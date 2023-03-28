@@ -1,0 +1,108 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #5169a1;
+  --ifm-color-primary-dark: #495e91;
+  --ifm-color-primary-darker: #455989;
+  --ifm-color-primary-darkest: #394971;
+  --ifm-color-primary-light: #5d75ad;
+  --ifm-color-primary-lighter: #657cb1;
+  --ifm-color-primary-lightest: #7d90be;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #5169a1;
+  --ifm-color-primary-dark: #495e91;
+  --ifm-color-primary-darker: #455989;
+  --ifm-color-primary-darkest: #394971;
+  --ifm-color-primary-light: #5d75ad;
+  --ifm-color-primary-lighter: #657cb1;
+  --ifm-color-primary-lightest: #7d90be;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+.ivertix__dropdown > .dropdown__menu{
+  padding: 0;
+  width: 350px;
+}
+
+.ivertix__navbar-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--ifm-navbar-link-color);
+  font-weight: var(--ifm-font-weight-semibold);
+}
+.ivertix__navbar-link:hover {
+  color: var(--ifm-navbar-link-hover-color);
+}
+.dropdown > .ivertix__navbar-link:after {
+  border-color: currentColor transparent;
+  border-style: solid;
+  border-width: 0.4em 0.4em 0;
+  content: '';
+  display: inline-block;
+  margin-left: 0.3em;
+  position: relative;
+  top: 2px;
+  transform: translateY(-50%);
+}
+.dropdown__menu > .ivertix__navbar-link-item {
+  border-bottom: 1px solid var(--ifm-color-content-secondary);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background-color: var(--ifm-navbar-background-color);
+  text-decoration: none;
+}
+
+.dropdown__menu > .ivertix__navbar-link-item:hover {
+  background-color: var(--ifm-hover-overlay);
+}
+
+.dropdown__menu > .ivertix__navbar-link-item:last-child {
+  border-bottom: unset;
+}
+
+.ivertix__navbar-link-item > .ivertix__navbar-link-item-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.ivertix__navbar-link-item-content > .ivertix__navbar-link-item-label {
+  color: var(--ifm-color-content);
+}
+
+.ivertix__navbar-link-item:hover .ivertix__navbar-link-item-label {
+  color: var(--ifm-navbar-link-hover-color);
+}
+
+.ivertix__navbar-link-item-active .ivertix__navbar-link-item-label {
+  color: var(--ifm-navbar-link-hover-color) !important;
+}
+
+.ivertix__navbar-link-item-content > .ivertix__navbar-link-item-desc {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.875rem;
+  line-height: normal;
+}
+
+.ivertix__navbar-link-item > .ivertix__navbar-link-item-icon {
+  padding: 0.5rem 1rem 0 0.5rem;
+  /*display: flex;*/
+  /*width: 32px;*/
+  /*justify-content: center;*/
+}
+
+.ivertix__navbar-link-item-icon > img {
+  max-width: 32px;
+  max-height: 32px;
+}
