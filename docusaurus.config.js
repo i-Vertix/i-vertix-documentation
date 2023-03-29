@@ -35,22 +35,28 @@ const config = {
     customFields: {
         products: [
             {
+                id: 'monitoring',
                 label: 'IT Monitoring',
                 description: 'Hi, this is a description text. I am very long',
+                icon: '/img/logo-monitoring-1000.png',
                 Image: '/img/logo-monitoring-1000.png',
                 to: '/monitoring/intro',
                 banner: "news"
             },
             {
+                id: 'log-management',
                 label: 'Log & Data Management',
                 description: 'Hi, this is a description text. I am very long',
+                icon: '/img/logo-log-management-1000.png',
                 Image: '/img/logo-log-management-1000.png',
                 to: '/log-management/intro',
                 banner: "news"
             },
             {
+                id: 'asset-management',
                 label: 'IT Asset Management',
                 description: 'Hi, this is a description text. I am very long',
+                icon: '/img/logo-asset-management-1000.png',
                 Image: '/img/logo-asset-management-1000.png',
                 to: '/asset-management/intro'
             }

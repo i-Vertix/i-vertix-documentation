@@ -114,12 +114,15 @@ function DropdownNavbarItemMobile({
         initialState: false
     });
 
+    console.log(props.label);
+
     return (
         <li
             className={clsx('menu__list-item', {
                 'menu__list-item--collapsed': collapsed,
             })}>
             <NavbarNavLink
+                label={props.label}
                 role="button"
                 className={clsx(
                     'menu__link menu__link--sublist menu__link--sublist-caret',

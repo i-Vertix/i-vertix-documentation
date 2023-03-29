@@ -4,11 +4,16 @@ import {useThemeConfig} from '@docusaurus/theme-common';
 import Logo from '@theme/Logo';
 import CollapseButton from '@theme/DocSidebar/Desktop/CollapseButton';
 import Content from '@theme/DocSidebar/Desktop/Content';
-import VersionDropdown from '@theme/NavbarItem/DocsVersionDropdownNavbarItem';
 import styles from './styles.module.css';
+import SidebarHeader from "@site/src/components/SidebarHeader";
 
-const getDocId = (path) => {
-
+export const getDocId = (path) => {
+    const pathMatches = path.match(/^\/([a-z-]+)\//);
+    console.log(path, pathMatches);
+    if (!pathMatches[1]) {
+        return undefined;
+    }
+    return pathMatches[1];
 }
 
 function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
@@ -18,6 +23,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
             sidebar: {hideable},
         },
     } = useThemeConfig();
+    const docId = getDocId(path);
     return (
         <div
             className={clsx(
@@ -26,9 +32,7 @@ function DocSidebarDesktop({path, sidebar, onCollapse, isHidden}) {
                 isHidden && styles.sidebarHidden,
             )}>
             {hideOnScroll && <Logo tabIndex={-1} className={styles.sidebarLogo}/>}
-            <VersionDropdown docsPluginId={"monitoring"}
-                             dropdownItemsBefore={[]}
-                             dropdownItemsAfter={[]}/>
+            <SidebarHeader docId={docId} mobile={false}/>
             <Content path={path} sidebar={sidebar}/>
             {hideable && <CollapseButton onClick={onCollapse}/>}
         </div>

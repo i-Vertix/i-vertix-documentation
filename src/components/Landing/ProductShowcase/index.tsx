@@ -4,8 +4,10 @@ import clsx from "clsx";
 import Link from "@docusaurus/Link";
 
 export type ProductItem = {
+    id: string;
     label: string;
     description: string;
+    icon: string;
     Image: string | React.ComponentType<React.ComponentProps<'svg'>>;
     to: string;
     banner?: "news" | "updated";
