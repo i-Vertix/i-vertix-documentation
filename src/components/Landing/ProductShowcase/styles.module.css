@@ -7,7 +7,7 @@
 
 .product {
     position: relative;
-    background-color: var(--ifm-navbar-background-color);
+    background-color: var(--ivertix-product-background);
     padding: 16px;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .product:hover {
-    background-color: var(--ifm-hover-overlay);
+    background-color: var(--ivertix-product-background-hover);
 }
 
 .banner {

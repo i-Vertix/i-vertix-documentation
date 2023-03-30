@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './styles.module.css';
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
@@ -19,8 +19,12 @@ interface Props {
 
 const Product = ({label, description, Image, to, banner}: ProductItem) => {
 
+    const [hovered, setHovered] = useState<boolean>(false);
+
     return (
-        <Link className={clsx('col col--4', styles.product)} to={to}>
+        <Link className={clsx('col col--4', styles.product)} to={to}
+              onMouseOver={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}>
             {banner && <span className={styles.banner}>{banner}</span>}
             <div className="text--center">
                 {typeof Image === "string" ?
@@ -28,7 +32,7 @@ const Product = ({label, description, Image, to, banner}: ProductItem) => {
                     <Image className={styles.productImg} role="img"/>}
             </div>
             <div className={clsx("text--center padding-horiz--md", styles.productLabel)}>
-                <div className="button button--secondary button--lg">
+                <div className={clsx("button button--secondary button--outline button--lg", hovered && "button--active")}>
                     {label}
                 </div>
             </div>
@@ -41,7 +45,7 @@ const ProductShowcase = ({products}: Props) => {
         <section className={styles.productShowcase}>
             <div className="container">
                 <div className="row">
-                    {products.map(value => <Product {...value} />)}
+                    {products.map(value => <Product key={value.id} {...value} />)}
                 </div>
             </div>
         </section>

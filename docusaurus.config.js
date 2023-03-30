@@ -7,7 +7,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 /** @type {import('@docusaurus/types').Config} */
 const config = {
     title: 'i-Vertix Documentation',
-    tagline: '',
+    tagline: 'Managing an IT infrastructure has never been easier',
     favicon: 'img/logo-ivertix-100.png',
 
     // Set the production url of your site here
@@ -19,7 +19,7 @@ const config = {
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'i-Vertix', // Usually your GitHub org/user name.
-    projectName: 'i-Vertix Documentation', // Usually your repo name.
+    projectName: 'i-vertix-documentation', // Usually your repo name.
 
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
@@ -60,17 +60,7 @@ const config = {
                 Image: '/img/logo-asset-management-1000.png',
                 to: '/asset-management/intro'
             }
-        ],
-        alert: {
-            date: "18-03-2023",
-            title: "New IT Monitoring version 22.04 released",
-            description: undefined,
-            link: {
-                label: "See changelog",
-                link: undefined,
-                to: "/monitoring/changelog"
-            }
-        }
+        ]
     },
 
     presets: [
@@ -158,21 +148,21 @@ const config = {
                             }
                         ]
                     },
-                    {
-                        type: 'docsVersionDropdown',
-                        docsPluginId: 'monitoring',
-                        position: "right"
-                    },
-                    {
-                        type: 'docsVersionDropdown',
-                        docsPluginId: 'asset-management',
-                        position: "right"
-                    },
-                    {
-                        type: 'docsVersionDropdown',
-                        docsPluginId: 'log-management',
-                        position: "right"
-                    }
+                    // {
+                    //     type: 'docsVersionDropdown',
+                    //     docsPluginId: 'monitoring',
+                    //     position: "right"
+                    // },
+                    // {
+                    //     type: 'docsVersionDropdown',
+                    //     docsPluginId: 'asset-management',
+                    //     position: "right"
+                    // },
+                    // {
+                    //     type: 'docsVersionDropdown',
+                    //     docsPluginId: 'log-management',
+                    //     position: "right"
+                    // }
                 ],
             },
             footer: {
