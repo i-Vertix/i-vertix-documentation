@@ -6,109 +6,200 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #5169a1;
-  --ifm-color-primary-dark: #495e91;
-  --ifm-color-primary-darker: #455989;
-  --ifm-color-primary-darkest: #394971;
-  --ifm-color-primary-light: #5d75ad;
-  --ifm-color-primary-lighter: #657cb1;
-  --ifm-color-primary-lightest: #7d90be;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+    --ifm-color-primary: #5169a1;
+    --ifm-color-primary-dark: #495e91;
+    --ifm-color-primary-darker: #455989;
+    --ifm-color-primary-darkest: #394971;
+    --ifm-color-primary-light: #5d75ad;
+    --ifm-color-primary-lighter: #657cb1;
+    --ifm-color-primary-lightest: #7d90be;
+    --ifm-code-font-size: 95%;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
-  --ivertix-product-background: rgba(0, 0, 0, 0.05);
-  --ivertix-product-background-hover: rgba(0, 0, 0, 0.1);
+    --ivertix-primary-color: #5169a2;
+    --ivertix-secondary-color: #EF8222;
+
+    --ivertix-product-background: rgba(0, 0, 0, 0.05);
+    --ivertix-product-background-hover: rgba(0, 0, 0, 0.1);
+
+    /*BREADCRUMBS*/
+    --ifm-breadcrumb-color-active: rgb(255, 255, 255);
+    --ifm-breadcrumb-item-background-active: var(--ivertix-primary-color);
+
+    --ifm-color-warning: var(--ivertix-secondary-color);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #5169a1;
-  --ifm-color-primary-dark: #495e91;
-  --ifm-color-primary-darker: #455989;
-  --ifm-color-primary-darkest: #394971;
-  --ifm-color-primary-light: #5d75ad;
-  --ifm-color-primary-lighter: #657cb1;
-  --ifm-color-primary-lightest: #7d90be;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+    --ifm-color-primary: #5169a2;
+    --ifm-color-primary-dark: #495e91;
+    --ifm-color-primary-darker: #455989;
+    --ifm-color-primary-darkest: #394971;
+    --ifm-color-primary-light: #5d75ad;
+    --ifm-color-primary-lighter: #657cb1;
+    --ifm-color-primary-lightest: #7d90be;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 
-  --ivertix-product-background: rgba(255, 255, 255, 0.05);
-  --ivertix-product-background-hover: rgba(255, 255, 255, 0.1);
+    --ivertix-primary-color: #5169a2;
+
+    /*GULASCH*/
+    /*--ivertix-secondary-color: #c99f80;*/
+
+    /*OK*/
+    --ivertix-secondary-color: #d5853c;
+
+    --ivertix-product-background: rgba(255, 255, 255, 0.05);
+    --ivertix-product-background-hover: rgba(255, 255, 255, 0.1);
+
+    /*ALERTS*/
+    --ifm-color-warning-dark: var(--ivertix-secondary-color);
 }
 
-.ivertix__dropdown > .dropdown__menu{
-  padding: 0;
-  width: 350px;
+/*BREADCRUMBS*/
+.breadcrumbs__link:any-link:hover {
+    color: rgb(255, 255, 255);
+}
+
+/* MARKDOWN HEADING COLORS */
+
+.markdown > h1 {
+    color: var(--ifm-color-primary);
+}
+
+.markdown > h2 {
+    color: var(--ifm-color-primary);
+}
+
+.markdown > h3 {
+    color: var(--ivertix-secondary-color);
+}
+
+.markdown > h3 > a {
+    color: var(--ivertix-secondary-color);
+}
+
+/*TO OVERWRITE GENERAL COLORS*/
+html[data-theme='dark'] {
+    /*--ifm-background-color: #414141;*/
+    /*--ifm-background-surface-color: #414141;*/
+}
+
+/* SIDEBAR (ALL PAGES) */
+
+.theme-doc-sidebar-container {
+    /*REMOVE CLIP-PATH TO MAKE VERSION DROPDOWN COMPLETELY VISIBLE*/
+    clip-path: none !important;
+}
+
+/* NAVBAR */
+
+.header-icon-link {
+    transition: opacity 0.2s;
+    opacity: 1;
+    padding: 4px 6px;
+}
+
+.header-icon-link:hover {
+     opacity: 0.5;
+}
+
+.header-icon-link::before {
+    content: "";
+    display: flex;
+    height: 24px;
+    width: 24px;
+}
+
+.header-homepage-link::before {
+    mask: url("/img/socials/internet.svg") no-repeat 50% 50%;
+    mask-size: cover;
+    background-color: var(--ifm-font-color-base);
+}
+
+.header-linkedin-link::before {
+    background: url("/img/socials/linkedin.svg");
+    background-size: cover;
+}
+
+/*CUSTOM NAVBAR ITEMS*/
+
+.ivertix__dropdown > .dropdown__menu {
+    padding: 0;
+    width: 350px;
 }
 
 .ivertix__navbar-link {
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--ifm-navbar-link-color);
-  font-weight: var(--ifm-font-weight-semibold);
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--ifm-navbar-link-color);
+    font-weight: var(--ifm-font-weight-semibold);
 }
+
 .ivertix__navbar-link:hover {
-  color: var(--ifm-navbar-link-hover-color);
+    color: var(--ifm-navbar-link-hover-color);
 }
+
 .dropdown > .ivertix__navbar-link:after {
-  border-color: currentColor transparent;
-  border-style: solid;
-  border-width: 0.4em 0.4em 0;
-  content: '';
-  display: inline-block;
-  margin-left: 0.3em;
-  position: relative;
-  top: 2px;
-  transform: translateY(-50%);
+    border-color: currentColor transparent;
+    border-style: solid;
+    border-width: 0.4em 0.4em 0;
+    content: '';
+    display: inline-block;
+    margin-left: 0.3em;
+    position: relative;
+    top: 2px;
+    transform: translateY(-50%);
 }
+
 .dropdown__menu > .ivertix__navbar-link-item {
-  border-bottom: 1px solid var(--ifm-color-content-secondary);
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  background-color: var(--ifm-navbar-background-color);
-  text-decoration: none;
+    border-bottom: 1px solid var(--ifm-color-content-secondary);
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: var(--ifm-navbar-background-color);
+    text-decoration: none;
 }
 
 .dropdown__menu > .ivertix__navbar-link-item:hover {
-  background-color: var(--ifm-hover-overlay);
+    background-color: var(--ifm-hover-overlay);
 }
 
 .dropdown__menu > .ivertix__navbar-link-item:last-child {
-  border-bottom: unset;
+    border-bottom: unset;
 }
 
 .ivertix__navbar-link-item > .ivertix__navbar-link-item-content {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .ivertix__navbar-link-item-content > .ivertix__navbar-link-item-label {
-  color: var(--ifm-color-content);
+    color: var(--ifm-color-content);
 }
 
 .ivertix__navbar-link-item:hover .ivertix__navbar-link-item-label {
-  color: var(--ifm-navbar-link-hover-color);
+    color: var(--ifm-navbar-link-hover-color);
 }
 
 .ivertix__navbar-link-item-active .ivertix__navbar-link-item-label {
-  color: var(--ifm-navbar-link-hover-color) !important;
+    color: var(--ifm-navbar-link-hover-color) !important;
 }
 
 .ivertix__navbar-link-item-content > .ivertix__navbar-link-item-desc {
-  color: var(--ifm-color-content-secondary);
-  font-size: 0.875rem;
-  line-height: normal;
+    color: var(--ifm-color-content-secondary);
+    font-size: 0.875rem;
+    line-height: normal;
 }
 
 .ivertix__navbar-link-item > .ivertix__navbar-link-item-icon {
-  padding: 0.5rem 1rem 0 0.5rem;
-  /*display: flex;*/
-  /*width: 32px;*/
-  /*justify-content: center;*/
+    padding: 0.5rem 1rem 0 0.5rem;
+    /*display: flex;*/
+    /*width: 32px;*/
+    /*justify-content: center;*/
 }
 
 .ivertix__navbar-link-item-icon > img {
-  max-width: 32px;
-  max-height: 32px;
+    max-width: 32px;
+    max-height: 32px;
 }

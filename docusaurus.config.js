@@ -148,6 +148,21 @@ const config = {
                             }
                         ]
                     },
+                    {
+                        href: "https://i-vertix.com/en/blog/",
+                        label: "Blog",
+                        target: '_blank'
+                    },
+                    {
+                        href: "https://www.i-vertix.com/",
+                        position: "right",
+                        className: "header-icon-link header-homepage-link",
+                    },
+                    {
+                        href: "https://www.linkedin.com/company/i-vertix/",
+                        position: "right",
+                        className: "header-icon-link header-linkedin-link",
+                    },
                     // {
                     //     type: 'docsVersionDropdown',
                     //     docsPluginId: 'monitoring',
@@ -206,11 +221,24 @@ const config = {
                         title: 'Follow us on',
                         items: [
                             {
-                                html: `<a href="https://www.linkedin.com/company/i-vertix/" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on LinkedIn"><img src="/img/socials/linkedin-icon.svg" alt="LinkedIn" width="24" height="24" /></a>`,
-                            },
+                                html: `
+<a href="https://www.linkedin.com/company/i-vertix/" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on LinkedIn">
+    <img src="/img/socials/linkedin.svg" alt="LinkedIn" width="32" height="32" />
+</a>
+<a href="https://www.linkedin.com/company/i-vertix/" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on Youtube">
+    <img src="/img/socials/youtube.svg" alt="LinkedIn" width="32" height="32" />
+</a>`,
+                            }
                         ],
                     },
                 ],
+                logo: {
+                    alt: 'i-Vertix',
+                    src: 'img/logo-ivertix-100.png',
+                    href: 'https://i-vertix.com',
+                    width: 100,
+                    height: 100,
+                },
                 copyright: `Copyright © ${new Date().getFullYear()} i-Vertix`,
             },
             prism: {
