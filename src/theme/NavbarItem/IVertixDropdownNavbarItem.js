@@ -23,7 +23,7 @@ const getRegexForDocumentationActive = (currentPath, docsMainPath) => {
     if (!pathMatches[0]) {
         return false;
     }
-    return`^${pathMatches[0].slice(0, -1)}\/`;
+    return `^${pathMatches[0].slice(0, -1)}\/`;
 }
 
 const getVersionMainDoc = (version) =>
@@ -81,7 +81,7 @@ function DropdownNavbarItemDesktop({
                         <Link
                             key={`nav-link-${i}`}
                             to={dropdownTo}
-                            className={clsx("ivertix__navbar-link-item", isActive && "ivertix__navbar-link-item-active")}
+                            className={clsx("ivertix__navbar-link-item", `${itemProps.id}__navbar-link-item`, isActive && "ivertix__navbar-link-item-active")}
                         >
                             <div className="ivertix__navbar-link-item-icon">
                                 <img alt={itemProps.label} src={itemProps.icon}/>

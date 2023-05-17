@@ -7,6 +7,7 @@ export type ProductItem = {
     id: string;
     label: string;
     description: string;
+    color: string;
     icon: string;
     Image: string | React.ComponentType<React.ComponentProps<'svg'>>;
     to: string;
@@ -17,26 +18,24 @@ interface Props {
     products: ProductItem[];
 }
 
-const Product = ({label, description, Image, to, banner}: ProductItem) => {
-
-    const [hovered, setHovered] = useState<boolean>(false);
+const Product = ({label, Image, to, color}: ProductItem) => {
 
     return (
-        <Link className={clsx('col col--4', styles.product)} to={to}
-              onMouseOver={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}>
-            {banner && <span className={styles.banner}>{banner}</span>}
+        <div className={clsx('col col--4', styles.product)}>
             <div className="text--center">
-                {typeof Image === "string" ?
-                    <img src={Image} alt={label} className={styles.productImg}/> :
-                    <Image className={styles.productImg} role="img"/>}
+                <Link to={to}>
+                    {typeof Image === "string" ?
+                        <img src={Image} alt={label} className={styles.productImg}/> :
+                        <Image className={styles.productImg} role="img"/>}
+                </Link>
             </div>
-            <div className={clsx("text--center padding-horiz--md", styles.productLabel)}>
-                <div className={clsx("button button--secondary button--outline button--lg", hovered && "button--active")}>
+            <div className={clsx("text--center padding-horiz--md", styles.productLabel)}
+                 style={{color: `var(--${color})`}}>
+                <Link to={to} className={styles.link}>
                     {label}
-                </div>
+                </Link>
             </div>
-        </Link>
+        </div>
     );
 }
 const ProductShowcase = ({products}: Props) => {

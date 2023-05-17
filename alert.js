@@ -1,5 +1,5 @@
 const alert = {
-    timestamp: 1680161117710,
+    timestamp: 1680589271000,
     title: "New documentation available soon!",
     description: [
         "The i-Vertix team is currently working on a new documentation for their products! In the meantime you can visit the i-Vertix homepage to get more information",

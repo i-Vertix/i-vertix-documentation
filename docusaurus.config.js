@@ -35,21 +35,23 @@ const config = {
     customFields: {
         products: [
             {
-                id: 'monitoring',
-                label: 'IT Monitoring',
-                description: 'Hi, this is a description text. I am very long',
-                icon: '/img/logo-monitoring-1000.png',
-                Image: '/img/logo-monitoring-1000.png',
-                to: '/monitoring/intro',
-                banner: "news"
-            },
-            {
                 id: 'log-management',
                 label: 'Log & Data Management',
                 description: 'Hi, this is a description text. I am very long',
                 icon: '/img/logo-log-management-1000.png',
                 Image: '/img/logo-log-management-1000.png',
                 to: '/log-management/intro',
+                color: 'ivertix-log-management',
+                banner: "news"
+            },
+            {
+                id: 'monitoring',
+                label: 'IT Monitoring',
+                description: 'Hi, this is a description text. I am very long',
+                icon: '/img/logo-monitoring-1000.png',
+                Image: '/img/logo-monitoring-1000.png',
+                to: '/monitoring/intro',
+                color: 'ivertix-monitoring',
                 banner: "news"
             },
             {
@@ -58,7 +60,8 @@ const config = {
                 description: 'Hi, this is a description text. I am very long',
                 icon: '/img/logo-asset-management-1000.png',
                 Image: '/img/logo-asset-management-1000.png',
-                to: '/asset-management/intro'
+                to: '/asset-management/intro',
+                color: 'ivertix-asset-management',
             }
         ]
     },
@@ -82,7 +85,6 @@ const config = {
                 id: 'monitoring',
                 path: 'monitoring',
                 routeBasePath: 'monitoring',
-                sidebarPath: require.resolve('./sidebarsMonitoring.js'),
                 includeCurrentVersion: false
                 // ... other options
             },
@@ -132,18 +134,21 @@ const config = {
                                 label: "IT Monitoring",
                                 description: "Keep a 360° view of your IT infrastructure",
                                 icon: "/img/logo-monitoring-100.png",
+                                id: "ivertix-monitoring",
                                 docsPluginId: "monitoring"
                             },
                             {
                                 label: "Log & Data Management",
                                 description: "Analyze logfiles and network traffic in real time",
                                 icon: "/img/logo-log-management-100.png",
+                                id: "ivertix-log-management",
                                 docsPluginId: "log-management"
                             },
                             {
                                 label: "IT Asset Management",
                                 description: "Automatically manage, track, inventory and update your IT assets",
                                 icon: "/img/logo-asset-management-100.png",
+                                id: "ivertix-asset-management",
                                 docsPluginId: "asset-management"
                             }
                         ]
