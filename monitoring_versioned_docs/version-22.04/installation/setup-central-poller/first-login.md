@@ -1,7 +1,9 @@
 ---
 id: first-login
-title: First Login
+title: First login
 ---
+
+## First Login
 
 After completing the VM configuration procedure in the chosen hypervisor, **start** the Central Manager and Smart Poller VMs.
 
@@ -12,7 +14,7 @@ It is recommended that the startup process is checked through the **hypervisor c
 
 Once the VM is started, the following screen with a login prompt will be displayed:
 
-![Login](../../assets/installation/first-login.png)
+![Login](../../assets/setup-startup-central-poller/first-login.png)
 
 You will need to log into i-Vertix Monitoring console to configure the network settings, using the following credentials:
 
@@ -25,7 +27,7 @@ minutes (see [fail2ban](../Security-aspects/fail2ban.md)).
 
 After the authentication, a menu that allows you to configure the next steps is displayed
 
-![iVertix menu](../../assets/installation/ivertix-menu.png)
+![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
 
 > Note:
     > If the menu doesn’t appear automatically at startup, simply type on the console the command ```menu```.

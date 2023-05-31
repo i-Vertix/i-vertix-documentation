@@ -144,6 +144,10 @@ html[data-theme='dark'] {
     background-size: cover;
 }
 
+.navbar__items--right .clean-btn {
+    color: #ffffff;
+}
+
 /*CUSTOM NAVBAR ITEMS*/
 
 .ivertix__dropdown > .dropdown__menu {

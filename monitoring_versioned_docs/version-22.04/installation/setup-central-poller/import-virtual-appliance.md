@@ -1,7 +1,9 @@
 ---
 id: import-virtual-appliance
-title: i-Vertix OVAs (Central Management & Smart Poller)
+title: How to import a Virtual appliance
 ---
+
+# i-Vertix OVAs (Central Management & Smart Poller)
 
 **i-Vertix** support provides a ready-to-use virtual machine.
 This virtual machine is available in **OVA** format for VMware environments.
@@ -99,6 +101,6 @@ Once the OVA has been imported into VMWare, Virtual Hardware (CPU and Memory) ha
 
 Start the vm and wait for the login screen.
 
-![First_login](../../assets/installation/first-login.png)
+![First_login](../../assets/setup-startup-central-poller/first-login.png)
 
-Now you can [log in](first-login.md) via VMware console and configure the ip address.
+Now you can [login](first-login.md) via VMware console and configure the ip address.

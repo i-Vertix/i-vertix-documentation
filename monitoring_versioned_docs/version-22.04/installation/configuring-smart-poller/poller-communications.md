@@ -1,6 +1,6 @@
 ---
-id: communications
-title: Communications
+id: poller-communications
+title: Communications flow between Central Manager and Smart Poller
 ---
 
 ## Communication between Central Manager and Smart Poller
@@ -21,15 +21,15 @@ platform.
 <Tabs groupId="sync">
 <TabItem value="Modern (recommended)" label="Modern (recommended)">
 
-| Communications                        | Allowed actions                                                           |
-|---------------------------------------|---------------------------------------------------------------------------|
+| Communications                         | Allowed actions                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------- |
 | **Central** <-- *ZMQ* --\> **Poller** | Monitoring actions\*, Engine/Broker statistics collection, Host Discovery |
 
 </TabItem>
 <TabItem value="Legacy (ex-Centcore)" label="Legacy (ex-Centcore)">
 
-| Communications                        | Allowed actions                                                           |
-|---------------------------------------|---------------------------------------------------------------------------|
+| Communications                         | Allowed actions                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------- |
 | **Central** <-- *SSH* --\> **Poller** | Monitoring actions\*, Engine/Broker statistics collection, Host Discovery |
 
 </TabItem>

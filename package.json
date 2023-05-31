@@ -12,7 +12,8 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "devserver": "pm2 stop devserver; pm2 delete devserver; pm2 start \"npm run start\" --name devserver"
   },
   "dependencies": {
     "@docusaurus/core": "2.3.1",

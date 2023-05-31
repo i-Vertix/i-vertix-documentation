@@ -3,30 +3,31 @@ id: smtp-configuration
 title: SMTP configuration
 ---
 
+# SMTP configuration
+
 Email notifications settings can be configured on both Central Manager and Smart Poller.
 
 **NOTE:**
-> By default, notifications about to monitored devices/services are sent by Smart Pollers.
+>By default notifications about to monitored devices/services are sent by Smart Pollers.
 
-Since the Central Manager can perform self-diagnostics procedures, in case it detects any issues, it can generate alarm
-notifications as well.
+Since the Central Manager can perform self-diagnostics procedures, in case it detects any issues, it can generate alarm notifications as well.
 
-Therefore, SMTP should be configured also on the Central Manager itself.
+Therefore SMTP should be configured also on the Central Manager itself.
 
 ## SMTP Configuration
 
 1) Select option **7) SMTP settings (e-mail)**
 
-![i-Vertix menu](../../assets/installation/ivertix-menu.png)
+![i-Vertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
 
 2) A new menu shows up
 
-![Relay host](../../assets/installation/relay-host.png)
+![Relay host](../../assets/setup-startup-central-poller/relay-host.png)
 
 3) Select **Y**
 4) A new menu shows up
 
-![SMTP options](../../assets/installation/smtp-options.png)
+![SMTP options](../../assets/setup-startup-central-poller/smtp-options.png)
 
 5) Select the proper SMTP option among the proposed ones
 
@@ -34,15 +35,15 @@ Therefore, SMTP should be configured also on the Central Manager itself.
 
 1) **Normal SMTP**: please follow each step carefully
 
-![Normal SMTP](../../assets/installation/simple-relay.png)
+![Normal SMTP](../../assets/setup-startup-central-poller/simple-relay.png)
 
 2) **SMTP with authentication**
 
-![Authenticated SMTP](../../assets/installation/auth-smtp.png)
+![Authenticated SMTP](../../assets/setup-startup-central-poller/auth-smtp.png)
 
 3) **SMTP for Office365 or Amazon AWS SES**
 
-![O365 - AWS SES SMTP](../../assets/installation/O365-smtp.png)
+![O365 - AWS SES SMTP](../../assets/setup-startup-central-poller/O365-smtp.png)
 
 
 ---
@@ -55,7 +56,7 @@ Once the proper option has been selected and configured, quit using **q** comman
 
 If you want to test the configuration you've just made, simply type **T) Test SMTP settings** in the menu.
 
-![Relay host](../../assets/installation/relay-host.png)
+![Relay host](../../assets/setup-startup-central-poller/relay-host.png)
 
 **NOTE:**
-> Provide real a e-mail sender and a e-mail reciver for the test.
+>Provide real a e-mail sender and a e-mail reciver for the test.

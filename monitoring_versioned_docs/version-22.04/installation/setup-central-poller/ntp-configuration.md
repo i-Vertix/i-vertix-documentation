@@ -1,7 +1,9 @@
 ---
 id: ntp-configuration
-title: Configuration of NTP (CLI)
+title: NTP configuration
 ---
+
+# Configuration of NTP (CLI)
 
 In the system shell follow this procedure:
 
@@ -30,10 +32,10 @@ requested)
 ### Examples
 
 Ex. 1
-![chronyc tracking](../../assets/installation/chronyc-tracking.png)
+![chronyc tracking](../../assets/setup-startup-central-poller/chronyc-tracking.png)
 
 Ex. 2
-![chronyc sources](../../assets/installation/chronyc-sources.png)
+![chronyc sources](../../assets/setup-startup-central-poller/chronyc-sources.png)
 
 Ex. 3
-![chrony.conf](../../assets/installation/chrony-conf.png)
+![chrony.conf](../../assets/setup-startup-central-poller/chrony-conf.png)

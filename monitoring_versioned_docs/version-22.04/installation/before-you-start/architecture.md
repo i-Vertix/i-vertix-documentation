@@ -1,5 +1,5 @@
 ---
-id: architecture
+id: architectures
 title: Architectures
 ---
 
