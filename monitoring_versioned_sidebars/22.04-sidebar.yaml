@@ -1,0 +1,107 @@
+sidebar:
+  - id: quick-start-guide
+    label: Quick Start Guide
+    items:
+      - id: configuring-first-hosts-services
+        label: Configuring first Hosts and Services
+        items:
+          - monitoring-the-first-host
+  - id: installation
+    label: Installation
+    items:
+      - id: before-you-start
+        label: Before you start
+        items:
+          - compatibility
+          - architecture
+          - prerequisites
+          - technical-information
+      - id: setup-central-poller
+        label: Setup Central & Poller
+        items:
+          - import-virtual-appliance
+          - first-login
+          - network-configuration
+          - ntp-configuration
+          - smtp-configuration
+          - password-modification
+          - license-central
+          - plugin-pack-install
+      - id: configuring-smart-poller
+        label: Configuring Smart Poller
+        items:
+          - first-web-access
+          - attach-a-poller-to-a-central-server
+          - poller-communications
+          - advanced-configuration
+      - id: security-aspects
+        label: Security aspects
+        items:
+          - fail2ban
+  - id: monitoring-resources
+    label: Monitoring Resources
+    items:
+      - id: monitoring-basics
+        label: Monitoring Basics
+        items:
+          - monitoring-principles
+          - plugin-packs
+          - config-deploy
+      - id: monitoring-hosts
+        label: Monitoring Hosts
+        items:
+          - monitoring-host
+          - create-host-manually
+          - host-templates
+          - create-host-automatically
+          - generic-actions
+      - id: monitoring-services
+        label: Monitoring Services
+        items:
+          - monitoring-service
+          - service-template
+      - id: discovery
+        label: Discovery
+        items:
+          - description
+          - host-discovery
+          - service-discovery
+          - vmware-discovery
+      - id: generic-object-actions
+        label: Generic objects and actions
+        items:
+          - timeperiods
+      - id: passive-monitoring
+        label: Passive monitoring
+        items:
+          - enable-snmp-traps
+          - create-snmp-traps-definitions
+          - monitoring-with-snmp-traps
+          - debug-snmp-traps-management
+  - id: events-alerts
+    label: Events & Alerts
+    items:
+      - id: viewing-events
+        label: Viewing events
+        items:
+          - custom-views
+      - id: managing-alarms
+        label: Managing alarms
+        items:
+          - acknowledge
+          - downtimes
+          - how-notifications-works
+  - id: managing-users-contacts
+    label: Managing Users & Contacts
+    items:
+      - contact-templates
+      - acl
+  - id: performance-graphs
+    label: Performance graphs
+    items:
+      - graph-template
+  - id: administration
+    label: Administration
+    items:
+      - backup
+  - glossary
