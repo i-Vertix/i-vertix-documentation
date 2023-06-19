@@ -1,0 +1,56 @@
+.aboutContainer {
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    padding: 48px;
+}
+
+.innerContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.contentContainer {
+    max-width: 900px;
+}
+
+.contentContainer > h2 {
+    color: var(--ivertix-primary-color);
+    font-size: var(--ifm-h1-font-size);
+}
+
+.contentContainer > p {
+
+}
+
+.summitContainer {
+    position: relative;
+}
+
+.summitImage {
+    display: inline-block;
+}
+
+.summitOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.summitOverlay .triangle {
+    fill: var(--ivertix-primary-color);
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+.summitOverlay .triangle:hover {
+    fill: var(--ifm-color-primary-lighter);
+}
+
+.summitOverlay .triangleActive {
+    fill: var(--ivertix-secondary-color);
+}
+
+.summitOverlay .triangleActive:hover {
+    fill: var(--ivertix-secondary-color);
+}

@@ -154,17 +154,22 @@ const config = {
                         ]
                     },
                     {
-                        href: "https://i-vertix.com/en/blog/",
+                        to: "https://i-vertix.com/en/blog/",
                         label: "Blog",
                         target: '_blank'
                     },
                     {
-                        href: "https://www.i-vertix.com/",
+                        to: "https://helpdesk.i-vertix.cloud/",
+                        position: "right",
+                        label: "Helpdesk Portal"
+                    },
+                    {
+                        to: "https://www.i-vertix.com/",
                         position: "right",
                         className: "header-icon-link header-homepage-link",
                     },
                     {
-                        href: "https://www.linkedin.com/company/i-vertix/",
+                        to: "https://www.linkedin.com/company/i-vertix/",
                         position: "right",
                         className: "header-icon-link header-linkedin-link",
                     },
@@ -189,7 +194,7 @@ const config = {
                 style: 'dark',
                 links: [
                     {
-                        title: 'Products',
+                        title: 'Resources',
                         items: [
                             {
                                 label: 'Monitoring',
@@ -205,34 +210,54 @@ const config = {
                             },
                         ],
                     },
-                    // {
-                    //     title: 'Community',
-                    //     items: [
-                    //         {
-                    //             label: 'Stack Overflow',
-                    //             href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-                    //         },
-                    //         {
-                    //             label: 'Discord',
-                    //             href: 'https://discordapp.com/invite/docusaurus',
-                    //         },
-                    //         {
-                    //             label: 'Twitter',
-                    //             href: 'https://twitter.com/docusaurus',
-                    //         },
-                    //     ],
-                    // },
+                    {
+                        title: 'Contact us',
+                        items: [
+                            {
+                                label: 'sales@i-vertix.com',
+                                to: 'mailto:sales@i-vertix.com',
+                            },
+                            {
+                                label: '+39 0471 1430170',
+                                to: 'tel:003904711430170',
+                            }
+                        ],
+                    },
+                    {
+                        title: 'Links',
+                        items: [
+                            {
+                                label: 'Helpdesk Portal',
+                                to: "https://helpdesk.i-vertix.cloud/",
+                            },
+                            {
+                                label: 'Credits',
+                                to: 'https://i-vertix.com',
+                            },
+                            {
+                                label: 'Legal information',
+                                to: 'https://i-vertix.com',
+                            }
+                        ],
+                    },
                     {
                         title: 'Follow us on',
                         items: [
                             {
                                 html: `
+<div class="footer__socials">
 <a href="https://www.linkedin.com/company/i-vertix/" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on LinkedIn">
     <img src="/img/socials/linkedin.svg" alt="LinkedIn" width="32" height="32" />
 </a>
 <a href="https://www.linkedin.com/company/i-vertix/" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on Youtube">
-    <img src="/img/socials/youtube.svg" alt="LinkedIn" width="32" height="32" />
-</a>`,
+    <img src="/img/socials/youtube.svg" alt="Youtube" width="32" height="32" />
+</a>
+</div>
+<div class="footer__capterra">
+<a href="https://www.capterra.com/reviews/229594/i-Vertix-IT-Network-Monitoring--Management?utm_source=vendor&utm_medium=badge&utm_campaign=capterra_reviews_badge" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix Reviews - Capterra">
+    <img src="https://assets.capterra.com/badge/b04a3bce76c7bb9ae072469a6424cd7b.svg?v=2178388&p=229594" alt="Capterra" width="200" />
+</a>
+</div>`,
                             }
                         ],
                     },

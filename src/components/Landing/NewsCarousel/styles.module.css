@@ -1,0 +1,75 @@
+.carouselContainer {
+    background-color: var(--ivertix-primary-color);
+    padding: 40px 20%;
+}
+
+@media only screen and (max-width: 1500px) {
+    .carouselContainer {
+        padding: 40px;
+    }
+}
+
+.newsItem {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20px;
+    background-color: var(--ivertix-news-background-color);
+    max-width: 740px;
+}
+
+.newsItem .newsImage {
+    height: auto;
+    display: block;
+}
+
+@media only screen and (max-width: 960px) {
+    .newsItem {
+        max-width: 520px;
+    }
+}
+
+@media only screen and (max-width: 760px) {
+    .newsItem {
+        max-width: 320px;
+    }
+}
+
+.newsItem .newsContent {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+}
+
+.newsItem .newsContent .newsTitle {
+    color: var(--ivertix-primary-color);
+    font-size: 2rem;
+    text-align: center;
+}
+
+.newsItem .newsContent .newsText {
+    text-align: center;
+}
+
+.newsItem .newsContent .newsActions {
+    display: flex;
+    justify-content: center;
+}
+
+.newsItem .newsContent .newsButton {
+    display: inline-flex;
+    border: 1px solid var(--ivertix-primary-color);
+    border-radius: 4px;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 8px 16px;
+    font-size: 1rem;
+    color: var(--ivertix-primary-color);
+}
+
+.newsItem .newsContent .newsButton:hover {
+    background-color: var(--ifm-color-primary-lightest);
+    border-color: var(--ifm-color-primary-lightest);
+    color: var(--ifm-text-color);
+    text-decoration: none;
+}
+

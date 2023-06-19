@@ -5,22 +5,13 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import ProductShowcase, {ProductItem} from '@site/src/components/Landing/ProductShowcase';
 import styles from './index.module.css';
+import NewsCarousel from "@site/src/components/Landing/NewsCarousel";
+import About from "@site/src/components/Landing/About";
 
 function HomepageHeader() {
     const {siteConfig} = useDocusaurusContext();
     return (
         <header className={clsx('hero hero--primary', styles.heroBanner)}>
-            <div className="container">
-                {/*<h1 className="hero__title">Get started with i-Vertix</h1>*/}
-                {/*<p className="hero__subtitle">{siteConfig.tagline}</p>*/}
-                {/*<div className={styles.buttons}>*/}
-                {/*    <Link*/}
-                {/*        className="button button--secondary button--lg"*/}
-                {/*        to="/monitoring/intro">*/}
-                {/*        Hop right in 🚀*/}
-                {/*    </Link>*/}
-                {/*</div>*/}
-            </div>
         </header>
     );
 }
@@ -35,6 +26,8 @@ export default function Home(): JSX.Element {
             <main>
                 <ProductShowcase products={siteConfig.customFields.products as ProductItem[]}/>
             </main>
+            <NewsCarousel />
+            <About />
         </Layout>
     );
 }

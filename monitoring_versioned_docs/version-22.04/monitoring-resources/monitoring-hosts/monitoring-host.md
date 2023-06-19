@@ -32,17 +32,17 @@ Also, download from the [Plugin Store](../monitoring-basics/plugin_packs.md) and
 
 > Select: **Administration -> i-Vertix -> Plugin Store**.
 
-![PluginStore](./assets/plugin-store.png)
+[//]: # (![PluginStore]&#40;./assets/plugin-store.png&#41;)
 
 ## Installation procedure
 1. Search for the required plugins by using the filters
 2. Click on **«i»** to see which application/DB/device/device family/etc. the plugin applies to, which monitoring protocol/technology it uses to collect monitoring information, which status parameters and performance metrics it monitors, which discovery types can apply plugin components automatically
 
-![APC](./assets/apc-example.png)
+[//]: # (![APC]&#40;./assets/apc-example.png&#41;)
 
 3. Select required plugins and click on "+ INSTALL"
 
-![APC](./assets/plugin-install.png)
+[//]: # (![APC]&#40;./assets/plugin-install.png&#41;)
 
 
 
