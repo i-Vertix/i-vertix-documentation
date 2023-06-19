@@ -194,7 +194,7 @@ const config = {
                 style: 'dark',
                 links: [
                     {
-                        title: 'Resources',
+                        title: 'Docs',
                         items: [
                             {
                                 label: 'Monitoring',

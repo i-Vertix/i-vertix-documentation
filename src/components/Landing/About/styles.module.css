@@ -40,7 +40,7 @@
 .summitOverlay .triangle {
     fill: var(--ivertix-primary-color);
     cursor: pointer;
-    transition: fill 0.2s ease;
+    transition: fill .4s ease;
 }
 
 .summitOverlay .triangle:hover {

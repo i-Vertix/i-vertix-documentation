@@ -1,61 +1,113 @@
-.carouselContainer {
-    background-color: var(--ivertix-primary-color);
-    padding: 40px 20%;
+:root {
+    --news-width: 500px;
+    --news-height: 650px;
 }
 
-@media only screen and (max-width: 1500px) {
-    .carouselContainer {
-        padding: 40px;
-    }
+.carouselContainer {
+    background-color: var(--ivertix-primary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    padding: 48px;
+}
+
+.slider {
+    max-width: var(--news-width);
+    width: var(--news-width);
+    position: relative;
+    height: var(--news-height);
+    transition: height .1s cubic-bezier(.17, .67, .83, .67);
+}
+
+.bullets {
+    display: flex;
+    flex-direction: row;
+    margin: 50px 0 0 0;
+}
+
+.bullets .bullet {
+    background-color: #fff;
+    border-radius: 100%;
+    cursor: pointer;
+    height: 0.75rem;
+    width: 0.75rem;
+    margin: 0 5px;
+    opacity: .2;
+    transform: scale(.75);
+    transition: transform .1s cubic-bezier(.17, .67, .83, .67), opacity .1s cubic-bezier(.17, .67, .83, .67);
+}
+
+.bullets .bullet.bulletActive {
+    background-color: #fff;
+    opacity: 1;
+    transform: scale(1);
+}
+
+.newsItemContainer {
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    overflow: hidden;
+    transition: transform .1s cubic-bezier(.17, .67, .83, .67), opacity .1s cubic-bezier(.17, .67, .83, .67), z-index .1s cubic-bezier(.17, .67, .83, .67);
+    box-sizing: border-box;
 }
 
 .newsItem {
     display: flex;
     flex-direction: column;
-    margin: 0 20px;
     background-color: var(--ivertix-news-background-color);
-    max-width: 740px;
+    max-width: var(--news-width);
+    height: var(--news-height);
+    border: 2px solid var(--ifm-color-surface);
+    border-radius: 8px;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, .05), 0 2px 4px 0 rgba(0, 0, 0, .1);
+    /*padding: 2rem;*/
+    pointer-events: none;
+    position: relative;
+    user-select: none;
+}
+
+.newsItem.newsItemActive {
+    pointer-events: all;
+    user-select: auto;
+    border: 2px solid var(--ifm-color-primary-darker);
 }
 
 .newsItem .newsImage {
     height: auto;
+    max-width: var(--news-width);
     display: block;
+    user-select: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
-@media only screen and (max-width: 960px) {
-    .newsItem {
-        max-width: 520px;
-    }
-}
-
-@media only screen and (max-width: 760px) {
-    .newsItem {
-        max-width: 320px;
-    }
-}
-
-.newsItem .newsContent {
+.newsItem .newsContentContainer {
     display: flex;
     flex-direction: column;
     padding: 32px;
+    flex-grow: 1;
 }
 
-.newsItem .newsContent .newsTitle {
+.newsItem .newsTitle {
     color: var(--ivertix-primary-color);
     font-size: 2rem;
     text-align: center;
 }
 
-.newsItem .newsContent .newsText {
-    text-align: center;
+.newsItem .newsContent {
+    flex-grow: 1;
 }
 
-.newsItem .newsContent .newsActions {
+.newsItem .newsActions {
     display: flex;
     justify-content: center;
 }
 
-.newsItem .newsContent .newsButton {
+.newsItem .newsButton {
     display: inline-flex;
     border: 1px solid var(--ivertix-primary-color);
     border-radius: 4px;
@@ -64,12 +116,14 @@
     padding: 8px 16px;
     font-size: 1rem;
     color: var(--ivertix-primary-color);
+    user-select: none;
+    transition: color .1s ease-in-out, background-color .1s ease-in-out, border-color .1s ease-in-out;
 }
 
-.newsItem .newsContent .newsButton:hover {
-    background-color: var(--ifm-color-primary-lightest);
-    border-color: var(--ifm-color-primary-lightest);
-    color: var(--ifm-text-color);
+.newsItem .newsButton:hover {
+    background-color: var(--ifm-color-primary);
+    border-color: var(--ifm-color-primary);
+    color: #fff;
     text-decoration: none;
 }
 

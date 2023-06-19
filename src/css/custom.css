@@ -6,6 +6,28 @@
 
 /* You can override the default Infima variables here. */
 :root {
+    --ifm-font-size-12: 0.75rem;
+    --ifm-font-size-14: 0.875rem;
+    --ifm-font-size-16: 1rem;
+    --ifm-font-size-18: 1.125rem;
+    --ifm-font-size-20: 1.25rem;
+    --ifm-font-size-24: 1.5rem;
+    --ifm-font-size-28: 1.75rem;
+    --ifm-font-size-30: 1.875rem;
+    --ifm-font-size-32: 2rem;
+    --ifm-font-size-36: 2.25rem;
+    --ifm-font-size-40: 2.5rem;
+    --ifm-font-size-48: 3rem;
+    --ifm-font-size-56: 3.5rem;
+    --ifm-font-size-64: 4rem;
+    --ifm-font-size-72: 4.5rem;
+    --ifm-font-size-small: var(--ifm-font-size-14);
+    --ifm-font-size-body: var(--ifm-font-size-16);
+    --ifm-font-size-large: var(--ifm-font-size-20);
+    --ifm-font-size-display: var(--ifm-font-size-48);
+    --ifm-font-size-display-small: var(--ifm-font-size-24);
+    --ifm-font-size-display-large: var(--ifm-font-size-72);
+
     --ifm-color-primary: #5169a1;
     --ifm-color-primary-dark: #495e91;
     --ifm-color-primary-darker: #455989;
@@ -34,7 +56,10 @@
 
     /* NAVBAR */
     --ifm-navbar-background-color: var(--ivertix-primary-color);
-    --ifm-navbar-link-color: #fff;
+    --ifm-navbar-link-color: var(--ifm-color-emphasis-300);
+    --ifm-navbar-color: var(--ifm-color-emphasis-300);
+    --ifm-navbar-color-active: var(--ifm-navbar-color);
+    --ifm-menu-link-sublist-icon-filter: invert(100%) sepia(94%) saturate(17%) hue-rotate(223deg) brightness(104%) contrast(98%);
 
     /* NEWS */
     --ivertix-news-background-color: #fff;
@@ -61,12 +86,14 @@
     --ivertix-log-management: #35DF91;
     --ivertix-asset-management: #FAC762;
 
-    /*ALERTS*/
+    /* ALERTS */
     --ifm-color-warning-dark: var(--ivertix-secondary-color);
 
     /* NAVBAR */
     --ifm-navbar-background-color: var(--ivertix-primary-color);
     --ifm-navbar-link-color: #fff;
+    --ifm-navbar-color: var(--ifm-color-emphasis-700);
+    --ifm-navbar-color-active: var(--ifm-navbar-color);
 
     /* NEWS */
     --ivertix-news-background-color: var(--ifm-background-color);
@@ -94,7 +121,7 @@ html .footer {
 }
 
 .footer .footer__title {
-    font-size: var(--ifm-h3-font-size);
+    font-size: var(--ifm-font-size-18);
 }
 
 .footer .footer__link-item:hover {
@@ -111,9 +138,20 @@ html .footer {
     margin-top: 16px;
 }
 
-/*BREADCRUMBS*/
+/* BREADCRUMBS */
+
 .breadcrumbs__link:any-link:hover {
     color: rgb(255, 255, 255);
+}
+
+/* TABLE OF CONTENTS */
+
+.table-of-contents__link--active {
+    color: var(--ivertix-secondary-color);
+}
+
+.table-of-contents__link:hover {
+    color: var(--ivertix-secondary-color);
 }
 
 /* MARKDOWN HEADING COLORS */
@@ -190,6 +228,28 @@ html[data-theme='dark'] {
 }
 
 .navbar__items--right .clean-btn:hover {
+    color: #ffffff;
+    background: none;
+    opacity: 80%;
+}
+
+.navbar__toggle {
+    color: #ffffff;
+}
+
+.navbar-sidebar__back {
+    color: var(--ifm-navbar-color);
+}
+
+.navbar-sidebar__item .menu__link {
+    color: var(--ifm-navbar-color);
+}
+
+.navbar-sidebar__brand .clean-btn {
+    color: #ffffff;
+}
+
+.navbar-sidebar__brand .clean-btn:hover {
     color: #ffffff;
     background: none;
     opacity: 80%;

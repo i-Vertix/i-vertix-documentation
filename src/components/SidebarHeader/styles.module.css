@@ -7,6 +7,7 @@
 
 .mobileTitle {
     padding: 0 12px 8px 12px;
+    color: var(--ifm-navbar-color);
 }
 
 .title {
@@ -31,7 +32,7 @@
     display: block;
     width: 100%;
     height: 0;
-    border-bottom: 1px solid var(--ifm-font-color-base);
+    border-bottom: 1px solid var(--ifm-menu-color);
     margin: 8px 0;
 }
 
