@@ -249,7 +249,7 @@ const config = {
 <a href="https://www.linkedin.com/company/i-vertix/" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on LinkedIn">
     <img src="/img/socials/linkedin.svg" alt="LinkedIn" width="32" height="32" />
 </a>
-<a href="https://www.linkedin.com/company/i-vertix/" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on Youtube">
+<a href="https://www.youtube.com/channel/UCa38ZZWVFpCX5XhY8v0UFnQ" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix on Youtube">
     <img src="/img/socials/youtube.svg" alt="Youtube" width="32" height="32" />
 </a>
 </div>

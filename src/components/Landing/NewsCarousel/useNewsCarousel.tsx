@@ -33,8 +33,7 @@ const useNewsCarousel = () => {
                 At the moment we are finalizing and testing our recent work.<br/>
                 By the end of june we will release a brand new monitoring version!<br/>
                 Don't miss any upcoming features and improvements
-                by subscribing to our Newsletter!
-
+                by subscribing to our Newsletter!<br/>
                 <strong>Stay tuned boys!</strong>
             </p>,
             buttonLabel: "Subscribe",
