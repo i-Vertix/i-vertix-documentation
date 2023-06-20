@@ -255,20 +255,20 @@ const config = {
 </div>
 <div class="footer__capterra">
 <a href="https://www.capterra.com/reviews/229594/i-Vertix-IT-Network-Monitoring--Management?utm_source=vendor&utm_medium=badge&utm_campaign=capterra_reviews_badge" target="_blank" rel="noreferrer noopener" aria-label="i-Vertix Reviews - Capterra">
-    <img src="https://assets.capterra.com/badge/b04a3bce76c7bb9ae072469a6424cd7b.svg?v=2178388&p=229594" alt="Capterra" width="200" />
+    <img src="https://assets.capterra.com/badge/b04a3bce76c7bb9ae072469a6424cd7b.svg?v=2178388&p=229594" alt="Capterra" />
 </a>
 </div>`,
                             }
                         ],
                     },
                 ],
-                logo: {
-                    alt: 'i-Vertix',
-                    src: 'img/logo-ivertix-100.png',
-                    href: 'https://i-vertix.com',
-                    width: 100,
-                    height: 100,
-                },
+                // logo: {
+                //     alt: 'i-Vertix',
+                //     src: 'img/logo-ivertix-100.png',
+                //     href: 'https://i-vertix.com',
+                //     width: 100,
+                //     height: 100,
+                // },
                 copyright: `Copyright © ${new Date().getFullYear()} i-Vertix`,
             },
             prism: {

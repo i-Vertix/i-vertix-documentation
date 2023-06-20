@@ -114,7 +114,6 @@ function DropdownNavbarItemMobile({
         initialState: false
     });
 
-    console.log(props.label);
 
     return (
         <li

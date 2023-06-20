@@ -45,7 +45,7 @@
     --ivertix-product-background-hover: rgba(0, 0, 0, 0.1);
 
     --ivertix-monitoring: #F47960;
-    --ivertix-log-management: #35DF91;
+    --ivertix-log-management: #64BA87;
     --ivertix-asset-management: #FAC762;
 
     /*BREADCRUMBS*/
@@ -56,8 +56,9 @@
 
     /* NAVBAR */
     --ifm-navbar-background-color: var(--ivertix-primary-color);
-    --ifm-navbar-link-color: var(--ifm-color-emphasis-300);
-    --ifm-navbar-color: var(--ifm-color-emphasis-300);
+    /*--ifm-navbar-link-color: var(--ifm-color-emphasis-300);*/
+    --ifm-navbar-color: #ffffff;
+    --ifm-navbar-link-color: var(--ifm-navbar-color);
     --ifm-navbar-color-active: var(--ifm-navbar-color);
     --ifm-menu-link-sublist-icon-filter: invert(100%) sepia(94%) saturate(17%) hue-rotate(223deg) brightness(104%) contrast(98%);
 
@@ -83,7 +84,7 @@
     --ivertix-product-background-hover: rgba(255, 255, 255, 0.1);
 
     --ivertix-monitoring: #F47960;
-    --ivertix-log-management: #35DF91;
+    --ivertix-log-management: #64BA87;
     --ivertix-asset-management: #FAC762;
 
     /* ALERTS */
@@ -91,8 +92,8 @@
 
     /* NAVBAR */
     --ifm-navbar-background-color: var(--ivertix-primary-color);
-    --ifm-navbar-link-color: #fff;
-    --ifm-navbar-color: var(--ifm-color-emphasis-700);
+    --ifm-navbar-color: #ffffff;
+    --ifm-navbar-link-color: var(--ifm-navbar-color);
     --ifm-navbar-color-active: var(--ifm-navbar-color);
 
     /* NEWS */
@@ -104,6 +105,15 @@
 html .footer {
     background: var(--ivertix-primary-color);
     padding: 32px 24px 24px 24px;
+}
+
+.footer .footer__container {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .footer .footer__links {
@@ -136,6 +146,46 @@ html .footer {
 
 .footer .footer__capterra {
     margin-top: 16px;
+    width: 100%;
+}
+
+.footer .footer__capterra img {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+}
+
+.footer .footer__logo-custom {
+    align-self: center;
+    flex: 1;
+    flex-direction: column;
+    min-width: 100px;
+    display: flex;
+}
+
+.footer .footer__logo-custom a {
+    display: inline-flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 996px) {
+    .footer .footer__logo-custom {
+        min-width: 100%;
+    }
+    .footer .footer__col {
+        min-width: calc(50% - 12px);
+        text-align: center;
+    }
+    .footer .footer__socials {
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .footer .footer__col {
+        min-width: 100%;
+        text-align: center;
+    }
 }
 
 /* BREADCRUMBS */

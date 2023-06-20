@@ -127,3 +127,16 @@
     text-decoration: none;
 }
 
+@media screen and (max-width: 500px) {
+    :root {
+        --news-width: 100%;
+    }
+    .carouselContainer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .bullets .bullet {
+        height: 1.75rem;
+        width: 1.75rem;
+    }
+}

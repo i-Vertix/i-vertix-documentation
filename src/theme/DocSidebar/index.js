@@ -3,7 +3,6 @@ import {useWindowSize} from '@docusaurus/theme-common';
 import DocSidebarDesktop from '@theme/DocSidebar/Desktop';
 import DocSidebarMobile from '@theme/DocSidebar/Mobile';
 export default function DocSidebar(props) {
-  console.log(props);
   const windowSize = useWindowSize();
   // Desktop sidebar visible on hydration: need SSR rendering
   const shouldRenderSidebarDesktop =

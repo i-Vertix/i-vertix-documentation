@@ -9,7 +9,6 @@ import SidebarHeader from "@site/src/components/SidebarHeader";
 
 export const getDocId = (path) => {
     const pathMatches = path.match(/^\/([a-z-]+)\//);
-    console.log(path, pathMatches);
     if (!pathMatches[1]) {
         return undefined;
     }

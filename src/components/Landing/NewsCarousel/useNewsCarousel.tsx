@@ -51,6 +51,16 @@ const useNewsCarousel = () => {
             buttonLabel: "Subscribe",
             buttonLink: "https://i-vertix.com",
         },
+        {
+            title: "I am news number 4",
+            image: "/img/alerts/os-discovery.png",
+            text: <p>
+                Well, I shouldn't be directly visible, I'm just here to test if everything works accordingly to plan.
+                Maybe I messed something up, maybe it works as it should. Who knows.. Who.. knows..
+            </p>,
+            buttonLabel: "Subscribe",
+            buttonLink: "https://i-vertix.com",
+        },
     ], []);
 
     const newsStyles = useMemo(() => {

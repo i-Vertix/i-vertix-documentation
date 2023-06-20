@@ -14,7 +14,6 @@ function DangerIcon() {
 
 export default function AdmonitionWrapper(props) {
     if (props.type === "danger") {
-        console.log("fulgasd");
         return (<>
             <Admonition icon={<DangerIcon/>} {...props} />
         </>);

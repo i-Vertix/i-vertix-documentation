@@ -28,7 +28,6 @@ const Alert = ({...alert}: Alert) => {
     useEffect(() => {
         let onClickOutside: (event: any) => void | undefined = undefined;
         if (show && ref.current) {
-            console.log("added listener");
             onClickOutside = (event) => {
                 if (!ref.current.contains(event.target)) {
                     setClosed(true);
@@ -39,7 +38,6 @@ const Alert = ({...alert}: Alert) => {
         }
         return () => {
             if (onClickOutside !== undefined) {
-                console.log("removed listener");
                 document.removeEventListener("mousedown", onClickOutside);
             }
         }
