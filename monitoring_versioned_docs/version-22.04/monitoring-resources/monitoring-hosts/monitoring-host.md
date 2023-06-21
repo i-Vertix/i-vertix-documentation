@@ -1,3 +1,8 @@
+---
+id: monitoring-host
+title: Monitoring Host
+---
+
 ## Overview
 
 Monitoring a host refers to the process of continuously observing and gathering data about the performance, availability, and health of device (server, network device, host esxi, APC, UPS, etc.). The main objectives of monitoring a host are:
@@ -12,8 +17,8 @@ Monitoring a host refers to the process of continuously observing and gathering 
 
 How to create host:
 
-- [create hosts manually](./create-host-automatically.md), using [host templates](./host-templates.md)
-- use the [hosts discovery feature](../discovery/description.md)
+- [create hosts manually](create-host-automatically.md), using [host templates](host-templates.md)
+- use the [discovery feature](../discovery/description.md)
 
 ## Requirements
 
@@ -32,17 +37,17 @@ Also, download from the [Plugin Store](../monitoring-basics/plugin_packs.md) and
 
 > Select: **Administration -> i-Vertix -> Plugin Store**.
 
-[//]: # (![PluginStore]&#40;./assets/plugin-store.png&#41;)
+![PluginStore](../../assets/monitoring-resources/monitoring-host/plugin-store.png)
 
 ## Installation procedure
 1. Search for the required plugins by using the filters
 2. Click on **«i»** to see which application/DB/device/device family/etc. the plugin applies to, which monitoring protocol/technology it uses to collect monitoring information, which status parameters and performance metrics it monitors, which discovery types can apply plugin components automatically
 
-[//]: # (![APC]&#40;./assets/apc-example.png&#41;)
+![APC](../../assets/monitoring-resources/monitoring-host/apc-example.png)
 
 3. Select required plugins and click on "+ INSTALL"
 
-[//]: # (![APC]&#40;./assets/plugin-install.png&#41;)
+![APC](../../assets/monitoring-resources/monitoring-host/plugin-install.png)
 
 
 
