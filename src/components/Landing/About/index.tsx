@@ -19,13 +19,13 @@ const About = () => {
                     <svg width={"100%"} height={"100%"} className={styles.summitOverlay} viewBox={"0 0 900 840"}>
                         <g>
                             {/* oben-xy links-xy rechts-xy */}
-                            <polygon points="165,140 235,140 200,200"
+                            <polygon points="165,130 235,130 200,190"
                                      className={clsx(styles.triangle, selectedText === 0 && styles.triangleActive)}
                                      onClick={() => onSelectedTextChange(0)}/>
                             <polygon points="330,40 400,40 365,100"
                                      className={clsx(styles.triangle, selectedText === 1 && styles.triangleActive)}
                                      onClick={() => onSelectedTextChange(1)}/>
-                            <polygon points="565,90 635,90 600,150"
+                            <polygon points="565,80 635,80 600,140"
                                      className={clsx(styles.triangle, selectedText === 2 && styles.triangleActive)}
                                      onClick={() => onSelectedTextChange(2)}/>
                         </g>

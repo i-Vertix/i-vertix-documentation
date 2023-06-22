@@ -7,7 +7,9 @@ const NewsItem = (props: News & { onClick: () => void }) => {
 
     return (
         <div className={styles.newsItemContainer} style={props.style} onClick={props.onClick}>
-            <div className={clsx(styles.newsItem, props.active && styles.newsItemActive)}>
+            <div className={clsx(styles.newsItem, props.position === "center" && styles.newsItemActive)}>
+                {props.position && props.position !== "center" && <div
+                    className={clsx(styles.newsItemInactive, props.position === "left" ? styles.left : styles.right)}/>}
                 <img className={styles.newsImage} src={props.image} alt={props.title}/>
                 <div className={styles.newsContentContainer}>
                     <h2 className={styles.newsTitle}>{props.title}</h2>

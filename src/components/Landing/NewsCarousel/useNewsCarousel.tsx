@@ -1,5 +1,6 @@
 import React, {useMemo, useState} from "react";
 
+type Position = "left" | "center" | "right";
 export type News = {
     title: string;
     image: string;
@@ -7,7 +8,7 @@ export type News = {
     buttonLabel?: string;
     buttonLink?: string;
     style?: any;
-    active?: boolean;
+    position?: Position;
 };
 
 
@@ -18,7 +19,7 @@ const useNewsCarousel = () => {
     const news = useMemo((): News[] => [
         {
             title: "OS Discovery Released",
-            image: "/img/alerts/os-discovery.png",
+            image: "/img/landing/news/news_1.png",
             text: <p>
                 In June we released our brand new OS-Discovery functionality for our monitoring solution.
                 Discovery you will be able to monitor your virtualized servers in seconds!
@@ -63,8 +64,9 @@ const useNewsCarousel = () => {
         },
     ], []);
 
-    const newsStyles = useMemo(() => {
+    const additionalProps = useMemo(() => {
         const styles: any = [];
+        const positions: (Position | undefined)[] = [];
         const leftIndex = selectedIndex - 1 < 0 ? news.length - 1 : selectedIndex - 1;
         const rightIndex = selectedIndex + 1 > news.length - 1 ? 0 : selectedIndex + 1;
         for (let i = 0; i < news.length; i++) {
@@ -75,6 +77,7 @@ const useNewsCarousel = () => {
                     zIndex: 2,
                     cursor: "auto"
                 });
+                positions.push("center");
             } else if (i === leftIndex) {
                 styles.push({
                     transform: `translateX(-220px) scale(0.85)`,
@@ -82,6 +85,7 @@ const useNewsCarousel = () => {
                     zIndex: 1,
                     cursor: "pointer"
                 });
+                positions.push("left");
             } else if (i === rightIndex) {
                 styles.push({
                     transform: `translateX(220px) scale(0.85)`,
@@ -89,6 +93,7 @@ const useNewsCarousel = () => {
                     zIndex: 0,
                     cursor: "pointer"
                 });
+                positions.push("right");
             } else {
                 styles.push({
                     transform: `translate(0px) scale(0)`,
@@ -96,14 +101,15 @@ const useNewsCarousel = () => {
                     zIndex: 0,
                     cursor: "none"
                 });
+                positions.push(undefined);
             }
         }
-        return styles;
+        return {styles, positions};
     }, [news.length, selectedIndex]);
 
     const _news = useMemo((): News[] =>
-            news.map((n, i) => ({...n, style: newsStyles[i], active: selectedIndex === i})),
-        [news, newsStyles, selectedIndex]);
+            news.map((n, i) => ({...n, style: additionalProps.styles[i], position: additionalProps.positions[i]})),
+        [news, additionalProps, selectedIndex]);
 
     return {
         news: _news,

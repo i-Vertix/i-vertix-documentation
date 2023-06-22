@@ -17,7 +17,7 @@ const NewsCarousel = () => {
                 {news.map((_, i) => <div
                     key={`bullet-${i}`}
                     onClick={() => setSelectedNews(i)}
-                    className={clsx(styles.bullet, _.active && styles.bulletActive)}
+                    className={clsx(styles.bullet, _.position === "center" && styles.bulletActive)}
                 >
                 </div>)}
             </div>
