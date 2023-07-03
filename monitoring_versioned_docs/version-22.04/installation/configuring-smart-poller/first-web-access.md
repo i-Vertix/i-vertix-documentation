@@ -41,3 +41,10 @@ Insert your new password or click on **Generate password** to
 have the system create a random password for you.
 
 ![New password](../../assets/configuring-smart-poller/4-web-user-icon.png)
+
+## Reset your password when expired
+If you have not changed your password before it expires, you will be redirected after login to a dedicated page where you can update it:
+
+![New password](../../assets/configuring-smart-poller/password_expired.png)
+
+Fill in your current password, define a new one and then click on **Reset Password**.

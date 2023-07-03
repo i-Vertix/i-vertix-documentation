@@ -116,9 +116,7 @@ To add a recurrent downtime period go into the **Monitoring > Downtimes > Recurr
 
 -   The **Name** and **Description** fields serve to give a name and describe the recurrent downtime period.
 -   The **Enable** field serves to enable or disable the downtime period.
--   The **Periods** field serves to define one or more periods of recurrent downtime periods. To add a period, click on the symbol
-
-![image](../assets/common/navigate_plus.png).
+-   The **Periods** field serves to define one or more periods of recurrent downtime periods. To add a period, click on the symbol ![image](../../assets/managing-alarms/add_new_period.png).
 
 It is possible to choose three types of period:
 

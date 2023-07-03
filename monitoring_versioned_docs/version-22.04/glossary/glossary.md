@@ -29,7 +29,7 @@ Acknowledging a resource does not mean that the incident is over: it is over whe
 
 - **Simple architecture**: architecture that consists entirely of a [Central Manager](#central-server).
 
-- **Distributed architecture**: architecture consisting of a [Central Manager](#central-server) and of n [remote server(s)](#remote-server) and [Smart Poller(s)](#poller). Remote servers and pollers allow you to distribute the monitoring load, either for security reasons, geographical or historical reasons, etc.
+- **Distributed architecture**: architecture consisting of a [Central Manager](#central-manager) and of n [remote server(s)](#remote-server) and [Smart Poller(s)](#smart-poller). Remote servers and pollers allow you to distribute the monitoring load, either for security reasons, geographical or historical reasons, etc.
 
 **See also**: [Architectures](../installation/before-you-start/architecture.md).
 
@@ -54,7 +54,7 @@ In i-Vertix, the Central Manager is the main console where you monitor resources
 
 - configure the monitoring of your whole infrastructure,
 - monitor resources
-- see what all your i-Vertix servers monitor (Central Manager, [remote servers](#remote-server) and [Smart Pollers](#poller)), using its web interface.
+- see what all your i-Vertix servers monitor (Central Manager, [remote servers](#remote-server) and [Smart Pollers](#smart-poller)), using its web interface.
 
 
 ## Downtime
@@ -73,11 +73,11 @@ Fully Qualified Domain Name: hostname and domain name for a server. E.g.: demo.I
 
 ## Gorgone
 
-I-Vertix Gorgone is the software component that allows the [Central Manager](#central-server) to send information to the [remote servers](#remote-server) and the [Smart Pollers](#poller).
+I-Vertix Gorgone is the software component that allows the [Central Manager](#central-manager) to send information to the [remote servers](#remote-server) and the [Smart Pollers](#smart-poller).
 Among other things, Gorgone deploys the configuration to the [monitoring engines](#monitoring-engine).
 
 
-## Graph
+## Graphs
 
 Graphs are generated from the [metrics](#metric) that make up [services](#service), using [RRD files](#rrd-files). They show how these metrics evolve in time.
 
@@ -103,7 +103,7 @@ LVM (logical volume manager): I-Vertix recommends that you use this partitioning
 
 Feature included in LVM that allows you to do a snapshot of a file system. I-Vertix uses this process to back up databases.
 
-**See also**: [Backup](../administration/backup.md).
+**See also**: [Backup](../administration/parameters/backup-Backup.md).
 
 ## Metric
 
@@ -120,7 +120,7 @@ Any action in the interface that affects your real-time monitoring. For instance
 ## Monitoring engine
 
 I-Vertix Engine is the software component that plans checks, executes them, and [notifies](#notification) users if an incident occurs.
-I-Vertix Engine is present on [Smart Pollers](#poller), [remote servers](#remote-server) and the [Central Manager](#central-manager).
+I-Vertix Engine is present on [Smart Pollers](#smart-poller), [remote servers](#remote-server) and the [Central Manager](#central-manager).
 
 ## MySQL Dump
 
@@ -231,13 +231,13 @@ Indicates:
 
 PENDING is not a status: a resource is "pending" when it has just been created and hasn't been checked yet.
 
-**See also**: [Possible statuses of a resource](../events-alerts/managing-alarms/how-notifications-works.md).
+**See also**: [Possible statuses of a resource](../events-alerts/managing-notifications/how-notifications-works.md#status-types).
 
 ## Status type
 
 Indicates whether a change in [status](#status) is confirmed (HARD) or not confirmed (SOFT). For instance, if a status becomes HARD, notifications are triggered.
 
-**See also**: [Status types](../events-alerts/managing-alarms/how-notifications-works.md#status-types).
+**See also**: [Status types](../events-alerts/managing-notifications/how-notifications-works.md#status-types).
 
 ## Template
 
@@ -265,11 +265,11 @@ Time Periods is a predefined list of time intervals that are used in the i-Verti
 
 A widget is a configurable visual element that provides a specific function and can be placed on a dashboard or on a map. Widgets can be used for a variety of purposes such as displaying information, controlling devices or applications, providing access to features or settings, and more.
 
-**See also**: [Custom views](../events-alerts/viewing-events/custom-views.md).
+**See also**: [Custom views](../events-alerts/viewing-events/create-custom-view.md).
 
 ## ZMQ
 
 ZeroMQ appears as a networking library but operates like a concurrency framework with fast, scalable sockets for transmitting atomic messages over various transports, N-to-N connections with different patterns, and an asynchronous I/O model that can handle multicore applications. It offers language APIs and works on various operating systems. [source](https://zeromq.org/).
 
-Protocol used by i-Vertix [Gorgone](#gorgone) to communicate from the [central server](#central-server) to the [remote servers](#remote-server) and the [pollers](#poller), in a [distributed architecture](#architecture-simple-vs-distributed).
+Protocol used by i-Vertix [Gorgone](#gorgone) to communicate from the [Central Manager](#central-manager) to the [remote servers](#remote-server) and the [Smart Pollers](#smart-poller), in a [distributed architecture](#architecture-simple-vs-distributed).
 
