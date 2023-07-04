@@ -1,5 +1,5 @@
 ---
-id: other-actions
+id: other
 title: Other actions
 ---
 import Tabs from '@theme/Tabs';

@@ -1,5 +1,5 @@
 ---
-id: contacts-groups
+id: contact-groups
 title: Contacts groups
 ---
 

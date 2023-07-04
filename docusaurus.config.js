@@ -11,7 +11,7 @@ const config = {
     favicon: 'img/logo-ivertix-100.png',
 
     // Set the production url of your site here
-    url: 'https://docs.i-vertix.cloud',
+    url: 'https://iridescent-jalebi-e15008.netlify.app/',
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/',
@@ -34,16 +34,16 @@ const config = {
 
     customFields: {
         products: [
-            {
-                id: 'log-management',
-                label: 'Log & Data Management',
-                description: 'Hi, this is a description text. I am very long',
-                icon: '/img/logo-log-management-1000.png',
-                Image: '/img/logo-log-management-1000.png',
-                to: '/log-management/intro',
-                color: 'ivertix-log-management',
-                banner: "news"
-            },
+            // {
+            //     id: 'log-management',
+            //     label: 'Log & Data Management',
+            //     description: 'Hi, this is a description text. I am very long',
+            //     icon: '/img/logo-log-management-1000.png',
+            //     Image: '/img/logo-log-management-1000.png',
+            //     to: '/log-management/intro',
+            //     color: 'ivertix-log-management',
+            //     banner: "news"
+            // },
             {
                 id: 'monitoring',
                 label: 'IT Monitoring',
@@ -54,15 +54,15 @@ const config = {
                 color: 'ivertix-monitoring',
                 banner: "news"
             },
-            {
-                id: 'asset-management',
-                label: 'IT Asset Management',
-                description: 'Hi, this is a description text. I am very long',
-                icon: '/img/logo-asset-management-1000.png',
-                Image: '/img/logo-asset-management-1000.png',
-                to: '/asset-management/intro',
-                color: 'ivertix-asset-management',
-            }
+            // {
+            //     id: 'asset-management',
+            //     label: 'IT Asset Management',
+            //     description: 'Hi, this is a description text. I am very long',
+            //     icon: '/img/logo-asset-management-1000.png',
+            //     Image: '/img/logo-asset-management-1000.png',
+            //     to: '/asset-management/intro',
+            //     color: 'ivertix-asset-management',
+            // }
         ]
     },
 
@@ -95,7 +95,6 @@ const config = {
                 id: 'asset-management',
                 path: 'asset-management',
                 routeBasePath: 'asset-management',
-                sidebarPath: require.resolve('./sidebarsAssetManagement.js'),
                 includeCurrentVersion: false
                 // ... other options
             },
@@ -106,7 +105,6 @@ const config = {
                 id: 'log-management',
                 path: 'log-management',
                 routeBasePath: 'log-management',
-                sidebarPath: require.resolve('./sidebarsLogManagement.js'),
                 includeCurrentVersion: false
                 // ... other options
             },
@@ -127,7 +125,7 @@ const config = {
                 items: [
                     {
                         type: 'custom-ivertixDropdown',
-                        label: 'Product Documentation',
+                        label: 'Docs',
                         position: 'left',
                         items: [
                             {
@@ -137,20 +135,20 @@ const config = {
                                 id: "ivertix-monitoring",
                                 docsPluginId: "monitoring"
                             },
-                            {
-                                label: "Log & Data Management",
-                                description: "Analyze logfiles and network traffic in real time",
-                                icon: "/img/logo-log-management-100.png",
-                                id: "ivertix-log-management",
-                                docsPluginId: "log-management"
-                            },
-                            {
-                                label: "IT Asset Management",
-                                description: "Automatically manage, track, inventory and update your IT assets",
-                                icon: "/img/logo-asset-management-100.png",
-                                id: "ivertix-asset-management",
-                                docsPluginId: "asset-management"
-                            }
+                            // {
+                            //     label: "Log & Data Management",
+                            //     description: "Analyze logfiles and network traffic in real time",
+                            //     icon: "/img/logo-log-management-100.png",
+                            //     id: "ivertix-log-management",
+                            //     docsPluginId: "log-management"
+                            // },
+                            // {
+                            //     label: "IT Asset Management",
+                            //     description: "Automatically manage, track, inventory and update your IT assets",
+                            //     icon: "/img/logo-asset-management-100.png",
+                            //     id: "ivertix-asset-management",
+                            //     docsPluginId: "asset-management"
+                            // }
                         ]
                     },
                     {

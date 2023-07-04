@@ -1,7 +1,22 @@
 sidebar:
+  - intro
   - id: quick-start-guide
     label: Quick Start Guide
     items:
+      - id: standard-vms-requirements
+        label: Standard VM's requirements
+        items:
+          - central-requirements
+          - poller-requirements
+          - network-ports
+          - browser-requirements
+          - licensing
+      - id: first-login
+        label: First login
+        items:
+          - plugin-store-configuration
+          - configuring-central-poller
+          - plugin-update-installation
       - id: configuring-first-hosts-services
         label: Configuring first Hosts and Services
         items:
@@ -25,8 +40,7 @@ sidebar:
           - ntp-configuration
           - smtp-configuration
           - password-modification
-          - license-central
-          - plugin-pack-install
+          - license
       - id: configuring-smart-poller
         label: Configuring Smart Poller
         items:
@@ -54,12 +68,14 @@ sidebar:
           - create-host-manually
           - host-templates
           - create-host-automatically
-          - generic-actions
+          - export-configuration
       - id: monitoring-services
         label: Monitoring Services
         items:
           - monitoring-service
+          - create-service-manually
           - service-template
+          - create-service-automatically
       - id: discovery
         label: Discovery
         items:
@@ -67,10 +83,22 @@ sidebar:
           - host-discovery
           - service-discovery
           - vmware-discovery
+          - vmware-os-discovery
+          - nedi
+          - meraki-discovery
+      - id: organizing-hosts-and-services
+        label: Organizing Hosts & Services
+        items:
+          - groups
+          - dynamic-hostgroups
+          - categories
       - id: generic-object-actions
         label: Generic objects and actions
         items:
           - timeperiods
+          - macros
+          - commands
+          - generic-actions
       - id: passive-monitoring
         label: Passive monitoring
         items:
@@ -84,24 +112,78 @@ sidebar:
       - id: viewing-events
         label: Viewing events
         items:
-          - custom-views
+          - concepts
+          - resources-status
+          - event-console
+          - event-log
+          - create-custom-view
       - id: managing-alarms
         label: Managing alarms
         items:
           - acknowledge
           - downtimes
+          - submit-status
+          - other
+      - id: managing-notifications
+        label: Managing notifications
+        items:
           - how-notifications-works
+          - configuring-notification
+          - dependencies
+          - escalation
+          - flapping
+          - email-configuration
   - id: managing-users-contacts
     label: Managing Users & Contacts
     items:
+      - contacts-users
+      - create-users-manually
       - contact-templates
+      - contact-groups
       - acl
   - id: performance-graphs
     label: Performance graphs
     items:
+      - charts-management
       - graph-template
+      - chart-curves
+      - virtual-metrics
+  - id: i-vertix-maps
+    label: i-Vertix Maps
+    items:
+      - map-types
+      - managing-maps
+      - edit-maps
+      - visualize-maps
   - id: administration
     label: Administration
     items:
-      - backup
+      - id: parameters
+        label: Parameters
+        items:
+          - centreon-UI
+          - monitoring-Monitoring
+          - gorgone-Gorgone
+          - my-Account
+          - ldap-Ldap
+          - rrdtool-RRDTool
+          - debug-Debug
+          - knowledge-Base
+          - backup-Backup
+          - performance-Management
+#          TODO: DATA-DATA
+          - media-Media
+      - id: authentication
+        label: Authentication
+        items:
+          - authentication-Authentication
+          - openid-OPENID
+          - websso-WEBSSO
+      - log-Log
+#      TODO: SESSIONS
+      - id: platform-status
+        label: Platform-Status
+        items:
+          - platform-Status
+          - databases-DB
   - glossary

@@ -1,5 +1,5 @@
 ---
-id: services
+id: create-service-manually
 title: Creating services manually
 ---
 

@@ -13,7 +13,7 @@ Access Control Lists allow you to grant rights to i-Vertix users. You can grant 
 
 - the actions that can be performed in the i-Vertix web interface.
 
-**See also**: [Granting rights to i-Vertix users (ACL)](../managing-users-contacts/acl.md).
+**See also**: [Granting rights to i-Vertix users (ACL)](managing-users-contacts/acl.md).
 
 ## Acknowledgement
 
@@ -23,7 +23,7 @@ When a resource is acknowledged, [notifications](#notification) are stopped, and
 
 Acknowledging a resource does not mean that the incident is over: it is over when the resource returns to state **OK** or **UP**.
 
-**See also**: [Acknowledging a problem](../events-alerts/managing-alarms/acknowledge.md).
+**See also**: [Acknowledging a problem](events-alerts/managing-alarms/acknowledge.md).
 
 ## Architecture: simple VS distributed
 
@@ -31,7 +31,7 @@ Acknowledging a resource does not mean that the incident is over: it is over whe
 
 - **Distributed architecture**: architecture consisting of a [Central Manager](#central-manager) and of n [remote server(s)](#remote-server) and [Smart Poller(s)](#smart-poller). Remote servers and pollers allow you to distribute the monitoring load, either for security reasons, geographical or historical reasons, etc.
 
-**See also**: [Architectures](../installation/before-you-start/architecture.md).
+**See also**: [Architectures](installation/before-you-start/architecture.md).
 
 ## BBDO
 
@@ -61,7 +61,7 @@ In i-Vertix, the Central Manager is the main console where you monitor resources
 
 A downtime is a time period during which [notifications](#notification) are disabled for a resource. Downtimes are used during planned maintenance operations, to avoid getting unnecessary alerts.
 
-**See also**: [Planning a downtime](../events-alerts/managing-alarms/downtimes.md).
+**See also**: [Planning a downtime](events-alerts/managing-alarms/downtimes.md).
 
 ## Engine
 
@@ -81,7 +81,7 @@ Among other things, Gorgone deploys the configuration to the [monitoring engines
 
 Graphs are generated from the [metrics](#metric) that make up [services](#service), using [RRD files](#rrd-files). They show how these metrics evolve in time.
 
-**See also**: [Graph template](../performance-graphs/graph-template.md) and the other topics in this section.
+**See also**: [Graph template](performance-graphs/graph-template.md) and the other topics in this section.
 
 ## Inheritance
 
@@ -93,7 +93,7 @@ Devices that have an IP address or FQDN and the host monitoring refers to the pr
 
 A host can have one of the following [statuses](#status): OK, DOWN, UNREACHABLE.
 
-See also: [Monitoring a host](../quick-start-guide/configuring-first-hosts-services/monitoring-the-first-host.md) and the other topics in this section.
+See also: [Monitoring a host](quick-start-guide/configuring-first-hosts-services/monitoring-the-first-host.md) and the other topics in this section.
 
 ## LVM
 
@@ -103,7 +103,7 @@ LVM (logical volume manager): I-Vertix recommends that you use this partitioning
 
 Feature included in LVM that allows you to do a snapshot of a file system. I-Vertix uses this process to back up databases.
 
-**See also**: [Backup](../administration/parameters/backup-Backup.md).
+**See also**: [Backup](administration/parameters/backup-Backup.md).
 
 ## Metric
 
@@ -171,7 +171,7 @@ Advanced configuration for i-Vertix [Gorgone](#gorgone) that reverses the direct
 
 Recurring downtimes are [downtimes](#downtime) that occur regularly.
 
-**See also**: [Recurrent downtimes](../events-alerts/managing-alarms/downtimes.md#recurrent-downtimes).
+**See also**: [Recurrent downtimes](events-alerts/managing-alarms/downtimes.md#recurrent-downtimes).
 
 ## Remote server
 
@@ -215,7 +215,7 @@ A service can consist of one or several [metrics](#metric).
 
 A service can have one of the following [statuses](#status): OK, WARNING, CRITICAL, UNKNOWN.
 
-**See also**: [Monitoring a service](../quick-start-guide/configuring-first-hosts-services/monitoring-the-first-host.md) and the other topics in this section.
+**See also**: [Monitoring a service](quick-start-guide/configuring-first-hosts-services/monitoring-the-first-host.md) and the other topics in this section.
 
 ## State
 
@@ -231,13 +231,13 @@ Indicates:
 
 PENDING is not a status: a resource is "pending" when it has just been created and hasn't been checked yet.
 
-**See also**: [Possible statuses of a resource](../events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Possible statuses of a resource](events-alerts/managing-notifications/how-notifications-works.md#status-types).
 
 ## Status type
 
 Indicates whether a change in [status](#status) is confirmed (HARD) or not confirmed (SOFT). For instance, if a status becomes HARD, notifications are triggered.
 
-**See also**: [Status types](../events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Status types](events-alerts/managing-notifications/how-notifications-works.md#status-types).
 
 ## Template
 
@@ -247,9 +247,9 @@ Skeleton of a [resource](#resource) that is preconfigured so that parameters def
 
 **See also**:
 
-- [Using host templates](../monitoring-resources/monitoring-hosts/host-templates.md),
-- [Using service templates](../monitoring-resources/monitoring-services/service-template.md),
-- [Using contact templates](../managing-users-contacts/contact-templates.md).
+- [Using host templates](monitoring-resources/monitoring-hosts/host-templates.md),
+- [Using service templates](monitoring-resources/monitoring-services/service-template.md),
+- [Using contact templates](managing-users-contacts/contact-templates.md).
 
 ## Time period
 
@@ -259,13 +259,13 @@ Time Periods is a predefined list of time intervals that are used in the i-Verti
 
 - when [notifications](#notification) are sent
 
-**See also**: [Time periods](../monitoring-resources/generic-object-actions/timeperiods.md).
+**See also**: [Time periods](monitoring-resources/generic-object-actions/timeperiods.md).
 
 ## Widget
 
 A widget is a configurable visual element that provides a specific function and can be placed on a dashboard or on a map. Widgets can be used for a variety of purposes such as displaying information, controlling devices or applications, providing access to features or settings, and more.
 
-**See also**: [Custom views](../events-alerts/viewing-events/create-custom-view.md).
+**See also**: [Custom views](events-alerts/viewing-events/create-custom-view.md).
 
 ## ZMQ
 

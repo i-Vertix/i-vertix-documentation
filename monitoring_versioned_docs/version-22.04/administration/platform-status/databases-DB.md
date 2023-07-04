@@ -1,5 +1,5 @@
 ---
-id: database--DB
+id: databases-DB
 title: Database partitioning
 ---
 

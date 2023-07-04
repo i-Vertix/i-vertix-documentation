@@ -1,5 +1,5 @@
 ---
-id: plugin-store-configuration.md
+id: plugin-store-configuration
 title: Plugin Store configuration
 ---
 

@@ -1,5 +1,5 @@
 ---
-id: plugin-update-installation.md
+id: plugin-update-installation
 title: Plugin Store Update/Upgrade
 ---
 

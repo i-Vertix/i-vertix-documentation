@@ -1,5 +1,5 @@
 ---
-id: services-create-disco
+id: create-service-automatically
 title: Creating services automatically
 ---
 

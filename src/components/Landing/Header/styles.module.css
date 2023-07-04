@@ -35,31 +35,25 @@
     border-left: 4px solid var(--ivertix-secondary-color);
 }
 
-.buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 @media screen and (min-width: 2561px) {
     .heroBanner {
         background-image: url("/img/landing/header4k.jpg");
         background-size: cover;
-        min-height: 900px;
+        min-height: 720px;
     }
 }
 
 @media screen and (min-width: 1921px) {
     .heroBanner {
         background-image: url("/img/landing/header4k.jpg");
-        min-height: 900px;
+        min-height: 720px;
     }
 }
 
 @media screen and (max-width: 1920px) {
     .heroBanner {
         background-image: url("/img/landing/header.png");
-        min-height: 680px;
+        min-height: 550px;
     }
 }
 

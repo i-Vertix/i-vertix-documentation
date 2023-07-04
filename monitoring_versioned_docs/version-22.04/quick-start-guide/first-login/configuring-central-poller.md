@@ -1,5 +1,5 @@
 ---
-id: configuring-central-poller.md
+id: configuring-central-poller
 title: Configuring Central and Poller
 ---
 

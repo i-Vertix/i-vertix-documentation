@@ -21,7 +21,7 @@ interface Props {
 const Product = ({label, Image, to, color}: ProductItem) => {
 
     return (
-        <div className={clsx('col col--4', styles.product)}>
+        <div className={clsx('col col--12', styles.product)}>
             <div className="text--center">
                 <Link to={to}>
                     {typeof Image === "string" ?

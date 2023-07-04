@@ -1,5 +1,5 @@
 ---
-id: notif-flapping
+id: flapping
 title: Flapping
 ---
 

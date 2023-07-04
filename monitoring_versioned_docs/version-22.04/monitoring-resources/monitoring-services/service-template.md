@@ -1,5 +1,5 @@
 ---
-id: services-templates
+id: service-template
 title: Using service templates
 ---
 
