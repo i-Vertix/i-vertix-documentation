@@ -39,21 +39,21 @@
     .heroBanner {
         background-image: url("/img/landing/header4k.jpg");
         background-size: cover;
-        min-height: 720px;
+        min-height: 560px;
     }
 }
 
 @media screen and (min-width: 1921px) {
     .heroBanner {
         background-image: url("/img/landing/header4k.jpg");
-        min-height: 720px;
+        min-height: 560px;
     }
 }
 
 @media screen and (max-width: 1920px) {
     .heroBanner {
         background-image: url("/img/landing/header.png");
-        min-height: 550px;
+        min-height: 420px;
     }
 }
 
