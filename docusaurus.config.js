@@ -11,7 +11,7 @@ const config = {
     favicon: 'img/logo-ivertix-100.png',
 
     // Set the production url of your site here
-    url: 'https://iridescent-jalebi-e15008.netlify.app',
+    url: 'https://i-vertix-docs-dev.netlify.app',
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/',
