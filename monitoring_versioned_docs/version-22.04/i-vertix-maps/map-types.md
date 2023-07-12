@@ -9,7 +9,7 @@ Maps display **Host and Services health status information**, but they can also 
 
 Maps can be configured from **Configuration  >  Maps menu**. Three types of maps are available:
 
-### Graphical (normal) map**
+### Graphical (normal) map
 
 This type of map lets the user upload an image (such as a campus/building/floor map, a rack picture or a Visio network map screenshot) and use it as a static background, on which the user can place monitored Hosts and their Services.
 Supported image formats are **.jpg .png .tiff** and **.bmp.**  

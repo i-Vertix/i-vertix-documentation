@@ -16,7 +16,13 @@ Different types of granular discoveries let the user easily filter/select servic
 
 Discovery results are matched with preconfigured monitoring templates to automate monitoring configuration.
 
-![image](../../assets/discovery/discovery.gif)
+![image](../../assets/discovery/nedi_example.png)
+
+![image](../../assets/discovery/host_discovery.png)
+
+![image](../../assets/discovery/vm_result.png)
+
+![image](../../assets/discovery/meraki15.png)
 
 ## Quick start
 

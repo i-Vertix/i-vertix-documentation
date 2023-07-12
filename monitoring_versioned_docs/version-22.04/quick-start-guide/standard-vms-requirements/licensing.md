@@ -13,7 +13,7 @@ Host: a **device**, with one or more IP address: Network infrastructure device, 
 
 Number of **Smart Pollers**
 
-Most often, 1 Smart Poller per main remote site o per Customer. 1 Smart Poller can typically monitor 8.000 -10.000 services. Exact number depends on polling interval, number and type of monitored services.
+Most often, 1 Smart Poller per main remote site o per Customer. 1 Smart Poller can typically monitor 8.000 - 10.000 services. Exact number depends on polling interval, number and type of monitored services.
 
 **Add-ons**
 

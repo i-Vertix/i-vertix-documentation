@@ -206,3 +206,23 @@ Connection issues by Access Point (AP) in the Cisco Meraki Dashboard refer to pr
 ![image](../../assets/discovery/dash2.png)
 
 ![image](../../assets/discovery/dash3.png)
+
+### How to add the Problematic connection step widget to your dashboards
+
+1. Press on the button **Create widget on custom view**
+
+![image](../../assets/discovery/meraki_widget1.png)
+
+2. Select a **Custom view** or click on **Create new custom view**
+
+![image](../../assets/discovery/meraki_widget2.png)
+
+If you choose to create a new custom view select the number of column
+
+![image](../../assets/discovery/meraki_widget3.png)
+
+3. Select the Timespan
+
+4. Press ADD
+
+The custom view now is ready, follow this path: **Home -> Custom Views**

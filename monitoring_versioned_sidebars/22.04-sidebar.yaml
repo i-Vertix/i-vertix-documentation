@@ -21,6 +21,8 @@ sidebar:
         label: Configuring first Hosts and Services
         items:
           - monitoring-the-first-host
+          - monitoring-central-poller
+          - monitoring-vmware
   - id: installation
     label: Installation
     items:
@@ -68,6 +70,7 @@ sidebar:
           - create-host-manually
           - host-templates
           - create-host-automatically
+          - generic-actions-host
           - export-configuration
       - id: monitoring-services
         label: Monitoring Services
@@ -75,6 +78,7 @@ sidebar:
           - monitoring-service
           - create-service-manually
           - service-template
+          - generic-actions-service
           - create-service-automatically
       - id: discovery
         label: Discovery

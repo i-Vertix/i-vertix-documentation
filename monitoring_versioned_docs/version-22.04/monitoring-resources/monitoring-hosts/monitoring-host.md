@@ -33,7 +33,7 @@ Before you run automatic network scans and start monitoring hosts/services, make
 > * VMware: a read-only vCenter user
 > * Meraki: token API
 
-Also, download from the [Plugin Store](../monitoring-basics/plugin_packs.md) and install any **plugins** you need to monitor your IT environment.
+Also, download from the [Plugin Store](../monitoring-basics/plugin-packs.md) and install any **plugins** you need to monitor your IT environment.
 
 > Select: **Administration -> i-Vertix -> Plugin Store**.
 
@@ -41,7 +41,7 @@ Also, download from the [Plugin Store](../monitoring-basics/plugin_packs.md) and
 
 ## Installation procedure
 1. Search for the required plugins by using the filters
-2. Click on **«i»** to see which application/DB/device/device family/etc. the plugin applies to, which monitoring protocol/technology it uses to collect monitoring information, which status parameters and performance metrics it monitors, which discovery types can apply plugin components automatically
+2. Click on plugin icon to see which application/DB/device/device family/etc. the plugin applies to, which monitoring protocol/technology it uses to collect monitoring information, which status parameters and performance metrics it monitors, which discovery types can apply plugin components automatically
 
 ![APC](../../assets/monitoring-resources/monitoring-host/apc-example.png)
 
