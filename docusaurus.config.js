@@ -34,16 +34,16 @@ const config = {
 
     customFields: {
         products: [
-            // {
-            //     id: 'log-management',
-            //     label: 'Log & Data Management',
-            //     description: 'Hi, this is a description text. I am very long',
-            //     icon: '/img/logo-log-management-1000.png',
-            //     Image: '/img/logo-log-management-1000.png',
-            //     to: '/log-management/intro',
-            //     color: 'ivertix-log-management',
-            //     banner: "news"
-            // },
+            {
+                id: 'log-management',
+                label: 'Log & Data Management',
+                description: 'Hi, this is a description text. I am very long',
+                icon: '/img/logo-log-management-1000.png',
+                Image: '/img/logo-log-management-1000.png',
+                to: '/log-management/intro',
+                color: 'ivertix-log-management',
+                links: []
+            },
             {
                 id: 'monitoring',
                 label: 'IT Monitoring',
@@ -52,17 +52,22 @@ const config = {
                 Image: '/img/logo-monitoring-1000.png',
                 to: '/monitoring/intro',
                 color: 'ivertix-monitoring',
-                banner: "news"
+                links: [
+                    {label: 'Monitoring Hosts', to: '/monitoring/monitoring-resources/monitoring-hosts/monitoring-host'},
+                    {label: 'Monitoring Services', to: '/monitoring/monitoring-resources/monitoring-services/monitoring-service'},
+                    {label: 'Discovery', to: '/monitoring/monitoring-resources/discovery/description'},
+                ]
             },
-            // {
-            //     id: 'asset-management',
-            //     label: 'IT Asset Management',
-            //     description: 'Hi, this is a description text. I am very long',
-            //     icon: '/img/logo-asset-management-1000.png',
-            //     Image: '/img/logo-asset-management-1000.png',
-            //     to: '/asset-management/intro',
-            //     color: 'ivertix-asset-management',
-            // }
+            {
+                id: 'asset-management',
+                label: 'IT Asset Management',
+                description: 'Hi, this is a description text. I am very long',
+                icon: '/img/logo-asset-management-1000.png',
+                Image: '/img/logo-asset-management-1000.png',
+                to: '/asset-management/intro',
+                color: 'ivertix-asset-management',
+                links: []
+            }
         ]
     },
 

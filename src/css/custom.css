@@ -41,8 +41,8 @@
     --ivertix-primary-color: #5169a2;
     --ivertix-secondary-color: #EF8222;
 
-    --ivertix-product-background: rgba(0, 0, 0, 0.05);
-    --ivertix-product-background-hover: rgba(0, 0, 0, 0.1);
+    --ivertix-product-background: rgba(245, 245, 245);
+    --ivertix-product-background-hover: rgba(230, 230, 230);
 
     --ivertix-monitoring: #F47960;
     --ivertix-log-management: #64BA87;
@@ -80,8 +80,8 @@
     --ivertix-primary-color: #5169a2;
     --ivertix-secondary-color: #d5853c;
 
-    --ivertix-product-background: rgba(255, 255, 255, 0.05);
-    --ivertix-product-background-hover: rgba(255, 255, 255, 0.1);
+    --ivertix-product-background: rgba(55, 55, 55);
+    --ivertix-product-background-hover: rgba(22, 22, 22);
 
     --ivertix-monitoring: #F47960;
     --ivertix-log-management: #64BA87;
