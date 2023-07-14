@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
     title: 'i-Vertix Documentation',
     tagline: 'Managing an IT infrastructure has never been easier',
-    favicon: 'img/logo-ivertix-100.png',
+    favicon: 'img/logo-ivertix-blue-100.png',
 
     // Set the production url of your site here
     url: 'https://i-vertix-docs-dev.netlify.app',
