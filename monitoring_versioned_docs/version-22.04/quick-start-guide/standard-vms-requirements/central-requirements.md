@@ -15,6 +15,7 @@ The resources needed for optimal performance depend on the product configuration
 Notes:
 
 *: exact number of required CPUs depends on frequency and type of monitors
+
 **: Disk space required to store collected status and performance data depends on several factors, such as: polling interval, number and type of monitors and data retention period
 
 See also [Prerequisites](../../installation/before-you-start/prerequisites.md) and [Architecture](../../installation/before-you-start/architecture.md)

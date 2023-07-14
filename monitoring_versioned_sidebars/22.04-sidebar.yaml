@@ -6,6 +6,7 @@ sidebar:
       - id: standard-vms-requirements
         label: Standard VM's requirements
         items:
+          - requirements
           - central-requirements
           - poller-requirements
           - network-ports
@@ -159,6 +160,12 @@ sidebar:
       - managing-maps
       - edit-maps
       - visualize-maps
+  - id: i-vertix-ncb
+    label: i-Vertix NCB
+    items:
+      - prerequisites-works
+      - managing-ncb
+      - visualize-ncb
   - id: administration
     label: Administration
     items:
