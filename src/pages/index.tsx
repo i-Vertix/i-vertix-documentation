@@ -5,6 +5,9 @@ import ProductShowcase, {ProductItem} from '@site/src/components/Landing/Product
 import NewsCarousel from "@site/src/components/Landing/NewsCarousel";
 import About from "@site/src/components/Landing/About";
 import Header from "@site/src/components/Landing/Header";
+import Search from "@site/src/components/Landing/Search";
+import styles from './styles.module.css';
+
 
 export default function Home(): JSX.Element {
     const {siteConfig} = useDocusaurusContext();
@@ -13,7 +16,8 @@ export default function Home(): JSX.Element {
             title={`Get started with i-Vertix`}
             description="Description will go into a meta tag in <head />">
             <Header/>
-            <main>
+            <main className={styles.docsContainer}>
+                <Search />
                 <ProductShowcase products={siteConfig.customFields.products as ProductItem[]}/>
             </main>
             <NewsCarousel/>

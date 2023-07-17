@@ -11,6 +11,7 @@ const config = {
     favicon: 'img/logo-ivertix-blue-100.png',
 
     // Set the production url of your site here
+    // url: 'https://i-vertix.guide',
     url: 'https://i-vertix-docs-dev.netlify.app',
     // Set the /<baseUrl>/ pathname under which your site is served
     // For GitHub pages deployment, it is often '/<projectName>/'
@@ -53,8 +54,14 @@ const config = {
                 to: '/monitoring/intro',
                 color: 'ivertix-monitoring',
                 links: [
-                    {label: 'Monitoring Hosts', to: '/monitoring/monitoring-resources/monitoring-hosts/monitoring-host'},
-                    {label: 'Monitoring Services', to: '/monitoring/monitoring-resources/monitoring-services/monitoring-service'},
+                    {
+                        label: 'Monitoring Hosts',
+                        to: '/monitoring/monitoring-resources/monitoring-hosts/monitoring-host'
+                    },
+                    {
+                        label: 'Monitoring Services',
+                        to: '/monitoring/monitoring-resources/monitoring-services/monitoring-service'
+                    },
                     {label: 'Discovery', to: '/monitoring/monitoring-resources/discovery/description'},
                 ]
             },
@@ -119,6 +126,27 @@ const config = {
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
+            algolia: {
+                // The application ID provided by Algolia
+                appId: '26QPCG4J0S',
+                // Public API key: it is safe to commit it
+                apiKey: '692ebed921fd5689a257cf6ab242ba09',
+                indexName: 'i-vertix-docs',
+                // Optional: see doc section below
+                contextualSearch: true,
+                // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+                // externalUrlRegex: 'external\\.com|domain\\.com',
+                // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+                // replaceSearchResultPathname: {
+                //     from: '/docs/', // or as RegExp: /\/docs\//
+                //     to: '/',
+                // },
+                // Optional: Algolia search parameters
+                searchParameters: {},
+                // Optional: path for search page that enabled by default (`false` to disable it)
+                searchPagePath: 'search',
+                //... other Algolia params
+            },
             // Replace with your project's social card
             image: 'img/docusaurus-social-card.jpg',
             navbar: {
