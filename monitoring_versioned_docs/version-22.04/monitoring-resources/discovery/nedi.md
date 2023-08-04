@@ -39,7 +39,7 @@ Click on **Next** to move to the next configuration settings page
 
 * **Poller**: select the Smart Poller that will run the scan
 
-* **SNMP INFO**: click on **+ ADD SNMP INFO** to enter the SNMP communities
+* **SNMP info**: click on **+ ADD SNMP INFO** to enter the SNMP communities
 
 ![image](../../assets/discovery/nedi_community.png)
 
@@ -50,7 +50,7 @@ Click on **Next** to move to the next configuration settings page
 
 ![image](../../assets/discovery/nedi_filters.png)
 
-* **CRON JOBS**: a scan can be executed periodically (default scan interval is 4-hour). Click on **+ ADD CRON JOB** to add and schedule new jobs.
+* **Cron jobs**: a scan can be executed periodically (default scan interval is 4-hour). Click on **+ ADD CRON JOB** to add and schedule new jobs.
 
 ![image](../../assets/discovery/nedi_cron_job.png)
 
@@ -122,7 +122,7 @@ To see Host details, click on it
 
 ![image](../../assets/discovery/nedi_device_info.png)
 
-### DEVICE INFO
+### Device info
 
 * Hostname: it can be changed if the host is not yet being  monitored
 * Alias: optional description, it can always be changed 
@@ -144,7 +144,7 @@ To see Host details, click on it
 * Last Discovery: last time the host was discovered
 * Description: Host description
 
-### HOST TEMPLATES
+### Host templates
 
 * **Templates from rules** 
 
@@ -164,7 +164,7 @@ Host template associated with the host as per Template Rules match. To replace i
 
 ![image](../../assets/discovery/nedi_host_template2.png)
 
-### UPLINKS
+### Uplinks
 
 This tab shows device uplinks, that are device Interfaces linked/connected to neighbour network devices
 
@@ -186,7 +186,7 @@ Uplinks have the following attributes:
 
 ![image](../../assets/discovery/nedi_uplinks3.png)
 
-### INTERFACES
+### Interfaces
 
 **<u>This tab shows all device Interfaces: both uplinks and interfaces not linked/connected to neighbour network devices</u>**
 
@@ -210,7 +210,7 @@ All the interfaces that are uplinks and have status = **<span style={{color:'#88
 * **Type**: Ethernet, Virtual Interface, Other
 * **Status**: represented by the color-coded dot
 
-### SERVICE DISCOVERY
+### Service discovery
 
 Template Rules are used to associate templates with hosts. They can also associate additional services, detected during the scan/discovery, with the Hosts. New services are shown with status = **<span style={{color:'#88b917'}}>new</span>**. Manual changes are applicable.
 
@@ -218,13 +218,13 @@ Template Rules are used to associate templates with hosts. They can also associa
 
 ![image](../../assets/discovery/nedi_service_discovery.png)
 
-### LINKED HOST
+### Linked host
 
 This section is enabled only when the network device  discovered by “Network Discovery“ is synchronized with “IT Monitoring” so that the device itself becomes a monitored Host. 
 
 ![image](../../assets/discovery/nedi_linked_host.png)
 
-### MAP tab
+### Map tab
 
 This tab displays the network infrastructure topology map: how network devices are interconnected to each other and the root device(s) (**RELATION ROOT(S)**).
 
@@ -238,6 +238,10 @@ You can replace the current one or add new ones.
 
 Select the hosts you want to monitor and click on **SYNC WITH MONITORING**.
 
-**Note**: as previously stated, any changes will take effect only once they are exported to the **Smart Poller(s)**. 
+:::note
+
+As previously stated, any changes will take effect only once they are exported to the **Smart Poller(s)**. 
+
+:::
 
 ![image](../../assets/discovery/nedi_monitor_hosts.png)

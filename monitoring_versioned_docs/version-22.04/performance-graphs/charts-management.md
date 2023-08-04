@@ -3,7 +3,7 @@ id: charts-management
 title: Charts management
 ---
 
-Centreon can be used to generate graphs from monitoring information. There are two types of graph:
+i-Vertix can be used to generate graphs from monitoring information. There are two types of graph:
 
 * Performance graphs serve to view the evolution of services intuitively. E.g.: filling level of a hard disc, network
   traffic, etc.

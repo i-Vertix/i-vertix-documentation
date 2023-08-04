@@ -23,7 +23,13 @@ All the commands can be configured in the menu: **Configuration > Commands**.
 
 ![image](../../assets/monitoring-resources/organizing-hosts-and-services/04commandlist.png)
 
-> By default, locked commands are hidden. Check the "Locked elements" box to list all commands.
+:::info
+
+By default, locked commands are hidden. 
+
+Check the "Locked elements" box to list all commands.
+
+:::
 
 ## Adding a command
 
@@ -32,7 +38,11 @@ All the commands can be configured in the menu: **Configuration > Commands**.
 
 ![image](../../assets/monitoring-resources/organizing-hosts-and-services/04command.png)
 
-> The configuration fields of a command are the same regardless of the type of command chosen.
+:::note
+
+The configuration fields of a command are the same regardless of the type of command chosen.
+
+:::
 
 ## Configuration fields
 
@@ -40,8 +50,8 @@ All the commands can be configured in the menu: **Configuration > Commands**.
 * The **Command Type** field allows us to choose the type of command.
 * The **Command Line** field indicates the application or the script use with the command.
 * The **Enable shell** box allows us to enable functions that are specific to a shell such as the pipe, etc.
-* The **Argument Example** field define examples of arguments (each argument starts with a ”!”)
-* The **Describe arguments** button serves to add  a description to arguments of the “$ARGn$” type. This description
+* The **Argument Example** field define examples of arguments (each argument starts with a ```"!"```)
+* The **Describe arguments** button serves to add  a description to arguments of the ```"$ARGn$"``` type. This description
   will be visible when using the command in a host or service form.
 * The **Clear arguments** button deletes the description of arguments defined
 * The **Describe macros** button serves to add  a description to all macros. This description will be visible when
@@ -57,7 +67,7 @@ In the **Command Line** field it is possible to use *[macros](macros.md)* and ar
 
 The macros are used to be able to pass various settings to the scripts called up by the commands. During execution
 of the command by the scheduler, each of the arguments and macros are replaced by their respective values.
-Each macro appears in the form **$value$**:
+Each macro appears in the form ```$value$```:
 
 ```shell
 $CENTREONPLUGINS$/centreon_linux_snmp.pl --plugin=os::linux::snmp::plugin --mode=cpu \
@@ -67,7 +77,11 @@ $CENTREONPLUGINS$/centreon_linux_snmp.pl --plugin=os::linux::snmp::plugin --mode
 --critical-average='$_SERVICECRITICAL$' $_SERVICEEXTRAOPTIONS$
 ```
 
-> Good practice requires replacing the arguments by *[custom macros](macros.md#custom-macros)*.
+:::tip
+
+Good practice requires replacing the arguments by *[custom macros](macros.md#custom-macros)*.
+
+:::
 
 ## Connectors
 

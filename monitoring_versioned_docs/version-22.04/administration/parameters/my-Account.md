@@ -5,13 +5,13 @@ title: My Account
 
 ## My Account
 
-To connect to your i-Vertix web interface, go to URL: `http://IP_ADDRESS/centreon`. (Replace **IP_ADDRESS** by the IP address or FQDN of your Centreon web server.)
+To connect to your i-Vertix web interface, go to URL: `http://IP_ADDRESS/centreon`. (Replace **IP_ADDRESS** by the IP address or FQDN of your i-Vertix web server (Central Management).
 
 Fill in your user name and associated password and click on the **Connect** button:
 
 ![image](../../assets/administration/my-account/aconnection.png)
 
-You are now connected to the Centreon web interface.
+You are now connected to the i-Vertix web interface.
 
 ## Menus
 
@@ -19,7 +19,7 @@ You are now connected to the Centreon web interface.
 
 ### Switch to dark mode
 
-When you first connect to the interface, Centreon is displayed in light mode by default.
+When you first connect to the interface, i-Vertix is displayed in light mode by default.
 
 On the banner, click on the profile icon and use the switch button to turn on the dark mode.
 Next time you connect to the interface, the mode you previously selected remains on.
@@ -53,8 +53,7 @@ In the language select box, choose your language:
 
 Then click on **Save**. Your interface is now translated.
 
-> If your language doesn't appear in the available language list, you can help the Centreon community to translate
-> the web interface. For more details go to  [How to translate Centreon](../developer/developer-translate-centreon.md).
+
 
 ## Change default page
 

@@ -3,8 +3,6 @@ id: contact-groups
 title: Contacts groups
 ---
 
-### Contact Groups
-
 Contact Groups are used to notify contacts:
 
 * In the definition of a host or of a service

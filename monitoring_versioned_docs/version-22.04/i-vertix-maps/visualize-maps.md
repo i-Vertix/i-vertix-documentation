@@ -1,6 +1,6 @@
 ---
 id: visualize-maps
-title: Visualize maps
+title: Maps visualization
 ---
 
 Previously created maps can be managed from **Monitoring -> Maps** menu. They are grouped in different sections/categories: Favorites, Normal Maps, Geographical Maps, Auto Maps.

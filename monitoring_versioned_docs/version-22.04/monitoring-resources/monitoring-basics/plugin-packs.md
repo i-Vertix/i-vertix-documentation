@@ -17,21 +17,20 @@ Plugin Packs consist of 2 elements, which are installed separately:
 installed using the command line interface, or automatically.
 
 - A pack that contains commands, host templates and service templates. 
-Packs are installed via the Centreon interface. For each type of equipment,
+Packs are installed via the i-Vertix interface. For each type of equipment,
  the templates determine which indicators will be
 monitored and set default warning and critical thresholds (these may be
 fine-tuned later on).
 
-  Some packs also contain [discovery rules](discovery/introduction.md).
+- Some packs also contain discovery modes.
 
-To get an up-to-date list of all Plugin Packs with their respective monitoring
-procedures, please refer to the section on [Plugin Packs](/pp/integrations/plugin-packs/getting-started/introduction).
+
 
 ## Prerequisites for i-Vertix Plugin Pack Manager
 
 ### License
 
-A [license](../../installation/Setup-Startup-Central-Poller/license.md) is required to access the full Plugin Packs catalog. Contact the
+A [license](../../installation/setup-central-poller/license.md) is required to access the full Plugin Packs catalog. Contact the
 
 1) i-Vertix support e-mail: support@i-vertix.com
 
@@ -46,7 +45,7 @@ Some Plugin Packs also require a Connector (e.g. AS400, VMWare) or an agent
 
 | Connector  | Description                                                                           |
 | ---------- | ------------------------------------------------------------------------------------- |
-| i-Vertix Client | NSClient++, packaged by i-Vertix, ready to use with embedded Centreon Plugins         |
+| i-Vertix Client | NSClient++, packaged by i-Vertix, ready to use with embedded i-Vertix Plugins         |
 | VMWare     | Perl daemon using VMware SDK to monitor VMware platforms                              |
 | AS400      | Java-based connector allowing you to execute checks on an AS400                       |
 
@@ -125,7 +124,7 @@ and on the left side will appear this overview
 
 ![image](../../assets/monitoring-resources/monitoring-basics/ver_2-pp.png)
 
-After an update or an upgrade of the Plugin Store it's a good idea to deploy the configuration to all the poller/s ([Deploy the configuration](../monitoring-basics/config_deploy.md)).
+After an update or an upgrade of the Plugin Store it's a good idea to deploy the configuration to all the poller/s ([Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)).
 
 ---
 

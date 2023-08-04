@@ -36,8 +36,11 @@ functions of these icons:
 
 ## Hosts (deprecated)
 
-> This interface is **deprecated** and replaced by the `Resources Status` page
-> and the [events list](resources-status.md#events-list).
+:::caution
+
+This interface is **deprecated** and replaced by the `Resources Status` page and the [events list](resources-status.md#events-list).
+
+:::
 
 To view the status of hosts, go into the **Monitoring > Status Details > Hosts**
 menu
@@ -66,8 +69,11 @@ menu
 -   **Status information**: Displays the message explaining the status
     of the host
 
-> The severity column and the associated filter appear if at least one object
-> displayed has a severity level.
+:::note
+
+The severity column and the associated filter appear if at least one object displayed has a severity level.
+
+:::
 
 ### Available filters
 
@@ -113,8 +119,11 @@ Hostgroups Summary` menu
 
 ## Host details (deprecated)
 
-> This interface is **deprecated** and replaced by the `Resources Status` page
-> and the [host panel](resources-status.md#host-panel).
+:::caution
+
+This interface is **deprecated** and replaced by the `Resources Status` page and the [host panel](resources-status.md#host-panel).
+
+:::
 
 When you click on the name of a host, you access to the details page of
 the resource.
@@ -183,8 +192,11 @@ linked to the host which will receive notifications.
 
 ## Services (deprecated)
 
-> This interface is **deprecated** and replaced by the `Resources Status` page
-> and the [events list](resources-status.md#events-list).
+:::caution
+
+This interface is **deprecated** and replaced by the `Resources Status` page and the [events list](resources-status.md#events-list).
+
+:::
 
 To view the status of service, go into the `Monitoring > Status Details >
 Services` menu.
@@ -210,11 +222,11 @@ Services` menu.
 -   **Status information**: Displays the message explaining the status
     of the service.
 
-> The severity column and the associated filter appear if at least one object
-> displayed has a severity level.
+:::note
 
-> The **Hard State Duration** doesn't appear if you select **All** value for
-> **Service Status** filter.
+The severity column and the associated filter appear if at least one object displayed has a severity level. The **Hard State Duration** doesn't appear if you select **All** value for **Service Status** filter.
+
+:::
 
 ### Available filters
 
@@ -279,8 +291,11 @@ for **Display** filter:
 
 ## Service Details (deprecated)
 
-> This interface is **deprecated** and replaced by the `Resources Status` page
-> and the [service panel](resources-status.md#service-panel).
+:::caution
+
+This interface is **deprecated** and replaced by the `Resources Status` page and the [service panel](resources-status.md#service-panel).
+
+:::
 
 When you click on a service, the following screen appears:
 

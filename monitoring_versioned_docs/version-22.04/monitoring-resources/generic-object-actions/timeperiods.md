@@ -56,7 +56,11 @@ To be able to define the national holiday days and the exceptional closure days,
 
 To add an exception, in the **Exceptions** field, click on **Add new entry**. For each exceptional day, you will need to define a time period. 
 
->Use the following syntax to exclude whole days from the supervision: 00:00-00:00.
+:::info
+
+Use the following syntax to exclude whole days from the supervision: 00:00-00:00.
+
+:::
 
 The table below shows some possible examples :
 

@@ -36,7 +36,7 @@ At each interval or sending of notification to the service (or the host) and unt
 ## Configuration
 
 To add an escalation of notification, go into the menu:
-`Configuration > Notifications > Escalations` and click on **Add**
+**Configuration > Notifications > Escalations** and click on **Add**
 
 ![image](../../assets/managing-notifications/escalation.png)
 

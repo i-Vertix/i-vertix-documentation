@@ -7,7 +7,7 @@ title: Technical information
 
 ## Network flows to integrate monitoring platform to IT
 
-> ### Central server
+### Central server
 
 | From           | To             | Protocol   | Port               | Application                                                                        |
 |----------------|----------------|------------|--------------------|------------------------------------------------------------------------------------|
@@ -17,7 +17,7 @@ title: Technical information
 | Central  | LDAP(s) server | LDAP, LDAPS    | TCP 389, 636      | Authentication to access the Centreon web interface                                |
 | Central  | HTTP     | HTTP, HTTPS    | TCP 80, 443 | System uptades, Push Notification |
 
-> ### Poller
+### Poller
 
 | From   | To          | Protocol   | Port               | Application                                    |
 |--------|-------------|------------|--------------------|------------------------------------------------|
@@ -27,14 +27,13 @@ title: Technical information
 | Poller | HTTP     | HTTP, HTTPS    | TCP 80, 443 | System uptades, Push Notification, SSL VPN * |
 
 
+:::note
 
+If you are using a **SSL VPN** connection between Smart Poller and Central Manager you don’t need to configure any specific firewall settings.
 
+:::
 
-**NOTE:**
->If you are using a **SSL VPN** connection between Smart Poller and Central Manager you don’t need to configure any specific firewall settings.
----
-
-## Tables of platform flows (Central/Poller)
+### Tables of platform flows (Central/Poller)
 
 
 | From           | To             | Protocol     | Port         | Application                                                        |
@@ -45,7 +44,7 @@ title: Technical information
 
 ---
 
-> ### Monitoring protocols
+### Monitoring protocols
 
 | From              | To                               | Protocol   | Port      | Application |
 |-------------------|----------------------------------|------------|-----------|-------------|
@@ -53,6 +52,8 @@ title: Technical information
 | Network device | Poller                           | Trap SNMP  | UDP 162   | Monitoring  |
 | Poller            | Servers                          | NSClient++ | HTTPS 8443 | Monitoring  |
 
+:::note
 
-> Other flows can be necessary to monitor databases, access to API, or
-> application ports.
+Other flows can be necessary to monitor databases, access to API, or application ports.
+
+:::

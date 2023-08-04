@@ -22,8 +22,12 @@ Enable OpenID Connect authentication:
 - **Authentication mode**: indicates if the authentication should be done using only OpenId Connect or using local
   authentication as well (**Mixed**). In mixed mode, users created manually in i-Vertix (and not identified via Open ID) will also be able to log in.
 
-> When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to
-> the local `admin` account in the event of a misconfiguration.
+:::note
+
+When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to the local `admin` account in the event of a misconfiguration.
+
+
+:::
 
 ### Step 2: Configure Identity Provider access credentials
 
@@ -35,8 +39,15 @@ Configure Identity Provider information:
 - **Client ID**: defines the Client ID (mandatory).
 - **Client Secret**: defines the Client secret (mandatory).
 - **Scopes**: defines the scopes of the identity provider, for example `openid`. Separate scopes by spaces.
-  > Depending on the identity provider, it is necessary to enter several scopes in order to retrieve the claim which will
-  > identify users. This is indicated in the provider's configuration documentation.
+
+:::note
+
+  Depending on the identity provider, it is necessary to enter several scopes in order to retrieve the claim which will identify users.
+  
+  This is indicated in the provider's configuration documentation.
+
+:::
+
 - **Login attribute path**: defines which of the variables returned by **Introspection Token Endpoint** or **User Information Endpoint**
   must be used to authenticate users. For example `sub` or `email`.
 - **End Session Endpoint**: defines the logout endpoint, for example `/logout`.
@@ -51,10 +62,13 @@ You can also configure:
 - **Use Basic Auth for Token Endpoint Authentication**: the `Authorization: Basic` method will be used. Enable this option if your identity provider requires it.
 - **Disable verify peer**: allows you to disable SSL peer validation. The identity provider's certificate will not be checked: use this option for test purposes only.
 
-> You can define a full URL for the endpoints in case the base of the URL is different from the others.
+:::note
 
-> You can enable **Authentication debug** through the **Administration > Parameters > Debug** menu to understand
-> authentication failures and improve your setup.
+You can define a full URL for the endpoints in case the base of the URL is different from the others.
+
+You can enable **Authentication debug** through the **Administration > Parameters > Debug** menu to understand authentication failures and improve your setup.
+
+:::
 
 ### Step 3: Configure authentication conditions
 
@@ -84,7 +98,11 @@ You can also configure:
    }
    ```
 
-   > Currently, only character string values can be used.
+:::caution
+
+Currently, only character string values can be used.
+
+:::
 
 ### Step 4: Manage user creation
 
@@ -93,9 +111,9 @@ You can also configure:
 
 If you turn on **Enable auto import**, users that log in to i-Vertix for the first time will be created in the i-Vertix configuration. (Turning the option on does not import automatically all users in your infrastructure.)
 
-- **Enable auto import**: enables or disables automatic users import.  If auto import is disabled, you will have to [create each user manually](../monitoring/basic-objects/contacts-create.md) before they can log in.
-- **Contact template**: select a [contact template](../monitoring/basic-objects/contacts-templates.md) that will be applied to newly imported users.
-  This allows in particular to manage the default configuration of the [notifications](../alerts-notifications/notif-configuration.md).
+- **Enable auto import**: enables or disables automatic users import.  If auto import is disabled, you will have to [create each user manually](../../managing-users-contacts/create-users-manually.md) before they can log in.
+- **Contact template**: select a [contact template](../../managing-users-contacts/contact-templates.md) that will be applied to newly imported users.
+  This allows in particular to manage the default configuration of the [notifications](../../events-alerts/managing-notifications/configuring-notification.md).
 - **Email attribute path**: defines which of the variables returned by **Introspection Token Endpoint** or **User Information Endpoint**
   must be used to get the user's email address.
 - **Fullname attribute path**: defines which of the variables returned by **Introspection Token Endpoint** or **User Information Endpoint**
@@ -104,7 +122,7 @@ If you turn on **Enable auto import**, users that log in to i-Vertix for the fir
 </TabItem>
 <TabItem value="Users manual management" label="Manual management">
 
-On page **Configuration > Users > Contacts/Users**, [create the users](../monitoring/basic-objects/contacts-create.md) that will log on to i-Vertix using OpenID.
+On page **Configuration > Users > Contacts/Users**, [create the users](../../managing-users-contacts/contacts-users.md) that will log on to i-Vertix using OpenID.
 
 </TabItem>
 </Tabs>
@@ -114,7 +132,7 @@ On page **Configuration > Users > Contacts/Users**, [create the users](../monito
 <Tabs groupId="sync">
 <TabItem value="Role automatic management" label="Automatic management">
 
-If you turn on **Enable automatic management**, users that log in to i-Vertix will be automatically [granted rights](../administration/access-control-lists.md), as they will be linked to [access groups](../administration/access-control-lists.md#creating-an-access-group) according to the rules you have defined.
+If you turn on **Enable automatic management**, users that log in to i-Vertix will be automatically [granted rights](../../managing-users-contacts/acl.md), as they will be linked to [access groups](../../managing-users-contacts/acl.md#creating-an-access-group) according to the rules you have defined.
 
 - Define which attribute from which endpoint will be used to retrieve values for enforcing relationships with access groups.
 - **Apply only first role**: If several roles are found for a specific user in the identity provider's information, then only the first role will be applied. If the option is turned off, all roles will be applied.
@@ -134,13 +152,16 @@ between the value **centreon-editor** and a defined access group in i-Vertix:
 }
 ```
 
-> Each time the user logs in, authorization management is reinitialized to take into account any new information from the
-> identity provider.
+::note
+
+Each time the user logs in, authorization management is reinitialized to take into account any new information from the identity provider.
+
+:::
 
 </TabItem>
 <TabItem value="Role manual management" label="Manual management">
 
-If you turn off **Enable automatic management**, you have to [grant users rights](../administration/access-control-lists.md) manually by linking them to [access groups](../administration/access-control-lists.md#creating-an-access-group).
+If you turn off **Enable automatic management**, you have to [grant users rights](../../managing-users-contacts/acl.md) manually by linking them to [access groups](../../managing-users-contacts/acl.md#creating-an-access-group).
 
 </TabItem>
 </Tabs>
@@ -150,7 +171,7 @@ If you turn off **Enable automatic management**, you have to [grant users rights
 <Tabs groupId="sync">
 <TabItem value="Groups automatic management" label="Automatic management">
 
-If you turn on **Enable automatic management**, users that log in to i-Vertix will be attached to the [contact groups](../monitoring/basic-objects/contacts-groups.md#contact-groups) you have defined.
+If you turn on **Enable automatic management**, users that log in to i-Vertix will be attached to the [contact groups](../../managing-users-contacts/contact-groups.md#contact-groups) you have defined.
 
 - Define which attribute from which endpoint will be used to retrieve values to create relationships with access groups.
 - Match the attributes retrieved from the identity provider with the contact groups you want the user to belong to.
@@ -167,12 +188,16 @@ between the value **Windows** and a defined contact group in i-Vertix, then betw
 }
 ```
 
-> Each time the user logs in, groups management is reinitialized to take into account any new information from the identity provider.
+:::note
+
+Each time the user logs in, groups management is reinitialized to take into account any new information from the identity provider.
+
+:::
 
 </TabItem>
 <TabItem value="Groups manual management" label="Manual management">
 
-If you turn off **Enable automatic management**, you have to manage manually relation between contact and [contact groups](../monitoring/basic-objects/contacts-groups.md#contact-groups).
+If you turn off **Enable automatic management**, you have to manage manually relation between contact and [contact groups](../../managing-users-contacts/contact-groups.md#contact-groups).
 
 </TabItem>
 </Tabs>
@@ -186,8 +211,13 @@ and to authorize the following `redirect URI` to forward your connected users to
 {protocol}://{server}:{port}/centreon/authentication/providers/configurations/openid
 ```
 
-> Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix server.
-> For example: `https://centreon.domain.net/centreon/authentication/providers/configurations/openid`
+:::note
+
+Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix server.
+
+For example: `https://i-vertix.domain.net/centreon/authentication/providers/configurations/openid`
+
+:::
 
 ## Examples of configuration
 
@@ -208,7 +238,12 @@ Here is an example configuration for Microsoft Azure Active Directory:
 | Client ID                    | ${clientId}                                               |
 | Client Secret                | ${clientSecret}                                           |
 
-> Please replace `${tenantId}`, `${clientId}` and `${clientSecret}` with your own values.
+
+:::info
+
+Please replace `${tenantId}`, `${clientId}` and `${clientSecret}` with your own values.
+
+:::
 
 </TabItem>
 <TabItem value="Okta" label="Okta">
@@ -228,7 +263,13 @@ Here is an example configuration for Okta:
 | Client ID                    | ${clientId}                              |
 | Client Secret                | ${clientSecret}                          |
 
-> Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
+
+:::info
+
+Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
+
+
+:::
 
 </TabItem>
 <TabItem value="Keycloak" label="Keycloak">
@@ -248,7 +289,13 @@ Here is an example configuration for Keycloak:
 | Client ID                    | ${clientId}                                                             |
 | Client Secret                | ${clientSecret}                                                         |
 
-> Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
+
+:::info
+
+Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
+
+
+:::
 
 </TabItem>
 <TabItem value="LemonLDAP::NG" label="LemonLDAP::NG">
@@ -268,7 +315,12 @@ Here is an example configuration for LemonLDAP::NG:
 | Client ID                    | ${clientId}                              |
 | Client Secret                | ${clientSecret}                          |
 
-> Please replace `auth.example.com`, `${clientId}` and `${clientSecret}` with your own values.
+
+:::info
+Please replace `auth.example.com`, `${clientId}` and `${clientSecret}` with your own values.
+
+
+:::
 
 </TabItem>
 <TabItem value="Others" label="Others">

@@ -3,13 +3,14 @@ id: downtimes
 title: Planning a downtime
 ---
 
-## Adding a downtime
-
 ### Concept
 
 A downtime period is a time period during which the notifications to a resource are disabled. Downtimes period are used during a programmed maintenance operation, they save us receiving false-positive alerts.
+:::note
 
-> It is important to select all the resources necessary to prevent false-positives and false-negatives. In addition, the time spent in this state is taken into account during the generation of the availability data.
+It is important to select all the resources necessary to prevent false-positives and false-negatives. In addition, the time spent in this state is taken into account during the generation of the availability data.
+
+:::
 
 There are two types of downtimes:
 
@@ -90,8 +91,6 @@ There are several ways to define a downtime:
 
 ## Recurrent downtimes
 
-### Principle
-
 A downtime period is a time period during which the notifications to a host or a service are disabled. Downtime periods are convenient during maintenance operations on a host or a service: they allow us to avoid receiving false positive.
 
 Recurrent Downtime periods are Downtime periods that recurs repetitively.
@@ -99,7 +98,11 @@ Recurrent Downtime periods are Downtime periods that recurs repetitively.
 E.g.: A back-up of the virtual machines is performed every day from 20h00 to midnight. This type of back-up has a tendency to saturate the CPU use of all the virtual machines. It is necessary to program recurrent Downtime periods on the services concerned to avoid receiving
 notifications from 20h00 to midnight.
 
-> The Downtime periods are taken into account in the calculation of the availability ratio of the resource in the **[Dashboard](../reporting/introduction.md#simple-reporting)**.
+:::note
+
+The Downtime periods are taken into account in the calculation of the availability ratio of the resource in the **[Dashboard](../../events-alerts/viewing-events/create-custom-view.md)**.
+
+:::
 
 ### Practice
 
@@ -128,7 +131,11 @@ It is possible to choose three types of period:
 -   The **Time period** field contains the time period concerned (expressed in HH:MM - HH:MM).
 -   The **Downtime type** field defines the type of downtime period desired.
 
-> It is possible to combine several types of periods within the same downtime period.
+:::note
+
+It is possible to combine several types of periods within the same downtime period.
+
+:::
 
 #### Relations
 

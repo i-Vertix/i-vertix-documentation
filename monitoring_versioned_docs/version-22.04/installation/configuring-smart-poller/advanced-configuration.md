@@ -10,8 +10,6 @@ In certain cases you may not be able to initialize the Centreon Broker data flow
 from the poller (or the Remote Server) to the Central Server or the Remote
 Server.
 
-Centreon has, however, developed a solution for initializing the flow from the
-Centreon Central Server, or from the Remote Server, to the poller.
 
 Go to the **Configuration > Pollers > Broker configuration** menu and click on
 **Centreon Broker SQL** configuration on the Central Server or Remote Server.

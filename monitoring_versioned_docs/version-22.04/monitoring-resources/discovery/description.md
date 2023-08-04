@@ -24,7 +24,7 @@ Discovery results are matched with preconfigured monitoring templates to automat
 
 ![image](../../assets/discovery/meraki15.png)
 
-## Quick start
+## Quick start configuration
 
 ### New Discovery Job
 
@@ -40,10 +40,14 @@ To add a new Discovery Job:
 
 ![image](../../assets/discovery/add_discovery.png)
 
-**Note: it could be that Host Discovery, VMware Discovery and Cisco Meraki are grayed out**
+:::note
+
+**it could be that Host Discovery, VMware Discovery and Cisco Meraki are grayed out**
 * Host Discovery: download **Linux SNMP** plugin from Plugin Store and install it 
 * VMware Discovery: download **VMware vCenter** and **vSAN** (optional) plugins from Plugin Store and install them 
-* Cisco Meraki: download **Cisco Meraki Cloud Controller** plugin from Plugin Store and install it 
+* Cisco Meraki: download **Cisco Meraki Cloud Controller** plugin from Plugin Store and install it
+
+:::
 
 **Discovery Jobs** panel shows all the jobs that have been created.
 

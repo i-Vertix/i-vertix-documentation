@@ -54,9 +54,13 @@ To perform a massive change:
 5. In the **More actions** menu, click on **Massive Change**.
 6. The form for the type of object opens, with 2 options next to each field:
 
+
+:::tip
   * **Incremental**: signifies that the change will be added to the existing options
+
   * **Replacement**: signifies that the change will overwrite the existing options.
 
+:::
 
 ## Enabling/disabling objects
 
@@ -78,12 +82,20 @@ You can also use the following buttons at the end of the line:
 
 ## Deleting objects
 
-> Deleting an object is final. If you delete an object by accident, you will need to re-create it. In the same way,
-> deleting an object automatically deletes all the objects linked to it and which cannot live without it. E.g.:
-> Deleting a host results in all the services associated with this host being deleted too.
+:::caution
+
+Deleting an object is final. If you delete an object by accident, you will need to re-create it.
+
+In the same way, deleting an object automatically deletes all the objects linked to it and which cannot live without it.
+
+E.g.:
+Deleting a host results in all the services associated with this host being deleted too.
+
+:::
 
 To delete an object:
 
 1. Select the objects you want to delete.
 2. In the **More actions** menu, click on **Delete**.
-3. Confirm the action.
+3. Confirm the action
+4. deploy configuration to poller

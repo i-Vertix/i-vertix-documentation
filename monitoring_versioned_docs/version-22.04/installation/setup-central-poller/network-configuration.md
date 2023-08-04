@@ -4,9 +4,12 @@ title: Network configuration
 ---
 
 # Network configuration
-**Before you start, plese be carefull to meet the technical requirement (see [Technical Information](../before-you-start/technical-information.md))**
 
-![NMTUI](../../assets/setup-startup-central-poller/nmtui.png)
+:::caution
+
+Before you start, plese be carefull to meet the technical requirement (see [Technical Information](../before-you-start/technical-information.md))
+
+:::
 
 To configure network settings:
 1. Select option **6** Network settings>
@@ -22,15 +25,16 @@ To configure network settings:
 
 Confirm the settings with **OK**
 
----
+![NMTUI](../../assets/setup-startup-central-poller/nmtui.png)
 
-![NMTUI2](../../assets/setup-startup-central-poller/nmtui2.png)
+
+---
 
 Get back to main menu NMTUI (on the lefthand side)
 
 To activate the new settings, select **Activate a connection** from the NMTUI menu
 
-• Select the **NIC** (by default ens192), then
+• Select the **NIC** (ens192 by default ), then
 
 • **Deactivate**
 
@@ -38,11 +42,17 @@ To activate the new settings, select **Activate a connection** from the NMTUI me
 
 Finally select **Back**
 
+---
+
 Get back to the main NTUI menu
 
 • Select **Set a system hostname** to configure the system hostname then select **OK**
 
 • Select **Quit** to quit the **NMTUI** menu and get back to the **i-Vertix menu**
+
+![NMTUI2](../../assets/setup-startup-central-poller/nmtui2.png)
+
+---
 
 Now network configuration is complete (restart the vm if necessary) and the system is accessible via network connection (for example using **Putty**)
 

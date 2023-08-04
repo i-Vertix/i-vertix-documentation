@@ -145,6 +145,8 @@ To handle production environments (up to 7.000 services with checks every 5 minu
 </TabItem>
 <TabItem value="over-10000" label="Over 10.000 Hosts">
 
+For large amounts of data, contact us directly and our experts will help you.
+
 </TabItem>
 </Tabs>
 
@@ -152,7 +154,7 @@ To handle production environments (up to 7.000 services with checks every 5 minu
 
 **Database server**
 
-The database can also be installed in a **highly available** (cluster) configuration upon request. This effectively
+The database can also be installed in a **high available** (cluster) configuration upon request. This effectively
 prevents potential data loss.
 
 **i-Vertix Poller**

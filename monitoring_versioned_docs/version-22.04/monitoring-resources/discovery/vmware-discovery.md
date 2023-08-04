@@ -28,14 +28,14 @@ Before the scan, configure vCenter settings
 * **Poller**: select the Smart Poller that will perform the scan
 * **Container**: select a Container or click on **+ ADD CONTAINER** to create a new one (Container used to communicate with VMware):
 
-### CONNECTION
+### Connection
 
 * **Container Name**: use a meaningful name
 * **Poller**: select the Poller that will issue the connection request
 * **Protocol**: http or https
 * **IP / FQDN**: enter the vCenter IP Address
 
-### AUTHENTICATION
+### Authentication
 
 Credentials that are to be used to access the virtual environment (the read-only one previously configured)
 Once CONNECTION and AUTHENTICATION are configured, click on **“SAVE & DEPLOY”**
@@ -56,11 +56,15 @@ Mapping rules are preconfigured by i-Vertix
 
 ![image](../../assets/discovery/vm_template_rules.png)
 
-**Note**: It can happen that some **Template Rules** are missing. In such a case:
+:::note
+
+It can happen that some **Template Rules** are missing. In such a case:
 
 * **Download the relevant plugin** from the Plugin Store and install it
 * Click on **RESET** to add Template Rules included in the plugin you have just installed to the Template Rules list
 * Contact support@i-vertix.com  if the template rule is still not available
+
+:::
 
 Click on **NEXT** to run the scan. The user interface shows all the discovery steps, while they happen.
 
@@ -75,9 +79,9 @@ Remember to **export the configuration to the Smart Pollers**.
 
 ![image](../../assets/discovery/vm_result.png)
 
-**RESCAN**: click on it to perform a new scan.
+**Rescan**: click on it to perform a new scan.
 
-**CHANGE PREFIX**: it can be used to add a prefix before the name of the selected items.
+**Change prefix**: it can be used to add a prefix before the name of the selected items.
 
 You can change Datacenter and/or Virtual Machines names. Once the you have edited it, the page will display both the hostname detected during the scan and the one you configured.  
 
@@ -85,6 +89,9 @@ To exclude an item from next discoveries and stop monitoring it, right click on 
 
 ![image](../../assets/discovery/vm_nic.png)
 
+VMs can be monitored through VMware but if you want to go deeper into their status and performance you may want to monitor them directly. Easily you can start monitoring VMs in bulk directly at the operating system level in a more granular and accurate way.
 
+If you want to use this feature after scanning, go to [Vmware OS Discovery](../discovery/vmware-os-discovery.md)
+ 
 
 

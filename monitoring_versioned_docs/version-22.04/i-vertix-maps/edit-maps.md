@@ -3,7 +3,9 @@ id: edit-maps
 title: Edit maps
 ---
 
-## Editing - Adding objects
+## Editing
+
+### Adding objects
 
 From **Monitoring -> Maps** page, click on the map you want to edit, then click on Edit at the top right corner to enter **Edit mode** 
 
@@ -30,7 +32,7 @@ The **object** has the following **properties**:
 * **Label Properties**: if the label is enabled, it is possible to decide what information to display, its position relative to the object, size and color.
 * **Popup Properties**: to select/change popup messages settings and configure which information they should include
 
-## Editing – Adding Links
+### Adding Links
 
 ![Image](../assets/maps/line.png) **Create a new line** icon: to add a new line/link between 2 objects
 
@@ -49,9 +51,9 @@ The object has the following properties:
 * **Label Properties**: if the label is enabled, it is possible to decide what information to display, its position relative to the object, size and color.
 * Popup Properties: to select/change popup messages settings and configure which information they should include
 
-## Editing – Adding Gadgets
+### Adding Gadgets
 
-![Image](../assets/maps/gadget_icon.png)**Create a new gadget icon**.
+![Image](../assets/maps/gadget_icon.png) **Create a new gadget icon**.
 
 Select the **service** that has to be represented by the new Gadget.
 

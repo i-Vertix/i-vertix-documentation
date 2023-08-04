@@ -28,7 +28,7 @@ To be able to export the OID present in the database in the configuration file t
 3. Check **Generate traps database** and **Apply configurations**
 4. In the drop-down list **Send signal** (the **Reload** option is preferable)
 5. Click on the **Generate** button
-6. *[Export the monitoring configuration](../monitoring-servers/deploying-a-configuration.md)*
+6. *[Export the monitoring configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)*
 
 ## To go further
 
@@ -36,7 +36,7 @@ To be able to export the OID present in the database in the configuration file t
 
 #### Use all the arguments
 
-For a SNMP trap, when configuring the output message, the argument **$\*** will display all the information (the value of
+For a SNMP trap, when configuring the output message, the argument ```$\``` will display all the information (the value of
 arguments) contained within the SNMP trap. However, it is possible to display only certain information contained in the
 SNMP trap by calling unitary arguments.
 
@@ -44,7 +44,7 @@ For example:
 ![image](../../assets/monitoring-resources/passive-monitoring/06servicetrapsrelation.png)
 
 The output message **Link down on interface $2. State: $4.** will display only the name of the interface and its status
-($2 and $4 argument).
+(```$2``` and ```$4``` argument).
 
 Where can I find the arguments?
 
@@ -54,10 +54,10 @@ The arguments are in the documentation of the MIB manufacturer or in the **Comme
 
 To show:
 
-* The index link, use the $1 argument
-* The interface name , use the $2 argument
-* The administrative state of the interface, use the $3 argument
-* The state interface, use the $4 argument
+* The index link, use the ```$1``` argument
+* The interface name , use the ```$2``` argument
+* The administrative state of the interface, use the ```$3``` argument
+* The state interface, use the ```$4``` argument
 
 For example, the following output message displays all the arguments:
 
@@ -150,7 +150,7 @@ To do this, perform the following steps:
 | Attributes       | Description                                                    |
 | ---------------- | -------------------------------------------------------------- |
 | Enable routing   | Checked                                                        |
-| Route definition | $2 (In this example $2 argument is for IP address of the host) |
+| Route definition | ```$2``` (In this example $2 argument is for IP address of the host) |
 
 2. Create a second trap definition:
 
@@ -171,15 +171,19 @@ In the **Route definition** field you can use the following arguments:
 
 | Variable name       | Description                                                                           |
 | ------------------- | ------------------------------------------------------------------------------------- |
-| @GETHOSTBYADDR($2)@ | Reverse DNS resolution to know the DNS name from IP address (127.0.0.1 -\> localhost) |
-| @GETHOSTBYNAME($2)@ | DNS resolution to know the Ip address from the DNS (localhost -\> 127.0.0.1)          |
+| ```@GETHOSTBYADDR($2)@``` | Reverse DNS resolution to know the DNS name from IP address (127.0.0.1 -\> localhost) |
+| ```@GETHOSTBYNAME($2)@``` | DNS resolution to know the Ip address from the DNS (localhost -\> 127.0.0.1)          |
 
 ### Ignore SNMP Trap when resource is on downtime
 
 **Check Downtime** allow centreontrapd to check if the service is not in Downtime status at trap reception. The
 submission can be canceled.
 
-> It's only possible with Centreon Broker and on central monitoring.
+:::note
+
+It's only possible with Centreon Broker and on central monitoring.
+
+:::
 
 There are three ways to configure this:
 

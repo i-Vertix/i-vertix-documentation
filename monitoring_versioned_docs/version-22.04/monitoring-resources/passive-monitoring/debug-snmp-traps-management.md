@@ -33,7 +33,7 @@ OPTIONS="-On -Lf /var/log/snmptrapd.log -p /var/run/snmptrapd.pid"
 ```
 
 Restart the process to take the changes into account. Thus, for any receiving SNMP traps, these events will be listed
-in the **/var/log/snmptrapd.log** log.
+in the **/var/log/snmptrapd.log**.
 
 In case you filter by SNMP community, check allowed communities in the configuration file **/etc/snmp/snmptrapd.conf**.
 If after all these checks, SNMP traps are not included in the log, verify that the process is listening on UDP port 162
@@ -51,7 +51,11 @@ udp        0      0 0.0.0.0:162             0.0.0.0:*                           
 
 If not, change the listening port of the process.
 
-> Don't forget to deactivate the logs after your check. Otherwise, the volume of the logs can be very important.
+:::note
+
+Don't forget to deactivate the logs after your check. Otherwise, the volume of the logs can be very important.
+
+:::
 
 ### Centreontrapdforward
 
@@ -72,7 +76,7 @@ You can check the proper functioning of binary centreontrapdforward by checking 
 ### Centreontrapd
 
 The next process to check is Centreontrapd. This daemon allows to connect a SNMP trap to a passive service linked to an
-host in Centreon using IP address or DNS from distant equipment.
+host in i-Vertix using IP address or DNS from distant equipment.
 To check its operation, you should check the centreontrapd configuration settings.
 
 You can check the proper functioning of binary centreontrapd by checking the configuration part of
@@ -101,7 +105,11 @@ systemctl restart centreontrapd
 Gorgoned daemon must be running to forward information from Centreontrapd to the monitoring engine as an external command.
 Enable the debug mode via **Administration > Parameters > Debug** menu and restart process.
 
-> You can change logging level through **Administration > Parameters > Debug** menu.
+:::tip
+
+You can change logging level through **Administration > Parameters > Debug** menu.
+
+:::
 
 If any external command are sent to the monitoring engine please check the path to "$cmdFile"" in **/etc/centreon/conf.pm**
 configuration file. The path should be **/var/lib/centreon/centcore.cmd** for a central Centreon server.
@@ -113,17 +121,17 @@ passive service. Please check the event log. For Centreon Engine, the path is **
 You should find lines as:
 
 ``` shell
-[1352838428] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;Centreon-Server;Traps-SNMP;2;Critical problem
-[1352838433] PASSIVE SERVICE CHECK: Centreon-Server;Traps-SNMP;2;Critical problem
+[1352838428] EXTERNAL COMMAND: PROCESS_SERVICE_CHECK_RESULT;i-vertx-Server;Traps-SNMP;2;Critical problem
+[1352838433] PASSIVE SERVICE CHECK: i-vertix-Server;Traps-SNMP;2;Critical problem
 ```
 
 If only the external command appears but not the consideration thereof by the scheduler ("PASSIVE SERVICE CHECK"), there may be a system clock problem synchronizing issue.
 The server is late and the order will be processed later, either in advance and the order will not be taken into account.
 
-### Centreon UI
+### i-Vertix UI
 
-To display the result in Centreon the monitoring engine must forward using NEB module information to the broker to
-store them into database. Centreon will display result from "centreon_storage" database. If you can reach Centreon web
+To display the result in i-Vertix the monitoring engine must forward using NEB module information to the broker to
+store them into database. i-Vertix will display result from "centreon_storage" database. If you can reach i-Vertix web
 interface you must see the change of the output and maybe the status of the passive service. If any change appears a
 connection failure between the monitoring engine and the broker can be the root cause of this issue. Problems can be:
 

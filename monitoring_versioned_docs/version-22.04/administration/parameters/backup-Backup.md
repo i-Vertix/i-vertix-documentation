@@ -12,7 +12,7 @@ The backup script is executed on a daily basis with a cron job located in
 
 ```text
 ##########################
-# Cron for Centreon-Backup
+# Cron for i-vertix-Backup
 30 3 * * * root /usr/share/centreon/cron/centreon-backup.pl >> /var/log/centreon/centreon-backup.log 2&>1
 ```
 
@@ -77,7 +77,11 @@ The following window is displayed:
   - **Remote host** Remote host for SCP export
   - **Remote directory** Remote directory for SCP export
 
-> **Temporary directory** can not be a folder of **Backup directory**.
+:::caution
+
+**Temporary directory** can not be a folder of **Backup directory**.
+
+:::
 
 ## Restore of i-Vertix central server
 
@@ -124,11 +128,16 @@ mysql centreon_storage < YYYY-MM-DD-centreon_storage.sql
 
 This may take a while due to the size of "centreon\_storage" databases.
 
-> Password is stored in configuration files previously restored. For example
-> **$mysql\_passwd** field in file "/etc/centreon/conf.pm".
+:::caution
 
-> The default configuration does not define any password for mysql root user.
-> That's why we can connect to database using only command "mysql".
+Password is stored in configuration files previously restored. For example
+**$mysql\_passwd** field in file "/etc/centreon/conf.pm".
+
+The default configuration does not define any password for mysql root user.
+
+That's why we can connect to database using only command "mysql".
+
+:::
 
 ### SSH keys restore
 
@@ -157,7 +166,11 @@ ssh <poller_ip_address>
 Answer "Yes" to the question. This is about adding the poller SSH fingerprint
 on the central server.
 
-> You have to do this operations only if you work with a distributed environment.
+:::caution
+
+You have to do this operations only if you work with a distributed environment.
+
+:::
 
 ### Plugins restore
 
@@ -202,7 +215,12 @@ cp nrpe.cfg /etc/centreon-engine/
 cp nsca.cfg /etc/centreon-engine/
 ```
 
-> You have to do this only if you're using the monitoring agents.
+:::caution
+
+You have to do this only if you're using the monitoring agents.
+
+:::
+
 
 ### Generate Centreon-Engine configuration files within centreon
 

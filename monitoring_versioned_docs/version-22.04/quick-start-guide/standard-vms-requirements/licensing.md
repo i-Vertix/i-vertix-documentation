@@ -9,7 +9,11 @@ Number of **Hosts**
 
 Host: a **device**, with one or more IP address: Network infrastructure device, server, storage, UPS, virtual host, virtual machine, web server host/URL, cloud host, etc.
 
-**Note**: A host can have any number of interfaces, elements or monitors/sensors/services, including the ones of any Applications running on it.
+:::note
+
+A host can have any number of interfaces, elements or monitors/sensors/services, including the ones of any Applications running on it.
+
+:::
 
 Number of **Smart Pollers**
 
@@ -27,7 +31,8 @@ Network Configuration Backup
 
 **Test Environment(s)**
 
-### Exceptions: 
+**Exceptions**:
+ 
 It can be **licensed per service**. A service is a single monitoring element: a status parameter or a performance metric. Other vendors call it "monitor", "sensor", "element". E.g.: PING, Interface, CPU load, etc.
 
 ## IT Monitoring - Editions and pricing models

@@ -12,11 +12,11 @@ It creates links between hosts and services and specific procedure on Wiki.
 
 To make things more flexible, procedures can be associated with templates.
 
-**Knowledge Base** is the solution to easily link a Wiki to Centreon.
+**Knowledge Base** is the solution to easily link a Wiki to i-Vertix.
 
 ## Prerequisites
 
-**Centreon Knowledge Base** requires **MediaWiki** to be installed (version =
+**i-Vertix Knowledge Base** requires **MediaWiki** to be installed (version =
 1.31) on your system.
 
 You can [download MediaWiki
@@ -38,7 +38,7 @@ the form
 ### Definition
 
 A procedure is basically a technical documentation allowing operators to know
-what to do when an alert is raised in Centreon.
+what to do when an alert is raised in i-Vertix.
 
 Procedures can be of different natures:
 
@@ -61,7 +61,7 @@ well for a host/service template.
 
 If a procedure is defined at template level, all children of the template will
 have the procedure attached as well unless overloaded by a specific one. The
-mechanism is identical to template system in Centreon with inheritance.
+mechanism is identical to template system in i-Vertix with inheritance.
 
 **Knowledge Base** function is designed to avoid adding or updating
 manually several times the same procedure in knowledge base.
@@ -80,7 +80,7 @@ It's the same for services.
 
 ### Create / Update / Delete a procedure
 
-Navigate in Centreon front-end to **Configuration > Knowledge Base** sub-menus
+Navigate in i-Vertix front-end to **Configuration > Knowledge Base** sub-menus
 to:
 
   - List Hosts / Services / Host Templates / Service Templates and attached
@@ -92,7 +92,7 @@ to:
 
 ### Link from monitoring front end
 
-The technical procedure is available in Centreon front-end through a link icon:
+The technical procedure is available in i-Vertix front-end through a link icon:
 
 ![image](../../assets/administration/knowledge-base/parameters-wiki-host-monitoring.png)
 
@@ -110,7 +110,7 @@ There's a cron job that updates hosts, services and hosts/services templates
 configuration.
 
 For example, if you create a page in the wiki using the usual pattern (ex:
-`Host:Centreon-Server` or `Service:Centreon-Server Disk-/`), the cron will add
+`Host:Dummy-Server` or `Service:Dummy-Server Disk-/`), the cron will add
 the link to the page in the **URL** field of object's extended information.
 
 ### Best practice for deployment
@@ -145,8 +145,9 @@ attached by inheritance. Because **Linux** is the parent template.
 
 Behavior is the same for service templates.
 
-> To delete a procedure link for specific host / service / template, edit the
-> object and empty the **URL** field in **Extended Information** tab.
->
-> If the object inherits from any template of a procedure, the empty value will
-> overload and delete the procedure link.
+:::note
+
+To delete a procedure link for specific host / service / template, edit the object and empty the **URL** field in **Extended Information** tab.
+If the object inherits from any template of a procedure, the empty value will overload and delete the procedure link.
+
+:::

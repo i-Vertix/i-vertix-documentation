@@ -88,15 +88,15 @@ Depending on host type, the discovery scan can provide different information:
 
 To see host details, click on it:
 
-**SCAN RESULTS**: this section reports information coming from Nmap and SNMP scans. If the host is not yet being monitored, the Hostname field can be amended.
+**Scan results**: this section reports information coming from Nmap and SNMP scans. If the host is not yet being monitored, the Hostname field can be amended.
 
 ![image](../../assets/discovery/scan_result_host_discovery.png)
 
-**HOST TEMPLATES**: Host template associated with the host as per Template Rules match. To replace it or add another/others, click on **+ HOST TEMPLATE**.
+**Host templates**: Host template associated with the host as per Template Rules match. To replace it or add another/others, click on **+ HOST TEMPLATE**.
 
 ![image](../../assets/discovery/host_templates_host_discovery.png)
 
-**SERVICE DISCOVERY**: this section is available if job discovery template rules are configured so that to detect additional services (in addition to the default ones). For example, when the system discovers a Windows host, it automatically starts monitoring Disk “C:”. This tab shows additional Disks that were detected so you can select the ones you want to monitor.
+**Service discovery**: this section is available if job discovery template rules are configured so that to detect additional services (in addition to the default ones). For example, when the system discovers a Windows host, it automatically starts monitoring Disk “C:”. This tab shows additional Disks that were detected so you can select the ones you want to monitor.
 
 ![image](../../assets/discovery/service_discovery_host_discovery.png)
 
@@ -106,6 +106,10 @@ To save changes, click on Save
 
 Select the Hosts you want to monitor and click on + ADD TO MONITORING.
 
-**Note**: as previously stated, any changes will take effect only once they are **exported to the Smart Poller(s)**. 
+:::note
+
+As previously stated, any changes will take effect only once they are **exported to the Smart Poller(s)**.
+
+:::
 
 ![image](../../assets/discovery/add_monitoring_host_discovery.png)

@@ -1,6 +1,6 @@
 ---
 id: managing-ncb
-title: Managing NCB
+title: NCB configuration
 ---
 
 ## How to configure
@@ -42,16 +42,21 @@ Press **Save**
 
 Go to **Configuration > NCB > Devices group** and press **ADD**
 
-Device Group
- Device Group Name *	
-Authentication
- User Name	
- Password	
-Enable Command	Yes No
- Enable Password	
-Devices
-Removing or changing the devices associated to this Devicegroup will have impacts to the authentication information of the device
- Devices	
+**Device Group**
+Device Group Name: short description for the group
+**Authentication**
+User Name: the username used for all devices associated to the Device Group
+Password: the username used for all devices associated to the Device Group
+Enable Command: activate if the device uses an enable mode
+Enable Password: enable password if the device uses an enable mode
+**Devices** (Removing or changing the devices associated to this Devicegroup will have impacts to the authentication information of the device)
+Devices: devices associated to the Device Group
+**ACL**
+Access groups: users with the specified Access Groups will have access to the Device Group
 
-ACL
- Access groups *
+**Extended info tab**
+
+**Additional information**
+
+* Status: the rule can be Enabled, Disabled or Default
+* Comments: text field used for notes or comments

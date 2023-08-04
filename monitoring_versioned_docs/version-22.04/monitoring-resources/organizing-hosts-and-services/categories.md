@@ -5,15 +5,15 @@ title: Categories and severities
 
 Categories allow you to:
 
-- organize hosts or services, so as to define user rights on them using [ACLs](../administration/access-control-lists.md)
-- [filter the view](../alerts-notifications/resources-status.md#filtering-events) in the **Resources status** page
+- organize hosts or services, so as to define user rights on them using [ACLs](../../managing-users-contacts/acl.md)
+- [filter the view](../../events-alerts/viewing-events/resources-status.md#filtering-events) in the **Resources status** page
 
 
 A special type of category is called severity. Severities can be used to achieve all of the above, but also to:
 
 - sort the view on page **Resources Status** by severity level, e.g. to show the most important alerts first. (Severities are shown in the **S** column in the **Resources Status** page.)
 
-- filter data in the **Host monitoring** and **Service monitoring** widgets in [custom views](../alerts-notifications/custom-views.md).
+- filter data in the **Host monitoring** and **Service monitoring** widgets in [custom views](../../events-alerts/viewing-events/create-custom-view.md).
 
 ## Hosts category
 

@@ -3,7 +3,7 @@ id: gorgone-Gorgone
 title: Gorgone
 ---
 
-This allows to set parameters needed by Centreon to interact with Gorgone.
+This allows to set parameters needed by i-Vertix to interact with Gorgone.
 
 Go to **Administration > Parameters > Gorgone**.
 

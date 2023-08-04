@@ -1,6 +1,6 @@
 ---
 id: managing-maps
-title: managing maps
+title: Maps configuration
 ---
 
 ## Graphical (Normal) and Geographical Maps Configuration
@@ -28,6 +28,7 @@ Add a Map window opens. In General tab, enter:
 * **Status**: enables or disables the map
 
 ### ACL
+
 * **Access groups**: To share a map with other users, you can assign Access Groups to it. Only users who belong to the designated Access Groups will be able to access the map. By linking a Menu Access to the Access Group, you can specify whether users with the Access Group can modify the map or just view it. 
 
 ## Automap Maps Configuration
@@ -39,18 +40,28 @@ Add a Map window opens. In General tab, enter:
 ![Image](../assets/maps/add_map.png)
 
 ### General
+
 * **Map Name** 
 * **Thumbnail**: the custom thumbnail that will be associated with the map and displayed in the Monitoring > Map menu. If no thumbnail is set, a default thumbnail will be set.
 * **Status**: enables or disables the map
+
 ### Appearance
+
 * **Label**: When enabled, host names will appear below each circle. This feature is disabled by default.
 * **Arrows**: When enabled, arrows indicating the parent-child relationship will be visible. Enabled by default.
 * **Line weight**: This setting controls the thickness of the lines, which is 1px by default.
+
 ### Filter
+
 * **Hostgroups**: When hostgroups are specified, only hosts that match those groups will be displayed. By default it’s empty.
 * **Pollers**: When pollers are specified, only hosts that match those pollers will be displayed. This setting is empty by default.
+
 ### ACL
+
 * **Access groups**: To share a map with other users, you can assign Access Groups to it. Users belonging to the designated Access Groups will be granted access to the map. By linking a Menu Access to the Access Group, you can specify whether users with the Access Group can only view the map or also modify it.
 
-**Note**: Automaps do not allow changing the location of displayed hosts or the relationships directly from the map.
+:::note
 
+Automaps do not allow changing the location of displayed hosts or the relationships directly from the map.
+
+:::

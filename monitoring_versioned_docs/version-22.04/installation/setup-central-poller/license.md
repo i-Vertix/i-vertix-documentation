@@ -5,20 +5,29 @@ title: i-Vertix License
 
 # License activation
 
+:::caution
+
 The Central Manager must access the Internet so the license can be activated.
 
-## Step 1
-1) Access **Central Manager CLI** and authenticate via SSH
-2) Launch the command **menu**
+:::
+
+## Adding a license to i-Vertix
+
+### Obtain the UUID
+
+1. Access **Central Manager CLI** and authenticate via SSH
+
+2. Launch the command **menu**
 
 ![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
 
-3) Select **9) i-Vertix license management**
+3. Choose **9) i-Vertix license management**
 
 ![License menu](../../assets/setup-startup-central-poller/license-menu.png)
 
-4) Copy the Unique Identifier (UUID) associatedwith the VM
-5) Send an email to i-Vertix technical support support@i-vertix.com with:
+4. Copy the Unique Identifier (UUID) associatedwith the VM
+
+5. Send an email to i-Vertix technical support support@i-vertix.com with:
 
         • Subject: License request
         • Email body that includes
@@ -33,24 +42,29 @@ The Central Manager must access the Internet so the license can be activated.
 
 
 
-## Step 2
-You will receive an email from i-Vertix tech support that confirms the license activation (and also provides the credential to access the Plugin Store)
+### Receive the email
+
+You will receive an email from i-Vertix tech support that confirms the license activation (and also provides the credential to access the Plugin Store).
 
 Follow the instructions in the email and download the license using the following steps:
 
-1) Access **Central Manager CLI** and authenticate via SSH
-2) Launch the command **menu**
+1. Access **Central Manager CLI** and authenticate via SSH
+
+2. Launch the command **menu**
 
 ![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
 
-3) Select **9) i-Vertix license management**
+3. Select **9) i-Vertix license management**
 
 ![License menu](../../assets/setup-startup-central-poller/license-menu.png)
  
-4) Type **3) Download license key informations**
-5) If the vm can go on the internet (tcp 80, 443 enabled) it will download the license and install it. Command lines will appear and then press "Enter"
-6) Restart the VM so that all the services will be started
-7) License status field will change from:
+4. Type **3) Download license key informations**
+
+5. If the vm can go on the internet (tcp 80, 443 enabled) it will download the license and install it. Command lines will appear and then press "Enter"
+
+6. Restart the VM so that all the services will be started
+
+7. License status field will change from:
 
         License       [ INVALID ]
         to

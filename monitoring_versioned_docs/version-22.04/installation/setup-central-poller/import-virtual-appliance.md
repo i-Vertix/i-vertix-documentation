@@ -40,10 +40,13 @@ Screen resolution should be at least 1280x768
 - RAM: 8 GB
 - HDD: 250 GB or greater (**)
 
-**NOTES:**
-> (*) Exact number of required CPUs depends on frequency and type of monitors.
->
-> (**) Disk space required to store collected status and performance data depends on several factors, such as: polling interval, number and type of monitors and data retention period.
+:::note
+
+(*) Exact number of required CPUs depends on frequency and type of monitors.
+
+(**) Disk space required to store collected status and performance data depends on several factors, such as: polling interval, number and type of monitors and data retention period.
+
+:::
 
 **i-Vertix Smart Poller Recommended characteristics**
 
@@ -51,37 +54,43 @@ Screen resolution should be at least 1280x768
 - RAM: 8 GB (***)
 - HDD: 60 GB
 
-**NOTE:**
-> (***) Memory depends on frequency and type of monitors.
->The VM uses the **Thin Provision** option to save as much free space as possible on the disk (this is best practice).
+:::note
+
+(***) Memory depends on frequency and type of monitors.
+
+The VM uses the **Thin Provision** option to save as much free space as possible on the disk (this is best practice).
+
+:::
 
 # Steps to import a vm in VMware
 
-## Step 1: Downloading the virtual machine
+## Downloading the virtual machine
 
 1. Download the ".ova" files (as per email received); you can have an OVA for the Central Management, an On OVA for a poller or both.
 
 2. Import the ".ova" files on your VMware infrastructure.
 
-## Step 2 : Import the OVA in VMware
+## Import the OVA in VMware
 Log in to your vCenter or VMWare infrastructure and:
-1) Right-click Host in the VMware Host Client inventory and select Create/Register VM. The New Virtual Machine wizard opens.
-2) On the Select creation type page, select Deploy a virtual machine from an OVF or OVA file and click Next.
-3) On the Select OVF and VMDK files page, provide a unique name for the virtual machine.
-4) To select an OVF and VMDK, or an OVA file to deploy, click the blue panel. Your local system storage opens.
-5) Select the file that you want to deploy your virtual machine from and click Open. The file you selected appears in the blue pane. Then click Next.
-6) Click Next.
-7) On the Select storage page, select the storage type for the virtual machine. Select a datastore from the list and click Next.
-8) On the Deployment options page, select the network mappings, disk provisioning, and whether you want the virtual machine to power on after
+1. Right-click Host in the VMware Host Client inventory and select Create/Register VM. The New Virtual Machine wizard opens.
+2. On the Select creation type page, select Deploy a virtual machine from an OVF or OVA file and click Next.
+3. On the Select OVF and VMDK files page, provide a unique name for the virtual machine.
+4. To select an OVF and VMDK, or an OVA file to deploy, click the blue panel. Your local system storage opens.
+5. Select the file that you want to deploy your virtual machine from and click Open. The file you selected appears in the blue pane. Then click Next.
+6. Click Next.
+7. On the Select storage page, select the storage type for the virtual machine. Select a datastore from the list and click Next.
+8. On the Deployment options page, select the network mappings, disk provisioning, and whether you want the virtual machine to power on after
 deployment.
-9) Click Next.
-10) On the Ready to complete page, review the details and click Finish.
+9. Click Next.
+10. On the Ready to complete page, review the details and click Finish.
 
-**NOTE:**
-> Be sure to place the VM in the correct VLAN of your infrastructure.
+:::caution
 
+Be sure to place the VM in the correct VLAN of your infrastructure.
 
-## Step 3 : Virtual Hardware configuration (Central Manager & Smart Poller)
+:::
+
+## Virtual Hardware configuration (Central Manager & Smart Poller)
 
 Once the OVA has been imported into VMWare, Virtual Hardware (CPU and Memory) has to be configured.
 

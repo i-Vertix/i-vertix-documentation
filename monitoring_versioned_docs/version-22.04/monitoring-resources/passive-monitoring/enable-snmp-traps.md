@@ -19,7 +19,7 @@ descriptions, this is what is called MIB files. There are two types of MIB:
 * Standard MIBs which use standardized OIDs and which are implemented by numerous manufacturers on their equipment.
 * MIB manufacturers who are specific to each one and often to each equipment model.
 
-MIB manufacturers can be retrieved from the equipment. Centreon allows us to store the definition of SNMP traps in its
+MIB manufacturers can be retrieved from the equipment. i-Vertix allows us to store the definition of SNMP traps in its
 MariaDB database. The traps can subsequently be linked to passive services via the **Relations** tab of the definition
 of a service.
 
@@ -34,7 +34,7 @@ The processing of an SNMP trap is as follows:
 2. Once the SNMP trap has been received, it is sent to the ‘centreontrapdforward’ script which writes the information
   received in a buffer folder (by default **/var/spool/centreontrapd/**).
 3. The ‘centreontrapd’ service reads the information received in the buffer folder and interprets the traps received
-  checking, in the centreon database, the actions necessary to process these events.
+  checking, in the i-Vertix database, the actions necessary to process these events.
 4. The ‘centreontrapd’ service transmits the information to the scheduler or the ‘gorgoned’ service (to send the
   information to a remote scheduler) which changes the status and the information associated with service to which the
   SNMP trap is linked.
@@ -60,7 +60,12 @@ The processing of an SNMP trap is as follows:
 
 ![image](../../assets/monitoring-resources/passive-monitoring/06_trap_poller.png)
 
-> The Centreon Gorgone process is responsible to copy the SQLite base on the remote poller.
+
+:::note
+
+The i-Vertix Gorgone process is responsible to copy the SQLite base on the remote poller.
+
+:::
 
 ### Successive actions by the centreontrapd process
 
@@ -122,13 +127,13 @@ Two configuration files existent in centreontrapd:
 In the file **/etc/centreon/centreontrapd.pm** we advise changing three settings only (if necessary):
 
 * If the **mode** option is defined in 1 centreontrapd functions on a satellite server, otherwise it functions on a
-  central server (centreon).
+  central server.
 * The **centreon_user** option can be used to change the user executing the actions.
 * The **spool_directory** option can be used to change the buffer folder to be read (if you have changed it in the
   ‘centreontrapdforward’ configuration file).
 
 Here is an example of possible configuration of the file **/etc/centreon/centreontrapd.pm** (the configuration file can
-be changed with ‘-config-extra = xxx’):
+be changed with ```‘-config-extra = xxx’```):
 
 ```perl
 our %centreontrapd_config = (
@@ -171,7 +176,7 @@ our %centreontrapd_config = (
 
 #### Configuring the database connection
 
-On Centreon Central server, edit the **/etc/centreon/conf.pm** file:
+On i-Vertix Central server, edit the **/etc/centreon/conf.pm** file:
 
 ```perl
 $centreon_config = {

@@ -39,10 +39,14 @@ Click on **Next** to move to the next configuration settings page
 
 Mapping rules are preconfigured by i-Vertix
 
-**Note**: It can happen that some **Template Rules** are missing. In such a case:
+:::note
+
+It can happen that some **Template Rules** are missing. In such a case:
 * **Download the relevant plugin** from the Plugin Store and install it
 * Click on **RESET** to add Template Rules included in the plugin you have just installed to the Template Rules list
 * Contact support@i-vertix.com if the template rule is still not available
+
+:::
 
 ![image](../../assets/discovery/meraki4.png)
 
@@ -92,7 +96,7 @@ To see Host details, click on it
 
 ![image](../../assets/discovery/meraki7.png)
 
-### DEVICE INFO
+### Device info
 
 * Hostname: it can be changed if the host is not yet being  monitored
 * Alias: optional description, it can always be changed 
@@ -114,7 +118,7 @@ To see Host details, click on it
 * Notes: description field
 
 
-### HOST TEMPLATES
+### host templates
 
 * **Templates from rules** 
 
@@ -122,7 +126,7 @@ Host template associated with the host as per Template Rules match. To replace i
 
 ![image](../../assets/discovery/meraki8.png)
 
-### LINKED HOST
+### Linked host
 
 Link to Host is only available for device in state existing or existing ip.
 
@@ -134,7 +138,11 @@ Select the hosts you want to monitor and click on **SYNC WITH MONITORING**.
 
 ![image](../../assets/discovery/meraki10.png)
 
-**Note**: as previously stated, any changes will take effect only once they are exported to the **Smart Poller(s)**. 
+:::note
+
+As previously stated, any changes will take effect only once they are exported to the **Smart Poller(s)**. 
+
+:::
 
 ## Meraki Dashboards
 
@@ -144,13 +152,13 @@ For wireless devices, different information is collected and displayed in dashbo
 
 ![image](../../assets/discovery/meraki11.png)
 
-### LIST TAB
+### List tab
 
 To view the list of devices, select the mandatory **Token** and **Organisation** fields in the filters. Other filters are available, including Networks, Search by Name, IP or Serial, Device Status.
 
 ![image](../../assets/discovery/meraki12.png)
 
-the list tab displays the hosts that were detected by the discovery, along with the following information:
+The list tab displays the hosts that were detected by the discovery, along with the following information:
 
 * **Device status**: status can be online, offline, alerting, dormant
 * **Name**: Device name
@@ -174,7 +182,7 @@ To see Host details, click on it:
 
 ![image](../../assets/discovery/meraki17.png)
 
-### HEALTH TAB
+### health tab
 Before selecting the tab, the function must select at least one available network.
 
 New search filters based on SSID and Timespan are available.

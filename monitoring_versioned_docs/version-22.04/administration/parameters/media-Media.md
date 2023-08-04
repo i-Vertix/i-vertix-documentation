@@ -10,7 +10,7 @@ for cartography modules, etc.
 ## Image management
 
 All the images are stored in the folder entitled:
-**/usr/share/centreon/www/img/media** of the Centreon server.
+**/usr/share/centreon/www/img/media** of the i-Verix server.
 
 There are two methods for adding images to this folder:
 
@@ -20,7 +20,7 @@ to import multiple images at the same time.
 
 ### Manual addition
 
-To add an image in Centreon, go to **Administration > Parameters > Images** and
+To add an image in i-Vertix, go to **Administration > Parameters > Images** and
 click on **Add**.
 
 The following window is displayed:
@@ -36,7 +36,7 @@ images contained in an archive which will be imported
 
 ### Synchronizing the images
 
-To synchronize one or more images in the Centreon medias:
+To synchronize one or more images in the i-Verix medias:
 
 1. Copy your images in the image folder (the images may be situated in folders)
 2. Make sure that the user who executes your web server has the read rights on

@@ -7,7 +7,7 @@ If you are monitoring a small number of hosts and services, a Central Manager is
 
 ## Available architectures
 
-> ### Simple architecture
+### Simple architecture
 
 The simple architecture is to have all oversight entities within the same server, ie:
 * i-Vertix IT Monitoring web interface
@@ -25,7 +25,7 @@ Many components are used to build this architecture:
 * Broker SQL allows to store information into MariaDB databases and forward them to Broker RRD
 * Broker RRD generates and updates RRD files with data in order to display performance graphs
 
-> ### Distributed architecture
+### Distributed architecture
 
 The distributed architecture is to have two types of entities:
 * A central i-Vertix IT Monitoring server to display information
@@ -42,8 +42,10 @@ The i-Vertix Poller includes the following items:
 This architecture is used for:
 * Enable load balancing across multiple remote monitoring servers
 * Network streams isolation: if your monitoring architecture have to monitor a DMZ area, it is easier (and safe) to place a remote server in the DMZ network
+
 ### Components
-> ### i-Vertix IT Monitoring
+
+### i-Vertix IT Monitoring
 Many components are used to build this architecture:
 * Apache web server for i-Vertix IT Monitoring web interface
 * MariaDB databases to store i-Vertix IT Monitoring configuration parameters as well as monitoring and performance data
@@ -51,13 +53,15 @@ Many components are used to build this architecture:
 * Collected data are sent to Broker SQL using cbmod by monitoring engine
 * Broker SQL allows to store information into MariaDB databases and forward them to Broker RRD
 * Broker RRD generates and updates RRD files with data in order to display performance graphs
-> ### i-Vertix Poller
+
+### i-Vertix Poller
+
 Many components are used to build a poller:
 * A monitoring engine to collect data
 Collected data are sent to Broker SQL using cbmod by monitoring engine
 
 
-> ### Architecture with remote DBMS
+### Architecture with remote DBMS
 
 The distributed architecture with remote DBMS is to have three types of entities:
 * A central i-Vertix IT Monitoring server to display information
@@ -77,9 +81,13 @@ This architecture is used for:
 * Network streams isolation: if your monitoring architecture have to monitor a DMZ area, it is easier (and safe) to place a remote server in the DMZ network
 * Have a remote DBMS
 ### Components
-> ### DBMS Server
+
+### DBMS Server
+
 The DBMS server is used only to store i-Vertix IT Monitoring configuration parameters as well as monitoring and performance data into MariaDB databases
-> ### i-Vertix IT Monitoring
+
+### i-Vertix IT Monitoring
+
 Many components are used to build this architecture:
 * Apache web server for i-Vertix IT Monitoring web interface
 * The central i-Vertix IT Monitoring server get configuration and collected data from DBMS server
@@ -87,12 +95,15 @@ Many components are used to build this architecture:
 * Collected data are sent to Broker SQL using cbmod by monitoring engine
 Broker SQL allows to store information into MariaDB databases and forward them to Broker RRD
 * Broker RRD generates and updates RRD files with data in order to display performance graphs
-> ### i-Vertix Poller
+
+### i-Vertix Poller
+
 Many components are used to build a poller:
 * A monitoring engine to collect data
 * Collected data are sent to Broker SQL using cbmod by monitoring engine
 
-> ### Remote Server architecture
+### Remote Server architecture
+
 The distributed architecture with Remote sever is to have three types of entities:
 * A central i-Vertix IT Monitoring server to display information
 * One or more i-Vertix Remote server to display & operate on a subset of collected data
@@ -114,9 +125,13 @@ This architecture is used for:
 * Network streams isolation: if your monitoring architecture have to monitor a DMZ area, it is easier (and safe) to place a remote server in the DMZ network
 * Have dedicated web interface to display and operate on a subset of data
 Components
-> ### DBMS Server
+
+### DBMS Server
+
 The DBMS server is used only to store i-Vertix IT Monitoring configuration parameters as well as monitoring and performance data into MariaDB databases
-> ### i-Vertix IT Monitoring
+
+### i-Vertix IT Monitoring
+
 Many components are used to build this architecture:
 * Apache web server for i-Vertix IT Monitoring web interface
 MariaDB databases to store i-Vertix IT Monitoring configuration parameters as well as monitoring and performance data
@@ -125,7 +140,9 @@ MariaDB databases to store i-Vertix IT Monitoring configuration parameters as we
 * Collected data are sent to Broker SQL using cbmod by monitoring engine
 * Broker SQL allows to store information into MariaDB databases and forward them to Broker RRD
 * Broker RRD generates and updates RRD files with data in order to display performance graphs
-> ### Remote monitoring server
+
+### Remote monitoring server
+
 Many components are used to build a remote server:
 * Apache web server for i-Vertix IT Monitoring web interface
 * MariaDB databases to store monitoring and performance data
@@ -134,7 +151,9 @@ Many components are used to build a remote server:
 * Collected data are sent to Broker SQL using cbmod by monitoring engine
 * Broker SQL allows to store information into MariaDB databases and forward them to Broker RRD locally. All information are forwarded to the i-Vertix IT Monitoring central server
 * Broker RRD generates and updates RRD files with data in order to display performance graphs
-> ### i-Vertix Poller
+
+### i-Vertix Poller
+
 Many components are used to build a poller:
 * A monitoring engine to collect data
 * Collected data are sent to Broker SQL using cbmod by monitoring engine

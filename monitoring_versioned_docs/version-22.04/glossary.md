@@ -130,7 +130,7 @@ Backup, in a text file, of a MySQL/MariaDB database.
 
 Message or alert that is sent to inform someone of a particular event or incident.Notification can be sent though various channels, such as email, text message, Teams, etc. You can configure notifications on various [statuses](#status).
 
-**See also**: [How notifications work](../events-alerts/managing-alarms/how-notifications-works.md) and the other topics in this section.
+**See also**: [How notifications work](/events-alerts/managing-notifications/how-notifications-works.md) and the other topics in this section.
 
 
 ## Performance data

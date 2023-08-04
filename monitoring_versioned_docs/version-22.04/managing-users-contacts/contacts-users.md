@@ -10,4 +10,4 @@ In i-Vertix IT Monitoring, users can:
 
 You can:
 - [Create users manually](create-users-manually.md).
-- [Connect your Centreon to an LDAP directory](../administration/ldap.md).
+- [Connect your i-Vertix IT Monitoring to an LDAP directory](../administration/parameters/ldap-Ldap.md).

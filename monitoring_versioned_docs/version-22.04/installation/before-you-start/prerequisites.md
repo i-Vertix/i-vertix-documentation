@@ -1,21 +1,7 @@
 ---
 id: prerequisites
 title: Prerequisites
----
-
-## Solution Sizing Questionnaire (long version)
-
-Total number of devices that are to be monitored (network devices, servers, virtual hosts and guests, UPSs, cloud hosts, web server hosts/URLs, storages, etc.). This is required to determine the proper license tier.
-
-* Approximate number of monitors/services/sensors that are to be monitored. This is useful to size HW specs and the number of Smart Pollers. Note: a monitor/service/sensor is a single monitoring element: a status parameter or a performance metric. E.g.: PING, Interface, CPU load, etc.
-
-* IT Environment architecture: is the infrastructure centralized (single site) or distributed across multiple network sites/Datacenters? In case of geographically distributed network, are remote site “well-connected” to the Datacenter? In other words, are they connected via a fast, always-up network connection? This is useful to determine the number of Smart Pollers and which type of deployment is required according to Customer’s datacenter and networking specification and constraints.
-
-* Total number of network devices (switches, routers, firewalls, etc.) requiring configuration file backup (if any). This is required to determine if Network Configuration Backup addon is necessary and its tier.
-
-* If “Total number of devices that are to be monitored” < 1000: Do you need layer 2 network topology discovery and mapping? If yes, how many network devices require configuration backup? This is necessary to determine if Network topology discovery and mapping addon is necessary and its tier. 
-
-It’s also good to know: type of network devices, servers and their Operating Systems, applications, databases, storage systems, cloud environments, virtual environments, etc. that are to be monitored. This is useful to check if all monitoring profiles are already available or new ones would have to be developed. 
+--- 
 
 ## i-Vertix IT Monitoring Server Requirements
 The resources needed for optimal performance depend on the product configuration. Addingmore devices, monitors/services and other configuration options may increase the server and database workload. Therefore, server configuration adjustments may be necessary to optimize performance for your specific environment.
@@ -27,10 +13,12 @@ The resources needed for optimal performance depend on the product configuration
 * RAM: 8+GB
 * HDD: 250GB or greater **
 
-**Notes**:
+:::note
 
 *: exact number of required CPUs depends on frequency and type of monitors
 **: Disk space required to store collected status and performance data depends on several factors, such as: polling interval, number and type of monitors and data retention period
+
+:::
 
 ### i-Vertix Smart Poller
 * Hypervisor: VMware

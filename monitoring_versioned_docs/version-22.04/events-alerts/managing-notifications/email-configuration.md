@@ -3,6 +3,8 @@ id: email-configuration
 title: Sender email address configuration
 ---
 
+The steps are the following:
+
 1. [Enable SMTP](../../installation/setup-central-poller/smtp-configuration.md)
 
 2. [Configuring notification](configuring-notification.md)

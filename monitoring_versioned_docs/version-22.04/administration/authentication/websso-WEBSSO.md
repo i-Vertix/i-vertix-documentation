@@ -7,7 +7,12 @@ Web SSO authentication relies on the Apache web server. It is Apache which, depe
 responsible for authenticating the user before allowing access to the i-Vertix web interface.
 Many Apache modules allow authentication via OIDC, SAMLv2, TLS, Kerberos, etc. protocols.
 
-> Users must be present in the i-Vertix configuration to access the interface.
+
+:::caution
+
+Users must be present in the i-Vertix configuration to access the interface.
+
+:::
 
 ## Configure Web SSO authentication
 
@@ -23,8 +28,11 @@ Enable authentication:
 - **Authentication mode**: indicates if the authentication should be done using only Web SSO or using local
   authentication as well (**Mixed**).
 
-> When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to
-> the local `admin` account in the event of a misconfiguration.
+:::caution
+
+When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to the local `admin` account in the event of a misconfiguration.
+
+:::
 
 ### Step 2: Configure your identity provider's access credentials
 
@@ -81,7 +89,12 @@ to authenticated users.
       </Location>
   ```
 
-  > In this example, the Apache module used was **mod_auth_openidc**. This is why authentication is **openid-connect**.
+
+:::note
+
+In this example, the Apache module used was **mod_auth_openidc**. This is why authentication is **openid-connect**.
+
+:::
 
 3. Validate the Apache configuration using:
 
@@ -110,5 +123,10 @@ And to authorize the following `redirect URI` to forward your connecter users to
 {protocol}://{server}:{port}/centreon/websso
 ```
 
-> Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix server.
-> For example: `https://centreon.domain.net/centreon/centreon/websso`
+:::info
+
+Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix server.
+
+For example: `https://i-vertix.domain.net/centreon/centreon/websso`
+
+:::

@@ -40,7 +40,7 @@ Go to the **Configuration > Hosts > Host Groups** menu and click on **Add**
 * The **Action URL** field defines a URL normally used to give information on actions on the hostgroup (maintenance, etc.).
 * The **Icon** field indicates the icon to be use for the host group.
 * The **Map Icon** is the icon use for mapping.
-* The **Geographic coordinates** field defines geographical coordinates used by the Centreon MAP module to position the resource on a map
+* The **Geographic coordinates** field defines geographical coordinates used by the MAP module to position the resource on a map
 * The **RRD retention** field is expressed in days, it serves to define the duration of retention of the services
   belonging to this hostgroup in the RRD database. It will be the default duration defined in the
   **Administration > Options > CentStorage** menu if this value is not defined.
@@ -55,6 +55,6 @@ Go to the **Configuration > Services > Service Groups** menu and click on **Add*
 * The **Linked Host Group Services** list allows us to choose the services linked to a host group that will be part
   of this group.
 * The **Linked Service Templates** list allows to deploy a service based on this template on all hosts linked to this group.
-* The **Geo coordinates** field defines geographical coordinates used by the Centreon MAP module to position the resource on a map.
+* The **Geo coordinates** field defines geographical coordinates used by the MAP module to position the resource on a map.
   Define "Latitude,Longitude", for example for Rome coordinates set "41.53,12.32"
 * The **Status** and **Comments** fields allow to enable or disable the service group and to make comment on it.

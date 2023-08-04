@@ -19,7 +19,7 @@ The dependencies of objects are of two types:
 
 Physical dependencies consist of taking into account physical links between equipment. This link can only be defined for **Host**.
 
-The configuration of a physical dependencies takes place in the **Relations** tab of a configuration sheet of a host through `Configuration > Hosts > Hosts` menu.
+The configuration of a physical dependencies takes place in the **Relations** tab of a configuration sheet of a host through **Configuration > Hosts > Hosts** menu.
 
 ![image](../../assets/managing-notifications/relations.png)
 
@@ -28,9 +28,13 @@ It is possible of define two settings:
 -   **Parent Hosts**: signifies that the hosts selected are parents of this host (situated upstream). If all the parent hosts selected become unavailable or impossible to reach the host itself will be considered by the scheduler as impossible to reach.
 -   **Child Hosts**: signifies that the host becomes the parent of all the child hosts selected.
 
-> It is not possible to have dependencies between hosts from different pollers.
+:::note
 
-> All the parents of a host must be in a Not-OK status for the host itself to be considered impossible to reach. If only one access path is down (physical dependencies link), the scheduler will continue to monitor this host.
+It is not possible to have dependencies between hosts from different pollers.
+
+All the parents of a host must be in a Not-OK status for the host itself to be considered impossible to reach. If only one access path is down (physical dependencies link), the scheduler will continue to monitor this host.
+
+:::
 
 ## Logical dependencies
 
@@ -38,14 +42,14 @@ Logical dependencies consist of installing logical links between multiple object
 
 ### Hosts
 
-To configure a logical dependency, go into the `Configuration > Notifications > Dependencies > Hosts` menu and click **Add**.
+To configure a logical dependency, go into the **Configuration > Notifications > Dependencies > Hosts** menu and click **Add**.
 
 ![image](../../assets/managing-notifications/dependencies.png)
 
-In this case, we have two types of host that come into play: one or more hosts (called master hosts) of which the status controls the execution and notification of other hosts (called dependent hosts). If you use the Centreon Broker, it is also possible to control the execution and notification of services (called dependent services) from master hosts.
+In this case, we have two types of host that come into play: one or more hosts (called master hosts) of which the status controls the execution and notification of other hosts (called dependent hosts). If you use the Broker, it is also possible to control the execution and notification of services (called dependent services) from master hosts.
 
 -   The **Name** and **Description** fields indicate the name and the description of the dependencies
--   The **Parent relationship** field should be ignored if you use the Centreon Engine. If it is enabled, and if the dependencies links of the master host become unavailable, the dependencies in the process of creation is not taken into account.
+-   The **Parent relationship** field should be ignored if you use the Engine. If it is enabled, and if the dependencies links of the master host become unavailable, the dependencies in the process of creation is not taken into account.
 -   The **Execution Failure Criteria** field indicates the statuses of the master host(s) preventing the check of the hosts or the dependent services
 -   The **Notification Failure Criteria** field indicates the statuses of the master host(s) preventing the sending of notifications to the hosts or the dependent services
 -   The **Hostnames** list defines the master host(s)
@@ -55,14 +59,14 @@ In this case, we have two types of host that come into play: one or more hosts (
 
 ### Services
 
-To configure a logical dependency, go into the `Configuration> Notifications > Dependencies > Services` menu and click **Add**.
+To configure a logical dependency, go into the **Configuration> Notifications > Dependencies > Services** menu and click **Add**.
 
 ![image](../../assets/managing-notifications/services_dependencies.png)
 
-In this case, we have two entities that come into play: the (“master”) services which control the execution and the notification of other (“dependent”) services. If you use Centreon Broker, it is also possible of control the execution and the notification of other hosts.
+In this case, we have two entities that come into play: the (“master”) services which control the execution and the notification of other (“dependent”) services. If you use Broker, it is also possible of control the execution and the notification of other hosts.
 
 -   The **Name** and **Description** fields indicate the name and description of the dependencies
--   The **Parent relationship** field should be ignored if you use the Centreon Engine. If it is enabled, and if the links of dependencies of the master service become unavailable the dependencies in the process of creation is no longer taken into account.
+-   The **Parent relationship** field should be ignored if you use the Engine. If it is enabled, and if the links of dependencies of the master service become unavailable the dependencies in the process of creation is no longer taken into account.
 -   The **Execution Failure Criteria** field indicates the statuses of the master service(s) preventing the check of the hosts or the dependent services
 -   The **Notification Failure Criteria** field indicates the statuses of the master service(s) preventing the sending of notifications to the hosts or the dependent services
 -   The **Services** list defines the master service(s)
@@ -72,14 +76,14 @@ In this case, we have two entities that come into play: the (“master”) servi
 
 ### Host groups
 
-To configure a logical dependency, go into the `Configuration> Notifications > Dependencies > Host Groups` menu and click **Add**.
+To configure a logical dependency, go into the **Configuration> Notifications > Dependencies > Host Groups** menu and click **Add**.
 
 ![image](../../assets/managing-notifications/hostgroups_dependencies.png)
 
 Two types of host groups: a host group is called a master if it controls the execution and the notification of other (“dependent”) host groups.
 
 -   The **Name** and **Description** fields indicate the name and the description of the dependencies
--   The **Parent relationship** field should be ignored if you use the Centreon Engine. If it is enabled, and if the links of dependencies of the master host group become unavailable the dependencies in the process of creation is no longer taken into account.
+-   The **Parent relationship** field should be ignored if you use the Engine. If it is enabled, and if the links of dependencies of the master host group become unavailable the dependencies in the process of creation is no longer taken into account.
 -   The **Execution Failure Criteria** field indicates the statuses of the master host group(s) preventing the check of the dependent host groups
 -   The **Notification Failure Criteria** field indicates the statuses of the master host(s) preventing the sending of notifications to the dependent host groups
 -   The **Host groups name** list defines the master host group(s)
@@ -88,14 +92,14 @@ Two types of host groups: a host group is called a master if it controls the exe
 
 ### Service groups
 
-To configure a logical dependency, go into the `Configuration> Notifications > Dependencies > Service Groups` menu and click **Add**.
+To configure a logical dependency, go into the **Configuration> Notifications > Dependencies > Service Groups** menu and click **Add**.
 
 ![image](../../assets/managing-notifications/servicegroups_dependencies.png)
 
 Two types of service group: a service group is called a “master” if it controls the execution and the notification of other (“dependent”) service groups.
 
 -   The **Name** and **Description** fields indicate the name and the description of the dependencies
--   The **Parent relationship** field should be ignored if you use the Centreon Engine. If it is enabled, and if the links of dependencies of the master service group become unavailable the dependencies in the process of creation is no longer taken into account.
+-   The **Parent relationship** field should be ignored if you use the Engine. If it is enabled, and if the links of dependencies of the master service group become unavailable the dependencies in the process of creation is no longer taken into account.
 -   The **Execution Failure Criteria** field indicates the statuses of the master service group(s) preventing the check of the dependent service groups
 -   The **Notification Failure Criteria** field indicates the statuses of the master host(s) preventing the sending of notifications to the dependent service groups
 -   The **Service group names** list defines the group(s) of master services
@@ -104,14 +108,14 @@ Two types of service group: a service group is called a “master” if it contr
 
 ### Meta-services
 
-To configure a logical dependency, go into the `Configuration> Notifications > Dependencies > Meta Services` menu and click **Add**.
+To configure a logical dependency, go into the **Configuration> Notifications > Dependencies > Meta Services** menu and click **Add**.
 
 ![image](../../assets/managing-notifications/metaservice_dependencies.png)
 
 Two types of meta-services: a meta-service is called a “master” if it controls the execution and the notification of other (“dependent”) meta-services.
 
 -   The **Name** and **Description** fields indicate the name and description of the dependencies
--   The **Parent relationship** field should be ignored if you use the Centreon Engine. If it is enabled, and if the links of dependencies of the master meta-service become unavailable the dependencies in the process of creation is no longer taken into account.
+-   The **Parent relationship** field should be ignored if you use the Engine. If it is enabled, and if the links of dependencies of the master meta-service become unavailable the dependencies in the process of creation is no longer taken into account.
 -   The **Execution Failure Criteria** field Indicates which are the statuses of the meta-master service(s) that will prevent the check of the meta-dependent services
 -   The **Notification Failure Criteria** field indicates the statuses of the meta-service(s) preventing the sending of notifications to meta-dependent services
 -   The **Meta-service name** list defines the master meta-service(s)
@@ -122,7 +126,11 @@ Two types of meta-services: a meta-service is called a “master” if it contro
 
 This sub-chapter illustrates the use of these dependencies via a few actual cases.
 
-> The dependencies are based on failure criteria that is “do not do if”. Do not notify if the service is in a Critical state. Do not perform the check if the service is in a Critical, Alert, Unknown, … state.
+:::note
+
+The dependencies are based on failure criteria that is “do not do if”. Do not notify if the service is in a Critical state. Do not perform the check if the service is in a Critical, Alert, Unknown, … state.
+
+:::
 
 ### Services dependencies
 
@@ -132,7 +140,7 @@ Consequently, if the database server does not reply, the Selenium scenario canno
 
 Moreover, considering that the Selenium scenario cannot perform properly, no performance data can be stored in the database. So, it is necessary not only to stop the notification for the service using the Selenium scenario but also the check.
 
-To create this dependency, go into the `Configuration> Notifications > Dependencies > Services` menu and click **Add**.
+To create this dependency, go into the **Configuration> Notifications > Dependencies > Services** menu and click **Add**.
 
 1.  Enter the name and the description of the dependency
 2.  For the **Execution Failure Criteria** and **Notification Failure Criteria** fields, check Warning, Critical, Unknown and Pending
@@ -148,7 +156,7 @@ Let us take the case of two hosts which operate as a cluster. Three hosts are cr
 
 If host A or host B has a Not-OK status the services of host C will automatically be considered to be Not-OK. So, it is necessary to add a dependency which prevents the sending of notifications if host A or host B become faulty. However, performance data feed-back must always be operational; this is why it is necessary to continue the monitoring of host C.
 
-To create this dependency, go into the `Configuration> Notifications > Dependencies > Hosts` menu and click **Add**.
+To create this dependency, go into the **Configuration> Notifications > Dependencies > Hosts** menu and click **Add**.
 
 1.  Enter the name and the description of the dependency
 2.  For the **Notification Failure Criteria** field, check Warning, Critical, Unknown and Pending
@@ -167,7 +175,7 @@ Let us take the example of a set of Oracle services on which the ERP application
 
 If the Oracle services become critical, the services of the ERP application are automatically critical. It is necessary to create a dependency link to prevent the check and notification of the services of the application ERP if the Oracle application is Not-OK.
 
-To create this dependency, go into the `Configuration> Notifications > Dependencies > Service Groups` menu and click **Add**.
+To create this dependency, go into the **Configuration> Notifications > Dependencies > Service Groups** menu and click **Add**.
 
 1.  Enter the name and the description of the dependency
 2.  For the **Execution Failure Criteria** and **Notification Failure Criteria** fields, check Critical and Pending

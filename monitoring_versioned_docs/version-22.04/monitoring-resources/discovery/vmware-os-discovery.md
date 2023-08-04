@@ -114,11 +114,15 @@ Host template associated with the host as per Template Rules match. To replace i
 
 Template Rules are used to associate templates with hosts. They can also associate additional services, detected during the scan/discovery, with the Hosts. Manual changes are applicable.
 
-**Note**: SERVICE DISCOVERY tab is available if job discovery template rules are configured so that to detect additional services (in addition to the default ones). 
+:::note
+
+SERVICE DISCOVERY tab is available if job discovery template rules are configured so that to detect additional services (in addition to the default ones). 
+
+:::
 
 ![image](../../assets/discovery/os_discovery10.png)
 
-### LINKED HOST
+### Linked host
 
 This functionality is also capable of recognizing any hosts that are already being monitored (**LINKED HOST**) and excludes them from the list of results.
 

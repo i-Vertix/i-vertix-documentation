@@ -17,7 +17,7 @@ The table below summarizes all the possible statuses for a host.
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------|
 | <span style={{color:'#88b917'}}>UP</span>          | The host is available and reachable                                                           |
 | <span style={{color:'#e00b3d'}}>DOWN</span>        | The host is unavailable                                                                       |
-| <span style={{color:'#818185'}}>UNREACHABLE</span> | The host is unreachable: it [depends](notif-dependencies.md) on a host whose status is **DOWN**  |
+| <span style={{color:'#818185'}}>UNREACHABLE</span> | The host is unreachable: it [depends](../../events-alerts/managing-notifications/dependencies.md) on a host whose status is **DOWN**  |
 | <span style={{color:'#2ad1d4'}}>PENDING</span>     | The host has just been created and has not been checked yet by the monitoring engine |
 
 ### Service status
@@ -36,12 +36,12 @@ The table below summarizes all the possible statuses for a service.
 
 In addition to their status, resources can be in several states:
 
-- [Acknowledged](acknowledge.md): indicates that the incident on the service or on the host
+- [Acknowledged](../../events-alerts/managing-alarms/acknowledge.md): indicates that the incident on the service or on the host
     has been taken into account by a user. Acknowledged resources have a yellow background.
-- [In downtime](downtimes.md): indicates that notifications are temporarily stopped. A downtime can be [planned in advance](downtimes.md#recurrent-downtimes) to avoid receiving alerts during maintenance periods, or be set following an incident. Resources in downtime have a purple background.
+- [In downtime](../../events-alerts/managing-alarms/downtimes.md): indicates that notifications are temporarily stopped. A downtime can be [planned in advance](../../events-alerts/managing-alarms/downtimes.md#recurrent-downtimes) to avoid receiving alerts during maintenance periods, or be set following an incident. Resources in downtime have a purple background.
 
 
--   [Flapping](notif-flapping.md): indicates that the status change
+-   [Flapping](../../events-alerts/managing-notifications/flapping.md): indicates that the status change
     percentage of the resource is very high. This percentage is obtained
     from calculations performed by the network monitoring engine.  Flapping resources have the following icon in their **Details** panel:
     ![image](../../assets/alerts/concepts/flapping_icon.png)

@@ -6,52 +6,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-## Adding a comment
-
-### Principle
-
-Centreon allows us to add comments on an object. This comment is visible by
-anyone having access to the resource (host or service). A comment has the
-following properties:
-
--   Hostname
--   Servicename if the comment is associated with a service
--   Date of entry of the comment
--   Author of the comment
--   The contents of the comment
--   The validity of the comment against a restart of the scheduler
-
-### Practice
-
-There are two solutions to add a comment:
-
-<Tabs groupId="sync">
-<TabItem value="From the detailed sheet of an object" label="From the detailed sheet of an object">
-
-1.  Access to the details page of the object
-2.  In the category **Host/Service Commands**, click on **Add a comment
-    for this host/this service**
-
-</TabItem>
-<TabItem value="From the Comment menu" label="From the Comment menu">
-
-1.  Go into the **Monitoring > Downtimes > Comments** menu
-2.  Click on **Add a Service Comment** or **Add a Host Comment**
-
-</TabItem>
-</Tabs>
-
-The following window appears:
-
-![image](../../assets/managing-alarms/comment.png)
-
--   The **Host Name** field defines the host concerned by the comment.
--   If you have chosen to add a comment to a service, the **Service**
-    field can be used to select the service concerned by the comment.
--   If the **Persistent** box is checked, the comment will be maintained
-    in the event of a restart of the scheduler.
--   The **Comments** field contains the comment itself.
-
 ## Management of checks
 
 ### Principle

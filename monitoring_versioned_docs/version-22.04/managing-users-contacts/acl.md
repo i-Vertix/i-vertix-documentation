@@ -13,17 +13,15 @@ Rights are not defined at user level but through [access groups](#creating-an-ac
 
 - A specific user can belong to several access groups: the rights defined in each group will be combined.
 - Non-administrator users that belong to no access group will have no rights at all on the monitoring platform (empty screen at login)
-- [Administrator](../monitoring/basic-objects/contacts-create.md#centreon-authentication) users have all rights (even if you add an administrator to an access group with limited rights).
+- Administrator users have all rights (even if you add an administrator to an access group with limited rights).
 
 ACLs are recalculated every minute; this is why it is sometimes necessary to wait a few seconds before changes are applied to a user. You can also [reload them](#reload-acl) manually.
-
-> The Centreon [MBI](../reporting/configure.md), BAM and [MAP](../graph-views/configuration.md) modules have their own ACLs.
 
 ## Granting rights to a user
 
 To grant rights to a user:
 
-1. [Create the user](../monitoring/basic-objects/contacts.md) in Centreon.
+1. [Create the user](create-users-manually.md) in i-Vertix IT Monitoring.
 
 2. [Create an access group](#creating-an-access-group).
 
@@ -79,19 +77,14 @@ To create an access filter on resources:
 | Tab                 | Actions                                                                                                                                                         |
 |------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **General Information** | <ul> <li>Use the **Linked groups** table to link access groups to the filter on resources, i.e. grant the rights defined in the filter to the access group.</li><li>**Status** and **Comments** allow you to enable/disable the filter or to add comments to it.</li></ul>                                                                                                                                                                                                                |
-| **Hosts Resources**    | <ul><li>Define which hosts and hosts groups users will be able to see in the Centreon interface.</li><li>If **Include all hosts** or **Include all hostgroups** is selected, any newly created host or host group will be added to the filter automatically.</li></ul>   <p>When **Include all hosts** or **Include all hostgroups** is selected, you can explicitly exclude hosts from the filter (e.g. when only 1 or 2 hosts should not be included in the filter). </p>                                                                       |
+| **Hosts Resources**    | <ul><li>Define which hosts and hosts groups users will be able to see in the IT Monitoring interface.</li><li>If **Include all hosts** or **Include all hostgroups** is selected, any newly created host or host group will be added to the filter automatically.</li></ul>   <p>When **Include all hosts** or **Include all hostgroups** is selected, you can explicitly exclude hosts from the filter (e.g. when only 1 or 2 hosts should not be included in the filter). </p>                                                                       |
 | **Services resources** | The **Services resources** tab allows you to define which service groups users will be allowed to see.                                                                                                                             |
 | **Meta Services**       | The **Meta Services** tab allows you to define which meta services users will be able to see.                                                                                                                             |
 | **Filters**                | <ul><li>The **Poller Filter** table allows you to select hosts supervised by a specific monitoring engine (if no poller is selected, then all pollers are taken into account)</li><li>The **Host Category Filter** table allows you to filter the hosts by category</li><li>The **Service Category Filter** table allows you to filter services by category. Filters by poller or by category of objects are inclusion filters (UNION). Only the objects belonging to these filters in addition to groups of objects (hosts and services) will be visible.</li></ul> |
 
 ### Access filters on menus
 
-Access filters on menus allow you to define which pages in the Centreon interface users will be able to access.
-
-> Accessing the command editing menu, as well as accessing the SNMP trap editing
-> menu can be very dangerous. Indeed, privileged users can create commands,
-> which may lead to the creation of security breaches (RCE). Only give this access
-> to people you trust.
+Access filters on menus allow you to define which pages in the It Monitoring interface users will be able to access.
 
 To create an access filter on menus:
 
@@ -167,17 +160,17 @@ These fields are no longer in use.
 | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | Enable/Disable Checks for a service                           | Allows users to enable or disable checks for a service on page **Monitoring > Status details > Services** (deprecated page)                           |
 | Enable/Disable Notifications for a service                    | Allows users to enable or disable notifications for a service  on page **Monitoring > Status details > Services** (deprecated page)                          |
-| Acknowledge a service                                         | Allows users to [acknowledge a service](../alerts-notifications/acknowledge.md)                                                  |
+| Acknowledge a service                                         | Allows users to [acknowledge a service](../events-alerts/managing-alarms/acknowledge.md)                                                  |
 | Disacknowledge a service | Allows users to disacknowledge a service |
-| Re-schedule the next check for a service                      | Allows users to [trigger a check on a service](../alerts-notifications/resources-status.md#refresh-a-status). The check is made even outside the service's check period.     |
-| Re-schedule the next check for a service (Forced)             | Allows users to [trigger a check on a service](../alerts-notifications/resources-status.md#refresh-a-status). The check is made even outside the service's check period.  |
-| Schedule downtime for a service                               | Allows users to [schedule downtime](../alerts-notifications/downtimes.md) on a service                                         |
-| Add/Delete a comment for a service                            | Allows users to add or delete a [comment](../alerts-notifications/other.md#adding-a-comment) on a service                                   |
+| Re-schedule the next check for a service                      | Allows users to [trigger a check on a service](../events-alerts/viewing-events/resources-status.md#refresh-a-status). The check is made even outside the service's check period.     |
+| Re-schedule the next check for a service (Forced)             | Allows users to [trigger a check on a service](../events-alerts/viewing-events/resources-status.md#refresh-a-status). The check is made even outside the service's check period.  |
+| Schedule downtime for a service                               | Allows users to [schedule downtime](../events-alerts/managing-alarms/downtimes.md)   on a service                                         |
+| Add/Delete a comment for a service                            | Allows users to add or delete a [comment](../events-alerts/managing-alarms/other.md) on a service                                   |
 | Enable/Disable Event Handler for a service                    | Allows users to enable or disable the event handler processing of a service in the detailed sheet of a service accessible via the **Monitoring > Status Details > Services** menu (deprecated page)           |
 | Allows users to enable or disable flap detection of a service | Allows users to enable or disable flap detection of a service in the detailed sheet of a service accessible via the **Monitoring > Status Details > Services** menu (deprecated page)                          |
 | Enable/Disable passive checks of a service                    | Allows users to enable or disable passive checks of a service in the detailed sheet of a service accessible via the **Monitoring > Status Details > Services** menu (deprecated page)                         |
-| [Submit result](../alerts-notifications/submit.md) for a service                                   | Allows users to modify the status of a passive service manually, until the next check                                             |
-| Display executed command by monitoring engine                 | Displays the executed command for a service in its [Details panel](../alerts-notifications/resources-status.md#service-panel)                             |
+| [Submit result](../events-alerts/managing-alarms/submit-status.md) for a service                                   | Allows users to modify the status of a passive service manually, until the next check                                             |
+| Display executed command by monitoring engine                 | Displays the executed command for a service in its [Details panel](../events-alerts/viewing-events/resources-status.md#service-panel)                             |
 
 #### Hosts Actions Access
 
@@ -185,12 +178,12 @@ These fields are no longer in use.
 | ----------------------------------------------- | ----------------------------------------------------------------------------------- |
 | Enable/Disable Checks for a host                | Allows users to enable or disable checks for a host on page **Monitoring > Status details > Hosts** (deprecated page)                                  |
 | Enable/Disable Notifications for a host         | Allows users to enable or disable notifications for a host on page **Monitoring > Status details > Hosts** (deprecated page)                          |
-| Acknowledge a host                              | Allows users to [acknowledge a host](../alerts-notifications/acknowledge.md)                                                  |
+| Acknowledge a host                              | Allows users to [acknowledge a host](../events-alerts/managing-alarms/acknowledge.md)                                                  |
 | Disaknowledge a host                            | Allows users to disacknowledge a host                                               |
-| Schedule the check for a host                   | Allows users to [trigger a check on a host](../alerts-notifications/resources-status.md#refresh-a-status). The check is made even outside the host's check period.                                     |
-| Schedule the check for a host (Forced)          | Allows users to [trigger a check on a host](../alerts-notifications/resources-status.md#refresh-a-status). The check is made even outside the host's check period.   |
-| Schedule downtime for a host                    | Allows users to [schedule downtime](../alerts-notifications/downtimes.md) on a host                                         |
-| Add/Delete a comment for a host                 | Allows users to add or delete a [comment](../alerts-notifications/other.md#adding-a-comment) for a host                                   |
+| Schedule the check for a host                   | Allows users to [trigger a check on a host](../events-alerts/viewing-events/resources-status.md#refresh-a-status). The check is made even outside the host's check period.                                     |
+| Schedule the check for a host (Forced)          | Allows users to [trigger a check on a host](../events-alerts/viewing-events/resources-status.md#refresh-a-status). The check is made even outside the host's check period.   |
+| Schedule downtime for a host                    | Allows users to [schedule downtime](../events-alerts/managing-alarms/downtimes.md) on a host                                         |
+| Add/Delete a comment for a host                 | Allows users to add or delete a [comment](../events-alerts/viewing-events/resources-status.md#service-panel) for a host                                   |
 | Enable/Disable Event Handler for a host         | Allows users to enable or disable the event handler processing of a host on page **Monitoring > Status details > Hosts** (deprecated page)            |
 | Enable/Disable Flap Detection for a host        | Allows users to enable or disable flap detection of a host on page **Monitoring > Status details > Hosts** (deprecated page)                         |
 | Enable/Disable Checks services of a host        | Allows users to enable or disable all service checks of a host on page **Monitoring > Status details > Hosts** (deprecated page)                     |

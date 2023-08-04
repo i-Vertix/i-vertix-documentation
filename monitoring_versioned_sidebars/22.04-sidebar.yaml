@@ -30,6 +30,7 @@ sidebar:
       - id: before-you-start
         label: Before you start
         items:
+          - platform
           - compatibility
           - architecture
           - prerequisites
@@ -191,7 +192,7 @@ sidebar:
           - openid-OPENID
           - websso-WEBSSO
       - log-Log
-#      TODO: SESSIONS
+      - sessions-Sessions
       - id: platform-status
         label: Platform-Status
         items:

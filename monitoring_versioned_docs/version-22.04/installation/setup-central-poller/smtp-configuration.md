@@ -7,8 +7,11 @@ title: SMTP configuration
 
 Email notifications settings can be configured on both Central Manager and Smart Poller.
 
-**NOTE:**
->By default notifications about to monitored devices/services are sent by Smart Pollers.
+:::info
+
+By default notifications about to monitored devices/services are sent by the Smart Pollers.
+
+:::
 
 Since the Central Manager can perform self-diagnostics procedures, in case it detects any issues, it can generate alarm notifications as well.
 
@@ -16,20 +19,19 @@ Therefore SMTP should be configured also on the Central Manager itself.
 
 ## SMTP Configuration
 
-1) Select option **7) SMTP settings (e-mail)**
+* Select option **7) SMTP settings (e-mail)**
 
 ![i-Vertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
 
-2) A new menu shows up
+* a new menu shows up
 
 ![Relay host](../../assets/setup-startup-central-poller/relay-host.png)
 
-3) Select **Y**
-4) A new menu shows up
+* Select **Y** and a new menu shows up
 
 ![SMTP options](../../assets/setup-startup-central-poller/smtp-options.png)
 
-5) Select the proper SMTP option among the proposed ones
+* Select the proper SMTP option among the proposed ones
 
 ### Available options are
 
@@ -58,5 +60,8 @@ If you want to test the configuration you've just made, simply type **T) Test SM
 
 ![Relay host](../../assets/setup-startup-central-poller/relay-host.png)
 
-**NOTE:**
->Provide real a e-mail sender and a e-mail reciver for the test.
+:::caution
+
+Provide real a e-mail sender and a e-mail reciver for the test.
+
+:::

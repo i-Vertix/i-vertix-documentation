@@ -13,7 +13,11 @@ Example of use:
 
 A service is charged with checking the health of the hard disks in a disc array. A hard disk goes down on a disk array, a notification is sent. The monitoring operator acknowledges the service specifying that a team is in the process of dealing with the problem. Notifications are no longer sent. The service will return to its nominal state after a change of disk.
 
-> The acknowledgment of an incident indicates that the issue has been acknowledged by a monitoring user, without necessarily implying the resolution of the incident. The actual resolution can only be achieved when the check returns to its normal state.
+:::note
+
+The acknowledgment of an incident indicates that the issue has been acknowledged by a monitoring user, without necessarily implying the resolution of the incident. The actual resolution can only be achieved when the check returns to its normal state.
+
+:::
 
 ### Practice
 

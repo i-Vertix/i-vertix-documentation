@@ -3,7 +3,9 @@ id: config-deploy
 title: Deploy configuration
 ---
 
-When you create, delete or edit objects in the **Configuration** menu, changes are not applied automatically (neither on the central server on which you have made the change, nor on any remote server or poller linked to it). For the changes to be taken into account, you have to export the configuration.
+When you create, delete or edit objects (host, service, thresholds, etc.) in the **Configuration** menu, changes are not applied automatically (neither on the central server on which you have made the change, nor on any remote server or poller linked to it).
+
+For the changes to be taken into account, you have to export the configuration.
 
 Any change in configuration must be done and exported from the central server's interface or API, regardless of which poller is affected by the change (central server, remote server, poller).
 
@@ -60,7 +62,7 @@ Administrators and users with the [appropriate rights](#activating-the-feature) 
 ### Activating the feature
 
 * For administrator users, the feature is automatically enabled.
-* To make the feature available to a non-administrator user, make sure they have the [**Deploy configuration**](../../administration/access-control-lists.md#poller-configuration-actions--poller-management) right, and the [**Display Top Counter pollers statistics**](../../administration/access-control-lists.md#global-functionalities-access) right.
+* To make the feature available to a non-administrator user, make sure they have the [**Deploy configuration**](../../managing-users-contacts/acl.md#poller-configuration-actions--poller-management) right, and the [**Display Top Counter pollers statistics**](../../managing-users-contacts/acl.md#global-functionalities-access) right.
 
 ### Exporting all configurations
 

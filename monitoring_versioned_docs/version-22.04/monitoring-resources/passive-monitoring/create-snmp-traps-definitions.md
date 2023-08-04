@@ -5,7 +5,7 @@ title: Create SNMP Traps definitions
 
 ## Add a manufacturer
 
-Within centreon, the root OIDs of the SNMP traps is filed by manufacturer. To add a manufacturer:
+Within i-vertix, the root OIDs of the SNMP traps is filed by manufacturer. To add a manufacturer:
 
 Go into the **Configuration > SNMP traps > Manufacturer** menu and click on **Add**
 
@@ -55,14 +55,13 @@ Go into the **Configuration > SNMP traps > SNMP traps** menu and click on **Add*
 * The field **Output message** of contains the message to be displayed in the event of reception of a trap containing
   the OID configured above.
 
-> By default, the MIB contains the definition of this variable (E.g.: “Link up on interface $2. State: $4.”, here $2
-> will be replaced by the 2nd argument received in the event.). In the opposite situation, the variable **$*** can be
-> used to display all the arguments contained in the trap.
+:::note
 
-> It is possible to construct the output message yourself. For this, use the MIB to know the arguments that will be
-> present in the body of the event and retrieve the arguments with the variables **$n**. As each argument is identified
-> by a OID, it is possible to use this OID directly to place it in the output message without knowing its position via
-> the variable **@{OID}**.
+By default, the MIB contains the definition of this variable (E.g.: “Link up on interface $2. State: $4.”, here ```$2``` will be replaced by the 2nd argument received in the event.). In the opposite situation, the variable ```$``` can be used to display all the arguments contained in the trap.
+It is possible to construct the output message yourself. For this, use the MIB to know the arguments that will be present in the body of the event and retrieve the arguments with the variables ```$n```.
+As each argument is identified by a OID, it is possible to use this OID directly to place it in the output message without knowing its position via the variable ```@{OID}```.
+
+:::
 
 * The **Default status** field defines the “monitoring” status of the service in case of reception of the trap.
 * If the **Submit result** box is checked the result is submitted to the Network supervisor engine.
@@ -84,8 +83,11 @@ For each rule, define the settings:
 * **Regexp** defined the REGEXP type search to be applied.
 * **Status** defines the status of the service in the event of concordance.
 
-> The order is important in the rules of correspondence because the process will stop at the first rule of which the
-correspondence is assured.
+:::note
+
+The order is important in the rules of correspondence because the process will stop at the first rule of which the correspondence is assured.
+
+:::
 
 * The **Disable submit result if no matched rules** field disables the sending of information to the scheduling engine
   if no correspondence with a rule is confirmed.
@@ -110,7 +112,7 @@ command called PREEXEC. To do this, it is possible to define **PREEXEC command (
 
 Here is an example of use with the linkUP trap:
 
-For a Cisco equipment, $2 == ifDescr contains the port number of the interface (GigabitEthernet0/1 for instance).
+For a Cisco equipment, ```$2 == ifDescr``` contains the port number of the interface (GigabitEthernet0/1 for instance).
 The best description of the interface is in the SNMP if Alias field.
 
 The following command can be used to retrieve this value:
@@ -128,7 +130,7 @@ Example:
 "Interface $2 ( $p1 ) linkUP. State: $4." "$CA"
 ```
 
-The result will have the form:  Interface GigabitEthernet0/1 ( NAS Server ) linkUP. State: up
+The result will have the form:  **Interface GigabitEthernet0/1 ( NAS Server ) linkUP. State: up**
 
 * The **Insert trap's information into database** box, if checked, record the SNMP trap information in the database
   field can be used define whether or not to classify the traps by day in the database.
@@ -166,7 +168,11 @@ if ($self->{trap_data}->{entvar}->[3] =~ /[[:xdigit:]]+/) {
 }
 ```
 
-> Beware the argument table starts at 0 for argument 1 of the SNMP trap.
+:::caution
+
+Beware the argument table starts at 0 for argument 1 of the SNMP trap.
+
+:::
 
 ### Variables
 
@@ -179,7 +185,7 @@ or **Special command** fields. These arguments are listed in the table below:
 | $1, $2...                | Retrieval of the value of an argument via its order of appearance                                                         |
 | $p1, $p2,...             | Value of the command: PREEXEC ($p1 = at the first command, $p2 at the second, ...)                                        |
 | $*                       | All the arguments separated by a space                                                                                    |
-| @HOSTNAME@               | Host name (in centreon) to which the service is attached                                                                  |
+| @HOSTNAME@               | Host name (in i-vertix) to which the service is attached                                                                  |
 | @HOSTADDRESS@            | IP address of the host sending the trap                                                                                   |
 | @HOSTADDRESS2@           | DNS name of the host sending the trap (if the server fails to effect a reverse DNS resolution we retrieve the IP address) |
 | @SERVICEDESC@            | Service name                                                                                                              |

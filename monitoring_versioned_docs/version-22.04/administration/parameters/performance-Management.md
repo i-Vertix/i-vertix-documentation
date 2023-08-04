@@ -15,8 +15,11 @@ make it possible to visualize the performance graphs of the collected metrics by
 the monitoring, to follow the evolution of the status of the services, or to
 follow certain indicators of the collection engines.
 
-> These values were set during the installation process, it is not recommended to
-> change them.
+:::caution
+
+These values were set during the installation process, it is not recommended to change them.
+
+:::
 
 - **Path to RRDTool Database For Metrics**: by default
 **/var/lib/centreon/metrics/**.
@@ -44,6 +47,8 @@ day).
 - **Retention duration for audit logs**: audit logs data, unlimited by default
 (0 day).
 
+:::info
 
-> If you change the retention time for performance charts, this value will only be
-> used for newly added services.
+If you change the retention time for performance charts, this value will only be used for newly added services.
+
+:::

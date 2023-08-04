@@ -12,7 +12,7 @@ events.
 ## Events list
 
 The event list is a condensed and efficient view of all alerts and of the status of all resources
-monitored by Centreon.
+monitored by i-Vertix.
 
 ![image](../../assets/alerts/resources-status/resources-status-listing.png)
 
@@ -24,7 +24,7 @@ You can add or remove columns, and sort by the column of your choice.
 
 ### Acknowledge an event
 
-When one or more alerts are visible, you may need to [acknowledge](acknowledge.md) them to tell
+When one or more alerts are visible, you may need to [acknowledge](../../events-alerts/managing-alarms/acknowledge.md) them to tell
 your team that the problem is handled. You can do that in two ways:
 
 - By directly acknowledging the line: an **Acknowledge** button
@@ -37,7 +37,7 @@ your team that the problem is handled. You can do that in two ways:
 When a resource is acknowledged:
 
 - The alert is not visible anymore in the **Unhandled problems** filter
-- [Notifications](notif-configuration.md) for this resource are stopped
+- [Notifications](../../events-alerts/managing-notifications/configuring-notification.md) for this resource are stopped
 - The color of the line for acknowledged resources is changed
 to yellow.
 
@@ -49,7 +49,7 @@ of **Unhandled Problems** and its notifications will resume: in the **More actio
 ### Set a planned downtime
 
 When a maintenance is planned on one or multiple resources, you can set a
-[planned downtime](downtimes.md) for them in Centreon in two ways:
+[planned downtime](../../events-alerts/managing-alarms/downtimes.md) for them in i-Vertix in two ways:
 
 - By directly setting a planned downtime on the line:
     a **Set Downtime** button appears on mouseover
@@ -112,18 +112,18 @@ You can filter the list of resources according to a number of predefined criteri
 
     A pop-in window appears, that lists the following criteria:
 
-    - **Type**: display only hosts, services or metaservices. You can also filter on [Anomaly Detection services](../monitoring/anomaly-detection.md) if the module is installed.
+    - **Type**: display only hosts, services or metaservices.
     - **State**: whether the problem is already acknowledged, in a planned downtime or simply unhandled
     - [**Status**](concepts.md): **OK**, **Up**, **Warning**, **Down**, **Critical**, **Unreachable**, **Unknown**, **Pending**
     - [**Status type**](concepts.md#status-types): SOFT or HARD
     - **Host group**
     - **Service group**
     - **Monitoring server**: resources monitored by a specific server (or poller)
-    - [**Host category**](../monitoring/categories.md)
-    - [**Service category**](../monitoring/categories.md)
-    - [**Host severity**](../monitoring/categories.md): name of the host severity
+    - [**Host category**](../../monitoring-resources/organizing-hosts-and-services/categories.md)
+    - [**Service category**](../../monitoring-resources/organizing-hosts-and-services/categories.md)
+    - [**Host severity**](../../monitoring-resources/organizing-hosts-and-services/categories.md): name of the host severity
     - **Host severity level**
-    - [**Service severity**](../monitoring/categories.md): name of the service severity
+    - [**Service severity**](../../monitoring-resources/organizing-hosts-and-services/categories.md): name of the service severity
     - **Service severity level**
 
     ![image](../../assets/alerts/resources-status/search-popup.png)
@@ -149,7 +149,7 @@ If you type text into the search bar, by default the search is performed on the 
 
 For instance, if you type "rta", all resources containing "rta" in one of the above fields will be displayed (e.g. a metaservice called **Ping-RTA-Average**).
 
-However, you can do a much more specific search using the [Centreon Query Language](#cql-criteria). This language allows you to search only 
+However, you can do a much more specific search using the [i-Vertix Query Language](#cql-criteria). This language allows you to search only 
 in one or several fields.
 
 #### CQL criteria

@@ -3,14 +3,14 @@ id: centreon-UI
 title: Centreon UI
 ---
 
-This part covers the configuration of the general options of the Centreon web
+This part covers the configuration of the general options of the i-Vertix web
 interface.
 
 Go to **Administration > Parameters > Centreon UI**.
 
 ## General options
 
-- **Directory** indicates the directory where Centreon is installed
+- **Directory** indicates the directory where i-Vertix is installed
 - **Contacts & Contact groups method calculation** allows to define how
 notification inheritance for hosts and services will be calculated.
 - **Limit per page (default)** field defines the number of objects displayed
@@ -36,8 +36,8 @@ and acknowledgment on chart
 - **Display comment on chart** allows to display comment from service on chart
 - **Timezone** field indicates timezone of your monitoring server.
 - **Centreon Support Email** field indicates the e-mail address of the
-**Customer’s service support centre** for the Centreon platform. This e-mail
-address will be displayed at the bottom of the page on the link **Centreon
+**Customer’s service support centre** for the i-Vertix platform. This e-mail
+address will be displayed at the bottom of the page on the link **i-Vertix
 Support**
 - **Send anonymous statistics** box defines wether or not the platform will
-send anonymous information for the **Centreon Customer Experience Improvement**
+send anonymous information for the **i-Vertix Customer Experience Improvement**

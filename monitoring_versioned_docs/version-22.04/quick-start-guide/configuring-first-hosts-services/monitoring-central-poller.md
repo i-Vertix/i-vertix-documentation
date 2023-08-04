@@ -51,4 +51,4 @@ Select **Configuration -> Services -> Manual Discovery**
 
 Once the host and services have been added, it is essential to export the configuration for the changes to take effect.
 
-[Exporting the configuration](../../monitoring-resources/monitoring-hosts/export-configuration.md)
+See the post for [Export the configuration](../../monitoring-resources/monitoring-hosts/export-configuration.md)

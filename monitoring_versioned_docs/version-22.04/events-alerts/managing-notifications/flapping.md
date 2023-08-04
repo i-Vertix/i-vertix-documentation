@@ -121,7 +121,11 @@ on the **Data Processing** tab:
 
 You can also adapt flapping thresholds for this resource.
 
-> Use templates to facilitate configuration
+:::tip
+
+Use templates to facilitate configuration
+
+:::
 
 ### Flap Detection for Hosts
 
@@ -138,4 +142,8 @@ your service and go on the **Data Processing** tab:
 
 You can also adapt flapping thresholds for this resource.
 
-> Use templates to facilitate configuration
+:::tip
+
+Use templates to facilitate configuration
+
+:::

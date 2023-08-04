@@ -1,6 +1,6 @@
 ---
 id: map-types
-title: Map types
+title: Maps overview
 ---
 
 ## Overview
@@ -39,9 +39,9 @@ Select **Map** to add a Graphical (Normal) map or a Geographical one, or **Autom
 
 See the following thread for:
 
-[Maps configuration](managing-maps.md)
+1. [Maps configuration](managing-maps.md)
 
-[Edit maps](managing-maps.md)
+2. [Edit maps](edit-maps.md)
 
-[Visualize maps](managing-maps.md)
+3. [Visualize maps](visualize-maps.md)
 

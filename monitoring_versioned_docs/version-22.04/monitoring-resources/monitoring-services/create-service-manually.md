@@ -58,7 +58,7 @@ To create a service manually, go to **Configuration \> Services > Services by ho
     * If the **Contact group additive inheritance** box is checked, i-Vertix does not overwrite the configuration of the parent host template but adds the contact groups in addition to the contact groups defined in the parent template.
 
 * **Notification Interval** is expressed in minutes. It indicates the time between sending of notifications when the status is Not-OK. If the value is defined as 0 the scheduler sends a single notification per status change.
-* **Notification Period** defines the [time period](../basic-objects/timeperiods.md) during which notifications will be sent. No notifications will be sent outside this time period.
+* **Notification Period** defines the [time period](../generic-object-actions/timeperiods.md) during which notifications will be sent. No notifications will be sent outside this time period.
 * **Notification Type** define the statuses for which a notification will be sent.
 * **First notification delay** time is expressed in minutes. It refers to the time delay to be respected before sending the first notification when a Not-OK status is validated.
 * **Recovery notification delay** is the time that must pass before a recovery notification is sent (when the service goes back to an OK state).
