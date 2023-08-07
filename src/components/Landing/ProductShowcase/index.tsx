@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import styles from './styles.module.css';
-import clsx from "clsx";
+import React from 'react';
+import styles from "@site/src/components/Landing/ProductShowcase/styles.module.css";
 import Link from "@docusaurus/Link";
+
 
 export type ProductItem = {
     id: string;
@@ -18,49 +18,33 @@ interface Props {
     products: ProductItem[];
 }
 
-const Product = ({label, Image, to, color, links}: ProductItem) => {
-
-    const [expanded, setExpanded] = useState<boolean>(false);
-
-    const onExpand = (event: React.MouseEvent) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setExpanded(prevState => !prevState);
-    }
+const Product = ({label, Image, to, description}: ProductItem) => {
 
     return (
-        <div className={styles.productContainer}>
-            <Link className={styles.product} to={to}>
-                {typeof Image === "string" ?
-                    <img src={Image} alt={label} className={styles.productImg}/> :
-                    <Image className={styles.productImg} role="img"/>}
-                <div className={styles.productLabel}>
-                    {label}
+        <Link className={styles.card} to={to}>
+            <div className={styles.card__section}>
+                <div className={styles.card__icon}>
+                    {typeof Image === "string" ?
+                        <img src={Image} alt={label}/> :
+                        <Image role="img"/>}
                 </div>
-                <div className={styles.productExpand} onClick={onExpand}>
-                    <span className={styles.productExpandIcon}/>
-                </div>
-            </Link>
-            {links.length > 0 && <div className={clsx(styles.collapse, expanded && styles.expanded)}>
-                <ul className={styles.usefulLinks}>
-                    {links.map(link => <li className={styles.usefulLink} key={link.label}>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"
-                             fill={"currentColor"}>
-                            <path d="m375-240-43-43 198-198-198-198 43-43 241 241-241 241Z"/>
-                        </svg>
-                        <Link to={link.to}>{link.label}</Link>
-                    </li>)}
-                </ul>
-            </div>}
-        </div>
+                <h3 className={styles.card__header}>{label}</h3>
+                <p className={styles.card__description}>
+                    {description}
+                </p>
+            </div>
+        </Link>
     );
 }
+
 const ProductShowcase = ({products}: Props) => {
 
     return (
-        <section className={styles.container}>
-            <div className={styles.innerContainer}>
-                {products.map(value => <Product key={value.id} {...value} />)}
+        <section className={styles.section}>
+            <div className={styles.container}>
+                <div className={styles.cards}>
+                    {products.map(value => <Product key={value.id} {...value} />)}
+                </div>
             </div>
         </section>
     );

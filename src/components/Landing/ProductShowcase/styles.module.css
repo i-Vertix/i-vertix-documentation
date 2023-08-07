@@ -1,150 +1,82 @@
+.section {
+    display: flex;
+    justify-content: center;
+    padding: 16px 0;
+}
+
 .container {
-    display: flex;
+    max-width: 1000px;
     width: 100%;
+    margin: 0 128px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(18rem, 1fr));
+    gap: 1rem;
+    width: 100%;
+    min-height: 400px;
+}
+
+.card {
+    aspect-ratio: 1/1;
+    display: flex;
     justify-content: center;
-}
-
-.innerContainer {
-    max-width: 1100px;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.productContainer {
-    display: flex;
-    flex-basis: 50%;
-    flex-grow: 0;
-    max-width: 50%;
-    box-sizing: border-box;
-    padding: 16px;
-    flex-wrap: wrap;
-    align-content: flex-start;
-}
-
-.product {
-    border-radius: 4px;
-    border: 1px solid var(--ifm-color-emphasis-500);
-    padding: 0 16px;
-    background: var(--ivertix-product-background);
-    width: 100%;
-    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, .05), 0 2px 4px 0 rgba(0, 0, 0, .1);
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
     align-items: center;
+    background-color: var(--ifm-color-emphasis-0);
+    box-shadow: 0 0 5px 0 var(--ifm-color-emphasis-300);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: var(--ifm-global-radius);
+    color: inherit;
     cursor: pointer;
-    transition: background 0.2s ease-in;
-    color: var(--ifm-font-color-base);
-    z-index: 1;
-    flex-grow: 0;
-    align-self: flex-start;
+    transition: border-color 200ms ease-in-out;
+    text-decoration: none;
+    justify-self: center;
+
 }
 
-.product:hover {
-    background: var(--ivertix-product-background-hover);
-    color: var(--ifm-font-color-base);
+.card:hover {
+    color: inherit;
+    border-color: var(--ifm-color-emphasis-400);
     text-decoration: none;
 }
 
-.productImg {
-    max-height: 60px;
-    max-width: 60px;
-    flex-basis: 60px;
-    flex-grow: 0;
-    user-select: none;
+:root[data-theme='dark'] .card {
+    box-shadow: none;
+    background-color: var(--ifm-color-emphasis-100);
 }
 
-.productLabel {
-    flex-grow: 1;
+.card__section {
     display: flex;
-    font-weight: 600;
-    font-size: 1.8rem;
-    margin: 0 auto;
-    text-align: center;
-    justify-content: center;
-    user-select: none;
-}
-
-.productExpand {
-    display: flex;
-    flex-grow: 0;
-    padding: 16px;
-    user-select: none;
-}
-
-.productExpandIcon {
-    width: 14px;
-    height: 14px;
-    display: block;
-    box-sizing: border-box;
-    border-width: 3px 0 0 3px;
-    border-radius: 3px;
-    border-style: solid;
-    border-color: var(--ifm-font-color-base);
-    transform: rotate(-135deg);
-}
-
-.collapse {
-    transition: all 180ms ease-in-out 0ms;
-    max-height: 0;
-    height: auto;
-    overflow: hidden;
-    background-color: rgba(222, 222, 222);
-    margin-top: -4px;
-    width: 100%;
-    box-sizing: border-box;
-    background: var(--ifm-color-primary);
-    flex-grow: 1;
-    border-radius: 4px;
-}
-
-.expanded {
-    max-height: 200px;
-}
-
-.usefulLinks {
-    display: flex;
-    flex-direction: row;
-    padding: 0;
-    flex-wrap: wrap;
-    margin: 4px 0 0 0;
-}
-
-.usefulLink {
-    flex-basis: 100%;
-    flex-shrink: 0;
-    list-style-type: none;
-    border-bottom: 2px solid var(--ifm-color-primary-darker);
-    padding: 4px 16px;
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    color: #ffffff;
+    width: 16rem;
+    height: 16rem;
 }
 
-.usefulLink svg {
-    display: inline-block;
+.card__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--ifm-color-emphasis-200);
+    border-radius: var(--ifm-global-radius);
+    fill: var(--ifm-color-emphasis-900);
+
+    width: 4rem;
+    height: 4rem;
 }
 
-.usefulLink:last-of-type {
-    border-bottom: none;
+.card__icon > svg, .card__icon > img {
+    width: 48px;
+    height: 48px;
 }
 
-.usefulLink a {
-    font-size: 1.2rem;
-    text-decoration: none;
-    color: #ffffff;
+.card__header {
+    margin-top: 1.5rem;
 }
 
-.usefulLink a:hover {
-    text-decoration: none;
-}
-
-@media screen and (max-width: 780px) {
-    .productContainer {
-        flex-basis: 100%;
-        max-width: 100%;
-    }
+.card__description {
+    text-align: center;
+    margin: 0;
+    font-size: 0.8rem;
 }

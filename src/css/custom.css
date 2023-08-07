@@ -60,7 +60,10 @@
     --ifm-navbar-color: #ffffff;
     --ifm-navbar-link-color: var(--ifm-navbar-color);
     --ifm-navbar-color-active: var(--ifm-navbar-color);
-    --ifm-menu-link-sublist-icon-filter: invert(100%) sepia(94%) saturate(17%) hue-rotate(223deg) brightness(104%) contrast(98%);
+
+    /* FIX SIDEBAR EXPAND/COLLAPSE ICONS ON LIGHT MODE */
+    --ifm-menu-link-sublist-icon-filter: none;
+    /*--ifm-menu-link-sublist-icon-filter: invert(100%) sepia(94%) saturate(17%) hue-rotate(223deg) brightness(104%) contrast(98%);*/
 
     /* NEWS */
     --ivertix-news-background-color: #fff;

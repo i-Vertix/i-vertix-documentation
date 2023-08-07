@@ -33,12 +33,12 @@ When setting the parameters, it is recommended to activate the "mixed" mode. Thi
 
 Configure Identity Provider information:
 
-- **Base URL**: defines the identity provider's base URL for OpenId Connect endpoints (mandatory).
-- **Authorization Endpoint**: defines the authorization endpoint, for example `/authorize` (mandatory).
-- **Token Endpoint**: defines the token endpoint, for example `/token` (mandatory).
-- **Client ID**: defines the Client ID (mandatory).
-- **Client Secret**: defines the Client secret (mandatory).
-- **Scopes**: defines the scopes of the identity provider, for example `openid`. Separate scopes by spaces.
+- **Base URL***: defines the identity provider's base URL for OpenId Connect endpoints (mandatory)
+- **Authorization Endpoint***: defines the authorization endpoint, for example `/authorize` (mandatory)
+- **Token Endpoint***: defines the token endpoint, for example `/token` (mandatory)
+- **Client ID***: defines the Client ID (mandatory)
+- **Client Secret***: defines the Client secret (mandatory)
+- **Scopes**: defines the scopes of the identity provider, for example `openid`. Separate scopes by spaces
 
 :::note
 

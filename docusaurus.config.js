@@ -36,45 +36,29 @@ const config = {
     customFields: {
         products: [
             {
-                id: 'log-management',
-                label: 'Log & Data Management',
-                description: 'Hi, this is a description text. I am very long',
-                icon: '/img/logo-log-management-1000.png',
-                Image: '/img/logo-log-management-1000.png',
-                to: '/log-management/intro',
-                color: 'ivertix-log-management',
-                links: []
-            },
-            {
                 id: 'monitoring',
                 label: 'IT Monitoring',
-                description: 'Hi, this is a description text. I am very long',
+                description: 'i-Vertix IT Monitoring enables an extensive oversight of the IT environment, offering an integrated monitoring with immediate error correction',
                 icon: '/img/logo-monitoring-1000.png',
                 Image: '/img/logo-monitoring-1000.png',
                 to: '/monitoring/intro',
-                color: 'ivertix-monitoring',
-                links: [
-                    {
-                        label: 'Monitoring Hosts',
-                        to: '/monitoring/monitoring-resources/monitoring-hosts/monitoring-host'
-                    },
-                    {
-                        label: 'Monitoring Services',
-                        to: '/monitoring/monitoring-resources/monitoring-services/monitoring-service'
-                    },
-                    {label: 'Discovery', to: '/monitoring/monitoring-resources/discovery/description'},
-                ]
             },
-            {
-                id: 'asset-management',
-                label: 'IT Asset Management',
-                description: 'Hi, this is a description text. I am very long',
-                icon: '/img/logo-asset-management-1000.png',
-                Image: '/img/logo-asset-management-1000.png',
-                to: '/asset-management/intro',
-                color: 'ivertix-asset-management',
-                links: []
-            }
+            // {
+            //     id: 'log-management',
+            //     label: 'Log & Data Management',
+            //     description: 'Hi, this is a description text. I am very long',
+            //     icon: '/img/logo-log-management-1000.png',
+            //     Image: '/img/logo-log-management-1000.png',
+            //     to: '/log-management/intro'
+            // },
+            // {
+            //     id: 'asset-management',
+            //     label: 'IT Asset Management',
+            //     description: 'Hi, this is a description text. I am very long',
+            //     icon: '/img/logo-asset-management-1000.png',
+            //     Image: '/img/logo-asset-management-1000.png',
+            //     to: '/asset-management/intro'
+            // },
         ]
     },
 
@@ -126,6 +110,12 @@ const config = {
     themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
+            docs: {
+                sidebar: {
+                    hideable: true,
+                    autoCollapseCategories: true
+                }
+            },
             algolia: {
                 // The application ID provided by Algolia
                 appId: '26QPCG4J0S',

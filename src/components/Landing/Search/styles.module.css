@@ -13,6 +13,7 @@
     border-radius: 32px;
     padding: 8px;
     gap: 8px;
+    color: var(--ifm-color-content-secondary);
 }
 
 .searchInput {
@@ -28,12 +29,12 @@
 }
 
 .searchInput::placeholder {
-    color: var(--ifm-font-color-base);
+    color: var(--ifm-color-content-secondary);
     opacity: 1;
 }
 
 .searchIcon {
-    color: var(--ifm-font-color-base);
+    color: var(--ifm-color-content-secondary);
 }
 
 @media screen and (max-width: 780px) {
