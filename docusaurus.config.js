@@ -120,7 +120,7 @@ const config = {
                 // The application ID provided by Algolia
                 appId: '26QPCG4J0S',
                 // Public API key: it is safe to commit it
-                apiKey: '692ebed921fd5689a257cf6ab242ba09',
+                apiKey: 'd0e8f15baedb811b3e2468e17c1f603e',
                 indexName: 'i-vertix-docs',
                 // Optional: see doc section below
                 contextualSearch: true,
