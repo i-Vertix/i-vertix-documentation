@@ -94,9 +94,9 @@ per your naming convention
 
 ![Export configuration 2](../../assets/configuring-smart-poller/poller-attach-13.png)
 
-:::info
+:::caution
 
-The following steps are mandatory
+The followins stepa are mandatory.
 
 :::
 

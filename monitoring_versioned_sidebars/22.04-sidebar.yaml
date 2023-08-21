@@ -7,16 +7,13 @@ sidebar:
         label: Standard VM's requirements
         items:
           - requirements
-          - central-requirements
-          - poller-requirements
           - network-ports
           - browser-requirements
-          - licensing
       - id: first-login
         label: First login
         items:
-          - plugin-store-configuration
           - configuring-central-poller
+          - plugin-store-configuration
           - plugin-update-installation
       - id: configuring-first-hosts-services
         label: Configuring first Hosts and Services

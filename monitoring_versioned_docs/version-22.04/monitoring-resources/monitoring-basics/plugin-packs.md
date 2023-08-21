@@ -28,15 +28,13 @@ fine-tuned later on).
 
 ## Prerequisites for i-Vertix Plugin Pack Manager
 
-### License
+### Accessing your Plugin Packs
 
-A [license](../../installation/setup-central-poller/license.md) is required to access the full Plugin Packs catalog. Contact the
+[Credentials](../../quick-start-guide/first-login/plugin-store-configuration.md) are required to access the full Plugin Packs catalog. 
 
-1) i-Vertix support e-mail: support@i-vertix.com
+Contact the i-Vertix support (support@i-vertix.com) to obtain your access.
 
-2) [i-Vertix Helpdesk](https://helpdesk.i-vertix.cloud)
-
-to get your license.
+---
 
 ### Connectors
 
