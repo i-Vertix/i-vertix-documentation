@@ -17,7 +17,7 @@
 }
 
 .searchInput {
-    min-width: 400px;
+    min-width: auto;
     border: none;
     font-size: 1.6rem;
     background: none;
@@ -41,5 +41,11 @@
     .productContainer {
         flex-basis: 100%;
         max-width: 100%;
+    }
+    .searchInput {
+        width: 100%;
+    }
+    .container {
+        padding: 16px;
     }
 }

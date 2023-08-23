@@ -80,3 +80,20 @@
     margin: 0;
     font-size: 0.8rem;
 }
+
+
+@media screen and (max-width: 420px) {
+    .card {
+        aspect-ratio: auto;
+    }
+    .card__section {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .cards {
+        grid-template-columns: repeat(1, minmax(0px, 1fr));
+    }
+    .card__description {
+        padding: 0 2rem;
+    }
+}

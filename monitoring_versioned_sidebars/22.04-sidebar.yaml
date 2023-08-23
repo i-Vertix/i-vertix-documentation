@@ -9,8 +9,8 @@ sidebar:
           - requirements
           - network-ports
           - browser-requirements
-      - id: first-login
-        label: First login
+      - id: how-to-configure-central-and-poller
+        label: How to configure Central and Poller
         items:
           - configuring-central-poller
           - plugin-store-configuration
