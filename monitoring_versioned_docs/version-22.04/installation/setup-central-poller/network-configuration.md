@@ -7,7 +7,7 @@ title: Network configuration
 
 :::caution
 
-Before you start, plese be carefull to meet the technical requirement (see [Technical Information](../before-you-start/technical-information.md))
+Before you start, please be careful to meet the technical requirement (see [Technical Information](../before-you-start/technical-information.md))
 
 :::
 
@@ -30,25 +30,19 @@ Confirm the settings with **OK**
 
 ---
 
-Get back to main menu NMTUI (on the lefthand side)
+Get back to main menu NMTUI (on the left-hand side)
 
-To activate the new settings, select **Activate a connection** from the NMTUI menu
-
-• Select the **NIC** (ens192 by default ), then
-
-• **Deactivate**
-
-• **Activate**
-
-Finally select **Back**
+1. To activate the new settings, select **Activate a connection** from the NMTUI menu
+2. Select the **NIC** (ens192 by default ), then
+3. **Deactivate**
+4. **Activate**
+5. Finally select **Back**
 
 ---
 
 Get back to the main NTUI menu
-
-• Select **Set a system hostname** to configure the system hostname then select **OK**
-
-• Select **Quit** to quit the **NMTUI** menu and get back to the **i-Vertix menu**
+1. Select **Set a system hostname** to configure the system hostname then select **OK**
+2. Select **Quit** to quit the **NMTUI** menu and get back to the **i-Vertix menu**
 
 ![NMTUI2](../../assets/setup-startup-central-poller/nmtui2.png)
 
