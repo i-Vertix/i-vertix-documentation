@@ -5,7 +5,7 @@ title: How to attach a Smart Poller to the Central Management
 
 # Smart Poller Configuration
 
-## **Poller configuration**
+## Poller configuration
 
 To attach a Smart Poller to a Central Management, please follow these instructions:
 
@@ -25,7 +25,7 @@ To attach a Smart Poller to a Central Management, please follow these instructio
 
 ---
 
-## **Broker configuration**
+## Broker configuration
 
 1. go to Configuration -> Pollers -> Broker configuration
 
@@ -47,7 +47,7 @@ To attach a Smart Poller to a Central Management, please follow these instructio
 
 ---
 
-## **Engine configuration**
+## Engine configuration
 
 1. go to Configuration -> Pollers -> Engine configuration
 
@@ -76,9 +76,9 @@ per your naming convention
 
 ---
 
-## **Pollers restart**
+## Pollers restart
 
-1. go to Configuration -> Pollers -> Pollers
+1. Go to Configuration -> Pollers -> Pollers
 
 ![Poller](../../assets/configuring-smart-poller/poller-attach-1.png)
 
@@ -94,9 +94,9 @@ per your naming convention
 
 ![Export configuration 2](../../assets/configuring-smart-poller/poller-attach-13.png)
 
-:::caution
+:::caution Mandatory
 
-The followins stepa are mandatory.
+The following steps are mandatory
 
 :::
 
@@ -112,7 +112,7 @@ The followins stepa are mandatory.
 
 :::info
 
-Central Manager performs such a synchronization every 4 hours.
+Central Manager performs such a synchronization every 4 hours
 
 :::
 
