@@ -88,19 +88,9 @@ const config = {
         [
             '@docusaurus/plugin-content-docs',
             {
-                id: 'asset-management',
-                path: 'asset-management',
-                routeBasePath: 'asset-management',
-                includeCurrentVersion: false
-                // ... other options
-            },
-        ],
-        [
-            '@docusaurus/plugin-content-docs',
-            {
-                id: 'log-management',
-                path: 'log-management',
-                routeBasePath: 'log-management',
+                id: 'plugin-packs',
+                path: 'plugin-packs',
+                routeBasePath: 'plugin-packs',
                 includeCurrentVersion: false
                 // ... other options
             },
@@ -158,6 +148,13 @@ const config = {
                                 id: "ivertix-monitoring",
                                 docsPluginId: "monitoring"
                             },
+                            // {
+                            //     label: "Monitoring Plugin Packs",
+                            //     description: "Collection of plugins to monitor your hardware and applications",
+                            //     icon: "/img/logo-monitoring-100.png",
+                            //     id: "ivertix-plugin-packs",
+                            //     docsPluginId: "plugin-packs"
+                            // },
                             // {
                             //     label: "Log & Data Management",
                             //     description: "Analyze logfiles and network traffic in real time",
@@ -221,14 +218,18 @@ const config = {
                                 label: 'Monitoring',
                                 to: '/monitoring/intro',
                             },
-                            {
-                                label: 'Asset Management',
-                                to: '/asset-management/intro',
-                            },
-                            {
-                                label: 'Log Management',
-                                to: '/log-management/intro',
-                            },
+                            // {
+                            //     label: 'Plugin Packs',
+                            //     to: '/plugin-packs/intro',
+                            // },
+                            // {
+                            //     label: 'Asset Management',
+                            //     to: '/asset-management/intro',
+                            // },
+                            // {
+                            //     label: 'Log Management',
+                            //     to: '/log-management/intro',
+                            // },
                         ],
                     },
                     {
