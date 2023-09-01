@@ -43,7 +43,10 @@ If you already have installed the i-Vertix Monitoring Central plugin pack you ca
 :::
 
 1. Head over to **Administration -> i-Vertix -> Plugin Store** using the left side-menu
-2. Search and install the plugin pack **i-Vertix3 Poller VM**
+2. Search and install the plugin pack
+```
+i-Vertix3 Poller VM
+```
 
 3. After the successful installation of the plugin pack you can head over to **Configuration -> Hosts -> Hosts**
 4. To add a new host click the blue button **Add** which is located between the top-side filters and the bottom list

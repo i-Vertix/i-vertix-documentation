@@ -15,16 +15,17 @@ We're excited to have you join us on this adventure of mastering the art of IT m
 
 **Before you start**:
 
-* [Elements of i-Vertix platform](/installation/before-you-start/platform.md)
-* [Requirements](/quick-start-guide/standard-vms-requirements/requirements.md)
-* [Architectures](/installation/before-you-start/architecture.md)
+* [Elements of i-Vertix platform](installation/before-you-start/platform.md)
+* [Requirements](quick-start-guide/standard-vms-requirements/requirements.md)
+* [Architectures](installation/before-you-start/architecture.md)
 
-**Licensing**:
+[//]: # (**Licensing**:)
 
-* [IT Monitoring - Editions](/quick-start-guide/standard-vms-requirements/licensing.md)
+[//]: # ()
+[//]: # (* [IT Monitoring - Editions]&#40;quick-start-guide/standard-vms-requirements/licensing.md&#41;)
 
 **Configuration**:
 
-* [Setup Central and Poller](/quick-start-guide/first-login/configuring-central-poller.md)
+* [Setup Central and Poller](quick-start-guide/how-to-configure-central-and-poller)
 
 
