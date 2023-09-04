@@ -109,6 +109,11 @@
     border-top-right-radius: 8px;
 }
 
+.newsItemActive > .newsImage {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
 .newsItem .newsContentContainer {
     display: flex;
     flex-direction: column;

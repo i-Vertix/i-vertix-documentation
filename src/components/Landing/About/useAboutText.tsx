@@ -2,30 +2,42 @@ import React, {useMemo, useState} from 'react';
 
 const text0Title = "Who we are";
 const text0 = <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent scelerisque nisl eu orci mattis molestie. Nam
-    hendrerit sagittis laoreet. Mauris faucibus nunc id dui consequat, vel pellentesque leo porta. Nulla eu elementum
-    leo, quis imperdiet ligula. Praesent sed lectus interdum, iaculis turpis ac, faucibus lacus. Proin vel placerat leo.
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras quis tristique
-    velit, eget varius ex. Morbi fermentum sapien dignissim, pharetra tortor at, laoreet arcu.
+    At i-Vertix, we are a team of dedicated professionals, IT enthusiasts, and problem-solvers who are passionate about
+    ensuring the heartbeat of your digital infrastructure never falters. With years of expertise in the field, we have
+    made it our purpose to help organizations thrive in the digital era.
 </p>;
 const text1Title = "What we do";
 const text1 = <p>
-    Nunc eu rutrum purus, eu accumsan mauris. Mauris at felis laoreet, porta est ut, interdum sapien. Vestibulum vitae
-    dui et nulla bibendum feugiat. Etiam justo tellus, lacinia a mattis ac, euismod sit amet leo. Donec vitae neque
-    volutpat, consectetur magna accumsan, pellentesque mi. Maecenas in nibh nibh. Nulla commodo enim egestas efficitur
-    iaculis. Vestibulum maximus, orci varius volutpat facilisis, est nisl accumsan nisl, at condimentum nunc lectus nec
-    libero. Vivamus ante est, fringilla non odio ut, interdum ultricies sapien. Donec sit amet gravida tellus, a
-    venenatis ligula.
+    We specialize in crafting cutting-edge IT Network Management solutions that provide real-time insights, improve
+    efficiency, and enhance the overall IT experience. Whether you're a small business looking to optimize your
+    operations or a global enterprise striving for digital excellence, i-Vertix is your trusted partner for IT
+    environments.
 </p>;
 const text2Title = "Why choose us";
-const text2 = <p>
-    Cras fringilla nibh eget diam congue, ac ultricies ex tempus. Proin ullamcorper, enim ac pellentesque commodo,
-    tortor enim auctor purus, vitae hendrerit purus metus et leo. In pellentesque ex eu felis varius, sit amet
-    ullamcorper est viverra. Suspendisse placerat eros vitae massa porttitor venenatis. Vivamus vitae consequat ipsum.
-    Proin non pretium eros. In vehicula molestie hendrerit. Duis ac arcu pharetra, efficitur eros sed, elementum arcu.
-    Nam vestibulum ornare diam vitae aliquam. Phasellus neque purus, viverra non euismod sed, laoreet eget sem. Cras et
-    nunc facilisis, consectetur purus sit amet, mollis magna.
-</p>;
+const text2 = <>
+    <p>
+        <strong>Innovation:</strong> We are at the forefront of IT Network Management technology, constantly innovating
+        to meet the evolving
+        needs of your business.
+    </p>
+    <p>
+        <strong>Expertise:</strong> Our team of seasoned professionals brings unparalleled expertise to deliver tailored
+        solutions that
+        match your unique requirements.
+    </p>
+    <p>
+        <strong>Scalability:</strong> Our solutions are designed to grow with your business, ensuring you're always
+        prepared for what's next.
+    </p>
+    <p>
+        <strong>Reliability:</strong> Count on i-Vertix to provide reliable, real-time monitoring that keeps your
+        systems running smoothly.
+    </p>
+    <p>
+        <strong>Customer Focus:</strong> Your success is our priority. We're committed to providing exceptional
+        support and building lasting partnerships.
+    </p>
+</>;
 
 const useAboutText = () => {
 

@@ -18,49 +18,39 @@ const useNewsCarousel = () => {
 
     const news = useMemo((): News[] => [
         {
-            title: "OS Discovery Released",
+            title: "22.10 on the way",
             image: "/img/landing/news/news_1.png",
             text: <p>
-                In June we released our brand new OS-Discovery functionality for our monitoring solution.
-                Discovery you will be able to monitor your virtualized servers in seconds!
+                We are finalizing our latest work to release a new major update of the i-Vertix monitoring.
+                You can expect new features, new functionalities and improvements, always suited for your needs.
+                During the next few months we will get in touch with you and roll-out the update on your systems.
+                As always: if you have any questions or find something missing, something broken or something which
+                could be improved, feel
+                free to contact us via <a href={"mailto:support@i-vertix.com"}>Email</a>.
             </p>,
-            buttonLabel: "Take me to the docs",
-            buttonLink: "/monitoring/monitoring-resources/discovery/vmware-discovery",
         },
         {
-            title: "New Monitoring version is on the way",
-            image: "/img/alerts/os-discovery.png",
+            title: "Monitoring - Integrated Documentation",
+            image: "/img/landing/news/news_2.png",
             text: <p>
-                At the moment we are finalizing and testing our recent work.<br/>
-                By the end of june we will release a brand new monitoring version!<br/>
-                Don't miss any upcoming features and improvements
-                by subscribing to our Newsletter!<br/>
-                <strong>Stay tuned boys!</strong>
-            </p>,
-            buttonLabel: "Subscribe",
-            buttonLink: "https://i-vertix.com",
+                With our new monitoring version we introduced the functionality to access the documentation' search
+                directly from the monitoring web interface!<br/>
+                On the left screen-corner you will find the i-Vertix icon which opens up a list of various helpful
+                links, including the documentation search.
+            </p>
         },
         {
-            title: "New docs are in the making",
-            image: "/img/alerts/os-discovery.png",
+            title: "Stay up to date",
+            image: "/img/landing/news/news_3.png",
             text: <p>
-                As you maybe have already noticed, Log & Data Management and Asset Management docs aren't yet available
-                on our documentation.<br/>
-                We are hardly working to provide some fresh, useful docs for you as soon as possible.<br/>
-                In the meantime, <strong>live long and prosper</strong>.
+                Don't want to miss any new features or news from i-Vertix?
+                We got you covered! Simply subscribe to our newsletter which we publish every month to not miss a thing.
+                If you'd like to further stay in touch with us you can follow us on <a
+                href={"https://www.linkedin.com/company/i-vertix/"} target={"_blank"}
+                rel={"noopener"}>LinkedIn</a>!
             </p>,
             buttonLabel: "Subscribe",
-            buttonLink: "https://i-vertix.com",
-        },
-        {
-            title: "I am news number 4",
-            image: "/img/alerts/os-discovery.png",
-            text: <p>
-                Well, I shouldn't be directly visible, I'm just here to test if everything works accordingly to plan.
-                Maybe I messed something up, maybe it works as it should. Who knows.. Who.. knows..
-            </p>,
-            buttonLabel: "Subscribe",
-            buttonLink: "https://i-vertix.com",
+            buttonLink: "https://eepurl.com/gW63E1",
         },
     ], []);
 
