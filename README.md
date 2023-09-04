@@ -1,5 +1,11 @@
 # i-Vertix Docs
 
+## Local Build
+
+```bash
+npm run start
+```
+
 ## Menu Sidebar
 
 ### Define Sidebar
@@ -46,4 +52,6 @@ Docker container with following configuration files:
 To start the crawler (docker container) you can use following command inside the directory where also the above 2 files
 are located:
 
-`docker run -it --env-file=.env -e "CONFIG=$(cat config.json | jq -r tostring)" algolia/docsearch-scraper`
+```bash
+docker run -it --env-file=.env -e "CONFIG=$(cat config.json | jq -r tostring)" algolia/docsearch-scraper
+```
