@@ -254,11 +254,11 @@ const config = {
                             },
                             {
                                 label: 'Credits',
-                                to: 'https://i-vertix.com',
+                                to: 'https://i-vertix.com/en/credits/',
                             },
                             {
                                 label: 'Legal information',
-                                to: 'https://i-vertix.com',
+                                to: 'https://i-vertix.com/en/privacy-conditions/',
                             }
                         ],
                     },
