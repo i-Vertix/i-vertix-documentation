@@ -59,3 +59,6 @@ are located:
 ```bash
 docker run -it --env-file=.env -e "CONFIG=$(cat config.json | jq -r tostring)" algolia/docsearch-scraper
 ```
+
+> **DocSearch Documentation**
+> [https://docsearch.algolia.com/docs/legacy/run-your-own](https://docsearch.algolia.com/docs/legacy/run-your-own)
