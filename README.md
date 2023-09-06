@@ -1,5 +1,9 @@
 # i-Vertix Docs
 
+## Develop Deploy Status
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/04f466d1-1cb3-47a6-a9f9-8aa60a01545d/deploy-status)](https://app.netlify.com/sites/i-vertix-docs-dev/deploys)
+
 ## Local Build
 
 ```bash
