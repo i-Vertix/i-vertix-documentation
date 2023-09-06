@@ -24,6 +24,6 @@ We're excited to have you join us on this adventure of mastering the art of IT m
 
 **Configuration**:
 
-* [Setup Central and Poller](quick-start-guide/how-to-configure-central-and-poller)
+* [Setup Central and Poller](quick-start-guide/how-to-configure-central-and-poller/configuring-central-poller.md)
 
 
