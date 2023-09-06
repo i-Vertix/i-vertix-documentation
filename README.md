@@ -34,15 +34,15 @@ The folder structure of the documentation instance (for example monitoring) is r
 
 To build the different sidebars use following commands:
 
-#### Monitoring:
+#### Monitoring
 
-**22.04**
+##### 22.04
 
 ```bash
 npm run build-sidebar-monitoring -- --version=22.04
 ```
 
-**22.10**
+##### 22.10
 
 ```bash
 npm run build-sidebar-monitoring -- --version=22.10
@@ -67,5 +67,5 @@ docker run -it --env-file=.env -e "CONFIG=$(cat config.json | jq -r tostring)" a
 ```
 
 > **DocSearch Documentation**
-> 
+>
 > [https://docsearch.algolia.com/docs/legacy/run-your-own](https://docsearch.algolia.com/docs/legacy/run-your-own)
