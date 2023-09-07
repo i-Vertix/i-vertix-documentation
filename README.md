@@ -56,7 +56,7 @@ Algolia search is already enabled by the docusaurus.config.js
 
 ## Algolia Crawler
 
-Docker container with following configuration files:
+The algolia crawler runs inside a docker container with following configuration files:
 
 - docsearch.config.json
 - .env (template available, get api keys from algolia dashboard)
