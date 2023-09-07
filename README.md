@@ -26,7 +26,7 @@ The folder structure of the documentation instance (for example monitoring) is r
 `id` as the folder name and the `label` as the displayed name in the sidebar for the folder.
 `items` are the respective markdown files present in the folder (use the file name without file extension as value).
 
-**Monitoring**:
+#### Monitoring Definition
 
 - [monitoring_versioned_sidebars/22.04-sidebar.yaml](./monitoring_versioned_sidebars/22.04-sidebar.yaml)
 
@@ -34,7 +34,7 @@ The folder structure of the documentation instance (for example monitoring) is r
 
 To build the different sidebars use following commands:
 
-#### Monitoring
+#### Build Monitoring Sidebar
 
 ##### 22.04
 
