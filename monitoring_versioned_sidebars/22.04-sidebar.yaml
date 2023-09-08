@@ -15,6 +15,11 @@ sidebar:
           - configuring-central-poller
           - plugin-store-configuration
           - plugin-update-installation
+      - id: how-to-guides
+        label: How to guides
+        items:
+          - introduction
+          - troubleshooting-plugins
       - id: configuring-first-hosts-services
         label: Configuring first Hosts and Services
         items:
