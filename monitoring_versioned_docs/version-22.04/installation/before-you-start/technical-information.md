@@ -1,6 +1,6 @@
 ---
 id: technical-information
-title: Tables of network flows
+title: Table of network flows
 ---
 
 ## Network flows to integrate monitoring platform to IT
@@ -24,7 +24,6 @@ title: Tables of network flows
 | Poller | SMTP server | SMTP       | TCP 25             | Notification via email                         |
 | Poller | HTTP     | HTTP, HTTPS    | TCP 80, 443 | System uptades, Push Notification, SSL VPN * |
 
-
 :::note
 
 If you are using a **SSL VPN** connection between Smart Poller and Central Manager you don’t need to configure any specific firewall settings.
@@ -32,7 +31,6 @@ If you are using a **SSL VPN** connection between Smart Poller and Central Manag
 :::
 
 ### Tables of platform flows (Central/Poller)
-
 
 | From           | To             | Protocol     | Port         | Application                                                        |
 |----------------|----------------|--------------|--------------|--------------------------------------------------------------------|
