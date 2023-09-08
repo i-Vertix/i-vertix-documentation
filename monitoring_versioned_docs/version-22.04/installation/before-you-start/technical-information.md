@@ -1,6 +1,6 @@
 ---
 id: technical-information
-title: Tables of network flows
+title: Table of network flows
 ---
 
 ## Network flows to integrate monitoring platform to IT
