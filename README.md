@@ -47,7 +47,7 @@ npm run build-sidebar-monitoring -- --version=22.04
 (coming soon)
 
 ```bash
-npm run build-sidebar-monitoring -- --version=22.10
+npm run build-sidebar-monitoring -- --version="22.10"
 ```
 
 ## Algolia Search
