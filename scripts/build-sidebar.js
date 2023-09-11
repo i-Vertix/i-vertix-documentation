@@ -14,12 +14,16 @@ if (!arguments.docs) {
 
 const validDocs = ["monitoring", "log-management", "asset-management"];
 const docs = arguments.docs;
-const version = arguments.version;
+let version = arguments.version;
 
 if (!validDocs.includes(docs)) {
     console.error("parameter --docs has an invalid value (available values are: " + validDocs.join(', ') + ")");
     process.exit(1);
     return;
+}
+
+if (docs === "monitoring") {
+    version = version.toFixed(2);
 }
 
 // fs.writeFileSync(path.resolve(`${__dirname}/../alert.js`), fileContent, {enconding: 'utf8'});
