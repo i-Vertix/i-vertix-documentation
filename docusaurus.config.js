@@ -81,8 +81,19 @@ const config = {
                 id: 'monitoring',
                 path: 'monitoring',
                 routeBasePath: 'monitoring',
-                includeCurrentVersion: false
-                // ... other options
+                includeCurrentVersion: false,
+                versions: {
+                    "22.10": {
+                        label: "✨ 22.10",
+                        banner: "none",
+                        badge: true
+                    },
+                    "22.04": {
+                        label: "22.04",
+                        banner: "none",
+                        badge: true
+                    }
+                }
             },
         ],
         [
@@ -91,7 +102,7 @@ const config = {
                 id: 'plugin-packs',
                 path: 'plugin-packs',
                 routeBasePath: 'plugin-packs',
-                includeCurrentVersion: false
+                sidebarPath: require.resolve('./plugin-packs/sidebar.js'),
                 // ... other options
             },
         ],
