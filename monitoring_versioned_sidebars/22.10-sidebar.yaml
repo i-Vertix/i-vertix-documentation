@@ -188,6 +188,7 @@ sidebar:
           - authentication-Authentication
           - openid-OPENID
           - websso-WEBSSO
+          - ldap
       - log-Log
       - sessions-Sessions
       - id: platform-status

@@ -5,7 +5,7 @@ title: Configuring connection via OpenId Connect
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-i-Vertix is compatible with OAuth 2.0/OpenId Connect authentication.
+i-Vertix IT Monitoring is compatible with OAuth 2.0/OpenId Connect authentication.
 
 Usage of Identity Providers (IdP) is available, such as Microsoft Azure AD, Okta, Keycloak, LemonLDAP::NG or other IdP
 which are compatible with the Authorization Code Flow.
@@ -20,34 +20,23 @@ Enable OpenID Connect authentication:
 
 - **Enable OpenId Connect authentication**: enables or disables OpenId Connect authentication.
 - **Authentication mode**: indicates if the authentication should be done using only OpenId Connect or using local
-  authentication as well (**Mixed**). In mixed mode, users created manually in i-Vertix (and not identified via Open ID) will also be able to log in.
+  authentication as well (**Mixed**). In mixed mode, users created manually in i-Vertix IT Monitoring (and not identified via Open ID) will also be able to log in.
 
-:::note
-
-When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to the local `admin` account in the event of a misconfiguration.
-
-
-:::
+> When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to
+> the local `admin` account in the event of a misconfiguration.
 
 ### Step 2: Configure Identity Provider access credentials
 
 Configure Identity Provider information:
 
-- **Base URL***: defines the identity provider's base URL for OpenId Connect endpoints (mandatory)
-- **Authorization Endpoint***: defines the authorization endpoint, for example `/authorize` (mandatory)
-- **Token Endpoint***: defines the token endpoint, for example `/token` (mandatory)
-- **Client ID***: defines the Client ID (mandatory)
-- **Client Secret***: defines the Client secret (mandatory)
-- **Scopes**: defines the scopes of the identity provider, for example `openid`. Separate scopes by spaces
-
-:::note
-
-  Depending on the identity provider, it is necessary to enter several scopes in order to retrieve the claim which will identify users.
-  
-  This is indicated in the provider's configuration documentation.
-
-:::
-
+- **Base URL**: defines the identity provider's base URL for OpenId Connect endpoints (mandatory).
+- **Authorization Endpoint**: defines the authorization endpoint, for example `/authorize` (mandatory).
+- **Token Endpoint**: defines the token endpoint, for example `/token` (mandatory).
+- **Client ID**: defines the Client ID (mandatory).
+- **Client Secret**: defines the Client secret (mandatory).
+- **Scopes**: defines the scopes of the identity provider, for example `openid`. Separate scopes by spaces.
+  > Depending on the identity provider, it is necessary to enter several scopes in order to retrieve the claim which will
+  > identify users. This is indicated in the provider's configuration documentation.
 - **Login attribute path**: defines which of the variables returned by **Introspection Token Endpoint** or **User Information Endpoint**
   must be used to authenticate users. For example `sub` or `email`.
 - **End Session Endpoint**: defines the logout endpoint, for example `/logout`.
@@ -62,20 +51,17 @@ You can also configure:
 - **Use Basic Auth for Token Endpoint Authentication**: the `Authorization: Basic` method will be used. Enable this option if your identity provider requires it.
 - **Disable verify peer**: allows you to disable SSL peer validation. The identity provider's certificate will not be checked: use this option for test purposes only.
 
-:::note
+> You can define a full URL for the endpoints in case the base of the URL is different from the others.
 
-You can define a full URL for the endpoints in case the base of the URL is different from the others.
-
-You can enable **Authentication debug** through the **Administration > Parameters > Debug** menu to understand authentication failures and improve your setup.
-
-:::
+> You can enable **Authentication debug** through the **Administration > Parameters > Debug** menu to understand
+> authentication failures and improve your setup.
 
 ### Step 3: Configure authentication conditions
 
-* You can whitelist or blacklist IP addresses. If you leave the first two fields empty, all IP addresses will be authorized to access the i-Vertix interface.
+* You can whitelist or blacklist IP addresses. If you leave the first two fields empty, all IP addresses will be authorized to access the i-Vertix IT Monitoring interface.
 
-   - **Trusted client addresses**: If you enter IP addresses in this field, only these IP addresses will be allowed to access the i-Vertix interface. All other IP addresses will be blocked. IP addresses must be separated by commas.
-   - **Blacklist client addresses**: These IP addresses will be blocked. All other IP addresses will be allowed to access the i-Vertix interface.
+   - **Trusted client addresses**: If you enter IP addresses in this field, only these IP addresses will be allowed to access the i-Vertix IT Monitoring interface. All other IP addresses will be blocked. IP addresses must be separated by commas.
+   - **Blacklist client addresses**: These IP addresses will be blocked. All other IP addresses will be allowed to access the i-Vertix IT Monitoring interface.
 
 * You can also define conditions according to which users will be allowed to log in or not, based on the data received by a particular endpoint.
    - Activate **Enable conditions on identity provider**.
@@ -98,18 +84,14 @@ You can enable **Authentication debug** through the **Administration > Parameter
    }
    ```
 
-:::caution
-
-Currently, only character string values can be used.
-
-:::
+   > Currently, only character string values can be used.
 
 ### Step 4: Manage user creation
 
 <Tabs groupId="sync">
 <TabItem value="Users automatic management" label="Automatic management">
 
-If you turn on **Enable auto import**, users that log in to i-Vertix for the first time will be created in the i-Vertix configuration. (Turning the option on does not import automatically all users in your infrastructure.)
+If you turn on **Enable auto import**, users that log in to i-Vertix IT Monitoring for the first time will be created in the i-Vertix IT Monitoring configuration. (Turning the option on does not import automatically all users in your infrastructure.)
 
 - **Enable auto import**: enables or disables automatic users import.  If auto import is disabled, you will have to [create each user manually](../../managing-users-contacts/create-users-manually.md) before they can log in.
 - **Contact template**: select a [contact template](../../managing-users-contacts/contact-templates.md) that will be applied to newly imported users.
@@ -122,7 +104,7 @@ If you turn on **Enable auto import**, users that log in to i-Vertix for the fir
 </TabItem>
 <TabItem value="Users manual management" label="Manual management">
 
-On page **Configuration > Users > Contacts/Users**, [create the users](../../managing-users-contacts/contacts-users.md) that will log on to i-Vertix using OpenID.
+On page **Configuration > Users > Contacts/Users**, [create the users](../../managing-users-contacts/contacts-users.md) that will log on to i-Vertix IT Monitoring using OpenID.
 
 </TabItem>
 </Tabs>
@@ -132,7 +114,7 @@ On page **Configuration > Users > Contacts/Users**, [create the users](../../man
 <Tabs groupId="sync">
 <TabItem value="Role automatic management" label="Automatic management">
 
-If you turn on **Enable automatic management**, users that log in to i-Vertix will be automatically [granted rights](../../managing-users-contacts/acl.md), as they will be linked to [access groups](../../managing-users-contacts/acl.md#creating-an-access-group) according to the rules you have defined.
+If you turn on **Enable automatic management**, users that log in to i-Vertix IT Monitoring will be automatically [granted rights](../../managing-users-contacts/acl.md), as they will be linked to [access groups](../../managing-users-contacts/acl.md#creating-an-access-group) according to the rules you have defined.
 
 - Define which attribute from which endpoint will be used to retrieve values for enforcing relationships with access groups.
 - **Apply only first role**: If several roles are found for a specific user in the identity provider's information, then only the first role will be applied. If the option is turned off, all roles will be applied.
@@ -140,7 +122,7 @@ If you turn on **Enable automatic management**, users that log in to i-Vertix wi
 
 For example, the **Introspection endpoint** gives you the following response and **Apply only first role** is enabled. The **Roles attribute path** will
 be **realm_access.roles** and **Define the relation between roles and ACL access groups** will establish a relationship
-between the value **centreon-editor** and a defined access group in i-Vertix:
+between the value **centreon-editor** and a defined access group in i-Vertix IT Monitoring:
 
 ```json
 {
@@ -152,11 +134,8 @@ between the value **centreon-editor** and a defined access group in i-Vertix:
 }
 ```
 
-::note
-
-Each time the user logs in, authorization management is reinitialized to take into account any new information from the identity provider.
-
-:::
+> Each time the user logs in, authorization management is reinitialized to take into account any new information from the
+> identity provider.
 
 </TabItem>
 <TabItem value="Role manual management" label="Manual management">
@@ -171,14 +150,14 @@ If you turn off **Enable automatic management**, you have to [grant users rights
 <Tabs groupId="sync">
 <TabItem value="Groups automatic management" label="Automatic management">
 
-If you turn on **Enable automatic management**, users that log in to i-Vertix will be attached to the [contact groups](../../managing-users-contacts/contact-groups.md#contact-groups) you have defined.
+If you turn on **Enable automatic management**, users that log in to i-Vertix IT Monitoring will be attached to the [contact groups](../../managing-users-contacts/contact-groups.md#contact-groups) you have defined.
 
 - Define which attribute from which endpoint will be used to retrieve values to create relationships with access groups.
 - Match the attributes retrieved from the identity provider with the contact groups you want the user to belong to.
 
 For example, if the **Introspection endpoint** gives you the following response, the **Groups attribute path** will
 be **groups** and **Define the relation between roles and contact groups** will define a relationship
-between the value **Windows** and a defined contact group in i-Vertix, then between **Linux** and another contact group, etc:
+between the value **Windows** and a defined contact group in i-Vertix IT Monitoring, then between **Linux** and another contact group, etc:
 
 ```json
 {
@@ -188,11 +167,7 @@ between the value **Windows** and a defined contact group in i-Vertix, then betw
 }
 ```
 
-:::note
-
-Each time the user logs in, groups management is reinitialized to take into account any new information from the identity provider.
-
-:::
+> Each time the user logs in, groups management is reinitialized to take into account any new information from the identity provider.
 
 </TabItem>
 <TabItem value="Groups manual management" label="Manual management">
@@ -204,8 +179,8 @@ If you turn off **Enable automatic management**, you have to manage manually rel
 
 ### Step 7: Configure your Identity Provider (IdP)
 
-Configure your IdP to add the i-Vertix application to use the OpenID Connect protocol to authenticate your users,
-and to authorize the following `redirect URI` to forward your connected users to i-Vertix:
+Configure your IdP to add the i-Vertix IT Monitoring application to use the OpenID Connect protocol to authenticate your users,
+and to authorize the following `redirect URI` to forward your connected users to i-Vertix IT Monitoring:
 
 ```shell
 {protocol}://{server}:{port}/centreon/authentication/providers/configurations/openid
@@ -238,12 +213,7 @@ Here is an example configuration for Microsoft Azure Active Directory:
 | Client ID                    | ${clientId}                                               |
 | Client Secret                | ${clientSecret}                                           |
 
-
-:::info
-
-Please replace `${tenantId}`, `${clientId}` and `${clientSecret}` with your own values.
-
-:::
+> Please replace `${tenantId}`, `${clientId}` and `${clientSecret}` with your own values.
 
 </TabItem>
 <TabItem value="Okta" label="Okta">
@@ -263,13 +233,7 @@ Here is an example configuration for Okta:
 | Client ID                    | ${clientId}                              |
 | Client Secret                | ${clientSecret}                          |
 
-
-:::info
-
-Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
-
-
-:::
+> Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
 
 </TabItem>
 <TabItem value="Keycloak" label="Keycloak">
@@ -289,13 +253,7 @@ Here is an example configuration for Keycloak:
 | Client ID                    | ${clientId}                                                             |
 | Client Secret                | ${clientSecret}                                                         |
 
-
-:::info
-
-Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
-
-
-:::
+> Please replace `${theIdPdomain}`, `${clientId}` and `${clientSecret}` with your own values.
 
 </TabItem>
 <TabItem value="LemonLDAP::NG" label="LemonLDAP::NG">
@@ -315,12 +273,7 @@ Here is an example configuration for LemonLDAP::NG:
 | Client ID                    | ${clientId}                              |
 | Client Secret                | ${clientSecret}                          |
 
-
-:::info
-Please replace `auth.example.com`, `${clientId}` and `${clientSecret}` with your own values.
-
-
-:::
+> Please replace `auth.example.com`, `${clientId}` and `${clientSecret}` with your own values.
 
 </TabItem>
 <TabItem value="Others" label="Others">
@@ -365,7 +318,7 @@ Most of the service providers have one URL presenting the configuration paramete
 }
 ```
 
-Retrieve the following parameters to configure your i-Vertix:
+Retrieve the following parameters to configure your i-Vertix IT Monitoring:
 
 - issuer (Base Url)
 - authorization_endpoint

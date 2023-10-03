@@ -4,15 +4,10 @@ title: Configuring a Web SSO connection
 ---
 
 Web SSO authentication relies on the Apache web server. It is Apache which, depending on its configuration, is
-responsible for authenticating the user before allowing access to the i-Vertix web interface.
+responsible for authenticating the user before allowing access to the i-Vertix IT Monitoring web interface.
 Many Apache modules allow authentication via OIDC, SAMLv2, TLS, Kerberos, etc. protocols.
 
-
-:::caution
-
-Users must be present in the i-Vertix configuration to access the interface.
-
-:::
+> Users must be present in the i-Vertix IT Monitoring configuration to access the interface.
 
 ## Configure Web SSO authentication
 
@@ -28,11 +23,8 @@ Enable authentication:
 - **Authentication mode**: indicates if the authentication should be done using only Web SSO or using local
   authentication as well (**Mixed**).
 
-:::caution
-
-When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to the local `admin` account in the event of a misconfiguration.
-
-:::
+> When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to
+> the local `admin` account in the event of a misconfiguration.
 
 ### Step 2: Configure your identity provider's access credentials
 
@@ -47,15 +39,15 @@ Configure Identity Provider information:
 
 ### Step 3: Configure client addresses
 
-If you leave both fields blank, all IP adresses will be allowed to access the i-Vertix interface.
+If you leave both fields blank, all IP adresses will be allowed to access the i-Vertix IT Monitoring interface.
 
-- **Trusted client addresses**: If you enter IP addresses in this field, only these IP addresses will be allowed to access the i-Vertix interface. All other IP addresses will be blocked. IP addresses must be separated by commas.
-- **Blacklist client addresses**: These IP adresses will be blocked. All other IP addresses will be allowed to access the i-Vertix interface.
+- **Trusted client addresses**: If you enter IP addresses in this field, only these IP addresses will be allowed to access the i-Vertix IT Monitoring interface. All other IP addresses will be blocked. IP addresses must be separated by commas.
+- **Blacklist client addresses**: These IP adresses will be blocked. All other IP addresses will be allowed to access the i-Vertix IT Monitoring interface.
 
 ### Step 4: Configure the Apache web server
 
 You must configure the Apache module allowing authentication with the identity provider.
-Once this configuration is done, you must modify the i-Vertix configuration for Apache in order to allow access only
+Once this configuration is done, you must modify the i-Vertix IT Monitoring configuration for Apache in order to allow access only
 to authenticated users.
 
 1. Edit **/etc/httpd/conf.d/10-centreon.conf** and search for the following block:
@@ -89,12 +81,7 @@ to authenticated users.
       </Location>
   ```
 
-
-:::note
-
-In this example, the Apache module used was **mod_auth_openidc**. This is why authentication is **openid-connect**.
-
-:::
+  > In this example, the Apache module used was **mod_auth_openidc**. This is why authentication is **openid-connect**.
 
 3. Validate the Apache configuration using:
 
@@ -116,17 +103,12 @@ In this example, the Apache module used was **mod_auth_openidc**. This is why au
 
 ### Step 5: Configure your Identity Provider (IdP)
 
-Configure your IdP to add the i-Vertix application to use your protocol to authenticate your users,
-And to authorize the following `redirect URI` to forward your connecter users to i-Vertix:
+Configure your IdP to add the i-Vertix IT Monitoring application to use your protocol to authenticate your users,
+And to authorize the following `redirect URI` to forward your connecter users to i-Vertix IT Monitoring:
 
 ```shell
 {protocol}://{server}:{port}/centreon/websso
 ```
 
-:::info
-
-Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix server.
-
-For example: `https://i-vertix.domain.net/centreon/centreon/websso`
-
-:::
+> Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix IT Monitoring server.
+> For example: `https://centreon.domain.net/centreon/centreon/websso`
