@@ -122,13 +122,13 @@ If you turn on **Enable automatic management**, users that log in to i-Vertix IT
 
 For example, the **Introspection endpoint** gives you the following response and **Apply only first role** is enabled. The **Roles attribute path** will
 be **realm_access.roles** and **Define the relation between roles and ACL access groups** will establish a relationship
-between the value **centreon-editor** and a defined access group in i-Vertix IT Monitoring:
+between the value **ivertix-editor** and a defined access group in i-Vertix IT Monitoring:
 
 ```json
 {
 	...
 	"realm_access": {
-		"roles": ["centreon-editor", "centreon-admin", "user"]
+		"roles": ["ivertix-editor", "ivertix-admin", "ivertix-user"]
 	},
 	...
 }
