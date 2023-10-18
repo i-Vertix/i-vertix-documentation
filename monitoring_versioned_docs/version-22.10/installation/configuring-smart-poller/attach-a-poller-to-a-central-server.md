@@ -119,7 +119,6 @@ Central Manager performs such a synchronization every 4 hours
 
 8. Final check, select: Configuration -> Pollers -> Pollers
 
-![Configuration](../../assets/configuring-smart-poller/poller-attach-13.png)
 
 Check the configuration is like the one shown
 in the picture.
