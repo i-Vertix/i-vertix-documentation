@@ -119,21 +119,19 @@ The first task to be completed must be the [network configuration](network-confi
 
 Check that **DNS** is working
 
-Type **ping www.google.com** and verify that the output returns Google IP Address, for example:
+Type **nslookup www.google.com** and verify that the output returns Google IP Address, for example:
 
 ```
-ping www.google.com
-PING www.google.com (142.250.180.164) 56(84) bytes of data.
-64 bytes from mil04s44-in-f4.1e100.net (142.250.180.164): icmp_seq=1 ttl=117 time=5.76 ms
-64 bytes from mil04s44-in-f4.1e100.net (142.250.180.164): icmp_seq=2 ttl=117 time=6.11 ms
-64 bytes from mil04s44-in-f4.1e100.net (142.250.180.164): icmp_seq=3 ttl=117 time=5.99 ms
-64 bytes from mil04s44-in-f4.1e100.net (142.250.180.164): icmp_seq=4 ttl=117 time=5.87
+nslookup www.google.com
+Server:         192.168.25.2
+Address:        192.168.25.2#53
+
+Non-authoritative answer:
+Name:   www.google.com
+Address: 142.251.209.4
+Name:   www.google.com
+Address: 2a00:1450:4002:402::2004
 ```
-
-
-Check that Internet access is available (http and https).
-
-Type **cd /tmp** then **wget www.google.it**, type **ll** to make sure that the file **index.html** was created.
 
 :::
 
