@@ -8,7 +8,7 @@ title: Vault
 Vault is a function of i-Vertix IT Monitoring that acts as an internal password safe.
 
 
-This function amalgamates credentials that will be used for the following features:
+The i-Vertix Vault will be used by the following features:
 
 - NEDI Discovery
 - Network Discovery
@@ -19,8 +19,8 @@ For example:
 
 ![vault](../../version-22.10/assets/vault/vault.gif)
 
-In the i-Vertix 22.10 version, all credentials are merged into vault (shared).
+In the i-Vertix 22.10 version, all credentials are merged into i-Vertix Vault (shared).
 
-When new credentials are added, they will, natively, be added to the vault to be recalled when needed.
+As new credentials are added, they will be added to the repository for use when needed.
 
 The functionality is subject to ACLs
