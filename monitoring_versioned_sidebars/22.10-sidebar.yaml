@@ -164,6 +164,10 @@ sidebar:
       - prerequisites-works
       - managing-ncb
       - visualize-ncb
+  - id: i-vertix-vault
+    label: i-Vertix Vault
+    items:
+     - vault
   - id: administration
     label: Administration
     items:
