@@ -5,7 +5,8 @@ title: Data
 
 ### Graphs rebuild
 
-When, for example after a database restore, you need to retrieve performance and graph data, go to the **Administration -> Parameters -> Data** menu.
+When you need to restore a RRD graphs because it's maybe corrupt or you have done a database restore go to
+Administration -> Parameters -> Data
 
 ![image](../../assets/administration/backup/data-menu.png)
 
