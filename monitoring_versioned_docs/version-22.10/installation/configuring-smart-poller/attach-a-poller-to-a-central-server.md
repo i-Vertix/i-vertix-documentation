@@ -60,7 +60,7 @@ per your naming convention
 
 ![Rename](../../assets/configuring-smart-poller/poller-attach-7.png)
 
-4. Go to **Data** tab and click on **+Add a new entry**
+4. Go to **Data** tab
 
 ![Add data entry](../../assets/configuring-smart-poller/poller-attach-8.png)
 
@@ -70,9 +70,9 @@ per your naming convention
 
 And write the first path on the first directive and the second on the following one
 
-    1 - */usr/lib64/centreon-engine/externalcmd.so*
+    1 - /usr/lib64/centreon-engine/externalcmd.so
 
-    2 - */usr/lib64/nagios/cbmod.so /etc/centreon-broker/poller-module.json*
+    2 - /usr/lib64/nagios/cbmod.so /etc/centreon-broker/poller-module.json
 
 The result should be like the image below
 
