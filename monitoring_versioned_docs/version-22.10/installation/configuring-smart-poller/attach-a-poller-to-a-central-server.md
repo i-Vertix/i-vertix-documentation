@@ -60,17 +60,21 @@ per your naming convention
 
 ![Rename](../../assets/configuring-smart-poller/poller-attach-7.png)
 
-4. Go to **Data** tab and click on **+Add a new entry**
+4. Go to **Data** tab
 
 ![Add data entry](../../assets/configuring-smart-poller/poller-attach-8.png)
 
-5. Enter these two brocker directive:
+5. Enter two **empty** brocker directive like the image below (clik **+ Add a new entry** twice):
 
 ![Add data entry empty](../../assets/configuring-smart-poller/poller-attach-9.png)
 
-    1 - */usr/lib64/centreon-engine/externalcmd.so*
+And write the first path on the first directive and the second on the following one
 
-    2 - */usr/lib64/nagios/cbmod.so /etc/centreon-broker/poller-module.json*
+    1 - /usr/lib64/centreon-engine/externalcmd.so
+
+    2 - /usr/lib64/nagios/cbmod.so /etc/centreon-broker/poller-module.json
+
+The result should be like the image below
 
 ![Add data entry directive](../../assets/configuring-smart-poller/poller-attach-10.png)
 
