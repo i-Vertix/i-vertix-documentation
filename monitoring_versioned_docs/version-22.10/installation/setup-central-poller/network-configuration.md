@@ -58,6 +58,26 @@ Get back to the main NTUI menu
 
 Now network configuration is complete (restart the vm if necessary) and the system is accessible via network connection (for example using **Putty**)
 
+:::note
+
+Check that **DNS** is working
+
+Type **nslookup www.google.com** and verify that the output returns Google IP Address, for example:
+
+```
+nslookup www.google.com
+Server:         192.168.25.2
+Address:        192.168.25.2#53
+
+Non-authoritative answer:
+Name:   www.google.com
+Address: 142.251.209.4
+Name:   www.google.com
+Address: 2a00:1450:4002:402::2004
+```
+
+:::
+
 You can go to [First login](first-login.md)
 
 </TabItem>
@@ -67,7 +87,7 @@ To configure network settings on **i-Vertix4**:
 
 1. Select option **6** Network settings>
 2. Select Edit Connection
-3. Select the proper NIC (by default **ens192**) and then **Modify** followed by your network settings:
+3. Select the proper NIC (for example **ens192**) and then **Modify** followed by your network settings:
 4. IPv4 Configuration: **Manual**
 5. Addresses: IP address you want to assign to the Central Manager
 6. Gateway: your default gateway IP address
@@ -101,6 +121,26 @@ Get back to the main NTUI menu
 ---
 
 Now network configuration is complete (restart the vm if necessary) and the system is accessible via network connection (for example using **Putty**)
+
+:::note
+
+Check that **DNS** is working
+
+Type **nslookup www.google.com** and verify that the output returns Google IP Address, for example:
+
+```
+nslookup www.google.com
+Server:         192.168.25.2
+Address:        192.168.25.2#53
+
+Non-authoritative answer:
+Name:   www.google.com
+Address: 142.251.209.4
+Name:   www.google.com
+Address: 2a00:1450:4002:402::2004
+```
+
+:::
 
 You can go to [First login](first-login.md)
 
