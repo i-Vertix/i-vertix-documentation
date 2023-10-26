@@ -204,7 +204,7 @@ The result should be like the image below
 ![Add data entry directive](../../assets/configuring-smart-poller/poller-attach-10.png)
 
 ---
-## Gorgon configuration export
+## Gorgone configuration export
 
 - Synchronize the Plugins from Central to the Poller
 	- Login through SSH on Central and became root user **(sudo bash)**
