@@ -46,7 +46,7 @@ Get back to main menu NMTUI (on the left-hand side)
 
 ---
 
-Get back to the main NTUI menu
+Get back to the main NMTUI menu
 
 1. Select **Set a system hostname** to configure the system hostname then select **OK**
 2. Select **Quit** to quit the **NMTUI** menu and get back to the **i-Vertix menu**
@@ -113,7 +113,7 @@ Get back to main menu NMTUI (on the left-hand side)
 
 ---
 
-Get back to the main NTUI menu
+Get back to the main NMTUI menu
 
 1. Select **Set a system hostname** to configure the system hostname then select **OK**
 2. Select **Quit** to quit the **NMTUI** menu and get back to the **i-Vertix menu**
