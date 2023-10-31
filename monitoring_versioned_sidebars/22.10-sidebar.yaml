@@ -79,6 +79,7 @@ sidebar:
           - service-template
           - generic-actions-service
           - create-service-automatically
+          - meta-service
       - id: discovery
         label: Discovery
         items:
@@ -180,6 +181,7 @@ sidebar:
           - knowledge-Base
           - backup-Backup
           - performance-Management
+          - data
 #          TODO: DATA-DATA
           - media-Media
       - id: authentication
