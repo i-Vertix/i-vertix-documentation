@@ -12,7 +12,7 @@ events.
 ## Events list
 
 The event list is a condensed and efficient view of all alerts and of the status of all resources
-monitored by i-Vertix.
+monitored by i-Vertix IT Monitoring.
 
 ![image](../../assets/alerts/resources-status/resources-status-listing.png)
 
@@ -24,7 +24,7 @@ You can add or remove columns, and sort by the column of your choice.
 
 ### Acknowledge an event
 
-When one or more alerts are visible, you may need to [acknowledge](../../events-alerts/managing-alarms/acknowledge.md) them to tell
+When one or more alerts are visible, you may need to [acknowledge](../managing-alarms/acknowledge.md) them to tell
 your team that the problem is handled. You can do that in two ways:
 
 - By directly acknowledging the line: an **Acknowledge** button
@@ -49,7 +49,7 @@ of **Unhandled Problems** and its notifications will resume: in the **More actio
 ### Set a planned downtime
 
 When a maintenance is planned on one or multiple resources, you can set a
-[planned downtime](../../events-alerts/managing-alarms/downtimes.md) for them in i-Vertix in two ways:
+[planned downtime](../managing-alarms/downtimes.md) for them in i-Vertix IT Monitoring in two ways:
 
 - By directly setting a planned downtime on the line:
     a **Set Downtime** button appears on mouseover
@@ -81,7 +81,7 @@ to submit a result, i.e. a status, an output and metrics, in order to
 reset the event.
 This can be achieved using the **Submit Status** action, available when a single passive service is selected.
 
-![image](../../assets/alerts/resources-status/resources-status-submit-status.gif)
+
 
 ## Filtering events
 
@@ -108,7 +108,7 @@ The following rules apply:
 
 You can filter the list of resources according to a number of predefined criteria.
 
-1. Click the **Search options** icon :![image](../../assets/alerts/resources-status/search-options-icon.png)
+1. Click the **Search options** icon ![image](../../assets/alerts/resources-status/search-options-icon.png) :
 
     A pop-in window appears, that lists the following criteria:
 
@@ -120,7 +120,7 @@ You can filter the list of resources according to a number of predefined criteri
     - **Service group**
     - **Monitoring server**: resources monitored by a specific server (or poller)
     - [**Host category**](../../monitoring-resources/organizing-hosts-and-services/categories.md)
-    - [**Service category**](../../monitoring-resources/organizing-hosts-and-services/categories.md)
+    - [**Service category**]../../monitoring-resources/organizing-hosts-and-services/categories.md)
     - [**Host severity**](../../monitoring-resources/organizing-hosts-and-services/categories.md): name of the host severity
     - **Host severity level**
     - [**Service severity**](../../monitoring-resources/organizing-hosts-and-services/categories.md): name of the service severity
@@ -169,7 +169,7 @@ in one or several fields.
 - **parent_name**: search for services, according to their parent's name
 - **parent_alias**: search for services, according to their parent's alias
 - **state**: search for resources in a non-OK or non-UP state, according to whether they are unhandled, acknowledged or in downtime
-- **status**: search for resources according to their [status](concepts.md)
+- **status**: search for resources according to their [status](../viewing-events/concepts.md)
 - **status_type**: search for resources according to their [status type](concepts.md#status-types)
 - **service_category**: search for services according to the category they belong to
 - **service_group**: search for services that belong to a service group
