@@ -8,19 +8,18 @@ import TabItem from '@theme/TabItem';
 
 ## Definition
 
-A command is the definition of a line of command which uses a script or an application to perform an action. It is
-possible execute this command by specifying arguments.
+A **command** is the definition of a line of code that uses a script or application to perform an action. It is
+possible to execute this command by specifying arguments.
 
 There are four types of command:
 
 * **Verification** commands are used by the schedulers to verify the status of a host or of a service.
-* **Notification** commands are used by the schedulers to alert the contacts (via mail, SMS, etc.).
-* **Discovery** commands are used by the schedulers to discover.
-* **Miscellaneous** commands are used by the additional modules (to perform certain actions), by the scheduler for
+* **Notification** commands are used by the schedulers to notify contacts (by email, SMS, etc).
+* **Discovery** commands are used by the schedulers to perform discovery.
+* **Miscellaneous** commands are used by the additional modules (to perform certain actions), by the scheduler for data processing, etc.
   data processing, etc.
 
 All the commands can be configured in the menu: **Configuration > Commands**.
-
 ![image](../../assets/monitoring-resources/organizing-hosts-and-services/04commandlist.png)
 
 :::info
