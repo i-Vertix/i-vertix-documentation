@@ -5,21 +5,23 @@ title: Time periods
 
 ## Definition
 
-Time periods define a time interval for each day of the week. They enable the functionalities of the scheduler over a given period of time. They apply to two types of actions:
+Time periods define a time interval for each day of the week.
+They enable the functionality of the scheduler over a given period of time.
+They apply to two types of actions:
 
-* The execution of check commands
-* The sending of notifications.
+* execution of check commands
+* sending of notifications.
 
 ## Configuration
 
-To configure a time period, go to **Configuration \> Users \> Time periods**.
+To configure a time period, go to **Configuration > Users > Time periods**.
 
 1. In the **Time Period Name** and **Alias** fields, enter a name and a description.
 
-2. In the **Basic settings** section, for each day of the week, define the time periods during which the checks and notifications will be enabled. (Use the [syntax described below](#syntax-of-a-time-period).) 
+2. In the **Basic Settings** section, for each day of the week, define the time periods during which the checks and notifications will be enabled. (Use the [syntax described below](#syntax-of-a-time-period)). 
 
-    - These definitions are applied every week, indefinitely.
-    - If you leave the field blank for a specific day, there will be no supervision on that day for actions to which this time period is applied.
+    - These definitions are applied each week, indefinitely.
+    - If you leave the field blank for a particular day, no monitoring will take place on that day for actions to which that time period applies.
 
 3. Use the [**Time Range Exceptions** tab](#time-range-exceptions-tab) to include days that would not normally belong to the time period.
 
@@ -31,9 +33,9 @@ To configure a time period, go to **Configuration \> Users \> Time periods**.
 
 Use the following characters to define time periods:
 
-* The character “:” separates the hours from the minutes. E.g.: HH:MM
-* The character “-” indicates continuity between two time periods
-* The character ”,” separates two time periods
+* The character **“:”** separates the hours from the minutes. E.g.: HH:MM
+* The character **“-”** indicates continuity between two time periods
+* The character **”,”** separates two time periods
 
 Here are a few examples:
 
