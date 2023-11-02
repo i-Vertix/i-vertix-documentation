@@ -56,11 +56,3 @@ You can log in using the default credentials:
 
 How to [access to Web console](../../installation/configuring-smart-poller/first-web-access.md)
 
-## Plugin Store configuration
-
-Contact i-Vertix support and add the Plugin Store credentials.
-
-![image](../../assets/monitoring-resources/monitoring-basics/version-pp.png)
-
-See the complete procedure for [Plugin Store configuration](plugin-store-configuration.md)
-
