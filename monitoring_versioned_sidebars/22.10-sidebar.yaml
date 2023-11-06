@@ -89,6 +89,10 @@ sidebar:
           - vmware-os-discovery
           - nedi
           - meraki-discovery
+      - id: i-vertix-e2e
+        label: Synthetic User Monitoring
+        items:
+          - e2e-configuration
       - id: organizing-hosts-and-services
         label: Organizing Hosts & Services
         items:
@@ -158,10 +162,6 @@ sidebar:
       - managing-maps
       - edit-maps
       - visualize-maps
-  - id: i-vertix-e2e
-    label: Synthetic User Monitoring
-    items:
-      - e2e-configuration
   - id: i-vertix-ncb
     label: i-Vertix NCB
     items:
