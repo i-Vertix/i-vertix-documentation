@@ -5,14 +5,14 @@ title: Create SNMP Traps definitions
 
 ## Add a manufacturer
 
-Within i-vertix, the root OIDs of the SNMP traps is filed by manufacturer. To add a manufacturer:
+Within i-vertix, manufacturers file the root OIDs of the SNMP traps. To add a manufacturer, follow these steps:
 
 Go into the **Configuration > SNMP traps > Manufacturer** menu and click on **Add**
 
 ![image](../../assets/monitoring-resources/passive-monitoring/06constructors.png)
 
-* The **Name** and **Alias** fields define the name and the alias of the manufacturer
-* The **Description** field provides an indication about the manufacturer
+* The fields for **Name** and **Alias** define the manufacturer's name and alternate name.
+* The **Description** field provides information about the manufacturer.
 
 ## Import SNMP traps from a MIB file
 
@@ -20,40 +20,43 @@ Go into the **Configuration > SNMP traps > MIBs** menu
 
 ![image](../../assets/monitoring-resources/passive-monitoring/import-mib.png)
 
-* The **Manufacturer** list can be used to choose the manufacturer to which the MIB that you are importing belongs
-* The **File (.mib)** field can be used to load the MIB
+* The **Manufacturer** list allows you to select the manufacturer associated with the MIB that you are importing.
+* Use the **File (.mib)** field to load the MIB.
 
-Prior to importing a certain MiB file, it may happen that a number of dependencies need to be met.
-In order to find the dependencies of your MIB, you must open your MIB file using a standard text editor, then:
+Before importing a MiB file, it may require meeting various dependencies. To find these dependencies, open the MiB file with a standard text editor and:
 
-1. Locate the line that starts with **IMPORTS**
-2. Verify all the required dependencies to import your MIB file after the keyword **FROM**
+* Locate the line that begins with **IMPORTS**.
+* Verify all necessary dependencies for importing your MIB file after the keyword **FROM**.
 
 ![image](../../assets/monitoring-resources/passive-monitoring/kdependances.png)
 
-In the MIB file shown above, there are four dependencies required to import the MIB: SNMPv2-SMI, SNMPv2-TC, SNMPv2-CONF,
-SNMP-FRAMEWORK-MIB.
+In the displayed MIB file, four dependencies are necessary for importing the MIB:
+* SNMPv2-SMI
+* SNMPv2-TC
+* SNMPv2-CONF
+* SNMP-FRAMEWORK-MIB
 
-> The dependencies of the MIBS that you import must be present in the folder **/usr/share/snmp/mibs**. Once the import
-> is completed, delete the dependencies previously copied.
+:::info
+
+The imported MIBS' dependencies must exist in the **/usr/share/snmp/mibs** directory. After completing the import, remove the previously copied dependencies.
+
+:::
 
 ## Manual configuration of traps
 
 ### Basic configuration
 
-It is also possible to create definitions of SNMP traps manually:
+It is possible to manually create definitions for SNMP traps:
 
 Go into the **Configuration > SNMP traps > SNMP traps** menu and click on **Add**
 
 ![image](../../assets/monitoring-resources/passive-monitoring/06addsnmptrap.png)
 
-* The field **Trap name** defines the name of the trap.
-* The field **Mode** defines how to check the trap **OID** received.
-* The field **OID** defines the Root OID to be received for this trap to be considered as received.
-* The field **Vendor name** defines the name of the manufacturer to which the trap to be selected in the drop-down
-  list belongs.
-* The field **Output message** of contains the message to be displayed in the event of reception of a trap containing
-  the OID configured above.
+* The **Trap Name** field specifies the name of the trap
+* The **Mode** field specifies how to validate the received trap OID
+* The **OID** field defines the root OID that must be received for this trap to be considered received
+* The **Vendor name** field specifies the manufacturer name for selecting the trap in the drop-down menu. belongs
+* The **Output message** field contains the message to be displayed upon receiving a trap. OID.
 
 :::note
 
@@ -63,19 +66,18 @@ As each argument is identified by a OID, it is possible to use this OID directly
 
 :::
 
-* The **Default status** field defines the “monitoring” status of the service in case of reception of the trap.
+* The **Default status** field defines the **monitoring** status of the service in case of reception of the trap.
 * If the **Submit result** box is checked the result is submitted to the Network supervisor engine.
 * The **Comments** field (last field) contains by default the comment by the manufacturer of the SNMP trap. Most of the
   time, this comment indicates the list of variables contained in the SNMP trap (see the next chapter on advanced configuration).
 
 ### Advanced configuration of the traps
 
-It is possible to determine the status of a service from the value of a setting of the SNMP trap rather than from the
-Root OID. Previously the manufacturer defined an SNMP trap (Root OID) by type of event to be sent (linkUp / linkDown).
-Today, the tendency is to define a Root OID by category of events and then to define the event via a set of settings.
+It is possible to determine service status by analyzing SNMP trap settings instead of the Root OID.
+In the past, manufacturers defined SNMP traps (Root OID) based on the type of event to be sent (linkUp / linkDown).
+Nowadays, Root OID is defined by event category with specific event configurations.
 
-To do this, it is possible of define **Advanced Matching mode** by clicking on **Add a new entry** and by creating as
-many rules as necessary.
+To do this, it is possible of define **Advanced Matching mode** by clicking on **Add a new entry** and creating as many rules as necessary.
 For each rule, define the settings:
 
 * **String** defines the element on which the search will be applied (@OUTPUT@ defined all the **Output messages**
@@ -89,24 +91,21 @@ The order is important in the rules of correspondence because the process will s
 
 :::
 
-* The **Disable submit result if no matched rules** field disables the sending of information to the scheduling engine
-  if no correspondence with a rule is confirmed.
-* If the **Reschedule associated services** box is checked, the next check on the service, which should be ‘active’,
-  should be reprogrammed as soon as possible after reception of the trap.
+* The **Disable submit result if no matched rules** feature prevents the transmission of information to the scheduling engine unless a matching rule has been confirmed
+* If the **Reschedule associated services** checkbox is selected, promptly reprogram the next check on the "active" service after receiving the trap
 * If the **Execute special command** box is checked, the command defined in **Special command** is executed.
 
 ### Advanced tab
 
-The **Advanced** tab serves to configure the behavior of the handling process of the SNMP traps on its reception of the latter.
+The **Advanced** tab configures how SNMP traps are handled upon reception.
 
 ![image](../../assets/monitoring-resources/passive-monitoring/06advancedconfiguration.png)
 
-* **Enable routing** is used to enable the routing of information.
-* **Route definition** is used to define the command to be used for routing.
+* **Enable routing** enable the routing of information
+* **Route definition** define the command to be used for routing.
 
-Before performing the processing of the event (translation of the **Output message**), it is possible to execute a
-command called PREEXEC. To do this, it is possible to define **PREEXEC command (SNMPTT type)** by clicking on
-**Add a new entry** and create as many rules as necessary.
+Before processing the event (translating the **Output message**), it's possible to execute the PREEXEC command.
+Define the **PREEXEC command (SNMPTT type)** by selecting **Add a new entry** and creating as many rules as needed.
 
 * **PREEXEC command** defines the command to be executed.
 
@@ -132,21 +131,18 @@ Example:
 
 The result will have the form:  **Interface GigabitEthernet0/1 ( NAS Server ) linkUP. State: up**
 
-* The **Insert trap's information into database** box, if checked, record the SNMP trap information in the database
-  field can be used define whether or not to classify the traps by day in the database.
-* The **Timeout** field expressed in seconds is used to define the maximum processing time of the event including the
-  pre-processing commands (PREEXEC) and post-processing commands (special command).
-* The **Execution interval** field expressed in seconds is used to define the maximum waiting time between two
-  processing operations of an event.
-* The **Execution Type** field is used to enable the Execution interval by defining the conditions by Root OID, by the
-  Root OID and host combination or, to disable this restriction, None.
-* The **Execution Method** field is used to define if on reception of multiple same events (Root OID). The execution is
-  either **Sequential** or **Parallel**.
+* If the **Insert trap's information into database** box is checked, the SNMP trap information will be recorded in the database field. This can be used to determine whether or not to classify the traps by day in the database
+* The **Timeout field** expressed in seconds, specifies the maximum processing time of the event, including pre-processing commands (PREEXEC) and post-processing commands (special command)
+* The **Execution Interval** field, measured in seconds, defines the maximum wait time between two processing operations for an event
+* The **Execution Type** field enables the Execution interval by defining conditions using the Root OID, the Root OID and host combination or, to disable this restriction, None.
+* The **Execution Method** field determines whether multiple identical events (Root OID) are processed mode can be **Sequential** or **Parallel**.
 
 ### Custom code
 
-The field **custom code** allows custom Perl processing. To enable this feature, you must set **secure_mode** to 0 in
-**/etc/centreon/centreontrapd.pm** file as:
+The field **custom code** allows custom Perl processing.
+
+To enable this feature, you must set **secure_mode** to 0 in **/etc/centreon/centreontrapd.pm** file as:
+
 
 ```perl
 our %centreontrapd_config = (
@@ -158,7 +154,7 @@ our %centreontrapd_config = (
 1;
 ```
 
-For example, to decode the 4 arguments from hexadecimal, the custom code will be:
+For example, to decode the 4 hexadecimal arguments, the custom code would be:
 
 ```perl
 if ($self->{trap_data}->{entvar}->[3] =~ /[[:xdigit:]]+/) {
