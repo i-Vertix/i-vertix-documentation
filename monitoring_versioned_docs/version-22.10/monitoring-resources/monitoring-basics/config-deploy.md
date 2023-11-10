@@ -3,18 +3,18 @@ id: config-deploy
 title: Deploy configuration
 ---
 
-When you create, delete or edit objects (host, service, thresholds, etc.) in the **Configuration** menu, changes are not applied automatically (neither on the central server on which you have made the change, nor on any remote server or poller linked to it).
+When you create, delete or edit objects (hosts, services, thresholds, etc.) in the **Configuration** menu, the changes are not automatically applied (neither to the central server on which you have made the change or poller connected to it).
 
-For the changes to be taken into account, you have to export the configuration.
+In order for the changes to be taken into account, you must export the configuration.
 
-Any change in configuration must be done and exported from the central server's interface or API, regardless of which poller is affected by the change (central server, remote server, poller).
+Any change to the configuration must be made and exported from the Central Server interface or API, regardless of which poller is affected by the change (Central Server or Poller).
 
 ## Exporting the configuration
 
-1. Go to the **Configuration > Pollers > Pollers** page. The page shows the state of your central
-server and of all pollers and remote servers linked to it: changes are shown in the **Conf changed** column.
+1. Go to the **Configuration > Pollers > Pollers** page. The page shows the status of your Central Server and any
+Server and all the Pollers linked to it: changes are shown in the **Conf changed** column.
 
-2. Select the central server, the remote server or the poller whose configuration has changed. 
+2. Select the Central Server or Poller whose configuration has changed.  
 
    ![Export config](../../assets/monitoring-resources/monitoring-basics/export_conf.png)
 
@@ -26,43 +26,41 @@ server and of all pollers and remote servers linked to it: changes are shown in 
    - **Run monitoring engine debug (-v)**
    - **Move Export Files**
    - **Restart Monitoring Engine**. Use the most appropriate method:
-     - **Reload** : when you have created, deleted or edited monitored objects
-     - **Restart** : when you have made changes to the way a poller and the central server communicate together, or
+     - **Reload** : if you have created, deleted or edited monitored objects
+     - **Restart** : if you have made changes to the way a poller communicates with the central server, or
      to the configuration of the engine. Restarting takes more time than reloading.
 
-5. Click **Export**. A log of the export is displayed.
+5. Click on **Export**. A log of the export will be displayed.
 
     ![Export config done](../../assets/monitoring-resources/monitoring-basics/export_conf_done.png)
 
-6. Read the log to check that the export has worked normally and that no errors were returned.
+6. Read the log to check that the export worked normally and that no errors were returned.
 
 ## Export options
 
-The options work in the following ways:
+The options work as follows:
 
-- **Generate Configuration Files**: Generates the monitoring engine's configuration
-  files in a temporary directory. This configuration is generated from objects
-  configured via the web interface
-- **Run monitoring engine debug (-v)**: Performs a sanity check of the monitoring engine's configuration files
+- **Generate Configuration Files**: Generates the monitoring engine configuration
+  files in a temporary directory. This configuration is generated from objects that have been configured via the web interface
+- **Run monitoring engine debug (-v)**: Performs a sanity check on the monitoring engine configuration files
 - **Move Export Files**: Moves the configuration files from the temporary
-  directory to the monitoring engine's configuration directory
+  directory to the monitoring engine configuration directory
 - **Restart Monitoring Engine**: Restarts the monitoring engine to apply the new
-  configuration
-- **Post generation command**: Executes the post-generation command set in the
-  poller's configuration.
+  new configuration
+- **Post generation command**: Executes the post-generation command specified in the configuration.
 
 ## Quick export
 
-Administrators and users with the [appropriate rights](#activating-the-feature) can activate a quick export button that allows them to export the configurations of ALL pollers at once (i.e. the configuration of the central server, remote servers and pollers).
+Administrators and users with the [appropriate rights](#activating-the-feature) can activate a quick export button that allows them to export the configurations of ALL pollers at once (i.e. the configuration of the Central Server and Pollers).
 
 ### When to use this feature
 
-> Do NOT use this feature if you have a large number of pollers. This feature is not appropriate either if you are an MSP and each poller belongs to a different customer.
+> Do NOT use this feature if you have a large number of Pollers. This feature is also not suitable if you are an MSP and each poller belongs to a different customer.
 
 ### Activating the feature
 
-* For administrator users, the feature is automatically enabled.
-* To make the feature available to a non-administrator user, make sure they have the [**Deploy configuration**](../../managing-users-contacts/acl.md#poller-configuration-actions--poller-management) right, and the [**Display Top Counter pollers statistics**](../../managing-users-contacts/acl.md#global-functionalities-access) right.
+* The feature is automatically enabled for **admin** users.
+* To make this feature available to a **non-administrator** user, make sure they have the [**Deploy Configuration**](../../managing-users-contacts/acl.md#poller-configuration-actions--poller-management) permission and the [**Display Top Counter Pollers Statistics**](../../managing-users-contacts/acl.md#global-functionalities-access) permission.
 
 ### Exporting all configurations
 
