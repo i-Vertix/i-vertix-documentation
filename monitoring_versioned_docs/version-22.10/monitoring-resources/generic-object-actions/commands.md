@@ -8,19 +8,18 @@ import TabItem from '@theme/TabItem';
 
 ## Definition
 
-A command is the definition of a line of command which uses a script or an application to perform an action. It is
-possible execute this command by specifying arguments.
+A **command** is the definition of a line of code that uses a script or application to perform an action. It is
+possible to execute this command by specifying arguments.
 
 There are four types of command:
 
-* **Verification** commands are used by the schedulers to verify the status of a host or of a service.
-* **Notification** commands are used by the schedulers to alert the contacts (via mail, SMS, etc.).
-* **Discovery** commands are used by the schedulers to discover.
-* **Miscellaneous** commands are used by the additional modules (to perform certain actions), by the scheduler for
+* **Verification** checks commands are used by the schedulers to verify the status of a host or of a service.
+* **Notification** commands are used by the schedulers to notify contacts (by email, SMS, etc).
+* **Discovery** commands are used by the schedulers to perform discovery.
+* **Miscellaneous** commands are used by the additional modules (to perform certain actions), by the scheduler for data processing, etc.
   data processing, etc.
 
-All the commands can be configured in the menu: **Configuration > Commands**.
-
+All the commands can be configured in the menu: **Configuration > Commands > Checks**.
 ![image](../../assets/monitoring-resources/organizing-hosts-and-services/04commandlist.png)
 
 :::info
@@ -46,35 +45,34 @@ The configuration fields of a command are the same regardless of the type of com
 
 ## Configuration fields
 
-* The **command Name** field defined the name of the command.
-* The **Command Type** field allows us to choose the type of command.
-* The **Command Line** field indicates the application or the script use with the command.
-* The **Enable shell** box allows us to enable functions that are specific to a shell such as the pipe, etc.
-* The **Argument Example** field define examples of arguments (each argument starts with a ```"!"```)
-* The **Describe arguments** button serves to add  a description to arguments of the ```"$ARGn$"``` type. This description
-  will be visible when using the command in a host or service form.
-* The **Clear arguments** button deletes the description of arguments defined
-* The **Describe macros** button serves to add  a description to all macros. This description will be visible when
-  using the command in a host or service form.
-* The **Connectors** selectlist serves to link a Connector to the command. For more information on Connectors refer to the
-  chapter entitled *[Perl Connector](#perl-connector)* and *[SSH Connector](#ssh-connector)*.
-* The **Graph template** field serves to link the command to a graphic model.
-* The **Comment** field can be used to make a comment on the command.
+* The **Command Name** field defines the name of the command.
+* The **Command Type** field allows us to select the type of command.
+* The **Command Line** field indicates the application or script to use with the command.
+* The **Enable Shell** field allows us to enable functions specific to a shell, such as the pipe, etc.
+* The **Argument Example** field defines examples of arguments (each argument starts with a ```"!"```).
+* The **Describe arguments** button is used to add a description to arguments of the ```"$ARGn$"``` type. This description will be visible when the command is used in a host or service form.
+* The **Clear arguments** button clears the description of defined arguments.
+* The **Describe macros** button is used to add a description to all macros. This description will be visible when the command is used in a host or service form.
+* The **Connectors** selection list is used to associate a connector with the command. For more information on connectors, see the *[Perl Connector](#perl-connector)* and *[SSH Connector](#ssh-connector)* chapters.
+* The **Graph Template** field is used to associate the command with a graphical model.
+* The **Comment** field can be used to add a comment to the command.
 
 ## Arguments and macros
 
-In the **Command Line** field it is possible to use *[macros](macros.md)* and arguments.
+In the **Command Line** field it is possible to use *[macros](macros.md)**and arguments.
 
-The macros are used to be able to pass various settings to the scripts called up by the commands. During execution
-of the command by the scheduler, each of the arguments and macros are replaced by their respective values.
+The macros are used to pass various settings to the scripts called by the commands.
+When the Scheduler executes the command, each of the arguments and macros are replaced with their respective values.
+
 Each macro appears in the form ```$value$```:
 
 ```shell
-$CENTREONPLUGINS$/centreon_linux_snmp.pl --plugin=os::linux::snmp::plugin --mode=cpu \
---hostname=$HOSTADDRESS$ --snmp-version='$_HOSTSNMPVERSION$' \
---snmp-community='$_HOSTSNMPCOMMUNITY$' $_HOSTSNMPEXTRAOPTIONS$ \
---warning-average='$_SERVICEWARNING$' \
---critical-average='$_SERVICECRITICAL$' $_SERVICEEXTRAOPTIONS$
+$IVERTIXPLUGINS$/os-linux-local.pl --plugin=os::linux::local::plugin --mode=cpu \
+--hostname=$HOSTADDRESS$ --ssh-backend=$_HOSTSSH-BACKEND$ --ssh-username=$_HOSTSSH-USERNAME$ \
+--ssh-password='$_HOSTSSH-PASSWORD$' --ssh-priv-key='$_HOSTSSH-PRIV-KEY$' --sshcli-option='$_HOSTSSHCLI-OPTION$' \
+--warning-average=$_SERVICEWARNING-AVERAGE$ --warning-core=$_SERVICEWARNING-CORE$ \
+--critical-average=$_SERVICECRITICAL-AVERAGE$ --critical-core=$_SERVICECRITICAL-CORE$ \
+--ssh-port=$_HOSTSSH-PORT$
 ```
 
 :::tip
@@ -87,10 +85,12 @@ Good practice requires replacing the arguments by *[custom macros](macros.md#cus
 
 ### SSH connector
 
-Centreon SSH Connector is a free software from Centreon available under the Apache Software License version 2 (ASL 2.0).
-It speeds up execution checks over SSH when used along Centreon Engine.
+SSH Connector is a free software under the Apache Software License version 2 (ASL 2.0).
+
+It speeds up execution checks over SSH when used together with the monitoring engine.
 
 ### Perl connector
 
-Centreon Perl Connector is a free software from Centreon available under the Apache Software License version 2 (ASL 2.0).
-It speeds up execution of Perl scripts when used along Centreon Engine.
+Perl Connector is a free software under the Apache Software License version 2 (ASL 2.0).
+
+It speeds up the execution of Perl scripts when used together with the monitoring Engine.
