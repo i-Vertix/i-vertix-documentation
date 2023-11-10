@@ -7,23 +7,17 @@ title: Plugin packs
 
 ## What is a Plugin Pack?
 
-A Plugin Pack is a downloadable package containing a set of configuration templates that make it fast and easy to
-monitor your IT infrastructure.
+A Plugin Pack is a downloadable package that contains a set of configuration templates that make monitoring your IT infrastructure fast and easy.
 
 Applying a template from a Plugin Pack is the easiest way to monitor a host.
 
-Plugin Packs consist of 2 elements, which are installed separately:
-
-- A plugin that executes the monitoring commands from a poller. Plugins can be
-  installed using the command line interface, or automatically.
-
-- A pack that contains commands, host templates and service templates.
+- A plugin pack contains commands, host templates and service templates.
   Packs are installed via the i-Vertix interface. For each type of equipment,
   the templates determine which indicators will be
   monitored and set default warning and critical thresholds (these may be
   fine-tuned later on).
 
-- Some packs also contain discovery modes.
+- Some packages also include discovery modes.
 
 ## Prerequisites for i-Vertix Plugin Pack Manager
 
@@ -91,7 +85,7 @@ objects and are not required to deploy the configuration templates provided by t
 
 ### Checking the monitoring procedure
 
-Some Plugin Packs require extra configuration steps; such as the protocol tha the plugin pack need (Rest API, SNMP, and
+Some Plugin Packs require extra configuration steps; such as the protocol tha the plugin pack need (Rest API, SNMP, SSH and
 so on).
 
 ![image](../../assets/monitoring-resources/monitoring-basics/proto-pp.png)
