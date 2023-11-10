@@ -32,7 +32,7 @@ To be able to export the OID present in the database in the configuration file t
 5. Click on the **Generate** button
 6. *[Export the monitoring configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)*
 
-## To go further
+## Advanced settings
 
 ### Modify the output
 
