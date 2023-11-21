@@ -21,7 +21,7 @@ Filtered **not checked**:
 
 ![image](../../assets/discovery/sd_manual4.png)
 
-### Discovery results
+### Discovered services
 
 After hitting **Scan**, the scan results are shown below.
 
@@ -56,18 +56,6 @@ You can show and hide all non-relevant columns using following control:
 
 ![image](../../assets/discovery/sd_manual7.png)
 
-### Debug
-
-![image](../../assets/discovery/sd_manual2.png)
-
-It is possible to easily activate the **debug** mode of our service discovery by enabling the **debug switch** right next to the **scan button**.
-
-After enabling debug click again on scan. A moveable popup will open which displays the executed command as well as the command result.
-
-Using the debug information you can **analyze** and **identify problems** of a failed scan.
-
-By clicking the button next to close in the top right corner of the debug popup, the inbuilt popup will close and a new browser window will open with the debug information. This may be useful for your workflow if you need to deeper analyze various scans and different scan-configurations.
-
 ### Syncing services
 
 #### Sync selected
@@ -85,6 +73,18 @@ To see created services, head over to **Configuration -> Services -> Services by
 
 To find your services you just created it's best practice to use the page's **filters**.
 Insert the **hostname** in the **Hosts** filter and choose the **service template** using the **Template** lookup.
+
+### Troubleshooting
+
+![image](../../assets/discovery/sd_manual2.png)
+
+It is possible to easily activate the **debug** mode of our service discovery by enabling the **debug switch** right next to the **scan button**.
+
+After enabling debug click again on scan. A moveable popup will open which displays the executed command as well as the command result.
+
+Using the debug information you can **analyze** and **identify problems** of a failed scan.
+
+By clicking the button next to close in the top right corner of the debug popup, the inbuilt popup will close and a new browser window will open with the debug information. This may be useful for your workflow if you need to deeper analyze various scans and different scan-configurations.
 
 ## Auto Discovery Service Job
 
