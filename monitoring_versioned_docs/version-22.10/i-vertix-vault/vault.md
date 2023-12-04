@@ -4,22 +4,33 @@ title: Vault
 ---
 
 
+## Overview
+
+IT Monitoring Vault simplifies access credentials management, making it easier for customers and MSPs to work with different IT environments without compromising security.
+
+Credentials are stored centrally, can be accessed by discovery functions and sensitive data such as the password field is protected by a master key.
+
+Users can configure and manage multiple credentials and easily switch between them.
+
 i-Vertix Vault, is a complete internal credential manager (not just passwords), with functionality to be extended in the future.
-For now, the i-Vertix Vault can be used for the following 4 types of access:
+
+The i-Vertix Vault supports four types of access:
 
 - **SNMP**
 - **SSH**
-- **I-VERTIX AGENT** (vmware o.s. discovery only)
-- **WSMAN** (vmware o.s. discovery only)
+- **I-VERTIX AGENT** (VMware O.S. discovery)
+- **WSMAN** (VMware O.S. discovery)
 
-The stored credentials can be used for various utilities such as:
+The stored credentials are used for these discoveries such as:
 
 - **NEDI Discovery**
 - **Network Discovery**
 - **VMware OS Discovery**
 - **Meraki**
 
-To access the i-Vertix Vault, you must edit a job configuration such as VMware or Nedi. The i-Vertix Vault is not actually accessible from a dedicated menu item.
+## How to use
+
+To access the i-Vertix Vault, you must edit, or create, a discovery job. The i-Vertix Vault is not actually accessible from a dedicated menu item.
 
 In the example configuration below (NEDI Discovery) we have created a new entry (under **Configuration > Hosts > NEDI Configuration**):
 
@@ -31,7 +42,7 @@ or we can use an entry already present on i-Vertix Vault:
 
 When credentials are changed, these changes will affect ***all*** hosts/configurations where these credentials are used.
 
-To see if credentials have been used check Usage:
+To see if credentials have been used check **u** (usage):
 
 ![vault](../../version-22.10/assets/vault/usage.png)
 
@@ -51,7 +62,7 @@ Currently, it is not currently possible to use (make link) of the users/password
 
 :::
 
-One important use of the i-Vertix Vault is to use it to retrieve credentials without using a personal credential store (e.g. keepass); remember that this functionality is subject to ACLs.
+An important functionality of the i-Vertix Vault is the ability to retrieve credentials without relying on a personal credential store (e.g., Keepass). It is crucial to note that this functionality is subject to Access Control Lists (ACLs).
 
 :::info
 
