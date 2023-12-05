@@ -7,7 +7,7 @@
 ## Install Dependencies
 
 ```bash
-npm run install
+npm install
 ```
 
 ## Local Build
@@ -43,8 +43,6 @@ npm run build-sidebar-monitoring -- --version=22.04
 ```
 
 ##### 22.10
-
-(coming soon)
 
 ```bash
 npm run build-sidebar-monitoring -- --version="22.10"

@@ -202,4 +202,8 @@ sidebar:
         items:
           - platform-Status
           - databases-DB
+  - id: api
+    label: API
+    items:
+      - rest-api-v1
   - glossary
