@@ -23,7 +23,8 @@ This involves monitoring the health and status of hardware components, software 
 
 Go to the following topics:
 
-1. [Create host manually](../../monitoring-resources/monitoring-hosts/create-host-manually.md)
-2. [Create host automatically](../../monitoring-resources/monitoring-hosts/create-host-automatically.md)
+1. [Create host manually](../configuring-first-hosts-services/create-host-manually.md)
+2. [VMware Discovery](../configuring-first-hosts-services/monitoring-vmware.md)
+3. [Network Topology Discovery](../configuring-first-hosts-services/network-discovery.md)
 
 See also how to monitor [Central and Poller](monitoring-central-poller.md)

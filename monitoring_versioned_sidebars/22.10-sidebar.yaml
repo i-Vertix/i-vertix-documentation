@@ -19,8 +19,10 @@ sidebar:
         label: Configuring first Hosts and Services
         items:
           - monitoring-the-first-host
+          - create-host-manually
           - monitoring-central-poller
           - monitoring-vmware
+          - network-discovery
   - id: installation
     label: Installation
     items:

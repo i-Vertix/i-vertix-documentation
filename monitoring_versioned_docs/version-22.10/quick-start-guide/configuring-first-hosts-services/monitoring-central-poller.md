@@ -78,7 +78,7 @@ Once you have added a host you can discover additional services
 
 ![image](../../assets/quick-start/monitor_central_poller1.png)
 
-## EXPORTING THE CONFIGURATION
+## Exporting the configuration
 
 Once the host and services have been added, it is essential to export the configuration for the changes to take effect.
 
