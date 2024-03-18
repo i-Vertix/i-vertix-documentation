@@ -8,7 +8,7 @@ title: Configuring a local authentication
 1. To authorize a [user](../../managing-users-contacts/contacts-users.md) to access the i-Vertix web interface, go to
 **Configuration > Users > Contacts/Users** and click on the user you want.
 
-2. On the **Centreon Authentication** tab, set **Reach Centreon Front-end** to **Yes**.
+2. On the **Authentication** tab, set **Reach the Front-end** to **Yes**.
 
 3. Fill in the **Password** and
 **Confirm Password** fields: the password must comply with the [password security policy](#configure-a-local-password-security-policy) that has been defined. You can use the **Generate** button to generate a random string based on this

@@ -12,7 +12,7 @@ title: Table of network flows
 | Central  | NTP server     | NTP        | UDP 123            | Synchronization of the system clock                                                |
 | Central  | DNS server     | DNS        | UDP 53             | Domain name resolution                                                             |
 | Central  | SMTP server    | SMTP       | TCP 25             | Notification via email                                                             |
-| Central  | LDAP(s) server | LDAP, LDAPS    | TCP 389, 636      | Authentication to access the Centreon web interface                                |
+| Central  | LDAP(s) server | LDAP, LDAPS    | TCP 389, 636      | Authentication to access the IT Monitoring web interface                                |
 | Central  | HTTP     | HTTP, HTTPS    | TCP 80, 443 | System uptades, Push Notification |
 
 ### Poller

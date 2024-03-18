@@ -100,7 +100,7 @@ Then restart **centreontrapd**:
 systemctl restart centreontrapd
 ```
 
-### Centreon Gorgone
+### Gorgone
 
 Gorgoned daemon must be running to forward information from Centreontrapd to the monitoring engine as an external command.
 Enable the debug mode via **Administration > Parameters > Debug** menu and restart process.
@@ -112,12 +112,12 @@ You can change logging level through **Administration > Parameters > Debug** men
 :::
 
 If any external command are sent to the monitoring engine please check the path to "$cmdFile"" in **/etc/centreon/conf.pm**
-configuration file. The path should be **/var/lib/centreon/centcore.cmd** for a central Centreon server.
+configuration file. The path should be **/var/lib/centreon/centcore.cmd** for a Central Manager.
 
-### Centreon Engine
+### IT Monitoring Engine
 
-The monitoring engine must receive external commands from Centreon Gorgone process in order to change status and output of the
-passive service. Please check the event log. For Centreon Engine, the path is **/var/log/centreon-engine/centengine.log**.
+The monitoring engine must receive external commands from Gorgone process in order to change status and output of the
+passive service. Please check the event log. For IT Monitoring Engine, the path is **/var/log/centreon-engine/centengine.log**.
 You should find lines as:
 
 ``` shell

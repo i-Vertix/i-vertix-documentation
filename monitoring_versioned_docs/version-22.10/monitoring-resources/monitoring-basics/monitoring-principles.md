@@ -7,7 +7,7 @@ title: Monitoring principles
 
 * A [**host**](../monitoring-hosts/monitoring-host.md) is any device with an IP address that you want to monitor. For example, a physical server, a virtual machine, a temperature sensor, an IP camera, a printer, or a disk space.
 * A [**service**](../monitoring-services/monitoring-service.md) is a checkpoint or indicator that you want to monitor on a host. This can be CPU utilization, temperature, motion detection, bandwidth utilization, disk I/O, and so on.
-* To collect each indicator value, monitoring plug-ins are used, which are periodically executed by a collection engine called Centreon Engine.
+* To collect each indicator value, monitoring plug-ins are used, which are periodically executed by a collection engine called i-Vertix IT Monitoring Engine.
 * In order to be executed, a plugin needs a set of arguments that define, for example, which host to connect to or through which protocol.
   The plugin and its arguments form a [**command**](../../monitoring-resources/generic-object-actions/commands.md).
 

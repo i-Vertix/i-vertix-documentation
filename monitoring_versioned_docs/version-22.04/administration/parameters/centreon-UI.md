@@ -1,12 +1,12 @@
 ---
 id: centreon-UI
-title: Centreon UI
+title: IT Monitoring UI
 ---
 
 This part covers the configuration of the general options of the i-Vertix web
 interface.
 
-Go to **Administration > Parameters > Centreon UI**.
+Go to **Administration > Parameters > IT Monitoring UI**.
 
 ## General options
 
@@ -35,7 +35,7 @@ rising or falling order of gravity
 and acknowledgment on chart
 - **Display comment on chart** allows to display comment from service on chart
 - **Timezone** field indicates timezone of your monitoring server.
-- **Centreon Support Email** field indicates the e-mail address of the
+- **IT Monitoring Support Email** field indicates the e-mail address of the
 **Customer’s service support centre** for the i-Vertix platform. This e-mail
 address will be displayed at the bottom of the page on the link **i-Vertix
 Support**

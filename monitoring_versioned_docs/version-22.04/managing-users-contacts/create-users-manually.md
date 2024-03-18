@@ -21,16 +21,16 @@ To display the matrix of notifications for a user, click on **View contact notif
 * The **Host / Service Notification Period** field serves to choose the time period in which notifications are sent.
 * The **Host / Service Notification Command** field serves to choose the notification command to a host or a service.
 
-## Centreon authentication
+## IT Monitoring authentication
 
-* The **Reach Centreon Front-end** field serves to authorize the user to access the i-Vertix IT Monitoring web interface.
+* The **Reach Front-end** field serves to authorize the user to access the i-Vertix IT Monitoring web interface.
 * The **Password** and **Confirm Password** fields contain the user password.
-* The **Default Language** field serves to define the language of the Centreon interface for this user.
+* The **Default Language** field serves to define the language of the IT Monitoring interface for this user.
 * The **Admin** field defined if this user is the administrator of the supervision platform or not.
 * The **Autologin key** serves to define a connection key for the user. The user will no longer need to enter his / her login and password but will use this key to log in directly. Connection syntax:
 
 ```url
-http://[IP_DU_SERVER_CENTRAL]/centreon/main.php?autologin=1&useralias=[login_user]&token=[value_autologin]
+http://[IP_OF_CENTRAL_MANAGER]/centreon/main.php?autologin=1&useralias=[login_user]&token=[value_autologin]
 ```
 
 > The Possibility of automatic connection (auto login) should be enabled in the menu: **Administration \> Options**.

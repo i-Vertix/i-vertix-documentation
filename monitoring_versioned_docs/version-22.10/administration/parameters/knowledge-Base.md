@@ -5,8 +5,8 @@ title: Knowledge Base
 
 ## Introduction
 
-In Centreon Open Source suite since 2.8.0 version, **Knowledge Base** allow you
-to easily associate a wiki with Centreon Web.
+**Knowledge Base** allow you
+to easily associate a wiki with i-Vertix IT Monitoring Web.
 
 It creates links between hosts and services and specific procedure on Wiki.
 

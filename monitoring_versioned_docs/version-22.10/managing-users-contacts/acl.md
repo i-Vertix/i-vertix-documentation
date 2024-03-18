@@ -45,7 +45,7 @@ To create an access group:
 
     > The contact group can be groups coming from the LDAP directory connected to the i-Vertix interface.
     >
-    > Groups created in the Centreon interface should not have the same name as LDAP groups to avoid problems.
+    > Groups created in the i-Vertix IT Monitoring interface should not have the same name as LDAP groups to avoid problems.
 
 4. On the **Authorizations information** tab, set the rights you want on the access group
 by choosing access filters on [resources](#access-filters-on-resources), [menus](#access-filters-on-menus) and [actions](#access-filters-on-actions) (if you have already created them).
@@ -56,7 +56,7 @@ by choosing access filters on [resources](#access-filters-on-resources), [menus]
 
 ### Access filters on resources
 
-The access filters on resources allow you to define which objects (hosts, host groups, services and service groups) users will be able to see in the Centreon interface.
+The access filters on resources allow you to define which objects (hosts, host groups, services and service groups) users will be able to see in the i-Vertix IT Monitoring interface.
 
 To create an access filter on resources:
 
@@ -109,7 +109,7 @@ submenu.
  otherwise they will not be able to view the menu via the interface. If this is not
 the case, users will have to access the page via a direct link
  (autologin, etc.).
-    - Whenever a new Centreon module is created with a web interface accessible
+    - Whenever a new module is created with a web interface accessible
  via a new menu, it should be added to the filter so that users can
 access it (if applicable).
 

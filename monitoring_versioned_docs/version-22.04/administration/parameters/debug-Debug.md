@@ -18,7 +18,7 @@ debugging
 - **LDAP User Import debug** box enables logging of debugging of the import of
 LDAP users
 - **SQL debug** box enables the logging of SQL requests executed by the
-Centreon interface
-- **Centreon Gorgone debug** box enables logging of Gorgone process debugging
+i-Vertix IT Monitoring interface
+- **Gorgone debug** box enables logging of Gorgone process debugging
 - **Centreontrapd debug** box enables logging of the Centreontrapd process
 debugging

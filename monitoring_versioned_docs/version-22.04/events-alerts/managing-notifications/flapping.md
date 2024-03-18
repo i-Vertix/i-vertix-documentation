@@ -5,7 +5,7 @@ title: Flapping
 
 ## Introduction
 
-Centreon Engine supports optional detection of hosts and services that
+IT Monitoring Engine supports optional detection of hosts and services that
 are “flapping”. Flapping occurs when a service or host changes state too
 frequently, resulting in a storm of problem and recovery notifications.
 Flapping can be indicative of configuration problems (i.e. thresholds
@@ -13,7 +13,7 @@ set too low), troublesome services, or real network problems.
 
 ## How Flap Detection Works
 
-Whenever Centreon Engine checks the status of a host or service, it will
+Whenever IT Monitoring Engine checks the status of a host or service, it will
 check to see if it has started or stopped flapping. It does this by:
 
 -   Storing the results of the last 21 checks of the host or service
@@ -84,10 +84,10 @@ The calculated percent state change for the service (31%) will then be
 compared against flapping thresholds to see what should happen:
 
 -   If the service was not previously flapping and 31% is equal to or
-    greater than the high flap threshold, Centreon Engine considers the
+    greater than the high flap threshold, IT Monitoring Engine considers the
     service to have just started flapping.
 -   If the service was previously flapping and 31% is less than the low
-    flap threshold, Centreon Engine considers the service to have just
+    flap threshold, IT Monitoring Engine considers the service to have just
     stopped flapping.
 
 If neither of those two conditions are met, the flap detection logic
@@ -99,7 +99,7 @@ currently flapping or it is still flapping.
 ### Enabling Flap Detection
 
 Go to the **Configuration > Pollers > Engine configuration** menu and
-select a scheduler (Centreon Engine). In the **Check Options** tab, you
+select a scheduler (IT Monitoring Engine). In the **Check Options** tab, you
 can enable the detection of flapping:
 
 ![image](../../assets/managing-notifications/flap_engine_conf.png)
@@ -108,7 +108,7 @@ You can modify the thresholds or keep preconfigured.
 
 ### Flap Detection for Services
 
-If you enable the flapping detection for a scheduler (Centreon Engine),
+If you enable the flapping detection for a scheduler (IT Monitoring Engine),
 the process will by applied for all resources monitored by it.
 
 You can disable / enable flapping detection for a host through
@@ -129,7 +129,7 @@ Use templates to facilitate configuration
 
 ### Flap Detection for Hosts
 
-If you enable the flapping detection for a scheduler (Centreon Engine),
+If you enable the flapping detection for a scheduler (IT Monitoring Engine),
 the process will by applied for all resources monitored by it.
 
 You can disable / enable flapping detection for a service through
