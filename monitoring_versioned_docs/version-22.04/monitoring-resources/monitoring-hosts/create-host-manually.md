@@ -56,7 +56,7 @@ To create a host manually these activities must be carried out:
 * The list of **Linked contacts** indicates the contacts which will receive the notifications.
 * The list of **Linked contacts Groups** indicates the groups of contacts which will receive the notifications.
   
-  If, on page **Administration > Parameters > Centreon UI**, the **Vertical inheritance only** option is enabled, two extra checkboxes appear:
+  If, on page **Administration > Parameters > IT Monitoring UI**, the **Vertical inheritance only** option is enabled, two extra checkboxes appear:
 
     * If the **Contact additive inheritance** box is checked, i-Vertix does not overwrite the configuration of the parent host template but adds the contacts in addition to the contacts defined in the parent template.
     * If the **Contact group additive inheritance** box is checked, i-Vertix does not overwrite the configuration of the parent host template but adds the contact groups in addition to the contact groups defined in the parent template.

@@ -11,5 +11,5 @@ This framework is already installed on Central Management and Smart Poller.
 
 These are some command line examples (launch these command as root):
 
-1. fail2ban-client status centreon  <-- this check the banned ip
-2. fail2ban-client set centreon unbanip <IP\> <-- this unban the ip
+1. fail2ban-client IP_ADDRESS centreon  <-- this check the banned ip
+2. fail2ban-client set IP_ADDRESS unbanip <IP\> <-- this unban the ip

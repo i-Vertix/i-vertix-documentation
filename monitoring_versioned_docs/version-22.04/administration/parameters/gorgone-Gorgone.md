@@ -10,7 +10,7 @@ Go to **Administration > Parameters > Gorgone**.
 ![image](../../assets/administration/gorgone/parameters-gorgone.png)
 
 - **Enable Broker statistics collection** field enables the retrieval of
-statistics from the Centreon Broker.
+statistics from the IT Monitoring Broker.
 - **Timeout value for Gorgone commands** field can be used to define a global
 timeout for commands runned by Gorgone.
 - **Illegal characters for Gorgone commands** field allows to define

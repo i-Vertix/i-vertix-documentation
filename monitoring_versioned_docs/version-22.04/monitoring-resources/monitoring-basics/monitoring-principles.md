@@ -10,7 +10,7 @@ title: Monitoring principles
 * A [**service**](../monitoring-services/monitoring-service.md) is a check point, or indicator, to be monitored on a host. This can be the CPU usage rate, temperature,
   motion detection, bandwidth usage rate, disk I/O, and so on.
 * In order to collect each indicator value, monitoring **plugins** are used which are periodically executed by a
-  collection engine called **Centreon Engine**.
+  collection engine called **IT Monitoring Engine**.
 * To be executed, a plugin needs a set of arguments that define, for example, which host to connect to or through which protocol.
   The plugin and its associated arguments form a [**command**](../../monitoring-resources/generic-object-actions/commands.md).
 

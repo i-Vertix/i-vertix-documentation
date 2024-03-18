@@ -35,6 +35,6 @@ platform.
 </TabItem>
 </Tabs>
 
-\* Monitoring actions are all actions provided by Centreon UI like downtimes,
+\* Monitoring actions are all actions provided by IT Monitoring UI like downtimes,
 acknowledgements, etc and configuration export.
 

@@ -5,7 +5,7 @@ title: My Account
 
 ## My Account
 
-To connect to your i-Vertix web interface, go to URL: `http://IP_ADDRESS/centreon`. (Replace **IP_ADDRESS** by the IP address or FQDN of your i-Vertix web server (Central Management).
+To connect to your i-Vertix web interface, go to URL: `http://IP_ADDRESS/centreon`. (Replace **IP_ADDRESS** by the IP address or FQDN of your i-Vertix web server (Central Manager).
 
 Fill in your user name and associated password and click on the **Connect** button:
 

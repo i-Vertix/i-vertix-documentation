@@ -75,7 +75,7 @@ To create a service manually, go to **Configuration \> Services > Services by ho
 * **Freshness threshold** is expressed in seconds. If during this period no request for a change in the status of the service (passive command) is received the check command is executed.
 * **Flap Detection Enabled** allows to enable or disable the detection of disruption in the statuses (status value changing too often on a given period).
 * **Low flap threshold** and **High flap threshold** define the high and low thresholds for the detection of disruption in percentage of status change.
-* **Performance data processing** allows to enable or disable performance data processing (and hence the generation of performance graphics). This option is not necessary when Centreon Broker is use.
+* **Performance data processing** allows to enable or disable performance data processing (and hence the generation of performance graphics). This option is not necessary when Broker is use.
 * **Retain status information** and **Retention non status information** indicate if the information concerning or not concerning the status is saved after every time the check command is repeated.
 * **Stalking Options** defined the options to be recorded if retention is enabled.
 * **Event handler enabled** allows us to enable or disable the events manager.
@@ -95,7 +95,7 @@ To create a service manually, go to **Configuration \> Services > Services by ho
 * **Icon** indicates the icon use for the service.
 * **Alt icon** is the text use if the icon cannot be Displays.
 * **Service severity** indicates the criticality level of the service.
-* **Geographic coordinates** defines geographical coordinates used by the Centreon MAP module to position the resource on a map. Define "Latitude,Longitude", for example for Amsterdam coordinates set "52.37,4.89".
+* **Geographic coordinates** defines geographical coordinates used by the MAP feature to position the resource on a map. Define "Latitude,Longitude", for example for Amsterdam coordinates set "52.37,4.89".
 
 #### Additional information
 

@@ -181,7 +181,7 @@ submission can be canceled.
 
 :::note
 
-It's only possible with Centreon Broker and on central monitoring.
+It's only possible with Broker and on Central Manager.
 
 :::
 

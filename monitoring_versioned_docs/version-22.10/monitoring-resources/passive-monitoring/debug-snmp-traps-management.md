@@ -93,7 +93,7 @@ Then restart **centreontrapd**:
 systemctl restart centreontrapd
 ```
 
-### Centreon Gorgone
+### Gorgone
 
 The Gorgoned daemon must be running to pass information from centerontrapd to the monitoring engine as an external command.
 Enable the debug mode via the **Administration > Parameters > Debug** menu and restart the process.
@@ -101,14 +101,14 @@ Enable the debug mode via the **Administration > Parameters > Debug** menu and r
 If any external commands are sent to the monitoring engine, please check the path to "$cmdFile" in the **/etc/centreon/conf.pm** configuration file.
 The path should be **/var/lib/centreon/centcore.cmd** in a Central i-Vertix IT Monitoring server.
 
-### Centreon Engine
+### IT Monitoring Engine
 
 The monitoring engine must receive external commands from i-Vertix Gorgone process in order to change status and output of the passive service.
 
 :::info
 
 Please check the event log.
-For Centreon Engine, the path is **/var/log/centreon-engine/centengine.log**.
+For IT Monitoring Engine, the path is **/var/log/centreon-engine/centengine.log**.
 
 :::
 

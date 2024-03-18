@@ -70,7 +70,7 @@ of the command by the scheduler, each of the arguments and macros are replaced b
 Each macro appears in the form ```$value$```:
 
 ```shell
-$CENTREONPLUGINS$/centreon_linux_snmp.pl --plugin=os::linux::snmp::plugin --mode=cpu \
+$IVERTIXPLUGINS$/os_linux_snmp.pl --plugin=os::linux::snmp::plugin --mode=cpu \
 --hostname=$HOSTADDRESS$ --snmp-version='$_HOSTSNMPVERSION$' \
 --snmp-community='$_HOSTSNMPCOMMUNITY$' $_HOSTSNMPEXTRAOPTIONS$ \
 --warning-average='$_SERVICEWARNING$' \
@@ -88,9 +88,9 @@ Good practice requires replacing the arguments by *[custom macros](macros.md#cus
 ### SSH connector
 
 Centreon SSH Connector is a free software from Centreon available under the Apache Software License version 2 (ASL 2.0).
-It speeds up execution checks over SSH when used along Centreon Engine.
+It speeds up execution checks over SSH when used along IT Monitoring Engine.
 
 ### Perl connector
 
 Centreon Perl Connector is a free software from Centreon available under the Apache Software License version 2 (ASL 2.0).
-It speeds up execution of Perl scripts when used along Centreon Engine.
+It speeds up execution of Perl scripts when used along IT Monitoring Engine.

@@ -83,7 +83,7 @@ The following window is displayed:
 
 :::
 
-## Restore of i-Vertix central server
+## Restore of i-Vertix Central Manager
 
 Restore process is divided in two main steps:
 
@@ -222,10 +222,10 @@ You have to do this only if you're using the monitoring agents.
 :::
 
 
-### Generate Centreon-Engine configuration files within centreon
+### Generate Centreon-Engine configuration files within IT Monitoring
 
 Last step is to generate the Centreon-Engine configuration files from
-within Centreon UI.
+within IT Monitoring UI.
 
 ### Graphs rebuild
 

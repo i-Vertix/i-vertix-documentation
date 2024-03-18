@@ -111,4 +111,4 @@ And to authorize the following `redirect URI` to forward your connecter users to
 ```
 
 > Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix IT Monitoring server.
-> For example: `https://centreon.domain.net/centreon/centreon/websso`
+> For example: `https://i-vertix.domain.net/centreon/centreon/websso`
