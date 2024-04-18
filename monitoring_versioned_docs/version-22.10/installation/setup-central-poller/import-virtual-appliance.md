@@ -8,7 +8,7 @@ title: How to import a Virtual appliance
 **i-Vertix** support provides a ready-to-use virtual machine.
 This virtual machine is available in **OVA** format for VMware environments.
 
-It's based on the **Linux CentOS 7** (and all required packages) operating system and includes a i-Vertix installation that allows you to easily start your first monitoring.
+It's based on the **Oracle Linux 8** (and all required packages) operating system and includes a i-Vertix installation that allows you to easily start your first monitoring.
 
 **Server Requirements (VMs) for VMware**
 
@@ -25,17 +25,17 @@ The database used is **MariaDB** (10.5.x) and is already included in the Central
 
 i-Vertix Central Manager web interface is compatible with the following web browsers (see [Compatibility List](../before-you-start/compatibility.md)):
 
-• Google Chrome (latest versions)
+- Google Chrome (latest versions)
 
-• Mozilla Firefox (latest versions)
+- Mozilla Firefox (latest versions)
 
-• Apple Safari (latest versions)
+- Apple Safari (latest versions)
 
-• Microsoft Edge (latest versions)
+- Microsoft Edge (latest versions)
 
 Screen resolution should be at least 1280x768
 
-**i-Vertix Central Manager Recommended characteristics**
+**i-Vertix Central Manager recommended specifications**
 - CPU: 4 vCPU (*)
 - RAM: 8 GB
 - HDD: 250 GB or greater (**)
@@ -48,7 +48,7 @@ Screen resolution should be at least 1280x768
 
 :::
 
-**i-Vertix Smart Poller Recommended characteristics**
+**i-Vertix Smart Poller recommended specifications**
 
 - CPU: 2 vCPU
 - RAM: 8 GB (***)
@@ -62,7 +62,7 @@ The VM uses the **Thin Provision** option to save as much free space as possible
 
 :::
 
-# Steps to import a vm in VMware
+# Steps to import a VM in VMware
 
 ## Downloading the virtual machine
 

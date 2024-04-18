@@ -8,12 +8,12 @@ import TabItem from '@theme/TabItem';
 
 ## Virtualization compatibility
 
-i-Vertix Central and Pollers supports different virtualization and Hyperscaler plattforms such as
+i-Vertix Central and Pollers support multiple virtualisation and hyperscaling platforms including
 
-| **Plattform**   | **i-Vertix 3** | **i-Vertix 4** |
+| **Platform**   | **i-Vertix 4** | **i-Vertix 3** |
 |-----------------|----------------|----------------|
-| **VMware**      | 6.5 or higher  | 6.5 or higher  |
-| **Hyper-V**     | only Gen 1     | yes            |
+| **VMware**      | 6.7 or higher  | 6.5 or higher  |
+| **Hyper-V**     | yes            | yes Gen 1      |
 | **KVM**         | yes            | yes            |
 | **Nutanix**     | yes            | yes            |
 | **Sangfor**     | yes            | yes            |
@@ -36,7 +36,7 @@ Architecture: Distributed
 
 **i-Vertix Central server**
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 8 GB      |
@@ -46,7 +46,7 @@ Architecture: Distributed
 
 To handle production environments (up to 7.000 services with checks every 5 minutes)
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 4 GB      |
@@ -61,7 +61,7 @@ Architecture: Distributed
 
 **i-Vertix Central server**
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 8 GB      |
@@ -71,7 +71,7 @@ Architecture: Distributed
 
 To handle production environments (up to 7.000 services with checks every 5 minutes)
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 4 GB      |
@@ -87,7 +87,7 @@ Architecture: Distributed
 
 **i-Vertix Central server**
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 8 GB      |
@@ -95,7 +95,7 @@ Architecture: Distributed
 
 **Database server**
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 12 GB     |
@@ -104,7 +104,7 @@ Architecture: Distributed
 **i-Vertix Poller**
 To handle production environments (up to 7.000 services with checks every 5 minutes)
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 4 GB      |
@@ -120,7 +120,7 @@ Architecture: Distributed
 
 **i-Vertix Central server**
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 8 GB      |
@@ -128,7 +128,7 @@ Architecture: Distributed
 
 **Database server**
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 8 vCPU    |
 | RAM           | 16 GB     |
@@ -137,7 +137,7 @@ Architecture: Distributed
 **i-Vertix Poller**
 To handle production environments (up to 7.000 services with checks every 5 minutes)
 
-| **Ressource** | **Value** |
+| **Resource** | **Value** |
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 4 GB      |

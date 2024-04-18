@@ -69,3 +69,5 @@ Follow the instructions in the email and download the license using the followin
         License       [ INVALID ]
         to
         License       [ VALID ]
+
+The system is now ready. Proceed with the [first access to the web console](../first-web-access/first-web-access.md)

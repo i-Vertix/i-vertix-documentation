@@ -1,6 +1,6 @@
 ---
 id: first-login
-title: First login
+title: First CLI login
 ---
 
 import Tabs from '@theme/Tabs';
@@ -16,56 +16,7 @@ It is recommended that the startup process is checked through the **hypervisor c
 Once the VM is started, the following screen with a login prompt will be displayed:
 
 <Tabs>
-<TabItem value="i-Vertix3" label="i-Vertix3 (Central & Poller)" default>
-
-![Login](../../assets/setup-startup-central-poller/first-login.png)
-
-On **i-Vertix3** system you will need to log into i-Vertix Monitoring console to configure the network settings, using the following credentials:
-
-- User: '**admin**'
-
-- Password: '**password**' (change as soon as possible, see [Password Modification](./password-modification.md))
-
-:::danger
-
-If you fail the login process three times, the IP Address will be blocked for 30 minutes (see [fail2ban](../../installation/security-aspects/fail2ban.md)).
-
-:::
-
-After the authentication, a menu that allows you to configure the next steps is displayed
-
-![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
-
-:::note
-
-If the menu doesn’t appear automatically at startup, simply type on the console the command ```menu```.
-
-:::
-
----
-
-:::caution
-
-Please proceed now with the [network configuration](network-configuration.md).
-
-:::
-
----
-
-:::info
-
-An internet connection should always be available, most importantly for:
-
-- [License installation](license.md)
-
-- [Plugin Packs installation](../../monitoring-resources/monitoring-basics/plugin-packs.md)
-
-- [NTP configuration](ntp-configuration.md)
-
-:::
-
-</TabItem>
-<TabItem value="i-Vertix4" label="i-Vertix4 (Poller)">
+<TabItem value="i-Vertix4" label="i-Vertix4 (Central & Poller)" default>
 
 ![Login](../../assets/setup-startup-central-poller/first-login-v4.png)
 
@@ -92,6 +43,55 @@ If the menu doesn’t appear automatically at startup, simply type on the consol
 ```bash
 menu
 ```
+
+:::
+
+---
+
+:::caution
+
+Please proceed now with the [network configuration](network-configuration.md).
+
+:::
+
+---
+
+:::info
+
+An internet connection should always be available, most importantly for:
+
+- [License installation](license.md)
+
+- [Plugin Packs installation](../../monitoring-resources/monitoring-basics/plugin-packs.md)
+
+- [NTP configuration](ntp-configuration.md)
+
+:::
+
+</TabItem>
+<TabItem value="i-Vertix3" label="i-Vertix3 (Central & Poller)">
+
+![Login](../../assets/setup-startup-central-poller/first-login.png)
+
+On **i-Vertix3** system you will need to log into i-Vertix Monitoring console to configure the network settings, using the following credentials:
+
+- User: '**admin**'
+
+- Password: '**password**' (change as soon as possible, see [Password Modification](./password-modification.md))
+
+:::danger
+
+If you fail the login process three times, the IP Address will be blocked for 30 minutes (see [fail2ban](../../installation/security-aspects/fail2ban.md)).
+
+:::
+
+After the authentication, a menu that allows you to configure the next steps is displayed
+
+![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
+
+:::note
+
+If the menu doesn’t appear automatically at startup, simply type on the console the command ```menu```.
 
 :::
 
