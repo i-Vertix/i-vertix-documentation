@@ -31,7 +31,9 @@ The **object** has the following **properties**:
 * **Icon Properties**: select **icon size** and the **icon pack** that is to be used
 * **Service Status on Host Icon**: The host icon displays the most critical status of all services assigned to a host.
 
-![Image](../assets/maps/service_status_on_host_icon.gif)
+![Image](../assets/maps/host_status1.png)
+
+![Image](../assets/maps/host_status2.png)
 
 * **Label Properties**: if the label is enabled, it is possible to decide what information to display, its position relative to the object, size and color.
 * **Popup Properties**: to select/change popup messages settings and configure which information they should include
@@ -111,7 +113,9 @@ There are available two options: **Create New Marker** or **Create a new Gadget*
 
 ![Image](../assets/maps/ok_geo.png) ![Image](../assets/maps/critical_geo.png) ![Image](../assets/maps/warning_geo.png) ![Image](../assets/maps/unknown_geo.png) ![Image](../assets/maps/pending_geo.png) 
 
-![Image](../assets/maps/create_marker_map.gif)
+![Image](../assets/maps/create_marker1.png)
+
+![Image](../assets/maps/create_marker2.png)
 
 ### Create a new Gadget
 
