@@ -36,7 +36,7 @@ After the authentication, a menu that allows you to configure the next steps is 
 
 ![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu-v4.png)
 
-:::note
+:::info
 
 If the menu doesn’t appear automatically at startup, simply type on the console the command
 
@@ -48,7 +48,7 @@ menu
 
 ---
 
-:::caution
+:::info
 
 Please proceed now with the [network configuration](network-configuration.md).
 

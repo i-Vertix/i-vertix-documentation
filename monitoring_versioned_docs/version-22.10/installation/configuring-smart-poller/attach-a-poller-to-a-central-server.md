@@ -94,14 +94,6 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
 ## Gorgone configuration export
 
-### Synchronize the Plugins from Central to the Poller
-
-```bash
-sudo ./opt/pgum/scripts/i-vertix/sync_poller.sh
-```
-
-![sync_poller](../../assets/configuring-smart-poller/sync_poller.png)
-
 ### Create the Gorgone configuration for the new Poller
 
 1. logon on your i-Vertix Central GUI and go to **Configuration -> Pollers**
@@ -171,6 +163,15 @@ sudo ./opt/pgum/scripts/i-vertix/sync_poller.sh
     Check if the configuration is like the one shown in the picture.
 
     ![Final check](../../assets/configuring-smart-poller/poller-attach-14.png)
+
+
+### Synchronize the Plugins from Central to the Poller
+
+```bash
+sudo ./opt/pgum/scripts/i-vertix/sync_poller.sh
+```
+
+![sync_poller](../../assets/configuring-smart-poller/sync_poller.png)
 
 </TabItem>
 <TabItem value="i-Vertix3 Poller" label="i-Vertix3 Poller">

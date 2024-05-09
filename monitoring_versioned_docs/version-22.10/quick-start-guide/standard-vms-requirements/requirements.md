@@ -18,7 +18,7 @@ i-Vertix Central and Pollers support multiple virtualisation and hyperscaling pl
 | **Nutanix**     | yes            | yes            |
 | **Sangfor**     | yes            | yes            |
 | **AWS EC2**     | yes            | yes            |
-| **MS Azure VM** | no             | yes            |
+| **Azure VM**    | yes            | no             |
 
 ## Sizing recommendations
 
@@ -37,10 +37,10 @@ Architecture: Distributed
 **i-Vertix Central server**
 
 | **Resource** | **Value** |
-|---------------|-----------|
-| CPU           | 4 vCPU    |
-| RAM           | 8 GB      |
-| HDD           | 250 GB    |
+|---------------|-------------------|
+| CPU           | 4 vCPU            |
+| RAM           | 8 GB              |
+| HDD           | 150 GB or greater |
 
 **i-Vertix Poller**
 
@@ -50,6 +50,7 @@ To handle production environments (up to 7.000 services with checks every 5 minu
 |---------------|-----------|
 | CPU           | 4 vCPU    |
 | RAM           | 4 GB      |
+| HDD           | 60        |
 
 </TabItem>
 <TabItem value="2500" label="2.500 Hosts">

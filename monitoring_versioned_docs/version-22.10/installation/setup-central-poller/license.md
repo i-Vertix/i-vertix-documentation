@@ -21,6 +21,8 @@ The Central Manager must access the Internet so the license can be activated.
 
 ![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
 
+![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu-iv4.png)
+
 3. Choose **9) i-Vertix license management**
 
 ![License menu](../../assets/setup-startup-central-poller/license-menu.png)

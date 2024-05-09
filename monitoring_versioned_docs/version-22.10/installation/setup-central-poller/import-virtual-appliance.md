@@ -38,7 +38,7 @@ Screen resolution should be at least 1280x768
 **i-Vertix Central Manager recommended specifications**
 - CPU: 4 vCPU (*)
 - RAM: 8 GB
-- HDD: 250 GB or greater (**)
+- HDD: 150 GB or greater (**)
 
 :::note
 
