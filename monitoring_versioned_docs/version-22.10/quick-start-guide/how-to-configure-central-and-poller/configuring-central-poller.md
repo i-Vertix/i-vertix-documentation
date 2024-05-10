@@ -11,7 +11,7 @@ Once the ova has been downloaded, import the Central Manager and Smart Poller im
 
 Start the vm and wait for the login screen.
 
-![First_login](../../assets/setup-startup-central-poller/first-login.png)
+![First_login](../../assets/setup-startup-central-poller/first-login-v4.png)
 
 
 :::note
@@ -26,7 +26,7 @@ You will need to log into i-Vertix Monitoring console to configure the network s
 
 * **User: 'admin'**
 
-* **Password: 'password'** (to be changed as soon as possible)
+* **Password: 'changeme'** (to be changed as soon as possible)
 
 See the complete procedure for [first Login to VMs](../../installation/setup-central-poller/first-login.md)
 
@@ -46,13 +46,11 @@ To activate your licence, provide i-Vertix with the necessary information as des
 
 Once the license is activated, you can access the Central Manager web console.
 
-You can log in using the default credentials:
+Open your favourite browser and enter the IP of the Central Manager, you can log in using the default credentials:
 
 * Username: **admin**
 
-* Password: **password**
+* Password: **ChangeMe$2024**
 
 ![i-Vertix web login](../../assets/configuring-smart-poller/ivertix-web-login.png)
-
-How to [access to Web console](../../installation/configuring-smart-poller/first-web-access.md)
 

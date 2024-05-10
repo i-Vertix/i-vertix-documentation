@@ -19,11 +19,11 @@ The Central Manager must access the Internet so the license can be activated.
 
 2. Launch the command **menu**
 
-![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
+![iVertix menu](../../assets/setup-startup-central-poller/central4_menu.png)
 
 3. Choose **9) i-Vertix license management**
 
-![License menu](../../assets/setup-startup-central-poller/license-menu.png)
+![License menu](../../assets/setup-startup-central-poller/central4_license.png)
 
 4. Copy the Unique Identifier (UUID) associatedwith the VM
 
@@ -52,11 +52,11 @@ Follow the instructions in the email and download the license using the followin
 
 2. Launch the command **menu**
 
-![iVertix menu](../../assets/setup-startup-central-poller/ivertix-menu.png)
+![iVertix menu](../../assets/setup-startup-central-poller/central4_menu.png)
 
 3. Select **9) i-Vertix license management**
 
-![License menu](../../assets/setup-startup-central-poller/license-menu.png)
+![License menu](../../assets/setup-startup-central-poller/central4_license.png)
  
 4. Type **3) Download license key informations**
 
@@ -69,3 +69,5 @@ Follow the instructions in the email and download the license using the followin
         License       [ INVALID ]
         to
         License       [ VALID ]
+
+The system is now ready. Proceed with the [first access to the web console](../first-web-access/first-web-access.md)

@@ -44,10 +44,13 @@ sidebar:
           - smtp-configuration
           - password-modification
           - license
+      - id: first-web-access
+        label: First web access
+        items:
+          - first-web-access
       - id: configuring-smart-poller
         label: Configuring Smart Poller
         items:
-          - first-web-access
           - attach-a-poller-to-a-central-server
           - poller-communications
           - advanced-configuration
