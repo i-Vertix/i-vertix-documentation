@@ -36,6 +36,8 @@ i-Vertix Central Manager web interface is compatible with the following web brow
 Screen resolution should be at least 1280x768
 
 **i-Vertix Central Manager recommended specifications**
+
+- Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/standard-vms-requirements/requirements.md)
 - CPU: 4 vCPU (*)
 - RAM: 8 GB
 - HDD: 150 GB or greater (**)
@@ -50,6 +52,7 @@ Screen resolution should be at least 1280x768
 
 **i-Vertix Smart Poller recommended specifications**
 
+- Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/standard-vms-requirements/requirements.md)
 - CPU: 2 vCPU
 - RAM: 8 GB (***)
 - HDD: 60 GB
@@ -63,6 +66,14 @@ The VM uses the **Thin Provision** option to save as much free space as possible
 :::
 
 # Steps to import a VM in VMware
+
+## Requirements
+
+i-Vertix Central and Pollers support multiple virtualisation and hyperscaling platforms. These are VMware requirements:
+
+| **Platform**   | **i-Vertix 4** | **i-Vertix 3** |
+|-----------------|----------------|----------------|
+| **VMware**      | 6.7 or higher  | 6.5 or higher  |
 
 ## Downloading the virtual machine
 
@@ -110,6 +121,6 @@ Once the OVA has been imported into VMWare, Virtual Hardware (CPU and Memory) ha
 
 Start the vm and wait for the login screen.
 
-![First_login](../../assets/setup-startup-central-poller/first-login.png)
+![First_login](../../assets/setup-startup-central-poller/first-login-v4.png)
 
 Now you can [login](first-login.md) via VMware console and configure the ip address.
