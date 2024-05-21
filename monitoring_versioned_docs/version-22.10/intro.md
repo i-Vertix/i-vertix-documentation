@@ -3,7 +3,7 @@ id: intro
 title: Getting started
 ---
 
-Welcome to the comprehensive and game-changing i-Vertix IT Monitoring Solution manual your ultimate companion in unlocking the full potential of your IT infrastructure!
+Welcome to the comprehensive and game-changing i-Vertix IT Monitoring Solution manual your ultimate companion in unlocking the full potential of your IT infrastructure! Test by Barney
 
 Our team of experts has meticulously crafted this guide to ensure you harness every ounce of i-Vertix's potential. From installation and configuration to advanced monitoring techniques, we leave no stone unturned in delivering comprehensive and easy-to-follow instructions.
 
