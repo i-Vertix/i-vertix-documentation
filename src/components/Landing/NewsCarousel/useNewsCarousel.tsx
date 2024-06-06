@@ -18,7 +18,7 @@ const useNewsCarousel = () => {
 
     const news = useMemo((): News[] => [
         {
-            title: "22.10 on the way",
+            title: "23.10 on the way",
             image: "/img/landing/news/news_1.png",
             text: <p>
                 We are finalizing our latest work to release a new major update of the i-Vertix monitoring.
