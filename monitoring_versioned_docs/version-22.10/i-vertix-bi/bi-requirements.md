@@ -1,11 +1,11 @@
 ---
-id: bi-overview
+id: bi-requirements
 title: Requirements
 ---
 
 ## Dedicated i-Vertix BI machine
 
-The i-Vertix BI runs on its own instance to not prevent negative impacts of the resources on the central monitoring system. Some tasks of the i-Vertix BI are very resource-intensive and it is therefore necessary to plan the hardware for the i-Vertix BI system accordingly.
+The i-Vertix BI runs on its own instance to prevent negative impacts of the resources on the central monitoring system. Some tasks of the i-Vertix BI are very resource-intensive and it is therefore necessary to plan the hardware for the i-Vertix BI system accordingly.
 
 The basic factor here is the size of the monitoring system itself, i.e. how many hosts and services are monitored and how much data is generated approximately every day.
 
