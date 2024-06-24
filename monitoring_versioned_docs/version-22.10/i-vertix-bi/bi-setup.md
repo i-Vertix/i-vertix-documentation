@@ -229,5 +229,3 @@ If you don't already have the dedicated Plugin Pack installed, head over to the 
 The setup is now complete and almost everything is ready now for your first report job.
 
 To create your first report job, Report Templates are required. You can get them from the integrated [i-Vertix Report Store](./bi-report-store).
-
-
