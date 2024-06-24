@@ -27,7 +27,7 @@ After the startup-process is completed, log into the command line of the i-Verti
 
 Following menu should appear:
 
-[bi menu](../assets/bi/menu.png)
+![bi menu](../assets/bi/menu.png)
 
 :::note
 
@@ -39,13 +39,13 @@ If the menu does not appear or if you are in the normal command line interface, 
 
 The first real step after the initial system-startup should be changing the password.
 
-To change the password, select option `4) System settings` from the menu.
+To change the admin users password, select option `8) i-Vertix BI settings` from the menu.
 
-Now select option `5) Change password`.
+Now select option `5) change user password`.
 
 You can now enter your new password.
 
->It is strongly recommended to choose a strong password, as there is no further SSH restriction (such as ssh-keys) implemented.
+> It is strongly recommended to choose a strong password, as there is no further SSH restriction (such as ssh-keys) implemented.
 
 ### Network configuration
 
@@ -57,12 +57,10 @@ Keep in mind that the i-Vertix BI system requires a connection to the **Monitori
 
 :::
 
-To change the network settings, select option `4) System settings` from the menu.
-
-Now select option `1) Change network settings`. The *Network Manager* should open.
+To change the network settings, select option `5) Network settings` from the menu. The *Network Manager* should open.
 
 1. Choose `Edit a Connection`
-2. Select the Ethernet connection to edit (should be `ens192` or similar) - navigate with keyboard arrows
+2. Select the Ethernet connection to edit (should be `ens192`/`ens33` or similar) - navigate with keyboard arrows
 3. Configure following fields:
    
    **IPv4 CONFIGURATION**: Manual
@@ -85,7 +83,7 @@ Now select option `1) Change network settings`. The *Network Manager* should ope
 
 :::info
 
-From now on you should be able to connect via SSH (port 22) to the i-Vertix BI server
+From now on you should be able to connect via SSH (port 22) to the i-Vertix BI server (first you may need to configure your firewall)
 
 :::
 
@@ -93,17 +91,15 @@ From now on you should be able to connect via SSH (port 22) to the i-Vertix BI s
 
 By default, the timezone is set to Europe/Rome.
 
-If you need to change the timezone, select option `4) System settings` from the menu.
+If you need to change the timezone, select option `7) i-Vertix BI settings` from the menu.
 
-Now select option `2) Change timezone`.
+Now select option `2) change timezone`.
 
 You will be asked to enter the new timezone. Here is a list of valid *TZ identifiers* to insert: [tz database on Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 ### Proxy settings
 
-If you need to set a proxy server for your system, select option `4) System settings` from the menu.
-
-Now select option `3) Proxy settings`.
+If you need to set a proxy server for your system, select option `6) Proxy settings` from the menu.
 
 You will be guided through the further process by the program itself.
 
@@ -121,7 +117,7 @@ To complete this step the *i-Vertix Business Intelligence* module needs to be fu
 
 :::
 
-To launch the setup script, which configures the API and the reporting engine, select option `9) Setup i-Vertix services` from the menu.
+To launch the setup script, which configures the REST API and the report engine, select option `9) Setup i-Vertix BI services` from the menu.
 
 You will be asked for the corret path to the .env file, which is located by default in `/usr/share/ivertix-bi/backend/.env`. If no custom modifications were made, you can simply accept the provided path.
 
