@@ -1,19 +1,19 @@
 import React from "react";
 
-export default ({children}: {children: React.ReactNode}) => (
+export default ({children, num}: {children?: React.ReactNode, num?: number}) => (
     <span
         style={{
             backgroundColor: "#8B0000",
             borderRadius: "50%",
             color: "#fff",
-            minWidth: "18px",
-            minHeight: "18px",
+            height: "1em",
+            aspectRatio: "1 / 1",
             textAlign: "center",
             display: "inline-block",
             marginRight: "4px",
             lineHeight: 1
         }}
     >
-        {children}
+        {children ?? num}
     </span>
 );
