@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({children, num}: {children?: React.ReactNode, num?: number}) => (
+export default ({children, num, disableMargin = false}: {children?: React.ReactNode, num?: number, disableMargin?: boolean}) => (
     <span
         style={{
             backgroundColor: "#8B0000",
@@ -10,7 +10,7 @@ export default ({children, num}: {children?: React.ReactNode, num?: number}) => 
             aspectRatio: "1 / 1",
             textAlign: "center",
             display: "inline-block",
-            marginRight: "4px",
+            marginRight: disableMargin ? "0px" : "4px",
             lineHeight: 1
         }}
     >
