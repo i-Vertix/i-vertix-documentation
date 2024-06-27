@@ -75,6 +75,7 @@ const config = {
     ],
 
     plugins: [
+        'plugin-image-zoom',
         [
             '@docusaurus/plugin-content-docs',
             {
@@ -109,13 +110,24 @@ const config = {
     ],
 
     themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+        /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
             docs: {
                 sidebar: {
                     hideable: true,
                     autoCollapseCategories: true
                 }
+            },
+            imageZoom: {
+                // CSS selector to apply the plugin to, defaults to '.markdown img'
+                selector: '.markdown img',
+                // Optional medium-zoom options
+                // see: https://www.npmjs.com/package/medium-zoom#options
+                options: {
+                    margin: 24,
+                    scrollOffset: 0,
+                    background: 'rgba(0,0,0,0.8)',
+                },
             },
             algolia: {
                 // The application ID provided by Algolia
@@ -139,7 +151,6 @@ const config = {
                 //... other Algolia params
             },
             // Replace with your project's social card
-            image: 'img/docusaurus-social-card.jpg',
             navbar: {
                 title: '',
                 logo: {

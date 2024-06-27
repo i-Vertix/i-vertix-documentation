@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import styles from "@site/src/components/Landing/Header/styles.module.css";
+import styles from "./styles.module.css";
 import React from "react";
 
 const Header = () => {
