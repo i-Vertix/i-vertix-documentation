@@ -77,16 +77,6 @@ const config = {
     plugins: [
         'plugin-image-zoom',
         [
-            '@docusaurus/plugin-ideal-image',
-            {
-                quality: 70,
-                max: 1030,
-                min: 640,
-                steps: 2,
-                disableInDev: true,
-            },
-        ],
-        [
             '@docusaurus/plugin-content-docs',
             {
                 id: 'monitoring',
@@ -161,7 +151,6 @@ const config = {
                 //... other Algolia params
             },
             // Replace with your project's social card
-            image: 'img/docusaurus-social-card.jpg',
             navbar: {
                 title: '',
                 logo: {
