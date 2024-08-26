@@ -26,43 +26,52 @@ description of the LDAP server
 - **Enable LDAP authentication**: enable authentication via the
 LDAP server
 - **Store LDAP password**: can be used to store user passwords in the
-database, useful to authenticate users in the event of loss of connection
-with the LDAP
+database, which is useful to authenticate users in the event of loss of connection
+with the LDAP server
 - **Auto import users**:
-    - **Yes** : All users in the directory will be able to log in to i-Vertix. The first time they log in, they will be created in i-Vertix, on page **Configuration > Contacts > Contacts/Users**, with their LDAP parameters (name, first name, email address...).
-    - **No** : Users will only be able to log in to i-Vertix if their account has been imported manually into i-Vertix.
-    - **Import users manually** : Whether auto import is enabled or not, you can use this button to import some users to the list of contacts.
+    - **Yes**: All users in the directory will be able to log in to Centreon. The first time they log in, they will be created in Centreon, on the **Configuration > Contacts > Contacts/Users** page, with their LDAP parameters (last name, first name, email address, etc.).
+    - **No**: Users will only be able to log in to Centreon if their account has been imported manually into Centreon.
+    - **Import users manually**: Whether or not auto import is enabled, you can use this button to import some users to the list of contacts.
 
 - **LDAP search size limit**: can be used to limit the number of users to search for (1000 users maximum).
 - **LDAP search timeout**: can be used define the maximum time for the
 LDAP search.
-- **Contact template**: defines the [contact template](../../managing-users-contacts/contact-templates.md) that will be linked
+- **Contact template**: defines the [contact template](../../monitoring/basic-objects/contacts-templates.md) that will be linked
 to all users imported from this LDAP directory.
 - **Default contactgroup**: is used to add a new user to
-a default contactgroup. This allows you to [grant rights](../../managing-users-contacts/acl.md) indirectly to the LDAP users.
+a default contactgroup. This allows you to [grant rights](../access-control-lists.md) indirectly to the LDAP users.
 - **Use service DNS**: indicates if it is necessary to use the DNS server
 to solve the IP address of the LDAP directory.
 - **Enable LDAP synchronization on login**: If enabled, a user LDAP
-synchronization will be performed on login to update contact's data and
-calculate new i-Vertix ACLs.
+synchronization will be performed on login to update the contact data and
+calculate new Centreon ACLs.
 - **LDAP synchronization interval (in hours)**: Displayed only if the previous
 option is enabled. This field is used to specify the time between two LDAP
 synchronizations.
 
-:::info
+> The contact's LDAP data won't be updated in Centreon until the next
+> synchronization is expected.
+>
+> If needed, "on-demand" synchronization is
+> available from the **Administration > Session** page and from the
+> **Configuration > Users > Contact / Users** list.
+>
+> The interval is expressed in hours. By default, this field is set to the lower
+> value: 1 hour.
 
-The contact's LDAP data won't be updated in i-Vertix until the next synchronization is expected.
-If needed, "on-demand" synchronization are available from the **Administration > Session** page and from the **Configuration > Users > Contact/Users** list.
-The interval is expressed in hours. By default, this field is set to the lower value : 1 hour.
-We save a timestamp as reference date in the DB and use the CentAcl CRON to update it.
-The reference date is used to calculate the next expected LDAP synchronization.
-If you modify one of these two fields the reference timestamp will be reset to your current time.
-The reference date won't be updated if you modify or not, only the other fields/options.
-
-:::
+> We save a timestamp as reference date in the DB and use the CentAcl CRON to
+> update it.
+>
+> The reference date is used to calculate the next expected LDAP synchronization.
+>
+> If you modify one of these two fields, the reference timestamp will be reset to
+> your current time.
+>
+> The reference date will not be updated, whether or not you make changes; only the other fields
+> / options are updated.
 
 - **LDAP servers**: can be used to add one or more LDAP directories to
-which i-Vertix will connect.
+which Centreon will connect.
 
 The table below summarizes the settings to add an LDAP server:
 
@@ -74,43 +83,21 @@ The table below summarizes the settings to add an LDAP server:
 | TLS          | Indicates if the TLS protocol is used for the connection to the server |
 
 - **Bind user** and **Bind password**: define the user name and the
-password for logging to the LDAP server
-- **Protocol version**: indicates the version of the protocol using to
-login
+password for logging on to the LDAP server
+- **Protocol version**: indicates the version of the protocol used to
+log in
 - **Template**: can be used to pre-configure the search filters for users
-on the LDAP directory. These filters serve to propose, by default, a search
-on the MS Active Directory, Okta or of Posix type directories.
+on the LDAP directory. These filters are used to propose, by default, a search
+on the MS Active Directory, Okta, or Posix-type directories.
 
-:::caution
+> Before any import, check the default settings proposed. If you have not selected
+> a Model, you will need to define the search filters manually by filling in the
+> fields.
 
-Before any import, check the default settings proposed. If you have not selected a Model, you will need to define the search filters manually by filling in the fields.
-
-:::
-
-
-With CentOS 7, it's possible to not check server certificate, follow procedure:
-
-Add the following line in file "/etc/openldap/ldap.conf":
-
-```shell
-TLS_REQCERT never
-```
-
-Then restart Apache:
-
-<Tabs groupId="sync">
-<TabItem value="Alma/ RHEL / Oracle Linux 8" label="Alma/ RHEL / Oracle Linux 8">
-
-```shell
-systemctl restart httpd
-```
-
-</TabItem>
-<TabItem value="CentOS 7" label="CentOS 7">
-
-```shell
-systemctl restart httpd24-httpd
-```
-
-</TabItem>
-</Tabs>
+> You can use **Okta** as LDAP server with [SWA
+> plugin](https://help.okta.com/en/prod/Content/Topics/Apps/Apps_Configure_Template_App.htm).
+> Please define:
+>
+> - **uid=<USER\>,dc=<ORGANIZATION\>,dc=okta,dc=com** for the **Bind DN** field
+> - **ou=<OU\>,dc=<ORGANIZATION\>,dc=okta,dc=com** \*\* for the **Search group
+> base DN** field.

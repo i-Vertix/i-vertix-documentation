@@ -3,9 +3,9 @@ id: websso-WEBSSO
 title: Configuring a Web SSO connection
 ---
 
-Web SSO authentication relies on the Apache web server. It is Apache which, depending on its configuration, is
-responsible for authenticating the user before allowing access to the i-Vertix IT Monitoring web interface.
-Many Apache modules allow authentication via OIDC, SAMLv2, TLS, Kerberos, etc. protocols.
+Web SSO authentication relies on the Apache web server. According to its configuration, Apache is
+responsible for authenticating the user before allowing access to the Centreon web interface.
+Many Apache modules allow authentication via OIDC, SAMLv2, TLS, Kerberos, and other protocols.
 
 > Users must be present in the i-Vertix IT Monitoring configuration to access the interface.
 
@@ -39,14 +39,14 @@ Configure Identity Provider information:
 
 ### Step 3: Configure client addresses
 
-If you leave both fields blank, all IP adresses will be allowed to access the i-Vertix IT Monitoring interface.
+If you leave both fields blank, all IP addresses will be allowed to access the i-Vertix IT Monitoring interface.
 
 - **Trusted client addresses**: If you enter IP addresses in this field, only these IP addresses will be allowed to access the i-Vertix IT Monitoring interface. All other IP addresses will be blocked. IP addresses must be separated by commas.
-- **Blacklist client addresses**: These IP adresses will be blocked. All other IP addresses will be allowed to access the i-Vertix IT Monitoring interface.
+- **Blacklist client addresses**: These IP addresses will be blocked. All other IP addresses will be allowed to access the i-Vertix IT Monitoring interface.
 
 ### Step 4: Configure the Apache web server
 
-You must configure the Apache module allowing authentication with the identity provider.
+You must configure the Apache module that allows authentication with the identity provider.
 Once this configuration is done, you must modify the i-Vertix IT Monitoring configuration for Apache in order to allow access only
 to authenticated users.
 
@@ -62,7 +62,7 @@ to authenticated users.
       Alias ${base_uri} ${install_dir}/www/
   ```
 
-2. Replace it by:
+2. Replace it with:
 
   ```apache
       Header set X-Frame-Options: "sameorigin"
@@ -104,11 +104,11 @@ to authenticated users.
 ### Step 5: Configure your Identity Provider (IdP)
 
 Configure your IdP to add the i-Vertix IT Monitoring application to use your protocol to authenticate your users,
-And to authorize the following `redirect URI` to forward your connecter users to i-Vertix IT Monitoring:
+and to authorize the following `redirect URI` to forward your connected users to i-Vertix IT Monitoring:
 
 ```shell
 {protocol}://{server}:{port}/centreon/websso
 ```
 
-> Replace `{protocol}`, `{server}` and `{port}` by the URI to access to your i-Vertix IT Monitoring server.
+> Replace `{protocol}`, `{server}` and `{port}` with the URI to access to your i-Vertix IT Monitoring server.
 > For example: `https://centreon.domain.net/centreon/centreon/websso`

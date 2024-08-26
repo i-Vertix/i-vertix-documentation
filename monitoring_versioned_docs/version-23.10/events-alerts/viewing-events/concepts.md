@@ -4,7 +4,8 @@ title: Possible statuses of a resource
 ---
 
 Statuses show the availability of a host, and the availability or performance of a service. Each status has a
-precise meaning for the resource. 
+precise meaning for the resource.
+
 * The statuses and states of a resource
 can be seen on page [Resources Status](resources-status.md). You can filter the page according to these statuses and to certain states.
 * Some statuses are determined according to user-defined thresholds.
@@ -36,26 +37,19 @@ The table below summarizes all the possible statuses for a service.
 
 In addition to their status, resources can be in several states:
 
-- [Acknowledged](../../events-alerts/managing-alarms/acknowledge.md): indicates that the incident on the service or on the host
-    has been taken into account by a user. Acknowledged resources have a yellow background.
-- [In downtime](../../events-alerts/managing-alarms/downtimes.md): indicates that notifications are temporarily stopped. A downtime can be [planned in advance](../../events-alerts/managing-alarms/downtimes.md#recurrent-downtimes) to avoid receiving alerts during maintenance periods, or be set following an incident. Resources in downtime have a purple background.
-
-
--   [Flapping](../../events-alerts/managing-notifications/flapping.md): indicates that the status change
-    percentage of the resource is very high. This percentage is obtained
+* [Acknowledged](../../events-alerts/managing-alarms/acknowledge.md): indicates that the incident on the service or on the host has been taken into account by a user. Acknowledged resources have a yellow background.
+* [In downtime](../../events-alerts/managing-alarms/downtimes.md): indicates that notifications are temporarily stopped. A downtime can be [planned in advance](../../events-alerts/managing-alarms/downtimes.md#recurrent-downtimes) to avoid receiving alerts during maintenance periods, or be set following an incident. Resources in downtime have a purple background.
+* [Flapping](../../events-alerts/managing-notifications/flapping.md): indicates that the status change
+percentage of the resource is very high. This percentage is obtained
     from calculations performed by the network monitoring engine.  Flapping resources have the following icon in their **Details** panel:
     ![image](../../assets/alerts/concepts/flapping_icon.png)
-
 
 ## Status types
 
 The status of a resource can have one of these 2 types:
 
--   SOFT: Signifies that an incident has just been detected and that it
-    has to be confirmed.
--   HARD: Signifies that the status of the incident is confirmed. Once
-    the status is confirmed, the notification process is engaged
-    (sending of an email, SMS, etc.).
+* SOFT: Signifies that an incident has just been detected and that it has to be confirmed.
+* HARD: Signifies that the status of the incident is confirmed. Once the status is confirmed, the notification process is engaged (sending of an email, SMS, etc.).
 
 You can filter the view on the [Resources Status](resources-status.md) page according to the status type.
 
@@ -72,9 +66,9 @@ Example:
 
 A service has the following check settings:
 
--   Max check attempts: 3
--   Normal check interval: 5 minutes
--   Retry check interval: 1 minute
+* Max check attempts: 3
+* Normal check interval: 5 minutes
+* Retry check interval: 1 minute
 
 Let us imagine the following scenario:
 
@@ -92,4 +86,4 @@ Let us imagine the following scenario:
 | t+27 | 1/3           | OK       | HARD  | No           | Service is still OK.                                                                                                                                                                                          |
 | t+32 | 1/3           | UNKNOWN  | SOFT  | Yes          | Service is detected as changing to a SOFT non-OK state. Event handlers execute.                                                                                                                               |
 | t+33 | 2/3           | OK       | SOFT  | Yes          | Service experiences a SOFT recovery. Event handlers execute, but notification are not sent, as this wasn't a "real" problem. State type is set HARD and check # is reset to 1 immediately after this happens. |
-| t+34 | 1/3           | OK       | HARD  | No           | Service stabilizes in an OK state.                                                                                                                                                                            |
+| t+34 | 1/3           | OK       | HARD  | No           | Service stabilizes in an OK state. |

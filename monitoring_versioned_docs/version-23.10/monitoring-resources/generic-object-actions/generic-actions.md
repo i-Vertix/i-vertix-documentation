@@ -5,7 +5,6 @@ title: Generic actions
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
 In the **Configuration** menu it is possible to perform certain “generic” actions on the various objects.
 
 ## Adding objects
@@ -36,7 +35,6 @@ For example, to duplicate a host:
 
     ![image](../../assets/monitoring-resources/organizing-hosts-and-services/01duplicateobjects.png)
 
-
 ## Massive Change
 
 Massive change enable you to apply a change to multiple objects.
@@ -46,7 +44,6 @@ community without it being necessary to change each sheet of each host individua
 
 To perform a massive change:
 
-
 1. Select the objects that you want to change.
 2. Click the **Massive change** icon above the list of objects: ![image](../../assets/monitoring-resources/organizing-hosts-and-services/mass_change.png)
 3. Confirm the changes.
@@ -54,11 +51,10 @@ To perform a massive change:
 5. In the **More actions** menu, click on **Massive Change**.
 6. The form for the type of object opens, with 2 options next to each field:
 
-
 :::tip
-  * **Incremental**: signifies that the change will be added to the existing options
 
-  * **Replacement**: signifies that the change will overwrite the existing options.
+* **Incremental**: signifies that the change will be added to the existing options
+* **Replacement**: signifies that the change will overwrite the existing options.
 
 :::
 
@@ -74,11 +70,10 @@ To enable/disable an object:
 
 You can also use the following buttons at the end of the line:
 
-*  **Enable**: ![image](../../assets/monitoring-resources/organizing-hosts-and-services/enabled.png#thumbnail1)
+* **Enable**: ![image](../../assets/monitoring-resources/organizing-hosts-and-services/enabled.png#thumbnail1)
 * **Disable**: ![image](../../assets/monitoring-resources/organizing-hosts-and-services/disabled.png#thumbnail1)
 
 ![image](../../assets/monitoring-resources/organizing-hosts-and-services/enable_disable.png)
-
 
 ## Deleting objects
 

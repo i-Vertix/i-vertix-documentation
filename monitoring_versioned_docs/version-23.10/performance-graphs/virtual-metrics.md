@@ -6,7 +6,7 @@ title: Virtual metrics
 ## Definition
 
 The virtual metrics are the display of curves resulting from the processing / aggregation of data from a set of data.
-The set of data corresponds to various values of curves on the period covered by the graph. 
+The set of data corresponds to various values of curves on the period covered by the graph.
 The creation of virtual metrics is based on the RPN (Reverse Polish Notation) language.
 
 Two types of sets of data are available:

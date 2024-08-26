@@ -25,7 +25,8 @@ Go to the **Monitoring \> Performances \> Templates** menu
 
 :::note
 
-Regardless of the selected value, base 1024 will be used on following metric units :
+Regardless of the selected value, base 1024 will be used on following metric units:
+
 * B
 * bytes
 * bytespersecond

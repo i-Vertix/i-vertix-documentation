@@ -1,35 +1,40 @@
 ---
 id: downtimes
-title: Planning a downtime
+title: Planning downtimes
 ---
+
+## Adding downtime
 
 ### Concept
 
-A downtime period is a time period during which the notifications to a resource are disabled. Downtimes period are used during a programmed maintenance operation, they save us receiving false-positive alerts.
+Downtime is a period during which the notifications for a
+resource are disabled. Downtimes are used during a programmed
+maintenance operation. They save us from receiving false positive alerts.
+
 :::note
 
 It is important to select all the resources necessary to prevent false-positives and false-negatives. In addition, the time spent in this state is taken into account during the generation of the availability data.
 
 :::
 
-There are two types of downtimes:
+There are two types of downtime:
 
--   The **fixed** downtime: it starts and stops at the preview time.
--   The **flexible** downtime: it starts during the preview time window as soon as an incident is detected and finishes when preview time in seconds expires.
+- **Fixed** downtime: starts and stops at the planned time.
+- **Flexible** downtime: starts during the planned time window as soon as an incident is detected and finishes when the planned time in seconds expires.
 
 ### Practice
 
 There are several ways to define a downtime:
 
--   From the **Resources Status** page
--   From the detail sheets of a host or of the service
--   From the real time monitoring interface
--   From the **Downtime** menu
+- From the **Resources Status** page
+- From the detail sheets of a host or of the service
+- From the real-time monitoring interface
+- From the **Downtime** menu
 
 1. Go to **Monitoring > Resources Status**.
 2. Use one of the following methods:
-    - Select the object(s) that you want to define a downtime on, then click the **Set Downtime** button above the list of resources.
-    - Hover over the resource you want to define a downtime on, then click the **Set Downtime** icon that appears on the left.
+   - Select the object(s) that you want to define a downtime on, then click the **Set Downtime** button above the list of resources.
+   - Hover over the resource you want to define a downtime on, then click the **Set Downtime** icon that appears on the left.
 
         ![image](../../assets/managing-alarms/downtime.gif)
 
@@ -37,7 +42,7 @@ There are several ways to define a downtime:
 
     ![image](../../assets/managing-alarms/set_downtime.png)
 
-    -   The **From** and **To** fields define the beginning and end date of the downtime. Downtimes cannot start or end after December 31, 2099, 11:59 pm.
+    -   The **From** and **To** fields define the beginning and end date of the downtime. Downtime cannot start or end after December 31, 2099, 11:59 pm.
 
     -   If the **Fixed** box is checked the downtime is fixed. Otherwise, it is flexible.
 
@@ -45,8 +50,8 @@ There are several ways to define a downtime:
 
     -   The **Comments** field can be used to indicate why the downtime is defined.
 
-1.  Access the detail page of an object
-2.  In the category: **Commands**, click on **Schedule downtime for this host/service**
+3.  Access the detail page of an object
+4.  In the category: **Commands**, click on **Schedule downtime for this host/service**
 
     The following window appears:
 

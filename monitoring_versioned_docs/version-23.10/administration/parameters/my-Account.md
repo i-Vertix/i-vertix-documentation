@@ -15,8 +15,6 @@ You are now connected to the i-Vertix web interface.
 
 ## Menus
 
-
-
 ### Switch to dark mode
 
 When you first connect to the interface, i-Vertix is displayed in light mode by default.
@@ -32,7 +30,6 @@ Next time you connect to the interface, the mode you previously selected remains
 
 ![image](../../assets/administration/my-account/menu_dark_mode.png)
 
-
 ### Change the user interface language
 
 On the banner, click on the profile icon, then click on **Edit profile**:
@@ -45,8 +42,6 @@ In the language select box, choose your language:
 
 Then click on **Save**. Your interface is now translated.
 
-
-
 ## Change default page
 
 You can choose the dafault page (normally the default page is (**Monitoring > Reesource Status**).
@@ -54,8 +49,6 @@ You can choose the dafault page (normally the default page is (**Monitoring > Re
 In the Preferences > Default Page box choouse your page:
 
 ![image](../../assets/administration/my-account/default_page.png)
-
-
 
 ## Reset your password
 

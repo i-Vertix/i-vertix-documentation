@@ -9,27 +9,28 @@ In i-Vertix, it is possible to group hosts and services into groups:
 
 Generally speaking, groups are containers in which sets of objects that share a common property can be grouped together:
 
-* Same physical identity (Dell, HP, IBM, etc. servers), logical identity (network equipment) or geographical identity
+* Same hardware identity (Dell, HP, IBM, etc. servers), logical identity (network equipment) or geographical identity
   (Europe, Asia, Africa, North America, etc.)
 * belonging to the same application (CMS application, etc.) or to the same sector of activity (salary management, etc.)
 * etc.
 
 Host groups and service groups are used to group objects according to logical entities. They are used to:
 
-* Configure ACLs to associate a set of resources with a type of profile.
-* Allow availability reports to be viewed by group. Generate a "Rome Agency" availability report for resources.
-* View the status of a set of items by selecting a group of items in the search filters.
+* Configure ACLs to link a set of resources to a type of profile
+* Allow viewing of availability reports by group. Generate a “Paris Agency” availability report for resources.
+* Enable viewing of the status of a set of objects by selecting a group of objects in the search filters
 * Quickly browse multiple performance graphs by browsing the object tree structure by group and then by resource.
 
-Generally we try to group hosts by functional level. For example: DELL and HP hosts, or Linux, Windows, etc. hosts.
-We also try to group services by application job. For example: Payroll application, ERP application, etc.
+Generally speaking, we try to group together hosts by functional level. Example: DELL and HP hosts or Linux, Windows,
+etc., hosts.
+We also try to group services by application jobs. Example: Salary management application, ERP Application, etc.
 
 > For the hosts belonging to a host group, the retention of RRD files can be defined in the host group. This definition overrides the global definition.
 > If the same host belongs to multiple groups, each with a retention definition, the highest value is selected for the host.
 
 ## Creating a host group
 
-Go to the **Configuration > Hosts > Host Groups** menu and click on **Add**
+Go to the **Configuration > Hosts > Host Groups** menu and click **Add**
 
 * The **Name** and **Alias** define the name and alias of the host group.
 * The **Members** list allows us to add hosts to the hostgroup.

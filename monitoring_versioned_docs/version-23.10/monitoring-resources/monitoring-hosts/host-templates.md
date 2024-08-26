@@ -7,7 +7,11 @@ title: Using host templates
 
 A template is a preset set of object settings that can be used to configure an object. The main benefit is the ability to set default values for specific objects, speeding up the creation of similar objects.
 
-> A template can inherit properties from another template.
+:::note
+
+A template can inherit properties from another template.
+
+:::
 
 Templates from plugin packs make monitoring hosts easy by providing out-of-the-box checks [commands](../generic-object-actions/commands.md).
 
@@ -15,8 +19,8 @@ Templates from plugin packs make monitoring hosts easy by providing out-of-the-b
 
 A host or host template can inherit from one or more host templates. This inheritance can be:
 
-  - associative (addition of multiple host templates)
-  - parent-child type
+* associative (addition of multiple host templates)
+* parent-child type
 
 ### Parent-child type inheritance
 
@@ -28,7 +32,6 @@ This consists of adding together multiple templates within the same object to su
 
 ![image](../../assets/host-templates/09hostmodels.png)
 
-
 ### Configuration
 
 To add a host template:
@@ -36,5 +39,5 @@ To add a host template:
 Go into the **Configuration > Hosts > Templates** menu and click on **Add**
 
 > Refer to the chapter covering configuration of [hosts](monitoring-host.md) to configure a template because the form is identical.
-
+>
 > By default, locked host templates are hidden. Check the "Locked elements" box to list all templates.

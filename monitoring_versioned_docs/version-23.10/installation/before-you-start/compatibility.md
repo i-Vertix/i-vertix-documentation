@@ -18,7 +18,7 @@ Screen resolution should be at least 1280x768.
 
 ### Operating Systems
 
-i-Vertix IT Monitoring (Central Manager and Smart Poller) are available as System Images including CentOS 7 (latest version) and all required packages. The images are available for VMware (min. 6.7), Hyper-V, KVM, Nutanix and Sangfor.
+i-Vertix IT Monitoring (Central Manager and Smart Poller) are available as System Images including Oracle Linux 8 and all required packages. The images are available for VMware (min. 6.7), Hyper-V, KVM, Nutanix and Sangfor.
 
 Only 64-bit operating system (x86_64) is supported.
 
