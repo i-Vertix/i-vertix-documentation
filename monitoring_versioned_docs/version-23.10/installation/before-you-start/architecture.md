@@ -128,6 +128,7 @@ This architecture is especially useful to:
 :::
 
 </TabItem>
+</Tabs>
 
 ## Components
 

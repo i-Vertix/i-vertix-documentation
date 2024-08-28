@@ -48,6 +48,12 @@ npm run build-sidebar-monitoring -- --version=22.04
 npm run build-sidebar-monitoring -- --version="22.10"
 ```
 
+##### 23.10
+
+```bash
+npm run build-sidebar-monitoring -- --version="23.10"
+```
+
 ## Algolia Search
 
 Algolia search is already enabled by the docusaurus.config.js
