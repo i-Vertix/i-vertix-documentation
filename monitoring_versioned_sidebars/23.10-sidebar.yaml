@@ -130,6 +130,7 @@ sidebar:
           - event-console
           - event-log
           - create-custom-view
+          - dashboards
       - id: managing-alarms
         label: Managing alarms
         items:
