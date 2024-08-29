@@ -27,22 +27,10 @@ but port-to-port connectivity information won't be detected and therefore the ne
 ### Main settings
 
 * **Job Name**: use a meaningful name
+* **Hostname Prefix**: optional hostname prefix for hosts created by the discovery (it can be used for example to “tag” discovered hosts)
 * **Nedi Configuration**: select a configuration from the drop- down menu otherwise click on **+ ADD CONFIGURATION** to create a new one
-* **Hostname Prefix**: optional prefix (it can be used for example to “tag” discovered hosts)
 
-### Access
-
-**Access Groups**: user group that can view and modify this job and all the hosts it will discover
-
-### Excluded Object
-
-List of hosts excluded from the discovery  
-
-Click on **Next** to move to the next configuration settings page
-
-![image](../../assets/discovery/nedi_main_settings.png)
-
-## Add a new Nedi Configuration
+### Add a new Nedi Configuration
 
 * **Poller**: select the Smart Poller that will run the scan
 
@@ -61,6 +49,18 @@ Click on **Next** to move to the next configuration settings page
 * **Cron jobs**: a scan can be executed periodically (default scan interval is 4-hour). Click on **+ ADD CRON JOB** to add and schedule new jobs.
 
 ![image](../../assets/discovery/nedi_cron_job.png)
+
+### Access
+
+**Access Groups**: user group that can view and modify this job and all the hosts it will discover
+
+### Excluded Object
+
+List of hosts excluded from the discovery  
+
+Click on **Next** to move to the next configuration settings page
+
+![image](../../assets/discovery/nedi_main_settings.png)
 
 ### Template Rules
 
