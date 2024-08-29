@@ -39,7 +39,7 @@ Go to **Administration > Authentication> Password Security Policy**:
 Configure when passwords will expire:
 
 - **Password expires after**: Once the password expires, the user will be redirected to a
-  [dedicated page](../../installation/configuring-smart-poller/first-web-access.md#reset-your-password-when-expired) to update their password.
+  [dedicated page](../../installation/first-web-access/first-web-access.md#reset-your-password-when-expired) to update their password.
 - **Minimum time between password changes**: When a password has just been changed, how much time must elapse before it can be changed again.
 - **Last 3 passwords can be reused**: Use this option to allow users to reuse one of their 3 old passwords when renewing.
 - **Excluded users**: Select user accounts for which the password expiration policy will not apply (for instance, the **admin** account, or technical accounts accessing APIs). The passwords for these accounts will never expire.
@@ -47,5 +47,6 @@ Configure when passwords will expire:
 ### Password blocking policy
 
 To block brute force type attacks, use the following fields:
-- **Number of attempts before user is blocked** 
+
+- **Number of attempts before user is blocked**
 - **Time that must pass before new connection is allowed**: when a user is blocked, they will have to wait that amount of time before they can try connecting again.

@@ -29,17 +29,17 @@ LDAP server
 database, which is useful to authenticate users in the event of loss of connection
 with the LDAP server
 - **Auto import users**:
-    - **Yes**: All users in the directory will be able to log in to Centreon. The first time they log in, they will be created in Centreon, on the **Configuration > Contacts > Contacts/Users** page, with their LDAP parameters (last name, first name, email address, etc.).
-    - **No**: Users will only be able to log in to Centreon if their account has been imported manually into Centreon.
-    - **Import users manually**: Whether or not auto import is enabled, you can use this button to import some users to the list of contacts.
+  - **Yes**: All users in the directory will be able to log in to Centreon. The first time they log in, they will be created in Centreon, on the **Configuration > Contacts > Contacts/Users** page, with their LDAP parameters (last name, first name, email address, etc.).
+  - **No**: Users will only be able to log in to Centreon if their account has been imported manually into Centreon.
+  - **Import users manually**: Whether or not auto import is enabled, you can use this button to import some users to the list of contacts.
 
 - **LDAP search size limit**: can be used to limit the number of users to search for (1000 users maximum).
 - **LDAP search timeout**: can be used define the maximum time for the
 LDAP search.
-- **Contact template**: defines the [contact template](../../monitoring/basic-objects/contacts-templates.md) that will be linked
+- **Contact template**: defines the [contact template](../../managing-users-contacts/contact-templates.md) that will be linked
 to all users imported from this LDAP directory.
 - **Default contactgroup**: is used to add a new user to
-a default contactgroup. This allows you to [grant rights](../access-control-lists.md) indirectly to the LDAP users.
+a default contactgroup. This allows you to [grant rights](../../managing-users-contacts/acl.md) indirectly to the LDAP users.
 - **Use service DNS**: indicates if it is necessary to use the DNS server
 to solve the IP address of the LDAP directory.
 - **Enable LDAP synchronization on login**: If enabled, a user LDAP
