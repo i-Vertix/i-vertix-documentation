@@ -3,25 +3,27 @@ id: import-virtual-appliance
 title: How to import a Virtual appliance
 ---
 
-# i-Vertix OVAs (Central Management & Smart Poller)
+## i-Vertix OVAs (Central Management & Smart Poller)
 
 **i-Vertix** support provides a ready-to-use virtual machine.
 This virtual machine is available in **OVA** format for VMware environments.
 
 It's based on the **Oracle Linux 8** (and all required packages) operating system and includes a i-Vertix installation that allows you to easily start your first monitoring.
 
-**Server Requirements (VMs) for VMware**
+### Requirements
+
+#### Server Requirements (VMs) for VMware
 
 The resources needed for optimal performance depend on the product configuration.
 
 Adding more devices, monitors/services and other configuration options may increase the server and database workload.
 Therefore, server configuration adjustments may be necessary to optimize performance for your specific environment.
 
-**Database**
+#### Database
 
 The database used is **MariaDB** (10.5.x) and is already included in the Central Manager System Image.
 
-**Web browser to access the Central Manager web user interface**
+#### Web browser to access the Central Manager web user interface**
 
 i-Vertix Central Manager web interface is compatible with the following web browsers (see [Compatibility List](../before-you-start/compatibility.md)):
 
@@ -35,7 +37,7 @@ i-Vertix Central Manager web interface is compatible with the following web brow
 
 Screen resolution should be at least 1280x768
 
-**i-Vertix Central Manager recommended specifications**
+#### i-Vertix Central Manager recommended specifications
 
 - Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/standard-vms-requirements/requirements.md)
 - CPU: 4 vCPU (*)
@@ -50,7 +52,7 @@ Screen resolution should be at least 1280x768
 
 :::
 
-**i-Vertix Smart Poller recommended specifications**
+#### i-Vertix Smart Poller recommended specifications
 
 - Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/standard-vms-requirements/requirements.md)
 - CPU: 2 vCPU
@@ -65,24 +67,26 @@ The VM uses the **Thin Provision** option to save as much free space as possible
 
 :::
 
-# Steps to import a VM in VMware
+## Steps to import a VM in VMware
 
-## Requirements
+### VMware Requirements
 
 i-Vertix Central and Pollers support multiple virtualisation and hyperscaling platforms. These are VMware requirements:
 
-| **Platform**   | **i-Vertix 4** | **i-Vertix 3** |
-|-----------------|----------------|----------------|
-| **VMware**      | 6.7 or higher  | 6.5 or higher  |
+| **Platform**   | **i-Vertix 4** |
+|-----------------|----------------|
+| **VMware**      | 6.7 or higher  |
 
-## Downloading the virtual machine
+### Downloading the virtual machine
 
 1. Download the ".ova" files (as per email received); you can have an OVA for the Central Management, an On OVA for a poller or both.
 
 2. Import the ".ova" files on your VMware infrastructure.
 
-## Import the OVA in VMware
+### Import the OVA in VMware
+
 Log in to your vCenter or VMWare infrastructure and:
+
 1. Right-click Host in the VMware Host Client inventory and select Create/Register VM. The New Virtual Machine wizard opens.
 2. On the Select creation type page, select Deploy a virtual machine from an OVF or OVA file and click Next.
 3. On the Select OVF and VMDK files page, provide a unique name for the virtual machine.
@@ -101,7 +105,7 @@ Be sure to place the VM in the correct VLAN of your infrastructure.
 
 :::
 
-## Virtual Hardware configuration (Central Manager & Smart Poller)
+### Virtual Hardware configuration (Central Manager & Smart Poller)
 
 Once the OVA has been imported into VMWare, Virtual Hardware (CPU and Memory) has to be configured.
 

@@ -14,10 +14,14 @@ If you already have installed the i-Vertix Monitoring Central plugin pack you ca
 :::
 
 1. Head over to **Administration -> i-Vertix -> Plugin Store** using the left side-menu
-2. Search and install the plugin pack **i-Vertix3 Monitoring Central**
+2. Search and install the plugin pack:
 
-3. After the successful installation of the plugin pack you can head over to **Configuration -> Hosts -> Hosts**
-4. To add a new host click the blue button **Add** which is located between the top-side filters and the bottom list
+  ```text
+  i-Vertix4 Monitoring Central**
+  ```
+
+1. After the successful installation of the plugin pack you can head over to **Configuration -> Hosts -> Hosts**
+2. To add a new host click the blue button **Add** which is located between the top-side filters and the bottom list
 
 ![image](../../assets/quick-start/monitor_central_poller.png)
 
@@ -28,7 +32,7 @@ If you already have installed the i-Vertix Monitoring Central plugin pack you ca
       enter a
       FQDN you can click on Resolve to have the system check name resolution.
     * **Monitored from**: Select ***Central*** from the dropdown menu
-    * **Templates**: Click ***Add a new entry*** and select ***i-Vertix3-Monitoring-Central*** from the dropdown list
+    * **Templates**: Click ***Add a new entry*** and select ***i-Vertix4-Monitoring-Central*** from the dropdown list
     * **Create Services linked to the Template too**: Select **Yes**
 6. Click on **Save**
 
@@ -44,23 +48,24 @@ If you already have installed the i-Vertix Monitoring Central plugin pack you ca
 
 1. Head over to **Administration -> i-Vertix -> Plugin Store** using the left side-menu
 2. Search and install the plugin pack
-```
-i-Vertix3 Poller VM
-```
 
-3. After the successful installation of the plugin pack you can head over to **Configuration -> Hosts -> Hosts**
-4. To add a new host click the blue button **Add** which is located between the top-side filters and the bottom list
+  ```text
+  i-Vertix4 Poller VM
+  ```
 
-5. Fill in the following fields:
+1. After the successful installation of the plugin pack you can head over to **Configuration -> Hosts -> Hosts**
+2. To add a new host click the blue button **Add** which is located between the top-side filters and the bottom list
+
+3. Fill in the following fields:
     * **Name**: insert the ***device name*** / ***host name*** (no spaces allowed)
     * **Alias**: insert an ***alternative name*** / ***readable name*** (spaces allowed)
     * **IP Address / DNS**: IP address or FQDN of the host (insert ***127.0.0.1*** for the Central Manager). If you
       enter a
       FQDN you can click on Resolve to have the system check name resolution.
     * **Monitored from**: Select ***Central*** from the dropdown menu
-    * **Templates**: Click ***Add a new entry*** and select ***i-Vertix3-Monitoring-Central*** from the dropdown list
+    * **Templates**: Click ***Add a new entry*** and select ***i-Vertix4-Monitoring-Central*** from the dropdown list
     * **Create Services linked to the Template too**: Select **Yes**
-6. Click on **Save**
+4. Click on **Save**
 
 ## Monitoring additional services (Service Discovery)
 

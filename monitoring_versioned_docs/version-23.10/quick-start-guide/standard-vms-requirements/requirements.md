@@ -10,15 +10,15 @@ import TabItem from '@theme/TabItem';
 
 i-Vertix Central and Pollers support multiple virtualisation and hyperscaling platforms including
 
-| **Platform**   | **i-Vertix 4** | **i-Vertix 3** |
-|-----------------|----------------|----------------|
-| **VMware**      | 6.7 or higher  | 6.5 or higher  |
-| **Hyper-V**     | yes            | yes Gen 1      |
-| **KVM**         | yes            | yes            |
-| **Nutanix**     | yes            | yes            |
-| **Sangfor**     | yes            | yes            |
-| **AWS EC2**     | yes            | yes            |
-| **Azure VM**    | yes            | no             |
+| **Platform**   | **i-Vertix 4** |
+|-----------------|----------------|
+| **VMware**      | 6.7 or higher  |
+| **Hyper-V**     | yes            |
+| **KVM**         | yes            |
+| **Nutanix**     | yes            |
+| **Sangfor**     | yes            |
+| **AWS EC2**     | yes            |
+| **Azure VM**    | yes            |
 
 ## Sizing recommendations
 
