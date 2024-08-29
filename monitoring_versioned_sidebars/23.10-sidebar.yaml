@@ -1,0 +1,226 @@
+sidebar:
+  - intro
+  - id: quick-start-guide
+    label: Quick Start Guide
+    items:
+      - id: standard-vms-requirements
+        label: Standard VM's requirements
+        items:
+          - requirements
+          - network-ports
+          - browser-requirements
+      - id: how-to-configure-central-and-poller
+        label: How to configure Central and Poller
+        items:
+          - configuring-central-poller
+          - plugin-store-configuration
+          - plugin-update-installation
+      - id: configuring-first-hosts-services
+        label: Configuring first Hosts and Services
+        items:
+          - monitoring-the-first-host
+          - create-host-manually
+          - monitoring-central-poller
+          - monitoring-vmware
+          - network-discovery
+  - id: installation
+    label: Installation
+    items:
+      - id: before-you-start
+        label: Before you start
+        items:
+          - platform
+          - compatibility
+          - architecture
+          - prerequisites
+          - technical-information
+      - id: setup-central-poller
+        label: Setup Central & Poller
+        items:
+          - import-virtual-appliance
+          - first-login
+          - network-configuration
+          - ntp-configuration
+          - smtp-configuration
+          - password-modification
+          - license
+      - id: first-web-access
+        label: First web access
+        items:
+          - first-web-access
+      - id: configuring-smart-poller
+        label: Configuring Smart Poller
+        items:
+          - attach-a-poller-to-a-central-server
+          - poller-communications
+          - advanced-configuration
+      - id: security-aspects
+        label: Security aspects
+        items:
+          - fail2ban
+  - id: monitoring-resources
+    label: Monitoring Resources
+    items:
+      - id: monitoring-basics
+        label: Monitoring Basics
+        items:
+          - monitoring-principles
+          - plugin-packs
+          - config-deploy
+      - id: monitoring-hosts
+        label: Monitoring Hosts
+        items:
+          - monitoring-host
+          - create-host-manually
+          - host-templates
+          - create-host-automatically
+          - generic-actions-host
+          - export-configuration
+      - id: monitoring-services
+        label: Monitoring Services
+        items:
+          - monitoring-service
+          - create-service-manually
+          - service-template
+          - generic-actions-service
+          - create-service-automatically
+          - meta-service
+      - id: discovery
+        label: Discovery
+        items:
+          - description
+          - host-discovery
+          - service-discovery
+          - vmware-discovery
+          - vmware-os-discovery
+          - nedi
+          - meraki-discovery
+      - id: i-vertix-e2e
+        label: Synthetic User Monitoring
+        items:
+          - e2e-configuration
+      - id: organizing-hosts-and-services
+        label: Organizing Hosts & Services
+        items:
+          - groups
+          - dynamic-hostgroups
+          - categories
+      - id: generic-object-actions
+        label: Generic objects and actions
+        items:
+          - timeperiods
+          - macros
+          - commands
+          - generic-actions
+      - id: passive-monitoring
+        label: Passive monitoring
+        items:
+          - enable-snmp-traps
+          - create-snmp-traps-definitions
+          - monitoring-with-snmp-traps
+          - debug-snmp-traps-management
+  - id: events-alerts
+    label: Events & Alerts
+    items:
+      - id: viewing-events
+        label: Viewing events
+        items:
+          - concepts
+          - resources-status
+          - event-console
+          - event-log
+          - create-custom-view
+          - dashboards
+      - id: managing-alarms
+        label: Managing alarms
+        items:
+          - acknowledge
+          - downtimes
+          - submit-status
+          - other
+      - id: managing-notifications
+        label: Managing notifications
+        items:
+          - how-notifications-works
+          - configuring-notification
+          - dependencies
+          - escalation
+          - flapping
+          - email-configuration
+  - id: managing-users-contacts
+    label: Managing Users & Contacts
+    items:
+      - contacts-users
+      - create-users-manually
+      - contact-templates
+      - contact-groups
+      - acl
+  - id: performance-graphs
+    label: Performance graphs
+    items:
+      - charts-management
+      - graph-template
+      - chart-curves
+      - virtual-metrics
+  - id: i-vertix-maps
+    label: i-Vertix Maps
+    items:
+      - map-types
+      - managing-maps
+      - edit-maps
+      - visualize-maps
+  - id: i-vertix-ncb
+    label: i-Vertix NCB
+    items:
+      - prerequisites-works
+      - managing-ncb
+      - visualize-ncb
+  - id: i-vertix-bi
+    label: Reporting
+    items:
+      - bi-overview
+      - bi-requirements
+      - bi-setup
+      - bi-report-store
+      - bi-job
+      - bi-viewing-reports
+      - bi-troubleshooting
+      - bi-settings 
+  - id: administration
+    label: Administration
+    items:
+      - id: parameters
+        label: Parameters
+        items:
+          - centreon-UI
+          - monitoring-Monitoring
+          - gorgone-Gorgone
+          - my-Account
+          - ldap-Ldap
+          - rrdtool-RRDTool
+          - debug-Debug
+          - knowledge-Base
+          - backup-Backup
+          - performance-Management
+          - data
+#          TODO: DATA-DATA
+          - media-Media
+      - id: authentication
+        label: Authentication
+        items:
+          - authentication-Authentication
+          - openid-OPENID
+          - websso-WEBSSO
+          - ldap
+      - log-Log
+      - sessions-Sessions
+      - id: platform-status
+        label: Platform-Status
+        items:
+          - platform-Status
+          - databases-DB
+  - id: api
+    label: API
+    items:
+      - rest-api-v1
+  - glossary
