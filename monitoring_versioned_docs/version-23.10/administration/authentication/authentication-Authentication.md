@@ -48,5 +48,5 @@ Configure when passwords will expire:
 
 To block brute force type attacks, use the following fields:
 
-- **Number of attempts before user is blocked** 
+- **Number of attempts before user is blocked**
 - **Time that must pass before new connection is allowed**: when a user is blocked, they will have to wait that amount of time before they can try connecting again.

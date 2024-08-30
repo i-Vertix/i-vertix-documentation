@@ -402,7 +402,7 @@ You can filter discovered nodes by:
 * Vendor
 * Last Discovered (useful to hide outdated devices which are no longer found by the discovery)
 * IP changes (how often the IP was changed, useful to detect flapping devices/devices using DHCP)
-* Shadow IT Status
+* [Shadow IT Status](#shadow-it)
 * Only where IP available (when selected, nodes *without* an ip address are not displayed)
 
 #### Actions
@@ -412,7 +412,7 @@ You can filter discovered nodes by:
   linkable host candidates are searched by the current job search scope (poller) and the node ip address, 
   if more than one candidate is available the node will not be linked automatically and requires manual intervention
 
-* <ImageCounter num={3} /> <strong>Change Shadow IT Status</strong>: change the shadow IT status of selected nodes
+* <ImageCounter num={3} /> <strong>Change Shadow IT Status</strong>: change the [shadow IT status](#shadow-it) of selected nodes
 * <ImageCounter num={4} /> show/hide additional columns
 
 #### <ImageCounter num={5} /> Node List
@@ -440,8 +440,14 @@ Following additional columns can be displayed on the list:
 #### Shadow IT
 
 By default, every node is assigned a *Shadow IT Status*.
-This status helps you to categorize any discovered component in your network.
-Together with the custom *Note* you can set, you can keep track and updates of any desired, suspect or undesired devices in your network.
+This status helps you to categorize any device in your network. You can also assign a custom *Note* to any device found.
+Using the provided tools, you can achieve:
+
+- better transparency of your network
+- early detection of potential security risks
+- a more effective vulnerability management
+- a more efficient resource allocation
+- increased agility to changes or new requirements of your network
 
 :::tip
 
