@@ -39,19 +39,19 @@ To build the different sidebars use following commands:
 ##### 22.04
 
 ```bash
-npm run build-sidebar-monitoring -- --version=22.04
+node scripts/build-sidebar.js --docs=monitoring --version="22.04"
 ```
 
 ##### 22.10
 
 ```bash
-npm run build-sidebar-monitoring -- --version="22.10"
+node scripts/build-sidebar.js --docs=monitoring --version="22.10"
 ```
 
 ##### 23.10
 
 ```bash
-npm run build-sidebar-monitoring -- --version="23.10"
+node scripts/build-sidebar.js --docs=monitoring --version="23.10"
 ```
 
 ## Algolia Search
