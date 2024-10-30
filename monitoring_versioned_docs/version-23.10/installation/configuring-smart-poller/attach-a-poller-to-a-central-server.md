@@ -2,11 +2,6 @@
 id: attach-a-poller-to-a-central-server
 title: How to attach a Smart Poller to the Central Management
 ---
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-<Tabs>
-<TabItem value="i-Vertix4 Poller" label="i-Vertix4 Poller" default>
 
 ## Smart Poller Configuration
 
@@ -156,21 +151,25 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
     sudo ./opt/pgum/scripts/i-vertix/sync_poller.sh
     ```
 
-7. In case the system asks for a **yes/no** confirmation answer yes, the CLI will show as many "ok" as the number of Pollers that are being synchronized
-
-8. Final check in the GUI under **Configuration -> Pollers -> Pollers**
+7. Final check in the GUI under **Configuration -> Pollers -> Pollers**
 
     Check if the configuration is like the one shown in the picture.
 
     ![Final check](../../assets/configuring-smart-poller/poller-attach-14.png)
 
-### Synchronize the Plugins from Central to the Poller
+:::note
+
+If you want to start immediately with the monitoring, make sure to also manually synchronize the plugins from the central to the newly created poller!
+
+:::
+
+### Synchronize Plugins from Central to Poller
+
+By default, syncing all plugins to the pollers is done every 4 hours on the Central server.
+
+In case of adding a new poller where you want to start immediately with the monitoring,
+you need to **execute following command** on the **Central Monitoring Server** to immediately sync the plugins:
 
 ```bash
-sudo ./opt/pgum/scripts/i-vertix/sync_poller.sh
+sudo ./opt/i-vertix/scripts/i-vertix/sync_poller.sh
 ```
-
-![sync_poller](../../assets/configuring-smart-poller/sync_poller.png)
-
-</TabItem>
-</Tabs>

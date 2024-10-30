@@ -102,7 +102,7 @@ const config = {
                 }
             },
         ],
-        [
+/*         [
             '@docusaurus/plugin-content-docs',
             {
                 id: 'plugin-packs',
@@ -111,7 +111,7 @@ const config = {
                 sidebarPath: require.resolve('./plugin-packs/sidebar.js'),
                 // ... other options
             },
-        ],
+        ], */
     ],
 
     themeConfig:

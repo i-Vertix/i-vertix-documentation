@@ -1,0 +1,71 @@
+---
+id: description
+title: Discovery features overview
+---
+
+## Overview and fast onboarding
+
+Different types of granular discoveries let the user easily filter/select services and hosts that are to be discovered and monitored.
+
+* **Network Topology Discovery**: Layer 2/3 discovery that creates comprehensive network topology maps.
+
+* **Host/Device Discovery**: scans any network, subnet, or IP address.
+
+* **VMware Discovery**: scans VMware environment (Datacenter, Clusters, Hosts, Datastores, VMs, NICs).
+
+* **Cisco Meraki**: discovers cloud Cisco Meraki infrastructures (APs and Switches)
+
+Discovery results are matched with preconfigured monitoring templates to automate monitoring configuration.
+
+![image](../../assets/discovery/nedi_example.png)
+
+![image](../../assets/discovery/host_discovery.png)
+
+![image](../../assets/discovery/vm_result.png)
+
+![image](../../assets/discovery/meraki15.png)
+
+## Quick start configuration
+
+### New Discovery Job
+
+![Job list](../../assets/discovery/list.png)
+
+To add a new Discovery Job:
+
+1. Go to **Configuration -> Hosts -> Discovery Jobs**
+2. Click on `+ ADD JOB`
+3. Select the desired discovery type:
+
+    * **Host Discovery**
+    * **Network Topology Discovery**
+    * **VMware Discovery**
+    * **Meraki Job Wizard**
+
+![image](../../assets/discovery/add_discovery.png)
+
+:::note
+
+It may occurr that the *Host Discovery*, *VMware Discovery* and/or *Cisco Meraki* are grayed out.
+Please verify following prerequisites are available for the individual discoveries:
+
+* **Host Discovery:** install the **Linux SNMP** plugin pack from Plugin Store
+* **VMware Discovery:** install the **VMware vCenter** and **vSAN** (optional) plugin packs from Plugin Store
+* **Cisco Meraki:** download the **Cisco Meraki Cloud Controller** plugin pack from Plugin Store
+
+:::
+
+### Job status
+
+A discovery job is assigned a job status. Following job statuses are available:
+
+* <strong><span style={{color:'#818185'}}>New</span></strong>: new discovery job.
+
+* <strong><span style={{color:'#2ad1d4'}}>Running</span></strong>: the job execution is in progress, and the job can't be modified until it completes.
+
+* <strong><span style={{color:'#e00b3d'}}>Failed</span></strong>: job didn't complete correctly.
+    To see the reason why it failed, hover the mouse over the <strong><span style={{color:'#e00b3d'}}>F</span></strong> button.
+
+* <strong><span style={{color:'#88b917'}}>Finished</span></strong>: the job completed successfully and its results can be viewed.
+
+![image](../../assets/discovery/discovery_status.png)

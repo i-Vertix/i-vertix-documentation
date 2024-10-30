@@ -64,15 +64,32 @@ Click on **Next** to move to the next configuration settings page
 
 ### Template Rules
 
-Mapping rules are preconfigured by i-Vertix
+Template rules are used to map found network devices to monitoring hosts.
+A template rule consists of conditions which are checked against a found device.
+When all conditions of a rule match a device, the template rule with it's host template,
+interface mapping and service discovery configuration will be assigned to the device.
 
-**Note**: It can happen that some **Template Rules** are missing. In such a case:
+Some template rules are already preconfigured and maintained by the i-Vertix team.
+They come along with the plugins installed from the [Plugin Store](../../quick-start-guide/how-to-configure-central-and-poller/plugin-update-installation.md#install-a-plugin).
 
-* **Download the relevant plugin** from the Plugin Store and install it
-* Click on **RESET** to add Template Rules included in the plugin you have just installed to the Template Rules list
-* Contact support@i-vertix.com if the template rule is still not available
+![image](../../assets/discovery/nedi_template_rules.png)
 
-![image](../../assets/discovery/nedi_template_rules_entry_points.png)
+:::note
+
+It can happen that some **Template Rules** are missing. In such a case:
+
+1. **Download the relevant plugin** from the [Plugin Store](../../quick-start-guide/how-to-configure-central-and-poller/plugin-update-installation.md#install-a-plugin) and install it
+2. Click on <ImageCounter num={1} /> **Load Defaults** to add Template Rules included in the plugin you have just installed to the Template Rule list
+
+Should the desired template rule still not be available, contact support@i-vertix.com.
+
+:::
+
+To synchronize the default job's template rules with the latest available version click on <ImageCounter num={1} disableMargin /> **Load Defaults**.
+
+It is also possible to <ImageCounter num={2} disableMargin /> create new custom template rules, <ImageCounter num={4} disableMargin /> delete or to <ImageCounter num={5} disableMargin /> modify existing ones.
+When a default tempalte rule is modified it will not be reset when <ImageCounter num={1} disableMargin /> reloading the default rules.
+To reset a modified default template rule to match it's default configuration again, click the <ImageCounter num={3} disableMargin /> individual reset button.
 
 ### Entry Points
 
@@ -225,7 +242,7 @@ To view detailed device information, click on the device in the list.
 ![Assigned host templates](../../assets/discovery/nedi_device_2.png)
 
 On this tab you can see all templates which will be assigned to the host.
-The shown templates were assigned by the rule engine because a template rule matched with the device's information.
+The shown templates were assigned by the rule engine because a [template rule](./nedi.mdx#template-rules) matched with the device's information.
 
 :::note
 
