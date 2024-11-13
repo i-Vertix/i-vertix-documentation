@@ -74,6 +74,7 @@ sidebar:
           - create-host-manually
           - host-templates
           - create-host-automatically
+          - updating-hosts-dynamically
           - generic-actions-host
           - export-configuration
       - id: monitoring-services
@@ -84,6 +85,7 @@ sidebar:
           - service-template
           - generic-actions-service
           - create-service-automatically
+          - updating-services-dynamically
           - meta-service
       - id: discovery
         label: Discovery
@@ -103,8 +105,8 @@ sidebar:
         label: Organizing Hosts & Services
         items:
           - groups
-          - dynamic-hostgroups
           - categories
+          - dynamic-groups
       - id: generic-object-actions
         label: Generic objects and actions
         items:
