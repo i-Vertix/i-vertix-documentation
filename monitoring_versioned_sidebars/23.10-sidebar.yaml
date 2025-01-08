@@ -169,8 +169,8 @@ sidebar:
     items:
       - map-types
       - managing-maps
-      - edit-maps
       - visualize-maps
+      - edit-maps
   - id: i-vertix-ncb
     label: i-Vertix NCB
     items:
