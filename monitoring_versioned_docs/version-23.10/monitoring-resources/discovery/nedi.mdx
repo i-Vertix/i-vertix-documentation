@@ -28,27 +28,68 @@ but port-to-port connectivity information won't be detected and therefore the ne
 
 * **Job Name**: use a meaningful name
 * **Hostname Prefix**: optional hostname prefix for hosts created by the discovery (it can be used for example to “tag” discovered hosts)
-* **Nedi Configuration**: select a configuration from the drop- down menu otherwise click on **+ ADD CONFIGURATION** to create a new one
+* **Nedi Configuration**: select an already existing configuration from the dropdown menu; to create a new configuration, click on the `Add Configuration` button 
 
 ### Add a new Nedi Configuration
 
-* **Poller**: select the Smart Poller that will run the scan
+A *Nedi Configuration* holds the configuration to run the network device discovery.
 
-* **SNMP info**: click on **+ ADD SNMP INFO** to enter the SNMP communities
+Select the Poller, from which the discovery should be executed.
 
-![image](../../assets/discovery/nedi_community.png)
+#### SNMP Infos
 
-* FILTERS (optional)
+![SNMP Infos](../../assets/discovery/nedi_community.png)
 
-  * **+ADD NET FILTER**: enter a regular expression to filter based on network settings
-  * **+ADD NAME FILTER**: enter a regular expression to filter based on sysname
-  * **+ADD BORDER**: enter a regular expression to specify the last host of the scan (neighbor name where the discovery should stop)
+Select or create all necessary SNMP credentials which can be used to access the devices in your network.
 
-![image](../../assets/discovery/nedi_filters.png)
+#### Filters
 
-* **Cron jobs**: a scan can be executed periodically (default scan interval is 4-hour). Click on **+ ADD CRON JOB** to add and schedule new jobs.
+![SNMP Infos](../../assets/discovery/nedi_filters.png)
 
-![image](../../assets/discovery/nedi_cron_job.png)
+You can filter network devices by IP adresses and names. You can also specify, when the discovery should stop.
+
+##### Net Filter
+
+Click `Add Net Filter` to add a new *regular expression*. All separate entries are combined with *OR*.
+
+> **Example**:
+> `^(?!192\.168\.1\.).*$`
+>
+> discover anything except devices with ip addresses of this network: 192.168.1.x
+
+##### Name Filter
+
+Click `Add Name Filter` to enter a new *regular expression*. All separate entries are combined with *OR*.
+
+##### Border
+
+Click `Add Border` to enter a new *regular expression*. All separate entries are combined with *OR*.
+
+Specify patterns to match names of devices where the discovery should stop.
+When a device name matches the provided border patterns, the discovery does not proceed with the device's neighbours.
+
+##### Cron Jobs
+
+![Cron Jobs](../../assets/discovery/nedi_cron_job.png)
+
+Click `Add Cron Job` to add a new cron job, which starts the discovery on the provided cron interval with provided command options.
+You can also modify, enable or disable already defined cron jobs.
+
+The default scan interval for a network discovery is is every 4 hours.
+
+##### Advanced
+
+![Advanced](../../assets/discovery/nedi_advanced.png)
+
+You can specify, after how many days:
+
+* no longer discovered nodes are deleted
+* inactive links are deleted
+* arp entries are deleted
+
+---
+
+After you have entered all information, you can `Save` the new *Nedi Configuration*.
 
 ### Access
 
@@ -102,12 +143,50 @@ When opening the button menu, you can <ImageCounter num={3} /> download a templa
 
 ### Finalize
 
-Select **Start Job directly after saving** to run the scan as soon as it gets saved. Select the Entry Point added previously.
-Click on **Save** to save the discovery job.
+![Finalize](../../assets/discovery/nedi_finalize.png)
 
-![image](../../assets/discovery/nedi_finalize.png)
+Configure the default *Sync Profiles*, which are used on a manual and automatic synchronization of discovered devices.
 
-The job will run instantly with the provided configuration and selected entry points.
+*Sync Profiles* define, which information is written or updated on monitored hosts.
+
+:::info Define Default Profiles
+
+As an admin, you can define the default *Sync Profiles* in `Administration -> i-Vertix -> Host Discovery` on the `Nedi` tab.
+
+:::
+
+#### Manual Sync
+
+You can always temporarily modify the current *Sync Profile* when manually syncing discovery results on the result page.
+The selected profile *Manual-Sync Profile* is pre-selected by default when syncing manually. 
+
+#### Automatic Sync
+
+The discovery automatically syncs all results **after every scan** with the selected *Automatic-Sync Profile*.
+
+#### Customize Profiles
+
+You can customize both manual and automatic *Sync Profiles* if the default profiles do not satisfy your requirements.
+
+
+#### Start the job directly after saving
+
+You can enable the discovery to start directly after saving the job configuration. First you need to select an *Entry Point* which was configured on the previous tab and the *Scan Mode*.
+
+:::info Define Scan Modes
+
+As an admin, you can define the default *Scan Modes* in `Administration -> i-Vertix -> Host Discovery` on the `Nedi` tab.
+
+:::
+
+Following modes are defined by default:
+
+- **Fast**: only discover network devices (skips nodes)
+- **Deep**: complete discovery including nodes
+
+---
+
+Click on `Save` to save the discovery job.
 
 ## Viewing the results of a discovery job
 
@@ -156,15 +235,25 @@ The highligt color indicates whether a device can be synced to the monitoring co
 
 #### Actions
 
-* <ImageCounter num={6} /> <strong>Sync with Monitoring</strong>: sync all or sync selected devices to the monitoring configuration
+* <ImageCounter num={7} /> <strong>Sync with Monitoring</strong>: sync all or sync selected devices to the monitoring configuration
   
   for devices with status *new*, a new host will be created - for devices with status *existing*, the linked host will be updated accordingly 
 
-* <ImageCounter num={7} /> <strong>Link existing Hosts</strong>: link all or link selected devices with already existing hosts
+  *to sync all devices, expand the button options by clicking on the <ImageCounter num={8} /> arrow*
+
+  *to switch or view the currently selected Sync Profile, click on the <ImageCounter num={6} /> profile icon*
+  ![Sync Profile](../../assets/discovery/nedi_results_sync_profile_1.png)
+
+  *You can also temporarily customize the **Custom** Profile for the current session:*
+  ![Customize Sync Profile](../../assets/discovery/nedi_results_sync_profile_2.png)
+
+* <ImageCounter num={9} /> <strong>Link existing Hosts</strong>: link all or link selected devices with already existing hosts
 
   only effective for devices with status *existing (ip)* and/or status *conflict (name)*
 
-* <ImageCounter num={8} /> <strong>Other actions</strong>
+  *to link all devices, expand the button options by clicking on the <ImageCounter num={10} /> arrow*
+
+* <ImageCounter num={11} /> <strong>Other actions</strong>
 
   * **Exclude devices**: exclude selected devices
   * **Include devices**: include selected devices
@@ -172,9 +261,13 @@ The highligt color indicates whether a device can be synced to the monitoring co
   * **Remove Relation Root**: removes "Relation Root" from selected devices
   * **Delete Proposals**: useful, when a device is outdated or not in sync with the current job configuration (template rules etc.)
 
-* <ImageCounter num={9} /> <strong>Regenerate Proposals</strong>: re-applies template rules to all devices, useful after changing template rules or including devices
+* <ImageCounter num={12} /> <strong>Refresh</strong>: manually refresh the device list
 
-#### <ImageCounter num={10} /> Device List
+* <ImageCounter num={13} /> <strong>Configuration Links</strong>: open the job or nedi configuration page
+
+* <ImageCounter num={14} /> <strong>Regenerate Proposals</strong>: re-applies template rules to all devices, useful after changing template rules or including devices
+
+#### <ImageCounter num={16} /> Device List
 
 The discovered devices are filtered by the above filters and displayed in the table with following information:
 
