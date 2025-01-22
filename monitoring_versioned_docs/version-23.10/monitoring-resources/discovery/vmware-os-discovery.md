@@ -5,7 +5,7 @@ title: VMware integrated OS Discovery
 
 First, configure a new **VMware discovery job**
 
-[How to configure a new job](vmware-discovery.md)
+[How to configure a new job](./vmware-discovery)
 
 ![image](../../assets/discovery/vmware_scans.png)
 

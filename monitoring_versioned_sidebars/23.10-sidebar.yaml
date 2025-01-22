@@ -198,7 +198,6 @@ sidebar:
           - monitoring-Monitoring
           - gorgone-Gorgone
           - my-Account
-          - ldap-Ldap
           - rrdtool-RRDTool
           - debug-Debug
           - knowledge-Base
@@ -214,6 +213,7 @@ sidebar:
           - openid-OPENID
           - websso-WEBSSO
           - ldap
+          - saml
       - log-Log
       - sessions-Sessions
       - id: platform-status

@@ -55,5 +55,5 @@ Remember to **export the configuration to the Smart Pollers**.
 
 ![image](../../assets/quick-start/vmware_job.gif)
 
-See the complete procedure for [VMware monitoring](../../monitoring-resources/discovery/vmware-discovery.md)
+See the complete procedure for [VMware monitoring](../../monitoring-resources/discovery/vmware-discovery)
 
