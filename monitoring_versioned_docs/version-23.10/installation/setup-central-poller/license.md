@@ -62,12 +62,14 @@ Follow the instructions in the email and download the license using the followin
 
 5. If the vm can go on the internet (tcp 80, 443 enabled) it will download the license and install it. Command lines will appear and then press "Enter"
 
-6. Restart the VM so that all the services will be started
-
+6. Type **0) to go back to the main menu
+   
 7. License status field will change from:
 
         License       [ INVALID ]
         to
         License       [ VALID ]
+
+8. Type 2 to reboot the VM so that all the services will be started
 
 The system is now ready. Proceed with the [first access to the web console](../first-web-access/first-web-access.md)
