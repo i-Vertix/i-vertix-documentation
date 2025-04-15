@@ -3,9 +3,9 @@ id: attach-a-poller-to-a-central-server
 title: How to attach a Smart Poller to the Central Management
 ---
 
-## Smart Poller Configuration
+import ImageCounter from "../../../../src/components/ImageCounter";
 
-### Poller configuration
+## Poller configuration
 
 To attach a Smart Poller **i-Vertix4** to a Central Management, please follow these instructions:
 
@@ -13,83 +13,61 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
     ![Poller configuration](../../assets/configuring-smart-poller/poller-attach-1.png)
 
-2. Click on Poller1 **Poller1**
+2. Click on `Add`
 
-3. Rename **Poller1** with a new name, according to your internal naming convention
+    ![Poller Add](../../assets/configuring-smart-poller/poller-attach-wizard-00.png)
 
-4. Enter the IP address of the Smart Poller
+3. Select *Add a Centreon Poller* and then `Next`
+    ![Poller Add Step 1](../../assets/configuring-smart-poller/poller-attach-wizard-01.png)
 
-    ![Change IP address](../../assets/configuring-smart-poller/poller-attach-2.png)
+4. Fill in the Poller information  
+    ![Poller Add Step 2](../../assets/configuring-smart-poller/poller-attach-wizard-02.png)
 
-5. Save this configuration by clicking **Save** at the top right corner
+- <ImageCounter num={1} /> The new Poller name
+- <ImageCounter num={2} /> The Poller IP address
+- <ImageCounter num={3} /> The i-Vertix Central IP address, please make sure the Poller is able to contact the Central with this IP address
 
-    ![Save](../../assets/configuring-smart-poller/save.png)
+5. Click on `Apply` to Add the new Poller and return to the Poller List
+    ![Poller Add Step 3](../../assets/configuring-smart-poller/poller-attach-wizard-03.png)
+
 
 ---
 
-### Broker configuration
+## Broker configuration
 
 1. go to Configuration -> Pollers -> Broker configuration
 
     ![Brocker configuration](../../assets/configuring-smart-poller/poller-attach-3.png)
 
-2. Click on Poller1 **Poller1**
-
-3. In the **General** tab rename **Poller1** with a new name, according to your internal naming convention
+2. Click on the module entry created for the new Poller, in this example **poller1-module**
+    ![Brocker configuration](../../assets/configuring-smart-poller/poller-attach-broker-00.png)
 
 4. Set the field **"Event queue max size"** to **250000**
 
     ![Event queue](../../assets/configuring-smart-poller/poller-attach-4.png)
 
-5. Select **Output** tab and enter the Central Manager IP **"Host to connect to"** filed
-
-    ![Host to connect to](../../assets/configuring-smart-poller/poller-attach-5.png)
-
-6. Save this configuration by clicking **Save** at the top right corner
-
-    ![Save](../../assets/configuring-smart-poller/save.png)
+5. Save this configuration by clicking `Save` at the top right corner
 
 ---
 
-### Engine configuration
+## Poller resources configuration
 
-1. go to Configuration -> Pollers -> Engine configuration
+1. go to Configuration -> Pollers -> Resources
 
-    ![Engine configuration](../../assets/configuring-smart-poller/poller-attach-6.png)
+    ![Resources configuration](../../assets/configuring-smart-poller/poller-attach-resources-00.png)
 
-2. Click on Poller1 **Poller1**
+2. Click on the *$IVERTIXPLUGINS$* entry
+    ![Resource IVERTIXPLUGINS](../../assets/configuring-smart-poller/poller-attach-resources-01.png)
 
-3. In **Files** tab configuration Name: replace "Poller1" with a new poller name, as per your naming convention
+3. Add the poller to the *Linked Instances* field.
+   This setting is needed to configure the base directory for the commands on the Poller
+    ![Resource IVERTIXPLUGINS](../../assets/configuring-smart-poller/poller-attach-resources-02.png)
 
-    ![Rename](../../assets/configuring-smart-poller/poller-attach-7.png)
-
-4. Go to **Data** tab
-
-    ![Add data entry](../../assets/configuring-smart-poller/poller-attach-8.png)
-
-5. Enter two **empty** brocker directive like the image below (clik **+ Add a new entry** twice):
-
-    ![Add data entry empty](../../assets/configuring-smart-poller/poller-attach-9.png)
-
-    And write the first path on the first directive and the second on the following one
-
-    ```text
-    /usr/lib64/centreon-engine/externalcmd.so
-    ```
-
-    ```text
-    /usr/lib64/nagios/cbmod.so /etc/centreon-broker/poller-module.json
-    ```
-
-    The result should be like the image below
-
-    ![Add data entry directive](../../assets/configuring-smart-poller/poller-attach-10.png)
+4. Save this configuration by clicking `Save` at the top right corner
 
 ---
 
 ## Gorgone configuration export
-
-### Create the Gorgone configuration for the new Poller
 
 1. logon on your i-Vertix Central GUI and go to **Configuration -> Pollers**
 
@@ -101,17 +79,22 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
     ![gorgone_config](../../assets/configuring-smart-poller/gorgone_config.png)
 
-4. click **Copy to clipboard**
+4. click `Copy to clipboard`
 
-    ![copy](../../assets/configuring-smart-poller/copy2clipboard.png)
+5. Log on to the i-Vertix4 Poller through SSH.
+   After login, run:
 
-5. Now login to the i-Vertix4 Poller through SSH and become **root**
+    ```bash
+    sudo bash
+    ```
 
-6. Paste the copied information and submit
+   to become **root**
+
+6. Paste the previously copied text in the terminal and submit, to create the new configuration file for the gorgone daemon
 
     ![config_copied](../../assets/configuring-smart-poller/config_copied.png)
 
-7. Restart the gorgone deamon on your Poller
+7. Restart the gorgone deamon on your Poller to use the new configuration
 
     ```bash
     systemctl restart gorgoned.service
@@ -121,7 +104,7 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
 ---
 
-## Pollers restart
+## Poller restart
 
 1. Go to Configuration -> Pollers -> Pollers
 
@@ -139,16 +122,24 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
     ![Export configuration 2](../../assets/configuring-smart-poller/poller-attach-13.png)
 
-5. Log on to the Central Management (SSH) do a sudo bash and enter the password
+:::caution Mandatory
 
-    :::caution Mandatory
-    The following steps are mandatory in any case Central Manager performs such a synchronization every 4 hours
-    :::
+The following steps are mandatory to synchronize immediately the plugins with the new Poller. Otherwise, the Central Manager performs such a synchronization every 4 hours
 
-6. Launch the following command:
+:::
+
+5. Log on to the Central Management (SSH) and launch
 
     ```bash
-    sudo ./opt/pgum/scripts/i-vertix/sync_poller.sh
+   sudo bash
+   ```
+
+   to become **root**
+
+6. Launch the following command to syncronize the plugins with the Poller and start immediately the monitoring.
+
+    ```bash
+    sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
     ```
 
 7. Final check in the GUI under **Configuration -> Pollers -> Pollers**
@@ -157,13 +148,14 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
     ![Final check](../../assets/configuring-smart-poller/poller-attach-14.png)
 
+<!---
 :::note
 
 If you want to start immediately with the monitoring, make sure to also manually synchronize the plugins from the central to the newly created poller!
 
 :::
 
-### Synchronize Plugins from Central to Poller
+## Synchronize Plugins from Central to Poller
 
 By default, syncing all plugins to the pollers is done every 4 hours on the Central server.
 
@@ -171,5 +163,6 @@ In case of adding a new poller where you want to start immediately with the moni
 you need to **execute following command** on the **Central Monitoring Server** to immediately sync the plugins:
 
 ```bash
-sudo ./opt/i-vertix/scripts/i-vertix/sync_poller.sh
+sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
 ```
+--->
