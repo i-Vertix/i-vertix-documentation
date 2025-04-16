@@ -30,7 +30,12 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 5. Click on `Apply` to Add the new Poller and return to the Poller List
     ![Poller Add Step 3](../../assets/configuring-smart-poller/poller-attach-wizard-03.png)
 
-
+:::tip
+When the Smart Poller is unable to directly contact the Central Server, due to specific network settings for example, it is possible to configure the Central to initiate the connection to the Poller's Broker instead.
+In this case the `Advanced: reverse Centreon Broker communication flow` option should be enabled.
+This option will automatically create a matchin Input entry in the *central-broker-master* Broker configuration for the Central.
+For more information refer the [Additional configuration](#additional-configuration) section.
+:::
 ---
 
 ## Broker configuration
@@ -166,3 +171,58 @@ you need to **execute following command** on the **Central Monitoring Server** t
 sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
 ```
 --->
+
+## Additional configuration
+
+### Reverse Broker communication flow
+
+In certain cases, the Poller might not be able to initialize the broker data flow to the Central or Remote Server—such as when a firewall blocks the connection.
+To work around this limitation, it is possible to configure the Central Server to initiate the connection to the Poller's Broker instead, effectively circumventing the issue.
+
+If the Poller was added with the option *Advanced: reverse Centreon Broker communication flow* everything is already set up, and the following steps are needed only to change the configuration.
+
+Otherwise the following steps are needed:
+
+1. Go to the **Configuration > Pollers > Broker configuration** menu and click on
+**central-broker-master** configuration on the Central Server.
+
+2. Go to the **Input** tab panel and add a new **TCP - IPv4** entry.
+
+3. Enter the **Name** of the connection, the TCP **Connection port** where the Poller is listening, and the **Host to connect to** (IP address of the Poller). Then **Save** your configuration.
+
+![image](../../assets/configuring-smart-poller/on-peer-configuration-1.png)
+
+
+<!--- 
+TODO: evaluate if next section should be included or not
+--->
+
+### Communication Protocol between Central Manager and Smart Poller
+
+The Gorgone daemon installed on Pollers typically communicates with the Central server using a ZeroMQ-based messaging protocol. However, it is still possible to configure the daemon to use the legacy SSH-based communication method.
+
+While SSH communication remains available, it is deprecated and no longer actively developed. It should only be used as a transitional option for migrating from older platforms that previously relied on Centcore.
+
+> Pollers that will not use ZMQ as communication type
+> between Central's Gorgone and theirs will not benefit from all i-Vertix
+> and i-Vertix's extensions features.
+
+<Tabs groupId="sync">
+<TabItem value="Modern (recommended)" label="Modern (recommended)">
+
+| Communications                         | Allowed actions                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------- |
+| **Central** <-- *ZMQ* --\> **Poller** | Monitoring actions\*, Engine/Broker statistics collection, Host Discovery |
+
+</TabItem>
+<TabItem value="Legacy (ex-Centcore)" label="Legacy (ex-Centcore)">
+
+| Communications                         | Allowed actions                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------- |
+| **Central** <-- *SSH* --\> **Poller** | Monitoring actions\*, Engine/Broker statistics collection, Host Discovery |
+
+</TabItem>
+</Tabs>
+
+\* Monitoring actions are all actions provided by Centreon UI like downtimes,
+acknowledgements, etc and configuration export.
