@@ -5,7 +5,7 @@ title: How to attach a Smart Poller to the Central Management
 
 import ImageCounter from "../../../../src/components/ImageCounter";
 
-## Poller configuration
+## Add the new Poller
 
 To attach a Smart Poller **i-Vertix4** to a Central Management, please follow these instructions:
 
@@ -24,7 +24,7 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
     ![Poller Add Step 2](../../assets/configuring-smart-poller/poller-attach-wizard-02.png)
 
 - <ImageCounter num={1} /> The new Poller name
-- <ImageCounter num={2} /> The Poller IP address
+- <ImageCounter num={2} /> The new Poller IP address
 - <ImageCounter num={3} /> The i-Vertix Central IP address, please make sure the Poller is able to contact the Central with this IP address
 
 5. Click on `Apply` to Add the new Poller and return to the Poller List
@@ -39,7 +39,7 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
     ![Brocker configuration](../../assets/configuring-smart-poller/poller-attach-3.png)
 
-2. Click on the module entry created for the new Poller, in this example **poller1-module**
+2. Click on the entry created for the new Poller, in this example **poller1-module**
     ![Brocker configuration](../../assets/configuring-smart-poller/poller-attach-broker-00.png)
 
 4. Set the field **"Event queue max size"** to **250000**
@@ -67,7 +67,7 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
 ---
 
-## Gorgone configuration export
+## Gorgone configuration deploy
 
 1. logon on your i-Vertix Central GUI and go to **Configuration -> Pollers**
 
@@ -124,7 +124,7 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
 :::caution Mandatory
 
-The following steps are mandatory to synchronize immediately the plugins with the new Poller. Otherwise, the Central Manager performs such a synchronization every 4 hours
+The following steps are mandatory to synchronize immediately the plugins with the new Poller and start monitoring right away. Otherwise, the Central Manager performs the synchronization every 4 hours
 
 :::
 
