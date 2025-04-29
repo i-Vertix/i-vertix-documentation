@@ -33,7 +33,7 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 :::tip
 When the Smart Poller is unable to directly contact the Central Server, due to specific network settings for example, it is possible to configure the Central to initiate the connection to the Poller's Broker instead.
 In this case the `Advanced: reverse Centreon Broker communication flow` option should be enabled.
-This option will automatically create a matchin Input entry in the *central-broker-master* Broker configuration for the Central.
+This option will automatically create a matching Input entry in the *central-broker-master* Broker configuration for the Central.
 For more information refer the [Additional configuration](#additional-configuration) section.
 :::
 ---
@@ -42,10 +42,10 @@ For more information refer the [Additional configuration](#additional-configurat
 
 1. go to Configuration -> Pollers -> Broker configuration
 
-    ![Brocker configuration](../../assets/configuring-smart-poller/poller-attach-3.png)
+    ![Broker configuration](../../assets/configuring-smart-poller/poller-attach-3.png)
 
 2. Click on the entry created for the new Poller, in this example **poller1-module**
-    ![Brocker configuration](../../assets/configuring-smart-poller/poller-attach-broker-00.png)
+    ![Broker configuration](../../assets/configuring-smart-poller/poller-attach-broker-00.png)
 
 4. Set the field **"Event queue max size"** to **250000**
 
@@ -99,7 +99,7 @@ For more information refer the [Additional configuration](#additional-configurat
 
     ![config_copied](../../assets/configuring-smart-poller/config_copied.png)
 
-7. Restart the gorgone deamon on your Poller to use the new configuration
+7. Restart the gorgone daemon on your Poller to use the new configuration
 
     ```bash
     systemctl restart gorgoned.service
@@ -141,7 +141,7 @@ The following steps are mandatory to synchronize immediately the plugins with th
 
    to become **root**
 
-6. Launch the following command to syncronize the plugins with the Poller and start immediately the monitoring.
+6. Launch the following command to synchronize the plugins with the Poller and start immediately the monitoring.
 
     ```bash
     sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
