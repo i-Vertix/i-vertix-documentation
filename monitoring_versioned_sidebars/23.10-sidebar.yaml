@@ -177,17 +177,22 @@ sidebar:
       - prerequisites-works
       - managing-ncb
       - visualize-ncb
-  - id: i-vertix-bi
+  - id: i-vertix-reporting
     label: Reporting
     items:
-      - bi-overview
-      - bi-requirements
-      - bi-setup
-      - bi-report-store
-      - bi-job
-      - bi-viewing-reports
-      - bi-troubleshooting
-      - bi-settings 
+      - availability-reports
+      - id: i-vertix-bi
+        label: i-Vertix Business Intelligence
+        items:
+          - bi-overview
+          - bi-requirements
+          - bi-setup
+          - bi-report-store
+          - bi-job
+          - bi-viewing-reports
+          - bi-troubleshooting
+          - bi-settings 
+      - dashboard-meraki
   - id: administration
     label: Administration
     items:
