@@ -136,34 +136,59 @@ However, performing an **Upgrade** will automatically include an **Update**.
 :::note
 
 When installing a new Plugin, any pending **Update** will be applied automatically before installation.
-
 :::
 
-1) to update the Plugin Store click on **Administration >
-   i-Vertix > Plugin Store**
+To update the Plugin Store click on **Administration > i-Vertix > Plugin Store**
 
-If this orange image (on the left) appears on a Plugin Store it means that an update is available.
+When an **Update** is available, the Update button lights up in orange:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/upd-pp.png)
 
-If this blue image (on the left) appears on a Plugin Store it means that an update is available.
+Likewise, when an **Upgrade** is available, the Upgrade button lights up in blue:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/upg-pp.png)
 
-In some case we can have both.
-
-![image](../../assets/monitoring-resources/monitoring-basics/upd-upg-pp.png)
-
-If you want to see what kind of implementations will be upgraded/updated you can click on
+The changes brought by the upcoming **Update/Upgrade** are shown clicking on the
+Version button:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/ver_1-pp.png)
 
-and on the left side will appear this overview
+which will show the overview on the right:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/ver_2-pp.png)
 
+As stated above, it is not uncommon that both an **Update** and an **Upgrade** are available at the same time:
+
+![image](../../assets/monitoring-resources/monitoring-basics/upd-upg-pp.png)
+
+The **Update/Upgrade** procedure can be started by clicking on the aforementioned buttons.
+
+:::caution Mandatory
+
+After an **Upgrade** it is advised to synchronize the new plugins with the Pollers. Otherwise, the Central Manager performs the synchronization every 4 hours and you need to wait this time before the Poller is able to use the new Plugins.
+
+:::
+
+To manually synchronize the Plugins:
+
+1. Log on to the Central Management through SSH and launch
+
+    ```bash
+   sudo bash
+   ```
+
+   to become **root**
+
+2. Run the command
+
+    ```bash
+    sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
+    ```
+
+to perform the synchronization
+
 After an update or an upgrade of the Plugin Store it's a good idea to deploy the configuration to all the
-poller/s ([Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)).
+Poller/s ([Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)).
 
 ---
 
