@@ -3,16 +3,14 @@ id: dashboard-meraki
 title: Meraki Dashboard
 ---
 
-## Meraki Dashboard
-
-The Cisco Meraki Dashboard shows information about wireless devices collected through Cisco Meraki API.
-The page is available at:
+The Cisco Meraki Dashboard provides insights into your Cisco wireless devices using data collected via the Meraki API.
+You can access the dashboard at:
 
 **Reporting -> Meraki Dashboard -> Wireless**
 
 ![image](../assets/discovery/meraki11.png)
 
-### List tab
+## List tab
 
 To view the list of devices, select the mandatory **Token** and **Organisation** fields in the filters. Other filters are available, including Networks, Search by Name, IP or Serial, Device Status.
 
@@ -42,7 +40,7 @@ To see Host details, click on it:
 
 ![image](../assets/discovery/meraki17.png)
 
-### health tab
+## Health tab
 Before selecting the tab, the function must select at least one available network.
 
 New search filters based on SSID and Timespan are available.
@@ -53,7 +51,7 @@ i-Vertix IT Monitoring offers various dashboard:
 
 A problematic connection step with the Cisco Meraki Dashboard refers to a specific stage or action in the process of connecting to and accessing the Dashboard that is encountering difficulties or issues. It indicates that there is a specific point in the connection flow where problems are arising, resulting in an inability to establish a successful connection or access the Dashboard's features and functionality.
 
-When facing a problematic connection step with the Cisco Meraki Dashboard, it's important to identify the specific stage or action causing the issue in order to troubleshoot effectively. 
+When facing a problematic connection step with the Cisco Meraki Dashboard, it's important to identify the specific stage or action causing the issue in order to troubleshoot effectively.
 
 ![image](../assets/discovery/meraki18.png)
 
@@ -75,7 +73,8 @@ Connection issues by Access Point (AP) in the Cisco Meraki Dashboard refer to pr
 
 ![image](../assets/discovery/dash3.png)
 
-### How to add the Problematic connection step widget to your dashboards
+## Widgets
+It is possible to add widgets to **Home > Custom Views**, for example a widget for a problematic connection.
 
 1. Press on the button **Create widget on custom view**
 

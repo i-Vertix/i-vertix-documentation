@@ -141,3 +141,8 @@ Select the hosts you want to monitor and click on **SYNC WITH MONITORING**.
 As previously stated, any changes will take effect only once they are exported to the **Smart Poller(s)**. 
 
 :::
+
+## Meraki Dashboard
+
+Once the Discovery process is complete, you can view detailed information about the wireless devices through
+the [Cisco Meraki Dashboard](../../i-vertix-reporting/dashboard-meraki.md).

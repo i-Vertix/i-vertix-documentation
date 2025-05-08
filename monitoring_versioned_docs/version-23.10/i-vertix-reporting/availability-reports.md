@@ -1,13 +1,12 @@
 ---
 id: availability-reports
-title: Availability
+title: Availability reports
 ---
 
+import ImageCounter from "../../../src/components/ImageCounter";
 
-## Availability reports
-
-The availability reports concerning objects monitored via the i-Vertix Web interface
-can display the availability rates of hosts, a hostgroup, or a servicegroup over a selected period.
+Through the i-Vertix Web interface, you can view availability reports showing how much time specific hosts,
+host groups, or service groups were available during a selected period.
 
 To access the availability reports:
 
@@ -16,10 +15,10 @@ To access the availability reports:
 
 ![image](../assets/reporting/host_availability_example1.png)
 
-- The **Reporting Period** lets you select a predefined period or define it manually using **From** to **to** fields.
-- The **Host state** table displays the availability rates of objects.
-- The **State Breakdowns For Host Services** table displays the availability of linked objects.
-- The timeline provides a quick and intuitive overview of the status of the object.
+- <ImageCounter num={1} /> The <b>Reporting Period</b> lets you select a predefined period or define it manually using <b>From</b> to <b>to</b> fields.
+- <ImageCounter num={2} /> The <b>Host state</b> table displays the availability rates of objects.
+- <ImageCounter num={3} /> The <b>State Breakdowns For Host Services</b> table displays the availability of linked objects.
+- <ImageCounter num={4} /> The timeline provides a quick and intuitive overview of the status of the object.
 
 ![image](../assets/reporting/host_timeline.png)
 
