@@ -142,22 +142,22 @@ To update the Plugin Store click on **Administration > i-Vertix > Plugin Store**
 
 When an **Update** is available, the Update button lights up in orange:
 
-![image](../../assets/monitoring-resources/monitoring-basics/upd-pp.png)
+![image](../../assets/monitoring-resources/monitoring-basics/topbar_update.png)
 
 Likewise, when an **Upgrade** is available, the Upgrade button lights up in blue:
 
-![image](../../assets/monitoring-resources/monitoring-basics/upg-pp.png)
+![image](../../assets/monitoring-resources/monitoring-basics/topbar_upgrade.png)
 
 The changes brought by the upcoming **Update/Upgrade** are shown clicking on the
 Version button:
 
-![image](../../assets/monitoring-resources/monitoring-basics/ver_1-pp.png)
+![image](../../assets/monitoring-resources/monitoring-basics/topbar_version.png)
 
-which will show the overview on the right:
+which will show an overview like the following on the right:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/ver_2-pp.png)
 
-As stated above, it is not uncommon that both an **Update** and an **Upgrade** are available at the same time:
+It is not uncommon that both an **Update** and an **Upgrade** are available at the same time:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/upd-upg-pp.png)
 
@@ -165,8 +165,7 @@ The **Update/Upgrade** procedure can be started by clicking on the aforementione
 
 :::caution Mandatory
 
-After an **Upgrade** it is advised to synchronize the new plugins with the Pollers. Otherwise, the Central Manager performs the synchronization every 4 hours and you need to wait this time before the Poller is able to use the new Plugins.
-
+After an **Upgrade**, it is recommended to manually synchronize the new plugins with the Pollers. Otherwise, the Central Manager will perform the synchronization automatically every 4 hours, and the Pollers will not be able to use the new plugins until then.
 :::
 
 To manually synchronize the Plugins:
@@ -185,10 +184,14 @@ To manually synchronize the Plugins:
     sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
     ```
 
-to perform the synchronization
+to perform the synchronization.
 
-After an update or an upgrade of the Plugin Store it's a good idea to deploy the configuration to all the
-Poller/s ([Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)).
+After the **Update** or the **Upgrade** procedure we need to export the configuration to the Pollers:
+
+- for an **Update** it is enough to Restart the monitoring engine with the **Reload** method
+- for the **Upgrade** it required to export the configuration selecting **Restart** as the `Restart monitoring Engine` Method
+
+See the link for the full explanation on how to export the configuration to the Pollers: [Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md).
 
 ---
 
