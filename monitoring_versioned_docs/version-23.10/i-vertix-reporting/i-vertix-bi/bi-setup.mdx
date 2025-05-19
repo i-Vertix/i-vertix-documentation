@@ -3,7 +3,7 @@ id: bi-setup
 title: Setup
 ---
 
-import ImageCounter from "../../../src/components/ImageCounter";
+import ImageCounter from "../../../../src/components/ImageCounter";
 
 ## Installation
 
@@ -27,7 +27,7 @@ After the startup-process is completed, log into the command line of the i-Verti
 
 The following menu should appear:
 
-![bi menu](../assets/bi/menu.png)
+![bi menu](../../assets/bi/menu.png)
 
 :::note
 
@@ -168,13 +168,13 @@ The setup wizard should now appear.
 
 ### 1st Step: Business Intelligence Server Connection
 
-![Setup Step 1](../assets/bi/setup_1.png)
+![Setup Step 1](../../assets/bi/setup_1.png)
 
 - <ImageCounter>1</ImageCounter> Insert the previous set-up ip address of the i-Vertix Business Intelligence Server
 - <ImageCounter>2</ImageCounter> Insert the previously generated API token which was exposed during the setup program
 - <ImageCounter>3</ImageCounter> Click <code>Connect</code> to test the connection
 
-![Setup Step 1.1](../assets/bi/setup_2.png)
+![Setup Step 1.1](../../assets/bi/setup_2.png)
 
 After a successful connection you can proceed with the next step by clicking `Next`.
 
@@ -186,13 +186,13 @@ If the connection cannot be established, head over to the [Troubleshooting](./bi
 
 ### 2nd Step: Verify installed versions
 
-![Setup Step 2](../assets/bi/setup_3.png)
+![Setup Step 2](../../assets/bi/setup_3.png)
 
 Quick overview of the installed versions on your fresh i-Vertix BI server. Click `Next` to proceed with the next step.
 
 ### 3rd Step: Monitoring database connection
 
-![Setup Step 3](../assets/bi/setup_4.png)
+![Setup Step 3](../../assets/bi/setup_4.png)
 
 - <ImageCounter>1</ImageCounter> Insert the central monitoring server ip address as seen by the i-Vertix BI server (same ip address which was requested during the BI server setup process). By default the current Browser address is used, this address is not always the right one
 - <ImageCounter>2</ImageCounter> Insert the monitoring database port (default <code>3306</code>)
@@ -212,7 +212,7 @@ After successfully creating the connection profile, click `Next` to proceed with
 
 ### 4th Step: Monitor the i-Vertix Business Intelligence Server
 
-![Setup Step 4](../assets/bi/setup_5.png)
+![Setup Step 4](../../assets/bi/setup_5.png)
 
 Almost done! The 4th and last step of the monitoring module setup is optional but highly recommended.
 
