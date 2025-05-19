@@ -168,23 +168,11 @@ The **Update/Upgrade** procedure can be started by clicking on the aforementione
 After an **Upgrade**, it is recommended to manually synchronize the new plugins with the Pollers. Otherwise, the Central Manager will perform the synchronization automatically every 4 hours, and the Pollers will not be able to use the new plugins until then.
 :::
 
-To manually synchronize the Plugins:
-
-1. Log on to the Central Management through SSH and launch
-
-    ```bash
-   sudo bash
-   ```
-
-   to become **root**
-
-2. Run the command
+To manually synchronize the Plugins, log on to the Central Management through SSH and launch
 
     ```bash
     sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
     ```
-
-to perform the synchronization.
 
 After the **Update** or the **Upgrade** procedure we need to export the configuration to the Pollers:
 

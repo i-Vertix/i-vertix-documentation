@@ -73,3 +73,11 @@ Follow the instructions in the email and download the license using the followin
 8. Type 2 to reboot the VM so that all the services will be started
 
 The system is now ready. Proceed with the [first access to the web console](../first-web-access/first-web-access.md)
+
+:::note
+
+The current license configuration does not allow access to the Plugin Store yet.
+You can find the configuration steps in the [Plugin Store Configuration](../../quick-start-guide/how-to-configure-central-and-poller/plugin-store-configuration.md) section.
+
+If you haven't already, please contact i-Vertix Support at support@i-vertix.com to request access.
+:::

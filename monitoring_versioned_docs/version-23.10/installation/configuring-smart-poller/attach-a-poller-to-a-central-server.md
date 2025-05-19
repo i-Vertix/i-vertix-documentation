@@ -109,7 +109,7 @@ For more information refer the [Additional configuration](#additional-configurat
 
 ---
 
-## Poller restart
+## Poller Configuration Export
 
 1. Go to Configuration -> Pollers -> Pollers
 
@@ -133,25 +133,20 @@ The following steps are mandatory to synchronize immediately the plugins with th
 
 :::
 
-5. Log on to the Central Management (SSH) and launch
-
-    ```bash
-   sudo bash
-   ```
-
-   to become **root**
-
-6. Launch the following command to synchronize the plugins with the Poller and start immediately the monitoring.
+5. Launch the following command to synchronize the plugins with the Poller and start immediately the monitoring.
 
     ```bash
     sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
     ```
 
-7. Final check in the GUI under **Configuration -> Pollers -> Pollers**
+6. Final check in the GUI under **Configuration -> Pollers -> Pollers**
 
     Check if the configuration is like the one shown in the picture.
 
     ![Final check](../../assets/configuring-smart-poller/poller-attach-14.png)
+
+At this stage of the setup, the Poller is fully configured and ready to begin monitoring.
+The following section covers advanced configuration options that may be useful for specific use cases.
 
 <!---
 :::note
