@@ -194,30 +194,20 @@ TODO: evaluate if next section should be included or not
 
 ### Communication Protocol between Central Manager and Smart Poller
 
-The Gorgone daemon installed on Pollers typically communicates with the Central server using a ZeroMQ-based messaging protocol. However, it is still possible to configure the daemon to use the legacy SSH-based communication method.
+The Gorgone daemon, installed on the Pollers, typically communicates with the Central server using a ZeroMQ (ZMQ) based messaging protocol.
+The messaging protocol is also leveraged by the Broker daemon to send the metrics from the Poller to the Central.
 
-While SSH communication remains available, it is deprecated and no longer actively developed. It should only be used as a transitional option for migrating from older platforms that previously relied on Centcore.
+However, it is still possible to configure the Pollers to use the legacy SSH-based communication method.
+While SSH communication remains available, it is deprecated and no longer actively developed.
+Its only purpose is as a transitional option for migrating from older platforms that previously relied on Centcore, therefore it will not be covered in this guide.
 
 > Pollers that will not use ZMQ as communication type
 > between Central's Gorgone and theirs will not benefit from all i-Vertix
 > and i-Vertix's extensions features.
 
-<Tabs groupId="sync">
-<TabItem value="Modern (recommended)" label="Modern (recommended)">
+The SSH connection, despite its deprecation as a messaging protocol, is still used as the primary channel for several important features:
+    - Network Configuration Backup
+    - plugins synchronization
+    - configuration and debug
 
-| Communications                         | Allowed actions                                                           |
-| -------------------------------------- | ------------------------------------------------------------------------- |
-| **Central** <-- *ZMQ* --\> **Poller** | Monitoring actions\*, Engine/Broker statistics collection, Host Discovery |
-
-</TabItem>
-<TabItem value="Legacy (ex-Centcore)" label="Legacy (ex-Centcore)">
-
-| Communications                         | Allowed actions                                                           |
-| -------------------------------------- | ------------------------------------------------------------------------- |
-| **Central** <-- *SSH* --\> **Poller** | Monitoring actions\*, Engine/Broker statistics collection, Host Discovery |
-
-</TabItem>
-</Tabs>
-
-\* Monitoring actions are all actions provided by Centreon UI like downtimes,
-acknowledgements, etc and configuration export.
+A comprehensive description of all the communication happening between the Central and the Pollers can be found at [Table of network flows](../before-you-start/technical-information.md).
