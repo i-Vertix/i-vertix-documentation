@@ -4,6 +4,8 @@ title: Plugin packs
 ---
 
 import ImageCounter from "../../../../src/components/ImageCounter";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
 A Plugin Pack is an installable package that provides a set of configuration templates, simplifying and accelerating the monitoring of your IT infrastructure.
 
@@ -124,44 +126,55 @@ Always check the Description sidebar of the Plugin for more information about th
 The Plugin Stores receives updates directly from the internet, but user intervention is required for installation.
 Most of the time, new Plugin versions introduce new features or fix existing bug.
 
-Updates are handled through two separate procedures:
-
-- **Update**: involves changes limited to template configurations, such as the addition of a new parameter or the adjustment of a service threshold
-
-- **Upgrade**: introduces new functionalities, such as support for a new monitoring protocol
-
-**Updates** can be performed at any time and do not require an **Upgrade**.
-However, performing an **Upgrade** will automatically include an **Update**.
-
-:::note
-
-When installing a new Plugin, any pending **Update** will be applied automatically before installation.
-:::
-
-To update the Plugin Store click on **Administration > i-Vertix > Plugin Store**
-
-When an **Update** is available, the Update button lights up in orange:
-
-![image](../../assets/monitoring-resources/monitoring-basics/topbar_update.png)
-
-Likewise, when an **Upgrade** is available, the Upgrade button lights up in blue:
-
-![image](../../assets/monitoring-resources/monitoring-basics/topbar_upgrade.png)
+Updates are handled through two different procedures, called **Update** and **Upgrade**.
+It is not uncommon that both of them are available at the same time.
 
 The changes brought by the upcoming **Update/Upgrade** are shown clicking on the
 Version button:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/topbar_version.png)
 
-which will show an overview like the following on the right:
+which will show an overview like the following:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/ver_2-pp.png)
 
-It is not uncommon that both an **Update** and an **Upgrade** are available at the same time:
-
+<!--
 ![image](../../assets/monitoring-resources/monitoring-basics/upd-upg-pp.png)
+-->
 
-The **Update/Upgrade** procedure can be started by clicking on the aforementioned buttons.
+<Tabs>
+<TabItem value="update" label="Update" default>
+
+An **Update** involves changes limited to command or template configurations, such as the addition of a new parameter or the adjustment of a service threshold.
+
+:::note
+
+When installing a new Plugin, any pending **Update** will be applied automatically before installation.
+:::
+
+Usually, **Updates** can be performed at any time, since they do not involve operations that requires downtimes or that might disrupt, even temporarily, the monitoring.
+
+To update the Plugin Store click on **Administration > i-Vertix > Plugin Store**.
+
+When an **Update** is available, the Update button lights up in orange:
+
+![image](../../assets/monitoring-resources/monitoring-basics/topbar_update.png)
+
+The procedure can be started by clicking on the button and, after its completion, we need to export the configuration to the Pollers restarting the monitoring engine with the **Reload** method.
+See the link [Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md) for the full explanation on how to export the configuration to the Pollers.
+</TabItem>
+
+<TabItem value="upgrade" label="Upgrade">
+
+An **Upgrade** introduces new functionalities, such as the support for a new monitoring protocol.
+
+Please note that, performing an **Upgrade**, will automatically execute any pending **Update**.
+
+When an **Upgrade** is available, the Upgrade button lights up in blue:
+
+![image](../../assets/monitoring-resources/monitoring-basics/topbar_upgrade.png)
+
+The procedure can be started by clicking on the button.
 
 :::caution Mandatory
 
@@ -170,16 +183,14 @@ After an **Upgrade**, it is recommended to manually synchronize the new plugins 
 
 To manually synchronize the Plugins, log on to the Central Management through SSH and launch
 
-    ```bash
-    sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
-    ```
+```bash
+sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
+```
 
-After the **Update** or the **Upgrade** procedure we need to export the configuration to the Pollers:
-
-- for an **Update** it is enough to Restart the monitoring engine with the **Reload** method
-- for the **Upgrade** it required to export the configuration selecting **Restart** as the `Restart monitoring Engine` Method
-
-See the link for the full explanation on how to export the configuration to the Pollers: [Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md).
+To complete the procedure, we need to export the configuration to the Pollers, selecting **Restart** as the `Restart monitoring Engine` Method.
+See the link [Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md) for the full explanation on how to export the configuration to the Pollers.
+</TabItem>
+</Tabs>
 
 ---
 
