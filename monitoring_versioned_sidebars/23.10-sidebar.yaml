@@ -52,8 +52,6 @@ sidebar:
         label: Configuring Smart Poller
         items:
           - attach-a-poller-to-a-central-server
-          - poller-communications
-          - advanced-configuration
       - id: security-aspects
         label: Security aspects
         items:

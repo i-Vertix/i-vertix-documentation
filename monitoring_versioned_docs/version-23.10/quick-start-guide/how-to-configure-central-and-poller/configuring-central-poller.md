@@ -53,4 +53,3 @@ Open your favourite browser and enter the IP of the Central Manager, you can log
 * Password: **ChangeMe$2024**
 
 ![i-Vertix web login](../../assets/configuring-smart-poller/ivertix-web-login.png)
-

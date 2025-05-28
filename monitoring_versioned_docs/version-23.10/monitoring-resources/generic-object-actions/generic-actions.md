@@ -5,7 +5,15 @@ title: Generic actions
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-In the **Configuration** menu it is possible to perform certain “generic” actions on the various objects.
+In many of the **Configuration** submenus, it is possible to perform certain “common” actions when object lists are displayed.
+These action are:
+
+- **Add** / **Delete**
+- **Duplicate**
+- **Mass change**
+- **Enable** / **Disable**
+
+They are available for object types such as Hosts, Services, Commands and others.
 
 ## Adding objects
 
@@ -58,7 +66,7 @@ To perform a massive change:
 
 :::
 
-## Enabling/disabling objects
+## Enabling / Disabling objects
 
 The enabling and disabling of objects allows you to take objects into account or not during configuration generation.
 The main advantage is to be able to keep the configuration of an object without applying it.
