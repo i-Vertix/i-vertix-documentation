@@ -3,7 +3,7 @@ id: bi-job
 title: Report jobs
 ---
 
-import ImageCounter from "../../../src/components/ImageCounter";
+import ImageCounter from "../../../../src/components/ImageCounter";
 
 ## Report Job List
 
@@ -11,7 +11,7 @@ To access the report job list, head over to `Reporting -> Business Intelligence 
 
 After a fresh installation of the i-Vertix BI module you will find an empty job list.
 
-![Empty Job list](../assets/bi/jobs_empty.png)
+![Empty Job list](../../assets/bi/jobs_empty.png)
 
 To create your first job, press the <ImageCounter num={1} /> <code>+ Add Job</code> button located on top of the list.
 The detail panel will open and you will be able to enter all relevant information to create the job.
@@ -23,7 +23,7 @@ The below chapters will guide you step-by-step to create a complete scheduled re
 
 ### General
 
-![General Tab](../assets/bi/jobs_1.png)
+![General Tab](../../assets/bi/jobs_1.png)
 
 *As always, please insert all required fields marked by a `*` beneath the input label, otherwise saving the job is not available*
 
@@ -57,7 +57,7 @@ This section covers the styling and personalization of generated reports using t
 
 1. Click on the current selected Logo to open the logo manager dialog
 
-    ![Create a new logo](../assets/bi/jobs_1_logo.png)
+    ![Create a new logo](../../assets/bi/jobs_1_logo.png)
 
 2. Upload the logo image
 3. Choose a descriptive name for you uploaded logo
@@ -86,8 +86,8 @@ Some types may be unavailable due to the report template type incompatibility.
 The report templates optimized types are selected by default.
 To change the desired output types, simply click on the icons (min. 1 is required).
 
-A report file will be generated on the report execution for each selected output type - for exmaple if
-PDF and Word is selected, a report in PDF and Word format will be avaialble for download.
+A report file will be generated on the report execution for each selected output type - for example if
+PDF and Word is selected, a report in PDF and Word format will be available for download.
 
 ---
 
@@ -99,7 +99,7 @@ This section covers the report job access management.
 
 ### Parameters
 
-![Parameters](../assets/bi/jobs_2.png)
+![Parameters](../../assets/bi/jobs_2.png)
 
 *As always, please insert all required fields marked by a checked required checkbox, otherwise saving the job is not available*
 
@@ -135,7 +135,7 @@ Types of parameter inputs:
 - **Number input:** special input that only allows numbers
 - **Checkbox**: used for true/falsy values
 - **Select box**: choose one or more values from the provided options - can be reliant on dependencies
-- **Special metric input**: special input to select metrics, acts like a select box but can be tranformed to a regex input along with a regex-matching tool
+- **Special metric input**: special input to select metrics, acts like a select box but can be transformed to a regex input along with a regex-matching tool
 
 ### Receivers
 
@@ -151,9 +151,9 @@ You also have the possibility to create a new receiver configuration by clicking
 <details>
 <summary>Create a new email receiver</summary>
 
-![Create a new email receiver](../assets/bi/jobs_3_dialog.png)
+![Create a new email receiver](../../assets/bi/jobs_3_dialog.png)
 
-1. Set a descriptive reciever name - *who will receive the reports?*
+1. Set a descriptive receiver name - *who will receive the reports?*
 2. Choose one of the pre-configured receiver templates (on the big textbox below you will se a preview of the text sent to the recipient)
 3. Add email addresses who will receive the mail with the report files attached
 4. *(optional)* Add email addresses who will receive a CC of the mail with the report files attached
@@ -199,7 +199,7 @@ Don't forget to [configure the SMTP Server](./bi-settings#smtp-configuration) if
 
 ### Schedule
 
-![Schedule Tab](../assets/bi/jobs_4.png)
+![Schedule Tab](../../assets/bi/jobs_4.png)
 
 *scheduling a report job is optional*
 
@@ -223,7 +223,7 @@ This means, that if f.e. the daily scheduling is not available, the report job s
 
 **Example**:
 
-In the above exmaple image the default monthly scheduling is selected and the slider is set to 3m (3 months) of data.
+In the above example image the default monthly scheduling is selected and the slider is set to 3m (3 months) of data.
 This means that the report will run on every 1st day of the month and includes the last 3 months of data.
 Let's pretend it's the 1st of July: the generated report would contain data from the 1st of April **until** (exclusive)
 the 1st of July - so practically all the data from April, May and June.
@@ -234,7 +234,7 @@ The same principle is also valid for the other default schedule types.
 
 #### Custom Executions
 
-![Custom Scheduling](../assets/bi/jobs_5_custom_predefined.png)
+![Custom Scheduling](../../assets/bi/jobs_5_custom_predefined.png)
 
 It is also possible to add custom execution configurations:
 
@@ -246,19 +246,19 @@ It is also possible to add custom execution configurations:
 
 1. Choose a schedule when the report job will be executed
     
-    ![Choose a schedule](../assets/bi/jobs_4_custom_1.png)
+    ![Choose a schedule](../../assets/bi/jobs_4_custom_1.png)
 
 2. Choose the timestamp of data used in the report
 
-    ![Choose a schedule](../assets/bi/jobs_4_custom_2.png)
+    ![Choose a schedule](../../assets/bi/jobs_4_custom_2.png)
 
 3. Choose a descriptive name to identify the custom execution
 
-    ![Choose a schedule](../assets/bi/jobs_4_custom_3.png)
+    ![Choose a schedule](../../assets/bi/jobs_4_custom_3.png)
 
 4. Review and save your custom execution
 
-    ![Choose a schedule](../assets/bi/jobs_4_custom_4.png)
+    ![Choose a schedule](../../assets/bi/jobs_4_custom_4.png)
 
 </details>
 
@@ -278,7 +278,7 @@ It is possible to pause and resume all configured job schedules without removing
 <details>
 <summary>Pause</summary>
 
-![Pause job](../assets/bi/jobs_4_pause.png)
+![Pause job](../../assets/bi/jobs_4_pause.png)
 
 Press button <ImageCounter num={1} /> `Pause` to pause scheduling.
 
@@ -287,7 +287,7 @@ Press button <ImageCounter num={1} /> `Pause` to pause scheduling.
 <details>
 <summary>Resume</summary>
 
-![Resume job](../assets/bi/jobs_4_resume.png)
+![Resume job](../../assets/bi/jobs_4_resume.png)
 
 Press button <ImageCounter num={1} /> `Resume` to resume scheduling.
 
@@ -304,7 +304,7 @@ If the save button is not available you might wanna check if something is still 
 
 ## Manually execute Report Jobs
 
-![Job List](../assets/bi/jobs_actions.png)
+![Job List](../../assets/bi/jobs_actions.png)
 
 While hovering over report jobs in the job list, following actions will be available:
 
@@ -320,7 +320,7 @@ After clicking the execute icon
 - the job is directly started
 - the below popover appears
 
-![Popover Period](../assets/bi/jobs_manual_execution_1.png)
+![Popover Period](../../assets/bi/jobs_manual_execution_1.png)
 
 The betold popover is used to configure, who of your <ImageCounter num={2} /> **receivers** should
 receive the generated reports and which <ImageCounter num={1} /> **period of data** should be used in the report.
@@ -328,7 +328,7 @@ receive the generated reports and which <ImageCounter num={1} /> **period of dat
 To select the <ImageCounter num={1} /> period of data used in the report you have the possibility to choose between
 defined periods or a custom date. You can enter a custom date by switching to `Use custom date`.
 
-![Popover Custom date](../assets/bi/jobs_manual_execution_2.png)
+![Popover Custom date](../../assets/bi/jobs_manual_execution_2.png)
 
 Here you will need to enter <ImageCounter num={1} disableMargin /> <strong>from</strong> which
 date (time 00:00) <ImageCounter num={2} disableMargin /> <strong>to</strong> which date (time 00:00) the data will be utilized.
