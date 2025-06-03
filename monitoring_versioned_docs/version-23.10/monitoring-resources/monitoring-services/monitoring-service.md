@@ -16,7 +16,7 @@ It is possible to:
 
 1. Create a service:
 
-    - Use the [host autodiscovery feature](../discovery/description.md): the corresponding services will be created automatically.
+    - Use the [host autodiscovery feature](../discovery/description): the corresponding services will be created automatically.
 
     - [Create a host manually](../monitoring-hosts/create-host-manually.md) using a [Plugin Pack](../monitoring-basics/plugin-packs.md), and select **Create Services linked to the Template too**: the services for the host will be created automatically.
 

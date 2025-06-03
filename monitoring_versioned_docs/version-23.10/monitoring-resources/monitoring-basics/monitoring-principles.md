@@ -23,4 +23,4 @@ In i-Vertix, monitoring is facilitated by the following elements:
 
 - [Plugin Packs](../../monitoring-resources/monitoring-basics/plugin-packs.md), which provide out-of-the-box host and service templates. These greatly simplify the configuration of hosts and services: for example, you only need to apply Plugin Pack templates to a host in order to monitor it.
 
-- The [Host and service auto-discovery](../../monitoring-resources/discovery/description.md), which allows you to obtain a list of new hosts and services and automatically add them to the list of monitored resources.
+- The [Host and service auto-discovery](../../monitoring-resources/discovery/description), which allows you to obtain a list of new hosts and services and automatically add them to the list of monitored resources.

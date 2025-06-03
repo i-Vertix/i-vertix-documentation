@@ -3,7 +3,7 @@ id: bi-troubleshooting
 title: Troubleshooting & FAQ
 ---
 
-import ImageCounter from "../../../src/components/ImageCounter";
+import ImageCounter from "../../../../src/components/ImageCounter";
 
 ## Troubleshooting
 
@@ -27,13 +27,13 @@ There could be several reasons which may lead to connection issues to your i-Ver
 
 If you are not able to log into your account using the correct password, your IP address may be blocked by fail2ban, a service we are running to block undesired authentication attempts (brute-force attempts).
 
-Our [dedicated Fail2ban article](../installation/security-aspects/fail2ban) may help you to check or unblock banned IP addresses.
+Our [dedicated Fail2ban article](../../installation/security-aspects/fail2ban) may help you to check or unblock banned IP addresses.
 
 ### REST API not responding
 
 If the i-Vertix BI REST API is not responding, verify if the `rest api` service is <span style={{color: "green"}}>RUNNING</span> in the `menu`.
 
-![Service on the menu](../assets/bi/menu_services.png)
+![Service on the menu](../../assets/bi/menu_services.png)
 
 Following steps may help you to re-activate the REST API:
 
@@ -78,7 +78,7 @@ Report jobs are suspended during a system maintenance. You can verify the curren
 <details>
 <summary><ImageCounter>1</ImageCounter> Maintenance status</summary>
 
-![Maintenance](../assets/bi/settings_maintenance.png)
+![Maintenance](../../assets/bi/settings_maintenance.png)
 
 </details>
 
@@ -108,7 +108,7 @@ It is also possible that the daily etl sync-job is still running. You can verify
 <details>
 <summary><ImageCounter>2</ImageCounter> ETL Job Running & <ImageCounter>6</ImageCounter> ETL Job History</summary>
 
-![Maintenance](../assets/bi/settings_maintenance.png)
+![Maintenance](../../assets/bi/settings_maintenance.png)
 
 </details>
 

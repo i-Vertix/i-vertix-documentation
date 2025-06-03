@@ -11,7 +11,8 @@ In i-Vertix IT Monitoring, users can:
 You can:
 
 * [Create users manually](create-users-manually.md)
-* [Connect your i-Vertix IT Monitoring to an LDAP directory](../administration/parameters/ldap-Ldap.md)
+* [Connect your i-Vertix IT Monitoring to an LDAP directory](../administration/authentication/ldap.md)
+* [Connect your i-Vertix IT Monitoring to an IDP using SAML](../administration/authentication/saml.md)
 * Make customizations:
   * Switch to dark mode
   * Change the user interface language

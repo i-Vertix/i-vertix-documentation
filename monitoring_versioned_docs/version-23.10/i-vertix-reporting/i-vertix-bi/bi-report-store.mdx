@@ -3,11 +3,11 @@ id: bi-report-store
 title: Install Report Templates
 ---
 
-import ImageCounter from "../../../src/components/ImageCounter";
+import ImageCounter from "../../../../src/components/ImageCounter";
 
 ## About
 
-The Report Store is similar to our [Plugin Store](../monitoring-resources/monitoring-basics/plugin-packs) which is used to install and update plugin packs.
+The Report Store is similar to our [Plugin Store](../../monitoring-resources/monitoring-basics/plugin-packs) which is used to install and update plugin packs.
 Also the report store is connected to the i-Vertix Server to provide the latest available packages and updates for your monitoring system.
 
 Although the Report Store is delivering *Report Templates* instead of *Plugin Packs*, the main principle stays the same:
@@ -15,7 +15,7 @@ you can install and update new or already installed report templates with just o
 
 This removes a lot of complexity for you when it comes down to install and update report templates to use them in report jobs.
 
-To access the Report Store, make sure you already have [configured the i-Vertix Store credentials](../quick-start-guide/how-to-configure-central-and-poller/plugin-store-configuration).
+To access the Report Store, make sure you already have [configured the i-Vertix Store credentials](../../quick-start-guide/how-to-configure-central-and-poller/plugin-store-configuration).
 The same credentials and connection parameters are also used for the Plugin Store.
 
 :::note
@@ -37,7 +37,7 @@ The downloaded report templates are directly transferred to the i-Vertix BI serv
 
 ## Using the Report Store
 
-![Report Store](../assets/bi/report_store_overview.png)
+![Report Store](../../assets/bi/report_store_overview.png)
 
 To access the Report Store, head over to `Administration -> i-Vertix -> Report Store`.
 
@@ -52,7 +52,7 @@ which report templates are already installed on the system and are up-to-date or
 
 When hovering over a report template card, you can click the info button to see more details about the report template.
 
-![Report Template Detail](../assets/bi/report_store_detail.png)
+![Report Template Detail](../../assets/bi/report_store_detail.png)
 
 On the detail panel you will find a screenshot-gallery of an example report using the selected report template.
 
@@ -76,7 +76,7 @@ At the bottom you will find the changelog of the selected report template to und
 
 ### Install Report Templates
 
-![Install Report Templates](../assets/bi/report_store_install.png)
+![Install Report Templates](../../assets/bi/report_store_install.png)
 
 You have 3 possibilites to install report templates:
 
@@ -100,7 +100,7 @@ This means, that some of the report template prerequisites are missing and there
 
 You can find the list of missing prerequisites in the [Report Template Detail](./bi-report-store#report-template-detail).
 
-![Report Template Prerequisites Example](../assets/bi/report_store_prerequsites.png)
+![Report Template Prerequisites Example](../../assets/bi/report_store_prerequsites.png)
 
 In the above example, the required library version is not installed on the i-Vertix BI server.
 
