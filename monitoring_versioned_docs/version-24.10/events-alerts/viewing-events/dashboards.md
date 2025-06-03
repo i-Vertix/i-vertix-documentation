@@ -126,9 +126,16 @@ The users you have just added now have access to your dashboard sharing, accordi
 
 | Widget                   | Description                                                                                                                                                                                                                                                                                                    |
 |--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Business Activity Diagram           | Displays graphically a business activity hierarchy of KPIs and lets you navigate through it.   |
+| Clock/Timer           | Displays the time according to the selected time zone, or a timer.   |
 | Generic text           | Allows you to add free text to your dashboards (section titles, information, etc.).   |
+| Group monitoring           | Displays the distribution of current statuses on selected groups of resources, as a table.   |
+| Map            |  Allows you to select and visualize a map created from i-Vertix Maps.  |
 | Metrics graph         | Displays metrics for a given time period.                                                                                |
-| Resource table                 | Displays data on resource status and events, centralized in a table. |
+| Resource table                 | Displays data on resource status and events, centralized in a table. Also displays [resources linked to a ticket](../alerts-notifications/ticketing.md#widget-configuration) or not.
 | Single metric          | Displays the value of a single metric as a text, a gauge or a bar chart.   |
+| Status chart     | Displays the distribution of current statuses on selected resources, as a chart.      |
 | Status grid     | Displays the current status of selected resources, as a grid.      |
 | Top/bottom              | Displays the top or bottom x hosts, for a selected metric.   |
+| Topology Map            |  Allows you to select and visualize a topology map created from i-Vertix Topology Maps.  |
+| Web page           | Displays a web page.   |
