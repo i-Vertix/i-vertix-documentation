@@ -3,6 +3,9 @@ id: dashboards
 title: Dashboards
 ---
 
+import Breadcrumb from "../../../../src/components/Breadcrumb";
+
+
 Get started with creating dashboards and adding widgets specially designed to optimize your user experience. Then benefit from data visualization options to display and monitor your resources in real time.
 
 ![image](../../assets/alerts/dashboards/dashboard-view.png)
@@ -31,16 +34,11 @@ Access to the Dashboards feature is not managed at the user level, but through a
 7. Select the profile to be set for this ACL. In this example: **Viewer**.
 8. Click **Save** to confirm your changes.
 
-### Check the feature is activated
-
-> You must have a user account with ACL rights to the Dashboards feature.
-
-1. Log into the monitoring
-2. You should see in the **Home** menu the **Dashboards Beta** entry.
-
 ## Creating your first dashboard
 
-> You must be logged into the monitoring system with administrator or creator rights.
+> You must be logged into the monitoring system with administrator or an user accoutn with creator permissions.
+
+ To create a dashboard, navigate to <Breadcrumb crumbs={["Home", "Dashboards"]} />.
 
 1. In the **Dashboard library** page, click the **Create a dashboard** button. This opens the **Create dashboard** modal.
 2. Name the dashboard and enter a description if needed.
@@ -132,7 +130,7 @@ The users you have just added now have access to your dashboard sharing, accordi
 | Group monitoring           | Displays the distribution of current statuses on selected groups of resources, as a table.   |
 | Map            |  Allows you to select and visualize a map created from i-Vertix Maps.  |
 | Metrics graph         | Displays metrics for a given time period.                                                                                |
-| Resource table                 | Displays data on resource status and events, centralized in a table. Also displays [resources linked to a ticket](../alerts-notifications/ticketing.md#widget-configuration) or not.
+| Resource table                 | Displays data on resource status and events, centralized in a table.
 | Single metric          | Displays the value of a single metric as a text, a gauge or a bar chart.   |
 | Status chart     | Displays the distribution of current statuses on selected resources, as a chart.      |
 | Status grid     | Displays the current status of selected resources, as a grid.      |

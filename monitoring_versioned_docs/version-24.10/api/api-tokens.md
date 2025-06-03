@@ -5,12 +5,12 @@ title: API tokens
 
 Using an API token, a third-party application can call the Monitoring API to perform actions (webhooks).
 
-A token is linked to one [Moniotinrg user](../monitoring/basic-objects/contacts.md) and is valid only for a certain period of time. API calls will be executed according to the [rights assigned to this user](../administration/access-control-lists.md#granting-rights-to-a-user). A specific user can have several tokens.
+A token is linked to one [Moniotinrg user](../managing-users-contacts/contacts-users.md) and is valid only for a certain period of time. API calls will be executed according to the [rights assigned to this user](../managing-users-contacts/acl.md#granting-rights-to-a-user). A specific user can have several tokens.
 
 ## Who can create API tokens?
 
-* [Users or administrators](../administration/access-control-lists.md#granting-rights-to-a-user) accessing the **Administration > API Tokens** page can create tokens for themselves.
-* Administrators can also see tokens created by other users, can create tokens for other users, and can disable or delete them. This is the same for users with the **Manage API tokens** permission in [action ACLs](../administration/access-control-lists.md#access-filters-on-actions).
+* [Users or administrators](../managing-users-contacts/acl.md#granting-rights-to-a-user) accessing the **Administration > API Tokens** page can create tokens for themselves.
+* Administrators can also see tokens created by other users, can create tokens for other users, and can disable or delete them. This is the same for users with the **Manage API tokens** permission in [action ACLs](../managing-users-contacts/acl.md#access-filters-on-actions).
 
 ## Creating an API token
 

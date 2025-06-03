@@ -8,7 +8,7 @@ title: Monitoring Host
 How to create host:
 
 - [create hosts manually](create-host-automatically.md), using [host templates](host-templates.md)
-- use the [discovery feature](../discovery/description.md)
+- use the [discovery feature](../discovery/description)
 
 ## Requirements
 
