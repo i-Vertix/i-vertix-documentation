@@ -12,7 +12,7 @@ if (!arguments.docs) {
     process.exit(1);
 }
 
-const validDocs = ["monitoring", "log-management", "asset-management"];
+const validDocs = ["monitoring", "log-management", "itam"];
 const docs = arguments.docs;
 let version = arguments.version;
 

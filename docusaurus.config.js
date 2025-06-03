@@ -51,14 +51,14 @@ const config = {
             //     Image: '/img/logo-log-management-1000.png',
             //     to: '/log-management/intro'
             // },
-            // {
-            //     id: 'asset-management',
-            //     label: 'IT Asset Management',
-            //     description: 'Hi, this is a description text. I am very long',
-            //     icon: '/img/logo-asset-management-1000.png',
-            //     Image: '/img/logo-asset-management-1000.png',
-            //     to: '/asset-management/intro'
-            // },
+            {
+                id: 'itam',
+                label: 'IT Asset Management',
+                description: 'i-Vertix IT Asset Management & Inventory automatically detects, updates and manages all IT assets, providing a complete overview of their use and performance over time',
+                icon: '/img/logo-asset-management-1000.png',
+                Image: '/img/logo-asset-management-1000.png',
+                to: '/itam/intro'
+            },
         ]
     },
 
@@ -102,16 +102,32 @@ const config = {
                 }
             },
         ],
-/*         [
+                [
             '@docusaurus/plugin-content-docs',
             {
-                id: 'plugin-packs',
-                path: 'plugin-packs',
-                routeBasePath: 'plugin-packs',
-                sidebarPath: require.resolve('./plugin-packs/sidebar.js'),
-                // ... other options
+                id: 'itam',
+                path: 'itam',
+                routeBasePath: 'itam',
+                includeCurrentVersion: false,
+                versions: {
+                    "10": {
+                        label: "✨ 10",
+                        banner: "none",
+                        badge: true
+                    }
+                }
             },
-        ], */
+        ],
+        /*         [
+                    '@docusaurus/plugin-content-docs',
+                    {
+                        id: 'plugin-packs',
+                        path: 'plugin-packs',
+                        routeBasePath: 'plugin-packs',
+                        sidebarPath: require.resolve('./plugin-packs/sidebar.js'),
+                        // ... other options
+                    },
+                ], */
     ],
 
     themeConfig:
@@ -189,13 +205,13 @@ const config = {
                             //     id: "ivertix-log-management",
                             //     docsPluginId: "log-management"
                             // },
-                            // {
-                            //     label: "IT Asset Management",
-                            //     description: "Automatically manage, track, inventory and update your IT assets",
-                            //     icon: "/img/logo-asset-management-100.png",
-                            //     id: "ivertix-asset-management",
-                            //     docsPluginId: "asset-management"
-                            // }
+                            {
+                                label: "IT Asset Management",
+                                description: "Automatically manage, track, inventory and update your IT assets",
+                                icon: "/img/logo-asset-management-100.png",
+                                id: "ivertix-itam",
+                                docsPluginId: "itam"
+                            }
                         ]
                     },
                     {
@@ -249,10 +265,10 @@ const config = {
                             //     label: 'Plugin Packs',
                             //     to: '/plugin-packs/intro',
                             // },
-                            // {
-                            //     label: 'Asset Management',
-                            //     to: '/asset-management/intro',
-                            // },
+                            {
+                                label: 'Asset Management',
+                                to: '/itam/intro',
+                            },
                             // {
                             //     label: 'Log Management',
                             //     to: '/log-management/intro',
