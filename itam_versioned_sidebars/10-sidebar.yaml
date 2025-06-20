@@ -1,2 +1,29 @@
 sidebar:
   - intro
+  - id: first-steps
+    label: First Steps with GLPI
+    items:
+      - general
+      - understanding-the-interface
+      - manage-your-password
+      - manage-your-preferences
+      - navigate-glpi-modules
+      - user-interfaces
+      - view
+      - search
+      - saved-searches
+      - access-glpi
+      - conclusion
+  
+  #- id: modules
+  #  label: modules
+  
+  - id: advanced
+    label: Advanced configuration
+    items:
+      - cache
+      - status
+      - override-locales
+  
+  - cli
+  - glossary
