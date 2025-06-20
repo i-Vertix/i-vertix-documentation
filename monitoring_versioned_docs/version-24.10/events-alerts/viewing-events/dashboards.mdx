@@ -3,7 +3,10 @@ id: dashboards
 title: Dashboards
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import Breadcrumb from "../../../../src/components/Breadcrumb";
+import ImageCounter from "../../../../src/components/ImageCounter";
 
 
 Get started with creating dashboards and adding widgets specially designed to optimize your user experience. Then benefit from data visualization options to display and monitor your resources in real time.
@@ -137,3 +140,56 @@ The users you have just added now have access to your dashboard sharing, accordi
 | Top/bottom              | Displays the top or bottom x hosts, for a selected metric.   |
 | Topology Map            |  Allows you to select and visualize a topology map created from i-Vertix Topology Maps.  |
 | Web page           | Displays a web page.   |
+
+## Dashboard playlists
+
+It is also possible to create dashboard playlists, which are used to present a slideshow of selected dashboards.
+
+### Create a dashboard playlist
+
+![Playlists](../../assets/alerts/dashboards/playlists.png)
+
+To configure new or list all dashboard playlist, navigate to the configuration list by selecting <ImageCounter num={1} /> `Playlists` on the top right of the `Dashboard library` page.
+You can also <ImageCounter num={3} /> filter all available playlists.
+
+Click <ImageCounter num={2} /> `Add Playlist` to create a new playlist.
+
+<Tabs>
+<TabItem value="general" label="General playlist information">
+
+![Add Playlist](../../assets/alerts/dashboards/add-playlist.png)
+
+- **Name**:* insert a descriptive name for your playlist
+- **Description**: you can also insert an additional description to better describe the playlist you are about to create
+- **Rotation**:* choose the time interval for the slideshow duration
+- **Selected dashboards**:* select all dashboards you want to present
+
+</TabItem>
+<TabItem value="share" label="Share playlist">
+
+![Share Playlist](../../assets/alerts/dashboards/share-playlist.png)
+
+You can share the playlist with other users or users which are part of contactgroups.
+You can choose between two different roles: *viewer* or *editor*. The roles define the granted permissions to the users.
+
+</TabItem>
+</Tabs>
+
+After inserting all the required information you can save your playlist.
+
+### View a dashboard playlist
+
+![Playlist actions](../../assets/alerts/dashboards/playlist-actions.png)
+
+You can <ImageCounter num={2}/> `edit` and <ImageCounter num={3} /> `delete` an already existing playlist.
+
+To view the playlist, click the <ImageCounter num={1} /> `play` button. You will be redirected to the slideshow.
+
+![Slideshow](../../assets/alerts/dashboards/slideshow.png)
+
+- <ImageCounter num={1} disableMargin={true} /> Name of the currently displayed playlist
+- <ImageCounter num={2} disableMargin={true} /> Switch between other playlists
+- <ImageCounter num={3} disableMargin={true} /> Pause the automatic rotation of dashboards contained in playlist or return to previous or go to next dashboard
+- <ImageCounter num={4} disableMargin={true} /> View all dashboards contained in the playlist
+- <ImageCounter num={5} disableMargin={true} /> Return to the dashboard library
+- <ImageCounter num={5} disableMargin={true} /> Return to the playlist configuration
