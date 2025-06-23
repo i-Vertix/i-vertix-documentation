@@ -177,6 +177,10 @@ sidebar:
       - prerequisites-works
       - managing-ncb
       - visualize-ncb
+  - id: i-vertix-netflow
+    label: i-Vertix Netflow
+    items:
+      - netflow-setup
   - id: i-vertix-reporting
     label: Reporting
     items:

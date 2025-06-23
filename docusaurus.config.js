@@ -84,8 +84,13 @@ const config = {
                 routeBasePath: 'monitoring',
                 includeCurrentVersion: false,
                 versions: {
+                    "24.10": {
+                        label: "✨ 24.10",
+                        banner: "none",
+                        badge: true
+                    },
                     "23.10": {
-                        label: "✨ 23.10",
+                        label: "23.10",
                         banner: "none",
                         badge: true
                     },
