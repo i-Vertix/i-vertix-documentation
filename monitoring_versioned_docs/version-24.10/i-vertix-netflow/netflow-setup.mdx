@@ -1,6 +1,6 @@
 ---
 id: netflow-setup
-title: Setup
+title: Setup & Configuration
 ---
 
 import Breadcrumb from "../../../src/components/Breadcrumb";
@@ -302,3 +302,36 @@ set a custom name in the below <ImageCounter num={7} disableMargin /> interface 
 After you modified and saved an exporter, make sure to deploy the changes to the poller (collector) using the `Deploy changes` button above.
 Otherwise your changes will not be taken into account.
 
+:::tip Ready to analyze flows!
+
+You should now be ready to start analyzing incoming flows. On the next page you find the documentation to view and alayze *Live Flows* and *Host Stats*.
+
+:::
+
+## Troubleshooting
+
+<details>
+<summary>No incoming flows</summary>
+
+In the exporter list you find the counts of exported and dropped flows of every configured exporter (flow sending network device).
+
+The most common reason to find the counts empty is a wrong network device configuration or a blocking firewall.
+
+Make sure that the flow configuration is correct for your type of network device.
+Check the offical vendor docs for *configuring sFlow/NetFlow/IPFIX* to find a helpful guide. 
+
+Also check your firewall policy for:
+
+- the defined collector port (default: 6363, Network device -> NetFlow collector)
+- the defined NetFlow Analyzer interface port (NetFlow collector -> NetFlow analyzer)
+
+</details>
+
+<details>
+<summary>Unable to connect to netflow API</summary>
+
+- Check your firewall policies for the NetFlow Analyzer system - TCP port 8443.
+- Make sure that the NetFlow Analyzer system is initialized and the `ntopng` and `clickhouse-server` service is running.
+- Verify that you have a valid netflow license
+
+</details>
