@@ -184,6 +184,7 @@ sidebar:
       - netflow-live-flows
       - netflow-flow-history
       - netflow-flow-alerts
+      - netflow-traffic-report
   - id: i-vertix-reporting
     label: Reporting
     items:
