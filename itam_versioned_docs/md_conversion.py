@@ -1,9 +1,11 @@
 import os
-import sys
 import yaml
 import pathlib
 from collections import OrderedDict
 import json
+import subprocess as sb
+import argparse
+import shutil
 
 
 def add_header(file_path):
@@ -13,7 +15,7 @@ def add_header(file_path):
         lines = fd.readlines()
             
     if lines:
-        if not lines[0].startswith('---'):
+        if not (lines[0].startswith('---') or lines[0].startswith(r'\-\--')):
             #with open(file_path, "w", encoding="utf8") as fd:
 
             module_name = os.path.basename(file_path)
@@ -86,28 +88,107 @@ def parse_index(fpath):
     return lines
 
 
+def makedir(path):
+    dpath = os.path.dirname(path)
+    if not os.path.exists(dpath):
+        os.makedirs(dpath, exist_ok=True)
+    return
+
+
+def convert_to_md(in_path, out_path):
+    print(f"converting {in_path} {out_path}")
+    
+    makedir(out_path)
+    
+    sb.call(["pandoc", in_path, "-f",  "rst", "-t", "markdown", "-o", out_path])
+    return
+
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser(
+        prog="GLPI doc converter",
+        description='What the program does',
+        epilog='Text at the bottom of help'
+        )
+
+    parser.add_argument("input_dir")
+    parser.add_argument("output_dir")
+
+    args = parser.parse_args()
+
+    input_dir = args.input_dir
+    output_dir = args.output_dir
+
+    if input_dir[-1] != "/":
+        input_dir = f"{input_dir}/"
+    
+    if output_dir[-1] != "/":
+        output_dir = f"{output_dir}/"
+
+    os.makedirs(output_dir, exist_ok=True)
+
+
+    #copy images
+    #static_dir = os.path.join(output_dir, "static")
+    static_dir = output_dir
+    os.makedirs(static_dir, exist_ok=True)
+    
+    for root, _, files in os.walk(input_dir):
+
+        png_files = filter(lambda x: x.endswith(".png"), files)
+        for f in png_files:
+            in_path = os.path.join(root, f)
+            rel_path = root.replace(input_dir, "")
+            out_path = os.path.join(
+                static_dir, rel_path, f
+                )
+            makedir(out_path)
+            shutil.copy(in_path, out_path)
+
+
+    #copy and convert md files
     acc = {"items": []}
-    for root, subdirs, files in os.walk(sys.argv[1]):
+    indexes = {}
+    for root, subdirs, files in os.walk(input_dir):
 
-        files = filter(lambda x: x.endswith(".md"), files)
-        for f in files:
+        png_files = filter(lambda x: x.endswith(".png"), files)
+        for f in png_files:
+            in_path = os.path.join(root, f)
+            rel_path = root.replace(input_dir, "")
+            out_path = os.path.join(
+                static_dir, rel_path, f
+                )
+            makedir(out_path)
+            shutil.copy(in_path, out_path)
+
+        rst_files = filter(lambda x: x.endswith(".rst"), files)
+        for f in rst_files:
             
-            path = os.path.join(root, f)
+            in_path = os.path.join(root, f)
+            out_path = os.path.join(
+                root.replace(input_dir, output_dir), 
+                f.replace(".rst", ".md")
+                )
 
-            if f == "index.md":
-                parse_index(path)
+            if f == "index.rst":
+                indexes[in_path] = parse_index(in_path)
 
-            add_header(path)
+            print(in_path, out_path)
+            convert_to_md(in_path, out_path)
+            
+            add_header(out_path)
+            
+            path_obj = pathlib.Path(out_path)
+            set_path(acc, path_obj)
 
-            path = pathlib.Path(path)
-            set_path(acc, path)
+
 
     items = acc.pop("items")
     acc = [v for k, v in acc.items()]
     acc.extend(items)
     acc = {"sidebar" : acc}
 
-    #print(yaml.dump(acc, sort_keys=False))
+    print(yaml.dump(acc, sort_keys=False))
+    with open("10-sidebar.yaml.new", "w") as fd:
+        fd.write(yaml.dump(acc, sort_keys=False))
