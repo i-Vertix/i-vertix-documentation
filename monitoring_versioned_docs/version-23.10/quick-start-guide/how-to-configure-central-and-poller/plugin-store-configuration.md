@@ -1,6 +1,6 @@
 ---
 id: plugin-store-configuration
-title: Plugin Store configuration
+title: Plugin Store Configuration
 ---
 
 Some connections parameters have to be configured in order to access the monitoring profiles included in the Plugin

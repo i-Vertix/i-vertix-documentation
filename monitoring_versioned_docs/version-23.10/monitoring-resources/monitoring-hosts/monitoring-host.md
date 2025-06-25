@@ -3,18 +3,25 @@ id: monitoring-host
 title: Monitoring Host
 ---
 
-> The list of hosts is shown on page **Configuration > Hosts > Hosts**.
+The list of Hosts that are configured for monitoring is shown on page **Configuration > Hosts > Hosts**.
 
-How to create host:
+New Hosts can be configured in two ways:
 
-- [create hosts manually](create-host-automatically.md), using [host templates](host-templates.md)
+- [create hosts manually](create-host-manually.md), [using host templates](host-templates.md)
 - use the [discovery feature](../discovery/description.mdx)
+
+:::tip
+
+If you are looking for the actual status of the already configured Hosts,
+it is reported on page **Monitoring > Resource Status**
+
+:::
 
 ## Requirements
 
 Before you run automatic network scans and start monitoring hosts/services, make sure that:
 
-* you configured the devices that are to be monitored so that they can be queried by i-Vertix IT Monitoring and monitoring protocols are allowed on any Firewalls that are in the middle 
+* you configured the devices that are to be monitored so that they can be queried by i-Vertix IT Monitoring and monitoring protocols are allowed on any Firewalls that are in the middle
 * you have all the **required credentials**:
 
 > * Network devices: SNMP communities (required for Host Discovery and Network Discovery)
@@ -23,8 +30,9 @@ Before you run automatic network scans and start monitoring hosts/services, make
 > * VMware: a read-only vCenter user
 > * Meraki: token API
 
-Also, download from the [Plugin Store](../monitoring-basics/plugin-packs.md) and install any **plugins** you need to monitor your IT environment.
+* you installed from all the **Plugin Packs** needed to monitor your IT environment, otherwise see the [Plugin Packs](../monitoring-basics/plugin-packs.md) section of this guide
 
+<!---
 > Select: **Administration -> i-Vertix -> Plugin Store**.
 
 ![PluginStore](../../assets/monitoring-resources/monitoring-host/plugin-store.png)
@@ -39,5 +47,4 @@ Also, download from the [Plugin Store](../monitoring-basics/plugin-packs.md) and
 
 ![APC](../../assets/monitoring-resources/monitoring-host/plugin-install.png)
 
-
-
+--->
