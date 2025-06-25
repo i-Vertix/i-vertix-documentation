@@ -1,6 +1,6 @@
 ---
 id: create-host-manually
-title: Create the first host
+title: Create the first Host
 ---
 
 1. Go to **Configuration \> Hosts \> Hosts** and then click **Add**.
