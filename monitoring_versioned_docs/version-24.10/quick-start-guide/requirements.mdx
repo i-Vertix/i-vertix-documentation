@@ -1,0 +1,330 @@
+---
+id: requirements
+title: Installation Requirements
+hide_table_of_contents: true
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Before you start with the quick setup of your *i-Vertix Central* system, make sure your infrastructure fulfills the following requirements.
+
+## Virtualization compatibility
+
+*i-Vertix Central* and *Pollers* support multiple virtualization and hyperscaling platforms including:
+
+| Platform | Support               |
+| -------- | --------------------- |
+| VMware   | ⚠️ 6.7 U2 or higher |
+| Hyper-V  | ✅ yes                |
+| KVM      | ✅ yes                |
+| Nutanix  | ✅ yes                |
+| Sangfor  | ✅ yes                |
+| AWS EC2  | ✅ yes                |
+| Azure VM | ✅ yes                |
+
+## Hardware resources
+
+The resources needed for optimal performance depend on the product configuration. Adding more hosts, services and other
+configuration options may increase the server and database workload. Therefore, server configuration adjustments may be
+necessary to optimize performance for your specific environment.
+
+<Tabs>
+<TabItem value="5" label="< 5000 Services" default>
+
+Considered architecture: [***Basic***](../installation/before-you-start/architecture#basic)
+
+* 1 *i-Vertix Central server*
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+---
+
+When using the [***Remote DBMS***](../installation/before-you-start/architecture#dmbs) architecture:
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+**Database server**
+
+| Resource | **Value** |
+| -------- | --------- |
+| CPU      | 4 vCPU    |
+| RAM      | 4 GB      |
+| Storage  | 250 GB    |
+
+
+</TabItem>
+<TabItem value="10" label="< 10000 Services" default>
+
+Considered architecture: [***Distributed***](../installation/before-you-start/architecture#distributed)
+
+* 1 *i-Vertix Central server*
+* 1 *i-Vertix Poller*
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+**i-Vertix Poller**
+
+Assumed to handle production environments (up to 7.000 services with checks every 5 minutes)
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 60 GB            |
+
+---
+
+When using the [***Remote DBMS***](../installation/before-you-start/architecture#remote-dmbs) architecture:
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+**Database server**
+
+| Resource | **Value** |
+| -------- | --------- |
+| CPU      | 4 vCPU    |
+| RAM      | 4 GB      |
+| Storage  | 250 GB    |
+
+</TabItem>
+<TabItem value="15" label="< 15.000 Services">
+
+Considered architecture: [***Distributed***](../installation/before-you-start/architecture#distributed)
+
+* 1 *i-Vertix Central server*
+* 2 *i-Vertix Poller*
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+**i-Vertix Poller**
+
+Assumed to handle production environments (up to 7.000 services with checks every 5 minutes)
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 60 GB            |
+
+---
+
+When using the [***Remote DBMS***](../installation/before-you-start/architecture#remote-dmbs) architecture:
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+**Database server**
+
+| Resource | **Value** |
+| -------- | --------- |
+| CPU      | 4 vCPU    |
+| RAM      | 4 GB      |
+| Storage  | 250 GB    |
+
+</TabItem>
+<TabItem value="20" label="< 20.000 Services">
+
+Considered architecture: [***Distributed***](../installation/before-you-start/architecture#distributed)
+
+* 1 *i-Vertix Central server*
+* 3 *i-Vertix Poller*
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 350 GB           |
+
+**i-Vertix Poller**
+
+Assumed to handle production environments (up to 7.000 services with checks every 5 minutes)
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 60 GB            |
+
+---
+
+When using the [***Remote DBMS***](../installation/before-you-start/architecture#remote-dmbs) architecture:
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+**Database server**
+
+| Resource | **Value** |
+| -------- | --------- |
+| CPU      | 4 vCPU    |
+| RAM      | 4 GB      |
+| Storage  | 350 GB    |
+
+</TabItem>
+<TabItem value="50" label="< 50.000 Services">
+
+Considered architecture: [***Distributed***](../installation/before-you-start/architecture#distributed)
+
+* 1 *i-Vertix Central server*
+* 7 *i-Vertix Poller*
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 8 vCPU           |
+| RAM      | 8 GB             |
+| Storage  | 650 GB           |
+
+**i-Vertix Poller**
+
+Assumed to handle production environments (up to 7.000 services with checks every 5 minutes)
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 60 GB            |
+
+---
+
+When using the [***Remote DBMS***](../installation/before-you-start/architecture#remote-dmbs) architecture:
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 250 GB           |
+
+**Database server**
+
+| Resource | **Value** |
+| -------- | --------- |
+| CPU      | 4 vCPU    |
+| RAM      | 4 GB      |
+| Storage  | 550 GB    |
+
+</TabItem>
+<TabItem value="100" label="< 100.000 Services">
+
+Considered architecture: [***Distributed***](../installation/before-you-start/architecture#distributed)
+
+* 1 *i-Vertix Central server*
+* 15 *i-Vertix Poller*
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 8 vCPU           |
+| RAM      | 8 GB             |
+| Storage  | 1.25 TB          |
+
+**i-Vertix Poller**
+
+Assumed to handle production environments (up to 7.000 services with checks every 5 minutes)
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 60 GB            |
+
+---
+
+When using the [***Remote DBMS***](../installation/before-you-start/architecture#remote-dmbs) architecture:
+
+**i-Vertix Central server**
+
+| Resource | Required minimum |
+| -------- | ---------------- |
+| CPU      | 4 vCPU           |
+| RAM      | 4 GB             |
+| Storage  | 350 GB           |
+
+**Database server**
+
+| Resource | **Value** |
+| -------- | --------- |
+| CPU      | 4 vCPU    |
+| RAM      | 4 GB      |
+| Storage  | 1 TB      |
+
+</TabItem>
+<TabItem value="100+" label="> 100.000 Services">
+
+Our [support team](mailto:support@i-vertix.com) is glad to help you find the right architecture and hardware specs for your system.
+
+</TabItem>
+</Tabs>
+
+:::tip
+
+**Database server**
+
+The database can also be installed in a **high available** (cluster) configuration upon request. This effectively
+prevents potential data loss.
+
+**i-Vertix Poller**
+
+To effectively handle the load of monitoring, it is recommended to have a **dedicated Poller** for every 500 hosts or
+7.000 services.
+
+:::
+
+See also the [storage consumption list](../installation/before-you-start/prerequisites#storage-consumption) to understand how the storage on a *i-Vertix Central* server is consumed. 
+
+## Used ports
+
+Make sure your firewall allows traffic between the i-Vertix components on following ports:
+
+| From               | To                 | Protocol | Port     | Application                                     |
+| ------------------ | ------------------ | -------- | -------- | ----------------------------------------------- |
+| Central Management | Poller             | ZMQ      | TCP 5666 | Export of configuration                         |
+| Central Management | Poller             | SSH      | TCP 22   | Export of configuration (legacy), NCB, Sync Job |
+| Poller             | Central Management | BBDO     | TCP 5669 | Transfer of collected data                      |

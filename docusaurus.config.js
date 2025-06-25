@@ -99,11 +99,11 @@ const config = {
                         banner: "none",
                         badge: true
                     },
-                    "22.04": {
-                        label: "22.04",
-                        banner: "none",
-                        badge: true
-                    }
+                    // "22.04": {
+                    //     label: "22.04",
+                    //     banner: "none",
+                    //     badge: true
+                    // }
                 }
             },
         ],

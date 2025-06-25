@@ -1,25 +1,24 @@
 ---
 id: plugin-packs
-title: Plugin packs
+title: Plugin Store and Plugin Packs
 ---
 
-# Plugin Packs
-
-## What is a Plugin Pack?
+## What is a Plugin Pack? {#plugin-pack}
 
 A Plugin Pack is a downloadable package that contains a set of configuration templates that make monitoring your IT infrastructure fast and easy.
 
-Applying a template from a Plugin Pack is the easiest way to monitor a host.
+Following monitoring configuration items are included in a plugin pack:
 
-- A plugin pack contains commands, host templates and service templates.
-  Packs are installed via the i-Vertix interface. For each type of equipment,
-  the templates determine which indicators will be
-  monitored and set default warning and critical thresholds (these may be
-  fine-tuned later on).
+- Host Templates
+- Service Templates
+- Commands
+- Discovery rules
 
-- Some packages also include discovery modes.
+Each template or rule is ready-to-use and for most use-cases no custom configuration is required. The core of each plugin pack are the included host templates, which combine commands and service templates together. Once applied to a host, all technology-common services and checks are automatically added to a host.
 
-## Prerequisites for i-Vertix Plugin Pack Manager
+The *Discovery rules*, as the name already mentions, are used by the different integrated *host and service discoveries*.
+
+## Prerequisites
 
 ### Accessing your Plugin Packs
 
@@ -121,16 +120,3 @@ After an update or an upgrade of the Plugin Store it's a good idea to deploy the
 poller/s ([Deploy the configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)).
 
 ---
-
-## Re-Install a Plugin Pack
-
-You can re-install a plugin pack (in case of some issue) by clicking the **RE-INSTALL** button.
-
-:::caution
-At the moment, the re-install resets **every** template contained in the plugin pack (also the generic-host and generic-service template for
-example).
-
-Any custom data or setting of every template which is part of this plugin pack will be removed.
-:::
-
-![image](../../assets/monitoring-resources/monitoring-basics/reinstall-pp.png)

@@ -3,26 +3,10 @@ sidebar:
   - id: quick-start-guide
     label: Quick Start Guide
     items:
-      - id: standard-vms-requirements
-        label: Standard VM's requirements
-        items:
-          - requirements
-          - network-ports
-          - browser-requirements
-      - id: how-to-configure-central-and-poller
-        label: How to configure Central and Poller
-        items:
-          - configuring-central-poller
-          - plugin-store-configuration
-          - plugin-update-installation
-      - id: configuring-first-hosts-services
-        label: Configuring first Hosts and Services
-        items:
-          - monitoring-the-first-host
-          - create-host-manually
-          - monitoring-central-poller
-          - monitoring-vmware
-          - network-discovery
+      - requirements
+      - setup-central-poller
+      - plugin-store-configuration
+      - plugin-store-init
   - id: installation
     label: Installation
     items:

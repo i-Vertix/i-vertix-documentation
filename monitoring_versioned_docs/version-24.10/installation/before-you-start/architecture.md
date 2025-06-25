@@ -8,12 +8,7 @@ import TabItem from '@theme/TabItem';
 
 If you are monitoring a small number of hosts and services, a Central Manager is enough. However, to monitor a large number of hosts and services, you will need to distribute the load over multiple Smart Pollers.
 
-## Available architectures
-
-<Tabs>
-<TabItem value="simple" label="Basic" default>
-
-### Basic architecture
+## Basic architecture {#basic}
 
 The basic architecture is set up as follows:
 
@@ -28,10 +23,7 @@ When operating the monitoring system using a basic architecture:
 
 :::
 
-</TabItem>
-<TabItem value="distributed" label="Distributed">
-
-### Distributed architecture
+## Distributed architecture {#distributed}
 
 The distributed architecture is set up as follows:
 
@@ -58,10 +50,7 @@ This architecture is especially useful to:
 
 :::
 
-</TabItem>
-<TabItem value="remotedbms" label="Remote DBMS">
-
-### Remote Database management architecture
+## Remote Database Management architecture {#dbms}
 
 The distributed architecture is set up as follows:
 
@@ -90,10 +79,7 @@ This architecture is especially useful to:
 
 :::
 
-</TabItem>
-<TabItem value="remoteservers" label="Remote Servers">
-
-### Remote Server architecture
+## Remote Server architecture {#remote-server}
 
 The remote server architecture is set up as follows:
 
@@ -126,9 +112,6 @@ This architecture is especially useful to:
 * have the possibility to directly view collected data by connected Pollers on the Remote servers - this is useful when directly accessing the Central i-Vertix Monitoring server is not always possible
 
 :::
-
-</TabItem>
-</Tabs>
 
 ## Components
 

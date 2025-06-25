@@ -1,13 +1,16 @@
 ---
 id: intro
 title: Getting started
+hide_table_of_contents: true
 ---
 
-Welcome to the comprehensive and game-changing i-Vertix IT Monitoring Solution manual your ultimate companion in unlocking the full potential of your IT infrastructure!
+Welcome to the comprehensive and game-changing i-Vertix IT Monitoring Solution manual - your ultimate companion in unlocking the full potential of your *IT Infrastructure Monitoring*!
 
-Our team of experts has meticulously crafted this guide to ensure you harness every ounce of i-Vertix's potential. From installation and configuration to advanced monitoring techniques, we leave no stone unturned in delivering comprehensive and easy-to-follow instructions.
+Our team of experts has crafted this guide to ensure you harness every ounce of i-Vertix's potential.
+We try to provide you with a mix of practical and technical resources to help you not only use but also master the *i-Vertix Monitoring* solution.
 
-We're excited to have you join us on this adventure of mastering the art of IT monitoring. So, fasten your seatbelts and get ready to embark on a remarkable journey of discovery and empowerment with i-Vertix IT Monitoring Solution. Let's elevate your IT infrastructure together!
+To quickly set up a fresh *i-Vertix Monitoring* environment, follow our [*Quick Start Guide*](./quick-start-guide/requirements) which covers the most important tasks.
+Otherwise you can read the full [i-Vertix Installation](./installation/before-you-start/platform.md) documentation.
 
 ## Before you start
 
