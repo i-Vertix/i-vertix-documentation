@@ -57,7 +57,7 @@ const config = {
                 description: 'i-Vertix IT Asset Management & Inventory automatically detects, updates and manages all IT assets, providing a complete overview of their use and performance over time',
                 icon: '/img/logo-asset-management-1000.png',
                 Image: '/img/logo-asset-management-1000.png',
-                to: '/itam/intro'
+                to: '/itam'
             },
         ]
     },
