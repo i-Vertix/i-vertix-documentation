@@ -62,7 +62,7 @@ An internet connection should always be available, most importantly for:
 
 - [License installation](license.md)
 
-- [Plugin Packs installation](../../monitoring-resources/monitoring-basics/plugin-packs.md)
+- [Plugin Packs installation](../../monitoring-resources/plugin-packs)
 
 - [NTP configuration](ntp-configuration.md)
 

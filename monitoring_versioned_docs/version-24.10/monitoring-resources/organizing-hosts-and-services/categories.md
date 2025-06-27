@@ -8,7 +8,6 @@ Categories allow you to:
 - organise hosts or services to define user permissions on them using [ACLs](../../managing-users-contacts/acl.md)
 - [Filtering the view](../../events-alerts/viewing-events/resources-status.md#filtering-events) on the **Resources Status** page.
 
-
 A special type of category is called a severity. Severities can be used to achieve all of the above, but also to
 
 - sort the view on the **Resource Status** page by severity, e.g. to show the most important alerts first. (Severity levels are displayed in the **S** column on the **Resource Status** page).
@@ -56,4 +55,6 @@ To create a severity:
 1. Edit the host or service (go to **Configuration > Hosts > Hosts** or **Configuration > Services > Services by Host** and then click on the host or service).
 2. In the **Extended Info** tab, in the **Monitoring Engine** section, select the required severity from the **Severity Level** list.
 3. Click on **Save**.
-4. [Deploy the configuration file](../monitoring-basics/config-deploy.md). On the **Resource Status** page, the severity icon will appear in the **S** column. A tooltip displays the level and name of the severity. Clicking the column header will sort the view by severity level.
+4. [Deploy the monitoring configuration](../export-configuration)
+
+On the **Resource Status** page, the severity icon will appear in the **S** column. A tooltip displays the level and name of the severity. Clicking the column header will sort the view by severity level.

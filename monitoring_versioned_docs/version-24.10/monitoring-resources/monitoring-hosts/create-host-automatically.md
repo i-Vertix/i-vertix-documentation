@@ -7,4 +7,4 @@ title: Creating hosts automatically
 
 Use the [Discovery feature](../discovery/description.mdx) to detect hosts and create them automatically in i-Vertix IT Monitoring. 
 
-Autodiscovery is done using [Plugin Packs](../monitoring-basics/plugin-packs.md).
+Autodiscovery is done using [Plugin Packs](../plugin-packs).

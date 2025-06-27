@@ -99,4 +99,8 @@ Lists all used *Mitre Techniques* which occurred on alerting flows during the se
 
 ## Understanding Alert Scores {#scores}
 
-The *Alert score* indicates that a flow comes with some kind of issue. The higher the score, the more serious the problem.
+The *Alert score* indicates that a flow comes with some kind of issue.
+Each problem is categorized and assigned a [Mitre Id](https://attack.mitre.org/). The value of the score depends on the severity of the problem.
+
+It is also possible that a single flow has more than one problem. In that particular case the scores are added together.
+Practically said, the higher the score, the more serious the problem(s).

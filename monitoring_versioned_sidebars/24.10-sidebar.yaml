@@ -32,25 +32,13 @@ sidebar:
         label: First web access
         items:
           - first-web-access
-      - id: configuring-smart-poller
-        label: Configuring Smart Poller
-        items:
-          - attach-a-poller-to-a-central-server
-          - poller-communications
-          - advanced-configuration
-      - id: security-aspects
-        label: Security aspects
-        items:
-          - fail2ban
+      - attach-a-poller-to-a-central-server
+      - fail2ban
   - id: monitoring-resources
     label: Monitoring Resources
     items:
-      - id: monitoring-basics
-        label: Monitoring Basics
-        items:
-          - monitoring-principles
-          - plugin-packs
-          - config-deploy
+      - monitoring-principles
+      - plugin-packs
       - id: monitoring-hosts
         label: Monitoring Hosts
         items:
@@ -60,7 +48,6 @@ sidebar:
           - create-host-automatically
           - updating-hosts-dynamically
           - generic-actions-host
-          - export-configuration
       - id: monitoring-services
         label: Monitoring Services
         items:
@@ -71,6 +58,7 @@ sidebar:
           - create-service-automatically
           - updating-services-dynamically
           - meta-service
+      - export-configuration
       - id: discovery
         label: Discovery
         items:

@@ -30,7 +30,7 @@ To be able to export the OID present in the database in the configuration file t
 4. In the drop-down list **Send signal** (the **Reload** option is preferable)
 ![image](../../assets/monitoring-resources/passive-monitoring/apply.png)
 5. Click on the **Generate** button
-6. *[Export the monitoring configuration](../../monitoring-resources/monitoring-basics/config-deploy.md)*
+6. [*Export the monitoring configuration*](../export-configuration)
 
 ## Advanced settings
 
@@ -45,7 +45,7 @@ For example:
 ![image](../../assets/monitoring-resources/passive-monitoring/06servicetrapsrelation.png)
 
 The output message **Link down on interface $2. State: $4.** will display only the name of the interface and its status
-(```$2``` and ```$4``` argument).
+(`$2` and `$4` argument).
 
 Where can I find the arguments?
 
@@ -55,10 +55,10 @@ The arguments are in the documentation of the MIB manufacturer or in the **Comme
 
 To show:
 
-* The index link, use the ```$1``` argument
-* The interface name , use the ```$2``` argument
-* The administrative state of the interface, use the ```$3``` argument
-* The state interface, use the ```$4``` argument
+* The index link, use the `$1` argument
+* The interface name , use the `$2` argument
+* The administrative state of the interface, use the `$3` argument
+* The state interface, use the `$4` argument
 
 For example, the following output message displays all the arguments:
 
@@ -146,7 +146,7 @@ To do this, perform the following steps:
 | Attributes       | Description                                                    |
 | ---------------- | -------------------------------------------------------------- |
 | Enable routing   | Checked                                                        |
-| Route definition | ```$2``` (In this example $2 argument is for IP address of the host) |
+| Route definition | `$2` (In this example $2 argument is for IP address of the host) |
 
 2. Create a second trap definition:
 
@@ -181,6 +181,7 @@ It's only possible with Centreon Broker and on Central monitoring.
 :::
 
 There are three ways to configure this:
+
 * None: nothing to do, the trap is sent as normal
 * Real-Time: with this option, a trap sent with a current downtime, the service status is not updated
 * History: option used to not acknowledge a trap snmp that refers to a past event during a downtime.
