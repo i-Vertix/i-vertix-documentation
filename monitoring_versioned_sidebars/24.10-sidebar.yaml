@@ -7,6 +7,7 @@ sidebar:
       - setup-central-poller
       - plugin-store-configuration
       - plugin-store-init
+      - monitoring-the-first-host
   - id: installation
     label: Installation
     items:
