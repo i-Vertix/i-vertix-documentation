@@ -122,7 +122,8 @@ def convert_to_md(in_path, out_path):
     makedir(out_path)
     
     #sb.call(["pandoc", in_path, "-f",  "rst", "-t", "markdown_strict", "-o", out_path])
-    sb.call(["pandoc", in_path, "-f",  "rst", "-t", "markdown", "-o", out_path])
+    #sb.call(["pandoc", in_path, "-f",  "rst", "-t", "markdown", "-o", out_path])
+    sb.call(["pandoc", in_path, "-f",  "rst", "-t", "commonmark_x", "-o", out_path])
     return
 
 
@@ -298,11 +299,42 @@ if __name__ == "__main__":
         with open(f, "r", encoding="utf8") as fd:
             text = fd.read()
 
-        match = re.search(r":::: ([\w]+)\s*::: title\s*(.*?)\s*:::\s*(.*?)::::\s*", text, re.DOTALL)
-        if match:
-            new_text = f":::{match.group(1)}\n{match.group(3)}\n:::\n\n"
+        #match = re.search(r":::: ([\w]+)\s*::: title\s*(.*?)\s*:::\s*(.*?)::::\s*", text, re.DOTALL)
+        #if match:
+        #    new_text = f":::{match.group(1)}\n{match.group(3)}\n:::\n\n"
+        #    text = text[:match.start()] + new_text + text[match.end():]
+
+
+        #boxes conversion
+        while True:
+            match = re.search(r"> \[\!(\w+)\]((\n> .*)+)", text, flags=re.MULTILINE)
+            
+            if match is None:
+                break
+                
+            note_text = match.group(2).replace("> ", "")
+            new_text = f":::{match.group(1).lower()}\n{note_text}\n:::"
             text = text[:match.start()] + new_text + text[match.end():]
 
+
+        #Removing newlines in link text
+        while True:
+            match = re.search(r"\[([^\]]*\n[^\]]*)\]\((.*)\)", text, flags=re.MULTILINE)
+            if match is None:
+                break
+            
+            link_text = match.group(1).replace("\n", " ")
+            new_text = f"[{link_text}]({match.group(2)})"
+            text = text[:match.start()] + new_text + text[match.end():]
+        
+        text = text.replace("GLPI", "i-Vertix ITAM")
+        text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
+
+
+        match = re.search(r":::.*\n(.*)\n:::", text, flags=re.MULTILINE)
+        if match:
+            print(f, match)
+        
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
     
