@@ -35,4 +35,4 @@ A poller can be attached to a [remote server](#remote-server), or directly to a 
 
 ![image](../../assets/before-you-start/architecture.png)
 
-See also [**Architectures**](architecture.md).
+See also [**Architectures**](./architecture).
