@@ -22,7 +22,7 @@ You will need to log into i-Vertix Monitoring console to configure the network s
 
 2. Password: '**password**' (to be changed as soon as possible)
 
-:::caution
+:::warning
 
 If you fail the login process three times, the IP Address will be blocked for 30 minutes (see [fail2ban](../../installation/security-aspects/fail2ban.md)).
 

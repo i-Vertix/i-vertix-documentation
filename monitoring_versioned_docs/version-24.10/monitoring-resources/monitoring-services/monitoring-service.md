@@ -26,5 +26,4 @@ It is possible to:
 
     - Create a check [command](../generic-object-actions/commands.md) or use an existing one, and link it to a service you have [created manually](create-service-manually.md).
 
-
-2. [Export the configuration](../monitoring-hosts/export-configuration.md).
+2. [Export the configuration](../export-configuration).

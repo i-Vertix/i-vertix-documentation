@@ -4,7 +4,7 @@ title: License activation
 hide_table_of_contents: true
 ---
 
-:::caution
+:::warning
 
 The Central Manager must access the Internet so the license can be activated.
 

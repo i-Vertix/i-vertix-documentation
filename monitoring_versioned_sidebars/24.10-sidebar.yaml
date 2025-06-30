@@ -153,6 +153,7 @@ sidebar:
   - id: i-vertix-netflow
     label: i-Vertix Netflow
     items:
+      - netflow-overview
       - netflow-setup
       - netflow-live-flows
       - netflow-flow-history
@@ -211,5 +212,6 @@ sidebar:
     label: API
     items:
       - rest-api-v1
+      - rest-api-v2
       - api-tokens
   - glossary

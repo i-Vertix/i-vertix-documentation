@@ -41,7 +41,7 @@ When a resource is acknowledged:
 - The color of the line for acknowledged resources is changed
 to yellow.
 
-The acknowledgement can also be cancelled, in which case the event will be included again in the list 
+The acknowledgement can also be cancelled, in which case the event will be included again in the list
 of **Unhandled Problems** and its notifications will resume: in the **More actions** menu, select **Disacknowledge**.
 
 ![image](../../assets/alerts/resources-status/resources-status-acknowledgement.gif)
@@ -80,8 +80,6 @@ In some cases, especially with so-called "passive" services, it can be useful
 to submit a result, i.e. a status, an output and metrics, in order to
 reset the event.
 This can be achieved using the **Submit Status** action, available when a single passive service is selected.
-
-
 
 ## Filtering events
 
@@ -149,7 +147,7 @@ If you type text into the search bar, by default the search is performed on the 
 
 For instance, if you type "rta", all resources containing "rta" in one of the above fields will be displayed (e.g. a metaservice called **Ping-RTA-Average**).
 
-However, you can do a much more specific search using the [i-Vertix Query Language](#cql-criteria). This language allows you to search only 
+However, you can do a much more specific search using the [i-Vertix Query Language](#cql-criteria). This language allows you to search only
 in one or several fields.
 
 #### CQL criteria
@@ -190,8 +188,8 @@ The search bar shows all applied criteria, as text. Autocomplete helps you enter
 
 3. Use spaces between search criteria. Criteria are added using an AND criterion: results will match all criteria.
 
-   * You can use regular expressions. Wildcards are not supported: a search pattern starting with a * is not valid.
-   * You cannot perform a pattern-based search inside a field that has a finite number of values (hostgroups, status, etc): for these fields, use the [**Search options**](#search-criteria) button.
+   - You can use regular expressions. Wildcards are not supported: a search pattern starting with a * is not valid.
+   - You cannot perform a pattern-based search inside a field that has a finite number of values (hostgroups, status, etc): for these fields, use the [**Search options**](#search-criteria) button.
 
 4. Once you have entered all your search criteria, type a space character or press **Esc** to exit autocomplete, then press **Enter**.
 
@@ -272,7 +270,7 @@ You can export the full list of events in CSV format.
 
 ### Graph tab
 
-The graph tab enables you to visually display how the metrics evolve for the selected resource. 
+The graph tab enables you to visually display how the metrics evolve for the selected resource.
 
 Hovering over the metric curves will display under the graph's title the precise time and also display within the legend the different values for that same point in time.
 
@@ -295,7 +293,7 @@ Graphs display metric evolution over a given period of time. This can be defined
 
 - A selection of preconfigured periods is available in the graph header: Last Day, Last 7 Days, Last 31 Days
 - Datetime pickers are available for Start and End points in time. Anytime the displayed period changes, this element is updated accordingly
-- Using the side [<] and [>] buttons that appear upon hovering the graph's border, you can translate in time by half your current timespan (respectively backward and forward in time)
+- Using the side `[<]` and `[>]` buttons that appear upon hovering the graph's border, you can translate in time by half your current timespan (respectively backward and forward in time)
 - Selecting a period of time within the graph will zoom in on this period
 
 ![image](../../assets/alerts/resources-status/resources-status-graph-time-selection.gif)

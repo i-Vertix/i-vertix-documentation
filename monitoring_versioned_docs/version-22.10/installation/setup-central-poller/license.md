@@ -5,7 +5,7 @@ title: i-Vertix License
 
 # License activation
 
-:::caution
+:::warning
 
 The Central Manager must access the Internet so the license can be activated.
 

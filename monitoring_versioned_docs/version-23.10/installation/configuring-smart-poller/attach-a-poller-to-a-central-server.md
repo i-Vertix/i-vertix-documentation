@@ -127,7 +127,7 @@ For more information refer the [Additional configuration](#additional-configurat
 
     ![Export configuration 2](../../assets/configuring-smart-poller/poller-attach-13.png)
 
-:::caution Mandatory
+:::warning[Mandatory]
 
 The following steps are mandatory to synchronize immediately the plugins with the new Poller and start monitoring right away. Otherwise, the Central Manager performs the synchronization every 4 hours
 

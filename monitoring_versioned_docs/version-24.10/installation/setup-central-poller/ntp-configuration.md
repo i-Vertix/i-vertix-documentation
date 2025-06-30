@@ -3,19 +3,13 @@ id: ntp-configuration
 title: NTP Configuration
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
 :::info
 
 Here you can find a list of all usable timezones:
 
-<https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>
+[https://en.wikipedia.org/wiki/List_of_tz_database_time_zones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 
 :::
-
-<Tabs>
-<TabItem value="i-Vertix4" label="i-Vertix4 (Central & Poller)" default>
 
 ## Modifying NTP settings on i-Vertix4 Poller
 
@@ -74,6 +68,3 @@ Below are some examples of commands to run to diagnose any problems
 #### Example 3 `vi /etc/chrony.conf`
 
 ![chrony.conf](../../assets/setup-startup-central-poller/chrony-conf.png)
-
-</TabItem>
-</Tabs>

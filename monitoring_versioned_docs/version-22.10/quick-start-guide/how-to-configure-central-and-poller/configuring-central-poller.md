@@ -28,7 +28,7 @@ You will need to log into i-Vertix Monitoring console to configure the network s
 
 * **Password: 'changeme'** (to be changed as soon as possible)
 
-See the complete procedure for [first Login to VMs](../../installation/setup-central-poller/first-login.md)
+See the complete procedure for [first Login to VMs](../../installation/setup-central-poller/first-login)
 
 ## Network configuration
 
@@ -53,4 +53,3 @@ Open your favourite browser and enter the IP of the Central Manager, you can log
 * Password: **ChangeMe$2024**
 
 ![i-Vertix web login](../../assets/configuring-smart-poller/ivertix-web-login.png)
-

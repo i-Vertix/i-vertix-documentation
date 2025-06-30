@@ -21,7 +21,7 @@ You can search for the resource through filters (for example: Hosts).
 
 ## Procedure
 
-:::caution
+:::warning
 
 Once your monitoring platform is restored and all is doing well, you can **rebuild
 RRD** files in order to restore all performance graphs.
@@ -37,7 +37,7 @@ menu **More actions...** and select the option **Rebuild RRD Database**
 
 ![image](../../assets/administration/backup/rrd-rebuild.gif)
 
-:::caution
+:::warning
 
 The rebuild process takes time, it is a background process and depends on the amount of data.
 

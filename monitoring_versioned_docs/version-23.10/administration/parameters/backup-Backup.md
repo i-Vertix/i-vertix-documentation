@@ -77,7 +77,7 @@ The following window is displayed:
   - **Remote host** Remote host for SCP export
   - **Remote directory** Remote directory for SCP export
 
-:::caution
+:::warning
 
 **Temporary directory** can not be a folder of **Backup directory**.
 
@@ -128,7 +128,7 @@ mysql centreon_storage < YYYY-MM-DD-centreon_storage.sql
 
 This may take a while due to the size of "centreon\_storage" databases.
 
-:::caution
+:::warning
 
 Password is stored in configuration files previously restored. For example
 **$mysql\_passwd** field in file "/etc/centreon/conf.pm".
@@ -166,7 +166,7 @@ ssh <poller_ip_address>
 Answer "Yes" to the question. This is about adding the poller SSH fingerprint
 on the central server.
 
-:::caution
+:::warning
 
 You have to do this operations only if you work with a distributed environment.
 
@@ -215,7 +215,7 @@ cp nrpe.cfg /etc/centreon-engine/
 cp nsca.cfg /etc/centreon-engine/
 ```
 
-:::caution
+:::warning
 
 You have to do this only if you're using the monitoring agents.
 

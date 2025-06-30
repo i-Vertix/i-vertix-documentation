@@ -29,7 +29,7 @@ Here an example of created scenario:
 
 ::: note
 
-Please contact <support@i-vertix.com> for further assistance in creating scenarios.
+Please contact [support@i-vertix.com](mailto:support@i-vertix.com) for further assistance in creating scenarios.
 
 :::
 
@@ -59,7 +59,7 @@ Press the button + Add Scenario:
 
 ![image](../../assets/quick-start/crme2e.png)
 
-Press the button Save and then [export the configuration](../monitoring-hosts/export-configuration.md) to the Poller.
+Press the button Save and then [export the configuration](../export-configuration) to the Poller.
 
 ## Resource Status
 

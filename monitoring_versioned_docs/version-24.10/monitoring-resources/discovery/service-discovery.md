@@ -9,7 +9,7 @@ From the sidemenu, select **Configuration > Services > Manual Discovery** to ent
 
 ![image](../../assets/discovery/sd_manual1.png)
 
-To simply start a service discovery scan, select a host and a discovery template (which are installed by our [Plugin Store](../../quick-start-guide/how-to-configure-central-and-poller/plugin-update-installation.md)). You can pre-filter hosts by selecting a poller and/or a hostgroup.
+To simply start a service discovery scan, select a host and a discovery template (which are installed by our [Plugin Store](../../monitoring-resources/plugin-packs)). You can pre-filter hosts by selecting a poller and/or a hostgroup.
 
 By enabling the **Filtered** flag next to the discovery template lookup, only relevant discovery templates depending on your selected host are available to select. Otherwise all installed discovery templates are selectable.
 

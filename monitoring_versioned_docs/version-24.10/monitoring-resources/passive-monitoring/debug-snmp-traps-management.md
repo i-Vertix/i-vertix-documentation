@@ -48,7 +48,7 @@ udp        0      0 0.0.0.0:162             0.0.0.0:*                           
 
 If not, change the listening port of the process.
 
-:::warning
+:::danger
 
 Don't forget to disable the logs after you've finished. Otherwise, the size of the logs can be very important.
 
@@ -66,14 +66,14 @@ traphandle default su -l centreon -c "/usr/share/centreon/bin/centreontrapdforwa
 ```
 
 If the path to the file is incorrect, change it and restart the snmptrapd process.
-You can check that the centreontrapdforward binary is working properly by checking the configuration part of *[centreontrapdforward](enable-snmp-traps.md#centreontrapdforward)*.
+You can check that the centreontrapdforward binary is working properly by checking the configuration part of *[centreontrapdforward](enable-snmp-traps.md)*.
 
 ### Centreontrapd
 
 The next process to check is Centerontrapd. This daemon allows you to connect an SNMP trap to a passive service connected to a host in i-Vertix using an IP address or DNS from a remote device.
 To verify its operation, you should check the centreontrapd configuration settings.
 
-You can check the proper functioning of binary centreontrapd by checking the configuration part of *[centreontrapd](enable-snmp-traps.md#centreontrapd)*.
+You can check the proper functioning of binary centreontrapd by checking the configuration part of *[centreontrapd](enable-snmp-traps.md)*.
 
 You can set up debug mode for the **centreontrapd** service. Edit the following file:
 

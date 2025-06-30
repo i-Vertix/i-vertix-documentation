@@ -15,7 +15,7 @@ make it possible to view the performance graphs of the metrics collected by
 the monitoring, to track the evolution of the status of the services, or to
 follow certain indicators concerning the collection engines.
 
-:::caution
+:::warning
 
 These values were set during the installation process, it is not recommended to change them.
 

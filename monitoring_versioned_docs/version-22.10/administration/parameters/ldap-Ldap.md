@@ -15,4 +15,4 @@ To configure LDAP integration in i-Vertix IT Monitoring, you typically need to p
 
 LDAP integration in i-Vertix IT Monitoring can vary depending on the specific LDAP server you are using and the requirements of your organization.
 
-Detailed instructions on configuring LDAP integration can be found [i-vertix-ldap](../authentication/ldap.md)
+Detailed instructions on configuring LDAP integration can be found [i-vertix-ldap](../authentication/ldap)

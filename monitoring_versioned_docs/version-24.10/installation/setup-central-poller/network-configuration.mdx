@@ -6,7 +6,7 @@ title: Network Configuration
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-:::caution
+:::warning
 
 Before you start, please be careful to meet the technical requirement (see [Technical Information](../before-you-start/technical-information.md))
 

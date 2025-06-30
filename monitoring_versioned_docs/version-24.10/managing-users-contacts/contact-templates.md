@@ -13,6 +13,6 @@ Go to **Configuration > Users > Contact Templates** and click on **Add**
 
 :::note
 
-Refer to the chapter covering configuration of [contacts](create-users-manually.md). In addition, the contacts templates are used for automatic import of profiles via [LDAP](../administration/authentication/ldap.md).
+Refer to the chapter covering configuration of [contacts](create-users-manually.md). In addition, the contacts templates are used for automatic import of profiles via [LDAP](../administration/authentication/ldap).
 
 :::

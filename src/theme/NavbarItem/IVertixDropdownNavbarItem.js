@@ -4,7 +4,8 @@ import {
     useCollapsible,
     Collapsible,
 } from '@docusaurus/theme-common';
-import {useDocsVersionCandidates, useLocalPathname} from '@docusaurus/theme-common/internal';
+import {useLocalPathname} from '@docusaurus/theme-common/internal';
+import {useDocsVersionCandidates} from '@docusaurus/plugin-content-docs/client';
 import NavbarNavLink from '@theme/NavbarItem/NavbarNavLink';
 import NavbarItem from '@theme/NavbarItem';
 import Link from "@docusaurus/Link";

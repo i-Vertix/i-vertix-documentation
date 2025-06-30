@@ -3,10 +3,12 @@ id: plugin-packs
 title: Plugin Store and Plugin Packs
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 import Breadcrumb from "../../../src/components/Breadcrumb";
 import ImageCounter from "../../../src/components/ImageCounter";
 
-## What is a Plugin Pack? {#plugin-pack}
+## What is a Plugin Pack? \{#plugin-pack}
 
 A Plugin Pack is a downloadable package that contains a set of configuration templates that make monitoring your IT infrastructure fast and easy.
 
@@ -146,7 +148,7 @@ When an **Upgrade** is available, the Upgrade button lights up in blue:
 
 The procedure can be started by clicking on the button.
 
-:::caution Mandatory
+:::warning[Mandatory]
 
 After an **Upgrade**, it is recommended to manually synchronize the new plugins with the Pollers. Otherwise, the Central Manager will perform the synchronization automatically every 4 hours, and the Pollers will not be able to use the new plugins until then.
 

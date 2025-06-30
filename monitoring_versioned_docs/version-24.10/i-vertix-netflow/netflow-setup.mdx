@@ -6,25 +6,11 @@ title: Setup & Configuration
 import Breadcrumb from "../../../src/components/Breadcrumb";
 import ImageCounter from "../../../src/components/ImageCounter";
 
-In our most recent monitoring version we introduced the additional add-on: *i-Vertix Netflow*.
-This module enables you to collect and analyze network flows directly from the monitoring ecosystem.
+[License acquired](mailto:sales@i-vertix.com) and ready? Let's install the new *i-Vertix IT Monitoring Netflow module* on
+your existing i-Vertix monitoring system!
 
-You can use a lot of new views and reports to view **Live flows**, **Problematic network flows** or the **Flows over time**.
-Since this add-on was recently published it is far from complete. New views and functionalities will follow over time.
-
-## Netflow Infrastructure
-
-The infrastructure for collecting network flows is similar to the normal monitoring infrastructure - consisting of decentralized collectors and a central processing and storage system. Some of the infrastructure, such as the i-Vertix Pollers can also be re-used (upgraded) to collect also flows.
-
-### Netflow collector
-
-Flows are sent from your L3 network devices, such as switches, routers or firewalls to our i-Vertix Netflow collector, which can be installed on any existing [i-Vertix Poller](../glossary.md#smart-poller) (hardware or virtual machine) when enough hardware resources are available.
-
-Like the monitoring data which is gathered by the i-Vertix Poller engine, also the flows are sent to a centralized managing system.
-
-### Netflow Analyzer
-
-The centralized **i-Vertix Netflow analyzer** receives all collected flows from the netflow collectors and processes, aggregates, stores and provides the data afterwards for further use. It is best practice to align the Netflow analyzer system next to the *Central Monitoring Manager* to minify the time of data exchange between the monitoring system and the netflow analyzer when interacting with flows.
+To understand the main components, which are part of the *i-Vertix IT Monitoring Netflow module*,
+please read the [netflow infrastructure chapter](./netflow-overview#main-components).
 
 ## Setup
 
@@ -47,7 +33,7 @@ It may be necessary to tune the resources over time, depending on the count of i
 
 |                       | Small Network | Medium Network    | Large Network |
 | --------------------- | ------------- | ----------------- | ------------- |
-| Network Traffic       | < 100 Mbps    | 100 Mpbs - 1 Gbps | > 1 Gbps      |
+| Network Traffic       | \< 100 Mbps    | 100 Mpbs - 1 Gbps | > 1 Gbps      |
 | Hosts in your Network | 0-1k          | 1k - 50k          | > 50k         |
 | Flows*                | 0-1k          | 350 GB            | 500 GB        |
 
@@ -79,7 +65,7 @@ menu
 ```
 
 Before starting with the setup procedure, please configure the system's network settings by choosing option `5) Network settings`.
-Here is a guide on [how to configure the network](../installation/setup-central-poller/network-configuration.md).
+Here is a guide on [how to configure the network](../installation/setup-central-poller/network-configuration).
 
 After configuring the network settings you can proceed with the initial setup.
 From the menu, choose option `9) Setup i-Vertix NetFlow services` to start the setup script.
@@ -103,9 +89,8 @@ You can now proceed with the monitoring module installation.
 Open an SSH connection to your monitoring central system and install the ivertix-netflow-module package:
 
 ```bash
-
 sudo dnf install ivertix-netflow-module
-
+sudo bash /opt/i-vertix/scripts/netflow/setup.sh
 ```
 
 After the install is complete, log into your monitoring system with an administrator account.
@@ -136,7 +121,7 @@ When hitting save following tasks will be executed:
 - Generate a new secure random password for the provided admin user
 - Create a new vault credential and save the connection information to the monitoring configuration db
 
-:::caution Problems during setup
+:::warning[Problems during setup]
 
 When you encounter any problems during the connectivity check or password reset, please check the provided error message for further information.
 
@@ -155,7 +140,7 @@ You can easily upgrade any existing i-Vertix Poller which is already connected t
 Please keep in mind that upgrading your poller to a *Poller + Netflow collector* increases the hardware consumption.
 If your poller which you want to upgrade is already scratching the limit of it's available hardware resources you need to add further hardware resources.
 
-You can also add a new dedicated poller which only functions as a *NetFlow collector*. Please follow [these steps to attach a new poller to the monitoring system](../installation/configuring-smart-poller/attach-a-poller-to-a-central-server.md).
+You can also add a new dedicated poller which only functions as a *NetFlow collector*. Please follow [these steps to attach a new poller to the monitoring system](../installation/attach-a-poller-to-a-central-server).
 
 After you have added a new poller or made sure enough hardware resources are available on your existing poller we can proceed with the installation of the netflow collector packages.
 
@@ -170,7 +155,7 @@ sudo dnf install ivertix-netflow-poller
 :::note
 
 To install the package `ivertix-netflow-poller` you first need to add the ivertix netflow repository.
-You receive a dedicated guide to install the repository upon obtaining the license for the add-on. 
+You receive a dedicated guide to install the repository upon obtaining the license for the add-on.
 
 :::
 
@@ -206,7 +191,7 @@ These settings are deployed to the poller.
 
 Save the new collector after you have filled all fields. A new netflow API user will be created for the new collector which is used to display the collected flows.
 
-:::caution Problems during configuration
+:::warning[Problems during configuration]
 
 If you encounter any problems during the configuration of the new collector, please check the provided error message for further information.
 
@@ -314,7 +299,7 @@ In the exporter list you find the counts of exported and dropped flows of every 
 The most common reason to find the counts empty is a wrong network device configuration or a blocking firewall.
 
 Make sure that the flow configuration is correct for your type of network device.
-Check the offical vendor docs for *configuring sFlow/NetFlow/IPFIX* to find a helpful guide. 
+Check the offical vendor docs for *configuring sFlow/NetFlow/IPFIX* to find a helpful guide.
 
 Also check your firewall policy for:
 

@@ -36,7 +36,7 @@ functions of these icons:
 
 ## Hosts (deprecated)
 
-:::caution
+:::warning
 
 This interface is **deprecated** and replaced by the `Resources Status` page and the [events list](resources-status.md#events-list).
 
@@ -119,7 +119,7 @@ Hostgroups Summary` menu
 
 ## Host details (deprecated)
 
-:::caution
+:::warning
 
 This interface is **deprecated** and replaced by the `Resources Status` page and the [host panel](resources-status.md#host-panel).
 
@@ -192,7 +192,7 @@ linked to the host which will receive notifications.
 
 ## Services (deprecated)
 
-:::caution
+:::warning
 
 This interface is **deprecated** and replaced by the `Resources Status` page and the [events list](resources-status.md#events-list).
 
@@ -291,7 +291,7 @@ for **Display** filter:
 
 ## Service Details (deprecated)
 
-:::caution
+:::warning
 
 This interface is **deprecated** and replaced by the `Resources Status` page and the [service panel](resources-status.md#service-panel).
 

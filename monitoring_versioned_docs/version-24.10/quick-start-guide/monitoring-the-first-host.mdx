@@ -1,6 +1,7 @@
 ---
 id: monitoring-the-first-host
 title: Monitoring the first Host
+hide_table_of_contents: true
 ---
 
 import Breadcrumb from "../../../src/components/Breadcrumb";
@@ -16,7 +17,7 @@ process to get a better understanding of the main concepts of *Monitoring with i
 
 We provide several ways of creating your monitoring configuration:
 
-- [the default, manual way](#manual)
+- [the default, manual way](#manually-configure-your-first-host)
 - [a network topology discovery to onboard network devices](../monitoring-resources/discovery/nedi)
 - [a network scan using nmap and snmp](../monitoring-resources/discovery/host-discovery)
 - [vmware discovery to onboard whole vmware datacenters](../monitoring-resources/discovery/vmware-discovery) in combination with the [further virtual machine OS scan](../monitoring-resources/discovery/vmware-os-discovery)
@@ -26,6 +27,8 @@ We provide several ways of creating your monitoring configuration:
 To start off, let's create the monitoring configuration for the *Central Management* server itself by hand.
 
 ---
+
+## Manually configure your first host
 
 1. Make sure you have the following plugin pack installed:
 
@@ -61,7 +64,7 @@ CPU, important storages, inodes, RAM, ntp, swap, load, uptime, important process
 
 This example shows the true power of *Plugin Packs* and the *monitoring templates* they bring along.
 
-To finish off this exmaple, let's discover the server's *interfaces* and monitor them as well.
+To finish off this example, let's discover the server's *interfaces* and monitor them as well.
 
 1. Navigate to <Breadcrumb crumbs={["Configuration", "Services", "Manual Discovery"]} />
 2. Select the *Host* you have created just now

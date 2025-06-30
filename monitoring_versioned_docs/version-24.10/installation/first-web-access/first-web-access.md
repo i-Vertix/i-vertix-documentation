@@ -7,7 +7,7 @@ title: First access to Web console
 
 Once the license is activated, you can access the Central Manager web console.
 
-Open your browser (see [Compatibility](../before-you-start/compatibility.md)) and enter the Central Manager IP Address previously configured (see [Network configuration](../../installation/setup-central-poller/network-configuration.md)).
+Open your browser (see [Compatibility](../before-you-start/compatibility.md)) and enter the Central Manager IP Address previously configured (see [Network configuration](../../installation/setup-central-poller/network-configuration)).
 
 :::note
 

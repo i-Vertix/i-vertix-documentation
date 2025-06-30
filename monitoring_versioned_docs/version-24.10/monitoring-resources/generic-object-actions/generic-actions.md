@@ -85,7 +85,7 @@ You can also use the following buttons at the end of the line:
 
 ## Deleting objects
 
-:::caution
+:::warning
 
 Deleting an object is final. If you delete an object by accident, you will need to re-create it.
 

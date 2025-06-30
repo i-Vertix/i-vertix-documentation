@@ -176,7 +176,7 @@ When an **Upgrade** is available, the Upgrade button lights up in blue:
 
 The procedure can be started by clicking on the button.
 
-:::caution Mandatory
+:::warning[Mandatory]
 
 After an **Upgrade**, it is recommended to manually synchronize the new plugins with the Pollers. Otherwise, the Central Manager will perform the synchronization automatically every 4 hours, and the Pollers will not be able to use the new plugins until then.
 :::
@@ -202,7 +202,7 @@ TODO: Currently re-installation is not possible
 
 You can re-install a plugin pack (in case of some issue) by clicking the **Re-Install** button.
 
-:::caution
+:::warning
 At the moment, the re-install resets **every** template contained in the plugin pack (also the generic-host and generic-service template for
 example).
 

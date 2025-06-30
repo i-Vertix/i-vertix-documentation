@@ -11,8 +11,8 @@ In i-Vertix IT Monitoring, users can:
 You can:
 
 * [Create users manually](create-users-manually.md)
-* [Connect your i-Vertix IT Monitoring to an LDAP directory](../administration/authentication/ldap.md)
-* [Connect your i-Vertix IT Monitoring to an IDP using SAML](../administration/authentication/saml.md)
+* [Connect your i-Vertix IT Monitoring to an LDAP directory](../administration/authentication/ldap)
+* [Connect your i-Vertix IT Monitoring to an IDP using SAML](../administration/authentication/saml)
 * Make customizations:
   * Switch to dark mode
   * Change the user interface language
@@ -32,6 +32,6 @@ The user is now unblocked and can connect to Centreon again.
 :::note
 
 It is also possible, that the user was blocked by the Fail2Ban service.
-Please refer to the [Fail2Ban documentation](../installation/security-aspects/fail2ban.md) for further information.
+Please refer to the [Fail2Ban documentation](../installation/fail2ban) for further information.
 
 :::

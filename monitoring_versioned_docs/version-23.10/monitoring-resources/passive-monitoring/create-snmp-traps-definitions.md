@@ -31,6 +31,7 @@ Before importing a MiB file, it may require meeting various dependencies. To fin
 ![image](../../assets/monitoring-resources/passive-monitoring/kdependances.png)
 
 In the displayed MIB file, four dependencies are necessary for importing the MIB:
+
 * SNMPv2-SMI
 * SNMPv2-TC
 * SNMPv2-CONF
@@ -60,9 +61,9 @@ Go into the **Configuration > SNMP traps > SNMP traps** menu and click on **Add*
 
 :::note
 
-By default, the MIB contains the definition of this variable (E.g.: “Link up on interface $2. State: $4.”, here ```$2``` will be replaced by the 2nd argument received in the event.). In the opposite situation, the variable ```$``` can be used to display all the arguments contained in the trap.
-It is possible to construct the output message yourself. For this, use the MIB to know the arguments that will be present in the body of the event and retrieve the arguments with the variables ```$n```.
-As each argument is identified by a OID, it is possible to use this OID directly to place it in the output message without knowing its position via the variable ```@{OID}```.
+By default, the MIB contains the definition of this variable (E.g.: "Link up on interface `$2`. State: `$4`.", here `$2` will be replaced by the 2nd argument received in the event.). In the opposite situation, the variable `$` can be used to display all the arguments contained in the trap.
+It is possible to construct the output message yourself. For this, use the MIB to know the arguments that will be present in the body of the event and retrieve the arguments with the variables `$n`.
+As each argument is identified by a OID, it is possible to use this OID directly to place it in the output message without knowing its position via the variable `@{OID}`.
 
 :::
 
@@ -120,7 +121,7 @@ The following command can be used to retrieve this value:
 snmpget -v 2c -Ovq -c <community> <cisco switch> ifAlias.$1
 ```
 
-To use the result of the PREEXEC command in the **Output message**, it is necessary to use the variable $p{n} where ‘n’
+To use the result of the PREEXEC command in the **Output message**, it is necessary to use the variable `$p{n}` where `n`
 corresponds to the order of definition of the command.
 
 Example:
@@ -143,7 +144,6 @@ The field **custom code** allows custom Perl processing.
 
 To enable this feature, you must set **secure_mode** to 0 in **/etc/centreon/centreontrapd.pm** file as:
 
-
 ```perl
 our %centreontrapd_config = (
     ...
@@ -164,7 +164,7 @@ if ($self->{trap_data}->{entvar}->[3] =~ /[[:xdigit:]]+/) {
 }
 ```
 
-:::caution
+:::warning
 
 Beware the argument table starts at 0 for argument 1 of the SNMP trap.
 
@@ -177,27 +177,27 @@ or **Special command** fields. These arguments are listed in the table below:
 
 | Macro name               | Description                                                                                                               |
 |--------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| @{NUMERIC_OID}           | Retrieval of the value of an argument via its OID, e.g.: @{.1.3.6.1.4.1.9.9.43.1.1.1}                                     |
-| $1, $2...                | Retrieval of the value of an argument via its order of appearance                                                         |
-| $p1, $p2,...             | Value of the command: PREEXEC ($p1 = at the first command, $p2 at the second, ...)                                        |
-| $*                       | All the arguments separated by a space                                                                                    |
-| @HOSTNAME@               | Host name (in i-vertix) to which the service is attached                                                                  |
-| @HOSTADDRESS@            | IP address of the host sending the trap                                                                                   |
-| @HOSTADDRESS2@           | DNS name of the host sending the trap (if the server fails to effect a reverse DNS resolution we retrieve the IP address) |
-| @SERVICEDESC@            | Service name                                                                                                              |
-| @TRAPOUTPUT@ ou @OUTPUT@ | Output of the traps                                                                                                       |
-| @STATUS@                 | Service state                                                                                                             |
-| @SEVERITYNAME@           | Criticality name                                                                                                          |
-| @SEVERITYLEVEL@          | Criticality level                                                                                                         |
-| @TIME@                   | Trap reception timestamp                                                                                                  |
-| @POLLERID@               | ID of the poller having received the trap                                                                                 |
-| @POLLERADDRESS@          | IP address of the poller having received the trap                                                                         |
-| @CMDFILE@                | Path to the command file of central or of centreon Engine (collector)                                          |
+| `@{NUMERIC_OID}`           | Retrieval of the value of an argument via its OID, e.g.: `@{.1.3.6.1.4.1.9.9.43.1.1.1}`                                     |
+| `$1, $2...`                | Retrieval of the value of an argument via its order of appearance                                                         |
+| `$p1, $p2,...`             | Value of the command: PREEXEC (`$p1` = at the first command, `$p2` at the second, ...)                                        |
+| `$*`                       | All the arguments separated by a space                                                                                    |
+| `@HOSTNAME@`               | Host name (in i-vertix) to which the service is attached                                                                  |
+| `@HOSTADDRESS@`            | IP address of the host sending the trap                                                                                   |
+| `@HOSTADDRESS2@`           | DNS name of the host sending the trap (if the server fails to effect a reverse DNS resolution we retrieve the IP address) |
+| `@SERVICEDESC@`            | Service name                                                                                                              |
+| `@TRAPOUTPUT@ ou @OUTPUT@` | Output of the traps                                                                                                       |
+| `@STATUS@`                 | Service state                                                                                                             |
+| `@SEVERITYNAME@`           | Criticality name                                                                                                          |
+| `@SEVERITYLEVEL@`          | Criticality level                                                                                                         |
+| `@TIME@`                   | Trap reception timestamp                                                                                                  |
+| `@POLLERID@`               | ID of the poller having received the trap                                                                                 |
+| `@POLLERADDRESS@`          | IP address of the poller having received the trap                                                                         |
+| `@CMDFILE@`                | Path to the command file of central or of centreon Engine (collector)                                          |
 
 In addition, there are special variables that can be used in the **Routing settings** section at the level of the
 **Routing command** if the option Enable routing is selected:
 
 | Macro name          | Description                                                                                       |
 |---------------------|---------------------------------------------------------------------------------------------------|
-| @GETHOSTBYADDR($1)@ | Reverse DNS resolution used to find the DNS name DNS from the IP address (127.0.0.1 -> localhost) |
-| @GETHOSTBYNAME($1)@ | DNS resolution used to find the IP address from the DNS name (localhost -> 127.0.0.1)             |
+| `@GETHOSTBYADDR($1)@` | Reverse DNS resolution used to find the DNS name DNS from the IP address (127.0.0.1 -> localhost) |
+| `@GETHOSTBYNAME($1)@` | DNS resolution used to find the IP address from the DNS name (localhost -> 127.0.0.1)             |

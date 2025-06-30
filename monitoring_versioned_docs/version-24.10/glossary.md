@@ -27,22 +27,20 @@ Acknowledging a resource does not mean that the incident is over: it is over whe
 
 ## Architecture: simple VS distributed
 
-- **Simple architecture**: architecture that consists entirely of a [Central Manager](#central-server).
+- **Simple architecture**: architecture that consists entirely of a [Central Manager](#central-manager).
 
 - **Distributed architecture**: architecture consisting of a [Central Manager](#central-manager) and of n [remote server(s)](#remote-server) and [Smart Poller(s)](#smart-poller). Remote servers and pollers allow you to distribute the monitoring load, either for security reasons, geographical or historical reasons, etc.
 
-**See also**: [Architectures](installation/before-you-start/architecture.md).
+**See also**: [Architectures](installation/before-you-start/architecture).
 
 ## BBDO
 
-Broker Binary Data Object: communication protocol used to transfer monitoring data from [remote servers](#remote-server) and [Smart Pollers](#poller) to the [Central Manager](#central-server).
-
+Broker Binary Data Object: communication protocol used to transfer monitoring data from [remote servers](#remote-server) and [Smart Pollers](#smart-poller) to the [Central Manager](#central-manager).
 
 ## Broker
 
 i-Vertix Broker is the software component that receives monitoring data collected by [monitoring engines](#monitoring-engine).
 Once it receives this data, by default, I-Vertix Broker redistributes them to the MariaDB and RRD databases.
-
 
 ## Broker reverse mode
 
@@ -55,7 +53,6 @@ In i-Vertix, the Central Manager is the main console where you monitor resources
 - configure the monitoring of your whole infrastructure,
 - monitor resources
 - see what all your i-Vertix servers monitor (Central Manager, [remote servers](#remote-server) and [Smart Pollers](#smart-poller)), using its web interface.
-
 
 ## Downtime
 
@@ -76,7 +73,6 @@ Fully Qualified Domain Name: hostname and domain name for a server. E.g.: demo.I
 I-Vertix Gorgone is the software component that allows the [Central Manager](#central-manager) to send information to the [remote servers](#remote-server) and the [Smart Pollers](#smart-poller).
 Among other things, Gorgone deploys the configuration to the [monitoring engines](#monitoring-engine).
 
-
 ## Graphs
 
 Graphs are generated from the [metrics](#metric) that make up [services](#service), using [RRD files](#rrd-files). They show how these metrics evolve in time.
@@ -93,7 +89,7 @@ Devices that have an IP address or FQDN and the host monitoring refers to the pr
 
 A host can have one of the following [statuses](#status): OK, DOWN, UNREACHABLE.
 
-See also: [Monitoring a host](quick-start-guide/configuring-first-hosts-services/monitoring-the-first-host.md) and the other topics in this section.
+See also: [Monitoring a host](./quick-start-guide/monitoring-the-first-host) and the other topics in this section.
 
 ## LVM
 
@@ -103,7 +99,7 @@ LVM (logical volume manager): I-Vertix recommends that you use this partitioning
 
 Feature included in LVM that allows you to do a snapshot of a file system. I-Vertix uses this process to back up databases.
 
-**See also**: [Backup](administration/parameters/backup-Backup.md).
+**See also**: [Backup](./administration/parameters/backup-Backup.md).
 
 ## Metric
 
@@ -132,7 +128,6 @@ Message or alert that is sent to inform someone of a particular event or inciden
 
 **See also**: [How notifications work](/events-alerts/managing-notifications/how-notifications-works.md) and the other topics in this section.
 
-
 ## Performance data
 
 See [**Metric**](#metric).
@@ -149,7 +144,6 @@ A pack contains the configuration of the plugin in i-Vertix (command, [templates
 
 **See also**:
 
-
 ## Smart Poller
 
 i-Vertix server used in a [distributed architecture](#architecture-simple-vs-distributed). A Smart Poller can be attached to a [remote server](#remote-server), or directly to a [Central Manager](#central-manager).
@@ -165,7 +159,6 @@ i-Vertix server used in a [distributed architecture](#architecture-simple-vs-dis
 ## Pull mode
 
 Advanced configuration for i-Vertix [Gorgone](#gorgone) that reverses the direction of ZMQ flows. The communication is initiated by pollers and remote servers, and is directed to the central server. This mode is commonly used by MSPs.
-
 
 ## Recurring downtime
 
@@ -215,7 +208,7 @@ A service can consist of one or several [metrics](#metric).
 
 A service can have one of the following [statuses](#status): OK, WARNING, CRITICAL, UNKNOWN.
 
-**See also**: [Monitoring a service](quick-start-guide/configuring-first-hosts-services/monitoring-the-first-host.md) and the other topics in this section.
+**See also**: [Monitoring a service](./quick-start-guide/monitoring-the-first-host) and the other topics in this section.
 
 ## State
 
@@ -231,21 +224,20 @@ Indicates:
 
 PENDING is not a status: a resource is "pending" when it has just been created and hasn't been checked yet.
 
-**See also**: [Possible statuses of a resource](events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Possible statuses of a resource](events-alerts/managing-notifications/how-notifications-works.md).
 
 ## Status type
 
 Indicates whether a change in [status](#status) is confirmed (HARD) or not confirmed (SOFT). For instance, if a status becomes HARD, notifications are triggered.
 
-**See also**: [Status types](events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Status types](events-alerts/managing-notifications/how-notifications-works.md).
 
 ## Template
 
 i-Vertix templates are preconfigured monitoring settings that can be assigned to one or more hosts or services, containing checks, thresholds, notification rules, and graphs.
 Skeleton of a [resource](#resource) that is preconfigured so that parameters defined on the skeleton are applied to the resource that inherits from it.
 
-
-**See also**:
+**See also**
 
 - [Using host templates](monitoring-resources/monitoring-hosts/host-templates.md),
 - [Using service templates](monitoring-resources/monitoring-services/service-template.md),
@@ -272,4 +264,3 @@ A widget is a configurable visual element that provides a specific function and 
 ZeroMQ appears as a networking library but operates like a concurrency framework with fast, scalable sockets for transmitting atomic messages over various transports, N-to-N connections with different patterns, and an asynchronous I/O model that can handle multicore applications. It offers language APIs and works on various operating systems. [source](https://zeromq.org/).
 
 Protocol used by i-Vertix [Gorgone](#gorgone) to communicate from the [Central Manager](#central-manager) to the [remote servers](#remote-server) and the [Smart Pollers](#smart-poller), in a [distributed architecture](#architecture-simple-vs-distributed).
-

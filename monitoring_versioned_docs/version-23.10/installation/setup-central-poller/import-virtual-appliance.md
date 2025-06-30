@@ -99,7 +99,7 @@ deployment.
 9. Click Next.
 10. On the Ready to complete page, review the details and click Finish.
 
-:::caution
+:::warning
 
 Be sure to place the VM in the correct VLAN of your infrastructure.
 

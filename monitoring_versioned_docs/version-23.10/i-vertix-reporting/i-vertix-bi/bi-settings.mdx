@@ -26,7 +26,7 @@ Here is a list of the most common settings:
 - <PowerRed spaceRight /> the red button indicates that the maintenance mode is <strong>deactivated</strong>
 - <PowerGreen spaceRight /> the green indicates that the maintenance mode is <strong>activated</strong>
 
-:::caution
+:::warning
 
 Please beware that **deactivating** the maintenance status during an actual system update or while reports are being built can lead to **inconsistent** or **suddendly aborted report job executions**
 as well as a **severe data warehouse inconsistency**.
@@ -68,7 +68,7 @@ When a loading icons is present, it indicates that at the moment reports are bei
 
 This information is especially useful before activating the maintenance mode.
 
-:::caution
+:::warning
 
 **Activating** the maintenance mode or **performing updates** while reports are being built can **lead into errors** during the build-process!
 
@@ -87,7 +87,7 @@ When performing a database update, the maintenance mode will be activated automa
 
 :::
 
-:::caution
+:::warning
 
 Make sure the ETL job is currently suspended and no reports are being built before updating any database component!
 
@@ -102,7 +102,7 @@ If the missing data was recovered again in the meantime by the i-Vertix Smart Po
 For doing so, select the days you want to recover from the list and click on the **Repair** button.
 The ETL job will start and sync the recovered data to the data warehouse on the i-Vertix BI server.
 
-:::caution
+:::warning
 
 Make sure the ETL job is currently suspended and no reports are being built before repairing any data!
 
