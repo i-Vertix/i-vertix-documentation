@@ -15,6 +15,25 @@ def dump_struct(s):
     return
 
 
+def normalize_url(url):
+    comp = url.split("/")
+    if comp:
+            
+        if comp[-1] == "index":
+            comp = comp[:-1]
+            if comp[0] == "..":
+                comp = comp[1:]
+
+        #url starts with an "/", hence it is absolute
+        if comp[0] == "":
+ 
+            if comp[0] not in ["/itam", ".."]:
+                comp.insert(0, "/itam")
+
+    comp = filter(lambda x: len(x) > 0, comp)
+    return "/".join(comp)
+
+
 def add_header(file_path):
 
     lines = []
@@ -327,13 +346,55 @@ if __name__ == "__main__":
             new_text = f"[{link_text}]({match.group(2)})"
             text = text[:match.start()] + new_text + text[match.end():]
         
+        # Changing GLPI to i-Vertix ITAM
         text = text.replace("GLPI", "i-Vertix ITAM")
+        
+        # Removing all { .attrib=value }
         text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
 
+        if os.path.basename(f) == "index.md":
+            
+            match = re.search(r"::: \n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)            
+ 
+            if match:
+            
+                rel_dir = f.replace(output_dir, "")
+                rel_dir = list(pathlib.Path(rel_dir).parts)
+                if rel_dir[-1] == "index.md":
+                    rel_dir.pop(-1)
 
-        match = re.search(r":::.*\n(.*)\n:::", text, flags=re.MULTILINE)
-        if match:
-            print(f, match)
+                def build_link(l, rel_dir):
+                    url = ["/itam"]
+                    url.extend(rel_dir)
+                    
+                    text = l.split("/")
+                    if text[-1] == "index":
+                        text.pop(-1)
+
+                    url.extend(text)
+                    url = [x for x in url if x]
+                    return (text[0], "/".join(url))
+                                                    
+                links = match.group(1).split()
+                links = [build_link(l, rel_dir) for l in links]
+                links = [f"- [{text}]({url})" for text, url in links]
+                links = "\n".join(links)
+
+                text = text[:match.start()] + links + "\n" + text[match.end():]
+        
+        #match = re.search(r"\`(.*) <(.*)>\`", text, flags=re.DOTALL)
+        while True:
+            match = re.search(r"\`([\w \"\'>]+) <([ \.\w/_]+)>\`", text, flags=re.MULTILINE)
+            if not match:
+                break
+
+            print(f, match.groups())
+
+            link_text = match.group(1)
+            url = normalize_url(match.group(2))
+            url = url.replace(" ", "")
+            new_text = f"[{link_text}]({url})"
+            text = text[:match.start()] + new_text + text[match.end():]
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
