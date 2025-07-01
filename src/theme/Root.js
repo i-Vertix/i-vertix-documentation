@@ -1,12 +1,11 @@
 import React from 'react';
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Alert from "@site/src/components/Landing/Alert";
 import alertConfig from "../../alert";
+import {FocusProvider} from "@site/src/components/useFocus";
 
 export default function Root({children}) {
-    const {siteConfig} = useDocusaurusContext();
-    return <>
+    return <FocusProvider>
         {alertConfig.timestamp && <Alert {...alertConfig} />}
         {children}
-    </>;
+    </FocusProvider>;
 }
