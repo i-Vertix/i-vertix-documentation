@@ -33,9 +33,9 @@ It may be necessary to tune the resources over time, depending on the count of i
 
 |                       | Small Network | Medium Network    | Large Network |
 | --------------------- | ------------- | ----------------- | ------------- |
-| Network Traffic       | \< 100 Mbps    | 100 Mpbs - 1 Gbps | > 1 Gbps      |
+| Network Traffic       | &lt;100 Mbps    | 100 Mbps - 1 Gbps | > 1 Gbps      |
 | Hosts in your Network | 0-1k          | 1k - 50k          | > 50k         |
-| Flows*                | 0-1k          | 350 GB            | 500 GB        |
+| Flows\*                | 0-1k          | 350 GB            | 500 GB        |
 
 *Flows: flows processed at the same time (Live flows)
 
@@ -54,11 +54,11 @@ It may be necessary to tune the **retention** or add additional storage to the s
 
 #### First start of the Netflow analyzer system
 
-After you have imported the netflow analyzer image start the new virtual machine and use the provided credentials to log in.
+After you have imported the netflow analyzer image, start the new virtual machine and use the provided credentials to log in.
 
 ![Menu](../assets/i-vertix-netflow/menu1.png)
 
-In case the menu does not appear, execute following command to enter the menu:
+In case the menu does not appear, execute the following command to enter the menu:
 
 ```bash
 menu
@@ -67,7 +67,7 @@ menu
 Before starting with the setup procedure, please configure the system's network settings by choosing option `5) Network settings`.
 Here is a guide on [how to configure the network](../installation/setup-central-poller/network-configuration).
 
-After configuring the network settings you can proceed with the initial setup.
+After configuring the network settings, you can proceed with the initial setup.
 From the menu, choose option `9) Setup i-Vertix NetFlow services` to start the setup script.
 
 Most actions of the setup script are done automatically:
@@ -114,7 +114,7 @@ If you are relocating your netflow system to a new monitoring system you may nee
 
 :::
 
-When hitting save following tasks will be executed:
+When hitting save, the following tasks will be executed:
 
 - Connection check to Netflow analyzer API
 - Login with provided (or default) credentials and check user permissions (admin account required)
@@ -135,10 +135,10 @@ After the connection information is successfully saved we can now set up and con
 
 As already stated in the introduction, *NetFlow collectors* receive the flows from network devices and send them to the central *NetFlow analyzer* system.
 
-You can easily upgrade any existing i-Vertix Poller which is already connected to your monitoring system to become also a *Netflow collector*.
+You can easily upgrade any existing i-Vertix Poller that is already connected to your monitoring system to become also a *Netflow collector*.
 
 Please keep in mind that upgrading your poller to a *Poller + Netflow collector* increases the hardware consumption.
-If your poller which you want to upgrade is already scratching the limit of it's available hardware resources you need to add further hardware resources.
+If your poller, which you want to upgrade, is already scratching the limit of it's available hardware resources you need to add further hardware resources.
 
 You can also add a new dedicated poller which only functions as a *NetFlow collector*. Please follow [these steps to attach a new poller to the monitoring system](../installation/attach-a-poller-to-a-central-server).
 
@@ -159,11 +159,11 @@ You receive a dedicated guide to install the repository upon obtaining the licen
 
 :::
 
-After the package is installed you can configure the collector from the monitoring interface.
+After the package is installed, you can configure the collector from the monitoring interface.
 
 ### Configure the new NetFlow collector
 
-To configure new NetFlow collectors navigate to <Breadcrumb crumbs={["Configuration", "NetFlow", "Exporters"]} /> in the monitoring interface.
+To configure new NetFlow collectors, navigate to <Breadcrumb crumbs={["Configuration", "NetFlow", "Exporters"]} /> in the monitoring interface.
 
 :::info
 
@@ -177,7 +177,7 @@ Click the `+ Add new NetFlow collector` button located at the top of the page an
 
 These settings are written to the NetFlow analyzer system.
 
-- **Poller:** choose the i-Vertix Poller which should operate as the NetFlow collector - [the `ivertix-netflow-poller` package must be already installed on the poller](#install-required-packages)
+- **Poller:** choose the i-Vertix Poller, which should operate as the NetFlow collector - [the `ivertix-netflow-poller` package must be already installed on the poller](#install-required-packages)
 - **NetFlow Collector Name:** defaults to the poller name - choose another name if you like
 - **NetFlow Analyzer Interface Port:** interface port to which the collector sends the flows to - must be unique and between **5556** - **5656**
 
@@ -187,7 +187,7 @@ These settings are deployed to the poller.
 
 - **NetFlow Collector Port**: this is the port to which the network devices send their flows
 - **NetFlow Analyzer IP**: IP address of the NetFlow Analyzer system as seen by the poller (collector)
-- **Netflow Analyzer Interface Port**: interface port to which the collecetor sends the flows to - by default the above configured interface port and this one are equal - only change if a firewall or proxy forwards the port
+- **Netflow Analyzer Interface Port**: interface port to which the collector sends the flows to - by default the above configured interface port and this one are equal - only change if a firewall or proxy forwards the port
 
 Save the new collector after you have filled all fields. A new netflow API user will be created for the new collector which is used to display the collected flows.
 
@@ -209,7 +209,7 @@ If you encounter any problems during the configuration of the new collector, ple
 
 ##### Interface port already in use
 
-This error can occurr if you have custom interfaces configured on the NetFlow Analyzer itself. Simply select an other port number in the available range.
+This error can occur if you have custom interfaces configured on the NetFlow Analyzer itself. Simply select an other port number in the available range.
 
 </details>
 
@@ -226,33 +226,33 @@ Make sure to back up your device settings before making any changes.
 
 :::
 
-| Vendor   |                                                                                                                                                                                                                                                                |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Cisco    | [https://www.cisco.com/c/dam/en/us/td/docs/security/stealthwatch/netflow/Cisco_NetFlow_Configuration.pdf](https://www.cisco.com/c/dam/en/us/td/docs/security/stealthwatch/netflow/Cisco_NetFlow_Configuration.pdf)                                             |
-| Juniper  | [https://www.juniper.net/documentation/us/en/software/junos/flow-monitoring/topics/example/jflow-v9-configuring-on-ms-mic.html](https://www.juniper.net/documentation/us/en/software/junos/flow-monitoring/topics/example/jflow-v9-configuring-on-ms-mic.html) |
-| Fortinet | [https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-Configure-Netflow/ta-p/196080](https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-Configure-Netflow/ta-p/196080)                                                               |
-| Mikrotik | [https://wiki.mikrotik.com/Manual:IP/Traffic_Flow](https://wiki.mikrotik.com/Manual:IP/Traffic_Flow) |
-| Palo Alto | [https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/monitoring/netflow-monitoring/configure-netflow-exports](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/monitoring/netflow-monitoring/configure-netflow-exports)|
-| HP | [https://support.hpe.com/hpesc/public/docDisplay?docId=c03129101&docLocale=en_US](https://support.hpe.com/hpesc/public/docDisplay?docId=c03129101&docLocale=en_US) or [https://support.hpe.com/hpesc/public/docDisplay?docId=c03151006&docLocale=en_US](https://support.hpe.com/hpesc/public/docDisplay?docId=c03151006&docLocale=en_US) |
-| Aruba | [https://arubanetworking.hpe.com/techdocs/AOS-CX/10.07/HTML/5200-7860/Content/Chp_sFlow/sfl-age-10.htm](https://arubanetworking.hpe.com/techdocs/AOS-CX/10.07/HTML/5200-7860/Content/Chp_sFlow/sfl-age-10.htm) and [https://arubanetworking.hpe.com/techdocs/AOS-S/16.11/MCG/WC/content/common%20files/cnf-sfl-cli.htm](https://arubanetworking.hpe.com/techdocs/AOS-S/16.11/MCG/WC/content/common%20files/cnf-sfl-cli.htm) |
-| Nokia | [https://documentation.nokia.com/html/0_add-h-f/93-0073-10-01/7750_SR_OS_Router_Configuration_Guide/Cflowd_cli.html](https://documentation.nokia.com/html/0_add-h-f/93-0073-10-01/7750_SR_OS_Router_Configuration_Guide/Cflowd_cli.html) |
-| Dell Series N | [https://www.dell.com/support/kbdoc/en-us/000116368/how-to-configure-sflow-on-dell-emc-networking-n-series-switches](https://www.dell.com/support/kbdoc/en-us/000116368/how-to-configure-sflow-on-dell-emc-networking-n-series-switches) |
-| Dell OS9 | [https://www.dell.com/support/kbdoc/en-us/000121452/how-to-set-up-sflow-on-dell-networking-force10-switches](https://www.dell.com/support/kbdoc/en-us/000121452/how-to-set-up-sflow-on-dell-networking-force10-switches) |
-| Dell SONiC | [https://www.dell.com/support/kbdoc/en-us/000218295/dell-networking-sonic-sflow-configuration?lang=de](https://www.dell.com/support/kbdoc/en-us/000218295/dell-networking-sonic-sflow-configuration?lang=de) |
+| Vendor        |                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Cisco         | [https://www.cisco.com/c/dam/en/us/td/docs/security/stealthwatch/netflow/Cisco_NetFlow_Configuration.pdf](https://www.cisco.com/c/dam/en/us/td/docs/security/stealthwatch/netflow/Cisco_NetFlow_Configuration.pdf)                                                                                                                                                                                                          |
+| Juniper       | [https://www.juniper.net/documentation/us/en/software/junos/flow-monitoring/topics/example/jflow-v9-configuring-on-ms-mic.html](https://www.juniper.net/documentation/us/en/software/junos/flow-monitoring/topics/example/jflow-v9-configuring-on-ms-mic.html)                                                                                                                                                              |
+| Fortinet      | [https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-Configure-Netflow/ta-p/196080](https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-Configure-Netflow/ta-p/196080)                                                                                                                                                                                                                            |
+| Mikrotik      | [https://wiki.mikrotik.com/Manual:IP/Traffic_Flow](https://wiki.mikrotik.com/Manual:IP/Traffic_Flow)                                                                                                                                                                                                                                                                                                                        |
+| Palo Alto     | [https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/monitoring/netflow-monitoring/configure-netflow-exports](https://docs.paloaltonetworks.com/pan-os/11-1/pan-os-admin/monitoring/netflow-monitoring/configure-netflow-exports)                                                                                                                                                                                    |
+| HP            | [https://support.hpe.com/hpesc/public/docDisplay?docId=c03129101&docLocale=en_US](https://support.hpe.com/hpesc/public/docDisplay?docId=c03129101&docLocale=en_US) or [https://support.hpe.com/hpesc/public/docDisplay?docId=c03151006&docLocale=en_US](https://support.hpe.com/hpesc/public/docDisplay?docId=c03151006&docLocale=en_US)                                                                                    |
+| Aruba         | [https://arubanetworking.hpe.com/techdocs/AOS-CX/10.07/HTML/5200-7860/Content/Chp_sFlow/sfl-age-10.htm](https://arubanetworking.hpe.com/techdocs/AOS-CX/10.07/HTML/5200-7860/Content/Chp_sFlow/sfl-age-10.htm) and [https://arubanetworking.hpe.com/techdocs/AOS-S/16.11/MCG/WC/content/common%20files/cnf-sfl-cli.htm](https://arubanetworking.hpe.com/techdocs/AOS-S/16.11/MCG/WC/content/common%20files/cnf-sfl-cli.htm) |
+| Nokia         | [https://documentation.nokia.com/html/0_add-h-f/93-0073-10-01/7750_SR_OS_Router_Configuration_Guide/Cflowd_cli.html](https://documentation.nokia.com/html/0_add-h-f/93-0073-10-01/7750_SR_OS_Router_Configuration_Guide/Cflowd_cli.html)                                                                                                                                                                                    |
+| Dell Series N | [https://www.dell.com/support/kbdoc/en-us/000116368/how-to-configure-sflow-on-dell-emc-networking-n-series-switches](https://www.dell.com/support/kbdoc/en-us/000116368/how-to-configure-sflow-on-dell-emc-networking-n-series-switches)                                                                                                                                                                                    |
+| Dell OS9      | [https://www.dell.com/support/kbdoc/en-us/000121452/how-to-set-up-sflow-on-dell-networking-force10-switches](https://www.dell.com/support/kbdoc/en-us/000121452/how-to-set-up-sflow-on-dell-networking-force10-switches)                                                                                                                                                                                                    |
+| Dell SONiC    | [https://www.dell.com/support/kbdoc/en-us/000218295/dell-networking-sonic-sflow-configuration?lang=de](https://www.dell.com/support/kbdoc/en-us/000218295/dell-networking-sonic-sflow-configuration?lang=de)                                                                                                                                                                                                                |
 
-This list is far from complete. If your device or vendor is not listed it is always a good shot to search the vendor's documentation for up-to-date guides regarding sFlow/NetFlow/IPFIX configuration.
+This list is far from complete. If your device or vendor is not listed, it is always a good shot to search the vendor's documentation for up-to-date guides regarding sFlow/NetFlow/IPFIX configuration.
 
 ### Register Network Devices as Flow Exporters
 
-After you have configured your network devices to send flows to the NetFlow collector you must register them as NetFlow Exporters in the monitoring interface.
+After you have configured your network devices to send flows to the NetFlow collector, you must register them as NetFlow Exporters in the monitoring interface.
 
-First of all, make sure the network devices are monitored.
+First, make sure the network devices are monitored.
 If you don't have them configured yet, take a look at our [Network Discovery](../monitoring-resources/discovery/nedi.mdx) which can help you with the onboarding.
 
 Navigate to <Breadcrumb crumbs={["Configuration", "NetFlow", "Exporters"]} />, select the `Exporters` tab (only when admin) and click the `+ Add Exporters` button on the top right of the list.
 
 A popup containing a list will appear. Select the NetFlow collector to which you want to add exporters. On the right of the collector select you find the filter input.
-With it you can easily filter all hosts by name, host templates, poller, ip, host group or host category.
+With it, you can filter all hosts by name, host templates, poller, ip, host group or host category.
 
 Select all hosts you want to add as exporters to your selected collector and hit `Confirm`.
 Upon the new exporters are saved, a new task is started in the background which scans the exporter interfaces.
@@ -299,7 +299,7 @@ In the exporter list you find the counts of exported and dropped flows of every 
 The most common reason to find the counts empty is a wrong network device configuration or a blocking firewall.
 
 Make sure that the flow configuration is correct for your type of network device.
-Check the offical vendor docs for *configuring sFlow/NetFlow/IPFIX* to find a helpful guide.
+Check the official vendor docs for *configuring sFlow/NetFlow/IPFIX* to find a helpful guide.
 
 Also check your firewall policy for:
 
