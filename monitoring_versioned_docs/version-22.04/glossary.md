@@ -231,13 +231,13 @@ Indicates:
 
 PENDING is not a status: a resource is "pending" when it has just been created and hasn't been checked yet.
 
-**See also**: [Possible statuses of a resource](events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Possible statuses of a resource](events-alerts/managing-notifications/how-notifications-works.md).
 
 ## Status type
 
 Indicates whether a change in [status](#status) is confirmed (HARD) or not confirmed (SOFT). For instance, if a status becomes HARD, notifications are triggered.
 
-**See also**: [Status types](events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Status types](events-alerts/managing-notifications/how-notifications-works.md).
 
 ## Template
 

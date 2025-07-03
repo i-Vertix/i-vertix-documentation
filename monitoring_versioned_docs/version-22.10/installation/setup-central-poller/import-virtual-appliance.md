@@ -95,7 +95,7 @@ deployment.
 9. Click Next.
 10. On the Ready to complete page, review the details and click Finish.
 
-:::caution
+:::warning
 
 Be sure to place the VM in the correct VLAN of your infrastructure.
 
@@ -123,4 +123,4 @@ Start the vm and wait for the login screen.
 
 ![First_login](../../assets/setup-startup-central-poller/first-login-v4.png)
 
-Now you can [login](first-login.md) via VMware console and configure the ip address.
+Now you can [login](./first-login) via VMware console and configure the ip address.

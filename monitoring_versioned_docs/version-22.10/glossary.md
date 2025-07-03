@@ -27,7 +27,7 @@ Acknowledging a resource does not mean that the incident is over: it is over whe
 
 ## Architecture: simple VS distributed
 
-- **Simple architecture**: architecture that consists entirely of a [Central Manager](#central-server).
+- **Simple architecture**: architecture that consists entirely of a [Central Manager](#central-manager).
 
 - **Distributed architecture**: architecture consisting of a [Central Manager](#central-manager) and of n [remote server(s)](#remote-server) and [Smart Poller(s)](#smart-poller). Remote servers and pollers allow you to distribute the monitoring load, either for security reasons, geographical or historical reasons, etc.
 
@@ -35,7 +35,7 @@ Acknowledging a resource does not mean that the incident is over: it is over whe
 
 ## BBDO
 
-Broker Binary Data Object: communication protocol used to transfer monitoring data from [remote servers](#remote-server) and [Smart Pollers](#poller) to the [Central Manager](#central-server).
+Broker Binary Data Object: communication protocol used to transfer monitoring data from [remote servers](#remote-server) and [Smart Pollers](#smart-poller) to the [Central Manager](#central-manager).
 
 
 ## Broker
@@ -231,13 +231,13 @@ Indicates:
 
 PENDING is not a status: a resource is "pending" when it has just been created and hasn't been checked yet.
 
-**See also**: [Possible statuses of a resource](events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Possible statuses of a resource](events-alerts/managing-notifications/how-notifications-works.md).
 
 ## Status type
 
 Indicates whether a change in [status](#status) is confirmed (HARD) or not confirmed (SOFT). For instance, if a status becomes HARD, notifications are triggered.
 
-**See also**: [Status types](events-alerts/managing-notifications/how-notifications-works.md#status-types).
+**See also**: [Status types](events-alerts/managing-notifications/how-notifications-works.md).
 
 ## Template
 

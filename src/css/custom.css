@@ -450,3 +450,11 @@ html[data-theme='dark'] {
     max-width: 32px;
     max-height: 32px;
 }
+
+/*
+* TAB ITEM
+*/
+
+.ivertix__tabItem-nowrap {
+    white-space: nowrap;
+}

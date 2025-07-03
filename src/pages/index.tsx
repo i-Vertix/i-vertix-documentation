@@ -8,13 +8,12 @@ import Header from "@site/src/components/Landing/Header";
 import Search from "@site/src/components/Landing/Search";
 import styles from './styles.module.css';
 
-
-export default function Home(): JSX.Element {
+export default function Home() {
     const {siteConfig} = useDocusaurusContext();
     return (
         <Layout
-            title={`Get started with i-Vertix`}
-            description="Description will go into a meta tag in <head />">
+            title={`i-Vertix - IT Infrastructure Management`}
+            description={"Powerful and scalable solutions to manage your IT Infrastructure"}>
             <Header/>
             <main className={styles.docsContainer}>
                 <Search />

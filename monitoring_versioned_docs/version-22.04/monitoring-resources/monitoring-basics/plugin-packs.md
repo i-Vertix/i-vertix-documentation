@@ -132,7 +132,7 @@ poller/s ([Deploy the configuration](../../monitoring-resources/monitoring-basic
 
 You can re-install a plugin pack (in case of some issue) by clicking the **RE-INSTALL** button.
 
-:::caution
+:::warning
 At the moment, the re-install resets **every** template contained in the plugin pack (also the generic-host and generic-service template for
 example).
 
