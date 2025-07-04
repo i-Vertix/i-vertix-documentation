@@ -78,7 +78,7 @@ def set_path(root, path):
         if not pres:
             next_elem = {
                 "id": p,
-                "label": p.title(),
+                "label": p.title().replace("_", " "),
                 "items": []
             }
             items.append(next_elem)
@@ -90,37 +90,56 @@ def set_path(root, path):
     return root
 
 
+#def parse_index(fpath):
+#    
+#    lines = []
+#    with open(fpath, "r", encoding="utf8") as fd:
+#        lines = fd.readlines()
+#
+#    start = -1
+#    end = -1
+#    for idx, l in enumerate(lines):
+#        if l.find(".. toctree::") != -1:
+#            start = idx + 3
+#            continue
+#
+#        if start != -1:
+#            if idx <= start:
+#                continue
+#        
+#        if start != -1:
+#            if l == "\n":
+#                end = idx
+#                break
+#
+#    #No index list present
+#    if start == -1:
+#        return []
+#
+#    #If file ends just after the index
+#    if end == -1: 
+#        end = len(lines)
+#
+#    lines = lines[start:end]
+#    lines = [l.strip() for l in lines]
+#    lines = [l.split("/")[0] for l in lines]
+#    lines.insert(0, "index")
+#
+#    return lines
+
+
 def parse_index(fpath):
     
-    lines = []
+    text = None
+    print(fpath)
     with open(fpath, "r", encoding="utf8") as fd:
-        lines = fd.readlines()
+        text = fd.read()
 
-    start = -1
-    end = -1
-    for idx, l in enumerate(lines):
-        if l.find(".. toctree::") != -1:
-            start = idx + 3
-            continue
-
-        if start != -1:
-            if idx <= start:
-                continue
-        
-        if start != -1:
-            if l == "\n":
-                end = idx
-                break
-
-    #No index list present
-    if start == -1:
-        return []
-
-    #If file ends just after the index
-    if end == -1: 
-        end = len(lines)
-
-    lines = lines[start:end]
+    text = text + "\n\n"
+    match = re.search(r"\.\. toctree::\n\s+:maxdepth: \d+\n\s*\n(.*?)\n\n", text, flags=re.DOTALL)
+    
+    text = text[match.start():match.end()]
+    lines = text.split("\n")
     lines = [l.strip() for l in lines]
     lines = [l.split("/")[0] for l in lines]
     lines.insert(0, "index")
@@ -136,7 +155,7 @@ def makedir(path):
 
 
 def convert_to_md(in_path, out_path):
-    print(f"converting {in_path} {out_path}")
+    #print(f"converting {in_path} {out_path}")
     
     makedir(out_path)
     
@@ -270,8 +289,6 @@ if __name__ == "__main__":
             add_header(out_path)
             set_path(acc, pathlib.Path(rel_path))
 
-
-
     items = acc.pop("items")
     acc = [v for k, v in acc.items()]
     acc.extend(items)
@@ -309,20 +326,27 @@ if __name__ == "__main__":
         shutil.copy(in_path, out_path)
         #print(c)
 
-    
 
+    #exit(0)
 
     for f in out_files:
 
         text = ""
         with open(f, "r", encoding="utf8") as fd:
             text = fd.read()
-
-        #match = re.search(r":::: ([\w]+)\s*::: title\s*(.*?)\s*:::\s*(.*?)::::\s*", text, re.DOTALL)
-        #if match:
-        #    new_text = f":::{match.group(1)}\n{match.group(3)}\n:::\n\n"
-        #    text = text[:match.start()] + new_text + text[match.end():]
-
+        
+        # removing todo
+        while True:
+            match = re.search(r"::: {\.todo}\n(.*?):::\n", text, re.DOTALL)
+            
+            if match is None:
+                break
+            
+            text = text[:match.start()] + text[match.end():]
+        
+        
+        # Removing all { .attrib=value }
+        text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
 
         #boxes conversion
         while True:
@@ -331,17 +355,33 @@ if __name__ == "__main__":
             if match is None:
                 break
                 
+            note_type = match.group(1).lower()
+            if note_type == "note":
+                note_type = "info"
+
+            note_text = match.group(2).replace("> ", "").strip()
+
+            new_text = f":::{note_type}\n\n{note_text}\n\n:::"
+            text = text[:match.start()] + new_text + text[match.end():]
+
+        # more boxes conversion, some boxes are still present... 
+        while True:
+            match = re.search(r"::::\s*\n:::\s*\n(.*?)\s*:::\n(.*?)::::", text, re.DOTALL)
+            
+            if match is None:
+                break
+                
             note_text = match.group(2).replace("> ", "")
-            new_text = f":::{match.group(1).lower()}\n{note_text}\n:::"
+            new_text = f":::{match.group(1).lower().strip()}\n{note_text}\n:::"
             text = text[:match.start()] + new_text + text[match.end():]
 
 
-        #Removing newlines in link text
         while True:
             match = re.search(r"\[([^\]]*\n[^\]]*)\]\((.*)\)", text, flags=re.MULTILINE)
             if match is None:
                 break
             
+            #Removing newlines in link text
             link_text = match.group(1).replace("\n", " ")
             new_text = f"[{link_text}]({match.group(2)})"
             text = text[:match.start()] + new_text + text[match.end():]
@@ -349,9 +389,7 @@ if __name__ == "__main__":
         # Changing GLPI to i-Vertix ITAM
         text = text.replace("GLPI", "i-Vertix ITAM")
         
-        # Removing all { .attrib=value }
-        text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
-
+        #convert indexes
         if os.path.basename(f) == "index.md":
             
             match = re.search(r"::: \n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)            
@@ -373,7 +411,12 @@ if __name__ == "__main__":
 
                     url.extend(text)
                     url = [x for x in url if x]
-                    return (text[0], "/".join(url))
+
+                    link_text = text[0].title()
+                    link_text= link_text.replace("_", " ")
+                    link_text= link_text.replace("-", " ")
+
+                    return (link_text, "/".join(url))
                                                     
                 links = match.group(1).split()
                 links = [build_link(l, rel_dir) for l in links]
@@ -384,27 +427,43 @@ if __name__ == "__main__":
         
         #match = re.search(r"\`(.*) <(.*)>\`", text, flags=re.DOTALL)
         while True:
-            match = re.search(r"\`([\w \"\'>]+) <([ \.\w/_]+)>\`", text, flags=re.MULTILINE)
+            match = re.search(r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", text, flags=re.MULTILINE)
             if not match:
                 break
 
-            print(f, match.groups())
+            #print(f, match.groups())
 
             link_text = match.group(1)
             url = normalize_url(match.group(2))
+            #print(url)
+            #print("")
+
+
             url = url.replace(" ", "")
             new_text = f"[{link_text}]({url})"
             text = text[:match.start()] + new_text + text[match.end():]
+
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
     
+
     
-    #for f in out_files:
+    transforms = [
+        lambda x: x.replace("\\\'", "'"),
+        lambda x: x.replace("\\\"", "\""),
+        lambda x: x.replace("\\.", "."),
+    ]
 
-    #    lines = []
-    #    with open(f, "r", encoding="utf8") as fd:
-    #        lines = fd.readlines()
+    
+    for f in out_files:
+    
+        lines = []
+        with open(f, "r", encoding="utf8") as fd:
+            text = fd.read()
 
-    #    #with open(f, "w", encoding="utf8") as fd:
-    #    #    fd.writelines(lines)
+        for r in transforms:
+            text = r(text)
+        
+        with open(f, "w", encoding="utf8") as fd:
+            fd.write(text)
