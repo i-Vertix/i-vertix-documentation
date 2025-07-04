@@ -29,7 +29,7 @@ Here an example of created scenario:
 
 ::: note
 
-Please contact <support@i-vertix.com> for further assistance in creating scenarios.
+Please contact [support@i-vertix.com](mailto:support@i-vertix.com) for further assistance in creating scenarios.
 
 :::
 

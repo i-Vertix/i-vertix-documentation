@@ -1,6 +1,6 @@
 ---
 id: plugin-store-configuration
-title: Plugin Store configuration
+title: Plugin Store Configuration
 ---
 
 Some connections parameters have to be configured in order to access the monitoring profiles included in the Plugin
@@ -22,7 +22,7 @@ ask our [Support team](mailto:support@i-vertix.com) to receive your personal cre
 
 ![image](../../assets/before-you-start/plugin-store-credential.png)
 
-:::caution Mandatory
+:::warning[Mandatory]
 This task is mandatory to ensure a properly working monitoring experience.
 
 After completion, please proceed to the next step to complete the procedure: [Plugin installation](plugin-update-installation.md)

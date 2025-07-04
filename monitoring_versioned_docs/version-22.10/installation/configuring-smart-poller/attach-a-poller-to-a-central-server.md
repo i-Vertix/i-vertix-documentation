@@ -146,7 +146,7 @@ To attach a Smart Poller **i-Vertix4** to a Central Management, please follow th
 
 5. Log on to the Central Management (SSH) do a sudo bash and enter the password
 
-    :::caution Mandatory
+    :::warning[Mandatory]
     The following steps are mandatory in any case Central Manager performs such a synchronization every 4 hours
     :::
 
@@ -274,7 +274,7 @@ To attach a Smart Poller **i-Vertix3** to a Central Management, please follow th
 
 5. Log on to the Central Management (SSH) do a sudo bash and enter the password
 
-    :::caution Mandatory
+    :::warning[Mandatory]
     The following steps are mandatory in any case Central Manager performs such a synchronization every 4 hours
     :::
 

@@ -1,0 +1,217 @@
+sidebar:
+  - intro
+  - id: quick-start-guide
+    label: Quick Start Guide
+    items:
+      - requirements
+      - setup-central-poller
+      - plugin-store-configuration
+      - plugin-store-init
+      - monitoring-the-first-host
+  - id: installation
+    label: Installation
+    items:
+      - id: before-you-start
+        label: Before you start
+        items:
+          - platform
+          - compatibility
+          - architecture
+          - prerequisites
+          - technical-information
+      - id: setup-central-poller
+        label: Setup Central & Poller
+        items:
+          - import-virtual-appliance
+          - first-login
+          - network-configuration
+          - ntp-configuration
+          - smtp-configuration
+          - password-modification
+          - license
+      - id: first-web-access
+        label: First web access
+        items:
+          - first-web-access
+      - attach-a-poller-to-a-central-server
+      - fail2ban
+  - id: monitoring-resources
+    label: Monitoring Resources
+    items:
+      - monitoring-principles
+      - plugin-packs
+      - id: monitoring-hosts
+        label: Monitoring Hosts
+        items:
+          - monitoring-host
+          - create-host-manually
+          - host-templates
+          - create-host-automatically
+          - updating-hosts-dynamically
+          - generic-actions-host
+      - id: monitoring-services
+        label: Monitoring Services
+        items:
+          - monitoring-service
+          - create-service-manually
+          - service-template
+          - generic-actions-service
+          - create-service-automatically
+          - updating-services-dynamically
+          - meta-service
+      - export-configuration
+      - id: discovery
+        label: Discovery
+        items:
+          - description
+          - host-discovery
+          - service-discovery
+          - vmware-discovery
+          - vmware-os-discovery
+          - nedi
+          - meraki-discovery
+      - id: i-vertix-e2e
+        label: Synthetic User Monitoring
+        items:
+          - e2e-configuration
+      - id: organizing-hosts-and-services
+        label: Organizing Hosts & Services
+        items:
+          - groups
+          - categories
+          - dynamic-groups
+      - id: generic-object-actions
+        label: Generic objects and actions
+        items:
+          - timeperiods
+          - macros
+          - commands
+          - generic-actions
+      - id: passive-monitoring
+        label: Passive monitoring
+        items:
+          - enable-snmp-traps
+          - create-snmp-traps-definitions
+          - monitoring-with-snmp-traps
+          - debug-snmp-traps-management
+  - id: events-alerts
+    label: Events & Alerts
+    items:
+      - id: viewing-events
+        label: Viewing events
+        items:
+          - concepts
+          - resources-status
+          - event-console
+          - event-log
+          - create-custom-view
+          - dashboards
+      - id: managing-alarms
+        label: Managing alarms
+        items:
+          - acknowledge
+          - downtimes
+          - submit-status
+          - other
+      - id: managing-notifications
+        label: Managing notifications
+        items:
+          - how-notifications-works
+          - configuring-notification
+          - dependencies
+          - escalation
+          - flapping
+          - email-configuration
+  - id: managing-users-contacts
+    label: Managing Users & Contacts
+    items:
+      - contacts-users
+      - create-users-manually
+      - contact-templates
+      - contact-groups
+      - acl
+  - id: performance-graphs
+    label: Performance graphs
+    items:
+      - charts-management
+      - graph-template
+      - chart-curves
+      - virtual-metrics
+  - id: i-vertix-maps
+    label: i-Vertix Maps
+    items:
+      - map-types
+      - managing-maps
+      - visualize-maps
+      - edit-maps
+  - id: i-vertix-ncb
+    label: i-Vertix NCB
+    items:
+      - prerequisites-works
+      - managing-ncb
+      - visualize-ncb
+  - id: i-vertix-netflow
+    label: i-Vertix Netflow
+    items:
+      - netflow-overview
+      - netflow-setup
+      - netflow-live-flows
+      - netflow-flow-history
+      - netflow-flow-alerts
+      - netflow-traffic-report
+  - id: i-vertix-reporting
+    label: Reporting
+    items:
+      - availability-reports
+      - id: i-vertix-bi
+        label: i-Vertix Business Intelligence
+        items:
+          - bi-overview
+          - bi-requirements
+          - bi-setup
+          - bi-report-store
+          - bi-job
+          - bi-viewing-reports
+          - bi-troubleshooting
+          - bi-settings 
+      - dashboard-meraki
+  - id: administration
+    label: Administration
+    items:
+      - id: parameters
+        label: Parameters
+        items:
+          - centreon-UI
+          - monitoring-Monitoring
+          - gorgone-Gorgone
+          - my-Account
+          - rrdtool-RRDTool
+          - debug-Debug
+          - knowledge-Base
+          - backup-Backup
+          - performance-Management
+          - data
+#          TODO: DATA-DATA
+          - media-Media
+      - id: authentication
+        label: Authentication
+        items:
+          - authentication-Authentication
+          - openid-OPENID
+          - websso-WEBSSO
+          - ldap
+          - saml
+      - log-Log
+      - sessions-Sessions
+      - id: platform-status
+        label: Platform-Status
+        items:
+          - platform-Status
+          - databases-DB
+  - id: api
+    label: API
+    items:
+      - rest-api-v1
+      - rest-api-v2
+      - api-tokens
+  - glossary

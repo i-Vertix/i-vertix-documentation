@@ -18,12 +18,12 @@ const useNewsCarousel = () => {
 
     const news = useMemo((): News[] => [
         {
-            title: "23.10 on the way",
+            title: "24.10 on the way",
             image: "/img/landing/news/news_1.png",
             text: <p>
                 We are finalizing our latest work to release a new major update of the i-Vertix monitoring.
                 You can expect new features, new functionalities and improvements, always suited for your needs.
-                During the next few months we will get in touch with you and roll-out the update on your systems.
+                During the next few weeks and months we will get in touch with you and roll-out the update on your systems.
                 As always: if you have any questions or find something missing, something broken or something which
                 could be improved, feel
                 free to contact us via <a href={"mailto:support@i-vertix.com"}>Email</a>.

@@ -39,20 +39,47 @@ To build the different sidebars use following commands:
 ##### 22.04
 
 ```bash
-node scripts/build-sidebar.js --docs=monitoring --version="22.04"
+node scripts/build-sidebar.js --docs=monitoring --versioning="22.04"
 ```
 
 ##### 22.10
 
 ```bash
-node scripts/build-sidebar.js --docs=monitoring --version="22.10"
+node scripts/build-sidebar.js --docs=monitoring --versioning="22.10"
 ```
 
 ##### 23.10
 
 ```bash
-node scripts/build-sidebar.js --docs=monitoring --version="23.10"
+node scripts/build-sidebar.js --docs=monitoring --versioning="23.10"
 ```
+
+##### 24.10
+
+```bash
+node scripts/build-sidebar.js --docs=monitoring --versioning="23.10"
+```
+
+## API Docs
+
+Use following command to bundle the API documentation:
+
+```bash
+redocly bundle ./openapi-specs-orig/24.10/centreon-api.yaml -o ./monitoring_versioned_docs/version-24.10/api/rest-api-v2.json
+```
+
+Unfortunately the centreon api spec contains some errors which need to be fixed before making the bundle.
+
+Most common errors while bundling:
+
+- wrong references schemas using `$ref`
+- wrong `ResourceHostDetail.yaml` and `ResourceServiceDetail.yaml` object structure
+
+Most commong issues while rendering:
+
+- usage of *type* `float` -> use `number` instead
+- usage of *type* `int` -> use `integer` instead
+- typo `descriptions` instead of `description`
 
 ## Algolia Search
 

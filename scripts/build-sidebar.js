@@ -2,19 +2,20 @@ const path = require("path");
 const fs = require("fs");
 const jsYaml = require('js-yaml');
 
-const arguments = require('minimist')(process.argv.slice(2));
-if (!arguments.version) {
-    console.error("parameter --version missing (e.g. --version=22.04)");
+const args = require('minimist')(process.argv.slice(2));
+console.log(args);
+if (!args.versioning) {
+    console.error("parameter --versioning missing (e.g. --versioning=22.04)");
     process.exit(1);
 }
-if (!arguments.docs) {
+if (!args.docs) {
     console.error("parameter --docs missing (e.g. --docs=log-management)");
     process.exit(1);
 }
 
-const validDocs = ["monitoring", "log-management", "itam"];
-const docs = arguments.docs;
-let version = arguments.version;
+const validDocs = ["monitoring", "log-management", "asset-management"];
+const docs = args.docs;
+let version = args.versioning;
 
 if (!validDocs.includes(docs)) {
     console.error("parameter --docs has an invalid value (available values are: " + validDocs.join(', ') + ")");
@@ -70,7 +71,7 @@ const addDoc = (obj, category, doc) => {
     }
     obj.push({
         type: "doc",
-        id: `version-${version}/${category}${d}`,
+        id: `${category}${d}`,
         label: l
     });
 }
@@ -87,7 +88,7 @@ for (const item of yaml.sidebar) {
 
 
 const sidebar = JSON.stringify({
-    [`version-${version}/docs`]: content
+    [`docs`]: content
 });
 
 const outputPath = path.resolve(`${__dirname}/../${docs}_versioned_sidebars/version-${version}-sidebars.json`);

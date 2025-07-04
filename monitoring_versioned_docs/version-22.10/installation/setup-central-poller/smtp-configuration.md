@@ -58,7 +58,7 @@ If you want to test the configuration you've just made, simply type **`T`** in t
 
 ![Relay host](../../assets/setup-startup-central-poller/test-smtp-v4.png)
 
-:::caution
+:::warning
 
 Provide a real e-mail sender and receiver for the test
 
@@ -111,7 +111,7 @@ If you want to test the configuration you've just made, simply type **`T`** in t
 
 ![Relay host](../../assets/setup-startup-central-poller/relay-host.png)
 
-:::caution
+:::warning
 
 Provide a real e-mail sender and receiver for the test
 

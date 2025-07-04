@@ -60,7 +60,7 @@ If you want to test the configuration you've just made, simply type **T) Test SM
 
 ![Relay host](../../assets/setup-startup-central-poller/relay-host.png)
 
-:::caution
+:::warning
 
 Provide real a e-mail sender and a e-mail reciver for the test.
 

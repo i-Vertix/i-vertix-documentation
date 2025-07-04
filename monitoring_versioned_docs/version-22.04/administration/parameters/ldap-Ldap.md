@@ -81,7 +81,7 @@ login
 on the LDAP directory. These filters serve to propose, by default, a search
 on the MS Active Directory, Okta or of Posix type directories.
 
-:::caution
+:::warning
 
 Before any import, check the default settings proposed. If you have not selected a Model, you will need to define the search filters manually by filling in the fields.
 

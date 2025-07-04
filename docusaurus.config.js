@@ -1,8 +1,6 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
-
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const {themes} = require('prism-react-renderer');
+const lightTheme = themes.github;
+const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -18,13 +16,21 @@ const config = {
     // For GitHub pages deployment, it is often '/<projectName>/'
     baseUrl: '/',
 
+    // use rspack for building
+    future: {
+        v4: true,
+        experimental_faster: true,
+    },
+
     // GitHub pages deployment config.
     // If you aren't using GitHub pages, you don't need these.
     organizationName: 'i-Vertix', // Usually your GitHub org/user name.
     projectName: 'i-vertix-documentation', // Usually your repo name.
+    noIndex: false,
 
     onBrokenLinks: 'warn',
     onBrokenMarkdownLinks: 'warn',
+    onBrokenAnchors: 'warn',
 
     // Even if you don't use internalization, you can use this field to set useful
     // metadata like html lang. For example, if your site is Chinese, you may want
@@ -70,9 +76,35 @@ const config = {
                 docs: false,
                 theme: {
                     customCss: [require.resolve('./src/css/custom.css')],
+                },
+                sitemap: {
+                    ignorePatterns: ['**/api/rest-api-v2', '**/api/rest-api-v1']
                 }
             }
-        ]
+        ],
+        [
+            'redocusaurus',
+            {
+                debug: Boolean(process.env.DEBUG || process.env.CI),
+            }
+        ],
+    ],
+
+    themes: [
+        [
+            require.resolve('@easyops-cn/docusaurus-search-local'),
+            /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+            ({
+                hashed: true,
+                indexBlog: false,
+                docsPluginIdForPreferredVersion: "monitoring",
+                docsRouteBasePath: ["monitoring"],
+                docsDir: ["monitoring_versioned_docs"],
+                explicitSearchResultPath: true,
+                language: ["en"],
+                ignoreFiles: [/rest-api-v/]
+            }),
+        ],
     ],
 
     plugins: [
@@ -85,8 +117,13 @@ const config = {
                 routeBasePath: 'monitoring',
                 includeCurrentVersion: false,
                 versions: {
+                    "24.10": {
+                        label: "✨ 24.10",
+                        banner: "none",
+                        badge: true
+                    },
                     "23.10": {
-                        label: "✨ 23.10",
+                        label: "23.10",
                         banner: "none",
                         badge: true
                     },
@@ -95,11 +132,11 @@ const config = {
                         banner: "none",
                         badge: true
                     },
-                    "22.04": {
-                        label: "22.04",
-                        banner: "none",
-                        badge: true
-                    }
+                    // "22.04": {
+                    //     label: "22.04",
+                    //     banner: "none",
+                    //     badge: true
+                    // }
                 }
             },
         ],
@@ -134,6 +171,7 @@ const config = {
     themeConfig:
         /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
         ({
+            image: "/img/ivertix-guide.jpg",
             docs: {
                 sidebar: {
                     hideable: true,
@@ -151,28 +189,27 @@ const config = {
                     background: 'rgba(0,0,0,0.8)',
                 },
             },
-            algolia: {
-                // The application ID provided by Algolia
-                appId: '26QPCG4J0S',
-                // Public API key: it is safe to commit it
-                apiKey: 'd0e8f15baedb811b3e2468e17c1f603e',
-                indexName: 'i-vertix-docs',
-                // Optional: see doc section below
-                contextualSearch: true,
-                // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
-                // externalUrlRegex: 'external\\.com|domain\\.com',
-                // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
-                // replaceSearchResultPathname: {
-                //     from: '/docs/', // or as RegExp: /\/docs\//
-                //     to: '/',
-                // },
-                // Optional: Algolia search parameters
-                searchParameters: {},
-                // Optional: path for search page that enabled by default (`false` to disable it)
-                searchPagePath: 'search',
-                //... other Algolia params
-            },
-            // Replace with your project's social card
+            // algolia: {
+            //     // The application ID provided by Algolia
+            //     appId: '26QPCG4J0S',
+            //     // Public API key: it is safe to commit it
+            //     apiKey: 'd0e8f15baedb811b3e2468e17c1f603e',
+            //     indexName: 'i-vertix-docs',
+            //     // Optional: see doc section below
+            //     contextualSearch: true,
+            //     // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+            //     // externalUrlRegex: 'external\\.com|domain\\.com',
+            //     // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+            //     // replaceSearchResultPathname: {
+            //     //     from: '/docs/', // or as RegExp: /\/docs\//
+            //     //     to: '/',
+            //     // },
+            //     // Optional: Algolia search parameters
+            //     searchParameters: {},
+            //     // Optional: path for search page that enabled by default (`false` to disable it)
+            //     searchPagePath: 'search',
+            //     //... other Algolia params
+            // },
             navbar: {
                 title: '',
                 logo: {
@@ -234,6 +271,10 @@ const config = {
                         to: "https://www.linkedin.com/company/i-vertix/",
                         position: "right",
                         className: "header-icon-link header-linkedin-link",
+                    },
+                    {
+                        type: 'search',
+                        position: "right"
                     },
                     // {
                     //     type: 'docsVersionDropdown',
@@ -338,8 +379,9 @@ const config = {
                 copyright: `Copyright © ${new Date().getFullYear()} i-Vertix`,
             },
             prism: {
-                theme: lightCodeTheme,
-                darkTheme: darkCodeTheme,
+                additionalLanguages: ['bash', 'diff', 'json'],
+                theme: lightTheme,
+                darkTheme: darkTheme,
             },
         }),
 };

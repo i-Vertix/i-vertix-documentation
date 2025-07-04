@@ -5,7 +5,7 @@ title: i-Vertix License
 
 # License activation
 
-:::caution
+:::warning
 
 The Central Manager must access the Internet so the license can be activated.
 
@@ -62,12 +62,22 @@ Follow the instructions in the email and download the license using the followin
 
 5. If the vm can go on the internet (tcp 80, 443 enabled) it will download the license and install it. Command lines will appear and then press "Enter"
 
-6. Restart the VM so that all the services will be started
-
+6. Type **0) to go back to the main menu
+   
 7. License status field will change from:
 
         License       [ INVALID ]
         to
         License       [ VALID ]
 
+8. Type 2 to reboot the VM so that all the services will be started
+
 The system is now ready. Proceed with the [first access to the web console](../first-web-access/first-web-access.md)
+
+:::note
+
+The current license configuration does not allow access to the Plugin Store yet.
+You can find the configuration steps in the [Plugin Store Configuration](../../quick-start-guide/how-to-configure-central-and-poller/plugin-store-configuration.md) section.
+
+If you haven't already, please contact i-Vertix Support at support@i-vertix.com to request access.
+:::

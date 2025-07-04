@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './styles.module.css';
+import styles from "./styles.module.css";
 import useAboutText from "@site/src/components/Landing/About/useAboutText";
 import clsx from "clsx";
 
@@ -15,7 +15,7 @@ const About = () => {
                     {text.text}
                 </div>
                 <div className={styles.summitContainer}>
-                    <img src={"/img/landing/summit.png"} className={styles.summitImage}/>
+                    <img src={"/img/landing/summit.png"} alt={"i-Vertix Mountain"} className={styles.summitImage}/>
                     <svg width={"100%"} height={"100%"} className={styles.summitOverlay} viewBox={"0 0 900 840"}>
                         <g>
                             {/* oben-xy links-xy rechts-xy */}

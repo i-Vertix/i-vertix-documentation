@@ -8,7 +8,7 @@ responsible for authenticating the user before allowing access to the i-Vertix w
 Many Apache modules allow authentication via OIDC, SAMLv2, TLS, Kerberos, etc. protocols.
 
 
-:::caution
+:::warning
 
 Users must be present in the i-Vertix configuration to access the interface.
 
@@ -28,7 +28,7 @@ Enable authentication:
 - **Authentication mode**: indicates if the authentication should be done using only Web SSO or using local
   authentication as well (**Mixed**).
 
-:::caution
+:::warning
 
 When setting the parameters, it is recommended to activate the "mixed" mode. This will allow you to retain access to the local `admin` account in the event of a misconfiguration.
 

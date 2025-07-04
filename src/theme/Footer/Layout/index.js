@@ -1,8 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
+import useFocus from "@site/src/components/useFocus";
 
 export default function FooterLayout({style, links, logo, copyright}) {
-    return (
+    const focus = useFocus();
+    return !focus ? (
         <footer
             className={clsx('footer', {
                 'footer--dark': style === 'dark',
@@ -24,5 +26,5 @@ export default function FooterLayout({style, links, logo, copyright}) {
                 )}
             </div>
         </footer>
-    );
+    ) : null;
 }
