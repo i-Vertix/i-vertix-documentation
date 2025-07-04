@@ -1,0 +1,216 @@
+sidebar:
+- index
+- id: first-steps
+  label: First-Steps
+  items:
+  - index
+  - general
+  - discovery
+  - manage-your-password
+  - preferences
+  - navigation-modules
+  - interfaces
+  - view
+  - search
+  - saved-searches
+  - access-glpi
+  - conclusion
+- id: modules
+  label: Modules
+  items:
+  - index
+  - id: overview
+    label: Overview
+    items:
+    - index
+    - actions
+    - templates
+    - status
+    - kanban
+  - id: assets
+    label: Assets
+    items:
+    - index
+    - computers
+    - displays
+    - softwares
+    - peripherals
+    - printers
+    - cartridges
+    - consumables
+    - phones
+    - global
+    - network-equipments
+    - id: tabs
+      label: Tabs
+      items:
+      - antivirus
+      - components
+      - connexions
+      - links
+      - network-ports
+      - os
+      - softwares
+      - virtualization
+      - volumes
+  - id: management
+    label: Management
+    items:
+    - index
+    - licenses
+    - budgets
+    - certificates
+    - suppliers
+    - contacts
+    - contract
+    - documents
+    - lines
+    - data-centers
+    - clusters
+    - domains
+  - id: tools
+    label: Tools
+    items:
+    - index
+    - projects
+    - reminders
+    - reports
+    - reservations
+    - rssfeed
+    - knowledgebase
+  - id: assistance
+    label: Assistance
+    items:
+    - index
+    - actors
+    - prioritymatrix
+    - tickets
+    - id: tickets
+      label: Tickets
+      items:
+      - recurrentticket
+      - ticketadvanced
+      - ticketlifecycle
+      - ticketmanagement
+      - ticketopening
+    - problems
+    - changes
+    - lifecyclematrix
+    - planning
+    - statistics
+    - categories
+  - id: administration
+    label: Administration
+    items:
+    - index
+    - id: users
+      label: Users
+      items:
+      - users
+      - usersimport
+    - groups
+    - entities
+    - id: rules
+      label: Rules
+      items:
+      - inventorytools
+      - rulesmanagement
+      - ticketbusinessrules
+      - userauthorizations
+    - dictionnaries
+    - id: profiles
+      label: Profiles
+      items:
+      - administrationtab
+      - assistancetab
+      - configurationtab
+      - profiles
+      - toolstab
+    - mailqueue
+    - logs
+  - id: configuration
+    label: Configuration
+    items:
+    - index
+    - id: authentication
+      label: Authentication
+      items:
+      - index
+      - configuration
+      - ldap
+      - imap
+      - other
+    - id: dropdowns
+      label: Dropdowns
+      items:
+      - index
+      - general
+      - assistance
+      - calendar
+      - internet
+      - others
+      - id: tabs
+        label: Tabs
+        items:
+        - translation
+    - components
+    - collectors
+    - id: notifications
+      label: Notifications
+      items:
+      - index
+      - templates
+      - template_example
+      - definitions
+      - email_notifications
+      - alarm_options
+    - crontasks
+    - fields-unicity
+    - service_levels
+    - id: general
+      label: General
+      items:
+      - index
+      - general_configuration
+      - default_values
+      - assets
+      - assistance
+      - management
+      - logs_purge
+      - system
+      - security
+      - performances
+      - api
+      - impact_analysis
+      - sql_replicas
+      - glpi_network
+    - external_links
+    - plugins
+  - id: tabs
+    label: Tabs
+    items:
+    - all
+    - changes
+    - contacts
+    - contracts
+    - debug
+    - documents
+    - elements
+    - external-links
+    - historical
+    - knowledgebase
+    - management
+    - notes
+    - problems
+    - suppliers
+    - templates
+    - tickets
+- id: advanced
+  label: Advanced
+  items:
+  - index
+  - cache
+  - status
+  - override-locales
+- cli
+- glossary

@@ -27,8 +27,8 @@ def normalize_url(url):
         #url starts with an "/", hence it is absolute
         if comp[0] == "":
  
-            if comp[0] not in ["/itam", ".."]:
-                comp.insert(0, "/itam")
+            if comp[0] not in ["/asset-management", ".."]:
+                comp.insert(0, "/asset-management")
 
     comp = filter(lambda x: len(x) > 0, comp)
     return "/".join(comp)
@@ -88,44 +88,6 @@ def set_path(root, path):
         curr = next_elem
 
     return root
-
-
-#def parse_index(fpath):
-#    
-#    lines = []
-#    with open(fpath, "r", encoding="utf8") as fd:
-#        lines = fd.readlines()
-#
-#    start = -1
-#    end = -1
-#    for idx, l in enumerate(lines):
-#        if l.find(".. toctree::") != -1:
-#            start = idx + 3
-#            continue
-#
-#        if start != -1:
-#            if idx <= start:
-#                continue
-#        
-#        if start != -1:
-#            if l == "\n":
-#                end = idx
-#                break
-#
-#    #No index list present
-#    if start == -1:
-#        return []
-#
-#    #If file ends just after the index
-#    if end == -1: 
-#        end = len(lines)
-#
-#    lines = lines[start:end]
-#    lines = [l.strip() for l in lines]
-#    lines = [l.split("/")[0] for l in lines]
-#    lines.insert(0, "index")
-#
-#    return lines
 
 
 def parse_index(fpath):
@@ -227,6 +189,8 @@ if __name__ == "__main__":
 
     parser.add_argument("input_dir")
     parser.add_argument("output_dir")
+    parser.add_argument("--skip_conversion", action="store_true", default=False)
+    parser.add_argument("--skip_post", action="store_true", default=False)
 
     args = parser.parse_args()
 
@@ -285,8 +249,9 @@ if __name__ == "__main__":
                 indexes[index_path] = parse_index(in_path)
 
             #print(in_path, out_path)
-            convert_to_md(in_path, out_path)
-            add_header(out_path)
+            if not args.skip_conversion:
+                convert_to_md(in_path, out_path)
+                add_header(out_path)
             set_path(acc, pathlib.Path(rel_path))
 
     items = acc.pop("items")
@@ -327,7 +292,8 @@ if __name__ == "__main__":
         #print(c)
 
 
-    #exit(0)
+    if args.skip_post:
+        exit(0)
 
     for f in out_files:
 
@@ -346,11 +312,13 @@ if __name__ == "__main__":
         
         
         # Removing all { .attrib=value }
+
+        text = text.replace("{glpi_address}", "glpi_address")
         text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
 
         #boxes conversion
         while True:
-            match = re.search(r"> \[\!(\w+)\]((\n> .*)+)", text, flags=re.MULTILINE)
+            match = re.search(r"> \[\!(\w+)\]((\n>.*)+)", text, flags=re.MULTILINE)
             
             if match is None:
                 break
@@ -359,20 +327,28 @@ if __name__ == "__main__":
             if note_type == "note":
                 note_type = "info"
 
-            note_text = match.group(2).replace("> ", "").strip()
-
+            note_text = match.group(2)
+            note_text = re.sub(r"^> *", "", note_text, flags=re.MULTILINE)
+            note_text = note_text.strip()
+            
             new_text = f":::{note_type}\n\n{note_text}\n\n:::"
+            new_text = new_text.replace(" <", " \\<")
+
             text = text[:match.start()] + new_text + text[match.end():]
 
         # more boxes conversion, some boxes are still present... 
         while True:
-            match = re.search(r"::::\s*\n:::\s*\n(.*?)\s*:::\n(.*?)::::", text, re.DOTALL)
+            match = re.search(r"\s*::::\s*\n\s*:::\s*\n\s*(.*?)\s*:::\n(.*?)\s*::::", text, re.DOTALL)
             
             if match is None:
                 break
+
+            note_type = match.group(1).lower().strip()
+            if note_type == "hint":
+                note_type = "tip"
                 
             note_text = match.group(2).replace("> ", "")
-            new_text = f":::{match.group(1).lower().strip()}\n{note_text}\n:::"
+            new_text = f"\n:::{note_type}\n{note_text}\n:::"
             text = text[:match.start()] + new_text + text[match.end():]
 
 
@@ -402,7 +378,7 @@ if __name__ == "__main__":
                     rel_dir.pop(-1)
 
                 def build_link(l, rel_dir):
-                    url = ["/itam"]
+                    url = ["/asset-management"]
                     url.extend(rel_dir)
                     
                     text = l.split("/")
@@ -443,6 +419,24 @@ if __name__ == "__main__":
             new_text = f"[{link_text}]({url})"
             text = text[:match.start()] + new_text + text[match.end():]
 
+        while True:
+            match = re.search(r"<((?:https*|redis+)://.*)>", text)
+            if not match:
+                break
+            
+            url = match.group(1)
+            new_text = f"[{url}]({url})"
+            text = text[:match.start()] + new_text + text[match.end():]
+
+        
+        match = re.search(r"<(.*@.*) .*>", text)
+        if match:
+            url = match.group(1)
+            new_text = url
+            text = text[:match.start()] + new_text + text[match.end():]
+
+        if os.path.basename(f) == "cli.md":
+            text = ""
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)

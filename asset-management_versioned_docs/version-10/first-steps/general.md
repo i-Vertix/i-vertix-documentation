@@ -1,0 +1,44 @@
+---
+id: general
+title: General
+---
+
+# General
+
+## Choose a web browser
+
+i-Vertix ITAM requires the use of a web browser.
+
+Optimal functioning of the application is obtained by using a modern
+browser compliant with web standards.
+
+The following web browsers are supported:
+
+- Edge
+- Firefox (including 2 latests ESR version)
+- Chrome
+
+i-Vertix ITAM also works on mobile; it is generally compatible with the mobile
+versions of the supported browsers.
+
+## How to connect
+
+Open your browser and go to the i-Vertix ITAM homepage
+([https://glpi_address/](https://glpi_address)).
+
+Access to the full functionality of the application requires
+authentication. An unauthenticated user can possibly access certain
+functions if i-Vertix ITAM has been configured to allow it:
+
+- View the `FAQ (Frequently Asked Questions)`,
+- Open a ticket,
+- ...
+
+Depending on the profile of the authenticated user, they may be shown
+the [standard interface](standard_interface), or
+[simplified interface](simplified_interface).
+
+## End your session
+
+To log out, click the Logout button in the top right of the screen. Once
+logged out, you will be redirected to the login page.
