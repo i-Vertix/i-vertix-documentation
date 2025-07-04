@@ -6,6 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+    
     title: 'i-Vertix Documentation',
     tagline: 'Managing an IT infrastructure has never been easier',
     favicon: 'img/logo-ivertix-blue-100.png',
@@ -267,7 +268,7 @@ const config = {
                             // },
                             {
                                 label: 'Asset Management',
-                                to: '/itam/intro',
+                                to: '/itam/',
                             },
                             // {
                             //     label: 'Log Management',
