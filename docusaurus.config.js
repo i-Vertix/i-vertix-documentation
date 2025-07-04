@@ -64,7 +64,7 @@ const config = {
                 description: 'i-Vertix IT Asset Management & Inventory automatically detects, updates and manages all IT assets, providing a complete overview of their use and performance over time',
                 icon: '/img/logo-asset-management-1000.png',
                 Image: '/img/logo-asset-management-1000.png',
-                to: '/itam'
+                to: '/asset-management'         
             },
         ]
     },
@@ -143,9 +143,9 @@ const config = {
                 [
             '@docusaurus/plugin-content-docs',
             {
-                id: 'itam',
-                path: 'itam',
-                routeBasePath: 'itam',
+                id: 'asset-management',
+                path: 'asset-management',
+                routeBasePath: 'asset-management',
                 includeCurrentVersion: false,
                 versions: {
                     "10": {
@@ -247,8 +247,8 @@ const config = {
                                 label: "IT Asset Management",
                                 description: "Automatically manage, track, inventory and update your IT assets",
                                 icon: "/img/logo-asset-management-100.png",
-                                id: "ivertix-itam",
-                                docsPluginId: "itam"
+                                id: "asset-management",
+                                docsPluginId: "asset-management"
                             }
                         ]
                     },
@@ -309,7 +309,7 @@ const config = {
                             // },
                             {
                                 label: 'Asset Management',
-                                to: '/itam/',
+                                to: '/asset-management/',
                             },
                             // {
                             //     label: 'Log Management',
