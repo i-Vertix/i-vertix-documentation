@@ -18,7 +18,7 @@ Ticket Categories*.
 
 ITIL categories are used by Tickets, Changes and Problems.
 
-![ITIL category](images/itilcategory.png)
+![ITIL category](../../assets/modules/assistance/images/itilcategory.png)
 
 A person in charge and/or a technical group can be added to this
 category and will then be used for notifications.

@@ -39,7 +39,7 @@ already set.
 
 A automatic fill and increment mechanism is provided for some fields
 that can be identified with to the
-![autofill marker](images/autofill_mark.png). These fields (name,
+![autofill marker](../../assets/modules/overview/images/autofill_mark.png). These fields (name,
 inventory number...) are then automatically completed when creating the
 object. To use this mechanism, the corresponding field in the template
 must contain a string following a syntax which is described below.

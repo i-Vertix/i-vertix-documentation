@@ -11,6 +11,12 @@ batch from the search engines for the various rules via massive actions.
 These features are interesting for example in the context of switching
 of rules from a pre-production environment to a production environment.
 
+:::info
+
+\export or import use a XML file format
+
+:::
+
 ## Rules engine
 
 i-Vertix ITAM contains a rules engine which enables a certain number of actions

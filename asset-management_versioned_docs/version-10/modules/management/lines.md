@@ -11,7 +11,7 @@ Phone lines management in i-Vertix ITAM allows to:
 - Follow information on each phone line;
 - Include phone lines in i-Vertix ITAM financial management.
 
-![A phone line in i-Vertix ITAM](images/lines.png)
+![A phone line in i-Vertix ITAM](../../assets/modules/management/images/lines.png)
 
 ## The different tabs
 
@@ -20,13 +20,13 @@ Phone lines management in i-Vertix ITAM allows to:
 Management of financial and administrative information, this information
 is visible in the 'Management' tab on the computer's form.
 
-![Management screen](/modules/tabs/images/management.png)
+![Management screen](../../assets/modules/tabs/images/management.png)
 
 By default this management is disabled. It is possible to activate the
 financial information on any type of object in the inventory by using
 the link in the *Management* tab of the material detail.
 
-![Enable management](/modules/tabs/images/management_enable.png)
+![Enable management](../../assets/modules/tabs/images/management_enable.png)
 
 :::info
 
@@ -131,7 +131,7 @@ on the profile of the user logged in.
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -153,7 +153,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -168,7 +168,7 @@ itself is still present.
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 

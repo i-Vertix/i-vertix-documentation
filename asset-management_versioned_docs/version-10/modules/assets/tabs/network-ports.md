@@ -9,7 +9,7 @@ This tab, named [Network ports] and visible in a
 [Computer] entry, allows to manage the network ports
 attached to a computer.
 
-![List of network ports](/modules/assets/images/ports.png)
+![List of network ports](../../../assets/modules/assets/images/ports.png)
 
 A network port represents the output of a network interface on a given
 hardware. A port is characterized by a number and a name.
@@ -17,13 +17,13 @@ hardware. A port is characterized by a number and a name.
 It is possible on a network port to add one or more VLAN, these VLANs
 being defined by a name, an optional comment and a VLAN number.
 
-![VLAN](/modules/assets/images/ports_vlan.png)
+![VLAN](../../../assets/modules/assets/images/ports_vlan.png)
 
 One or more
 [network name](/asset-management/modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
 tab [Network name].
 
-![Network name](/modules/assets/images/ports_network_name.png)
+![Network name](../../../assets/modules/assets/images/ports_network_name.png)
 
 :::info
 

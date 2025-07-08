@@ -49,7 +49,7 @@ It is possible to use
 The information on operating systems for a computer are visible in tabs
 [Operating system] for a Computer entry.
 
-![Screen presenting an operating system](/modules/assets/images/os.png)
+![Screen presenting an operating system](../../assets/modules/assets/images/os.png)
 
 An operating system is associated with the following elements:
 
@@ -68,7 +68,7 @@ The creation and management of the titles for operating systems is
 located in the menu [Setup \> Drop-downs \> Operating
 systems].
 
-![Screen of titles definition for operating systems](/modules/assets/images/os_dropdown.png)
+![Screen of titles definition for operating systems](../../assets/modules/assets/images/os_dropdown.png)
 
 :::
 
@@ -92,7 +92,7 @@ This tab, named [Components] and visible in a
 [Computer] entry, allows to manage the hardware components
 of a computer.
 
-![Components screen](/modules/assets/images/component.png)
+![Components screen](../../assets/modules/assets/images/component.png)
 
 :::info
 
@@ -106,7 +106,7 @@ Adding or managing components is located in menu
 If several components of the same type are used, they will be grouped
 in the view.
 
-![Grouped components](/modules/assets/images/component_group.png)
+![Grouped components](../../assets/modules/assets/images/component_group.png)
 
 :::
 
@@ -114,12 +114,12 @@ It is possible to add a component by first selecting its family in the
 drop-down list at the top of the table and then its name and the number
 of components to add.
 
-![Adding a component](/modules/assets/images/component_add.png)
+![Adding a component](../../assets/modules/assets/images/component_add.png)
 
 Starting from a computer view, it is possible to modify a component by
 clicking on the link under its name.
 
-![Modify a component](/modules/assets/images/component_update.png)
+![Modify a component](../../assets/modules/assets/images/component_update.png)
 
 To act on several components (for example modify an element of the
 component, activate accounting information or modify them, delete a
@@ -131,17 +131,17 @@ If several types of different components, not having the same
 characteristics, are selected for modification, in the actions it will
 be asked on which component modification must be applied.
 
-![Mass actions on a component](/modules/assets/images/component_computer_massives_actions.png)
+![Mass actions on a component](../../assets/modules/assets/images/component_computer_massives_actions.png)
 
 Selection button in left column allows to select all the components at
 once.
 
-![Component selection (left)](/modules/assets/images/component_select_group_left.png)
+![Component selection (left)](../../assets/modules/assets/images/component_select_group_left.png)
 
 Selection at right of type column (grayed line) allows to select all
 components of the same type (processor, memory, network interface...).
 
-![Component selection (right)](/modules/assets/images/component_select_group_right.png)
+![Component selection (right)](../../assets/modules/assets/images/component_select_group_right.png)
 
 :::info
 
@@ -150,7 +150,7 @@ one computer
 
 > From tab *Elements* of the component, click on the link **Update**.
 >
-> ![Modify a component](/modules/assets/images/component_update_link.png)
+> ![Modify a component](../../assets/modules/assets/images/component_update_link.png)
 >
 > Several tabs are then displayed:
 >
@@ -187,7 +187,7 @@ This tab, named [Volumes] and visible in a
 [Computer] entry, allows to manage the volumes attached to a
 computer.
 
-![Volumes screen](/modules/assets/images/volumes_list.png)
+![Volumes screen](../../assets/modules/assets/images/volumes_list.png)
 
 A volume attached to a computer is characterized by:
 
@@ -202,12 +202,12 @@ A volume attached to a computer is characterized by:
 It is possible from a [Computer] entry to add a volume by
 clicking on button `Add a volume`.
 
-![Adding volumes](/modules/assets/images/volumes_add.png)
+![Adding volumes](../../assets/modules/assets/images/volumes_add.png)
 
 It is possible from a [Computer] entry to modify an existing
 volume by clicking on the link under its name.
 
-![Modify a volume](/modules/assets/images/volumes_update.png)
+![Modify a volume](../../assets/modules/assets/images/volumes_update.png)
 
 :::info
 
@@ -230,28 +230,28 @@ This tab, named [Softwares] and visible in a
 a computer. Those software are sorted by their category and are
 characterized by name, version and version status.
 
-![Software list](/modules/assets/images/softwares_list.png)
+![Software list](../../assets/modules/assets/images/softwares_list.png)
 
 To install a software, first select its name in the drop-down list, then
 its version.
 
-![Adding a software](/modules/assets/images/softwares_add.png)
+![Adding a software](../../assets/modules/assets/images/softwares_add.png)
 
 It is possible to associate a license to a software on a computer.
 
 To associate a license, first select the software in the drop-down list,
 then the wanted license.
 
-![Adding a license](/modules/assets/images/softwares_licence_add.png)
+![Adding a license](../../assets/modules/assets/images/softwares_licence_add.png)
 
 If the license is associated with a software that is already installed
 on the computer, it will be presented in the list of software.
 
-![License from a software](/modules/assets/images/softwares_licence.png)
+![License from a software](../../assets/modules/assets/images/softwares_licence.png)
 
 Otherwise it will be displayed in a separate table.
 
-![List of licenses](/modules/assets/images/softwares_licence_list.png)
+![List of licenses](../../assets/modules/assets/images/softwares_licence_list.png)
 :::note
 
 - the drop-down list enumerates the software that are available in the
@@ -295,14 +295,14 @@ The connection can be made toward one or several elements of type
 display, printer, peripheral or phone. For each type of connected
 object, its name, serial number and inventory number are displayed.
 
-![List of connections](/modules/assets/images/connections_computer_list.png)
+![List of connections](../../assets/modules/assets/images/connections_computer_list.png)
 
 #### From an element other than a computer
 
 To add a connection, select the computer in the drop-down list presented
 at top of the table.
 
-![List of connections](/modules/assets/images/connections_monitor_list.png)
+![List of connections](../../assets/modules/assets/images/connections_monitor_list.png)
 
 If this case, the connection can only be made to a single computer. The
 table will list the name of this computer as well as its serial and
@@ -335,7 +335,7 @@ This tab, named [Network ports] and visible in a
 [Computer] entry, allows to manage the network ports
 attached to a computer.
 
-![List of network ports](/modules/assets/images/ports.png)
+![List of network ports](../../assets/modules/assets/images/ports.png)
 
 A network port represents the output of a network interface on a given
 hardware. A port is characterized by a number and a name.
@@ -343,13 +343,13 @@ hardware. A port is characterized by a number and a name.
 It is possible on a network port to add one or more VLAN, these VLANs
 being defined by a name, an optional comment and a VLAN number.
 
-![VLAN](/modules/assets/images/ports_vlan.png)
+![VLAN](../../assets/modules/assets/images/ports_vlan.png)
 
 One or more
 [network name](/asset-management/modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
 tab [Network name].
 
-![Network name](/modules/assets/images/ports_network_name.png)
+![Network name](../../assets/modules/assets/images/ports_network_name.png)
 
 :::info
 
@@ -470,13 +470,13 @@ ports information can be automatically imported and updated.
 Management of financial and administrative information, this information
 is visible in the 'Management' tab on the computer's form.
 
-![Management screen](/modules/tabs/images/management.png)
+![Management screen](../../assets/modules/tabs/images/management.png)
 
 By default this management is disabled. It is possible to activate the
 financial information on any type of object in the inventory by using
 the link in the *Management* tab of the material detail.
 
-![Enable management](/modules/tabs/images/management_enable.png)
+![Enable management](../../assets/modules/tabs/images/management_enable.png)
 
 :::info
 
@@ -581,7 +581,7 @@ on the profile of the user logged in.
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -603,7 +603,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -645,7 +645,7 @@ This tab, named [Antivirus] and visible in a
 [Computer] entry, allows to manage the antivirus running on
 a computer.
 
-![Antivirus screen](/modules/assets/images/antivirus.png)
+![Antivirus screen](../../assets/modules/assets/images/antivirus.png)
 
 An antivirus is characterized by:
 
@@ -676,7 +676,7 @@ information can be automatically imported and updated.
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -707,7 +707,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 
@@ -738,7 +738,7 @@ This summary table includes the following fields for each object:
 - Name
 - Number of scheduled tasks
 
-![Creation and list of associated changes](/modules/tabs/images/changes.png)
+![Creation and list of associated changes](../../assets/modules/tabs/images/changes.png)
 
 :::info
 
@@ -774,7 +774,7 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 
 ### History
@@ -818,7 +818,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 

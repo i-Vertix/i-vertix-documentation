@@ -69,7 +69,7 @@ This mechanism is based on the use of Authorization Assignment Rules.
 
 ### LDAP directory
 
-![LDAP directory](images/ldap.png)
+![LDAP directory](../../../assets/modules/configuration/authentication/images/ldap.png)
 
 :::info
 
@@ -179,18 +179,18 @@ Allows you to configure how the link between the fields of the directory
 and those of i-Vertix ITAM will be made. Most of the fields are automatically
 mapped for you but can still be changed.
 
-![Configuration of LDAP users](images/ldap-users.png)
+![Configuration of LDAP users](../../../assets/modules/configuration/authentication/images/ldap-users.png)
 
 ### Groups
 
 Allows you to configure the method for retreiving groups from the LDAP
 directory.
 
-![Confiuguration of LDAP groups](images/ldap-groups.png)
+![Confiuguration of LDAP groups](../../../assets/modules/configuration/authentication/images/ldap-groups.png)
 
 ### Advanced Information
 
-![Configuration advanced LDAP settings](images/ldap-advanced.png)
+![Configuration advanced LDAP settings](../../../assets/modules/configuration/authentication/images/ldap-advanced.png)
 
 In case the server hosting the LDAP directory is in a different timezone
 as i-Vertix ITAM, it is necessary to modify the **Timezone** variable to account

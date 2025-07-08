@@ -17,7 +17,7 @@ To use the capacity of i-Vertix ITAM to create on the fly users present in the
 external sources of authentication, it is necessary to activate it in
 the menu Configuration \> Authentication \> Configuration.
 
-![Authentication configuration menu](images/authConfig.png)
+![Authentication configuration menu](../../../assets/modules/configuration/authentication/images/authConfig.png)
 
 The LDAP directories also allow you to refuse the creation of users who
 do not have authorizations. Deleting a user from the directory can also

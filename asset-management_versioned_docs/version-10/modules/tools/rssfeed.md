@@ -21,7 +21,7 @@ this profile has read permission for public RSS feeds.
 
 :::
 
-![Characteristics of a RSS feed](images/details-fluxrss.png)
+![Characteristics of a RSS feed](../../assets/modules/tools/images/details-fluxrss.png)
 
 ## The different tabs
 

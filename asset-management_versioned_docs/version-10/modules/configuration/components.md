@@ -11,7 +11,7 @@ A hardware component is defined by a type, a name, a manufacturer, a
 comment, and several fields specific to the type of component. For
 example, for a system board, you can enter the chipset.
 
-![List of component types](images/component_dropdown.png)
+![List of component types](../../assets/modules/configuration/images/component_dropdown.png)
 
 :::info
 
@@ -25,7 +25,7 @@ Once a component type has been selected (*Motherboard*,
 *Processor*...), you are redirected to the list of components already
 created.
 
-![List of components](images/component_list.png)
+![List of components](../../assets/modules/configuration/images/component_list.png)
 
 ## The different tabs
 
@@ -36,14 +36,14 @@ depending on the type of component).
 
 Example for a Processor:
 
-![Processor component details](images/component_details.png)
+![Processor component details](../../assets/modules/configuration/images/component_details.png)
 
 ### Items
 
 The elements tab allows to visualize the computers linked to the
 component.
 
-![Component associated items](images/component_elements.png)
+![Component associated items](../../assets/modules/configuration/images/component_elements.png)
 :::note
 
 - **It is possible to modify the characteristics of a component only for
@@ -78,7 +78,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 

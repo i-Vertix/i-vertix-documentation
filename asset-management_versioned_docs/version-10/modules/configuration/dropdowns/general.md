@@ -66,14 +66,14 @@ element.
 This tab is reserved for names and only appears if the translation of
 dropdown names has been enabled in the general configuration.
 
-![Dropdown translation tab](../images/dropdown_translation.png)
+![Dropdown translation tab](../../../assets/modules/configuration/dropdowns/images/dropdown_translation.png)
 
 This tab lists all current translations of the dropdown name and allows
 you to add new ones.
 
 ### Sockets
 
-![image](../images/sockets_location.png)
+![image](../../../assets/modules/configuration/images/sockets_location.png)
 
 Lists the network sockets assigned to this location and allows to add a
 new one. In this case, when selecting a socket on a network port of a
@@ -108,7 +108,7 @@ gives an option to add new child statuses.
 This tab is reserved for names and only appears if the translation of
 dropdown names has been enabled in the general configuration.
 
-![Dropdown translation tab](../images/dropdown_translation.png)
+![Dropdown translation tab](../../../assets/modules/configuration/dropdowns/images/dropdown_translation.png)
 
 This tab lists all current translations of the dropdown name and allows
 you to add new ones.

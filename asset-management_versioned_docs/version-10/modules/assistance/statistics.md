@@ -45,7 +45,7 @@ Reports can be parameterized on a given time slot.
   The table groups the same numbers as defined in statistics by tickets.
 
   For these two types of reports, the button
-  ![stats_item](images/stats_item.png) located on each result line
+  ![stats_item](../../assets/modules/assistance/images/stats_item.png) located on each result line
   allows to display the statistics as a graphic.
 
 - **By hardware:**

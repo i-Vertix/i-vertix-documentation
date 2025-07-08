@@ -6,7 +6,7 @@ title: Usersimport
 # Import users
 
 From users list, three options are available for adding a user
-![addUserAll](../images/addUserAll.png):
+![addUserAll](../../../assets/modules/administration/images/addUserAll.png):
 
 > - **Add user**: Opens a user creation form, similar to the
 >   [Add] button; requires profile to be granted user

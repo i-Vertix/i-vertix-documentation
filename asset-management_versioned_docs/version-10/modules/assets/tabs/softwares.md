@@ -10,28 +10,28 @@ This tab, named [Softwares] and visible in a
 a computer. Those software are sorted by their category and are
 characterized by name, version and version status.
 
-![Software list](/modules/assets/images/softwares_list.png)
+![Software list](../../../assets/modules/assets/images/softwares_list.png)
 
 To install a software, first select its name in the drop-down list, then
 its version.
 
-![Adding a software](/modules/assets/images/softwares_add.png)
+![Adding a software](../../../assets/modules/assets/images/softwares_add.png)
 
 It is possible to associate a license to a software on a computer.
 
 To associate a license, first select the software in the drop-down list,
 then the wanted license.
 
-![Adding a license](/modules/assets/images/softwares_licence_add.png)
+![Adding a license](../../../assets/modules/assets/images/softwares_licence_add.png)
 
 If the license is associated with a software that is already installed
 on the computer, it will be presented in the list of software.
 
-![License from a software](/modules/assets/images/softwares_licence.png)
+![License from a software](../../../assets/modules/assets/images/softwares_licence.png)
 
 Otherwise it will be displayed in a separate table.
 
-![List of licenses](/modules/assets/images/softwares_licence_list.png)
+![List of licenses](../../../assets/modules/assets/images/softwares_licence_list.png)
 :::note
 
 - the drop-down list enumerates the software that are available in the

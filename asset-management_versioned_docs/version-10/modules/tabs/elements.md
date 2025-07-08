@@ -7,4 +7,4 @@ title: Elements
 
 The *Items* tab is used to show or add linked assets.
 
-![Adding and viewing an element](/modules/tabs/images/elements.png)
+![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)

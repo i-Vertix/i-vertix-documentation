@@ -7,7 +7,7 @@ title: General_Configuration
 
 This tab permits to customize main application appearance.
 
-![image](../images/general_configuration.png)
+![image](../../../assets/modules/configuration/images/general_configuration.png)
 
 ## Description of fields
 

@@ -22,7 +22,7 @@ Attaching a i-Vertix ITAM item to a budget is done via tab
 
 :::
 
-![Main fields of a budget](images/budgets.png)
+![Main fields of a budget](../../assets/modules/management/images/budgets.png)
 
 :::info
 
@@ -48,14 +48,14 @@ It is possible to use
 This tab provides a summary table giving the expended amount of the
 budget, sorted by item type, as well as total remaining amount.
 
-![Budget summary table](images/main-budgets.png)
+![Budget summary table](../../assets/modules/management/images/main-budgets.png)
 
 ### Items
 
 This tab displays i-Vertix ITAM items attached to this budget as well as their
 value.
 
-![Budget attached elements](images/elements-budgets.png)
+![Budget attached elements](../../assets/modules/management/images/elements-budgets.png)
 
 :::info
 
@@ -76,7 +76,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -91,7 +91,7 @@ itself is still present.
 The *Knowledge base* tab is used to show or add linked knowledge base
 articles.
 
-![Viewing or adding a knowledge base entry](/modules/tabs/images/knowledgebase.png)
+![Viewing or adding a knowledge base entry](../../assets/modules/tabs/images/knowledgebase.png)
 
 ### Associated External Links
 
@@ -115,7 +115,7 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 

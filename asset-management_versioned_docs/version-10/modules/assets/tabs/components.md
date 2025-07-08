@@ -9,7 +9,7 @@ This tab, named [Components] and visible in a
 [Computer] entry, allows to manage the hardware components
 of a computer.
 
-![Components screen](/modules/assets/images/component.png)
+![Components screen](../../../assets/modules/assets/images/component.png)
 
 :::info
 
@@ -23,7 +23,7 @@ Adding or managing components is located in menu
 If several components of the same type are used, they will be grouped
 in the view.
 
-![Grouped components](/modules/assets/images/component_group.png)
+![Grouped components](../../../assets/modules/assets/images/component_group.png)
 
 :::
 
@@ -31,12 +31,12 @@ It is possible to add a component by first selecting its family in the
 drop-down list at the top of the table and then its name and the number
 of components to add.
 
-![Adding a component](/modules/assets/images/component_add.png)
+![Adding a component](../../../assets/modules/assets/images/component_add.png)
 
 Starting from a computer view, it is possible to modify a component by
 clicking on the link under its name.
 
-![Modify a component](/modules/assets/images/component_update.png)
+![Modify a component](../../../assets/modules/assets/images/component_update.png)
 
 To act on several components (for example modify an element of the
 component, activate accounting information or modify them, delete a
@@ -48,17 +48,17 @@ If several types of different components, not having the same
 characteristics, are selected for modification, in the actions it will
 be asked on which component modification must be applied.
 
-![Mass actions on a component](/modules/assets/images/component_computer_massives_actions.png)
+![Mass actions on a component](../../../assets/modules/assets/images/component_computer_massives_actions.png)
 
 Selection button in left column allows to select all the components at
 once.
 
-![Component selection (left)](/modules/assets/images/component_select_group_left.png)
+![Component selection (left)](../../../assets/modules/assets/images/component_select_group_left.png)
 
 Selection at right of type column (grayed line) allows to select all
 components of the same type (processor, memory, network interface...).
 
-![Component selection (right)](/modules/assets/images/component_select_group_right.png)
+![Component selection (right)](../../../assets/modules/assets/images/component_select_group_right.png)
 
 :::info
 
@@ -67,7 +67,7 @@ one computer
 
 > From tab *Elements* of the component, click on the link **Update**.
 >
-> ![Modify a component](/modules/assets/images/component_update_link.png)
+> ![Modify a component](../../../assets/modules/assets/images/component_update_link.png)
 >
 > Several tabs are then displayed:
 >

@@ -20,8 +20,8 @@ The global configuration allows you to set the following options:
 
 <table>
 <colgroup>
-<col style="width: 36%" />
-<col style="width: 63%" />
+<col  />
+<col  />
 </colgroup>
 <tbody>
 <tr>

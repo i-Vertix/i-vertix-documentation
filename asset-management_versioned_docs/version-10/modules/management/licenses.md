@@ -22,7 +22,7 @@ information update.
 
 :::
 
-![Characteristics of a license](images/licenses.png)
+![Characteristics of a license](../../assets/modules/management/images/licenses.png)
 
 :::info
 
@@ -58,7 +58,7 @@ child/parent relationship allows to declare it.
 
 :::
 
-![List of child licenses](images/child-licenses.png)
+![List of child licenses](../../assets/modules/management/images/child-licenses.png)
 
 ### Summary
 
@@ -74,26 +74,26 @@ Creating a link between an asset and the license id done in tab
 
 :::
 
-![Summary of item types linked to the license](images/summary-licenses.png)
+![Summary of item types linked to the license](../../assets/modules/management/images/summary-licenses.png)
 
 ### Items
 
 This tab details each item linked to the license.
 
-![List of items linked to the license](images/elements-licenses.png)
+![List of items linked to the license](../../assets/modules/management/images/elements-licenses.png)
 
 ### Management
 
 Management of financial and administrative information, this information
 is visible in the 'Management' tab on the computer's form.
 
-![Management screen](/modules/tabs/images/management.png)
+![Management screen](../../assets/modules/tabs/images/management.png)
 
 By default this management is disabled. It is possible to activate the
 financial information on any type of object in the inventory by using
 the link in the *Management* tab of the material detail.
 
-![Enable management](/modules/tabs/images/management_enable.png)
+![Enable management](../../assets/modules/tabs/images/management_enable.png)
 
 :::info
 
@@ -198,7 +198,7 @@ on the profile of the user logged in.
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -220,7 +220,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -235,14 +235,14 @@ itself is still present.
 The *Knowledge base* tab is used to show or add linked knowledge base
 articles.
 
-![Viewing or adding a knowledge base entry](/modules/tabs/images/knowledgebase.png)
+![Viewing or adding a knowledge base entry](../../assets/modules/tabs/images/knowledgebase.png)
 
 ### Tickets
 
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -273,7 +273,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 
@@ -304,7 +304,7 @@ This summary table includes the following fields for each object:
 - Name
 - Number of scheduled tasks
 
-![Creation and list of associated changes](/modules/tabs/images/changes.png)
+![Creation and list of associated changes](../../assets/modules/tabs/images/changes.png)
 
 :::info
 
@@ -323,13 +323,13 @@ Any deletion or addition of a change is recorded in the history.
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### Certificates
 
 This tab allows to attach a certificate present in i-Vertix ITAM to the license.
 
-![image](images/certificates-licenses.png)
+![image](../../assets/modules/management/images/certificates-licenses.png)
 
 ### History
 

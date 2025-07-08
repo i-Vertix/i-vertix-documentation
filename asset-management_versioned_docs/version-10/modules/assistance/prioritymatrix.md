@@ -27,7 +27,7 @@ some of them. This action allows to ease declaration of an incident and
 its processing. To disable a level, this level must be set to
 [No]. Medium level cannot be disabled.
 
-![Matrix of calculus for priority](images/priority_matrix.png)
+![Matrix of calculus for priority](../../assets/modules/assistance/images/priority_matrix.png)
 
 In example above, the urgency level [Low] will not be
 proposed to requester and the impact level [High] will not

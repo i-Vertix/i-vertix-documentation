@@ -20,7 +20,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 

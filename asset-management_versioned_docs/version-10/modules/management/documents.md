@@ -30,7 +30,7 @@ by collectors; it is useful for signature images, logos...
 
 :::
 
-![A i-Vertix ITAM document](images/documents.png)
+![A i-Vertix ITAM document](../../assets/modules/management/images/documents.png)
 
 ## The different tabs
 
@@ -38,7 +38,7 @@ by collectors; it is useful for signature images, logos...
 
 The *Items* tab is used to show or add linked assets.
 
-![Adding and viewing an element](/modules/tabs/images/elements.png)
+![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
 
 ### Documents
 
@@ -50,7 +50,7 @@ explains why a [Document] has a [Document] tab.
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 

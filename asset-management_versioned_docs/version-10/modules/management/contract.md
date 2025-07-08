@@ -14,7 +14,7 @@ Contracts management allows to:
 - integrate contracts in i-Vertix ITAM financial management
 - anticipate and follow contract renewal.
 
-![Main fields of a contract](images/contract.png)
+![Main fields of a contract](../../assets/modules/management/images/contract.png)
 
 :::info
 
@@ -64,19 +64,19 @@ values and a possible anticipation of notification.
 This tab allows to define a cost related to the contract and linked to a
 i-Vertix ITAM budget: the cost of the contract will be imputed to this budget.
 
-![A cost associated to a contract](images/cost.png)
+![A cost associated to a contract](../../assets/modules/management/images/cost.png)
 
 ### Suppliers
 
 This tab allows to associate one or several suppliers to the contract.
 
-![Suppliers associated to a contract](images/suppliers-contract.png)
+![Suppliers associated to a contract](../../assets/modules/management/images/suppliers-contract.png)
 
 ### Associated elements
 
 The *Items* tab is used to show or add linked assets.
 
-![Adding and viewing an element](/modules/tabs/images/elements.png)
+![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
 
 ### Documents
 
@@ -90,7 +90,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -122,7 +122,7 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 
@@ -165,7 +165,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 

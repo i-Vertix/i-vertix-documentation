@@ -20,7 +20,7 @@ This summary table includes the following fields for each object:
 - Name
 - Number of scheduled tasks
 
-![Creation and list of associated changes](/modules/tabs/images/changes.png)
+![Creation and list of associated changes](../../assets/modules/tabs/images/changes.png)
 
 :::info
 

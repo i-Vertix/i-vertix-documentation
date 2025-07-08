@@ -60,14 +60,14 @@ The connection can be made toward one or several elements of type
 display, printer, peripheral or phone. For each type of connected
 object, its name, serial number and inventory number are displayed.
 
-![List of connections](/modules/assets/images/connections_computer_list.png)
+![List of connections](../../assets/modules/assets/images/connections_computer_list.png)
 
 #### From an element other than a computer
 
 To add a connection, select the computer in the drop-down list presented
 at top of the table.
 
-![List of connections](/modules/assets/images/connections_monitor_list.png)
+![List of connections](../../assets/modules/assets/images/connections_monitor_list.png)
 
 If this case, the connection can only be made to a single computer. The
 table will list the name of this computer as well as its serial and
@@ -99,13 +99,13 @@ connections informations can be automatically imported and updated.
 Management of financial and administrative information, this information
 is visible in the 'Management' tab on the computer's form.
 
-![Management screen](/modules/tabs/images/management.png)
+![Management screen](../../assets/modules/tabs/images/management.png)
 
 By default this management is disabled. It is possible to activate the
 financial information on any type of object in the inventory by using
 the link in the *Management* tab of the material detail.
 
-![Enable management](/modules/tabs/images/management_enable.png)
+![Enable management](../../assets/modules/tabs/images/management_enable.png)
 
 :::info
 
@@ -210,7 +210,7 @@ on the profile of the user logged in.
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -232,7 +232,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -247,7 +247,7 @@ itself is still present.
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -278,7 +278,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 
@@ -314,7 +314,7 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 
 ### History
@@ -358,7 +358,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 

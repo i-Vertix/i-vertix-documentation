@@ -105,4 +105,4 @@ In this window, additional shortcuts are available:
 - `Enter` to change the active glpi page on the selected result
 - `Esc` to close the window.
 
-![Navigation "Fuzzy"](images/fuzzyglpi.png)
+![Navigation "Fuzzy"](../assets/first-steps/images/fuzzyglpi.png)

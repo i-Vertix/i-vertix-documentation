@@ -129,7 +129,7 @@ Two search criteria linked by the operator `AND NOT`
 :   Search for all computers in the « Root entity » which are not
     laptops.
 
-    ![Search interface](images/search_example.png)
+    ![Search interface](../assets/first-steps/images/search_example.png)
 
 `[Year]-[Month]-[Day]` (YYYY-MM-DD)
 
@@ -154,7 +154,7 @@ clipboard (Ex: Computer names).
 The SLK format can be used by a lot of spreadsheet software. Fields that
 are too long will be truncated when using software that does not fully
 comply with the standards. In this case, it is preferable to use the
-exports in CSV format.
+\exports in CSV format.
 
 If the data exported in CSV format is imported into Microsoft Excel
 software, accented characters may not be displayed correctly. This
@@ -242,7 +242,7 @@ your PHP configuration or reduce the number of items displayed.
 
 ## Quick search
 
-![Quick search box](images/search_quick.png)
+![Quick search box](../assets/first-steps/images/search_quick.png)
 
 This tool is located at the top right of the i-Vertix ITAM screen. It allows
 searching within elements including but not limited to:

@@ -11,7 +11,7 @@ the logic of the interface remains the same.
 The i-Vertix ITAM interface is made up of different areas grouping together the
 application's functionalities according to their nature.
 
-![General interface of i-Vertix ITAM](images/main-ui.png)
+![General interface of i-Vertix ITAM](../assets/first-steps/images/main-ui.png)
 
 1.  The user menu allows you to manage your preferences, access help,
     change the current language, change your current profile and entity,

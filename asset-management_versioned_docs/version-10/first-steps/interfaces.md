@@ -18,7 +18,7 @@ different modules can be configured in the profiles or from
 This is the main interface of the application. All the modules are
 available, but there are limits depending on the profile settings.
 
-![i-Vertix ITAM standard interface](images/standard-interface.png)
+![i-Vertix ITAM standard interface](../assets/first-steps/images/standard-interface.png)
 
 The home page of the standard interface provides a summary view for
 quick access to active elements (tickets, notes, planning, contracts,
@@ -75,7 +75,7 @@ default in i-Vertix ITAM, the second asks you to delete the directory
 `glpi/install`. There may also be one or more other messages here
 related to security or needed database schema changes
 
-![Security messages](images/security-messages.png)
+![Security messages](../assets/first-steps/images/security-messages.png)
 
 As long as you have not performed these operations, the messages will
 remain.
@@ -88,7 +88,7 @@ It is the most restrictive interface of the application and is built for
 an end-user more than a technician. Therefore, the number of available
 modules is reduced to a minimum.
 
-![i-Vertix ITAM simplified interface](images/simplified-interface.png)
+![i-Vertix ITAM simplified interface](../assets/first-steps/images/simplified-interface.png)
 
 It is intended for users with very limited permissions in the
 application such as the built-in self-service and helpdesk profiles.

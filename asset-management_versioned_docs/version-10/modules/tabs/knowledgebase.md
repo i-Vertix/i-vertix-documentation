@@ -8,4 +8,4 @@ title: Knowledgebase
 The *Knowledge base* tab is used to show or add linked knowledge base
 articles.
 
-![Viewing or adding a knowledge base entry](/modules/tabs/images/knowledgebase.png)
+![Viewing or adding a knowledge base entry](../../assets/modules/tabs/images/knowledgebase.png)

@@ -21,7 +21,7 @@ more information about the available options refer to the [general setup documen
 
 ## Main Tab
 
-![Screen for user form](images/userprefs-main.png)
+![Screen for user form](../assets/first-steps/images/userprefs-main.png)
 
 Here the user can modify the usual personal information:
 
@@ -56,7 +56,7 @@ to have additional information on different objects in a specific tab
 
 ## Personalization Tab
 
-![Screen for customizing user preferences](images/userprefs-custom.png)
+![Screen for customizing user preferences](../assets/first-steps/images/userprefs-custom.png)
 
 This tab allows you to modify the general display preferences applied to
 a given user. These parameters take priority over those defined in the

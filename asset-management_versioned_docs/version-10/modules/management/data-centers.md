@@ -20,7 +20,7 @@ rooms and racks, allows to:
 Data center in itself is a very simple object, with a name and a
 location, and allows only to group server rooms.
 
-![A i-Vertix ITAM data center](images/data-centers.png)
+![A i-Vertix ITAM data center](../../assets/modules/management/images/data-centers.png)
 
 ### The different tabs
 
@@ -29,7 +29,7 @@ location, and allows only to group server rooms.
 This tab displays server rooms attached to the data center and allows to
 add new rooms.
 
-![List of server rooms attached to the data center](images/serversrooms-data-centers.png)
+![List of server rooms attached to the data center](../../assets/modules/management/images/serversrooms-data-centers.png)
 
 ### All Information
 
@@ -44,7 +44,7 @@ the space available in the room to place racks.
 
 A server room can be attached to a data center and to a location.
 
-![A i-Vertix ITAM server room](images/servers-room.png)
+![A i-Vertix ITAM server room](../../assets/modules/management/images/servers-room.png)
 
 :::info
 
@@ -66,27 +66,27 @@ directly on the map the racks composing the room.
 If the room contains many elements, it is possible to switch from a grid
 view to a list view.
 
-![Map of a server room](images/plan-servers-room.png)
+![Map of a server room](../../assets/modules/management/images/plan-servers-room.png)
 
 ### Impact analysis
 
 This tab allow to display and build the impact schema for the data
 center.
 
-![An impact schema for a data center](images/impact-datacenters.png)
+![An impact schema for a data center](../../assets/modules/management/images/impact-datacenters.png)
 
 ### Management
 
 Management of financial and administrative information, this information
 is visible in the 'Management' tab on the computer's form.
 
-![Management screen](/modules/tabs/images/management.png)
+![Management screen](../../assets/modules/tabs/images/management.png)
 
 By default this management is disabled. It is possible to activate the
 financial information on any type of object in the inventory by using
 the link in the *Management* tab of the material detail.
 
-![Enable management](/modules/tabs/images/management_enable.png)
+![Enable management](../../assets/modules/tabs/images/management_enable.png)
 
 :::info
 
@@ -191,7 +191,7 @@ on the profile of the user logged in.
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -213,7 +213,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -245,7 +245,7 @@ Examples:
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -276,7 +276,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 
@@ -307,7 +307,7 @@ This summary table includes the following fields for each object:
 - Name
 - Number of scheduled tasks
 
-![Creation and list of associated changes](/modules/tabs/images/changes.png)
+![Creation and list of associated changes](../../assets/modules/tabs/images/changes.png)
 
 :::info
 

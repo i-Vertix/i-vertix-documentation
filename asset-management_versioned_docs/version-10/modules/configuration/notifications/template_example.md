@@ -8,7 +8,7 @@ title: Template_Example
 In this example, we will create a template for ticket mail
 notifications.
 
-![Final result](images/final_result.png)
+![Final result](../../../assets/modules/configuration/notifications/images/final_result.png)
 
 In the end, this template can be used for several ticket events:
 

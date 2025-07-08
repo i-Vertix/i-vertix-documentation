@@ -10,7 +10,7 @@ performance.
 
 This tab is only visible if the option has been enabled in the [system tab](system.html).
 
-![image](../images/sql_replicas.png)
+![image](../../../assets/modules/configuration/images/sql_replicas.png)
 
 To activate the replica management, you just have to fill in the
 connection parameters. It is advisable to use a login that has only read

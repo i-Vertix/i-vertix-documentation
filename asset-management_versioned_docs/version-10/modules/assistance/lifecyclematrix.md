@@ -17,7 +17,7 @@ present in the list of status of the object.
 See
 [Ticket management rules](/asset-management/modules/assistance/tickets/ticketmanagement).
 
-![The life cycle matrix of a problem (standard interface)](images/lifecycle_tickets_standard.png)
+![The life cycle matrix of a problem (standard interface)](../../assets/modules/assistance/images/lifecycle_tickets_standard.png)
 
 In example above, a [New] ticket will never be put to
 [Waiting], this status being not proposed in the ticket.
@@ -26,7 +26,7 @@ Furthermore, a requester will not have access to solution validation
 form, because a solved ticket for which solution has been approved
 becomes closed, which is not authorized by the example.
 
-![The life cycle matrix of a problem (simplified interface)](images/lifecycle_tickets_simple.png)
+![The life cycle matrix of a problem (simplified interface)](../../assets/modules/assistance/images/lifecycle_tickets_simple.png)
 
 For the simplified interface, ticket life cycle allows to define if user
 can close a ticket (solution approved) and if user can re-open it event
@@ -37,7 +37,7 @@ if it is closed.
 See
 [Ticket management rules](/asset-management/modules/assistance/problems).
 
-![The life cycle matrix of a problem](images/lifecycle_problems.png)
+![The life cycle matrix of a problem](../../assets/modules/assistance/images/lifecycle_problems.png)
 
 In example above, a [New] problem will never be put directly
 to status [Solved], this status being not proposed in the
@@ -48,7 +48,7 @@ problem.
 See
 [Ticket management rules](/asset-management/modules/assistance/changes).
 
-![The life cycle matrix of a change](images/lifecycle_changes.png)
+![The life cycle matrix of a change](../../assets/modules/assistance/images/lifecycle_changes.png)
 
 In example above, a [New] change will never be
 [Accepted] before having its status put to

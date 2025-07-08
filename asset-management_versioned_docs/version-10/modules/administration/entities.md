@@ -224,7 +224,7 @@ functionality applies on *all* software of the entity; if redirection
 must be defined only for some software, the
 `software dictionary</modules/administration/dictionnaries>` must be used.
 
-![image](images/configtransfer.png)
+![image](../../assets/modules/administration/images/configtransfer.png)
 
 - **Model for automatic entity transfer on inventories** i-Vertix ITAM also
   allows to transfer a computer in another entity if one of the criteria
@@ -270,7 +270,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -285,7 +285,7 @@ itself is still present.
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 

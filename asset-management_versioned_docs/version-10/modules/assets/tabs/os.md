@@ -8,7 +8,7 @@ title: Os
 The information on operating systems for a computer are visible in tabs
 [Operating system] for a Computer entry.
 
-![Screen presenting an operating system](/modules/assets/images/os.png)
+![Screen presenting an operating system](../../../assets/modules/assets/images/os.png)
 
 An operating system is associated with the following elements:
 
@@ -27,7 +27,7 @@ The creation and management of the titles for operating systems is
 located in the menu [Setup \> Drop-downs \> Operating
 systems].
 
-![Screen of titles definition for operating systems](/modules/assets/images/os_dropdown.png)
+![Screen of titles definition for operating systems](../../../assets/modules/assets/images/os_dropdown.png)
 
 :::
 

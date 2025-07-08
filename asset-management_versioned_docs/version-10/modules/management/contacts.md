@@ -14,7 +14,7 @@ title, phone number, mail address... Defining a list of contact types
 allows to sort contacts by types. It is also possible to export a
 contact in vCard format.
 
-![A contact in i-Vertix ITAM](images/contacts.png)
+![A contact in i-Vertix ITAM](../../assets/modules/management/images/contacts.png)
 
 :::info
 
@@ -29,7 +29,7 @@ possible titles for users.
 
 The *Suppliers* tab is used to show or add linked suppliers.
 
-![Screen for creating a link with a supplier](/modules/tabs/images/suppliers.png)
+![Screen for creating a link with a supplier](../../assets/modules/tabs/images/suppliers.png)
 
 ### Documents
 
@@ -43,7 +43,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -75,7 +75,7 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 

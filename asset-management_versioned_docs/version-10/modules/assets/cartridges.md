@@ -55,7 +55,7 @@ sub-entities.
 A first table lists the new or unused cartridges, the second table lists
 used cartridges.
 
-![A cartridge form](images/cartridge.png)
+![A cartridge form](../../assets/modules/assets/images/cartridge.png)
 
 - **Tab "Printer models"** This tab allows to declare the printer
   models that are compatible with the cartridge.
@@ -65,13 +65,13 @@ used cartridges.
 Management of financial and administrative information, this information
 is visible in the 'Management' tab on the computer's form.
 
-![Management screen](/modules/tabs/images/management.png)
+![Management screen](../../assets/modules/tabs/images/management.png)
 
 By default this management is disabled. It is possible to activate the
 financial information on any type of object in the inventory by using
 the link in the *Management* tab of the material detail.
 
-![Enable management](/modules/tabs/images/management_enable.png)
+![Enable management](../../assets/modules/tabs/images/management_enable.png)
 
 :::info
 
@@ -184,7 +184,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -216,7 +216,7 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 
@@ -259,7 +259,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 

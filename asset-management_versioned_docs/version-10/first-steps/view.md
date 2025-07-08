@@ -35,7 +35,7 @@ and the software list are in two separate tabs.
 
 The columns displayed from the complete list of the inventory can be
 configured. Click on the button
-![Management of display preferences](images/change_prefs_button.png). It
+![Management of display preferences](../assets/first-steps/images/change_prefs_button.png). It
 is possible to add, delete and order the displayed columns.
 
 - The global view applies to all profiles having access to a part of the

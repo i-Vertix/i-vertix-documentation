@@ -42,7 +42,7 @@ include official plugins (free and subscription) and community plugins.
 On the left, you can select a category to filter plugins and use the
 search bar to further limit the results.
 
-![Discover tab in Marketplace](images/marketplace_discover.png)
+![Discover tab in Marketplace](../../assets/modules/configuration/images/marketplace_discover.png)
 
 Any plugin that has a [i-Vertix ITAM NETWORK] requires a non-free
 subscription. These plugins will also indicate the tier required such as

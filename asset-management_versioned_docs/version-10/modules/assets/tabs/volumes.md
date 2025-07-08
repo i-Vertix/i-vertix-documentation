@@ -9,7 +9,7 @@ This tab, named [Volumes] and visible in a
 [Computer] entry, allows to manage the volumes attached to a
 computer.
 
-![Volumes screen](/modules/assets/images/volumes_list.png)
+![Volumes screen](../../../assets/modules/assets/images/volumes_list.png)
 
 A volume attached to a computer is characterized by:
 
@@ -24,12 +24,12 @@ A volume attached to a computer is characterized by:
 It is possible from a [Computer] entry to add a volume by
 clicking on button `Add a volume`.
 
-![Adding volumes](/modules/assets/images/volumes_add.png)
+![Adding volumes](../../../assets/modules/assets/images/volumes_add.png)
 
 It is possible from a [Computer] entry to modify an existing
 volume by clicking on the link under its name.
 
-![Modify a volume](/modules/assets/images/volumes_update.png)
+![Modify a volume](../../../assets/modules/assets/images/volumes_update.png)
 
 :::info
 

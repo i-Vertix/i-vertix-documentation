@@ -9,7 +9,7 @@ i-Vertix ITAM offers a system for saving searches (bookmarks). Once the search i
 done, it is possible to save it from a star-shaped button accessible in
 the search form.
 
-![Saving a search](images/save_search.png)
+![Saving a search](../assets/first-steps/images/save_search.png)
 
 There are two types of saved searches:
 
@@ -22,7 +22,7 @@ There are two types of saved searches:
 Saved searches can be accessed by clicking on the star shaped button in
 the user menu.
 
-![List of saved searches](images/saved_searches.png)
+![List of saved searches](../assets/first-steps/images/saved_searches.png)
 
 From this interface, it is possible to:
 
@@ -64,7 +64,7 @@ using the i-Vertix ITAM notification system . Sending a notification is based on
 the number of results returned by the search, compared with the chosen
 operator to the entered value.
 
-![Configuration of alerts on saved searches](images/saved_search_alert.png)
+![Configuration of alerts on saved searches](../assets/first-steps/images/saved_search_alert.png)
 
 The notification(s) used are displayed for reference from the alerts
 configuration tab. For private research; only the user who created the
@@ -85,6 +85,6 @@ same search via the event that corresponds to it.
 As long as the notification specific to a public search is not
 created; it will not be possible to add alerts.
 
-![No saved search notification message](images/saved_search_nonotif.png)
+![No saved search notification message](../assets/first-steps/images/saved_search_nonotif.png)
 
 :::

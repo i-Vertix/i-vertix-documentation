@@ -23,7 +23,7 @@ This tab, named [Components] and visible in a
 [Computer] entry, allows to manage the hardware components
 of a computer.
 
-![Components screen](/modules/assets/images/component.png)
+![Components screen](../../assets/modules/assets/images/component.png)
 
 :::info
 
@@ -37,7 +37,7 @@ Adding or managing components is located in menu
 If several components of the same type are used, they will be grouped
 in the view.
 
-![Grouped components](/modules/assets/images/component_group.png)
+![Grouped components](../../assets/modules/assets/images/component_group.png)
 
 :::
 
@@ -45,12 +45,12 @@ It is possible to add a component by first selecting its family in the
 drop-down list at the top of the table and then its name and the number
 of components to add.
 
-![Adding a component](/modules/assets/images/component_add.png)
+![Adding a component](../../assets/modules/assets/images/component_add.png)
 
 Starting from a computer view, it is possible to modify a component by
 clicking on the link under its name.
 
-![Modify a component](/modules/assets/images/component_update.png)
+![Modify a component](../../assets/modules/assets/images/component_update.png)
 
 To act on several components (for example modify an element of the
 component, activate accounting information or modify them, delete a
@@ -62,17 +62,17 @@ If several types of different components, not having the same
 characteristics, are selected for modification, in the actions it will
 be asked on which component modification must be applied.
 
-![Mass actions on a component](/modules/assets/images/component_computer_massives_actions.png)
+![Mass actions on a component](../../assets/modules/assets/images/component_computer_massives_actions.png)
 
 Selection button in left column allows to select all the components at
 once.
 
-![Component selection (left)](/modules/assets/images/component_select_group_left.png)
+![Component selection (left)](../../assets/modules/assets/images/component_select_group_left.png)
 
 Selection at right of type column (grayed line) allows to select all
 components of the same type (processor, memory, network interface...).
 
-![Component selection (right)](/modules/assets/images/component_select_group_right.png)
+![Component selection (right)](../../assets/modules/assets/images/component_select_group_right.png)
 
 :::info
 
@@ -81,7 +81,7 @@ one computer
 
 > From tab *Elements* of the component, click on the link **Update**.
 >
-> ![Modify a component](/modules/assets/images/component_update_link.png)
+> ![Modify a component](../../assets/modules/assets/images/component_update_link.png)
 >
 > Several tabs are then displayed:
 >
@@ -118,7 +118,7 @@ This tab, named [Network ports] and visible in a
 [Computer] entry, allows to manage the network ports
 attached to a computer.
 
-![List of network ports](/modules/assets/images/ports.png)
+![List of network ports](../../assets/modules/assets/images/ports.png)
 
 A network port represents the output of a network interface on a given
 hardware. A port is characterized by a number and a name.
@@ -126,13 +126,13 @@ hardware. A port is characterized by a number and a name.
 It is possible on a network port to add one or more VLAN, these VLANs
 being defined by a name, an optional comment and a VLAN number.
 
-![VLAN](/modules/assets/images/ports_vlan.png)
+![VLAN](../../assets/modules/assets/images/ports_vlan.png)
 
 One or more
 [network name](/asset-management/modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
 tab [Network name].
 
-![Network name](/modules/assets/images/ports_network_name.png)
+![Network name](../../assets/modules/assets/images/ports_network_name.png)
 
 :::info
 
@@ -256,13 +256,13 @@ ports information can be automatically imported and updated.
 Management of financial and administrative information, this information
 is visible in the 'Management' tab on the computer's form.
 
-![Management screen](/modules/tabs/images/management.png)
+![Management screen](../../assets/modules/tabs/images/management.png)
 
 By default this management is disabled. It is possible to activate the
 financial information on any type of object in the inventory by using
 the link in the *Management* tab of the material detail.
 
-![Enable management](/modules/tabs/images/management_enable.png)
+![Enable management](../../assets/modules/tabs/images/management_enable.png)
 
 :::info
 
@@ -367,7 +367,7 @@ on the profile of the user logged in.
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -389,7 +389,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -404,7 +404,7 @@ itself is still present.
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -435,7 +435,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 
@@ -471,7 +471,7 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 
 ### History
@@ -515,7 +515,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 

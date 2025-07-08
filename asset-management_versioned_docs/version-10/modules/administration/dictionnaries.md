@@ -23,6 +23,12 @@ or by batch using mass actions from dictionary's search results. These
 functionalities are useful for instance when migrating rules from a
 pre-production environment to a production one.
 
+:::info
+
+\export or import use a XML file format
+
+:::
+
 ## Configure data dictionaries
 
 A dictionary works the following way:

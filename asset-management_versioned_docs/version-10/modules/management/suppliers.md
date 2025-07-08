@@ -23,7 +23,7 @@ Supplier management allows to:
 - ease contact in case of incident
 - include suppliers in i-Vertix ITAM assistance
 
-![A supplier in i-Vertix ITAM](images/suppliers.png)
+![A supplier in i-Vertix ITAM](../../assets/modules/management/images/suppliers.png)
 
 ## -The different tabs 
 
@@ -31,7 +31,7 @@ Supplier management allows to:
 
 The *Contacts* tab is used to show or add linked contacts.
 
-![View and add associated contacts](/modules/tabs/images/contacts.png)
+![View and add associated contacts](../../assets/modules/tabs/images/contacts.png)
 
 :::info
 
@@ -49,7 +49,7 @@ type "Sale" Attach the contact to supplier Foo
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -63,7 +63,7 @@ Refer to
 
 The *Items* tab is used to show or add linked assets.
 
-![Adding and viewing an element](/modules/tabs/images/elements.png)
+![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
 
 ### Documents
 
@@ -77,7 +77,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -92,7 +92,7 @@ itself is still present.
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -123,7 +123,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 
@@ -154,7 +154,7 @@ This summary table includes the following fields for each object:
 - Name
 - Number of scheduled tasks
 
-![Creation and list of associated changes](/modules/tabs/images/changes.png)
+![Creation and list of associated changes](../../assets/modules/tabs/images/changes.png)
 
 :::info
 
@@ -190,14 +190,14 @@ Examples:
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### Knowledge base
 
 The *Knowledge base* tab is used to show or add linked knowledge base
 articles.
 
-![Viewing or adding a knowledge base entry](/modules/tabs/images/knowledgebase.png)
+![Viewing or adding a knowledge base entry](../../assets/modules/tabs/images/knowledgebase.png)
 
 ### History
 

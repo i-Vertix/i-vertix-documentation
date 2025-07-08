@@ -64,18 +64,18 @@ knowledge base:
   popular articles and last changes. It allows also to search inside
   knowledge base.
 
-  ![Knowledge base search tab](images/research-knowledgebase.png)
+  ![Knowledge base search tab](../../assets/modules/tools/images/research-knowledgebase.png)
 
 - **Browse** This tab allows to browse tree structure of categories.
 
-  ![Knowledge base browse tab](images/browse-knowledgebase.png)
+  ![Knowledge base browse tab](../../assets/modules/tools/images/browse-knowledgebase.png)
 
 - **Manage** This tab is only visible for knowledge base administrators.
   Depending on user's permissions, it is possible to access quickly
   user's articles, user's unpublished articles, all unpublished
   articles...
 
-  ![Knowledge base manage tab](images/manage-knowledgebase.png)
+  ![Knowledge base manage tab](../../assets/modules/tools/images/manage-knowledgebase.png)
 
 :::info
 
@@ -150,7 +150,7 @@ article.
 
 The *Items* tab is used to show or add linked assets.
 
-![Adding and viewing an element](/modules/tabs/images/elements.png)
+![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
 
 ### Documents
 
@@ -164,7 +164,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -208,14 +208,14 @@ version of the article.
 
 Revisions can be shown and restored.
 
-![Article revisions](images/revisions-knowledgebase.png)
+![Article revisions](../../assets/modules/tools/images/revisions-knowledgebase.png)
 
 ### Comments
 
 This tab allows platform's users to add their comments and discuss the
 article.
 
-![Article comments](images/comments-knowledgebase.png)
+![Article comments](../../assets/modules/tools/images/comments-knowledgebase.png)
 
 ### All Information
 

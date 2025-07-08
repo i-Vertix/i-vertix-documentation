@@ -44,7 +44,7 @@ alt="../images/configAssistance.png" />
 
 ## Matrix of calculus for priority
 
-![image](/modules/assistance/images/priority_matrix.png) The priority
+![image](../../../assets/modules/assistance/images/priority_matrix.png) The priority
 definition matrix allows you to define the priority of tickets according
 to the level of impact and urgency. The availability of these levels in
 the application can also be defined but the Medium level cannot be

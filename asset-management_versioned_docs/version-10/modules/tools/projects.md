@@ -45,7 +45,7 @@ already defined tasks with, for each task, its name, type, status,
 planned start and end dates, real start and end dates, percent done and
 parent task name.
 
-![Project's tasks](images/tasks-project.png)
+![Project's tasks](../../assets/modules/tools/images/tasks-project.png)
 
 ### Project team
 
@@ -53,7 +53,7 @@ This tab allows to add new members to the project team, this member
 being a contact, a supplier or a group. It lists also members of project
 team with for each member its type.
 
-![Project's team](images/team-project.png)
+![Project's team](../../assets/modules/tools/images/team-project.png)
 
 ### Project
 
@@ -61,7 +61,7 @@ This tab displays project's sub-projects. A sub-project is defined the
 same way as a project, the only difference being that the field [As
 child of] is defined.
 
-![A project's sub-projects](images/subprojects-project.png)
+![A project's sub-projects](../../assets/modules/tools/images/subprojects-project.png)
 
 ### GANTT
 
@@ -69,13 +69,13 @@ A GANTT diagram is available for each project. A global GANTT diagram is
 also available, including projects defined as visible in this global
 diagram (field [Show on global GANTT] of the project form).
 
-![GANTT diagram](images/gantt-project.png)
+![GANTT diagram](../../assets/modules/tools/images/gantt-project.png)
 
 ### Kanban
 
 This tab provides an interface to use Kanban method.
 
-![Kanban interface in i-Vertix ITAM](images/kanban-project.png)
+![Kanban interface in i-Vertix ITAM](../../assets/modules/tools/images/kanban-project.png)
 
 For more information about the Kanban feature, please refer to the
 [full documentation](/asset-management/modules/overview/kanban).
@@ -95,7 +95,7 @@ directly from this tab.
 
 The *Items* tab is used to show or add linked assets.
 
-![Adding and viewing an element](/modules/tabs/images/elements.png)
+![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
 
 ### Documents
 
@@ -109,7 +109,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -123,7 +123,7 @@ itself is still present.
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -138,7 +138,7 @@ Refer to
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 
@@ -181,7 +181,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 
@@ -201,7 +201,7 @@ dates, percent done.
 Distinct management teams can by composed of users, groups, suppliers
 and contacts.
 
-![A task](images/task-details-project.png)
+![A task](../../assets/modules/tools/images/task-details-project.png)
 
 :::info
 
@@ -238,7 +238,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -253,7 +253,7 @@ itself is still present.
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -272,7 +272,7 @@ Any deletion or addition of a ticket is recorded in the history.
 The *Notes* tab provides a free text field for storing additional
 information. Notes are displayed in the order of their creation.
 
-![View and enter a note](/modules/tabs/images/notes.png)
+![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
 ### History
 

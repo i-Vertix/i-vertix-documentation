@@ -9,7 +9,7 @@ This tab permit to configure global parameters for inventory.
 
 ## Assets
 
-![image](../images/configparc.png)
+![image](../../../assets/modules/configuration/images/configparc.png)
 
 - **Enable the financial and administrative information by default**
   Applicable for all objects in the inventory
@@ -35,7 +35,7 @@ This tab permit to configure global parameters for inventory.
 
 ## Automatically update of the elements related to the computers
 
-![image](../images/configpc.png)
+![image](../../../assets/modules/configuration/images/configpc.png)
 
 Interfacing with an inventory tool makes it possible to take an
 automated inventory of the equipment. This interfacing is possible

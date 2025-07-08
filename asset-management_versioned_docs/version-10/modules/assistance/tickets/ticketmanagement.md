@@ -167,7 +167,7 @@ See
 Allows to display and add problems associated with the ticket, or to
 create a problem from this ticket.
 
-![Creating a problem from a ticket](../images/ticket_problems.png)
+![Creating a problem from a ticket](../../../assets/modules/assistance/images/ticket_problems.png)
 
 See [Problems](/asset-management/commontabs/item_problemes)
 
@@ -192,7 +192,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 

@@ -16,7 +16,7 @@ analysis.
 :::
 
 
-![A i-Vertix ITAM cluster](images/clusters.png)
+![A i-Vertix ITAM cluster](../../assets/modules/management/images/clusters.png)
 
 ## Description of specific fields
 
@@ -32,7 +32,7 @@ analysis.
 This tab lists the cluster's elements and allow to add new assets to
 the cluster.
 
-![List of cluster's elements](images/elements-clusters.png)
+![List of cluster's elements](../../assets/modules/management/images/elements-clusters.png)
 
 ### Network ports
 
@@ -49,13 +49,13 @@ Possible interfaces are:
 - Dial up line connection
 - Local loop-back
 
-![List of cluster's network interfaces](images/networks-clusters.png)
+![List of cluster's network interfaces](../../assets/modules/management/images/networks-clusters.png)
 
 ### Associated Contracts
 
 The *Contracts* tab is used to show or add linked contracts.
 
-![Contract display screen](/modules/tabs/images/contract.png)
+![Contract display screen](../../assets/modules/tabs/images/contract.png)
 
 For each associated contract, the name, number, contract type, supplier,
 start date and initial duration of the contract are listed. In the last
@@ -77,7 +77,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -92,7 +92,7 @@ itself is still present.
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -123,7 +123,7 @@ This summary table includes for each object:
 - Name
 - Column indicating the number of scheduled tasks
 
-![Creation and list of associated problems](/modules/tabs/images/problems.png)
+![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
 
 :::info
 
@@ -154,7 +154,7 @@ This summary table includes the following fields for each object:
 - Name
 - Number of scheduled tasks
 
-![Creation and list of associated changes](/modules/tabs/images/changes.png)
+![Creation and list of associated changes](../../assets/modules/tabs/images/changes.png)
 
 :::info
 

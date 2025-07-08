@@ -31,7 +31,7 @@ temporarily take the ownership of another user's account without knowing
 its password. An icon is available at the top of the user´s form to
 perform this action.
 
-![Impersonate user icon](/modules/administration/images/impersonate_icon.png)
+![Impersonate user icon](../../../assets/modules/administration/images/impersonate_icon.png)
 
 To note:
 
@@ -42,7 +42,7 @@ To note:
 - The history of actions taken by the administrator will appear with a
   special note: "user (xxx) impersonated by admin (yyy)".
 
-![Impersonate banner](/modules/administration/images/impersonate_banner.png)
+![Impersonate banner](../../../assets/modules/administration/images/impersonate_banner.png)
 
 ## The different tabs
 
@@ -115,7 +115,7 @@ See [Tab "Links"](/asset-management/modules/tabs/external-links)
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
-![Image of the ticket list](/modules/tabs/images/tickets.png)
+![Image of the ticket list](../../../assets/modules/tabs/images/tickets.png)
 
 :::info
 
@@ -145,7 +145,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -196,7 +196,7 @@ the notifications that will be triggered on this computer with:
 - Notification model used
 - Recipient(s) email address
 
-![Debugging page](/modules/tabs/images/debug.png)
+![Debugging page](../../../assets/modules/tabs/images/debug.png)
 
 ### All Information
 

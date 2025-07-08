@@ -15,14 +15,14 @@ A reminder is characterized by:
 - the possibility to appear in planning;
 - its targets.
 
-![Characteristics of a reminder](images/details-notes.png)
+![Characteristics of a reminder](../../assets/modules/tools/images/details-notes.png)
 
 The created reminders will then appear in i-Vertix ITAM home page or in targeted
 users' planning.
 
-![Reminder on i-Vertix ITAM home page](images/dashboard-notes.png)
+![Reminder on i-Vertix ITAM home page](../../assets/modules/tools/images/dashboard-notes.png)
 
-![Reminder in i-Vertix ITAM planning](images/planning-notes.png)
+![Reminder in i-Vertix ITAM planning](../../assets/modules/tools/images/planning-notes.png)
 
 :::info
 
@@ -52,7 +52,7 @@ specifying the desired file and optionally the field in which the new
 document is to be placed. The name of the created document will be based
 on the name of the added file.
 
-![Document creation screen](/modules/tabs/images/documents.png)
+![Document creation screen](../../assets/modules/tabs/images/documents.png)
 
 :::info
 
@@ -74,7 +74,7 @@ profile, group or users.
 A public reminder is visible by users associated with a profile if this
 profile has read permission for public reminders.
 
-![A reminder's targets](images/targets-notes.png)
+![A reminder's targets](../../assets/modules/tools/images/targets-notes.png)
 
 ### History
 
