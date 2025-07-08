@@ -93,7 +93,7 @@ def set_path(root, path):
 def parse_index(fpath):
     
     text = None
-    print(fpath)
+    #print(fpath)
     with open(fpath, "r", encoding="utf8") as fd:
         text = fd.read()
 
@@ -222,25 +222,6 @@ if __name__ == "__main__":
 
     os.makedirs(output_dir, exist_ok=True)
 
-
-    #copy images
-    #static_dir = os.path.join(output_dir, "static")
-    static_dir = output_dir
-    os.makedirs(static_dir, exist_ok=True)
-    
-    for root, _, files in os.walk(input_dir):
-
-        png_files = filter(lambda x: x.endswith(".png"), files)
-        for f in png_files:
-            in_path = os.path.join(root, f)
-            rel_path = root.replace(input_dir, "")
-            out_path = os.path.join(
-                static_dir, rel_path, f
-                )
-            makedir(out_path)
-            shutil.copy(in_path, out_path)
-
-
     #copy and convert md files
     acc = {"items": []}
     indexes = {}
@@ -288,16 +269,20 @@ if __name__ == "__main__":
     common_images = []
     path_translation = {}
 
+    img_nr = 0
     for f in out_files:
 
         lines = []
         with open(f, "r", encoding="utf8") as fd:
             lines = fd.readlines()
 
-        for idx, l in enumerate(lines):
-            img_include = re.match(r"!\[([\w ]+)\]\(([\w\/\. ]+)\)", l)
+        for l in lines:
+            img_include = re.search(r"!\[(.*)\]\((.*)\)", l)
+
             if img_include:
+                img_nr += 1
                 img = img_include.group(2)
+                orig_img = img
                 
                 #if it is relative, make it absolute
                 if img[0] != "/":
@@ -305,8 +290,11 @@ if __name__ == "__main__":
                     img = "/" + merge_path(os.path.dirname(rel_out_path), img)
                 
                 common_images.append(img)
-                
+                path_translation[orig_img] = img
+
+    print(f"images nr: {img_nr}")
     common_images = list(set(common_images))
+    print(f"images dedup: {len(common_images)}")
 
     replaced_links = {}
     for c in common_images:
@@ -481,37 +469,32 @@ if __name__ == "__main__":
             url = match.group(1)
             new_text = url
             text = text[:match.start()] + new_text + text[match.end():]
-    
+        
+        # replacing image paths to point to the 
+        # asset dir
+        end = 0
+        while True:
+            match = re.search(r"!\[(.*)\]\((.*)\)", text[end:])
+            if not match:
+                break
+            
+            path = match.group(2)
+            link = path_translation[path] 
 
-        #end = 0
-        #while True:
-        #    match = re.search(r"!\[([\w ]+)\]\(([\w\/\. ]+)\)", text[end:])
-        #    if not match:
-        #        break
+            lev = len(pathlib.Path(f).parts)-3
+            lev = "/".join(lev * [".."] + ["assets"])
+            link = lev + link
 
-        #    print(f)
-        #    print(match)
-
-        #    link = match.group(2)
-        #    print(link)
-        #    if replaced_links.get(link[1:]):
-        #        link = replaced_links[link]
-        #        print("really replacing link")
-
-        #    new_text = f"![{match.group(2)}]({link})"
-        #    text = text[:match.start()] + new_text + text[match.end():]
-        #    end += len(new_text)
+            new_text = f"![{match.group(1)}]({link})"
+            text = text[:end + match.start()] + new_text + text[end + match.end():]
+            end += match.start() + len(new_text)
 
         if os.path.basename(f) == "cli.md":
             text = ""
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
-    
-
-
-
-    
+     
     transforms = [
         lambda x: x.replace("\\\'", "'"),
         lambda x: x.replace("\\\"", "\""),
@@ -532,14 +515,3 @@ if __name__ == "__main__":
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
-
-
-    #for i in images:
-    #    print(f"{i} {images[i]}")
-
-    #images = list(os.path.basename(images.keys()))
-    #print(images)
-
-    #print("")
-    #for r, v in replaced_links.items():
-    #    print(r, v)
