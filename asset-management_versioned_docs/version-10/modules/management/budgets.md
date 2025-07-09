@@ -37,7 +37,7 @@ values of attached items is greater than the budget amount.
 :::info
 
 It is possible to use
-`templates to generate this object \<../overview/templates>`.
+[templates to generate this object](../overview/templates).
 
 :::
 

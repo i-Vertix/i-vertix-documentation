@@ -35,7 +35,7 @@ notification templates).
 :::info
 
 For alerts to be effective, notifications must be activated; see
-`notification management \<configure_notifications>`.
+[notification management](configure_notifications).
 
 :::
 

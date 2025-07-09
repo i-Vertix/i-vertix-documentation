@@ -119,9 +119,7 @@ and versions are grouped by type.
 <img src="images/resultMozilla.png" alt="images/resultMozilla.png" />
 <figcaption>Result of grouping Mozilla software</figcaption>
 </figure>
-
-::: 
-**Example for Windows updates grouping, very unclear!**
+:::note[**Example for Windows updates grouping, very unclear!**]
 
 Autre exemple pour regrouper les mises à jour Windows. Cette fois le
 critères sont des OU et non des ET *Critères* Logiciel expression
@@ -135,9 +133,7 @@ assigner Mise à jour Windows Version assigner valeur depuis regex \#0
 
 This dictionary allows to group under a unique name the manufacturer
 names coming from an inventory tool under different forms.
-
-::: 
-**Exemple for manufacturer grouping, unclear!**
+:::note[**Exemple for manufacturer grouping, unclear!**]
 
 regrouper les fabricants . Sun_Microsystems . Sun Microsystems, Inc. for
 the OpenOffice.org-Community . Sun Microsystems, Inc. . Sun
@@ -160,9 +156,7 @@ and models of items, operating system, version and service pack.
 #### Models
 
 Possible criteria are manufacturer and item model.
-
-::: 
-**Example: transforming technical number into commercial model name**
+:::note[**Example: transforming technical number into commercial model name**]
 
 Often inventory tools extract model technical number, which is
 irrelevant for user. This example allows to extract commercial model
@@ -186,9 +180,7 @@ The obtained result will be for instance: Netvista S42 (8319LGV)
 #### Types
 
 Only possible criteria is item type.
-
-::: 
-**Example: harmonizing peripheral names**
+:::note[**Example: harmonizing peripheral names**]
 
 <figure class="align-center">
 <img src="images/criteriaKbd.png" alt="images/criteriaKbd.png" />

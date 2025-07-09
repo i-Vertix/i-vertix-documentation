@@ -150,9 +150,7 @@ Several criteria are available:
 Regular expressions (otherwise known as regex) return one or more
 results which can then be used by actions using the \#x directive (where
 x is the number of the result of the regular expression).
-
-::: 
-**Example**
+:::note[**Example**]
 
 Criteria : name matching regular expression `/DESKTOP\_(.\*)/` If object
 is named `DESKTOP_0001`, then it will be possible to use `0001` in the

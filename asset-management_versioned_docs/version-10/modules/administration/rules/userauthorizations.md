@@ -53,9 +53,7 @@ import from the mail server.
 When multiple mail servers are defined as the authentication source and
 the mail server URL is a relevant criterion, this information can be
 used to define authorizations.
-
-::: 
-**Example**
+:::note[**Example**]
 
 Authentication uses the following IMAP/POP servers: `imap.exemple.fr` et
 `imap.exemple.be`. Each server is defined as an authentication source.
@@ -79,9 +77,7 @@ can be used to define the authorizations. It is also possible to assign
 an entity to a user using the mail domain if this is specific to an
 entity. The email domain used by the entity is defined in the
 [advanced information for entities](/asset-management/modules/administration/entities).
-
-::: 
-**Example**
+:::note[**Example**]
 
 Users authenticate using e-mail addresses of the following form:
 `user@example.fr` and `user@example.be`. It does not matter if one or
@@ -116,9 +112,7 @@ is relevant when a default profile can be assigned to the majority of
 users. The assignment of non-standard profiles should be dealt with
 elsewhere. The information on the user sent from the directory is
 sufficient to create the assignment rules in i-Vertix ITAM.
-
-::: 
-**Example**
+:::note[**Example**]
 
 Consider an LDAP tree of the following form:
 
@@ -206,9 +200,7 @@ this is not limited to group type attributes, but is valid for other
 types of attributes stored in the directory.
 
 :::
-
-::: 
-**Example**
+:::note[**Example**]
 
 Consider an LDAP tree of the following form:
 

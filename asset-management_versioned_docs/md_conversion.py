@@ -351,6 +351,21 @@ if __name__ == "__main__":
         text = text.replace("{glpi_address}", "glpi_address")
         text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
 
+
+        # Convert links
+        while True:
+            match = re.search(r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", text, flags=re.MULTILINE)
+            if not match:
+                break
+
+            link_text = match.group(1)
+            url = normalize_url(match.group(2))
+
+            url = url.replace(" ", "")
+            new_text = f"[{link_text}]({url})"
+            text = text[:match.start()] + new_text + text[match.end():]
+
+
         #boxes conversion
         while True:
             match = re.search(r"> \[\!(\w+)\]((\n>.*)+)", text, flags=re.MULTILINE)
@@ -386,6 +401,17 @@ if __name__ == "__main__":
             new_text = f"\n:::{note_type}\n{note_text}\n:::"
             text = text[:match.start()] + new_text + text[match.end():]
 
+        # even more boxes, this time with custom title
+        end = 0
+        while True:
+            match = re.search(r"\s*:::\s*\n((?:\*\*)Ex[a|e]mple.*?)\n\s*(.*?)\s*:::\n", text[end:], re.DOTALL)
+            
+            if match is None:
+                break
+            
+            new_text = f"\n:::note[{match.group(1)}]\n\n{match.group(2)}\n:::\n"
+            text = text[:end+match.start()] + new_text + text[end+match.end():]
+            end += match.start() + len(new_text)
 
         while True:
             match = re.search(r"\[([^\]]*\n[^\]]*)\]\((.*)\)", text, flags=re.MULTILINE)
@@ -436,23 +462,6 @@ if __name__ == "__main__":
 
                 text = text[:match.start()] + links + "\n" + text[match.end():]
         
-        #match = re.search(r"\`(.*) <(.*)>\`", text, flags=re.DOTALL)
-        while True:
-            match = re.search(r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", text, flags=re.MULTILINE)
-            if not match:
-                break
-
-            #print(f, match.groups())
-
-            link_text = match.group(1)
-            url = normalize_url(match.group(2))
-            #print(url)
-            #print("")
-
-
-            url = url.replace(" ", "")
-            new_text = f"[{link_text}]({url})"
-            text = text[:match.start()] + new_text + text[match.end():]
 
         while True:
             match = re.search(r"<((?:https*|redis+)://.*)>", text)
@@ -477,7 +486,7 @@ if __name__ == "__main__":
             match = re.search(r"!\[(.*)\]\((.*)\)", text[end:])
             if not match:
                 break
-            
+
             path = match.group(2)
             link = path_translation[path] 
 

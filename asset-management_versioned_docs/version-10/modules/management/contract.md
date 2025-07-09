@@ -19,7 +19,7 @@ Contracts management allows to:
 :::info
 
 It is possible to use
-`templates to generate this object \<../overview/templates>`.
+[templates to generate this object](../overview/templates).
 
 :::
 

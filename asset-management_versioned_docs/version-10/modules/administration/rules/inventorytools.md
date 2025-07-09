@@ -73,9 +73,7 @@ already present in i-Vertix ITAM is done only in the destination entity of the
 machine.
 
 :::
-
-::: 
-**Example**
+:::note[**Example**]
 
 Refuse all imports coming from a precise inventory server:
 

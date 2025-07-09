@@ -35,7 +35,7 @@ These status can neither be parameterized nor modified.
 :::info
 
 It is therefore possible to hide some status according to profile (see
-`Life cycle matrix \</modules/assistance/lifecyclematrix>`).\*
+[Life cycle matrix](/asset-management/modules/assistance/lifecyclematrix)).\*
 
 :::
 
@@ -57,7 +57,7 @@ using a matrix and provides the true importance of the ticket.
 :::info
 
 To go further on this matrix configuration, see
-`Define the matrix of calculus for priority \</modules/assistance/prioritymatrix>`.
+[Define the matrix of calculus for priority](/asset-management/modules/assistance/prioritymatrix).
 
 :::
 

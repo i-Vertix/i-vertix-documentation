@@ -9,7 +9,7 @@ title: Interfaces
 
 The choice of the default interface as well as the visiblity of
 different modules can be configured in the profiles or from
-`the user's preferences \<preferences>`.
+[the user's preferences](preferences).
 
 :::
 

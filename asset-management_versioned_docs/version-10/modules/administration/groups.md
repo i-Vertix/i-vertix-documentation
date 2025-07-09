@@ -9,9 +9,7 @@ Groups tab allows to add, modify, delete, search, export groups.
 
 Groups can be defined in a hierarchical structure in order to ease
 navigation and search.
-
-::: 
-**Example: groups**
+:::note[**Example: groups**]
 
 ::
 
@@ -42,7 +40,7 @@ a group of technicians, see the ticket categories in the chapter: doc:
 [Configure dropdowns
 \</modules/configuration/dropdowns/assistance.rst\>].
 Likewise, it can be used in
-`Business rules for tickets \</modules/administration/rules/ticketbusinessrules>`.
+[Business rules for tickets](/asset-management/modules/administration/rules/ticketbusinessrules).
 
 :::
 :::tip
@@ -59,9 +57,7 @@ the group when a ticket is opened, see
 
 A **delegation** mechanism allows a user to declare incidents not for
 himself but for one of the members of this group.
-
-::: 
-**Example: delegation**
+:::note[**Example: delegation**]
 
 an assistant declaring incidents for all persons of the management
 :::
@@ -97,7 +93,7 @@ group as well as its visibility in the sub-entities.
 importing groups cannot be filtered by entity. In addition, no group
 synchronization function is available. The only way to refresh from a
 directory the list of group members is to resynchronize users, see
-`Import users from an external source \</modules/administration/users/usersimport>`.
+[Import users from an external source](/asset-management/modules/administration/users/usersimport).
 
 :::
 

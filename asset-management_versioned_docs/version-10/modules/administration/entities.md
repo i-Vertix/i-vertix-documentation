@@ -37,11 +37,9 @@ assistance service become dependent upon entities: a computer can be
 assigned to an entity, a ticket can be declared on an entity, profiles
 and authorizations can be specific to entities... Automatic entity
 assignment for users and assets are possible thanks to rules management.
+:::note[**Example: entities inside a company**]
 
-::: 
-**Example: entities inside a company**
-
-    EM
+EM
     |------|------|
     EA            EB
     |   |        |    |
