@@ -1,6 +1,6 @@
 ---
 id: external-links
-title: External-Links
+title: External Links
 ---
 
 # Associated External Links

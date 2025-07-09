@@ -1,6 +1,6 @@
 ---
 id: data-centers
-title: Data-Centers
+title: Data Centers
 ---
 
 # Data centers

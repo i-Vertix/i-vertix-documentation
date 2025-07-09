@@ -1,6 +1,6 @@
 ---
 id: network-ports
-title: Network-Ports
+title: Network Ports
 ---
 
 # Network ports

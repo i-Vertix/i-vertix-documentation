@@ -1,6 +1,6 @@
 ---
 id: navigation-modules
-title: Navigation-Modules
+title: Navigation Modules
 ---
 
 # Navigate i-Vertix ITAM modules

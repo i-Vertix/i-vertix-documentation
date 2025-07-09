@@ -42,11 +42,11 @@ def add_header(file_path):
             
     if lines:
         if not (lines[0].startswith('---') or lines[0].startswith(r'\-\--')):
-            #with open(file_path, "w", encoding="utf8") as fd:
 
             module_name = os.path.basename(file_path)
             module_name = module_name[:-3]
             title = module_name.title()
+            title = title.replace("-", " ")
 
             header = [
                 "---\n",
@@ -59,8 +59,7 @@ def add_header(file_path):
             header.extend(lines)
             with open(file_path, "w", encoding="utf8") as fd:
                 fd.writelines(header)
-
-            #print(header)
+    return
 
             
 def set_path(root, path):
@@ -78,7 +77,7 @@ def set_path(root, path):
         if not pres:
             next_elem = {
                 "id": p,
-                "label": p.title().replace("_", " "),
+                "label": p.title().replace("_", " ").replace("-", " "),
                 "items": []
             }
             items.append(next_elem)

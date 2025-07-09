@@ -1,6 +1,6 @@
 ---
 id: network-equipments
-title: Network-Equipments
+title: Network Equipments
 ---
 
 # Network equipments

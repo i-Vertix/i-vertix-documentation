@@ -1,6 +1,6 @@
 ---
 id: saved-searches
-title: Saved-Searches
+title: Saved Searches
 ---
 
 # Saved Searches 

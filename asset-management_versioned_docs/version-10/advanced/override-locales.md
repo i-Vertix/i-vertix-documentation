@@ -1,6 +1,6 @@
 ---
 id: override-locales
-title: Override-Locales
+title: Override Locales
 ---
 
 # Override i-Vertix ITAM locales

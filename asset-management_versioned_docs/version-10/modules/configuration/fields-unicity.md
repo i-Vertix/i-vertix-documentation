@@ -1,6 +1,6 @@
 ---
 id: fields-unicity
-title: Fields-Unicity
+title: Fields Unicity
 ---
 
 # Fields unicity

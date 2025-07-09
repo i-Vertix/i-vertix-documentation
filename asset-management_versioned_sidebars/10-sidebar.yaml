@@ -1,7 +1,7 @@
 sidebar:
 - index
 - id: first-steps
-  label: First-Steps
+  label: First Steps
   items:
   - index
   - general

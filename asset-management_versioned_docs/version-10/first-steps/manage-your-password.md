@@ -1,6 +1,6 @@
 ---
 id: manage-your-password
-title: Manage-Your-Password
+title: Manage Your Password
 ---
 
 # Manage your password

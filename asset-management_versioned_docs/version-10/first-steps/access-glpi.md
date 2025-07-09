@@ -1,6 +1,6 @@
 ---
 id: access-glpi
-title: Access-Glpi
+title: Access Glpi
 ---
 
 # Administering access controls
