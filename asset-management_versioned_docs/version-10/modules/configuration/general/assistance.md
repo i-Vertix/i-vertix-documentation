@@ -9,11 +9,7 @@ This tab allows management of i-Vertix ITAM assistance part.
 
 ## Assistance
 
-<figure>
-<img src="../images/configAssistance.png"
-alt="../images/configAssistance.png" />
-<figcaption>image</figcaption>
-</figure>
+![image](../../../assets/modules/configuration/images/configAssistance.png)
 
 - **Step for the hours (minutes)** Amount of minutes between each step
   for minutes under an hour in duration dropdowns. Example: 5 minutes

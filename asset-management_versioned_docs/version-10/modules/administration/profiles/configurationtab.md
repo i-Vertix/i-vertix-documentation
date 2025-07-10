@@ -14,10 +14,7 @@ The 7 standard permissions will not be listed (see
 
 ## All Configuration Permissions
 
-<figure class="align-center">
-<img src="../images/config.png" alt="../images/config.png" />
-<figcaption>All Configuration Permissions</figcaption>
-</figure>
+![All Configuration Permissions](../../../assets/modules/administration/images/config.png)
 
 The **Search result display** permission allows to configure the
 displayed columns in the i-Vertix ITAM search engine..

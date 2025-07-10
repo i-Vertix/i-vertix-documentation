@@ -14,9 +14,7 @@ The 7 standard permissions will not be listed (see
 
 ## Simplified Interface
 
-<figure class="align-center">
-<img src="../images/toolsPO.png" alt="../images/toolsPO.png" />
-</figure>
+![Tools permissions (simplified interface)](../../../assets/modules/administration/images/toolsPO.png)
 
 - **Read the FAQ**: see the knowledge base articles which are published
   in the FAQ.
@@ -26,11 +24,7 @@ The 7 standard permissions will not be listed (see
 
 Common fields with the simplified interface will not be detailed.
 
-<figure class="align-center">
-<img src="../images/tools_standard.png"
-alt="../images/tools_standard.png" />
-<figcaption>Tools permissions</figcaption>
-</figure>
+![Tools permissions](../../../assets/modules/administration/images/tools_standard.png)
 
 ### Knowledge Base Permissions
 
@@ -39,9 +33,7 @@ alt="../images/tools_standard.png" />
 
 ### Projects Permissions
 
-<figure class="align-center">
-<img src="../images/projects.png" alt="../images/projects.png" />
-</figure>
+![Projects permissions](../../../assets/modules/administration/images/projects.png)
 
 - **See (Actor)**: see the projects I have created or for which I am the
   supervisor or member of the supervisor group.

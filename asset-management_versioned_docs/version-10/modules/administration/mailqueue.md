@@ -28,10 +28,7 @@ request... the email will be placed in the queue.
 
 :::
 
-<figure class="align-center">
-<img src="images/mailqueue.png" alt="images/mailqueue.png" />
-<figcaption>Example of queue</figcaption>
-</figure>
+![Example of queue](../../assets/modules/administration/images/mailqueue.png)
 
 In the example above, the deadline for sending email notifications has
 been set to 20 minutes in the configuration of the entity; as a

@@ -23,18 +23,11 @@ business rules may vary from one entity to another.
 
 :::
 
-<figure class="align-center">
-<img src="../images/legend.png" alt="../images/legend.png" />
-<figcaption>Permissions zones</figcaption>
-</figure>
+![Permissions zones](../../../assets/modules/administration/images/legend.png)
 
 ## User permissions
 
-<figure class="align-center">
-<img src="../images/administration.png"
-alt="../images/administration.png" />
-<figcaption>User permissions</figcaption>
-</figure>
+![User permissions](../../../assets/modules/administration/images/administration.png)
 
 - **Read Auth**: adds a field in the user form indicating the
   authentication method as well as the date of the last synchronization
@@ -58,10 +51,7 @@ alt="../images/administration.png" />
 
 ## Business rules for tickets (entity) permissions
 
-<figure class="align-center">
-<img src="../images/rules.png" alt="../images/rules.png" />
-<figcaption>Rules permissions</figcaption>
-</figure>
+![Rules permissions](../../../assets/modules/administration/images/rules.png)
 
 - **Parent Business**: displays a **applied rules (entity name)** tab in
   the business rules for tickets. This tab lists all the played rules of
@@ -70,8 +60,4 @@ alt="../images/administration.png" />
 The elements of the *Dictionaries* part fall within the 7 standard
 permissions.
 
-<figure class="align-center">
-<img src="../images/dictionaries.png"
-alt="../images/dictionaries.png" />
-<figcaption>Dictionaries permissions</figcaption>
-</figure>
+![Dictionaries permissions](../../../assets/modules/administration/images/dictionaries.png)

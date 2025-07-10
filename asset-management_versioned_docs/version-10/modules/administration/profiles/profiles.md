@@ -108,10 +108,7 @@ user. It can therefore vary depending on the profile.
 The 7 standard permissions described above apply to the elements of tab
 **Assets**.
 
-<figure class="align-center">
-<img src="../images/assets.png" alt="../images/assets.png" />
-<figcaption>Permissions on assets</figcaption>
-</figure>
+![Permissions on assets](../../../assets/modules/administration/images/assets.png)
 
 The **Internet** permission applies to:
 
@@ -143,10 +140,7 @@ See
 The 7 standard permissions described above apply to the elements of tab
 **Management**.
 
-<figure class="align-center">
-<img src="../images/management.png" alt="../images/management.png" />
-<figcaption>Permissions on management</figcaption>
-</figure>
+![Permissions on management](../../../assets/modules/administration/images/management.png)
 
 :::warning
 

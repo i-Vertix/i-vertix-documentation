@@ -97,28 +97,18 @@ re-applying dictionary on an existing database.
 As an example, following image describes grouping Mozilla software.
 Criteria are accumulated with AND.
 
-<figure class="align-center">
-<img src="images/criteriaMozilla.png"
-alt="images/criteriaMozilla.png" />
-<figcaption>Criteria for grouping Mozilla software</figcaption>
-</figure>
+![Criteria for grouping Mozilla software](../../assets/modules/administration/images/criteriaMozilla.png)
 
 The following image describes associated action for grouping Mozilla
 software.
 
-<figure class="align-center">
-<img src="images/actionMozilla.png" alt="images/actionMozilla.png" />
-<figcaption>Action for grouping Mozilla software</figcaption>
-</figure>
+![Action for grouping Mozilla software](../../assets/modules/administration/images/actionMozilla.png)
 
 The following image presents result of grouping Mozilla software:
 software are grouped by type (Mozilla Thunderbird, Mozilla Firefox...)
 and versions are grouped by type.
 
-<figure class="align-center">
-<img src="images/resultMozilla.png" alt="images/resultMozilla.png" />
-<figcaption>Result of grouping Mozilla software</figcaption>
-</figure>
+![Result of grouping Mozilla software](../../assets/modules/administration/images/resultMozilla.png)
 :::note[**Example for Windows updates grouping, very unclear!**]
 
 Autre exemple pour regrouper les mises à jour Windows. Cette fois le
@@ -163,16 +153,9 @@ irrelevant for user. This example allows to extract commercial model
 name while keeping technical number which can be required in case of
 requesting a provider intervention.
 
-<figure class="align-center">
-<img src="images/criteriaS42.png" alt="images/criteriaS42.png" />
-<figcaption>Example of dictionary for computer model: rule</figcaption>
-</figure>
+![Example of dictionary for computer model: rule](../../assets/modules/administration/images/criteriaS42.png)
 
-<figure class="align-center">
-<img src="images/actionS42.png" alt="images/actionS42.png" />
-<figcaption>Example of dictionary for computer model:
-action</figcaption>
-</figure>
+![Example of dictionary for computer model: action](../../assets/modules/administration/images/actionS42.png)
 
 The obtained result will be for instance: Netvista S42 (8319LGV)
 :::
@@ -182,17 +165,10 @@ The obtained result will be for instance: Netvista S42 (8319LGV)
 Only possible criteria is item type.
 :::note[**Example: harmonizing peripheral names**]
 
-<figure class="align-center">
-<img src="images/criteriaKbd.png" alt="images/criteriaKbd.png" />
-<figcaption>Example of dictionary on peripheral type: rule</figcaption>
-</figure>
+![Example of dictionary on peripheral type: rule](../../assets/modules/administration/images/criteriaKbd.png)
 :::
 
-<figure class="align-center">
-<img src="images/actionKbd.png" alt="images/actionKbd.png" />
-<figcaption>Example of dictionary on peripheral type: action
-<p>The obtained result will be for instance: Keyboard</p></figcaption>
-</figure>
+![Example of dictionary on peripheral type: action](../../assets/modules/administration/images/actionKbd.png)
 
 #### Operating systems
 

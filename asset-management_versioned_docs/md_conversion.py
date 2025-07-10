@@ -207,7 +207,7 @@ if __name__ == "__main__":
     parser.add_argument("output_dir")
     parser.add_argument("--skip_conversion", action="store_true", default=False)
     parser.add_argument("--skip_post", action="store_true", default=False)
-
+    parser.add_argument("--copy_images", action="store_true", default=False)
     args = parser.parse_args()
 
     input_dir = args.input_dir
@@ -265,7 +265,7 @@ if __name__ == "__main__":
     # parse / copy all common images
     static_dir = os.path.join(output_dir, "assets")
     os.makedirs(static_dir, exist_ok=True)
-    common_images = []
+    abs_images = []
     path_translation = {}
 
     img_nr = 0
@@ -288,42 +288,40 @@ if __name__ == "__main__":
                     rel_out_path = f.replace(output_dir, "")
                     img = "/" + merge_path(os.path.dirname(rel_out_path), img)
                 
-                common_images.append(img)
+                abs_images.append(img)
                 path_translation[orig_img] = img
 
     print(f"images nr: {img_nr}")
-    common_images = list(set(common_images))
-    print(f"images dedup: {len(common_images)}")
+    abs_images = list(set(abs_images))
+    print(f"images dedup: {len(abs_images)}")
 
-    replaced_links = {}
-    for c in common_images:
-        
-        in_path = os.path.join(input_dir, c[1:])
-        if not os.path.exists(in_path): 
-            print(f"Image {in_path} does not exist")
+    if args.copy_images:
+        replaced_links = {}
+        for c in abs_images:
 
-            fname = os.path.basename(c)
-            replacements = list(filter(lambda x: x.find(fname) != -1 and x != c, common_images))
-
-            if replacements:
-                in_path = os.path.join(input_dir, replacements[0][1:])
-                print(f"replacing with: {in_path}")
-            else:
-                print("Cannot replace")
-                continue
-            
+            in_path = os.path.join(input_dir, c[1:])
             if not os.path.exists(in_path): 
-                print(f"Replacement {in_path} still does not exist")
-                continue
+                print(f"Image {in_path} does not exist")
 
-            replaced_links[c] = replacements[0]
+                fname = os.path.basename(c)
+                replacements = list(filter(lambda x: x.find(fname) != -1 and x != c, abs_images))
+
+                if replacements:
+                    in_path = os.path.join(input_dir, replacements[0][1:])
+                    print(f"replacing with: {in_path}")
+                else:
+                    print("Cannot replace")
+                    continue
+                
+                if not os.path.exists(in_path): 
+                    print(f"Replacement {in_path} still does not exist")
+                    continue
+
+                replaced_links[c] = replacements[0]
  
-        out_path = os.path.join(static_dir, c[1:])
-        makedir(out_path)
-
-        shutil.copy(in_path, out_path)
-        #print("common", c)
-        #print("dest", out_path)
+            out_path = os.path.join(static_dir, c[1:])
+            makedir(out_path)
+            shutil.copy(in_path, out_path)
 
 
     if args.skip_post:
@@ -472,6 +470,7 @@ if __name__ == "__main__":
             text = text[:match.start()] + new_text + text[match.end():]
 
         
+        #replace e-mail addresses
         match = re.search(r"<(.*@.*) .*>", text)
         if match:
             url = match.group(1)

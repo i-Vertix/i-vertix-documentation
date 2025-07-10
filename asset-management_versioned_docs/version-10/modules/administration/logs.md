@@ -18,6 +18,4 @@ event.
 - Log retention period can be parameterized in automatic actions.
 :::
 
-<figure class="align-center">
-<img src="images/logs.png" alt="images/logs.png" />
-</figure>
+![A log display](../../assets/modules/administration/images/logs.png)

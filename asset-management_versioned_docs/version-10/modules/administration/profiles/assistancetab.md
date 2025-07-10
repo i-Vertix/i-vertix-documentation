@@ -11,10 +11,7 @@ orphan
 
 ## Simplified interface
 
-<figure>
-<img src="../images/assistancePO.png"
-alt="../images/assistancePO.png" />
-</figure>
+![image](../../../assets/modules/administration/images/assistancePO.png)
 
 ### Tickets permissions
 
@@ -48,10 +45,7 @@ alt="../images/assistancePO.png" />
 
 ### Validations permissions
 
-<figure class="align-center">
-<img src="../images/validations.png" alt="../images/validations.png" />
-<figcaption>Validations permissions</figcaption>
-</figure>
+![Validations permissions](../../../assets/modules/administration/images/validations.png)
 
 - **Validate an Incident**: respond to a validation request concerning
   an Incident type ticket. Having this right makes you appear in the
@@ -71,11 +65,7 @@ the ticket corresponds to the permission.
 
 ### Associations permissions
 
-<figure class="align-center">
-<img src="../images/associations.png"
-alt="../images/associations.png" />
-<figcaption>Associations permissions</figcaption>
-</figure>
+![Associations permissions](../../../assets/modules/administration/images/associations.png)
 
 - **Link with items for the creation of tickets**:
 
@@ -97,11 +87,7 @@ alt="../images/associations.png" />
   > general configuration, the list contains only the recursive
   > templates of the root entity.
 
-  <figure class="align-center">
-  <img src="../images/assistance_general.png"
-  alt="../images/assistance_general.png" />
-  <figcaption>Default ITIL templates</figcaption>
-  </figure>
+  ![Default ITIL templates](../../../assets/modules/administration/images/assistance_general.png)
 
 - **See hardware of my groups**: asset whose type is authorized and for
   which I am a member of the group.
@@ -114,10 +100,7 @@ standard permissions will not be listed (see
 
 ### Tickets permissions
 
-<figure class="align-center">
-<img src="../images/tickets.png" alt="../images/tickets.png" />
-<figcaption>Tickets permissions</figcaption>
-</figure>
+![Tickets permissions](../../../assets/modules/administration/images/tickets.png)
 
 - **Assigned Tickets**: be assigned to a ticket. All the users of this
   profile having this option enabled will be present in the list of
@@ -137,11 +120,7 @@ standard permissions will not be listed (see
 
 ### Followups permissions
 
-<figure class="align-center">
-<img src="../images/followups_and_tasks.png"
-alt="../images/followups_and_tasks.png" />
-<figcaption>Followups permissions</figcaption>
-</figure>
+![Followups permissions](../../../assets/modules/administration/images/followups_and_tasks.png)
 
 - **See Private Ones**: see all followups typed as private follow-up.
 
@@ -167,16 +146,9 @@ alt="../images/followups_and_tasks.png" />
 
 ### Planning permissions
 
-<figure class="align-center">
-<img src="../images/planning.png" alt="../images/planning.png" />
-<figcaption>Planning permissions</figcaption>
-</figure>
+![Planning permissions](../../../assets/modules/administration/images/planning.png)
 
-<figure class="align-center">
-<img src="../images/planning_visibility.png"
-alt="../images/planning_visibility.png" />
-<figcaption>Planning visibility permissions</figcaption>
-</figure>
+![Planning visibility permissions](../../../assets/modules/administration/images/planning_visibility.png)
 
 - **See personal planning**: only see my planning data.
 - **See all plannings**: see the data of all plannings
@@ -189,9 +161,7 @@ a change.
 
 ### Problems permissions
 
-<figure>
-<img src="../images/problems.png" alt="../images/problems.png" />
-</figure>
+![image](../../../assets/modules/administration/images/problems.png)
 
 - **See (author)**: view problems for which I am a requester, or a
   member of the requesting group, or an observer, or a member of the
@@ -211,10 +181,7 @@ a change.
 
 ### Changes permissions
 
-<figure class="align-center">
-<img src="../images/changes.png" alt="../images/changes.png" />
-<figcaption>Changes permissions</figcaption>
-</figure>
+![Changes permissions](../../../assets/modules/administration/images/changes.png)
 
 - **See (author)**: see the changes for which I am the requester, or
   member of the requesting group, or observer, or member of the observer
