@@ -178,7 +178,7 @@ It is used to define the types of tasks applied to a project.
 This tab is reserved for names and only appears if the translation of
 dropdown names has been enabled in the general configuration.
 
-![Dropdown translation tab](../../../assets/modules/configuration/dropdowns/images/dropdown_translation.png)
+![Dropdown translation tab](../../../assets/modules/configuration/images/dropdown_translation.png)
 
 This tab lists all current translations of the dropdown name and allows
 you to add new ones.

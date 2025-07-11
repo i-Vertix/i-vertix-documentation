@@ -1,14 +1,13 @@
 import os
-import yaml
 import pathlib
-from collections import OrderedDict
 import json
 import subprocess as sb
 import argparse
 import shutil
 import re
 
-yaml.add_representer(OrderedDict, lambda dumper, data: dumper.represent_mapping('tag:yaml.org,2002:map', data.items()))
+import index 
+
 
 def dump_struct(s):
     print(json.dumps(s, indent=4))
@@ -62,138 +61,91 @@ def add_header(file_path):
     return
 
             
-def set_path(root, path):
-
-    curr = root
-    for p in pathlib.Path(path).parts:
-
-        items = curr["items"]
-
-        if p.endswith(".md"):
-            curr["items"].append(p[:-3])
-            break
-
-        pres = [e for e in items if isinstance(e, dict) and e["id"] == p]
-        if not pres:
-            next_elem = {
-                "id": p,
-                "label": p.title().replace("_", " ").replace("-", " "),
-                "items": []
-            }
-            items.append(next_elem)
-        else:
-            next_elem = pres[0]
-        
-        curr = next_elem
-
-    return root
-
-
-def parse_index(fpath):
-    
-    text = None
-    #print(fpath)
-    with open(fpath, "r", encoding="utf8") as fd:
-        text = fd.read()
-
-    text = text + "\n\n"
-    match = re.search(r"\.\. toctree::\n\s+:maxdepth: \d+\n\s*\n(.*?)\n\n", text, flags=re.DOTALL)
-    
-    text = text[match.start():match.end()]
-    lines = text.split("\n")
-    lines = [l.strip() for l in lines]
-    lines = [l.split("/")[0] for l in lines]
-    lines.insert(0, "index")
-
-    return lines
 
 
 def makedir(path):
-    dpath = os.path.dirname(path)
-    if not os.path.exists(dpath):
-        os.makedirs(dpath, exist_ok=True)
+    path.parent.mkdir(exist_ok=True, parents=True)
     return
 
 
 def convert_to_md(in_path, out_path):
     #print(f"converting {in_path} {out_path}")
-    
     makedir(out_path)
-    
-    #sb.call(["pandoc", in_path, "-f",  "rst", "-t", "markdown_strict", "-o", out_path])
-    #sb.call(["pandoc", in_path, "-f",  "rst", "-t", "markdown", "-o", out_path])
     sb.call(["pandoc", in_path, "-f",  "rst", "-t", "commonmark_x", "-o", out_path])
     return
 
 
-def sort_index_tree(tree, indexes):
-    
-    def ordered_dict_rec(tree, indexes=indexes, cpath=[]):
-
-        if isinstance(tree, dict):
-
-            newl = list(cpath)
-            newl.append(tree["id"])
-
-            return OrderedDict([
-                ("id", tree["id"]),
-                ("label", tree["label"]),
-                ("items", ordered_dict_rec(
-                    tree["items"], 
-                    indexes,
-                    newl
-                    )
-                )
-            ]
-            )
-        elif isinstance(tree, list):
-            
-            res = [ordered_dict_rec(x, indexes, cpath) for x in tree]
-
-            def sorter(x): 
-                index = indexes.get(tuple(cpath), [])
-
-                if isinstance(x, OrderedDict):
-                    x = x["id"]
-                
-                #print(f"sorter {cpath} {x} {index}")
-
-                if x in index:
-                    return index.index(x)
-                
-                return len(index)
-
-            res = sorted(res, key=sorter)
-            return res
-        
-        elif isinstance(tree, str):
-            return tree
-
-    #for i in indexes:
-    #    print(f"\"{i}\" -> {indexes[i]}")
-
-    tree = ordered_dict_rec(tree)
-    #print(json.dumps(tree, indent=4))
-
-    return tree
-
-
 def merge_path(base, rel):  
-    
-    if rel.startswith("/"):
-        return rel                  
-    
-    base_parts = list(pathlib.Path(base).parts)
-    rel_parts = list(pathlib.Path(rel).parts)
-    #print(base_parts, rel_parts)
+
+    base_parts = list(base.parts)
+    rel_parts = list(rel.parts)    
     while rel_parts[0] == "..":
         base_parts = base_parts[:-1]
         rel_parts = rel_parts[1:]
 
     merged_parts = base_parts + rel_parts   
-    #print(merged_parts)
-    return "/".join(merged_parts)
+    
+    return pathlib.Path(*merged_parts)
 
+
+def compute_conversion_list(input_dir, output_dir):
+    """
+    returns a list of (input_file, relative path in input dir, output_file)
+    """
+    
+    res = []
+    for root, _, files in input_dir.walk():
+            
+        rst_files = filter(lambda x: x.endswith(".rst"), files)
+        for f in rst_files:
+            
+            in_path = root / f
+
+            rel_path = in_path.relative_to(input_dir)
+            rel_dir = rel_path.parent
+            
+            out_path = output_dir / rel_path.with_suffix(".md")
+
+            res.append((in_path, rel_dir, out_path))
+    
+    return res
+
+
+
+# The alternative is keeping a fork of the GLPI doc repository
+def prepare_sources(files):
+    """
+
+    """
+
+    transforms = [
+        (
+            lambda path, text: True, 
+            lambda x: x.replace(".. figure::", ".. image::")
+        ),
+
+        (
+            lambda path, text: True, 
+            lambda x: x.replace(".. include:: /modules/tabs", ".. include:: ../tabs")
+        )
+
+    ]
+ 
+    for f in files:
+
+        text = ""
+        with open(f, "r", encoding="utf8") as fd:
+            text = fd.read()
+
+        for check, t in transforms:
+            if check(f, text):
+                text = t(text)
+
+        with open(f, "w", encoding="utf8") as fd:
+            fd.write(text)
+
+    return
+    
 
 if __name__ == "__main__":
 
@@ -205,71 +157,59 @@ if __name__ == "__main__":
 
     parser.add_argument("input_dir")
     parser.add_argument("output_dir")
-    parser.add_argument("--skip_conversion", action="store_true", default=False)
-    parser.add_argument("--skip_post", action="store_true", default=False)
-    parser.add_argument("--copy_images", action="store_true", default=False)
+    parser.add_argument("--skip-conversion", action="store_true", default=False)
+    parser.add_argument("--skip-post", action="store_true", default=False)
+    parser.add_argument("--copy-images", action="store_true", default=False)
+    parser.add_argument("--tmp-dir", default="itam_tmp", dest="tmp_dir")
     args = parser.parse_args()
 
-    input_dir = args.input_dir
-    output_dir = args.output_dir
+    input_dir = pathlib.Path(args.input_dir)
+    output_dir = pathlib.Path(args.output_dir)
+    tmp_dir = pathlib.Path(args.tmp_dir)
 
-    if input_dir[-1] != "/":
-        input_dir = f"{input_dir}/"
+    output_dir.mkdir(exist_ok=True)
     
-    if output_dir[-1] != "/":
-        output_dir = f"{output_dir}/"
+    # copy tmp dir    
+    if os.path.exists(tmp_dir):
+        shutil.rmtree(tmp_dir)
 
-    os.makedirs(output_dir, exist_ok=True)
+    shutil.copytree(input_dir, tmp_dir)
+    input_dir = tmp_dir
 
-    #copy and convert md files
-    acc = {"items": []}
-    indexes = {}
-    out_files = []
-    for root, subdirs, files in os.walk(input_dir):
-            
-        rst_files = filter(lambda x: x.endswith(".rst"), files)
-        for f in rst_files:
-            
-            out_file = f.replace(".rst", ".md")
-            
-            in_path = os.path.join(root, f)
-        
-            rel_dir = root.replace(input_dir, "")
-            rel_path = os.path.join(rel_dir, out_file)
-            
-            out_dir = root.replace(input_dir, output_dir)
-            out_path = os.path.join(out_dir, out_file)
-            out_files.append(out_path)
+    # compute the list of (input, red_dir, output) that will be used in all
+    # following ops
+    fmap = compute_conversion_list(input_dir, output_dir)
+   
+    # fix errors in glpi sources, 
+    # fix hard (for pandoc) to interpret rst directives
+    prepare_sources([x[0] for x in fmap])
 
-            if f == "index.rst":
-                index_path = tuple(pathlib.Path(rel_dir).parts)
-                indexes[index_path] = parse_index(in_path)
-
-            #print(in_path, out_path)
-            if not args.skip_conversion:
-                convert_to_md(in_path, out_path)
-                add_header(out_path)
-            set_path(acc, pathlib.Path(rel_path))
-
-    items = acc.pop("items")
-    acc = [v for k, v in acc.items()]
-    acc.extend(items)
-    acc = sort_index_tree(acc, indexes)
-    acc = {"sidebar" : acc}
+    # create md files as result from pandoc conversion    
+    if not args.skip_conversion:
+        for in_file, rel_dir, out_file in fmap: 
+            convert_to_md(in_file, out_file)
     
-    #print(yaml.dump(acc, sort_keys=False))
-    with open("asset-management_versioned_sidebars/10-sidebar.yaml", "w") as fd:
-        fd.write(yaml.dump(acc, sort_keys=False))
+    # write docusaurs header to files
+    for _, _, out_file in fmap: 
+        add_header(out_file)
 
+    # compute and write the index yaml file
+    index.write_index(
+        fmap, 
+        "asset-management_versioned_sidebars/10-sidebar.yaml"
+    )
+
+    # parse / copy all images
+    static_dir = output_dir / "assets"
+    static_dir.mkdir(exist_ok=True)
+    images = []
+    img_include_from = {}
     
-    # parse / copy all common images
-    static_dir = os.path.join(output_dir, "assets")
-    os.makedirs(static_dir, exist_ok=True)
-    abs_images = []
-    path_translation = {}
+    incpath_to_realpath = {}
+    realpath_to_incpath = {}
 
     img_nr = 0
-    for f in out_files:
+    for _, rel_path, f in fmap:
 
         lines = []
         with open(f, "r", encoding="utf8") as fd:
@@ -280,46 +220,49 @@ if __name__ == "__main__":
 
             if img_include:
                 img_nr += 1
-                img = img_include.group(2)
-                orig_img = img
+                orig_img = img_include.group(2)
+                img = pathlib.Path(orig_img)
                 
                 #if it is relative, make it absolute
-                if img[0] != "/":
-                    rel_out_path = f.replace(output_dir, "")
-                    img = "/" + merge_path(os.path.dirname(rel_out_path), img)
+                #if not img.is_absolute():
+                img = merge_path(rel_path, img)
+                if img.parts[0] == "\\":
+                    img = pathlib.Path(*img.parts[1:])
+
+                images.append(img)
+                incpath_to_realpath[orig_img] = img
                 
-                abs_images.append(img)
-                path_translation[orig_img] = img
+                # I need a bi-directional association for replacements
+                realpath_to_incpath[img] = orig_img
+
+                img_include_from[img] = f
 
     print(f"images nr: {img_nr}")
-    abs_images = list(set(abs_images))
-    print(f"images dedup: {len(abs_images)}")
+    images = list(set(images))
+    print(f"images dedup: {len(images)}")
+
+    replacements = {x.name: x  for x in images if (input_dir / x).exists()}
 
     if args.copy_images:
-        replaced_links = {}
-        for c in abs_images:
+        for c in images:
 
-            in_path = os.path.join(input_dir, c[1:])
-            if not os.path.exists(in_path): 
-                print(f"Image {in_path} does not exist")
+            in_path = input_dir / c
 
-                fname = os.path.basename(c)
-                replacements = list(filter(lambda x: x.find(fname) != -1 and x != c, abs_images))
+            # if image does not exist, search for an image with the same name
+            # if a replacement is found, then replace just the entry 
+            # in incpath_to_realpath, avoiding multiple copies of the same
+            # image
 
-                if replacements:
-                    in_path = os.path.join(input_dir, replacements[0][1:])
-                    print(f"replacing with: {in_path}")
-                else:
-                    print("Cannot replace")
+            if not in_path.exists(): 
+                print(f"Image {in_path}, included from {img_include_from[c]} does not exist")
+
+                if c.name in replacements:
+                    incpath = realpath_to_incpath[c]
+                    incpath_to_realpath[incpath] = replacements[c.name]
+                    print(f"-> Replaced with {replacements[c.name]}")
                     continue
-                
-                if not os.path.exists(in_path): 
-                    print(f"Replacement {in_path} still does not exist")
-                    continue
-
-                replaced_links[c] = replacements[0]
  
-            out_path = os.path.join(static_dir, c[1:])
+            out_path = static_dir / c
             makedir(out_path)
             shutil.copy(in_path, out_path)
 
@@ -327,7 +270,8 @@ if __name__ == "__main__":
     if args.skip_post:
         exit(0)
 
-    for f in out_files:
+    # files processing
+    for _, rel_dir, f in fmap:
 
         text = ""
         with open(f, "r", encoding="utf8") as fd:
@@ -343,11 +287,11 @@ if __name__ == "__main__":
             text = text[:match.start()] + text[match.end():]
         
         
-        # Removing all { .attrib=value }
 
         text = text.replace("{glpi_address}", "glpi_address")
+        
+        # Removing all { .attrib=value }
         text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
-
 
         # Convert links
         while True:
@@ -424,20 +368,15 @@ if __name__ == "__main__":
         text = text.replace("GLPI", "i-Vertix ITAM")
         
         #convert indexes
-        if os.path.basename(f) == "index.md":
+        if f.name == "index.md":
             
             match = re.search(r"::: \n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)            
  
             if match:
-            
-                rel_dir = f.replace(output_dir, "")
-                rel_dir = list(pathlib.Path(rel_dir).parts)
-                if rel_dir[-1] == "index.md":
-                    rel_dir.pop(-1)
 
                 def build_link(l, rel_dir):
                     url = ["/asset-management"]
-                    url.extend(rel_dir)
+                    url.extend(list(rel_dir.parts))
                     
                     text = l.split("/")
                     if text[-1] == "index":
@@ -486,12 +425,12 @@ if __name__ == "__main__":
                 break
 
             path = match.group(2)
-            link = path_translation[path] 
+            link = incpath_to_realpath[path] 
 
-            lev = len(pathlib.Path(f).parts)-3
-            lev = "/".join(lev * [".."] + ["assets"])
-            link = lev + link
-
+            lev = len(rel_dir.parts) * [".."]
+            lev = pathlib.Path(*lev)
+            link = lev / "assets" / link
+            link = link.as_posix()
             new_text = f"![{match.group(1)}]({link})"
             text = text[:end + match.start()] + new_text + text[end + match.end():]
             end += match.start() + len(new_text)
@@ -511,7 +450,7 @@ if __name__ == "__main__":
     ]
 
     
-    for f in out_files:
+    for inf, rel_dir, f in fmap:
     
         lines = []
         with open(f, "r", encoding="utf8") as fd:
