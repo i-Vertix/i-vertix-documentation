@@ -148,22 +148,22 @@ components of the same type (processor, memory, network interface...).
 It is possible to modify the characteristics of a component only for
 one computer
 
-> From tab *Elements* of the component, click on the link **Update**.
->
-> ![Modify a component](../../assets/modules/assets/images/component_update_link.png)
->
-> Several tabs are then displayed:
->
-> - Tab "Element - Link name of component" : list the
->   characteristics of this component
-> - [Tab "Management"](/asset-management/modules/tabs/management) : manage administrative and accounting information
-> - [Tab "Documents"](/asset-management/modules/tabs/documents) : attached documents
-> - [Tab "History"](/asset-management/modules/tabs/historical) : history of modifications
-> - [Tab "Contract"](/asset-management/modules/tabs/contracts) : contracts management
-> - [Tab "Debug"](/asset-management/modules/tabs/debug)
->   : only if you are connected in Debug mode
-> - [Tab "All"](/asset-management/modules/tabs/all) :
->   all the information are displayed on a single page
+From tab *Elements* of the component, click on the link **Update**.
+
+![Modify a component](../../assets/modules/assets/images/component_update_link.png)
+
+Several tabs are then displayed:
+
+- Tab "Element - Link name of component" : list the
+characteristics of this component
+- [Tab "Management"](/asset-management/modules/tabs/management) : manage administrative and accounting information
+- [Tab "Documents"](/asset-management/modules/tabs/documents) : attached documents
+- [Tab "History"](/asset-management/modules/tabs/historical) : history of modifications
+- [Tab "Contract"](/asset-management/modules/tabs/contracts) : contracts management
+- [Tab "Debug"](/asset-management/modules/tabs/debug)
+: only if you are connected in Debug mode
+- [Tab "All"](/asset-management/modules/tabs/all) :
+all the information are displayed on a single page
 
 :::
 

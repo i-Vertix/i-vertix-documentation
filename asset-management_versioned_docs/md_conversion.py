@@ -243,25 +243,25 @@ if __name__ == "__main__":
 
     replacements = {x.name: x  for x in images if (input_dir / x).exists()}
 
-    if args.copy_images:
-        for c in images:
+    for c in images:
 
-            in_path = input_dir / c
+        in_path = input_dir / c
 
-            # if image does not exist, search for an image with the same name
-            # if a replacement is found, then replace just the entry 
-            # in incpath_to_realpath, avoiding multiple copies of the same
-            # image
+        # if image does not exist, search for an image with the same name
+        # if a replacement is found, then replace just the entry 
+        # in incpath_to_realpath, avoiding multiple copies of the same
+        # image
 
-            if not in_path.exists(): 
-                print(f"Image {in_path}, included from {img_include_from[c]} does not exist")
+        if not in_path.exists(): 
+            print(f"Image {in_path}, included from {img_include_from[c]} does not exist")
 
-                if c.name in replacements:
-                    incpath = realpath_to_incpath[c]
-                    incpath_to_realpath[incpath] = replacements[c.name]
-                    print(f"-> Replaced with {replacements[c.name]}")
-                    continue
+            if c.name in replacements:
+                incpath = realpath_to_incpath[c]
+                incpath_to_realpath[incpath] = replacements[c.name]
+                print(f"-> Replaced with {replacements[c.name]}")
+                continue
  
+        if args.copy_images:
             out_path = static_dir / c
             makedir(out_path)
             shutil.copy(in_path, out_path)
@@ -309,7 +309,7 @@ if __name__ == "__main__":
 
         #boxes conversion
         while True:
-            match = re.search(r"> \[\!(\w+)\]((\n>.*)+)", text, flags=re.MULTILINE)
+            match = re.search(r"^[> ]*\[\!(\w+)\]((\n>.*)+)", text, flags=re.MULTILINE)
             
             if match is None:
                 break
@@ -319,7 +319,7 @@ if __name__ == "__main__":
                 note_type = "info"
 
             note_text = match.group(2)
-            note_text = re.sub(r"^> *", "", note_text, flags=re.MULTILINE)
+            note_text = re.sub(r"^>[ >]*", "", note_text, flags=re.MULTILINE)
             note_text = note_text.strip()
             
             new_text = f":::{note_type}\n\n{note_text}\n\n:::"

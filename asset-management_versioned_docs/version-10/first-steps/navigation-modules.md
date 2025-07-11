@@ -82,13 +82,13 @@ examples according to the browsers:
 
 - Mozilla Firefox / Chrome
 
-> Simultaneously press the keys `Alt`, `Shift` and *the desired
-> shortcut*.
+Simultaneously press the keys `Alt`, `Shift` and *the desired
+shortcut*.
 
 - Opera
 
-> Simultaneously press the keys `Esc`, `Shift` and *the desired
-> shortcut*.
+Simultaneously press the keys `Esc`, `Shift` and *the desired
+shortcut*.
 
 :::
 

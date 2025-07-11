@@ -174,10 +174,10 @@ The are two different views for search results in i-Vertix ITAM.
 The switch to the map view, click on the map toggle above the search
 results.
 
-> :::info
+:::info
 
-> If an item type does not have the ability to have a location, then
-> the map view toggle will be hidden.
+If an item type does not have the ability to have a location, then
+the map view toggle will be hidden.
 
 :::
 
