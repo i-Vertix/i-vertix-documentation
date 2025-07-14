@@ -423,6 +423,7 @@ if __name__ == "__main__":
         lambda x: x.replace("\\.", "."),
         lambda x: re.sub(r"style=\".*\"", "", x),
         lambda x: re.sub(r"^export", r"\\export", x, flags=re.MULTILINE),
+        lambda x: re.sub(r"^-[ ]+[\n]+\s*", r"- ", x, flags=re.MULTILINE),
     ]
 
     

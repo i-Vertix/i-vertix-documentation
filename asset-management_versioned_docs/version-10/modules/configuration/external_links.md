@@ -45,9 +45,7 @@ replaced by the values of the element. The tags are:
 - \[REALNAME\]: The user's surname (Only applies to User external
   links)
 
-- 
-
-  \[FIELD:\*\]: If the field you want is not available as a separate tag, it may still be possible to use it by referencing its internal field name.
+- \[FIELD:\*\]: If the field you want is not available as a separate tag, it may still be possible to use it by referencing its internal field name.
 
   :   For example, the comment field would be
       [\[FIELD:comment\]]. The field name is case sensitive

@@ -7,17 +7,13 @@ title: Definitions
 
 A notification definition in i-Vertix ITAM is composed of:
 
-- 
-
-  One or more notification templates
+- One or more notification templates
 
   :   Templates are added for specific notifications modes. This allows
       you to use one template for email notifications and another for
       browser notifications.
 
-- 
-
-  A set of recipients
+- A set of recipients
 
   :   The list of recipients could include specific users, groups, etc
       or can include dynamic recipients such as "Requester" which
@@ -30,9 +26,7 @@ A notification definition in i-Vertix ITAM is composed of:
 
 ## The different tabs
 
-- 
-
-  **Notification**
+- **Notification**
 
   :   
 
@@ -51,9 +45,7 @@ A notification definition in i-Vertix ITAM is composed of:
 - **Notification templates**: Indicates the notification that will be
   sent for the object type and the event defined previously.
 
-- 
-
-  **Recipients**
+- **Recipients**
 
   :   This is where you define who will receive the notification.
 

@@ -127,9 +127,7 @@ The following configuration options are available for the
 
 - SMTP host - The SMTP server address.
 
-- 
-
-  Port - The port to communicate with the SMTP host over.
+- Port - The port to communicate with the SMTP host over.
 
   :   Typically, this is port 25. Check your provider's documentation
       for more info.  
@@ -142,9 +140,7 @@ The following configuration options are available for the
 - SMTP password (optional) - Password to authenticate with the email
   server.
 
-- 
-
-  Email sender - This may be needed for some email providers.
+- Email sender - This may be needed for some email providers.
 
   :   If this is not specified, the Administrator email will be used.
 
