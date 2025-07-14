@@ -3,10 +3,6 @@ id: ticketbusinessrules
 title: Ticketbusinessrules
 ---
 
-orphan
-
-:   
-
 # Business rules for tickets
 
 A mechanism is available to modify the attributes of the ticket

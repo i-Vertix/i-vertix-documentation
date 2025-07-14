@@ -3,10 +3,6 @@ id: toolstab
 title: Toolstab
 ---
 
-orphan
-
-:   
-
 # Tools Permissions
 
 The 7 standard permissions will not be listed (see

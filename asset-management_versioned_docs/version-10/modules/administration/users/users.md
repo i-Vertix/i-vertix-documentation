@@ -8,9 +8,7 @@ title: Users
 User management allows to add, modify, delete, search users and to
 import and export users list.
 
-::: 
-usersimport
-:::
+- [Usersimport](/asset-management/modules/administration/users/usersimport)
 
 It is possible to deactivate a user if needed. If deactivated, the user
 can no longer be selected in drop-down menu for tickets or inventories,
@@ -21,7 +19,7 @@ can be defined independently.
 
 A photo can be added manually or imported automatically from a directory
 (see
-[Authenticate users with LDAP](/asset-management/modules/configuration/authentification/ldap)).
+[Authenticate users with LDAP](/asset-management/modules/configuration/authentication/ldap)).
 
 ## Impersonate
 

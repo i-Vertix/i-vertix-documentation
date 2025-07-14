@@ -3,10 +3,6 @@ id: userauthorizations
 title: Userauthorizations
 ---
 
-orphan
-
-:   
-
 # Rules for assigning authorizations to a user
 
 i-Vertix ITAM has a dynamic authorization engine which is based on external

@@ -3,10 +3,6 @@ id: assistancetab
 title: Assistancetab
 ---
 
-orphan
-
-:   
-
 # Assistance permissions
 
 ## Simplified interface

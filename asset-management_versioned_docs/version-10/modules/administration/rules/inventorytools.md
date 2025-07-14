@@ -3,10 +3,6 @@ id: inventorytools
 title: Inventorytools
 ---
 
-orphan
-
-:   
-
 # Rules for assigning an item to an entity
 
 i-Vertix ITAM has a type of rules that automatically assign an item from an

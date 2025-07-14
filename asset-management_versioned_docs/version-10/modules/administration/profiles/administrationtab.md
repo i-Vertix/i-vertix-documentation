@@ -3,10 +3,6 @@ id: administrationtab
 title: Administrationtab
 ---
 
-orphan
-
-:   
-
 # Administration permissions
 
 The 7 standard permissions will not be listed (see

@@ -82,11 +82,11 @@ accessible.
 
 Depending on how you search for groups (see: doc: [Authenticating users
 from LDAP directories
-\</modules/configuration/authentification/ldap\>]), a
-**Search filter in groups** and/or a **User search filter** appear:
-these allow to refine the list to be imported. If i-Vertix ITAM is used in
-multi-entities, it is necessary to select the destination entity of the
-group as well as its visibility in the sub-entities.
+\</modules/configuration/authentication/ldap\>]), a **Search
+filter in groups** and/or a **User search filter** appear: these allow
+to refine the list to be imported. If i-Vertix ITAM is used in multi-entities, it
+is necessary to select the destination entity of the group as well as
+its visibility in the sub-entities.
 
 :::info
 

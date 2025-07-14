@@ -35,20 +35,24 @@ def set_path(root, path):
 def parse_index(fpath):
     
     text = None
+    lines = []
+
     #print(fpath)
     with open(fpath, "r", encoding="utf8") as fd:
         text = fd.read()
 
     text = text + "\n\n"
     match = re.search(r"\.\. toctree::\n\s+:maxdepth: \d+\n\s*\n(.*?)\n\n", text, flags=re.DOTALL)
-    
-    text = text[match.start():match.end()]
-    lines = text.split("\n")
-    lines = [l.strip() for l in lines]
-    lines = [l.split("/")[0] for l in lines]
-    lines.insert(0, "index")
 
-    return lines
+    if match: 
+        text = text[match.start():match.end()]
+        lines = text.split("\n")
+        lines = [l.strip() for l in lines]
+        lines = [l.split("/")[0] for l in lines]
+        lines.insert(0, "index")
+        return lines
+    else:
+        return []
 
 
 def sort_index_tree(tree, indexes):
@@ -126,3 +130,36 @@ def write_index(fmap, index_file):
         fd.write(yaml.dump(acc, sort_keys=False))
 
     return
+
+
+def replace_index(rel_dir, text):
+    
+    match = re.search(r"::: \{\.toctree .*\}\n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)
+    if match is None:
+        return text
+
+    def build_link(l, rel_dir):
+        url = ["/asset-management"]
+        url.extend(list(rel_dir.parts))
+        
+        text = l.split("/")
+        if text[-1] == "index":
+            text.pop(-1)
+
+        url.extend(text)
+        url = [x for x in url if x]
+
+        link_text = text[0].title()
+        link_text= link_text.replace("_", " ")
+        link_text= link_text.replace("-", " ")
+
+        return (link_text, "/".join(url))
+                                        
+    links = match.group(1).split()
+    links = [build_link(l, rel_dir) for l in links]
+    links = [f"- [{text}]({url})" for text, url in links]
+    links = "\n".join(links)
+
+    text = text[:match.start()] + links + "\n" + text[match.end():]
+    
+    return text

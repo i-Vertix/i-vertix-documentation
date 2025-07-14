@@ -3,10 +3,6 @@ id: configurationtab
 title: Configurationtab
 ---
 
-orphan
-
-:   
-
 # Setup permissions
 
 The 7 standard permissions will not be listed (see

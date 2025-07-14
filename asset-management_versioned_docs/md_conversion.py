@@ -119,16 +119,10 @@ def prepare_sources(files):
     """
 
     transforms = [
-        (
-            lambda path, text: True, 
-            lambda x: x.replace(".. figure::", ".. image::")
-        ),
-
-        (
-            lambda path, text: True, 
-            lambda x: x.replace(".. include:: /modules/tabs", ".. include:: ../tabs")
-        )
-
+        lambda x: x.replace(".. figure::", ".. image::"),
+        lambda x: x.replace(".. include:: /modules/tabs", ".. include:: ../tabs"),
+        lambda x: x.replace(":orphan:\n", ""),
+        lambda x: x.replace("authentification", "authentication"),
     ]
  
     for f in files:
@@ -137,9 +131,19 @@ def prepare_sources(files):
         with open(f, "r", encoding="utf8") as fd:
             text = fd.read()
 
-        for check, t in transforms:
-            if check(f, text):
+        for t in transforms:
+            
+            if isinstance(t, tuple):
+                check, t = t
+                if check(f, text):
+                    text = t(text)
+            
+            elif(callable(t)):
                 text = t(text)
+            
+            else:
+                print("Error applying the transform!")
+                print("please provide a (check(), transform()) tuple or a transform()")
 
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
@@ -286,8 +290,10 @@ if __name__ == "__main__":
             
             text = text[:match.start()] + text[match.end():]
         
-        
+        # convert indexes 
+        text = index.replace_index(rel_dir, text) 
 
+        # replace glpi_address
         text = text.replace("{glpi_address}", "glpi_address")
         
         # Removing all { .attrib=value }
@@ -367,36 +373,6 @@ if __name__ == "__main__":
         # Changing GLPI to i-Vertix ITAM
         text = text.replace("GLPI", "i-Vertix ITAM")
         
-        #convert indexes
-        if f.name == "index.md":
-            
-            match = re.search(r"::: \n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)            
- 
-            if match:
-
-                def build_link(l, rel_dir):
-                    url = ["/asset-management"]
-                    url.extend(list(rel_dir.parts))
-                    
-                    text = l.split("/")
-                    if text[-1] == "index":
-                        text.pop(-1)
-
-                    url.extend(text)
-                    url = [x for x in url if x]
-
-                    link_text = text[0].title()
-                    link_text= link_text.replace("_", " ")
-                    link_text= link_text.replace("-", " ")
-
-                    return (link_text, "/".join(url))
-                                                    
-                links = match.group(1).split()
-                links = [build_link(l, rel_dir) for l in links]
-                links = [f"- [{text}]({url})" for text, url in links]
-                links = "\n".join(links)
-
-                text = text[:match.start()] + links + "\n" + text[match.end():]
         
 
         while True:
