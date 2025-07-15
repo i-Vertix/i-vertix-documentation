@@ -7,30 +7,8 @@ import shutil
 import re
 
 import index 
-
-
-def dump_struct(s):
-    print(json.dumps(s, indent=4))
-    return
-
-
-def normalize_url(url):
-    comp = url.split("/")
-    if comp:
-            
-        if comp[-1] == "index":
-            comp = comp[:-1]
-            if comp[0] == "..":
-                comp = comp[1:]
-
-        #url starts with an "/", hence it is absolute
-        if comp[0] == "":
- 
-            if comp[0] not in ["/asset-management", ".."]:
-                comp.insert(0, "/asset-management")
-
-    comp = filter(lambda x: len(x) > 0, comp)
-    return "/".join(comp)
+import images
+import utils
 
 
 def add_header(file_path):
@@ -61,31 +39,11 @@ def add_header(file_path):
     return
 
             
-
-
-def makedir(path):
-    path.parent.mkdir(exist_ok=True, parents=True)
-    return
-
-
 def convert_to_md(in_path, out_path):
     #print(f"converting {in_path} {out_path}")
-    makedir(out_path)
+    utils.makedir(out_path)
     sb.call(["pandoc", in_path, "-f",  "rst", "-t", "commonmark_x", "-o", out_path])
     return
-
-
-def merge_path(base, rel):  
-
-    base_parts = list(base)
-    rel_parts = list(rel)
-    while rel_parts[0] == "..":
-        base_parts = base_parts[:-1]
-        rel_parts = rel_parts[1:]
-
-    merged_parts = base_parts + rel_parts   
-    
-    return merged_parts
 
 
 def compute_conversion_list(input_dir, output_dir):
@@ -195,7 +153,7 @@ def parse_link(conv_list):
                 norm_path = l_path.split("/")
                 norm_path = [n for n in norm_path if n]
             else:
-                norm_path = merge_path(rel.parts, l_path.split("/"))
+                norm_path = utils.merge_path(rel.parts, l_path.split("/"))
 
             if norm_path[-1] == "index":
                 norm_path = norm_path[:-1]
@@ -276,73 +234,15 @@ if __name__ == "__main__":
         "asset-management_versioned_sidebars/10-sidebar.yaml"
     )
 
-    # parse / copy all images
-    static_dir = output_dir / "assets"
-    static_dir.mkdir(exist_ok=True)
-    images = []
-    img_include_from = {}
-    
-    incpath_to_realpath = {}
-    realpath_to_incpath = {}
-
-    img_nr = 0
-    for _, rel_path, f in fmap:
-
-        lines = []
-        with open(f, "r", encoding="utf8") as fd:
-            lines = fd.readlines()
-
-        for l in lines:
-            img_include = re.search(r"!\[(.*)\]\((.*)\)", l)
-
-            if img_include:
-                img_nr += 1
-                orig_img = img_include.group(2)
-                img = pathlib.Path(orig_img)
-                
-                #if it is relative, make it absolute
-                #if not img.is_absolute():
-                img = merge_path(rel_path.parts, img.parts)
-                img = pathlib.Path(*img)
-                if img.parts[0] == "\\":
-                    img = pathlib.Path(*img.parts[1:])
-
-                images.append(img)
-                incpath_to_realpath[orig_img] = img
-                
-                # I need a bi-directional association for replacements
-                realpath_to_incpath[img] = orig_img
-
-                img_include_from[img] = f
-
-    print(f"images nr: {img_nr}")
-    images = list(set(images))
-    print(f"images dedup: {len(images)}")
-
-    replacements = {x.name: x  for x in images if (input_dir / x).exists()}
-
-    for c in images:
-
-        in_path = input_dir / c
-
-        # if image does not exist, search for an image with the same name
-        # if a replacement is found, then replace just the entry 
-        # in incpath_to_realpath, avoiding multiple copies of the same
-        # image
-
-        if not in_path.exists(): 
-            print(f"Image {in_path}, included from {img_include_from[c]} does not exist")
-
-            if c.name in replacements:
-                incpath = realpath_to_incpath[c]
-                incpath_to_realpath[incpath] = replacements[c.name]
-                print(f"-> Replaced with {replacements[c.name]}")
-                continue
- 
-        if args.copy_images:
-            out_path = static_dir / c
-            makedir(out_path)
-            shutil.copy(in_path, out_path)
+    #images
+    assets_dir = output_dir / "assets"
+    assets_dir.mkdir(exist_ok=True)
+    incpath_to_realpath = images.process_images(
+        fmap, 
+        input_dir,
+        assets_dir,
+        real_copy=args.copy_images 
+        )
 
 
     if args.skip_post:

@@ -146,6 +146,10 @@ def replace_index(rel_dir, text):
         if text[-1] == "index":
             text.pop(-1)
 
+
+        if len(text) > 1 and text[-1] == text[-2]:
+            text = text[:-1]
+
         url.extend(text)
         url = [x for x in url if x]
 
