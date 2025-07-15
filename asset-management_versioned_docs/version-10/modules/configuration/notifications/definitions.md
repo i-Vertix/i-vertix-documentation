@@ -56,10 +56,10 @@ A notification definition in i-Vertix ITAM is composed of:
 
       - **Administrator**: person whose email address has been defined
         in the global
-        [configuration of email follow-ups](email_notifications).
+        [configuration of email follow-ups](/asset-management/modules/configuration/notifications/email_notifications).
       - **Entity Administrator**: person, for each entity, whose email
         address is defined in the entity
-        [configuration of email follow-ups](email_notifications).
+        [configuration of email follow-ups](/asset-management/modules/configuration/notifications/email_notifications).
       - **Requester**: The person who is listed as the requester in the
         ticket.
       - **Technician in charge of the ticket**: Users assigned to the

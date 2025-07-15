@@ -10,7 +10,7 @@ characterized by periods of opening as well as periods of closing.
 
 These calendars are used in the `SLA`
 (see Configure SLAs) and the
-[configuration of entities](../../administration/entities).
+[configuration of entities](/asset-management/modules/administration/entities).
 
 ## Calendar
 
@@ -22,8 +22,7 @@ as necessary per day as long as these slots do not overlap.
 ### Close times
 
 Lists the closing periods assigned to this calendar and allows you to
-add a new one; see
-[lca configuration of closing periods](conf-close-periods).
+add a new one; see lca configuration of closing periods.
 
 ### All Information
 

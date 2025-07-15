@@ -20,7 +20,7 @@ and shares with it many concepts: [Requester],
 
 
 Problems use their own notifications, see
-[configuration of email follow-ups](email_notifications).
+[configuration of email follow-ups](/asset-management/modules/assistance/email_notifications).
 
 Statistics similar to tickets are available for problems, see
 [Display statistics](/asset-management/modules/assistance/statistics).

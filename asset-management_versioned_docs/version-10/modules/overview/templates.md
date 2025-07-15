@@ -102,8 +102,7 @@ Default templates can be defined at entity level or at profile level.
 For the profiles, only the template of the root entity that are visible
 from sub-entities can be attached.
 
-Default templates can also be defined by
-[ticket category](tickets-categories).
+Default templates can also be defined by ticket category.
 
 When creating a ticket, the used template is, with priority order:
 
@@ -124,6 +123,5 @@ then the first case is then tested again with these new values.
 - If one of the parameter entity, profile, type or category is modified
   when filling the ticket, the template to use is then searched again
   according to these new values.
-- The template is used to create
-  [recurrent tickets](recurrent-tickets).
+- The template is used to create recurrent tickets.
 :::

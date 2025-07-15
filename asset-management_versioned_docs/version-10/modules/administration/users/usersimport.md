@@ -41,7 +41,7 @@ This button is available when profile is granted user *External add*
 authorization. i-Vertix ITAM allows users advanced search in a LDAP directory.
 The interface is restricted to the list of entities for which i-Vertix ITAM
 connected user is granted authorization (see
-[Administer user profiles](/asset-management/modules/administration/profiles/profiles)). Once entity is selected (if i-Vertix ITAM is in multi-entities mode
+[Administer user profiles](/asset-management/modules/administration/profiles)). Once entity is selected (if i-Vertix ITAM is in multi-entities mode
 or if connected user is granted authorization for several entities), a
 list of criteria is displayed, based on personal information collected
 from directory. The search syntax for fields is similar to the syntax of

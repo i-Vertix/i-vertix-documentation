@@ -15,10 +15,10 @@ authentication server with matching credentials.
 
 The general authentication configuration and the management of external
 authentication servers can be done in the
-[Setup > Authentication menu](configuration).
+[Setup > Authentication menu](/asset-management/modules/configuration/authentication/configuration).
 
 The attribution of authorizations is described in the
-[Rules for assigning authorizations to a user](../../administration/rules/userauthorizations) documentation.
+[Rules for assigning authorizations to a user](/asset-management/modules/administration/rules/userauthorizations) documentation.
 
 :::info
 

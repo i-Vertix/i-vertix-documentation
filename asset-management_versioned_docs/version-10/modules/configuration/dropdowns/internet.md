@@ -12,7 +12,7 @@ The IP protocol is represented in several forms:
 - `FQDN`
 
 A device connects to a network through
-[network ports](../../assets/tabs/network-ports).
+[network ports](/asset-management/modules/assets/tabs/network-ports).
 
 To a network port, one or more Network Names are associated (see below).
 

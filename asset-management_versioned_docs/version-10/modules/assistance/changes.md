@@ -29,7 +29,7 @@ or several projects allowing a mode detailed management
 ([Manage projects](/asset-management/modules/tools/projects)).
 
 Changes use their own notifications (see
-[configuration of email follow-ups](email_notifications)).
+[configuration of email follow-ups](/asset-management/modules/assistance/email_notifications)).
 
 ## The different tabs
 

@@ -26,7 +26,7 @@ Statistics are available for tickets, see
   These two dates allow to limit in time incident or service request. A
   **SLA** can also be associated with the ticket; in this case the SLA
   and the next escalade level are displayed (see
-  [Configure SLA](modules/configuration/service_levels)).
+  [Configure SLA](/asset-management/modules/assistance/tickets/modules/configuration/service_levels)).
 
 - **By**: references the i-Vertix ITAM user having opened the ticket;
 
@@ -66,9 +66,9 @@ Statistics are available for tickets, see
   them to be notified during ticket life cycle, see
   [Defining actors and roles](/asset-management/modules/assistance/actors).
 
-  If email followup have been configured (see
-  [notification management](configure_notifications)), information about notifications are displayed for a user
-  or a supplier: *Email Followup* (yes or no) and *Email*. Email is
+  If email followup have been configured (see notification management),
+  information about notifications are displayed for a user or a
+  supplier: *Email Followup* (yes or no) and *Email*. Email is
   pre-filled with user's email if defined in user or supplier form. If
   no email is defined in user or supplier form, an email can be entered
   in text field.
@@ -122,7 +122,7 @@ technician which is not visible by requester.
 
 Adding, modifying and deleting a followup is submited to authorizations
 defined in profile, see
-[Administer user profiles](/asset-management/modules/administration/profiles/profiles).
+[Administer user profiles](/asset-management/modules/administration/profiles).
 
 ### Approvals
 

@@ -17,6 +17,5 @@ management.
 Modifying an element's status can be done either from the element's
 form or using mass actions.
 
-A [report](gestion-rapports) can display
-a summary of statuses sorted by asset types.
-[Global search on inventory](recherche-globale-inventaire) allows to query inventory elements by status.
+A report can display a summary of statuses sorted by asset types. Global
+search on inventory allows to query inventory elements by status.

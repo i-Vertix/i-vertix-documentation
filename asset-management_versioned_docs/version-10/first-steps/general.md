@@ -35,8 +35,7 @@ functions if i-Vertix ITAM has been configured to allow it:
 - ...
 
 Depending on the profile of the authenticated user, they may be shown
-the [standard interface](standard_interface), or
-[simplified interface](simplified_interface).
+the standard interface, or simplified interface.
 
 ## End your session
 

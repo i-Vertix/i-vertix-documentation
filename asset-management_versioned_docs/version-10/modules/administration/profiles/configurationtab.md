@@ -6,7 +6,7 @@ title: Configurationtab
 # Setup permissions
 
 The 7 standard permissions will not be listed (see
-[Permissions description](/asset-management/modules/administration/profiles/profiles)).
+[Permissions description](/asset-management/modules/administration/profiles)).
 
 ## All Configuration Permissions
 

@@ -92,7 +92,7 @@ the ticket corresponds to the permission.
 
 Common fields with the simplified interface will not be detailed. The 7
 standard permissions will not be listed (see
-[Permissions description](/asset-management/modules/administration/profiles/profiles)).
+[Permissions description](/asset-management/modules/administration/profiles)).
 
 ### Tickets permissions
 

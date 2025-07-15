@@ -42,7 +42,7 @@ Global management allows to limit the number of elements to manage when
 these elements are not a strategic data in the assets management.
 
 It is possible to use
-[templates with displays](../overview/templates).
+[templates with displays](/asset-management/modules/overview/templates).
 
 ## The different tabs
 
@@ -159,7 +159,7 @@ Financial information consists of the following items:
 - TCO (value+amount of interventions): the total cost of ownership which
   includes all the constituent elements of an invoiced product.
 - Budget: the budget on which this equipment was purchased See
-  [Managing the budget](../management/budgets).
+  [Managing the budget](/asset-management/modules/management/budgets).
 - Order date: date on which the material was ordered.
 - Purchase date: date on which the equipment was purchased.
 - Delivery date: date on which the equipment was delivered.
@@ -191,8 +191,8 @@ another date. All this configuration is done by
 #### Tips
 
 i-Vertix ITAM allows you to configure a notification on the expiry of the
-hardware warranty. This is configurable by entity in
-[notification management](configure_notifications) to define the models and recipients used and in
+hardware warranty. This is configurable by entity in notification
+management to define the models and recipients used and in
 [the administration of entities](/asset-management/modules/administration/entities) to enable or disable this feature, define the default values
 and anticipate the sending of the notification if necessary.
 
@@ -366,6 +366,6 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](../overview/actions), some actions are specific to displays:
+Apart from [common actions](/asset-management/modules/overview/actions), some actions are specific to displays:
 
-- [connect a display to a monitor](../../commontabs/item_connexions)
+- [connect a display to a monitor](/asset-management/commontabs/item_connexions)

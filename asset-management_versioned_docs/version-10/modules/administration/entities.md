@@ -120,7 +120,7 @@ tables:
   be the `From:` for all i-Vertix ITAM issued emails), administrator name, prefix
   for notification email subject (`i-Vertix ITAM` by default), response email
   address (see
-  [configuration of email follow-ups](email_notifications)) and email signature.
+  [configuration of email follow-ups](/asset-management/modules/administration/email_notifications)) and email signature.
 
   For each entity, the delay applied before sending notification can be
   defined. This delay allows for instance in case of fast multiples

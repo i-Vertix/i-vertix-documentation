@@ -45,14 +45,14 @@ made recursive.
 :::
 
 It is possible to use
-[templates with software](../overview/templates).
+[templates with software](/asset-management/modules/overview/templates).
 
 ## The different tabs
 
 ### Versions 
 
 A version of a software is the element that can be installed on a asset;
-see also `*Installations* tab <tab-install-software>`.
+see also *Installations* tab.
 
 The main view lists the number of installations of the version.
 
@@ -71,11 +71,10 @@ Specific fields:
 ### Installations
 
 The installation of a software on a computer is visualized through a
-[version](versions_soft) and can be
-consulted on a software form (list of computers having at least one
-version installed), on a version form (computers having this version
-installed) and finally on a computer form (list of versions of installed
-software, sorted by category).
+version and can be consulted on a software form (list of computers
+having at least one version installed), on a version form (computers
+having this version installed) and finally on a computer form (list of
+versions of installed software, sorted by category).
 :::note
 
 - Column [license] is filled only when the license is
@@ -165,7 +164,7 @@ Financial information consists of the following items:
 - TCO (value+amount of interventions): the total cost of ownership which
   includes all the constituent elements of an invoiced product.
 - Budget: the budget on which this equipment was purchased See
-  [Managing the budget](../management/budgets).
+  [Managing the budget](/asset-management/modules/management/budgets).
 - Order date: date on which the material was ordered.
 - Purchase date: date on which the equipment was purchased.
 - Delivery date: date on which the equipment was delivered.
@@ -197,8 +196,8 @@ another date. All this configuration is done by
 #### Tips
 
 i-Vertix ITAM allows you to configure a notification on the expiry of the
-hardware warranty. This is configurable by entity in
-[notification management](configure_notifications) to define the models and recipients used and in
+hardware warranty. This is configurable by entity in notification
+management to define the models and recipients used and in
 [the administration of entities](/asset-management/modules/administration/entities) to enable or disable this feature, define the default values
 and anticipate the sending of the notification if necessary.
 
@@ -423,9 +422,9 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](../overview/actions), some actions are specific to software:
+Apart from [common actions](/asset-management/modules/overview/actions), some actions are specific to software:
 
-- [Add a version to a software](versions_soft)
+- Add a version to a software
 - **\[Manage   licenses\](03_Module_Parc/04_Logiciels/Onglet_Licences.rst)** From
   menu **\*Assets \> Softwares**\* click on license name in tab
   *Licenses*.

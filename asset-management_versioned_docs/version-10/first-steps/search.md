@@ -19,8 +19,7 @@ criteria; these lists offer some additional features:
 
 - Export in different formats (CSV, PDF, ...)
 - Massive (Bulk) actions
-- A [bookmarks](bookmarks) system to save
-  searches
+- A bookmarks system to save searches
 
 ## Perform a basic search
 

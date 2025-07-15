@@ -57,8 +57,7 @@ all the criteria and results of the rule.
 
 ### Rules for assigning a ticket opened via a mail collector
 
-See
-[Rules for assigning a ticket opened via a mail collector](collectors_rules)
+See Rules for assigning a ticket opened via a mail collector
 
 ### Rules for assigning authorizations to a user
 

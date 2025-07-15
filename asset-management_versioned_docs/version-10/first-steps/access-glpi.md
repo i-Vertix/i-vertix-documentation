@@ -18,29 +18,29 @@ The first step is to configure the desired authentication method(s).
 i-Vertix ITAM is able to manage user authentication and information completely
 locally in its database, however it is recommended to delegate the
 authentication to an external service like LDAP. See
-[Configuring authentication methods](modules/configuration/authentication) for more information.
+[Configuring authentication methods](/asset-management/modules/configuration/authentication) for more information.
 
 The import or creation of new users and management of users known to
 i-Vertix ITAM including deletion, syncronization, activation/deactivation and
 management of information such as email, phone, etc is covered in
-[the user administration documentation](../modules/administration/users/users).
+[the user administration documentation](/asset-management/modules/administration/users).
 
 A user can associated with groups, entities, and profiles which are the
 means of determining usage contexts.
 
 Groups allow users to be grouped according to similarities in skills or
 organizational units. See
-[Administering groups](../modules/administration/groups) for more information.
+[Administering groups](/asset-management/modules/administration/groups) for more information.
 
 Entities allow you to segment your asset fleet, help desk, etc into
 departments that are isolated from each other. See
-[Administering entities](../modules/administration/entities) for more information.
+[Administering entities](/asset-management/modules/administration/entities) for more information.
 
 Profiles are sets of permissions that can be granted to users. Multiple
 profiles can be given to a user but only one can be active at a time.
 See
-[Administering profiles](../modules/administration/profiles/profiles) for more information.
+[Administering profiles](/asset-management/modules/administration/profiles) for more information.
 
 Finally, you can configure
-[Rules for assigning authorizations to a user](../modules/administration/rules/userauthorizations) to dynamically assign entities, groups and profiles to
+[Rules for assigning authorizations to a user](/asset-management/modules/administration/rules/userauthorizations) to dynamically assign entities, groups and profiles to
 users.

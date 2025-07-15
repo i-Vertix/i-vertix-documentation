@@ -77,15 +77,15 @@ def convert_to_md(in_path, out_path):
 
 def merge_path(base, rel):  
 
-    base_parts = list(base.parts)
-    rel_parts = list(rel.parts)    
+    base_parts = list(base)
+    rel_parts = list(rel)
     while rel_parts[0] == "..":
         base_parts = base_parts[:-1]
         rel_parts = rel_parts[1:]
 
     merged_parts = base_parts + rel_parts   
     
-    return pathlib.Path(*merged_parts)
+    return merged_parts
 
 
 def compute_conversion_list(input_dir, output_dir):
@@ -115,14 +115,29 @@ def compute_conversion_list(input_dir, output_dir):
 # The alternative is keeping a fork of the GLPI doc repository
 def prepare_sources(files):
     """
-
     """
+
+    def remove_ref(text):
+
+        end = 0
+        while True:
+            match = re.search(r":ref:`(.*?) <(.*?)>`", text[end:], flags=re.MULTILINE)
+            if not match:
+                break
+
+            new_text = f"{match.group(1)}"
+            text = text[:end + match.start()] + new_text + text[end + match.end():]
+
+            end += match.start() + len(new_text)
+
+        return text
 
     transforms = [
         lambda x: x.replace(".. figure::", ".. image::"),
         lambda x: x.replace(".. include:: /modules/tabs", ".. include:: ../tabs"),
         lambda x: x.replace(":orphan:\n", ""),
         lambda x: x.replace("authentification", "authentication"),
+        remove_ref
     ]
  
     for f in files:
@@ -149,7 +164,62 @@ def prepare_sources(files):
             fd.write(text)
 
     return
+
+
+def parse_link(conv_list):
+
+    links = {}
     
+    # orig_link -> correction, to manage rst includes
+    # without parsing the full include tree
+    links_euristic = {}
+    
+    links_nr = 0
+
+    for inf, rel, outf in conv_list:
+        with open(inf, "r", encoding="utf8") as fd:
+            text = fd.read()
+
+        end = 0
+        while True:
+            match = re.search(r":doc:`(.*?) <(.*?)>`", text[end:], flags=re.MULTILINE)
+            if not match:
+                break
+
+            links_nr += 1
+
+            #l_text = match.group(1)
+            l_path = match.group(2)
+
+            if l_path[0] == "/":
+                norm_path = l_path.split("/")
+                norm_path = [n for n in norm_path if n]
+            else:
+                norm_path = merge_path(rel.parts, l_path.split("/"))
+
+            if norm_path[-1] == "index":
+                norm_path = norm_path[:-1]
+
+            if norm_path[-1] == norm_path[-2]:
+                norm_path = norm_path[:-1]
+
+
+            #print("")
+            #print(inf, l_text)
+            #print(rel.parts, l_path)
+            #print(norm_path)
+            ##print(l_text, l_path)
+
+            norm_path = ["", "asset-management"] + norm_path
+            url = "/".join(norm_path)
+            links[(outf, l_path)] = url
+            links_euristic[l_path] = url
+
+            end += match.end()
+
+    print(f"internal links: {links_nr}")
+    return links, links_euristic
+
 
 if __name__ == "__main__":
 
@@ -187,6 +257,9 @@ if __name__ == "__main__":
     # fix errors in glpi sources, 
     # fix hard (for pandoc) to interpret rst directives
     prepare_sources([x[0] for x in fmap])
+
+    # parse links
+    link_replacement, links_euristic = parse_link(fmap)
 
     # create md files as result from pandoc conversion    
     if not args.skip_conversion:
@@ -229,7 +302,8 @@ if __name__ == "__main__":
                 
                 #if it is relative, make it absolute
                 #if not img.is_absolute():
-                img = merge_path(rel_path, img)
+                img = merge_path(rel_path.parts, img.parts)
+                img = pathlib.Path(*img)
                 if img.parts[0] == "\\":
                     img = pathlib.Path(*img.parts[1:])
 
@@ -273,6 +347,9 @@ if __name__ == "__main__":
 
     if args.skip_post:
         exit(0)
+        
+    tot_links = 0
+    replaced_links = 0
 
     # files processing
     for _, rel_dir, f in fmap:
@@ -300,18 +377,28 @@ if __name__ == "__main__":
         text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
 
         # Convert links
+
+
         while True:
             match = re.search(r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", text, flags=re.MULTILINE)
             if not match:
                 break
 
             link_text = match.group(1)
-            url = normalize_url(match.group(2))
+            link_path = match.group(2)
 
-            url = url.replace(" ", "")
+            k = (f, link_path)
+            url = link_replacement.get(k)
+            tot_links += 1
+
+            if url is None:
+                replaced_links += 1
+                url = links_euristic.get(link_path, link_path)
+
+            #url = url.replace(" ", "")
+
             new_text = f"[{link_text}]({url})"
             text = text[:match.start()] + new_text + text[match.end():]
-
 
         #boxes conversion
         while True:
@@ -438,3 +525,7 @@ if __name__ == "__main__":
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
+        
+    print(f"tot_links: {tot_links}")
+    print(f"replaced_links: {replaced_links}")
+

@@ -35,8 +35,7 @@ A mail message will go through the following steps:
 - Mail box;
 - Collector, configured using
   [Configure collectors](/asset-management/modules/configuration/collectors);
-- Rules, see
-  [Assigned a ticked opened by mail to an entity](collectors_rules)
+- Rules, see Assigned a ticked opened by mail to an entity
 - Business rules, see
   [Business rules for tickets](/asset-management/modules/administration/rules/ticketbusinessrules)
 - Ticket is created
@@ -71,7 +70,7 @@ See
 Incidents resolution delays or SLA can be configured.
 
 See
-[Configure SLAs](modules/configuration/service_levels).
+[Configure SLAs](/asset-management/modules/assistance/tickets/modules/configuration/service_levels).
 
 ## Business rules
 

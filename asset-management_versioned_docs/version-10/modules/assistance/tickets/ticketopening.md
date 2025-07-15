@@ -51,7 +51,7 @@ when opening the ticket (content, title and/or category). If a mandatory
 field is missing, the ticket will not be opened.
 
 The different fields are described in
-[Manage tickets](ticketmanagement).
+[Manage tickets](/asset-management/modules/assistance/tickets/ticketmanagement).
 
 It is possible to attach to the ticket one or more documents in one
 operation.
@@ -75,19 +75,18 @@ easily contacted by technicians.
 Specific fields:
 
 - **Inform me about he actions take**: Appears if email followup are
-  configured, see
-  [notification management](configure_notifications). If set to [Yes], the requester will be kept
-  informed by mail of the different processing of the ticket. The field
-  *Mail* contains the email address to which notifications will be sent.
-  If several email addresses are defined, i-Vertix ITAM will select the default
-  email defined in user's preferences. It is possible to select another
-  email address or to enter an address if user's profile does not
-  mention an email;
+  configured, see notification management. If set to [Yes],
+  the requester will be kept informed by mail of the different
+  processing of the ticket. The field *Mail* contains the email address
+  to which notifications will be sent. If several email addresses are
+  defined, i-Vertix ITAM will select the default email defined in user's
+  preferences. It is possible to select another email address or to
+  enter an address if user's profile does not mention an email;
 
 - **Associated elements**: Allows to associate an item of the inventory
   with the ticket. The content of the list depends upon parameters
   defined in user's profile (see
-  [Administer user profile](/asset-management/modules/administration/profiles/profiles).
+  [Administer user profile](/asset-management/modules/administration/profiles).
 
 - **Watchers**: Allows to add a watcher and to define notification
   parameters.
@@ -153,4 +152,4 @@ visible in the description of the ticket.
 ## Open a ticket automatically
 
 This mechanism is activated through
-[Recurrent tickets](recurrentticket).
+[Recurrent tickets](/asset-management/modules/assistance/tickets/recurrentticket).

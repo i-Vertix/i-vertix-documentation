@@ -33,7 +33,7 @@ type) and [Update source] (where are computer updates coming
 from (Windows update, yum, apt...).
 
 It is possible to use
-[templates with computers](../overview/templates).
+[templates with computers](/asset-management/modules/overview/templates).
 :::note
 
 - when i-Vertix ITAM is used with an inventory tool, various information provided
@@ -257,7 +257,7 @@ Otherwise it will be displayed in a separate table.
 - the drop-down list enumerates the software that are available in the
   entity
 - licenses management can be found in [Assets \Softwares].
-  See [Manage software](../softwares)
+  See [Manage software](/asset-management/modules/assets/softwares)
 :::
 
 :::info
@@ -530,7 +530,7 @@ Financial information consists of the following items:
 - TCO (value+amount of interventions): the total cost of ownership which
   includes all the constituent elements of an invoiced product.
 - Budget: the budget on which this equipment was purchased See
-  [Managing the budget](../management/budgets).
+  [Managing the budget](/asset-management/modules/management/budgets).
 - Order date: date on which the material was ordered.
 - Purchase date: date on which the equipment was purchased.
 - Delivery date: date on which the equipment was delivered.
@@ -562,8 +562,8 @@ another date. All this configuration is done by
 #### Tips
 
 i-Vertix ITAM allows you to configure a notification on the expiry of the
-hardware warranty. This is configurable by entity in
-[notification management](configure_notifications) to define the models and recipients used and in
+hardware warranty. This is configurable by entity in notification
+management to define the models and recipients used and in
 [the administration of entities](/asset-management/modules/administration/entities) to enable or disable this feature, define the default values
 and anticipate the sending of the notification if necessary.
 
@@ -826,7 +826,7 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](../overview/actions), some actions are specific to computers:
+Apart from [common actions](/asset-management/modules/overview/actions), some actions are specific to computers:
 
 - **Install a software with a license on a computer** From the tab
   *Softwares*, add a license by choosing the name of the software

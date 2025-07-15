@@ -35,8 +35,8 @@ between technicians.
 - for users who are not known to i-Vertix ITAM, mail address can be associated to
   a ticket. Default choice for requester and watcher (no selected user)
   allows to add a mail address in these fields; for this to be
-  available, notifications must be activated (see
-  [notification management](configure_notifications))
+  available, notifications must be activated (see notification
+  management)
 - Role attribution is done in user's authorization management (see
   [Attribute authorizations to a user](/asset-management/modules/administration/rules/userauthorizations))
 :::

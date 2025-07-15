@@ -52,8 +52,7 @@ for history or for adding empty groups in the hierarchical structure.
 
 A group can have one or more supervisors, concept which can then be used
 for notifications, for example to send an email to the supervisor(s) of
-the group when a ticket is opened, see
-[notification management](configure_notifications).
+the group when a ticket is opened, see notification management.
 
 A **delegation** mechanism allows a user to declare incidents not for
 himself but for one of the members of this group.
@@ -76,7 +75,7 @@ From the list of groups, a group can be imported from a LDAP directory
 via the *LDAP directory link* button if external authentication is used
 and the "Auth and sync update" authorization is granted in profile.
 The assignment of users to groups will be automatic, see
-[Profiles](/asset-management/modules/administration/profiles/profiles). If several directories are configured, the choice between
+[Profiles](/asset-management/modules/administration/profiles). If several directories are configured, the choice between
 directories is proposed, otherwise the search form is directly
 accessible.
 

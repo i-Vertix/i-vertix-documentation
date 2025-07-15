@@ -9,7 +9,7 @@ Receivers configuration can be reached from [Configuration -\> Receivers
 ] menu.
 
 A receiver allow to import emails from a mailbox ans turn them into i-Vertix ITAM
-tickets. A [routing mechanism](collectors_rules) will bring them to the destination entity.
+tickets. A routing mechanism will bring them to the destination entity.
 
 A receiver is associated with an email address. It is possible to add as
 many receivers as you want. Of course, the more receivers you configure,

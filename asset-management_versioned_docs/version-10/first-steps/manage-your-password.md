@@ -6,7 +6,7 @@ title: Manage Your Password
 # Manage your password
 
 The change password form can be found in
-[user preferences](preferences).
+[user preferences](/asset-management/first-steps/preferences).
 
 You must enter and confirm your password before validation. The
 administrator can disable this feature, so the change password area does
