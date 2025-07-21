@@ -102,9 +102,12 @@ Here are some examples of search operators:
 
 :   Find the records containing 123 at the start of the field.
 
-    > [!WARNING]
-    > On some systems, you have to type \^, the space bar then the first
-    > character.
+:::warning
+
+On some systems, you have to type \^, the space bar then the first
+character.
+
+:::
 
 `^Windows`
 

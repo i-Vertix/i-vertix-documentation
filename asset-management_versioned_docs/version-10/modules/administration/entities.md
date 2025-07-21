@@ -130,9 +130,12 @@ tables:
 - triggering options of alerts for cartridges, consumables, contracts,
   accounting information, licenses, reservations and tickets.
 
-  > [!WARNING]
-  > Each alert option is associated with an automatic action. If action
-  > is disable by i-Vertix ITAM administrator, no notification will be sent.
+:::warning
+
+Each alert option is associated with an automatic action. If action
+is disable by i-Vertix ITAM administrator, no notification will be sent.
+
+:::
 
 If refining notification at entity level is not desired, these
 parameters can be defined once at root entity level; each entity will

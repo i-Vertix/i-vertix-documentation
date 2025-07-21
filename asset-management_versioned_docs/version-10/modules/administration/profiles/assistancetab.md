@@ -78,10 +78,13 @@ the ticket corresponds to the permission.
 - **Default ITIL templates**: default templates for Tickets, Changes and
   Problems that will apply for profile.
 
-  > [!WARNING]
-  > the template being applied to the profile which is an element of the
-  > general configuration, the list contains only the recursive
-  > templates of the root entity.
+:::warning
+
+the template being applied to the profile which is an element of the
+general configuration, the list contains only the recursive
+templates of the root entity.
+
+:::
 
   ![Default ITIL templates](../../../assets/modules/administration/images/assistance_general.png)
 
@@ -122,9 +125,12 @@ standard permissions will not be listed (see
 
 - **Update All**: modify all followups, regardless of the author.
 
-  > [!NOTE]
-  > a technician assigned to a ticket or member of the assigned group,
-  > can also modify all follow-ups.
+:::info
+
+a technician assigned to a ticket or member of the assigned group,
+can also modify all follow-ups.
+
+:::
 
 - **Add to all tickets**: add a follow-up to all tickets of the entity.
 
@@ -134,9 +140,12 @@ standard permissions will not be listed (see
 
 - **Update All**: modify all tasks, regardless of the author.
 
-  > [!NOTE]
-  > a technician assigned to a ticket or member of the assigned group,
-  > can also modify all tasks.
+:::info
+
+a technician assigned to a ticket or member of the assigned group,
+can also modify all tasks.
+
+:::
 
 - **Add to all tickets**: add a task to all tickets of the entity.
 

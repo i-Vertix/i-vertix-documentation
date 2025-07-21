@@ -302,7 +302,7 @@ if __name__ == "__main__":
 
         #boxes conversion
         while True:
-            match = re.search(r"^[> ]*\[\!(\w+)\]((\n>.*)+)", text, flags=re.MULTILINE)
+            match = re.search(r"^[> ]*\[\!(\w+)\]((\n[> ]+.*)+)", text, flags=re.MULTILINE)
             
             if match is None:
                 break
@@ -312,7 +312,7 @@ if __name__ == "__main__":
                 note_type = "info"
 
             note_text = match.group(2)
-            note_text = re.sub(r"^>[ >]*", "", note_text, flags=re.MULTILINE)
+            note_text = re.sub(r"^[ >]*", "", note_text, flags=re.MULTILINE)
             note_text = note_text.strip()
             
             new_text = f":::{note_type}\n\n{note_text}\n\n:::"
