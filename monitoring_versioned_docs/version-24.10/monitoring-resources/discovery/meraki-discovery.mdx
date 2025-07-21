@@ -3,20 +3,24 @@ id: meraki-discovery
 title: Cisco Meraki Discovery
 ---
 
-Install the Cisco Meraki Cloud Controller plugin from the Plugin Store : **Administration -> i-Vertix -> Plugin Store**
+import ImageCounter from "../../../../src/components/ImageCounter";
+import Breadcrumb from "../../../../src/components/Breadcrumb";
+
+Install the Cisco Meraki Cloud Controller plugin from the Plugin Store : <Breadcrumb crumbs={["Administration", "Stores", "Plugin Store"]} />
 
 ![image](../../assets/discovery/meraki1.png)
 
 ### Main settings
-Add new job and select Cisco Meraki from this path: **Configuration -> Hosts -> Discovery Jobs**
+
+Add new job and select Cisco Meraki from this path: <Breadcrumb crumbs={["Configuration", "Hosts", "Discovery Jobs"]} />
 
 ![image](../../assets/discovery/meraki2.png)
 
-* **Job Name**: use a meaningful name 
-*  **Poller**: select the Smart Poller that will run the scan
+* **Job Name**: use a meaningful name
+* **Poller**: select the Smart Poller that will run the scan
 * **Meraki API Token**: add Meraki Token API
-    * Several tokens can be stored
-    * The authentication token is provided directly by the Meraki console
+  * Several tokens can be stored
+  * The authentication token is provided directly by the Meraki console
 
     ![image](../../assets/discovery/meraki3.png)
 
@@ -26,9 +30,11 @@ Add new job and select Cisco Meraki from this path: **Configuration -> Hosts -> 
 * Select **Use cache** if you have a large number of devices and API requests are high (optional)
 
 ### Access
+
 **Access Groups**: user group that can view and modify this job and all the hosts it will discover
 
 ### Excluded Object
+
 List of hosts excluded from the discovery  
 
 Click on **Next** to move to the next configuration settings page
@@ -40,6 +46,7 @@ Mapping rules are preconfigured by i-Vertix
 :::note
 
 It can happen that some **Template Rules** are missing. In such a case:
+
 * **Download the relevant plugin** from the Plugin Store and install it
 * Click on **RESET** to add Template Rules included in the plugin you have just installed to the Template Rules list
 * Contact support@i-vertix.com if the template rule is still not available
@@ -49,7 +56,8 @@ It can happen that some **Template Rules** are missing. In such a case:
 ![image](../../assets/discovery/meraki4.png)
 
 ### Advanced Options
-* Devices with coordinates can be placed on i-Vertix Maps, create a [geo map](../../i-vertix-maps/map-types.md) before running the discovery 
+
+* Devices with coordinates can be placed on i-Vertix Maps, create a [geo map](../../i-vertix-maps/map-types.md) before running the discovery
 * Devices can be assigned to custom hostgroups, Network or Organization hostgroups
 
 ### Scan Results
@@ -63,6 +71,7 @@ They depend on hosts reachability, template rules mapping, API reachability and 
 Different filters are available: **Device, Type, Networks, Device Status, Status, Model, Serial, Tags**.
 
 **Device status** filters are:
+
 * Online
 * Offline
 * Alerting
@@ -73,7 +82,7 @@ Different filters are available: **Device, Type, Networks, Device Status, Status
 * **new**: hosts are highlighted in green. Connection was established and the proper templates were assigned to the hosts. To start monitoring new hosts, select them and click on **ADD TO MONITORING**.
 * **existing (ip)**: an host with the **same IP address** had already been detected. The host is likely already being monitored.
 * **existing**: an host with the **same IP address and hostname** had already been detected. The host is likely already being monitored.
-* **conflict**: an host with the **same hostname** had already been detected, or **the host doesn’t have any hostname**. To resolve the conflict, hostname has to be entered or modified.
+* **conflict**: an host with the **same hostname** had already been detected, or **the host doesn't have any hostname**. To resolve the conflict, hostname has to be entered or modified.
 * **excluded**: the host was excluded from the discovery (**EXCLUDED HOST**).
 * **no template assigned**: the host didn’t match any templates. Amend the discovery job and assign a new template rule, or add the host manually.
 
@@ -83,7 +92,7 @@ The result tab displays the hosts that were detected by the discovery, along wit
 
 * **Device name**
 * **Type**: Host/device type
-* **Model**: Host/device model 
+* **Model**: Host/device model
 * **IP**: Host IP Address
 * **Serial**: serial number
 * **Network**: the network on which the host is located
@@ -97,7 +106,7 @@ To see Host details, click on it
 ### Device info
 
 * Hostname: it can be changed if the host is not yet being  monitored
-* Alias: optional description, it can always be changed 
+* Alias: optional description, it can always be changed
 * IP: Host IP Address
 
 ### Device
@@ -105,7 +114,7 @@ To see Host details, click on it
 * Device Name
 * Device Status: status can be online, offline, alerting, dormant
 * Type: Device type
-* Model: Device model 
+* Model: Device model
 * Serial: Device serial number
 * MAC: Host mac address
 * Firmware: Firmware version
@@ -118,7 +127,7 @@ To see Host details, click on it
 
 ### host templates
 
-* **Templates from rules** 
+* **Templates from rules**
 
 Host template associated with the host as per Template Rules match. To replace it or add another/others, click on **+ HOST TEMPLATE**
 
@@ -138,7 +147,7 @@ Select the hosts you want to monitor and click on **SYNC WITH MONITORING**.
 
 :::note
 
-As previously stated, any changes will take effect only once they are exported to the **Smart Poller(s)**. 
+As previously stated, any changes will take effect only once they are exported to the **Smart Poller(s)**.
 
 :::
 

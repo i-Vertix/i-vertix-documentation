@@ -314,20 +314,20 @@ Please make sure the monitoring central server is able to reach the i-Vertix BI 
 
 The Business Intelligence Server API token is used to authenticate with the i-Vertix Business Intelligence API.
 
-The API token was generated and presented during the [setup process of the i-Vertix BI server](./bi-setup#api--reporting-engine).
-If somehow the API token has changed (newly setup system for example) you should update the existing API token credential and insert the new token.
+The API token was generated and presented during the [setup process of the i-Vertix BI server](./bi-setup#configure-bunsiness-intelligence-services-and-database).
+To re-generate a new API token, re-run the setup on the *i-Vertix Business Intelligence* machine (you will be asked if you want to generate a new token).
+After you have generated a new token, update the <ImageCounter num={2} disableMargin /> existing record.
 
-### <ImageCounter num={3} /> Re-Create Connection Profile
+### <ImageCounter num={3} /> Monitoring Database Connection
 
-Re-creating the database connection profile is needed when the i-Vertix BI IP address has changed.
+Reconnecting the database is necessary when the i-Vertix BI IP address has changed.
 
-The connection profile holds the database connection information to the monitoring central server for the i-Vertix BI system.
-A new special database user was created during the i-Vertix BI setup process which is restricted to only access from the defined i-Vertix Business Intelligence Server IP address.
+This database connection is used by the *i-Vertix Business Intelligence* server to access the monitoring database.
+For the connection a dedicated database user was created which is restricted to only access from the defined i-Vertix Business Intelligence Server IP address.
 
 :::danger
 
-If the Business Intelligence Server IP has changed you must re-create the connection profile,
-otherwise the daily ETL job will not be able to sync any new data.
+Please change the <ImageCounter num={1} /> *Business Intelligence Server IP* and **save** the settings **before** reconnecting the database.
 
 :::
 
