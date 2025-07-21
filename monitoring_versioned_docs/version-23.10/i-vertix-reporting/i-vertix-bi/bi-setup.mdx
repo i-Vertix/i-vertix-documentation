@@ -4,8 +4,11 @@ title: Setup
 ---
 
 import ImageCounter from "../../../../src/components/ImageCounter";
+import Breadcrumb from "../../../../src/components/Breadcrumb";
 
-## Installation
+## Preparation
+
+### Prepare the new Business Intelligence instance
 
 The pre-configured i-Vertix Business Intelligence instance is available in OVA format for virtualization environments. Please contact our support ([support@i-vertix.com](mailto:support@i-vertix.com)) if you need other virtualization formats for your environment.
 
@@ -13,13 +16,36 @@ Please have a look at the [system requirements](./bi-requirements) when creating
 
 :::info
 
-If you need help on how to import the OVA into your VMware environment, please have a look at our [How to import a Virtual appliance](../../installation/setup-central-poller/import-virtual-appliance#downloading-the-virtual-machine) documentation
+If you need help on how to import the OVA into your VMware environment, please have a look at our [How to import a Virtual appliance](../../installation/setup-central-poller/import-virtual-appliance#steps-to-import-a-vm-in-vmware) documentation
 
 :::
 
+### Prepare the Central Monitoring system
+
+
+#### Install the new module
+
+On the Monitoring Central System you need to install the *i-Vertix Business Intelligence module*:
+
+```bash
+dnf install ivertix-bi-module
+```
+
+#### Install the Business Intelligence Plugin Pack
+
+To monitor your Business Intelligence system, we created a new plugin pack which you can download from the [*Plugin Store*](../../monitoring-resources/plugin-packs).
+
+```text
+i-Vertix Business Intelligence Server
+```
+
+![Plugin Pack](../../assets/bi/plugin_pack.png)
+
+It is recommended to install the plugin pack right away so we can later keep focusing on the rest of the setup.
+
 ---
 
-## Configure your system
+## Configure the i-Veritx Business Intelligence system
 
 After completing the virtual machine import and configuration, start the newly created virtual machine.
 
@@ -45,15 +71,13 @@ Now select option `5) change user password`.
 
 You can now enter your new password.
 
-> It is strongly recommended to choose a strong password, as there is no further SSH restriction (such as ssh-keys) implemented.
-
 ### Network configuration
 
 Next you need to configure the network settings for your newly imported i-Vertix business intelligence system.
 
 :::note
 
-The i-Vertix BI system requires a connection to the **Monitoring Central Server**!
+When configuring the network, keep in mind that the i-Vertix BI system requires to connect to the **Monitoring Central Server**!
 
 :::
 
@@ -103,56 +127,57 @@ If you need to set a proxy server for your system, select option `6) Proxy setti
 
 You will be guided through the further process by the program itself.
 
----
+### Configure Bunsiness Intelligence Services and Database
 
-## Configure the i-Vertix BI services and the monitoring module
+To simplify the setup process of the core services and the database, we have created a setup script that automates the configuration process.
 
-### API & Reporting Engine
+:::caution
 
-To simplify the setup process of our i-Vertix services, we have created a setup script that does most of the work for you.
-
-:::note
-
-To complete this step the *i-Vertix Business Intelligence* module needs to be fully installed and licensed on the Monitoring system. If it isn't already you should take care of it now.
+During the setup you will be asked to **store the API key temporarily**.
+The API key is later needed while configuring the *i-Vertix Business Intelligence module* on the Monitoring system itself.
 
 :::
 
-To launch the setup script, which configures the REST API and the report engine, select option `9) Setup i-Vertix BI services` from the menu.
+The setup is accessible from the `menu`:
 
-You will be asked for the correct path to the .env file, which is located by default in `/usr/share/ivertix-bi/backend/.env`. If no custom modifications were made, you can simply accept the provided path.
+![Menu](../../assets/bi/menu.png)
 
-After accepting, the database will be initialized and configured.
+1. Select option `9) Setup i-Vertix BI services`
+   
+   You will be asked for the correct path to the .env file, which is located by default in `/usr/share/ivertix-bi/backend/.env`.
+   If no custom modifications were made, you can simply accept the provided path.
 
-If any problems happen during the database setup, please contact us at [support@i-vertix.com](mailto:support@i-vertix.com) with the corresponding error messages.
+2. The database will now be configured automatically
+3. A new API token is generated and printed on the screen. Please **store the API token for a moment**, this is important for the monitoring module setup!
 
-After the database was initialized, the **API token** will be **generated and printed on the screen**.
+   ![API token](../../assets/bi/setup_bi_1.png)
 
-:::danger
+4. Continue with the setup
+6. A new certificate will now be created used for SSL encryption.
 
-It is very important to **copy and store** the API token for a moment because it is needed in the further setup process (monitoring module setup).
+   You will be questioned some general information for the certificate. Please insert at least following information:
 
-The API token will only be exposed once during the setup. Afterwards it is not possible to retrieve it again. If the token gets lost, a new API token must be generated.
+   - Country Name (2 letter code, you can find all valid codes on [iso.org](https://www.iso.org/obp/ui/))
+   - State or Province Name
+   - Locality Name
+   - Organization Name (company name)
+   - Common Name (server hostname)
+   - Email Address
 
-:::
+   All other fields can be left blank (enter `.` or just skip the question by pressing Enter).
 
-After the token was created, the SSL encryption certificate will be created.
+5. You will now need to insert the IP address of the Central Monitoring server for the creation of a readonly database user on the BI database.
+   This database user will be user to monitor the database of the BI server. By default, the BI server will be monitored from the **Central poller**.
+   In case you want to monitor the BI server from another poller, use the IP of this poller instead.
 
-You will be questioned some general information for the certificate. Please insert at least following information:
+   ![Readonly db user](../../assets/bi/setup_bi_2.png)
 
-- Country Name (2 letter code, you can find all valid codes on [iso.org](https://www.iso.org/obp/ui/))
-- State or Province Name
-- Locality Name
-- Organization Name (company name)
-- Common Name (server hostname)
-- Email Address
+   After providing the IP address, the credentials of the readonly user will be printed on the screen.
+   There is **no need to save** the credentials, they will be later imported automatically during the module setup.
 
-All other fields can be left blank (enter `.` or just skip the question by pressing Enter).
+6. The **setup is now finished** and the backend restarted.
 
-Next you will be asked for the host address, which interacts with the BI server. The ip address is used to create a new readonly database user for monitoring purposes. The requested ip address should be the ip address of the **Central Monitoring Server**, as seen by this server.
-
-After this step is complete, the setup is finished and the API service is started automatically.
-
-There is no need to copy and store the generated readonly database password.
+> If any problems happen during the setup, please contact us at [support@i-vertix.com](mailto:support@i-vertix.com) with the corresponding error messages.
 
 ---
 
@@ -160,9 +185,8 @@ There is no need to copy and store the generated readonly database password.
 
 After finishing the above setup steps on the i-Vertix BI system you can now move on to the module setup part.
 
-For that, log in to your i-Vertix monitoring platform using an account with admin privileges.
-
-Head over to `Administration -> i-Vertix -> Business Intelligence`.
+For that, log in to your i-Vertix monitoring platform using an account with admin privileges
+and navigate to <Breadcrumb crumbs={["Administration", "i-Vertix", "Business Intelligence"]} />.
 
 The setup wizard should now appear.
 
@@ -172,6 +196,14 @@ The setup wizard should now appear.
 
 - <ImageCounter>1</ImageCounter> Insert the previous set-up ip address of the i-Vertix Business Intelligence Server
 - <ImageCounter>2</ImageCounter> Insert the previously generated API token which was exposed during the setup program
+   
+   :::note
+
+   In case you no longer have access to the token (for whatever reason), you can re-run the setup on the Business Intelligence machine again.
+   You will be asked if you'd like to re-generate a new token.
+
+   :::
+
 - <ImageCounter>3</ImageCounter> Click <code>Connect</code> to test the connection
 
 ![Setup Step 1.1](../../assets/bi/setup_2.png)
@@ -194,11 +226,21 @@ Quick overview of the installed versions on your fresh i-Vertix BI server. Click
 
 ![Setup Step 3](../../assets/bi/setup_4.png)
 
-- <ImageCounter>1</ImageCounter> Insert the central monitoring server ip address as seen by the i-Vertix BI server (same ip address which was requested during the BI server setup process). By default the current Browser address is used, this address is not always the right one
-- <ImageCounter>2</ImageCounter> Insert the monitoring database port (default <code>3306</code>)
-- <ImageCounter>3</ImageCounter> Insert the monitoring database superadmin/root username (default <code>root</code>)
-- <ImageCounter>4</ImageCounter> Insert the monitoring database superadmin/root password (consult the i-Vertix team)
-- <ImageCounter>5</ImageCounter> Click <code>Connect</code> to test the database connection from the i-Vertix BI server to the central monitoring server
+During this step the monitoring database connection for the BI server will be configured.
+For that, a new database user must be configured on the monitoring database.
+To create the new user with all required access permissions, a command is prepared for you, which you need to execute as `root` user on the database server.
+
+Provide following information:
+
+- <ImageCounter>1</ImageCounter> Monitoring database server IP address
+   - Most probably your monitoring database is present on the monitoring server it self, in that case please **insert the monitoring server IP** (must be reachable by the BI server)
+   - In case you have a [remote database server architecture](../../installation/before-you-start/architecture#dbms), use the **IP of the remote database server** (must be reachable by the BI server)
+- <ImageCounter>2</ImageCounter> Monitoring database port (default <code>3306</code>)
+- <ImageCounter>3</ImageCounter> Username (default <code>ivertix_bi</code>)
+- <ImageCounter>4</ImageCounter> Password (pre-generated randomly, change as you like)
+
+Copy now the <ImageCounter>5</ImageCounter> *Command to create database user for BI* and execute it on the monitoring database server as `root` user.
+After the query command was executed, you can click <ImageCounter>6</ImageCounter> <code>Test & Save Connection</code> to finish the step.
 
 :::note
 
@@ -206,9 +248,7 @@ If the connection cannot be established, head over to the [Troubleshooting](./bi
 
 :::
 
-- <ImageCounter>6</ImageCounter> After the connection is established, click <code>Create Connection Profile</code>. In the background, a new dedicated user is created on the central monitoring database for the i-Vertix BI system.
-
-After successfully creating the connection profile, click `Next` to proceed with the next step. Eventual errors during the creation process will be displayed on the wizard itself.
+When the connection is saved, click `Next` to proceed with the next step.
 
 ### 4th Step: Monitor the i-Vertix Business Intelligence Server
 
