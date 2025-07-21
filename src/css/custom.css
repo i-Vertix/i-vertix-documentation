@@ -67,6 +67,10 @@
 
     /* NEWS */
     --ivertix-news-background-color: #fff;
+
+    /* IMAGE ZOOM Z-INDEX */
+    --ivertix-image-zoom-overlay: calc(var(--ifm-z-index-fixed) - 2);
+    --ivertix-image-zoom-image: calc(var(--ifm-z-index-fixed) - 1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -142,6 +146,16 @@
             var(--ifm-color-emphasis-200) 0%,
             var(--ifm-color-emphasis-100) 100%
     );
+}
+
+/* IMAGE ZOOM */
+
+.medium-zoom-overlay {
+    z-index: var(--ivertix-image-zoom-overlay);
+}
+
+.medium-zoom-image {
+    z-index: var(--ivertix-image-zoom-image);
 }
 
 /*FOOTER*/
