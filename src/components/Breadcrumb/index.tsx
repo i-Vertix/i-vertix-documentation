@@ -12,7 +12,7 @@ const Arrow = () => (
 );
 
 export default ({ crumbs, disableMargin = false, size = "small" }: { children?: never, crumbs: string[], disableMargin?: boolean, size?: "small" | "medium" }) => (
-    <div style={{
+    <span style={{
         display: "inline-flex",
         gap: "1px",
         padding: "2px 6px",
@@ -22,9 +22,9 @@ export default ({ crumbs, disableMargin = false, size = "small" }: { children?: 
         borderColor: "var(--ifm-font-color-base)",
         fontSize: size === "small" ? "0.875rem" : "1rem"
     }}>
-        {crumbs.map((value, index, arr) => <>
+        {crumbs.map((value, index, arr) => <React.Fragment key={value}>
             <span
-                key={value}
+                key={`c.${value}`}
                 style={{
                     display: "inline-block",
                     lineHeight: 1
@@ -32,8 +32,8 @@ export default ({ crumbs, disableMargin = false, size = "small" }: { children?: 
             >
                 {value}
             </span>
-            {index < arr.length -1 && <Arrow key={`a-${value}`} />}
-        </>
+            {index < arr.length -1 && <Arrow key={`a.${value}`} />}
+        </React.Fragment>
         )}
-    </div>
+    </span>
 );
