@@ -28,12 +28,16 @@ If you need help on how to import the OVA into your VMware environment, please h
 On the Monitoring Central System you need to install the *i-Vertix Business Intelligence module*:
 
 ```bash
-dnf install ivertix-bi-module
+sudo dnf install ivertix-bi-module
 ```
+
+After the install is complete, log into your monitoring system with an administrator account.
+
+Perform the extension installation from the `Extension Manager` under <Breadcrumb crumbs={["Administration", "Extensions", "Manager"]} /> and install the new `Business Intelligence by i-Vertix` extension.
 
 #### Install the Business Intelligence Plugin Pack
 
-To monitor your Business Intelligence system, we created a new plugin pack which you can download from the [*Plugin Store*](../../monitoring-resources/plugin-packs).
+To monitor your Business Intelligence system, we created a new plugin pack which you can download from the [*Plugin Store*](../../monitoring-resources/monitoring-basics/plugin-packs).
 
 ```text
 i-Vertix Business Intelligence Server
@@ -233,8 +237,8 @@ To create the new user with all required access permissions, a command is prepar
 Provide following information:
 
 - <ImageCounter>1</ImageCounter> Monitoring database server IP address
-   - Most probably your monitoring database is present on the monitoring server it self, in that case please **insert the monitoring server IP** (must be reachable by the BI server)
-   - In case you have a [remote database server architecture](../../installation/before-you-start/architecture#dbms), use the **IP of the remote database server** (must be reachable by the BI server)
+   - Most probably your monitoring database is present on the monitoring server itself, in that case please **insert the monitoring server IP** (must be reachable by the BI server)
+   - In case you have a [remote database server architecture](../../installation/before-you-start/architecture#remote-database-management-architecture), use the **IP of the remote database server** (must be reachable by the BI server)
 - <ImageCounter>2</ImageCounter> Monitoring database port (default <code>3306</code>)
 - <ImageCounter>3</ImageCounter> Username (default <code>ivertix_bi</code>)
 - <ImageCounter>4</ImageCounter> Password (pre-generated randomly, change as you like)
