@@ -1,6 +1,6 @@
 ---
 id: alarm_options
-title: Alarm_Options
+title: Alarm Options
 ---
 
 # Alarm options

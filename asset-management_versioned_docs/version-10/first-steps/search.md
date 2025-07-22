@@ -91,7 +91,7 @@ Here are some examples of search operators:
 
 `NULL`
 
-:   - Find the records with such empty field with a date field:
+    - Find the records with such empty field with a date field:
       \<number_of_months or\> number_of_months
     - Search for materials with a deadline corresponding to the number
       of months
@@ -100,7 +100,7 @@ Here are some examples of search operators:
 
 `^123`
 
-:   Find the records containing 123 at the start of the field.
+    Find the records containing 123 at the start of the field.
 
 :::warning
 
@@ -111,35 +111,35 @@ character.
 
 `^Windows`
 
-:   Find records containing Windows 2000, Windows XP but not with
+    Find records containing Windows 2000, Windows XP but not with
     Windows.
 
 `123$`
 
-:   Find the records containing 123 at the end of the field.
+    Find the records containing 123 at the end of the field.
 
 `^123$`
 
-:   Find records containing only the text 123.
+    Find records containing only the text 123.
 
 Two search criteria linked by the operator `AND NOT`
 
-:   Find records that do not match a criterion (other than).
+    Find records that do not match a criterion (other than).
 
 *Entity is « Root entity »* `AND NOT` *Type contains « Laptop »*
 
-:   Search for all computers in the « Root entity » which are not
+    Search for all computers in the « Root entity » which are not
     laptops.
 
     ![Search interface](../assets/first-steps/images/search_example.png)
 
 `[Year]-[Month]-[Day]` (YYYY-MM-DD)
 
-:   Search by date.
+    Search by date.
 
 `\\`
 
-:   For security reasons, the `\\` operator is not usable.
+    For security reasons, the `\\` operator is not usable.
 
 ## Export the result of a search
 

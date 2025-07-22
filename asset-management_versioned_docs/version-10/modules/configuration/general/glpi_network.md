@@ -1,6 +1,6 @@
 ---
 id: glpi_network
-title: Glpi_Network
+title: Glpi Network
 ---
 
 # i-Vertix ITAM Network

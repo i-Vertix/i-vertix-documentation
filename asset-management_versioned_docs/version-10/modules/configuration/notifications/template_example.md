@@ -1,6 +1,6 @@
 ---
 id: template_example
-title: Template_Example
+title: Template Example
 ---
 
 # Template example

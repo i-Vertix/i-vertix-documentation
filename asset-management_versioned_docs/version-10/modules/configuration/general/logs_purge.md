@@ -1,6 +1,6 @@
 ---
 id: logs_purge
-title: Logs_Purge
+title: Logs Purge
 ---
 
 # Logs purge

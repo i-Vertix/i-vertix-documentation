@@ -1,6 +1,6 @@
 ---
 id: sql_replicas
-title: Sql_Replicas
+title: Sql Replicas
 ---
 
 # SQL replicas

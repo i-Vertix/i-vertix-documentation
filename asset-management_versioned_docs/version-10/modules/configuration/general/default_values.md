@@ -1,6 +1,6 @@
 ---
 id: default_values
-title: Default_Values
+title: Default Values
 ---
 
 # Default values

@@ -1,6 +1,6 @@
 ---
 id: email_notifications
-title: Email_Notifications
+title: Email Notifications
 ---
 
 # Email follow-ups configuration
@@ -128,8 +128,7 @@ The following configuration options are available for the
 - SMTP host - The SMTP server address.
 
 - Port - The port to communicate with the SMTP host over.
-
-  :   Typically, this is port 25. Check your provider's documentation
+      Typically, this is port 25. Check your provider's documentation
       for more info.  
       Also, additional configuration may be needed if your provider
       needs [IMAP       OAuth](https://glpi-plugins.readthedocs.io/en/latest/oauthimap/index.html).
@@ -141,8 +140,7 @@ The following configuration options are available for the
   server.
 
 - Email sender - This may be needed for some email providers.
-
-  :   If this is not specified, the Administrator email will be used.
+      If this is not specified, the Administrator email will be used.
 
 ## Email Method - SMTP+SSL
 

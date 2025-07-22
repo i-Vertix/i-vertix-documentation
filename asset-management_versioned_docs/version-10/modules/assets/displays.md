@@ -178,8 +178,7 @@ Financial information consists of the following items:
 - Warranty information: text qualifying the warranty
 
 - Warranty period: duration of the warranty expressed in months
-
-  :   If a warranty start date and a warranty period are set, the
+      If a warranty start date and a warranty period are set, the
       information "Expires on" will appear with a date in red if it is
       earlier than the current date
 

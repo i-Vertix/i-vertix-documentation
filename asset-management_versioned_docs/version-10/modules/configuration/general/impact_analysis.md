@@ -1,6 +1,6 @@
 ---
 id: impact_analysis
-title: Impact_Analysis
+title: Impact Analysis
 ---
 
 # Impact analysis

@@ -87,8 +87,7 @@ default.
   from the server it was previously set to.
 
 - **Server** and **Port**: Represent the address and port of the LDAP directory.
-
-  :   i-Vertix ITAM can connect to an LDAP directory through an LDAPS connection.
+      i-Vertix ITAM can connect to an LDAP directory through an LDAPS connection.
       To enable this, prefix your server field with *ldaps://* and
       change the port to the LDAPS one of your LDAP directory (default
       636).

@@ -23,6 +23,7 @@ def add_header(file_path):
             module_name = os.path.basename(file_path)
             module_name = module_name[:-3]
             title = module_name.title()
+            title = title.replace("_", " ")
             title = title.replace("-", " ")
 
             header = [
@@ -411,6 +412,14 @@ if __name__ == "__main__":
         lambda x: re.sub(r"style=\".*\"", "", x),
         lambda x: re.sub(r"^export", r"\\export", x, flags=re.MULTILINE),
         lambda x: re.sub(r"^-[ ]+[\n]+\s*", r"- ", x, flags=re.MULTILINE),
+        lambda x: re.sub(r"^:\s[\s]+", r"    ", x, flags=re.MULTILINE),
+
+        # Replace (spaces):(spaces) with the same number of spaces to 
+        # keep indent level
+        lambda x: re.sub(r"^\s*:\s[\s]+", 
+                         lambda x: " " * (x.end()-x.start() - 1), 
+                         x, flags=re.MULTILINE),
+    
     ]
 
     

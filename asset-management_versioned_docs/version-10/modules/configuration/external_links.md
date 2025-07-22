@@ -1,6 +1,6 @@
 ---
 id: external_links
-title: External_Links
+title: External Links
 ---
 
 # External links
@@ -46,8 +46,7 @@ replaced by the values of the element. The tags are:
   links)
 
 - \[FIELD:\*\]: If the field you want is not available as a separate tag, it may still be possible to use it by referencing its internal field name.
-
-  :   For example, the comment field would be
+      For example, the comment field would be
       [\[FIELD:comment\]]. The field name is case sensitive
       and typically it will need to be all lowercase.
 

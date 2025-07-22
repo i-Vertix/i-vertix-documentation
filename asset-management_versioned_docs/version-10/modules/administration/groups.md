@@ -13,7 +13,7 @@ navigation and search.
 
 ::
 
-:   Management \> Division \> Service or N3 Support \> Network \> LAN
+    Management \> Division \> Service or N3 Support \> Network \> LAN
 :::
 
 Groups can be used in several way to group users by: \* *skills*: for

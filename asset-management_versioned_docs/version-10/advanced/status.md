@@ -23,7 +23,7 @@ CLI command.
 
 A non exhaustive list of services available:
 
-:   - db - Database (Main and replicants)
+    - db - Database (Main and replicants)
     - cas - Central Authentication Server
     - ldap - LDAP/Active Directory
     - imap - Email Server(s)

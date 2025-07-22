@@ -1,6 +1,6 @@
 ---
 id: general_configuration
-title: General_Configuration
+title: General Configuration
 ---
 
 # General configuration

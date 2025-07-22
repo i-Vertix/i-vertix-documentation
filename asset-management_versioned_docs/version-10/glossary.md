@@ -9,175 +9,175 @@ title: Glossary
 
 Accepted
 
-:   State of a demand which has been validated by an approver.
+    State of a demand which has been validated by an approver.
 
 Actions
 
-:   Grouping in a list of available handling of i-Vertix ITAM objects.
+    Grouping in a list of available handling of i-Vertix ITAM objects.
 
 Adaptive rule
 
-:   Rule in which at least one action is the result of a regular
+    Rule in which at least one action is the result of a regular
     expression defined in a criteria.
 
 Administrative closing
 
-:   Modification of a ticket status to closed (manually or
+    Modification of a ticket status to closed (manually or
     automatically).
 
 Alert threshold
 
-:   Minimal value from which an alert is triggered.
+    Minimal value from which an alert is triggered.
 
 Automatic action
 
-:   Process for regular actions triggering, either internal to i-Vertix ITAM or
+    Process for regular actions triggering, either internal to i-Vertix ITAM or
     external (Unix cron, Windows planned tasks...).
 
 Automatic closing
 
-:   i-Vertix ITAM internal process that closes unresolved tickets after a given
+    i-Vertix ITAM internal process that closes unresolved tickets after a given
     time.
 
 Bookmark
 
-:   Stored link to a i-Vertix ITAM page that allows to access the page quickly.
+    Stored link to a i-Vertix ITAM page that allows to access the page quickly.
 
 Budget
 
-:   Accounting operation that groups all provisional expenses and
+    Accounting operation that groups all provisional expenses and
     receipts.
 
 Cartridge
 
-:   Consumable used by a printer and specifically managed in i-Vertix ITAM.
+    Consumable used by a printer and specifically managed in i-Vertix ITAM.
 
 Case
 
-:   Physical element that contains a computer's components
+    Physical element that contains a computer's components
     (motherboard, processor, disk...).
 
 SSO
 
-:   Unique authentication system
+    Unique authentication system
     (`SSO (Single Sign On)`).
 
 Accreditation
 
-:   Authorization to perform a set of actions on several entities, given
+    Authorization to perform a set of actions on several entities, given
     by rights attribution process.
 
 Closed (ticket)
 
-:   Status of a ticket whose solution has been approved by the ticket
+    Status of a ticket whose solution has been approved by the ticket
     issuer or that has been close automatically.
 
 Connection (network)
 
-:   Link between two network ports.
+    Link between two network ports.
 
 Registered user
 
-:   Person having an accreditation allowing to connect to i-Vertix ITAM.
+    Person having an accreditation allowing to connect to i-Vertix ITAM.
 
 Contact
 
-:   Referent person linked to a supplier.
+    Referent person linked to a supplier.
 
 Contract
 
-:   Financial document linked to assets and to suppliers.
+    Financial document linked to assets and to suppliers.
 
 Controller
 
-:   Device that interfaces with other peripheral device.
+    Device that interfaces with other peripheral device.
 
 Criteria
 
-:   Element or pattern used by search engines to select an information
+    Element or pattern used by search engines to select an information
     or used by rules engines and dictionaries to perform actions.
 
 Depreciation type
 
-:   Characteristic of depreciation which balance can be linear or
+    Characteristic of depreciation which balance can be linear or
     declining.
 
 Default profile
 
-:   Profile attributed by the application in the absence of particular
+    Profile attributed by the application in the absence of particular
     settings (rules, manual attribution...).
 
 Dictionary
 
-:   Set of rules that allow to modify i-Vertix ITAM data.
+    Set of rules that allow to modify i-Vertix ITAM data.
 
 Direct connection
 
-:   Physical link between a computer and another asset.
+    Physical link between a computer and another asset.
 
 Active Directory service
 
-:   Directory service compatible with `LDAP directory`, provided by Microsoft. Also known as [AD].
+    Directory service compatible with `LDAP directory`, provided by Microsoft. Also known as [AD].
 
 LDAP directory
 
-:   Directory service using the
+    Directory service using the
     `LDAP protocol (Lightweight Directory Access Protocol)`. Allows in particular to store user accounts.
 
 Document
 
-:   Element that defines a link and/or store a file and that can be
+    Element that defines a link and/or store a file and that can be
     associated to other objects of i-Vertix ITAM.
 
 Mail domain
 
-:   Part of a mail adress that is after character [@].
+    Part of a mail adress that is after character [@].
 
 Domain
 
-:   Group of assets connected to a network.
+    Group of assets connected to a network.
 
 Dropdown
 
-:   Customizable dropdown list used in i-Vertix ITAM and plugins.
+    Customizable dropdown list used in i-Vertix ITAM and plugins.
 
 Entity
 
-:   Organizational object allowing to partition view and action scope of
+    Organizational object allowing to partition view and action scope of
     users.
 
 Local right
 
-:   Permission applicable to a given scope (entity).
+    Permission applicable to a given scope (entity).
 
 Tacit renewal
 
-:   The contract is renewed automaticaly if none of the parties declares
+    The contract is renewed automaticaly if none of the parties declares
     its will to break it.
 
 External link
 
-:   Link displayed on an asset form in i-Vertix ITAM and built dynamically using
+    Link displayed on an asset form in i-Vertix ITAM and built dynamically using
     the asset data.
 
 Frequently Asked Questions (FAQ)
 
-:   Specifically in i-Vertix ITAM, selection of elements of the knowledge base
+    Specifically in i-Vertix ITAM, selection of elements of the knowledge base
     that can be provided independently, for example articles that are
     made accessible to users having only access to the simplified
     interface.
 
 Financial information
 
-:   Data for invoicing and warranty.
+    Data for invoicing and warranty.
 
 Followup
 
-:   Exchange between a ticket issuer and the persons in charge of it.
+    Exchange between a ticket issuer and the persons in charge of it.
 
 Label FQDN
 
-:   A `FQDN` is composed of labels
+    A `FQDN` is composed of labels
     separated by dots ('\`.\`').
 
     For example, [www.glpi-project.org] is composed of
@@ -192,387 +192,387 @@ Label FQDN
 
 FQDN
 
-:   A `FQDN (Fully qualified domain name)` is a fully qualified domain name.
+    A `FQDN (Fully qualified domain name)` is a fully qualified domain name.
 
     For example : [www.glpi-project.org],
     [forge.glpi-project.org]...
 
 Global management
 
-:   Management mode in which a unique inventory object can be connected
+    Management mode in which a unique inventory object can be connected
     to several computers.
 
 Global note
 
-:   Public note that is also visible from sub-entities.
+    Public note that is also visible from sub-entities.
 
 Global right
 
-:   Permission on objects that are not linked to an entity.
+    Permission on objects that are not linked to an entity.
 
 Grouping
 
-:   Action of merging similar elements of distinct entities into the
+    Action of merging similar elements of distinct entities into the
     parent entity.
 
 Group
 
-:   Grouping of users.
+    Grouping of users.
 
 Hive
 
-:   Entry in Windows registry.
+    Entry in Windows registry.
 
 ICAL (ICalendar)
 
-:   Calendar import/export format.
+    Calendar import/export format.
 
 ID
 
-:   Technical identifier of an element.
+    Technical identifier of an element.
 
 IMAP/POP
 
-:   `IMAP (Internet Message Access Protocol)` and `POP (Post Office Protocol)` are messaging protocols allowing to retrieve mail
+    `IMAP (Internet Message Access Protocol)` and `POP (Post Office Protocol)` are messaging protocols allowing to retrieve mail
     messages.
 
 Impact
 
-:   Measure of the effect of an incident, problem or change in business
+    Measure of the effect of an incident, problem or change in business
     process.
 
 Incident
 
-:   Unplanned interruption or quality decrease of a service.
+    Unplanned interruption or quality decrease of a service.
 
 Intervention
 
-:   Action of a technician to solve an incident.
+    Action of a technician to solve an incident.
 
 Asset
 
-:   Generic term for an element that can be inventoried and managed in
+    Generic term for an element that can be inventoried and managed in
     i-Vertix ITAM.
 
 Knowledge base
 
-:   Database allowing to gather, analyze, store and share knowledge and
+    Database allowing to gather, analyze, store and share knowledge and
     information inside an organization.
 
 Location
 
-:   Name in i-Vertix ITAM allowing geographical localization of an asset.
+    Name in i-Vertix ITAM allowing geographical localization of an asset.
 
 Identifier
 
-:   Connection name of a user (login).
+    Connection name of a user (login).
 
 Logs
 
-:   List of events occurring during use of i-Vertix ITAM application.
+    List of events occurring during use of i-Vertix ITAM application.
 
 Manufacturer
 
-:   Company producing a hardware.
+    Company producing a hardware.
 
 Mount point
 
-:   Directory from which the data contained in a partition can be
+    Directory from which the data contained in a partition can be
     accessed.
 
 Network
 
-:   Name defining the connection type (internet, local...).
+    Name defining the connection type (internet, local...).
 
 Network port
 
-:   Network interface that can be virtual or physical.
+    Network interface that can be virtual or physical.
 
 Networks
 
-:   Hardwares providing interconnection of computer equipments.
+    Hardwares providing interconnection of computer equipments.
 
 New (ticket)
 
-:   Default status of a ticket.
+    Default status of a ticket.
 
 Path
 
-:   Address allowing to localize an element in a tree structure.
+    Address allowing to localize an element in a tree structure.
 
 Pattern
 
-:   Character string used for comparison in a criteria.
+    Character string used for comparison in a criteria.
 
 Personal note
 
-:   Note visible only by its writer.
+    Note visible only by its writer.
 
 Planning
 
-:   Scheduling of a task in time scale.
+    Scheduling of a task in time scale.
 
 Plugin
 
-:   i-Vertix ITAM extension that allows to add functionalities and/or to modify
+    i-Vertix ITAM extension that allows to add functionalities and/or to modify
     application behaviors.
 
 PDU
 
-:   Power Distribution Unit.
+    Power Distribution Unit.
 
 Power supply
 
-:   Bloc providing electric current to the components of a computer.
+    Bloc providing electric current to the components of a computer.
 
 Priority
 
-:   Scale that identifies the relative importance of a ticket and that
+    Scale that identifies the relative importance of a ticket and that
     results from impact and urgency.
 
 Private
 
-:   Element that is visible only by its writer (bookmark, note...).
+    Element that is visible only by its writer (bookmark, note...).
 
 In progress (attributed) (Ticket)
 
-:   Status of a ticket that is attributed to a technician or a group of
+    Status of a ticket that is attributed to a technician or a group of
     technicians.
 
 In progress (planned) (Ticket)
 
-:   Status of a ticket that is attributed to a technician or a group of
+    Status of a ticket that is attributed to a technician or a group of
     technicians and for which an action is planned.
 
 Profile
 
-:   Set of rights.
+    Set of rights.
 
 Public
 
-:   Element that is visible by all authorized users of an entity.
+    Element that is visible by all authorized users of an entity.
 
 Public note
 
-:   Note that is visible by all users of the note's entity.
+    Note that is visible by all users of the note's entity.
 
 Purge
 
-:   Permanent deletion of elements placed in the trash bin.
+    Permanent deletion of elements placed in the trash bin.
 
 Saved search
 
-:   Recording of i-Vertix ITAM search engine state that allows to store and
+    Recording of i-Vertix ITAM search engine state that allows to store and
     perform again the search.
 
 Collector
 
-:   Functionality of i-Vertix ITAM that allows to create tickets or followup by
+    Functionality of i-Vertix ITAM that allows to create tickets or followup by
     importing messages from a mailbox.
 
 Recursivity
 
-:   Property of an object belonging to an entity that makes it visible
+    Property of an object belonging to an entity that makes it visible
     from sub-entities.
 
 Refused
 
-:   State of a demand that has been invalidated.
+    State of a demand that has been invalidated.
 
 Regular expression
 
-:   Character string (often called pattern) that describes a set of
+    Character string (often called pattern) that describes a set of
     accepted strings according to a well-defined syntax.
 
 Replicate (MySQL)
 
-:   MySQL database used by i-Vertix ITAM if main database is not available.
+    MySQL database used by i-Vertix ITAM if main database is not available.
 
 Report
 
-:   Document that sums up i-Vertix ITAM data.
+    Document that sums up i-Vertix ITAM data.
 
 Requester
 
-:   Person at the origin of an incident ticket or a service request.
+    Person at the origin of an incident ticket or a service request.
 
 Booking
 
-:   Element that is booked for a given period.
+    Element that is booked for a given period.
 
 Restoration
 
-:   Recovery of an element of the trash bin.
+    Recovery of an element of the trash bin.
 
 Right
 
-:   Authorization of a user for a given action.
+    Authorization of a user for a given action.
 
 Root entity
 
-:   First entity of i-Vertix ITAM entities tree structure, that is always present
+    First entity of i-Vertix ITAM entities tree structure, that is always present
     even if no other entity is defined and that cannot be deleted.
 
 Rule
 
-:   List of criteria that trig a list of actions if criteria are
+    List of criteria that trig a list of actions if criteria are
     satisfied.
 
 Service
 
-:   General action of i-Vertix ITAM listed in the events.
+    General action of i-Vertix ITAM listed in the events.
 
 Preferences
 
-:   Personal parameters of a user.
+    Personal parameters of a user.
 
 Solved (ticket)
 
-:   Ticket state when a technical solution was provided for an incident.
+    Ticket state when a technical solution was provided for an incident.
 
 Express renewal
 
-:   The contract is renewed only if both parties agree for its renewal
+    The contract is renewed only if both parties agree for its renewal
     (opposite to tacit renewal).
 
 Standard interface
 
-:   i-Vertix ITAM user interface that gives access to all functionalities
+    i-Vertix ITAM user interface that gives access to all functionalities
     (opposite to [simplified interface]).
 
 Statistics
 
-:   Summary of i-Vertix ITAM data linked to tickets.
+    Summary of i-Vertix ITAM data linked to tickets.
 
 Status
 
-:   State of an asset or of a ticket, belonging to its life cycle.
+    State of an asset or of a ticket, belonging to its life cycle.
 
 Simplified interface
 
-:   i-Vertix ITAM user interface that gives access to a reduced set of
+    i-Vertix ITAM user interface that gives access to a reduced set of
     functionalities and that targets end users (opposite to [standard
     interface]).
 
 Sub-entity
 
-:   Child entity of an entity; on a form, indicates recursivity status.
+    Child entity of an entity; on a form, indicates recursivity status.
 
 Subject
 
-:   Title or question of an element of the knowledge base.
+    Title or question of an element of the knowledge base.
 
 Supervisor
 
-:   Person in charge of a group of users.
+    Person in charge of a group of users.
 
 Provider
 
-:   Legal structure toward which a contractual relation can be
+    Legal structure toward which a contractual relation can be
     established (purchase, contract...).
 
 VLAN
 
-:   `VLAN (Virtual Local Area Network)` :
+    `VLAN (Virtual Local Area Network)` :
     Virtual Local Network.
 
 Tagged VLAN
 
-:   A tagged `VLAN (Virtual Local Area Network)` is a `VLAN` which tag is
+    A tagged `VLAN (Virtual Local Area Network)` is a `VLAN` which tag is
     transmited in network frame (see
     [802.1Q](http://fr.wikipedia.org/wiki/IEEE_802.1Q)).
 
 Virtual network port
 
-:   A virtual network port is a port which does not correspond to a
+    A virtual network port is a port which does not correspond to a
     physical network hardware.
 
 Task
 
-:   Action corresponding to a technical operation that can be planned.
+    Action corresponding to a technical operation that can be planned.
 
 Technician
 
-:   User in charge of tickets processing.
+    User in charge of tickets processing.
 
 Template
 
-:   Reusable model of object containing predefined fieds and allowing
+    Reusable model of object containing predefined fieds and allowing
     easier user entry.
 
 Tier type
 
-:   Category of providers.
+    Category of providers.
 
 Ticket
 
-:   i-Vertix ITAM object representing an incident or a service request.
+    i-Vertix ITAM object representing an incident or a service request.
 
 Transfer
 
-:   Action of moving an object from one entity to another.
+    Action of moving an object from one entity to another.
 
 Trash bin
 
-:   Container of elements deleted by users. Similar to the trash bin in
+    Container of elements deleted by users. Similar to the trash bin in
     a desktop environment, it is an intermediate state before purge.
 
 Tree
 
-:   Hierarchical organization of data using a tree structure.
+    Hierarchical organization of data using a tree structure.
 
 Unitary management
 
-:   Management mode in which an inventory object can be connected to
+    Management mode in which an inventory object can be connected to
     only one computer.
 
 Urgency
 
-:   Criteria defined by the requester that specifies for a ticket the
+    Criteria defined by the requester that specifies for a ticket the
     desired resolution speed.
 
 User
 
-:   User of an asset that is not registered in i-Vertix ITAM user base.
+    User of an asset that is not registered in i-Vertix ITAM user base.
 
 Validation
 
-:   Action of authorizing a ticket processing.
+    Action of authorizing a ticket processing.
 
 Validator
 
-:   Person performing the validation of a ticket.
+    Person performing the validation of a ticket.
 
 Global view
 
-:   In a i-Vertix ITAM menu, display of columns in a list that is common to all
+    In a i-Vertix ITAM menu, display of columns in a list that is common to all
     users.
 
 Personal view
 
-:   In a i-Vertix ITAM menu, display of columns in a list that is specific to a
+    In a i-Vertix ITAM menu, display of columns in a list that is specific to a
     user.
 
 VCard
 
-:   Virtual visit card.
+    Virtual visit card.
 
 Volume
 
-:   Storage area attached to a computer.
+    Storage area attached to a computer.
 
 Pending (Ticket)
 
-:   Status of a ticket which processing is temporarily suspended (does
+    Status of a ticket which processing is temporarily suspended (does
     not impact processing time).
 
 Webcal
 
-:   Exchange format for calendar data.
+    Exchange format for calendar data.
 
 SLA
 
-:   SLA (for Service-Level Agreement) is a contract between a service
+    SLA (for Service-Level Agreement) is a contract between a service
     provider and a client that defines the requested quality of service
     and the responsibilities in case of failure.
 :::
