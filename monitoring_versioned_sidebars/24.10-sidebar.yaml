@@ -35,6 +35,10 @@ sidebar:
           - first-web-access
       - attach-a-poller-to-a-central-server
       - fail2ban
+  - id: upgrade
+    label: Update / Upgrade 
+    items:
+      - upgrade-from_4.2
   - id: monitoring-resources
     label: Monitoring Resources
     items:
