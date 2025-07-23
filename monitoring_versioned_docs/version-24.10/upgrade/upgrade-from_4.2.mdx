@@ -18,22 +18,7 @@ that the Central has Internet access.
 Start by logging in the system using ssh.
 The user needs to be able to run commands with sudo.
 
-The first operation is to check whether the upgrade package is already installed or not.
-
-```
-sudo dnf list ivertix-ansible-playbooks
-```
-
-If the package needs to be installed, it will be shown in the list "Available Packages"
-
-![dnf list available](../assets/upgrade/upgrade-from_4.2/dnf_list_available.png)
-
-otherwise, it will be shown as an "Installed Packages".
-
-![dnf list installed](../assets/upgrade/upgrade-from_4.2/dnf_list_installed.png)
-
-
-In the case the installation is needed, run
+The first operation is to install the upgrade package with:
 
 ```
 sudo dnf install ivertix-ansible-playbooks
