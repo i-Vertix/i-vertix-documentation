@@ -38,7 +38,7 @@ sidebar:
   - id: upgrade
     label: Update / Upgrade 
     items:
-      - upgrade-from_4.2
+      - upgrade-from-4-2
   - id: monitoring-resources
     label: Monitoring Resources
     items:

@@ -1,19 +1,31 @@
 ---
-id: upgrade-from_4.2
-title: Upgrade from version 4.2
+id: upgrade-from-4-2
+title: Upgrade from i-Vertix 4.2
 ---
 
-# Prerequisites
+import ImageCounter from "../../../src/components/ImageCounter";
+import Breadcrumb from "../../../src/components/Breadcrumb";
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+:::info
+This guide requires your system to be on version 4.2. If you need to upgrade from an older version, please contact us via support@i-vertix.com.
+:::
+
+## Prerequisites
 
 :::warning
 Before attempting any Update, please make sure to create a snapshot or a backup
-of your i-Vertix Central Virtual Machine.
+of your i-Vertix Central Virtual Machine and any other Machine involved.
+
+A reliable Internet connection is also needed, both from Central and Pollers.
 :::
 
-This guide applies to i-Vertix Central version 4.2, please also ensure 
-that the Central has Internet access.
 
-## Installing upgrade package
+## Update Central Server
+
+### Prepare the Upgrade
 
 Start by logging in the system using ssh.
 The user needs to be able to run commands with sudo.
@@ -27,9 +39,7 @@ sudo dnf install ivertix-ansible-playbooks
 ![dnf install](../assets/upgrade/upgrade-from_4.2/dnf_install.png)
 
 
-## Launching first upgrade step
-
-After installing the upgrade package, run
+### Perform Upgrade Step 1
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step1.yaml
@@ -42,11 +52,13 @@ Since the scripts update the entire system and download many packages,
 the process may take up to 45 minutes or longer, depending on the speed of your Internet connection.
 
 
-
-## WebUI Login and update
+### Perform Application Upgrade
 
 After the first system update, it is time for the WebUI.
-Using a browser, visit the Central WebPage and follow the wizard clicking next.
+Using a browser, visit the Central WebPage and follow the wizard clicking next and finish.
+
+<details>
+<summary>Application Upgrade Wizard</summary>
 
 ![webui_1](../assets/upgrade/upgrade-from_4.2/webui_step1.png)
 ![webui_2](../assets/upgrade/upgrade-from_4.2/webui_step2.png)
@@ -54,8 +66,14 @@ Using a browser, visit the Central WebPage and follow the wizard clicking next.
 ![webui_4](../assets/upgrade/upgrade-from_4.2/webui_step4.png)
 ![webui_5](../assets/upgrade/upgrade-from_4.2/webui_step5.png)
 
+</details>
 
-Then, enter the admin credentials and visit the `Administration > Extensions > Manager` page.
+Then, visit
+
+<!---
+TODO: evaluate wheter to replace the screenshot with the provided breadcrumb.
+<Breadcrumb crumbs={["Administration", "Extensions", "Manager"]} />
+-->
 
 ![administration extensions manager](../assets/upgrade/upgrade-from_4.2/administration_extensions_manager.png)
 
@@ -68,9 +86,9 @@ When all Extensions are updated, the page should become as follows:
 ![extensions update final](../assets/upgrade/upgrade-from_4.2/update_extensions_finish.png)
 
 
-## Final update steps
+### Perform Upgrade Step 2
 
-Now it's time to get back to the cli and run the next update steps:
+Return to the cli and run the next update script.
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step2.yaml
@@ -79,27 +97,57 @@ sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-ste
 ![ansible 2](../assets/upgrade/upgrade-from_4.2/ansible_step_2.png)
 
 
-Then:
+### Perform Upgrade Step 3
+
+At this point, we need to upgrade the MariaDb database. 
+The procedure varies depending on whether the database is embedded (i.e., installed on the same machine as the Central) 
+or deployed on a separate server. 
+See [Remote Database Management architecture](/monitoring/installation/before-you-start/architecture#dbms)
+for more details.
+
+<Tabs>
+<TabItem value="internal_db" label="Embedded Database" default>
+
+In case the database is running on the same machine as the Web Application,
+please run:
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step3.yaml
 ```
 
+</TabItem>
+<TabItem value="external_db" label="Separate Database">
+
+If the system architecture has a separate database, we need to run a different upgrade script.
+Please contact us at support@i-vertix.com for more information.
+
+</TabItem>
+</Tabs>
+
+
 ![ansible 3](../assets/upgrade/upgrade-from_4.2/ansible_step_3.png)
 
-and finally reboot the system.
+
+### Finalize Upgrade
+
+At last, we need to reboot the Central.
 
 ```
 sudo reboot
 ```
 
-## Poller update
+:::tip
+It is strongly suggested to clean the Browser Cache before 
+logging in again to avoid errors on the web application.
+:::
 
-After the Central, we need to update the Pollers.
-On the Central CLI, run:
+
+## Update Pollers
+### Perform Automatic Upgrade
+
+After the Central, we need to update all Pollers by running:
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-poller-42-to-43.yaml
 ```
 
-to update all Pollers connected to the Central.
