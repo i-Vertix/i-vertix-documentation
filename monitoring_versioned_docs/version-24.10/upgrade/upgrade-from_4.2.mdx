@@ -41,13 +41,15 @@ sudo dnf install ivertix-ansible-playbooks
 
 ### Perform Upgrade Step 1
 
+Run:
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step1.yaml
 ```
+to really start the upgrade. 
 
 ![ansible first step](../assets/upgrade/upgrade-from_4.2/ansible_step_1.png)
 
-to really start the upgrade. 
+
 Since the scripts update the entire system and download many packages, 
 the process may take up to 45 minutes or longer, depending on the speed of your Internet connection.
 
@@ -68,7 +70,7 @@ Using a browser, visit the Central WebPage and follow the wizard clicking next a
 
 </details>
 
-Then, visit
+Then, login in the Central and visit
 
 <!---
 TODO: evaluate wheter to replace the screenshot with the provided breadcrumb.
@@ -88,7 +90,7 @@ When all Extensions are updated, the page should become as follows:
 
 ### Perform Upgrade Step 2
 
-Return to the cli and run the next update script.
+Return to the cli and run the next update script:
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step2.yaml
@@ -99,7 +101,7 @@ sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-ste
 
 ### Perform Upgrade Step 3
 
-At this point, we need to upgrade the MariaDb database. 
+At this point, we need to upgrade the MariaDB database. 
 The procedure varies depending on whether the database is embedded (i.e., installed on the same machine as the Central) 
 or deployed on a separate server. 
 See [Remote Database Management architecture](/monitoring/installation/before-you-start/architecture#dbms)
@@ -108,8 +110,7 @@ for more details.
 <Tabs>
 <TabItem value="internal_db" label="Embedded Database" default>
 
-In case the database is running on the same machine as the Web Application,
-please run:
+In cases where the database is deployed on the same host as the web application, run:
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step3.yaml
