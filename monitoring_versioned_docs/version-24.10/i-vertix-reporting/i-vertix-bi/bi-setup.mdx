@@ -28,7 +28,7 @@ If you need help on how to import the OVA into your VMware environment, please h
 On the Monitoring Central System you need to install the *i-Vertix Business Intelligence module*:
 
 ```bash
-sudo dnf install ivertix-bi-module
+sudo dnf install ivertix-bi-module ivertix-bi-connector-vmware-containers
 ```
 
 After the install is complete, log into your monitoring system with an administrator account.
@@ -71,7 +71,7 @@ The first real step after the initial system-startup should be changing the pass
 
 To change the admin users password, select option `8) i-Vertix BI settings` from the menu.
 
-Now select option `5) change user password`.
+Now select option `3) change user password`.
 
 You can now enter your new password.
 
@@ -119,7 +119,7 @@ From now on you should be able to connect via SSH (port 22) to the i-Vertix BI s
 
 By default, the timezone is set to Europe/Rome.
 
-If you need to change the timezone, select option `7) i-Vertix BI settings` from the menu.
+If you need to change the timezone, select option `8) i-Vertix BI settings` from the menu.
 
 Now select option `2) change timezone`.
 
@@ -135,7 +135,7 @@ You will be guided through the further process by the program itself.
 
 To simplify the setup process of the core services and the database, we have created a setup script that automates the configuration process.
 
-:::caution
+:::danger
 
 During the setup you will be asked to **store the API key temporarily**.
 The API key is later needed while configuring the *i-Vertix Business Intelligence module* on the Monitoring system itself.
@@ -230,25 +230,37 @@ Quick overview of the installed versions on your fresh i-Vertix BI server. Click
 
 ![Setup Step 3](../../assets/bi/setup_4.png)
 
-During this step the monitoring database connection for the BI server will be configured.
-For that, a new database user must be configured on the monitoring database.
+During this step the **monitoring database connection for the BI server** will be configured.
+For that, a **new database user** must be configured on the **monitoring database**.
 To create the new user with all required access permissions, a command is prepared for you, which you need to execute as `root` user on the database server.
 
-Provide following information:
+**Before copying and executing the command** you must provide and/or verify the following information:
 
 - <ImageCounter>1</ImageCounter> Monitoring database server IP address
    - Most probably your monitoring database is present on the monitoring server itself, in that case please **insert the monitoring server IP** (must be reachable by the BI server)
+
+      :::warning
+
+      The pre-filled *Monitoring Database Server IP* is not said to be always correct, please verify the IP closely.
+      The BI server needs to access the monitoring database using this IP.
+
+      :::
+
    - In case you have a [remote database server architecture](../../installation/before-you-start/architecture#dbms), use the **IP of the remote database server** (must be reachable by the BI server)
 - <ImageCounter>2</ImageCounter> Monitoring database port (default <code>3306</code>)
 - <ImageCounter>3</ImageCounter> Username (default <code>ivertix_bi</code>)
 - <ImageCounter>4</ImageCounter> Password (pre-generated randomly, change as you like)
 
-Copy now the <ImageCounter>5</ImageCounter> *Command to create database user for BI* and execute it on the monitoring database server as `root` user.
+Copy now the <ImageCounter disableMargin>5</ImageCounter> *Command to create database user for BI* and execute it on the monitoring database server.
+
+![Execute the command](../../assets/bi/setup_4_cli.png)
+
 After the query command was executed, you can click <ImageCounter>6</ImageCounter> <code>Test & Save Connection</code> to finish the step.
 
 :::note
 
-If the connection cannot be established, head over to the [Troubleshooting](./bi-troubleshooting) section which may help you finding the cause
+If the connection cannot be established, make sure you entered the correct *Monitoring Database Server IP*!
+The *Business Intelligence* server needs to be able to connect with the provided IP.
 
 :::
 
@@ -256,22 +268,35 @@ When the connection is saved, click `Next` to proceed with the next step.
 
 ### 4th Step: Monitor the i-Vertix Business Intelligence Server
 
-![Setup Step 4](../../assets/bi/setup_5.png)
+![Setup Step 4](../../assets/bi/setup_5_ok.png)
 
 Almost done! The 4th and last step of the monitoring module setup is optional but highly recommended.
 
 By monitoring the Business Intelligence Server you always have the most important components of the i-Vertix BI server in view.
 
-If you don't already have the dedicated Plugin Pack installed, head over to the i-Vertix Plugin Store (preferably in a new tab) and
-search for the <code>i-Vertix Business Intelligence</code> plugin pack (you can copy the plugin pack name by clicking on the file icon inside
-the alert <ImageCounter disableMargin>1</ImageCounter>).
-After installing, return to the setup page, click on <ImageCounter disableMargin>2</ImageCounter> <code>Re-Check</code>.
-After the system has recognized, that the plugin pack was installed,
+Click the `Monitor Business Intelligence Server` button to create a pre-configured host to monitor the BI server.
+
+#### Plugin Pack not installed yet
+
+![Plugin pack missing](../../assets/bi/setup_5.png)
+
+In case you did not already install the required *Plugin Pack*, head over to the i-Vertix Plugin Store (preferably in a new tab) and
+search for following plugin pack:
+
+```text
+i-Vertix Business Intelligence Server
+```
+
+You can copy the name also by clicking on the file icon inside the alert <ImageCounter disableMargin>1</ImageCounter>.
+After installing the plugin pack, return to the setup page and click on <ImageCounter disableMargin>2</ImageCounter> <code>Re-Check</code>.
+After the system has recognized that the plugin pack was installed,
 click on <ImageCounter disableMargin>3</ImageCounter> <code>Monitor Business Intelligence Server</code> to automatically create the monitoring host
 with all relevant checks assigned.
 
 ---
 
-The setup is now complete and almost everything is ready now for your first report job.
+The setup is now complete, you can <ImageCounter disableMargin>1</ImageCounter> **deactivate the maintenance mode** now on the *Maintenance* tab.
 
-To create your first report job, Report Templates are required. You can get them from the integrated [i-Vertix Report Store](./bi-report-store).
+![Maintenance](../../assets/bi/maintenance.png)
+
+To create your first report job, Report Templates are required. You can get them from the [i-Vertix Report Store](./bi-report-store).

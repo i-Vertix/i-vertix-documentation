@@ -28,19 +28,15 @@ The folder structure of the documentation instance (for example monitoring) is r
 
 #### Monitoring Definition
 
-- [monitoring_versioned_sidebars/22.04-sidebar.yaml](./monitoring_versioned_sidebars/22.04-sidebar.yaml)
+- [monitoring_versioned_sidebars/22.10-sidebar.yaml](./monitoring_versioned_sidebars/22.10-sidebar.yaml)
+- [monitoring_versioned_sidebars/23.10-sidebar.yaml](./monitoring_versioned_sidebars/23.10-sidebar.yaml)
+- [monitoring_versioned_sidebars/24.10-sidebar.yaml](./monitoring_versioned_sidebars/24.10-sidebar.yaml)
 
 ### Build Sidebar
 
 To build the different sidebars use following commands:
 
 #### Build Monitoring Sidebar
-
-##### 22.04
-
-```bash
-node scripts/build-sidebar.js --docs=monitoring --versioning="22.04"
-```
 
 ##### 22.10
 
@@ -57,7 +53,7 @@ node scripts/build-sidebar.js --docs=monitoring --versioning="23.10"
 ##### 24.10
 
 ```bash
-node scripts/build-sidebar.js --docs=monitoring --versioning="23.10"
+node scripts/build-sidebar.js --docs=monitoring --versioning="24.10"
 ```
 
 ## API Docs
@@ -72,10 +68,10 @@ Unfortunately the centreon api spec contains some errors which need to be fixed 
 
 Most common errors while bundling:
 
-- wrong references schemas using `$ref`
+- wrong referenced schemas using `$ref`
 - wrong `ResourceHostDetail.yaml` and `ResourceServiceDetail.yaml` object structure
 
-Most commong issues while rendering:
+Most common issues while rendering:
 
 - usage of *type* `float` -> use `number` instead
 - usage of *type* `int` -> use `integer` instead
@@ -83,9 +79,13 @@ Most commong issues while rendering:
 
 ## Algolia Search
 
+*No longer used* - search is now local
+
 Algolia search is already enabled by the docusaurus.config.js
 
 ## Algolia Crawler
+
+*No longer used* - search is now local
 
 The algolia crawler runs inside a docker container with following configuration files:
 
