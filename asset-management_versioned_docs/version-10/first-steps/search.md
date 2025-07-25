@@ -156,7 +156,7 @@ clipboard (Ex: Computer names).
 The SLK format can be used by a lot of spreadsheet software. Fields that
 are too long will be truncated when using software that does not fully
 comply with the standards. In this case, it is preferable to use the
-\exports in CSV format.
+ exports in CSV format.
 
 If the data exported in CSV format is imported into Microsoft Excel
 software, accented characters may not be displayed correctly. This

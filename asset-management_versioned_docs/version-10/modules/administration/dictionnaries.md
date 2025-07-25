@@ -25,7 +25,7 @@ pre-production environment to a production one.
 
 :::info
 
-\export or import use a XML file format
+ export or import use a XML file format
 
 :::
 

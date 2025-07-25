@@ -13,7 +13,7 @@ of rules from a pre-production environment to a production environment.
 
 :::info
 
-\export or import use a XML file format
+ export or import use a XML file format
 
 :::
 

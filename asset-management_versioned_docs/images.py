@@ -76,3 +76,18 @@ def process_images(
             shutil.copy(in_path, out_path)
 
     return incpath_to_realpath
+
+
+## replacing image paths to point to the 
+## asset dir
+def replace_image(match, rel_dir, incpath_to_realpath):
+    path = match.group(2)
+    link = incpath_to_realpath[path] 
+
+    lev = len(rel_dir.parts) * [".."]
+    lev = pathlib.Path(*lev)
+    link = lev / "assets" / link
+    link = link.as_posix()
+    new_text = f"![{match.group(1)}]({link})"
+    
+    return new_text

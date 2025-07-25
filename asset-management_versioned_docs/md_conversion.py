@@ -5,6 +5,7 @@ import subprocess as sb
 import argparse
 import shutil
 import re
+from functools import partial
 
 import index 
 import images
@@ -277,160 +278,140 @@ if __name__ == "__main__":
         # Removing all { .attrib=value }
         text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
 
-        # Convert links
-
-
-        while True:
-            match = re.search(r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", text, flags=re.MULTILINE)
-            if not match:
-                break
-
-            link_text = match.group(1)
-            link_path = match.group(2)
-
-            k = (f, link_path)
-            url = link_replacement.get(k)
-            tot_links += 1
-
-            if url is None:
-                replaced_links += 1
-                url = links_euristic.get(link_path, link_path)
-
-            #url = url.replace(" ", "")
-
-            new_text = f"[{link_text}]({url})"
-            text = text[:match.start()] + new_text + text[match.end():]
-
-        #boxes conversion
-        while True:
-            match = re.search(r"^[> ]*\[\!(\w+)\]((\n[> ]+.*)+)", text, flags=re.MULTILINE)
-            
-            if match is None:
-                break
-                
-            note_type = match.group(1).lower()
-            if note_type == "note":
-                note_type = "info"
-
-            note_text = match.group(2)
-            note_text = re.sub(r"^[ >]*", "", note_text, flags=re.MULTILINE)
-            note_text = note_text.strip()
-            
-            new_text = f":::{note_type}\n\n{note_text}\n\n:::"
-            new_text = new_text.replace(" <", " \\<")
-
-            text = text[:match.start()] + new_text + text[match.end():]
-
-        # more boxes conversion, some boxes are still present... 
-        while True:
-            match = re.search(r"\s*::::\s*\n\s*:::\s*\n\s*(.*?)\s*:::\n(.*?)\s*::::", text, re.DOTALL)
-            
-            if match is None:
-                break
-
-            note_type = match.group(1).lower().strip()
-            if note_type == "hint":
-                note_type = "tip"
-                
-            note_text = match.group(2).replace("> ", "")
-            new_text = f"\n:::{note_type}\n{note_text}\n:::"
-            text = text[:match.start()] + new_text + text[match.end():]
-
-        # even more boxes, this time with custom title
-        end = 0
-        while True:
-            match = re.search(r"\s*:::\s*\n((?:\*\*)Ex[a|e]mple.*?)\n\s*(.*?)\s*:::\n", text[end:], re.DOTALL)
-            
-            if match is None:
-                break
-            
-            new_text = f"\n:::note[{match.group(1)}]\n\n{match.group(2)}\n:::\n"
-            text = text[:end+match.start()] + new_text + text[end+match.end():]
-            end += match.start() + len(new_text)
-
-        while True:
-            match = re.search(r"\[([^\]]*\n[^\]]*)\]\((.*)\)", text, flags=re.MULTILINE)
-            if match is None:
-                break
-            
-            #Removing newlines in link text
-            link_text = match.group(1).replace("\n", " ")
-            new_text = f"[{link_text}]({match.group(2)})"
-            text = text[:match.start()] + new_text + text[match.end():]
-        
-        # Changing GLPI to i-Vertix ITAM
-        text = text.replace("GLPI", "i-Vertix ITAM")
-        
-        
-
-        while True:
-            match = re.search(r"<((?:https*|redis+)://.*)>", text)
-            if not match:
-                break
-            
-            url = match.group(1)
-            new_text = f"[{url}]({url})"
-            text = text[:match.start()] + new_text + text[match.end():]
-
-        
-        #replace e-mail addresses
-        match = re.search(r"<(.*@.*) .*>", text)
-        if match:
-            url = match.group(1)
-            new_text = url
-            text = text[:match.start()] + new_text + text[match.end():]
-        
-        # replacing image paths to point to the 
-        # asset dir
-        end = 0
-        while True:
-            match = re.search(r"!\[(.*)\]\((.*)\)", text[end:])
-            if not match:
-                break
-
-            path = match.group(2)
-            link = incpath_to_realpath[path] 
-
-            lev = len(rel_dir.parts) * [".."]
-            lev = pathlib.Path(*lev)
-            link = lev / "assets" / link
-            link = link.as_posix()
-            new_text = f"![{match.group(1)}]({link})"
-            text = text[:end + match.start()] + new_text + text[end + match.end():]
-            end += match.start() + len(new_text)
-
         if os.path.basename(f) == "cli.md":
             text = ""
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
-     
+
+
+    def replace_links(match, outfile):
+
+        global tot_links
+        global replaced_links
+
+        link_text = match.group(1)
+        link_path = match.group(2)
+
+        k = (outfile, link_path)
+        url = link_replacement.get(k)
+        tot_links += 1
+
+        if url is None:
+            replaced_links += 1
+            url = links_euristic.get(link_path, link_path)
+
+        new_text = f"[{link_text}]({url})"
+        return new_text
+
+
+    def replace_boxes(match):
+        note_type = match.group(1).lower()
+        if note_type == "note":
+            note_type = "info"
+
+        note_text = match.group(2)
+        note_text = re.sub(r"^[ >]*", "", note_text, flags=re.MULTILINE)
+        note_text = note_text.strip()
+        
+        new_text = f":::{note_type}\n\n{note_text}\n\n:::"
+        new_text = new_text.replace(" <", " \\<")
+        return new_text
+
+
+    def replace_boxes2(match):
+
+        note_type = match.group(1).lower().strip()
+        if note_type == "hint":
+            note_type = "tip"
+            
+        note_text = match.group(2).replace("> ", "")
+        return f"\n:::{note_type}\n{note_text}\n:::"
+
+
+    def replace_boxes_custom_title(match):
+        new_text = f"\n:::note[{match.group(1)}]\n\n{match.group(2)}\n:::\n"
+        return new_text
+        
+
+    def remove_newlines_in_link_text(match):
+        link_text = match.group(1).replace("\n", " ")
+        new_text = f"[{link_text}]({match.group(2)})"
+        return new_text
+
+
     transforms = [
-        lambda x: x.replace("\\\'", "'"),
-        lambda x: x.replace("\\\"", "\""),
-        lambda x: x.replace("\\.", "."),
-        lambda x: re.sub(r"style=\".*\"", "", x),
-        lambda x: re.sub(r"^export", r"\\export", x, flags=re.MULTILINE),
-        lambda x: re.sub(r"^-[ ]+[\n]+\s*", r"- ", x, flags=re.MULTILINE),
-        lambda x: re.sub(r"^:\s[\s]+", r"    ", x, flags=re.MULTILINE),
+
+        # using re.sub passing a function that returns the replacement
+
+        lambda x, rd, f: re.sub(
+            r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", 
+            partial(replace_links, outfile=f), 
+            x, 
+            flags=re.MULTILINE),
+        
+        lambda x, _, f: re.sub(r"^[> ]*\[\!(\w+)\]((\n[> ]+.*)+)", 
+                            replace_boxes,
+                            x, 
+                            flags=re.MULTILINE),
+
+        lambda x, _, f: re.sub(r"\s*::::\s*\n\s*:::\s*\n\s*(.*?)\s*:::\n(.*?)\s*::::", 
+                            replace_boxes2, 
+                            x, 
+                            flags=re.DOTALL),
+
+        lambda x, _, f: re.sub(r"\s*:::\s*\n((?:\*\*)Ex[a|e]mple.*?)\n\s*(.*?)\s*:::\n", 
+                            replace_boxes_custom_title, 
+                            x, 
+                            flags=re.DOTALL),
+
+        lambda x, _, f: re.sub(r"\[([^\]]*\n[^\]]*)\]\((.*)\)", remove_newlines_in_link_text, x, flags=re.MULTILINE),
+
+        # Changing GLPI to i-Vertix ITAM
+        lambda x, _, f: x.replace("GLPI", "i-Vertix ITAM"),
+        
+        # replace https and redis links, for some reason they are converted wrongly
+        lambda x, _, f: re.sub(r"<((?:https*|redis+)://.*)>", lambda m: f"[{m.group(1)}]({m.group(1)})", x),
+
+        # convert email addresses
+        lambda x, _, f: re.sub(r"<(.*@.*) .*>", lambda m: m.group(1), x),
+
+        # replace all image path with relative links in the asset directory,
+        # using a partial functions to fix arguments in images.replace_image
+        lambda x, rd, f: re.sub(
+            r"!\[(.*)\]\((.*)\)", 
+            partial(
+                images.replace_image, 
+                rel_dir=rd, 
+                incpath_to_realpath=incpath_to_realpath), 
+            x),
+
+        lambda x, _, f: x.replace("\\\'", "'"),
+        lambda x, _, f: x.replace("\\\"", "\""),
+        lambda x, _, f: x.replace("\\.", "."),
+        lambda x, _, f: re.sub(r"style=\".*\"", "", x),
+        lambda x, _, f: re.sub(r"^export", r" export", x, flags=re.MULTILINE),
+        lambda x, _, f: re.sub(r"^-[ ]+[\n]+\s*", r"- ", x, flags=re.MULTILINE),
+        lambda x, _, f: re.sub(r"^:\s[\s]+", r"    ", x, flags=re.MULTILINE),
 
         # Replace (spaces):(spaces) with the same number of spaces to 
         # keep indent level
-        lambda x: re.sub(r"^\s*:\s[\s]+", 
-                         lambda x: " " * (x.end()-x.start() - 1), 
-                         x, flags=re.MULTILINE),
+        lambda x, _, f: re.sub(
+            r"^\s*:\s[\s]+", 
+            lambda x: " " * (x.end()-x.start() - 1), 
+            x, flags=re.MULTILINE),
     
     ]
 
     
     for inf, rel_dir, f in fmap:
-    
+        
         lines = []
         with open(f, "r", encoding="utf8") as fd:
             text = fd.read()
 
         for r in transforms:
-            text = r(text)
+            text = r(text, rel_dir, f)
         
         with open(f, "w", encoding="utf8") as fd:
             fd.write(text)
