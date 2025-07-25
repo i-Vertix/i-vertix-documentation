@@ -15,7 +15,7 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "devserver": "pm2 stop devserver; pm2 delete devserver; pm2 start \"npm run start\" --name devserver",
-    "build-sidebar-monitoring": "node scripts/build-sidebar.js --docs=monitoring --versioning=24.10"
+    "build-sidebar-monitoring": "node scripts/build-sidebar.js --docs=monitoring"
   },
   "dependencies": {
     "@docusaurus/core": "3.8.1",
