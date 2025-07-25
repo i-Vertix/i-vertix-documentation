@@ -16,22 +16,21 @@ This guide requires your system to be on version 4.2. If you need to upgrade fro
 ## Prerequisites
 
 :::warning
-Before attempting any Update, please make sure to create a snapshot or a backup
+Before attempting any upgrade, please make sure to create a snapshot or a backup
 of your i-Vertix Central Virtual Machine and any other Machine involved.
 
-A reliable Internet connection is also needed, both from Central and Pollers.
+To upgrade the systems, a stable internet connection is required on the Central and on each Poller.
 :::
 
 
-## Update Central Server
+## Upgrade Central Server
 
 ### Prepare the Upgrade
 
 Start by logging in the system using ssh.
 The user needs to be able to run commands with sudo.
 
-The first operation is to install the upgrade package with:
-
+Install the automated upgrade scripts with following command:
 ```
 sudo dnf install ivertix-ansible-playbooks
 ```
@@ -41,23 +40,29 @@ sudo dnf install ivertix-ansible-playbooks
 
 ### Perform Upgrade Step 1
 
-Run:
+Launch the first step of the Central system upgrade with following command:
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step1.yaml
 ```
-to really start the upgrade. 
 
 ![ansible first step](../assets/upgrade/upgrade-from_4.2/ansible_step_1.png)
 
 
-Since the scripts update the entire system and download many packages, 
-the process may take up to 45 minutes or longer, depending on the speed of your Internet connection.
-
+Since the scripts upgrade the entire system and download many packages, 
+the process may take up to 45 minutes or longer, 
+depending on the hardware resources and the internet connection of the Central Monitoring server.
 
 ### Perform Application Upgrade
 
-After the first system update, it is time for the WebUI.
-Using a browser, visit the Central WebPage and follow the wizard clicking next and finish.
+After the first system upgrade, it is time for the WebUI.
+Open the Monitoring Interface in your Browser and step through the displayed upgrade wizard.
+
+:::note
+
+You must be logged out to access the upgrade wizard
+
+:::
+
 
 <details>
 <summary>Application Upgrade Wizard</summary>
@@ -90,7 +95,7 @@ When all Extensions are updated, the page should become as follows:
 
 ### Perform Upgrade Step 2
 
-Return to the cli and run the next update script:
+Return to the cli and run the next upgrade script:
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step2.yaml
@@ -103,7 +108,7 @@ sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-ste
 
 At this point, we need to upgrade the MariaDB database. 
 The procedure varies depending on whether the database is embedded (i.e., installed on the same machine as the Central) 
-or deployed on a separate server. 
+or deployed on a remote server. 
 See [Remote Database Management architecture](/monitoring/installation/before-you-start/architecture#dbms)
 for more details.
 
@@ -117,7 +122,7 @@ sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-ste
 ```
 
 </TabItem>
-<TabItem value="external_db" label="Separate Database">
+<TabItem value="external_db" label="Remote Database">
 
 If the system architecture has a separate database, we need to run a different upgrade script.
 Please contact us at support@i-vertix.com for more information.
@@ -143,10 +148,11 @@ logging in again to avoid errors on the web application.
 :::
 
 
-## Update Pollers
+## Upgrade Pollers
 ### Perform Automatic Upgrade
 
-After the Central, we need to update all Pollers by running:
+To upgrade all the Pollers, we need to run the following command 
+in the Central server CLI:
 
 ```
 sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-poller-42-to-43.yaml
