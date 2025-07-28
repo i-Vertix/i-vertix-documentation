@@ -141,10 +141,7 @@ def parse_link(conv_list):
             text = fd.read()
 
         end = 0
-        while True:
-            match = re.search(r":doc:`(.*?) <(.*?)>`", text[end:], flags=re.MULTILINE)
-            if not match:
-                break
+        for match in re.finditer(r":doc:`(.*?) <(.*?)>`", text[end:], flags=re.MULTILINE):
 
             links_nr += 1
 
@@ -253,38 +250,6 @@ if __name__ == "__main__":
     tot_links = 0
     replaced_links = 0
 
-    # files processing
-    for _, rel_dir, f in fmap:
-
-        text = ""
-        with open(f, "r", encoding="utf8") as fd:
-            text = fd.read()
-        
-        # removing todo
-        while True:
-            match = re.search(r"::: {\.todo}\n(.*?):::\n", text, re.DOTALL)
-            
-            if match is None:
-                break
-            
-            text = text[:match.start()] + text[match.end():]
-        
-        # convert indexes 
-        text = index.replace_index(rel_dir, text) 
-
-        # replace glpi_address
-        text = text.replace("{glpi_address}", "glpi_address")
-        
-        # Removing all { .attrib=value }
-        text = re.sub(r"\{.*?\}", "", text, flags=re.DOTALL)
-
-        if os.path.basename(f) == "cli.md":
-            text = ""
-        
-        with open(f, "w", encoding="utf8") as fd:
-            fd.write(text)
-
-
     def replace_links(match, outfile):
 
         global tot_links
@@ -343,6 +308,18 @@ if __name__ == "__main__":
     transforms = [
 
         # using re.sub passing a function that returns the replacement
+        
+        # remove todo
+        lambda x, _, f: re.sub(r"::: {\.todo}\n(.*?):::\n", "", x, flags=re.DOTALL),
+
+        # replace index
+        lambda x, rd, f: index.replace_index(rd, x),
+
+        # replace glpi_address
+        lambda x, _, f: x.replace("{glpi_address}", "glpi_address"),
+
+        # Removing all { .attrib=value }
+        lambda x, _, f: re.sub(r"\{.*?\}", "", x, flags=re.DOTALL),
 
         lambda x, rd, f: re.sub(
             r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", 
@@ -402,13 +379,16 @@ if __name__ == "__main__":
             x, flags=re.MULTILINE),
     
     ]
-
     
     for inf, rel_dir, f in fmap:
+
         
         lines = []
         with open(f, "r", encoding="utf8") as fd:
             text = fd.read()
+        
+        if f.name == "cli.md":
+            text = ""
 
         for r in transforms:
             text = r(text, rel_dir, f)
