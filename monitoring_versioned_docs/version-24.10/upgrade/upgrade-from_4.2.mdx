@@ -34,10 +34,15 @@ To upgrade the systems, a stable internet connection is required on the Central 
 Start by logging in the system using ssh.
 The user needs to be able to run commands with sudo.
 
+Make sure that the version reported in the login banner is `4.2.0`.
+![dnf install](../assets/upgrade/upgrade-from_4.2/version_4-2.png)
+
 Install the automated upgrade scripts with following command:
-```
+```bash
 sudo dnf install ivertix-ansible-playbooks
 ```
+
+In the case that some question are asked during the installation, please reply `y` (type y and confirm with Enter).
 
 ![dnf install](../assets/upgrade/upgrade-from_4.2/dnf_install.png)
 
@@ -45,8 +50,8 @@ sudo dnf install ivertix-ansible-playbooks
 ### Perform Upgrade Step 1
 
 Launch the first step of the Central system upgrade with following command:
-```
-sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step1.yaml
+```bash
+sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-i-vertix-4.3/upgrade-central-step1.yml
 ```
 
 ![ansible first step](../assets/upgrade/upgrade-from_4.2/ansible_step_1.png)
@@ -55,6 +60,9 @@ sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-ste
 Since the scripts upgrade the entire system and download many packages, 
 the process may take up to 45 minutes or longer, 
 depending on the hardware resources and the internet connection of the Central Monitoring server.
+
+After the execution, the report on performed operations (PLAY RECAP) should look like this:
+![ansible first step finish](../assets/upgrade/upgrade-from_4.2/ansible_step_1_finish.png)
 
 ### Perform Application Upgrade
 
@@ -88,21 +96,21 @@ Then, login with an administrator account and navigate to <Breadcrumb crumbs={["
 {/* Restore if a navigation screenshot is preferable. */}
 {/* ![administration extensions manager](../assets/upgrade/upgrade-from_4.2/administration_extensions_manager.png) */}
 
-Click the `Update all` button to update all installed *Modules*.
-The modules are updated simultaneously, it may take some time until every module is updated.
-
 ![extensions update](../assets/upgrade/upgrade-from_4.2/update_extensions.png)
 
-After the updates are complete, every module should turn green (up-to-date).
+- <ImageCounter num={1} /> Click the `Update all` button to update all installed *Modules*
+    > The modules are updated simultaneously, it may take some time until every module is updated.
+- <ImageCounter num={2} /> Click the `Install all` button to install all available *Modules**
 
+After the updates are complete, every module should turn green (up-to-date).
 ![extensions update final](../assets/upgrade/upgrade-from_4.2/update_extensions_finish.png)
 
 ### Perform Upgrade Step 2
 
 Return to the *Central's* CLI and run the next upgrade script:
 
-```
-sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step2.yaml
+```bash
+sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-i-vertix-4.3/upgrade-central-step2.yml
 ```
 
 ![ansible 2](../assets/upgrade/upgrade-from_4.2/ansible_step_2.png)
@@ -121,11 +129,14 @@ for more details.
 
 In cases where the database is deployed on the same host as the monitoring application, run:
 
-```
-sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-central-42-to-43-step3.yaml
+```bash
+sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-i-vertix-4.3/upgrade-central-step3.yml
 ```
 
 ![ansible 3](../assets/upgrade/upgrade-from_4.2/ansible_step_3.png)
+
+After the execution, the report on performed operations (PLAY RECAP) should look like this:
+![ansible first step finish](../assets/upgrade/upgrade-from_4.2/ansible_step_3_finish.png)
 
 </TabItem>
 <TabItem value="external_db" label="Remote Database">
@@ -141,7 +152,7 @@ Please contact us at [support@i-vertix.com](mailto:support@i-vertix.com) for mor
 
 Reboot the Central server using following command:
 
-```
+```bash
 sudo reboot
 ```
 
@@ -158,7 +169,7 @@ It is strongly suggested to **clean the Browser cache** before logging in again 
 To upgrade all *Pollers*, we need to run the following command in the *Central server* CLI:
 
 ```bash
-sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-poller-42-to-43.yaml
+sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-i-vertix-4.3/upgrade-poller.yml
 ```
 
 By default, the automated script will upgrade 5 pollers simultaneously until every single configured poller is upgraded.
@@ -166,7 +177,7 @@ By default, the automated script will upgrade 5 pollers simultaneously until eve
 You can also upgrade a single *Poller* by adding the option `-l <poller name>`:
 
 ```bash
-sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-poller-42-to-43.yaml -l Poller1
+sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-i-vertix-4.3/upgrade-poller.yml -l Poller1
 ```
 
 ### Verify Poller Upgrade
