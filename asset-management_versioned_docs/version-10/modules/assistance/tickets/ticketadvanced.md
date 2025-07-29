@@ -7,14 +7,14 @@ title: Ticketadvanced
 
 ## Tickets categories
 
-See [Categories](/asset-management/modules/assistance/categories)
+See [Categories](../../../modules/assistance/categories)
 
 ## Tickets templates
 
 Using ticket templates, it is possible to customize ticket creation form
 by masking, pre-defining or making mandatory some fields.
 
-See [Ticket templates](/asset-management/modules/overview/templates)
+See [Ticket templates](../../../modules/overview/templates)
 
 ## Collectors
 
@@ -34,10 +34,10 @@ A mail message will go through the following steps:
 
 - Mail box;
 - Collector, configured using
-  [Configure collectors](/asset-management/modules/configuration/collectors);
+  [Configure collectors](../../../modules/configuration/collectors);
 - Rules, see Assigned a ticked opened by mail to an entity
 - Business rules, see
-  [Business rules for tickets](/asset-management/modules/administration/rules/ticketbusinessrules)
+  [Business rules for tickets](../../../modules/administration/rules/ticketbusinessrules)
 - Ticket is created
 
 An answer to a mail coming from i-Vertix ITAM will go through the following
@@ -50,12 +50,12 @@ steps:
 ## Recurrent tickets
 
 See
-[Recurrent tickets](/asset-management/modules/assistance/tickets/recurrentticket)
+[Recurrent tickets](../../../modules/assistance/tickets/recurrentticket)
 
 ## Attached costs
 
 See
-[Attached costs](/asset-management/modules/assistance/tickets/ticketmanagement)
+[Attached costs](../../../modules/assistance/tickets/ticketmanagement)
 
 ## Links between tickets
 
@@ -63,21 +63,21 @@ It is possible to define links between tickets or to mark tickets as
 duplicates.
 
 See
-[Links between tickets](/asset-management/modules/assistance/tickets/ticketmanagement)
+[Links between tickets](../../../modules/assistance/tickets/ticketmanagement)
 
 ## Processing time
 
 Incidents resolution delays or SLA can be configured.
 
 See
-[Configure SLAs](/asset-management/modules/assistance/tickets/modules/configuration/service_levels).
+[Configure SLAs](../../../modules/assistance/tickets/modules/configuration/service_levels).
 
 ## Business rules
 
 Business rules can be defined to modify and assign tickets.
 
 See
-[Business rules for tickets](/asset-management/modules/administration/rules/ticketbusinessrules).
+[Business rules for tickets](../../../modules/administration/rules/ticketbusinessrules).
 
 ## Administrative closure
 
@@ -90,7 +90,7 @@ technician corresponds to the demand. However, if the requester does not
 fulfill this validation, it is possible to parameterize an
 administrative closure after a delay which can be configured at entity
 level (see
-[Assistance tab](/asset-management/modules/administration/entities)). If this delay is set to zero, the ticket is automatically
+[Assistance tab](../../../modules/administration/entities)). If this delay is set to zero, the ticket is automatically
 closed.
 
 ## Satisfaction
@@ -100,7 +100,7 @@ closed.
 A satisfaction survey is triggered when the ticket status is set to
 *Closed* and the triggering delay is elapsed. This triggering delay is
 parameterized at entity level (see
-[Delegate administration at entity level](/asset-management/modules/administration/entities)).
+[Delegate administration at entity level](../../../modules/administration/entities)).
 
 :::info
 
@@ -117,7 +117,7 @@ The requester can then select the satisfaction level (from 0 to 5, given
 as stars) about the ticket solution. A comment can also be added.
 
 Statistics on surveys are available in
-[statistics](/asset-management/modules/assistance/statistics).
+[statistics](../../../modules/assistance/statistics).
 :::note
 
 - the requester can change the answer to the satisfaction survey within
@@ -129,4 +129,4 @@ Statistics on surveys are available in
 ## See also
 
 See
-[Advanced configuration](/asset-management/modules/assistance/categories).
+[Advanced configuration](../../../modules/assistance/categories).

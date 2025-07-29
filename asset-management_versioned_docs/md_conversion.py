@@ -167,7 +167,8 @@ def parse_link(conv_list):
             #print(norm_path)
             ##print(l_text, l_path)
 
-            norm_path = ["", "asset-management"] + norm_path
+            #norm_path = ["", "asset-management"] + norm_path
+            norm_path = [".."] * len(rel.parts) + norm_path
             url = "/".join(norm_path)
             links[(outf, l_path)] = url
             links_euristic[l_path] = url

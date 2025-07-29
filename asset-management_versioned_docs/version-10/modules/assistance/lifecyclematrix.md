@@ -15,7 +15,7 @@ present in the list of status of the object.
 ## Ticket life cycle matrix
 
 See
-[Ticket management rules](/asset-management/modules/assistance/tickets/ticketmanagement).
+[Ticket management rules](../../modules/assistance/tickets/ticketmanagement).
 
 ![The life cycle matrix of a problem (standard interface)](../../assets/modules/assistance/images/lifecycle_tickets_standard.png)
 
@@ -35,7 +35,7 @@ if it is closed.
 ## Problem life cycle matrix
 
 See
-[Ticket management rules](/asset-management/modules/assistance/problems).
+[Ticket management rules](../../modules/assistance/problems).
 
 ![The life cycle matrix of a problem](../../assets/modules/assistance/images/lifecycle_problems.png)
 
@@ -46,7 +46,7 @@ problem.
 ## Change life cycle matrix
 
 See
-[Ticket management rules](/asset-management/modules/assistance/changes).
+[Ticket management rules](../../modules/assistance/changes).
 
 ![The life cycle matrix of a change](../../assets/modules/assistance/images/lifecycle_changes.png)
 

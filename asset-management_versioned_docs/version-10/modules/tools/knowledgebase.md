@@ -32,7 +32,7 @@ You can publish an article for everyone by targeting the root entity.
 
 By default, articles are not translatable. However, this functionality
 can be activated, see
-[general configuration](/asset-management/modules/configuration/general/general_configuration).
+[general configuration](../../modules/configuration/general/general_configuration).
 
 It is possible to attach documents to articles of the knowledge base.
 
@@ -57,7 +57,7 @@ content (case change, tags adding) when editing.
 
 It is possible to create categories and sub-categories in order to
 organize browsing (see
-[Configure drop-downs](/asset-management/modules/configuration/dropdowns)). User can then use several tabs to search and browse
+[Configure drop-downs](../../modules/configuration/dropdowns)). User can then use several tabs to search and browse
 knowledge base:
 
 - **Search** This tab is the default tab, displaying recent articles,
@@ -157,7 +157,7 @@ The *Items* tab is used to show or add linked assets.
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new

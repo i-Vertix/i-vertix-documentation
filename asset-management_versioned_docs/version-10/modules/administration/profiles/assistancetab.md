@@ -95,7 +95,7 @@ templates of the root entity.
 
 Common fields with the simplified interface will not be detailed. The 7
 standard permissions will not be listed (see
-[Permissions description](/asset-management/modules/administration/profiles)).
+[Permissions description](../../../modules/administration/profiles)).
 
 ### Tickets permissions
 

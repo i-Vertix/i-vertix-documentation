@@ -42,7 +42,7 @@ Global management allows to limit the number of elements to manage when
 these elements are not a strategic data in the assets management.
 
 It is possible to use
-[templates with displays](/asset-management/modules/overview/templates).
+[templates with displays](../../modules/overview/templates).
 
 ## The different tabs
 
@@ -138,7 +138,7 @@ Financial information consists of the following items:
 #### Financial and administrative information
 
 - Supplier: Third party who sold the equipment. See
-  [Managing suppliers](/asset-management/modules/management/suppliers). Suppliers are managed from the menu **Management \>
+  [Managing suppliers](../../modules/management/suppliers). Suppliers are managed from the menu **Management \>
   Suppliers**.
 - Order number : number of the order of the equipment.
 - Asset number.
@@ -159,7 +159,7 @@ Financial information consists of the following items:
 - TCO (value+amount of interventions): the total cost of ownership which
   includes all the constituent elements of an invoiced product.
 - Budget: the budget on which this equipment was purchased See
-  [Managing the budget](/asset-management/modules/management/budgets).
+  [Managing the budget](../../modules/management/budgets).
 - Order date: date on which the material was ordered.
 - Purchase date: date on which the equipment was purchased.
 - Delivery date: date on which the equipment was delivered.
@@ -192,7 +192,7 @@ another date. All this configuration is done by
 i-Vertix ITAM allows you to configure a notification on the expiry of the
 hardware warranty. This is configurable by entity in notification
 management to define the models and recipients used and in
-[the administration of entities](/asset-management/modules/administration/entities) to enable or disable this feature, define the default values
+[the administration of entities](../../modules/administration/entities) to enable or disable this feature, define the default values
 and anticipate the sending of the notification if necessary.
 
 i-Vertix ITAM can perform a simple net book value calculation based on
@@ -215,14 +215,14 @@ field, the end date of the contract is also shown with a red display if
 the date is earlier than the current date.
 
 Refer to
-[contract management](/asset-management/modules/management/contract) for more information.
+[contract management](../../modules/management/contract) for more information.
 
 ### Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new
@@ -297,7 +297,7 @@ For some items, external links are managed from the menu **Setup \>
 External links**.
 
 These links can use object fields such as IP, name, etc. See
-[Configure protocol external links](/asset-management/modules/configuration/external_links).
+[Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
 
@@ -365,6 +365,6 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](/asset-management/modules/overview/actions), some actions are specific to displays:
+Apart from [common actions](../../modules/overview/actions), some actions are specific to displays:
 
-- [connect a display to a monitor](/asset-management/commontabs/item_connexions)
+- [connect a display to a monitor](../../commontabs/item_connexions)

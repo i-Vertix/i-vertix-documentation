@@ -29,4 +29,4 @@ service tailored to the organization's needs.
 
 Tickets, Changes and Problems can be viewed globally in a Kanban view.
 For more information about the Kanban feature, please refer to the
-[full documentation](/asset-management/modules/overview/kanban).
+[full documentation](../../modules/overview/kanban).

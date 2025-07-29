@@ -25,7 +25,7 @@ persons to be notified.
 The options available to adjust these behaviors are: \* **Visible in a
 ticket**: requesting group and/or assignment to this group; \* **Can be
 notified**: recipient of notifications; \* **Can be supervisor**: only
-for a [project](/asset-management/modules/tools/projects);
+for a [project](../../modules/tools/projects);
 \* **May contain**: assets and/or users.
 
 In an item form, 2 notions of groups are available: \* *technical group*
@@ -40,7 +40,7 @@ a group of technicians, see the ticket categories in the chapter: doc:
 [Configure dropdowns
 \</modules/configuration/dropdowns/assistance.rst\>].
 Likewise, it can be used in
-[Business rules for tickets](/asset-management/modules/administration/rules/ticketbusinessrules).
+[Business rules for tickets](../../modules/administration/rules/ticketbusinessrules).
 
 :::
 :::tip
@@ -75,7 +75,7 @@ From the list of groups, a group can be imported from a LDAP directory
 via the *LDAP directory link* button if external authentication is used
 and the "Auth and sync update" authorization is granted in profile.
 The assignment of users to groups will be automatic, see
-[Profiles](/asset-management/modules/administration/profiles). If several directories are configured, the choice between
+[Profiles](../../modules/administration/profiles). If several directories are configured, the choice between
 directories is proposed, otherwise the search form is directly
 accessible.
 
@@ -92,7 +92,7 @@ its visibility in the sub-entities.
 importing groups cannot be filtered by entity. In addition, no group
 synchronization function is available. The only way to refresh from a
 directory the list of group members is to resynchronize users, see
-[Import users from an external source](/asset-management/modules/administration/users/usersimport).
+[Import users from an external source](../../modules/administration/users/usersimport).
 
 :::
 
@@ -118,7 +118,7 @@ the current group. The search can be extended to sub-groups as well as
 to the members of the group (*User* field of the item).
 
 See
-[Tab "Used Items"](/asset-management/Les_différents_onglets/Onglet_Eléments)
+[Tab "Used Items"](../../Les_différents_onglets/Onglet_Eléments)
 
 ### Managed items
 
@@ -128,7 +128,7 @@ sub-groups as well as to the members of the group (*Technical manager*
 field of the item).
 
 See
-[Tab "Managed Items"](/asset-management/Les_différents_onglets/Onglet_Eléments)
+[Tab "Managed Items"](../../Les_différents_onglets/Onglet_Eléments)
 
 ### LDAP directory link
 

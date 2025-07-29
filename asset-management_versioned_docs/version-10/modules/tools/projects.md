@@ -8,7 +8,7 @@ title: Projects
 Project management in i-Vertix ITAM allows to follow entirely a project's
 progress by creating tasks and building teams; projects can be
 optionally linked to a
-[change](/asset-management/modules/assistance/changes).
+[change](../../modules/assistance/changes).
 
 A i-Vertix ITAM project allows:
 
@@ -78,7 +78,7 @@ This tab provides an interface to use Kanban method.
 ![Kanban interface in i-Vertix ITAM](../../assets/modules/tools/images/kanban-project.png)
 
 For more information about the Kanban feature, please refer to the
-[full documentation](/asset-management/modules/overview/kanban).
+[full documentation](../../modules/overview/kanban).
 
 ### Costs
 
@@ -102,7 +102,7 @@ The *Items* tab is used to show or add linked assets.
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new
@@ -131,7 +131,7 @@ field, the end date of the contract is also shown with a red display if
 the date is earlier than the current date.
 
 Refer to
-[contract management](/asset-management/modules/management/contract) for more information.
+[contract management](../../modules/management/contract) for more information.
 
 ### Notes
 
@@ -231,7 +231,7 @@ This tab defines the team in charge of the task.
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new

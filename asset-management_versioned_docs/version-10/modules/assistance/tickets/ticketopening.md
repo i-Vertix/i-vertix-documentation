@@ -9,7 +9,7 @@ A requester formulating a need can use several tools:
 
 - filling an online form, the requester being known to i-Vertix ITAM or not;
 - asking a delegate in the group to open the ticket (see
-  [Administer groups](/asset-management/modules/administration/groups). In simplified interface, this is put into evidence by an
+  [Administer groups](../../../modules/administration/groups). In simplified interface, this is put into evidence by an
   option allowing to indicate if the ticket concerns the requesting user
   or another user. In standard interface, this mechanism is active as
   long as authorization **See all tickets** is set to *No* in the
@@ -46,12 +46,12 @@ By default, ticket is created in root entity.
 ### Opening a ticket in graphical interface
 
 If templates are used (see
-[Using templates](/asset-management/modules/overview/templates)), some fields can be made mandatory, predefined or masked
+[Using templates](../../../modules/overview/templates)), some fields can be made mandatory, predefined or masked
 when opening the ticket (content, title and/or category). If a mandatory
 field is missing, the ticket will not be opened.
 
 The different fields are described in
-[Manage tickets](/asset-management/modules/assistance/tickets/ticketmanagement).
+[Manage tickets](../../../modules/assistance/tickets/ticketmanagement).
 
 It is possible to attach to the ticket one or more documents in one
 operation.
@@ -86,14 +86,14 @@ Specific fields:
 - **Associated elements**: Allows to associate an item of the inventory
   with the ticket. The content of the list depends upon parameters
   defined in user's profile (see
-  [Administer user profile](/asset-management/modules/administration/profiles).
+  [Administer user profile](../../../modules/administration/profiles).
 
 - **Watchers**: Allows to add a watcher and to define notification
   parameters.
 :::tip
 
   Users can add new email addresses to the profile, see
-  [Manager preferences](/asset-management/first-steps/preferences).
+  [Manager preferences](../../../first-steps/preferences).
 :::
 
 :::warning
@@ -136,7 +136,7 @@ simplified view of current tickets for this item is displayed.
 
 Opening a ticket by mail is done by sending a mail to an email address
 defined in the collector (see
-[Configure collectors](/asset-management/modules/configuration/collectors)
+[Configure collectors](../../../modules/configuration/collectors)
 
 On reception of the mail, a ticket will be opened automatically:
 
@@ -152,4 +152,4 @@ visible in the description of the ticket.
 ## Open a ticket automatically
 
 This mechanism is activated through
-[Recurrent tickets](/asset-management/modules/assistance/tickets/recurrentticket).
+[Recurrent tickets](../../../modules/assistance/tickets/recurrentticket).

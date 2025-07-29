@@ -9,7 +9,7 @@ title: Interfaces
 
 The choice of the default interface as well as the visiblity of
 different modules can be configured in the profiles or from
-[the user's preferences](/asset-management/first-steps/preferences).
+[the user's preferences](../first-steps/preferences).
 
 :::
 
@@ -56,7 +56,7 @@ It is divided into 5 views:
 - *RSS feed*
 
   > Proposes the content of defined RSS feeds.
-  > [RSS feeds are managed from the "Tools  > RSS Feeds" menu](/asset-management/modules/tools/rssfeed).
+  > [RSS feeds are managed from the "Tools  > RSS Feeds" menu](../modules/tools/rssfeed).
 
 :::info
 

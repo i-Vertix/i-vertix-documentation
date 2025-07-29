@@ -125,7 +125,7 @@ statistics and schedules as well as the assignment of a template to the
 profile.
 
 See
-[Tab "Assistance"](/asset-management/modules/administration/profiles/assistancetab)
+[Tab "Assistance"](../../../modules/administration/profiles/assistancetab)
 
 ### Life cycle
 
@@ -133,7 +133,7 @@ This tab manages the permissions on the status life cyle of tickets,
 problems and changes.
 
 See
-[Tab "Life cycle"](/asset-management/modules/assistance/lifecyclematrix)
+[Tab "Life cycle"](../../../modules/assistance/lifecyclematrix)
 
 ### Management
 
@@ -159,7 +159,7 @@ reports, reservations, knowledge base as well as projects and tasks of a
 project.
 
 See
-[Tab "Tools"](/asset-management/modules/administration/profiles/toolstab)
+[Tab "Tools"](../../../modules/administration/profiles/toolstab)
 
 ### Administration
 
@@ -167,12 +167,12 @@ This tab manages permissions on users, entities and business rules on
 tickets.
 
 See
-[Tab "Administration"](/asset-management/modules/administration/profiles/administrationtab)
+[Tab "Administration"](../../../modules/administration/profiles/administrationtab)
 
 ### Configuration
 
 See
-[Tab "Configuration"](/asset-management/modules/administration/profiles/configurationtab)
+[Tab "Configuration"](../../../modules/administration/profiles/configurationtab)
 
 ### Users
 
@@ -183,8 +183,8 @@ permissions are recursive from the assignment entity.
 
 ### Historical
 
-See [Tab "Historical"](/asset-management/modules/tabs/historical)
+See [Tab "Historical"](../../../modules/tabs/historical)
 
 ### All
 
-See [Tab "All"](/asset-management/modules/tabs/all)
+See [Tab "All"](../../../modules/tabs/all)

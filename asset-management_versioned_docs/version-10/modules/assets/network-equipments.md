@@ -13,7 +13,7 @@ A network equipment can be a switch, an Ethernet hub, a router, a
 firewall or a WiFi access point.
 
 It is possible to use
-[templates with network equipments](/asset-management/modules/overview/templates).
+[templates with network equipments](../../modules/overview/templates).
 
 ## The different tabs
 
@@ -28,7 +28,7 @@ of a computer.
 :::info
 
 Adding or managing components is located in menu
-[Setup > Components](/asset-management/modules/configuration/components).
+[Setup > Components](../../../modules/configuration/components).
 
 :::
 
@@ -87,13 +87,13 @@ Several tabs are then displayed:
 
 - Tab "Element - Link name of component" : list the
 characteristics of this component
-- [Tab "Management"](/asset-management/modules/tabs/management) : manage administrative and accounting information
-- [Tab "Documents"](/asset-management/modules/tabs/documents) : attached documents
-- [Tab "History"](/asset-management/modules/tabs/historical) : history of modifications
-- [Tab "Contract"](/asset-management/modules/tabs/contracts) : contracts management
-- [Tab "Debug"](/asset-management/modules/tabs/debug)
+- [Tab "Management"](../../../modules/tabs/management) : manage administrative and accounting information
+- [Tab "Documents"](../../../modules/tabs/documents) : attached documents
+- [Tab "History"](../../../modules/tabs/historical) : history of modifications
+- [Tab "Contract"](../../../modules/tabs/contracts) : contracts management
+- [Tab "Debug"](../../../modules/tabs/debug)
 : only if you are connected in Debug mode
-- [Tab "All"](/asset-management/modules/tabs/all) :
+- [Tab "All"](../../../modules/tabs/all) :
 all the information are displayed on a single page
 
 :::
@@ -129,7 +129,7 @@ being defined by a name, an optional comment and a VLAN number.
 ![VLAN](../../assets/modules/assets/images/ports_vlan.png)
 
 One or more
-[network name](/asset-management/modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
+[network name](../../../modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
 tab [Network name].
 
 ![Network name](../../assets/modules/assets/images/ports_network_name.png)
@@ -295,7 +295,7 @@ Financial information consists of the following items:
 #### Financial and administrative information
 
 - Supplier: Third party who sold the equipment. See
-  [Managing suppliers](/asset-management/modules/management/suppliers). Suppliers are managed from the menu **Management \>
+  [Managing suppliers](../../modules/management/suppliers). Suppliers are managed from the menu **Management \>
   Suppliers**.
 - Order number : number of the order of the equipment.
 - Asset number.
@@ -316,7 +316,7 @@ Financial information consists of the following items:
 - TCO (value+amount of interventions): the total cost of ownership which
   includes all the constituent elements of an invoiced product.
 - Budget: the budget on which this equipment was purchased See
-  [Managing the budget](/asset-management/modules/management/budgets).
+  [Managing the budget](../../modules/management/budgets).
 - Order date: date on which the material was ordered.
 - Purchase date: date on which the equipment was purchased.
 - Delivery date: date on which the equipment was delivered.
@@ -349,7 +349,7 @@ another date. All this configuration is done by
 i-Vertix ITAM allows you to configure a notification on the expiry of the
 hardware warranty. This is configurable by entity in notification
 management to define the models and recipients used and in
-[the administration of entities](/asset-management/modules/administration/entities) to enable or disable this feature, define the default values
+[the administration of entities](../../modules/administration/entities) to enable or disable this feature, define the default values
 and anticipate the sending of the notification if necessary.
 
 i-Vertix ITAM can perform a simple net book value calculation based on
@@ -372,14 +372,14 @@ field, the end date of the contract is also shown with a red display if
 the date is earlier than the current date.
 
 Refer to
-[contract management](/asset-management/modules/management/contract) for more information.
+[contract management](../../modules/management/contract) for more information.
 
 ### Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new
@@ -454,7 +454,7 @@ For some items, external links are managed from the menu **Setup \>
 External links**.
 
 These links can use object fields such as IP, name, etc. See
-[Configure protocol external links](/asset-management/modules/configuration/external_links).
+[Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
 
@@ -523,4 +523,4 @@ below the other.
 ## The different actions
 
 Network equipments do not have specific actions; report to
-[common actions](/asset-management/modules/overview/actions).
+[common actions](../../modules/overview/actions).

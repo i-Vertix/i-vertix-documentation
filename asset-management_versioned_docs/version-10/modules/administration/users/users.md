@@ -19,7 +19,7 @@ can be defined independently.
 
 A photo can be added manually or imported automatically from a directory
 (see
-[Authenticate users with LDAP](/asset-management/modules/configuration/authentication/ldap)).
+[Authenticate users with LDAP](../../../modules/configuration/authentication/ldap)).
 
 ## Impersonate
 
@@ -58,7 +58,7 @@ A summary tab displays already attributed authorizations for the user.
 This tab lists the groups associated to the user. Table includes group
 name, whether the group is dynamic (i.e. linked to a directory service),
 whether the user is delegatee or manager for the group (see
-[Manage groups](/asset-management/modules/administration/groups)).
+[Manage groups](../../../modules/administration/groups)).
 
 If modify user authorization is granted, it is also possible from this
 tab to assign a group to the user.
@@ -66,7 +66,7 @@ tab to assign a group to the user.
 ### Settings
 
 This tab allows to edit user's settings (see
-[Manage settings](/asset-management/first-steps/preferences)). In order to be able to modify data in this tab, general
+[Manage settings](../../../first-steps/preferences)). In order to be able to modify data in this tab, general
 configuration modification authorization must be granted.
 
 ### Used items
@@ -76,7 +76,7 @@ the item or for which user is member of the group defined in field
 *Group* of the item.
 
 See
-[Tab "Used items"](/asset-management/Les_différents_onglets/Onglet_Eléments)
+[Tab "Used items"](../../../Les_différents_onglets/Onglet_Eléments)
 
 ### Managed items
 
@@ -85,7 +85,7 @@ in Charge* of the item or for which user is member of the group defined
 in field *Group in Charge* of the item.
 
 See
-[Tab "Managed items"](/asset-management/Les_différents_onglets/Onglet_Eléments)
+[Tab "Managed items"](../../../Les_différents_onglets/Onglet_Eléments)
 
 ### Reservations
 
@@ -94,7 +94,7 @@ order to see this tab, read authorization on reservation management must
 be granted.
 
 See
-[Tab "Reservations"](/asset-management/Les_différents_onglets/Onglet_Réservations)
+[Tab "Reservations"](../../../Les_différents_onglets/Onglet_Réservations)
 
 ### Synchronization
 
@@ -106,7 +106,7 @@ and to force its synchronization.
 
 This tab list external links defined for users.
 
-See [Tab "Links"](/asset-management/modules/tabs/external-links)
+See [Tab "Links"](../../../modules/tabs/external-links)
 
 ### Tickets
 
@@ -136,7 +136,7 @@ as *Requester*).
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new

@@ -37,7 +37,7 @@ values of attached items is greater than the budget amount.
 :::info
 
 It is possible to use
-[templates to generate this object](/asset-management/modules/overview/templates).
+[templates to generate this object](../../modules/overview/templates).
 
 :::
 
@@ -69,7 +69,7 @@ Attaching a i-Vertix ITAM item to a budget is done via tab
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new
@@ -101,7 +101,7 @@ For some items, external links are managed from the menu **Setup \>
 External links**.
 
 These links can use object fields such as IP, name, etc. See
-[Configure protocol external links](/asset-management/modules/configuration/external_links).
+[Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
 

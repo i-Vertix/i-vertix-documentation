@@ -295,4 +295,4 @@ below the other.
 
 ## The different actions
 
-See the [common actions](/asset-management/modules/overview/actions).
+See the [common actions](../../../modules/overview/actions).

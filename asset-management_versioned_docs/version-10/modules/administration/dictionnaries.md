@@ -9,7 +9,7 @@ Dictionary's allow to modify data already existing in i-Vertix ITAM or new data
 in order to group redundant data.
 
 Dictionaries are based on i-Vertix ITAM
-[rules engine](/asset-management/modules/administration/rules/rulesmanagement) and are available for some types of items (software,
+[rules engine](../../modules/administration/rules/rulesmanagement) and are available for some types of items (software,
 suppliers, drop-downs). The rules associated with a dictionary will
 modify values that are either manually inserted or automatically
 inserted via an inventory tool or via plugins (for instance CSV file

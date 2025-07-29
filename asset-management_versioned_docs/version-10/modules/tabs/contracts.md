@@ -15,4 +15,4 @@ field, the end date of the contract is also shown with a red display if
 the date is earlier than the current date.
 
 Refer to
-[contract management](/asset-management/modules/management/contract) for more information.
+[contract management](../../modules/management/contract) for more information.

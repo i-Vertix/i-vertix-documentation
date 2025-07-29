@@ -6,7 +6,7 @@ title: Toolstab
 # Tools Permissions
 
 The 7 standard permissions will not be listed (see
-[Permissions descriptions](/asset-management/modules/administration/profiles)).
+[Permissions descriptions](../../../modules/administration/profiles)).
 
 ## Simplified Interface
 

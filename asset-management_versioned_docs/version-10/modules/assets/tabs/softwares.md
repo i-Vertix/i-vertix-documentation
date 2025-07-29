@@ -37,7 +37,7 @@ Otherwise it will be displayed in a separate table.
 - the drop-down list enumerates the software that are available in the
   entity
 - licenses management can be found in [Assets \Softwares].
-  See [Manage software](/asset-management/modules/assets/softwares)
+  See [Manage software](../../../modules/assets/softwares)
 :::
 
 :::info

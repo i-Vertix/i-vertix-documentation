@@ -16,14 +16,14 @@ and shares with it many concepts: [Requester],
 [Watcher], [Assigned to], [Status],
 [Urgency], [Impact], [Priority],
 [Category]. For more information, see
-[Manage tickets](/asset-management/modules/assistance/tickets/ticketmanagement).
+[Manage tickets](../../modules/assistance/tickets/ticketmanagement).
 
 
 Problems use their own notifications, see
-[configuration of email follow-ups](/asset-management/modules/assistance/email_notifications).
+[configuration of email follow-ups](../../modules/assistance/email_notifications).
 
 Statistics similar to tickets are available for problems, see
-[Display statistics](/asset-management/modules/assistance/statistics).
+[Display statistics](../../modules/assistance/statistics).
 
 ## The different tabs
 
@@ -31,7 +31,7 @@ Statistics similar to tickets are available for problems, see
 
 This tab allows to display changes associated with the problem and add
 new changes. See
-[Solutions](/asset-management/Les_différents_onglets/Onglet_Changements)
+[Solutions](../../Les_différents_onglets/Onglet_Changements)
 
 ### Analysis
 
@@ -41,29 +41,29 @@ symptoms.
 ### Solutions
 
 This tab allows to describe the resolution of the problem. See
-[Solutions](/asset-management/Les_différents_onglets/Onglet_Solution)
+[Solutions](../../Les_différents_onglets/Onglet_Solution)
 
 ### Statistics
 
 Statistics similar to tickets are available for problems. See
-[Statistics](/asset-management/Les_différents_onglets/Onglet_Statistiques)
+[Statistics](../../Les_différents_onglets/Onglet_Statistiques)
 
 ### Tasks
 
 A task is an action linked with a problem, usually a technical
 intervention. See
-[Tasks](/asset-management/Les_différents_onglets/Onglet_Tâches)
+[Tasks](../../Les_différents_onglets/Onglet_Tâches)
 
 ### Costs
 
 This tab defines the costs applicable to this problem. See
-[Costs](/asset-management/Les_différents_onglets/Onglet_Coûts)
+[Costs](../../Les_différents_onglets/Onglet_Coûts)
 
 ### Elements
 
 This tab allows to attach an item to the problem by choosing the type
 and the selected item. See
-[Items](/asset-management/Les_différents_onglets/Onglet_Eléments)
+[Items](../../Les_différents_onglets/Onglet_Eléments)
 
 ### Tickets
 
@@ -89,7 +89,7 @@ Any deletion or addition of a ticket is recorded in the history.
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new

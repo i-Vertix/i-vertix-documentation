@@ -14,7 +14,7 @@ of a computer.
 :::info
 
 Adding or managing components is located in menu
-[Setup > Components](/asset-management/modules/configuration/components).
+[Setup > Components](../../../modules/configuration/components).
 
 :::
 
@@ -73,13 +73,13 @@ Several tabs are then displayed:
 
 - Tab "Element - Link name of component" : list the
 characteristics of this component
-- [Tab "Management"](/asset-management/modules/tabs/management) : manage administrative and accounting information
-- [Tab "Documents"](/asset-management/modules/tabs/documents) : attached documents
-- [Tab "History"](/asset-management/modules/tabs/historical) : history of modifications
-- [Tab "Contract"](/asset-management/modules/tabs/contracts) : contracts management
-- [Tab "Debug"](/asset-management/modules/tabs/debug)
+- [Tab "Management"](../../../modules/tabs/management) : manage administrative and accounting information
+- [Tab "Documents"](../../../modules/tabs/documents) : attached documents
+- [Tab "History"](../../../modules/tabs/historical) : history of modifications
+- [Tab "Contract"](../../../modules/tabs/contracts) : contracts management
+- [Tab "Debug"](../../../modules/tabs/debug)
 : only if you are connected in Debug mode
-- [Tab "All"](/asset-management/modules/tabs/all) :
+- [Tab "All"](../../../modules/tabs/all) :
 all the information are displayed on a single page
 
 :::

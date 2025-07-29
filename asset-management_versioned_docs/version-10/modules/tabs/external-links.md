@@ -11,7 +11,7 @@ For some items, external links are managed from the menu **Setup \>
 External links**.
 
 These links can use object fields such as IP, name, etc. See
-[Configure protocol external links](/asset-management/modules/configuration/external_links).
+[Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
 

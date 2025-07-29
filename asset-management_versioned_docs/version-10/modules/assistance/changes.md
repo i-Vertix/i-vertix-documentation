@@ -14,7 +14,7 @@ The form to create a change is similar to the ticket creation form and
 shares with it many terms: *requester*, *watcher*, *assigned to*,
 *status*, *urgency*, *impact*, *priority*, *category*. For more
 information see
-[Manage tickets](/asset-management/modules/assistance/tickets/ticketmanagement). The validation process is also the same as tickets in order
+[Manage tickets](../../modules/assistance/tickets/ticketmanagement). The validation process is also the same as tickets in order
 to allow preliminary validation of the change (tab *Validations*).
 
 Once the change is created, it is possible to attach tickets but also
@@ -26,10 +26,10 @@ this change through a deployment plan, a backup plan and a checklist
 Same as tickets, task, costs and solution allow to follow and solve the
 change. For complex changes management, a change can be linked with one
 or several projects allowing a mode detailed management
-([Manage projects](/asset-management/modules/tools/projects)).
+([Manage projects](../../modules/tools/projects)).
 
 Changes use their own notifications (see
-[configuration of email follow-ups](/asset-management/modules/assistance/email_notifications)).
+[configuration of email follow-ups](../../modules/assistance/email_notifications)).
 
 ## The different tabs
 
@@ -53,34 +53,34 @@ dates, priority and supervisors.
 ### Solutions
 
 This tab allows to describe the resolution of the change. See
-[Solutions](/asset-management/Les_différents_onglets/Onglet_Solution)
+[Solutions](../../Les_différents_onglets/Onglet_Solution)
 
 ### Statistics
 
 Statistics similar to tickets are available for changes. See
-[Statistics](/asset-management/Les_différents_onglets/Onglet_Statistiques)
+[Statistics](../../Les_différents_onglets/Onglet_Statistiques)
 
 ### Approvals
 
 See
-[Approvals](/asset-management/Les_différents_onglets/Onglet_Validations)
+[Approvals](../../Les_différents_onglets/Onglet_Validations)
 
 ### Tasks
 
 A task is an action linked with a change, usually a technical
 intervention. See
-[Tasks](/asset-management/Les_différents_onglets/Onglet_Tâches)
+[Tasks](../../Les_différents_onglets/Onglet_Tâches)
 
 ### Costs
 
 This tab defines the costs applicable to this change. See
-[Costs](/asset-management/Les_différents_onglets/Onglet_Coûts)
+[Costs](../../Les_différents_onglets/Onglet_Coûts)
 
 ### Elements
 
 This tab allows to attach an item to the change by choosing the type and
 the selected item. See
-[Items](/asset-management/Les_différents_onglets/Onglet_Eléments)
+[Items](../../Les_différents_onglets/Onglet_Eléments)
 
 ### Tickets
 
@@ -106,7 +106,7 @@ Any deletion or addition of a ticket is recorded in the history.
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](/asset-management/modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new

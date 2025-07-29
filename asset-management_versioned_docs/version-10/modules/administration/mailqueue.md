@@ -10,12 +10,12 @@ allows keeping a history and a list of the various emails sent.
 
 An automatic action (`queuedmail`) allows the sending of pending emails
 (see
-[Configure automatic actions](/asset-management/modules/configuration/crontasks)). Another automatic action (`queuemailclean`) cleans the
+[Configure automatic actions](../../modules/configuration/crontasks)). Another automatic action (`queuemailclean`) cleans the
 queue by keeping only recent emails.
 
 The delay applied for sending notifications can be defined at entity
 level, see
-[administration by entity](/asset-management/modules/administration/entities)). This allows for example in the case of rapid multiple
+[administration by entity](../../modules/administration/entities)). This allows for example in the case of rapid multiple
 modifications of an object to send only one notification.
 
 :::warning

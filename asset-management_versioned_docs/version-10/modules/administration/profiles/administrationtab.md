@@ -6,7 +6,7 @@ title: Administrationtab
 # Administration permissions
 
 The 7 standard permissions will not be listed (see
-[Permissions description](/asset-management/modules/administration/profiles)).
+[Permissions description](../../../modules/administration/profiles)).
 
 :::warning
 

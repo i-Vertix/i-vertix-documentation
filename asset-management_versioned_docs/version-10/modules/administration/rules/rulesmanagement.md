@@ -30,7 +30,7 @@ This engine is used for both:
   - assigning category to a software
   - routing tickets to entities
   - automatic actions when opening ticket
-- [data dictionaries](/asset-management/modules/administration/dictionnaries) :
+- [data dictionaries](../../../modules/administration/dictionnaries) :
   - manufacturers
   - software
   - printers
@@ -62,7 +62,7 @@ See Rules for assigning a ticket opened via a mail collector
 ### Rules for assigning authorizations to a user
 
 See
-[Rules for assigning authorizations to a user](/asset-management/modules/administration/rules/userauthorizations)
+[Rules for assigning authorizations to a user](../../../modules/administration/rules/userauthorizations)
 
 ### Rules for assigning a category to software
 
@@ -79,7 +79,7 @@ When opening or modifying a ticket, a mechanism allows to modify ticket
 attributes automatically.
 
 See
-[Business rules for tickets](/asset-management/modules/administration/rules/ticketbusinessrules)
+[Business rules for tickets](../../../modules/administration/rules/ticketbusinessrules)
 
 ### Rules for inventory agent
 
@@ -90,7 +90,7 @@ an automatic inventory of computers in i-Vertix ITAM.
 - rules for importing and linking computers
 
 See
-[Rules for inventory agent](/asset-management/modules/administration/rules/inventorytools)
+[Rules for inventory agent](../../../modules/administration/rules/inventorytools)
 
 - **Transfer** This menu allows you to define the inter-entity transfer
   profiles.

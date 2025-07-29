@@ -16,7 +16,7 @@ a technician assigned - The maximum amount of time that should pass
 before a ticket is resolved
 
 A calendar can be associated with an SLA/OLA (see
-[calendars](/asset-management/modules/configuration/dropdowns/calendar)). By
+[calendars](../../modules/configuration/dropdowns/calendar)). By
 default, no calendar is associated and calculations are done on a
 working basis 7 days a week and 24 hours a day. It is also possible to
 use the calendar associated with the ticket (i.e. the one of the entity
@@ -45,7 +45,7 @@ postponed by 3 hours.
 ## Automatic assignment of service levels
 
 You can automatically assign an SLA or OLA to tickets through the
-[ticket rules engine](/asset-management/modules/administration/rules/ticketbusinessrules). The association of the SLA with the ticket allows the
+[ticket rules engine](../../modules/administration/rules/ticketbusinessrules). The association of the SLA with the ticket allows the
 automatic calculation of its the expiration date. Several SLA/OLAs can
 thus be defined and assigned according to precise criteria.
 

@@ -38,5 +38,5 @@ between technicians.
   available, notifications must be activated (see notification
   management)
 - Role attribution is done in user's authorization management (see
-  [Attribute authorizations to a user](/asset-management/modules/administration/rules/userauthorizations))
+  [Attribute authorizations to a user](../../modules/administration/rules/userauthorizations))
 :::

@@ -72,7 +72,7 @@ information relevant to defining the authorizations, this information
 can be used to define the authorizations. It is also possible to assign
 an entity to a user using the mail domain if this is specific to an
 entity. The email domain used by the entity is defined in the
-[advanced information for entities](/asset-management/modules/administration/entities).
+[advanced information for entities](../../../modules/administration/entities).
 :::note[**Example**]
 
 Users authenticate using e-mail addresses of the following form:

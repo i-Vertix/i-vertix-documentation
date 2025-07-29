@@ -15,7 +15,7 @@ mandatory to follow these best practices and freedom is given to
 implement an incident management best tailored for organization's need.
 
 Statistics are available for tickets, see
-[Display statistics](/asset-management/modules/assistance/statistics).
+[Display statistics](../../../modules/assistance/statistics).
 
 ## Description of specific fields
 
@@ -26,7 +26,7 @@ Statistics are available for tickets, see
   These two dates allow to limit in time incident or service request. A
   **SLA** can also be associated with the ticket; in this case the SLA
   and the next escalade level are displayed (see
-  [Configure SLA](/asset-management/modules/assistance/tickets/modules/configuration/service_levels)).
+  [Configure SLA](../../../modules/assistance/tickets/modules/configuration/service_levels)).
 
 - **By**: references the i-Vertix ITAM user having opened the ticket;
 
@@ -37,12 +37,12 @@ Statistics are available for tickets, see
 
 - **Status**: status attributed manualy by the technician or dynamically
   by performed actions, see
-  [Management rules](/asset-management/modules/assistance/tickets/ticketlifecycle) and
-  [life cycle matrix](/asset-management/modules/assistance/lifecyclematrix);
+  [Management rules](../../../modules/assistance/tickets/ticketlifecycle) and
+  [life cycle matrix](../../../modules/assistance/lifecyclematrix);
 
 - **Request Source**: indicates the channel used to create the ticket,
   see
-  [Configure drop down](/asset-management/modules/configuration/dropdowns);
+  [Configure drop down](../../../modules/configuration/dropdowns);
 
 - **Urgency**: importance given to the ticket by the requester;
 
@@ -50,7 +50,7 @@ Statistics are available for tickets, see
 
 - **Priority**: importance of the ticket automaticaly computed from
   defined impact and urgency using a predefined calculus matrix, see
-  [life cycle matrix](/asset-management/modules/assistance/lifecyclematrix);
+  [life cycle matrix](../../../modules/assistance/lifecyclematrix);
 
 - **Approval**: by default the ticket is *Not subject to approval*;
 
@@ -64,7 +64,7 @@ Statistics are available for tickets, see
 
 - **Actor**: implied actors are referenced in the ticket, which allows
   them to be notified during ticket life cycle, see
-  [Defining actors and roles](/asset-management/modules/assistance/actors).
+  [Defining actors and roles](../../../modules/assistance/actors).
 
   If email followup have been configured (see notification management),
   information about notifications are displayed for a user or a
@@ -113,7 +113,7 @@ ticket is waiting for approval.
 To add a followup, click on **Followup** and enter a description.
 
 It is possible to choose the source of the followup, see
-[Configure dropdown](/asset-management/modules/configuration/dropdowns).
+[Configure dropdown](../../../modules/configuration/dropdowns).
 
 A followup can be public or private. A private followup is only visible
 by i-Vertix ITAM users having the authorization [See all followup and
@@ -122,19 +122,19 @@ technician which is not visible by requester.
 
 Adding, modifying and deleting a followup is submited to authorizations
 defined in profile, see
-[Administer user profiles](/asset-management/modules/administration/profiles).
+[Administer user profiles](../../../modules/administration/profiles).
 
 ### Approvals
 
 See
-[Validation](/asset-management/Les_différents_onglets/Onglet_Validations)
+[Validation](../../../Les_différents_onglets/Onglet_Validations)
 
 ### Project Tasks
 
 A task is an action corresponding to a technical intervention related to
 the ticket.
 
-See [Tasks](/asset-management/Les_différents_onglets/Onglet_Tâches)
+See [Tasks](../../../Les_différents_onglets/Onglet_Tâches)
 
 ### Solution
 
@@ -142,25 +142,25 @@ This tab allows resolution of a ticket by a technican and approval of
 solution by requester.
 
 See
-[Solutions](/asset-management/Les_différents_onglets/Onglet_Solution)
+[Solutions](../../../Les_différents_onglets/Onglet_Solution)
 
 ### Statistics
 
 See
-[Statistics](/asset-management/Les_différents_onglets/Onglet_Statistiques)
+[Statistics](../../../Les_différents_onglets/Onglet_Statistiques)
 
 ### Items
 
 Allows to associate several items to the ticket.
 
-See [Items](/asset-management/Les_différents_onglets/Onglet_Eléments)
+See [Items](../../../Les_différents_onglets/Onglet_Eléments)
 
 ### Changes
 
 Allows to add and display changes associated with the ticket.
 
 See
-[Changes](/asset-management/Les_différents_onglets/Onglet_Changements)
+[Changes](../../../Les_différents_onglets/Onglet_Changements)
 
 ### Problems
 
@@ -169,13 +169,13 @@ create a problem from this ticket.
 
 ![Creating a problem from a ticket](../../../assets/modules/assistance/images/ticket_problems.png)
 
-See [Problems](/asset-management/commontabs/item_problemes)
+See [Problems](../../../commontabs/item_problemes)
 
 ### Historical
 
 Display the history of the ticket.
 
-See [Historical](/asset-management/commontabs/item_historique)
+See [Historical](../../../commontabs/item_historique)
 
 ### Debugging information
 
