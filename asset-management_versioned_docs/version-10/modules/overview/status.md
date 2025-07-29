@@ -11,7 +11,7 @@ specific to the information system managed by i-Vertix ITAM.
 
 Defining new status and the object types they will be used for is under
 i-Vertix ITAM administrator's responsibility, see
-[dropdown configuration](../../modules/configuration/dropdowns). These defined status can be recursive, in order to ease
+[dropdown configuration](../../modules/configuration/dropdowns/index.md). These defined status can be recursive, in order to ease
 management.
 
 Modifying an element's status can be done either from the element's

@@ -17,7 +17,7 @@ This tab permits to customize main application appearance.
 - **Text in the login box**: specific text to be displayed at the top of
   the login block
 - **Allow FAQ anonymous access**: allows
-  [Frequently Asked Question](FAQ)
+  Frequently Asked Question
   access without any login in i-Vertix ITAM. A link to access the FAQ will be
   displayed below the login box when enabled.
 - **Default search results limit**: maximum number of search results

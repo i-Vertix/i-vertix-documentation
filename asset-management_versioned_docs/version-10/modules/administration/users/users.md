@@ -76,7 +76,7 @@ the item or for which user is member of the group defined in field
 *Group* of the item.
 
 See
-[Tab "Used items"](../../../Les_différents_onglets/Onglet_Eléments)
+Tab "Used items"
 
 ### Managed items
 
@@ -85,7 +85,7 @@ in Charge* of the item or for which user is member of the group defined
 in field *Group in Charge* of the item.
 
 See
-[Tab "Managed items"](../../../Les_différents_onglets/Onglet_Eléments)
+Tab "Managed items"
 
 ### Reservations
 
@@ -94,7 +94,7 @@ order to see this tab, read authorization on reservation management must
 be granted.
 
 See
-[Tab "Reservations"](../../../Les_différents_onglets/Onglet_Réservations)
+Tab "Reservations"
 
 ### Synchronization
 
@@ -136,7 +136,7 @@ as *Requester*).
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
 associated and unlinked with the selected item. The
-[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
+[management of the documents themselves](../../../modules/management/documents) is dealt with in another chapter.
 
 It is also possible to quickly create a document via this tab by
 specifying the desired file and optionally the field in which the new

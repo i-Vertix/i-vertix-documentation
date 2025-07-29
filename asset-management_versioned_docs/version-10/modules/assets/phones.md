@@ -54,7 +54,7 @@ of a computer.
 :::info
 
 Adding or managing components is located in menu
-[Setup > Components](../../../modules/configuration/components).
+[Setup > Components](../../modules/configuration/components).
 
 :::
 
@@ -113,13 +113,13 @@ Several tabs are then displayed:
 
 - Tab "Element - Link name of component" : list the
 characteristics of this component
-- [Tab "Management"](../../../modules/tabs/management) : manage administrative and accounting information
-- [Tab "Documents"](../../../modules/tabs/documents) : attached documents
-- [Tab "History"](../../../modules/tabs/historical) : history of modifications
-- [Tab "Contract"](../../../modules/tabs/contracts) : contracts management
-- [Tab "Debug"](../../../modules/tabs/debug)
+- [Tab "Management"](../../modules/tabs/management) : manage administrative and accounting information
+- [Tab "Documents"](../../modules/tabs/documents) : attached documents
+- [Tab "History"](../../modules/tabs/historical) : history of modifications
+- [Tab "Contract"](../../modules/tabs/contracts) : contracts management
+- [Tab "Debug"](../../modules/tabs/debug)
 : only if you are connected in Debug mode
-- [Tab "All"](../../../modules/tabs/all) :
+- [Tab "All"](../../modules/tabs/all) :
 all the information are displayed on a single page
 
 :::
@@ -203,7 +203,7 @@ being defined by a name, an optional comment and a VLAN number.
 ![VLAN](../../assets/modules/assets/images/ports_vlan.png)
 
 One or more
-[network name](../../../modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
+[network name](../../modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
 tab [Network name].
 
 ![Network name](../../assets/modules/assets/images/ports_network_name.png)

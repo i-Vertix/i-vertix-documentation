@@ -29,7 +29,7 @@ or several projects allowing a mode detailed management
 ([Manage projects](../../modules/tools/projects)).
 
 Changes use their own notifications (see
-[configuration of email follow-ups](../../modules/assistance/email_notifications)).
+[configuration of email follow-ups](../../modules/configuration/notifications/email_notifications)).
 
 ## The different tabs
 
@@ -53,34 +53,34 @@ dates, priority and supervisors.
 ### Solutions
 
 This tab allows to describe the resolution of the change. See
-[Solutions](../../Les_différents_onglets/Onglet_Solution)
+Solutions
 
 ### Statistics
 
 Statistics similar to tickets are available for changes. See
-[Statistics](../../Les_différents_onglets/Onglet_Statistiques)
+Statistics
 
 ### Approvals
 
 See
-[Approvals](../../Les_différents_onglets/Onglet_Validations)
+Approvals
 
 ### Tasks
 
 A task is an action linked with a change, usually a technical
 intervention. See
-[Tasks](../../Les_différents_onglets/Onglet_Tâches)
+Tasks
 
 ### Costs
 
 This tab defines the costs applicable to this change. See
-[Costs](../../Les_différents_onglets/Onglet_Coûts)
+Costs
 
 ### Elements
 
 This tab allows to attach an item to the change by choosing the type and
 the selected item. See
-[Items](../../Les_différents_onglets/Onglet_Eléments)
+Items
 
 ### Tickets
 

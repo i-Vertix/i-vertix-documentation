@@ -6,13 +6,13 @@ title: Ldap
 # LDAP directories
 
 i-Vertix ITAM can interface with one or more
-[LDAP directories](LDAP directory) in
+LDAP directories in
 order to authenticate users, control their access, retrieve their
 personal information and import groups.
 
 All the directories compatible LDAP v3 are supported by i-Vertix ITAM. It is thus
 also the case for the
-'[Active Directory](Active Directory service) of Microsoft. There is no limit as to the number of
+'Active Directory of Microsoft. There is no limit as to the number of
 directories informed. However, the higher the number, the longer the
 search for a new user to authenticate can be.
 

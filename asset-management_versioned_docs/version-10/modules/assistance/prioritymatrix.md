@@ -18,7 +18,7 @@ default predefined matrix which corresponds to standard cases.
 
 This predefined matrix can be modified in tab [Assistance]
 of menu **Setup \> General** (see
-[Configure general parameters](../../modules/configuration/general).
+[Configure general parameters](../../modules/configuration/general/index.md).
 
 Knowing that the order of items processing by technicians is based on
 priority, it is possible to select the different levels of urgency,

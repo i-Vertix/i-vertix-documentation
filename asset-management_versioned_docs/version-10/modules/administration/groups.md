@@ -118,7 +118,7 @@ the current group. The search can be extended to sub-groups as well as
 to the members of the group (*User* field of the item).
 
 See
-[Tab "Used Items"](../../Les_différents_onglets/Onglet_Eléments)
+Tab "Used Items"
 
 ### Managed items
 
@@ -128,7 +128,7 @@ sub-groups as well as to the members of the group (*Technical manager*
 field of the item).
 
 See
-[Tab "Managed Items"](../../Les_différents_onglets/Onglet_Eléments)
+Tab "Managed Items"
 
 ### LDAP directory link
 

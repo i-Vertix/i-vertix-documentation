@@ -26,7 +26,7 @@ Statistics are available for tickets, see
   These two dates allow to limit in time incident or service request. A
   **SLA** can also be associated with the ticket; in this case the SLA
   and the next escalade level are displayed (see
-  [Configure SLA](../../../modules/assistance/tickets/modules/configuration/service_levels)).
+  Configure SLA).
 
 - **By**: references the i-Vertix ITAM user having opened the ticket;
 
@@ -42,7 +42,7 @@ Statistics are available for tickets, see
 
 - **Request Source**: indicates the channel used to create the ticket,
   see
-  [Configure drop down](../../../modules/configuration/dropdowns);
+  [Configure drop down](../../../modules/configuration/dropdowns/index.md);
 
 - **Urgency**: importance given to the ticket by the requester;
 
@@ -113,7 +113,7 @@ ticket is waiting for approval.
 To add a followup, click on **Followup** and enter a description.
 
 It is possible to choose the source of the followup, see
-[Configure dropdown](../../../modules/configuration/dropdowns).
+[Configure dropdown](../../../modules/configuration/dropdowns/index.md).
 
 A followup can be public or private. A private followup is only visible
 by i-Vertix ITAM users having the authorization [See all followup and
@@ -127,14 +127,14 @@ defined in profile, see
 ### Approvals
 
 See
-[Validation](../../../Les_différents_onglets/Onglet_Validations)
+Validation
 
 ### Project Tasks
 
 A task is an action corresponding to a technical intervention related to
 the ticket.
 
-See [Tasks](../../../Les_différents_onglets/Onglet_Tâches)
+See Tasks
 
 ### Solution
 
@@ -142,25 +142,25 @@ This tab allows resolution of a ticket by a technican and approval of
 solution by requester.
 
 See
-[Solutions](../../../Les_différents_onglets/Onglet_Solution)
+Solutions
 
 ### Statistics
 
 See
-[Statistics](../../../Les_différents_onglets/Onglet_Statistiques)
+Statistics
 
 ### Items
 
 Allows to associate several items to the ticket.
 
-See [Items](../../../Les_différents_onglets/Onglet_Eléments)
+See Items
 
 ### Changes
 
 Allows to add and display changes associated with the ticket.
 
 See
-[Changes](../../../Les_différents_onglets/Onglet_Changements)
+Changes
 
 ### Problems
 
@@ -169,13 +169,13 @@ create a problem from this ticket.
 
 ![Creating a problem from a ticket](../../../assets/modules/assistance/images/ticket_problems.png)
 
-See [Problems](../../../commontabs/item_problemes)
+See Problems
 
 ### Historical
 
 Display the history of the ticket.
 
-See [Historical](../../../commontabs/item_historique)
+See Historical
 
 ### Debugging information
 

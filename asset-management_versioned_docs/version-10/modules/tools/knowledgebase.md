@@ -57,7 +57,7 @@ content (case change, tags adding) when editing.
 
 It is possible to create categories and sub-categories in order to
 organize browsing (see
-[Configure drop-downs](../../modules/configuration/dropdowns)). User can then use several tabs to search and browse
+[Configure drop-downs](../../modules/configuration/dropdowns/index.md)). User can then use several tabs to search and browse
 knowledge base:
 
 - **Search** This tab is the default tab, displaying recent articles,

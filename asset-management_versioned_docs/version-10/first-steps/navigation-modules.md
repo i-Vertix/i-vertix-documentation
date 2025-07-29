@@ -9,21 +9,21 @@ The various functions of i-Vertix ITAM have been grouped into several modules,
 built around similar contexts of use. The top bar of the interface
 allows you to navigate between these modules:
 
-- The [Assets module](../modules/assets) provides access to the various inventoried materials,
+- The [Assets module](../modules/assets/index.md) provides access to the various inventoried materials,
 - The
-  [Assistance module](../modules/assistance) allows you to create and monitor tickets, problems and
+  [Assistance module](../modules/assistance/index.md) allows you to create and monitor tickets, problems and
   changes; as well as see statistics.
 - The
-  [Management module](../modules/management) allows you to manage contacts, suppliers, budgets,
+  [Management module](../modules/management/index.md) allows you to manage contacts, suppliers, budgets,
   contracts and documents.
-- The [Tools module](../modules/tools) allows you to manage projects, notes, the knowledge base,
+- The [Tools module](../modules/tools/index.md) allows you to manage projects, notes, the knowledge base,
   reservations, RSS feeds and view reports.
 - The
-  [Administration module](../modules/administration) allows you to administer users, groups, entities,
+  [Administration module](../modules/administration/index.md) allows you to administer users, groups, entities,
   profiles, rules and dictionaries. It also allows the management of the
   email queue.
 - The
-  [Setup module](../modules/configuration) provides access to the general configuration options of
+  [Setup module](../modules/configuration/index.md) provides access to the general configuration options of
   i-Vertix ITAM: notifications, collectors, automatic tasks, authentication,
   plugins, external links, SLA, management of titles, components as well
   as control of the uniqueness of fields.

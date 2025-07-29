@@ -70,7 +70,7 @@ See
 Incidents resolution delays or SLA can be configured.
 
 See
-[Configure SLAs](../../../modules/assistance/tickets/modules/configuration/service_levels).
+Configure SLAs.
 
 ## Business rules
 

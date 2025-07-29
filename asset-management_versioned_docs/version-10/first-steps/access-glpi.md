@@ -18,7 +18,7 @@ The first step is to configure the desired authentication method(s).
 i-Vertix ITAM is able to manage user authentication and information completely
 locally in its database, however it is recommended to delegate the
 authentication to an external service like LDAP. See
-[Configuring authentication methods](../modules/configuration/authentication) for more information.
+[Configuring authentication methods](../modules/configuration/authentication/index.md) for more information.
 
 The import or creation of new users and management of users known to
 i-Vertix ITAM including deletion, syncronization, activation/deactivation and

@@ -367,4 +367,4 @@ below the other.
 
 Apart from [common actions](../../modules/overview/actions), some actions are specific to displays:
 
-- [connect a display to a monitor](../../commontabs/item_connexions)
+- connect a display to a monitor

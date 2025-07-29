@@ -20,7 +20,7 @@ and shares with it many concepts: [Requester],
 
 
 Problems use their own notifications, see
-[configuration of email follow-ups](../../modules/assistance/email_notifications).
+[configuration of email follow-ups](../../modules/configuration/notifications/email_notifications).
 
 Statistics similar to tickets are available for problems, see
 [Display statistics](../../modules/assistance/statistics).
@@ -31,7 +31,7 @@ Statistics similar to tickets are available for problems, see
 
 This tab allows to display changes associated with the problem and add
 new changes. See
-[Solutions](../../Les_différents_onglets/Onglet_Changements)
+Solutions
 
 ### Analysis
 
@@ -41,29 +41,29 @@ symptoms.
 ### Solutions
 
 This tab allows to describe the resolution of the problem. See
-[Solutions](../../Les_différents_onglets/Onglet_Solution)
+Solutions
 
 ### Statistics
 
 Statistics similar to tickets are available for problems. See
-[Statistics](../../Les_différents_onglets/Onglet_Statistiques)
+Statistics
 
 ### Tasks
 
 A task is an action linked with a problem, usually a technical
 intervention. See
-[Tasks](../../Les_différents_onglets/Onglet_Tâches)
+Tasks
 
 ### Costs
 
 This tab defines the costs applicable to this problem. See
-[Costs](../../Les_différents_onglets/Onglet_Coûts)
+Costs
 
 ### Elements
 
 This tab allows to attach an item to the problem by choosing the type
 and the selected item. See
-[Items](../../Les_différents_onglets/Onglet_Eléments)
+Items
 
 ### Tickets
 

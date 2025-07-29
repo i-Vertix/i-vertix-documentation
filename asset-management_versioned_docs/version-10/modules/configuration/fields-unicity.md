@@ -24,7 +24,7 @@ the object and/or send a notification if it is determined to not be
 unique.
 
 Th criteria added in the
-[blacklists](../../modules/configuration/intitules/general) will be
+blacklists will be
 ignored when calculating uniqueness.
 
 ## The different tabs

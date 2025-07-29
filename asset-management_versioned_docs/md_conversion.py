@@ -126,6 +126,36 @@ def prepare_sources(files):
     return
 
 
+def provide_link_corrections(url):
+
+    alt = [
+        url.parent / url.stem / pathlib.Path("index.md"),
+        url.parent / url.name.replace(".html", ""),
+        url.parent / url.name.split(".")[0] / (url.name.split(".")[0] + ".md"),
+    ]
+
+    return alt
+
+
+def test_url(outf, url):
+
+    rel_path = pathlib.Path(url)
+    fs_path = outf.parent / rel_path.with_suffix(".md")
+    return fs_path.exists()
+
+
+#Looks for url with a given list of replacements
+def correct_url(outf, url):
+
+    rel_path = pathlib.Path(url)
+    for a in provide_link_corrections(rel_path):
+        abs_path = outf.parent / a
+        if abs_path.exists():
+            return a.as_posix()
+    
+    return None
+
+
 def parse_link(conv_list):
 
     links = {}
@@ -133,6 +163,13 @@ def parse_link(conv_list):
     # orig_link -> correction, to manage rst includes
     # without parsing the full include tree
     links_euristic = {}
+
+    # second euristic,
+    # for broken links in orig sources
+    # last part of the link -> working link with the same last part
+    links_dest = {}
+
+    dead_url = []
     
     links_nr = 0
 
@@ -140,13 +177,16 @@ def parse_link(conv_list):
         with open(inf, "r", encoding="utf8") as fd:
             text = fd.read()
 
-        end = 0
-        for match in re.finditer(r":doc:`(.*?) <(.*?)>`", text[end:], flags=re.MULTILINE):
+        for match in re.finditer(r"(?::doc:)*`(.*?) <(.*?)>`", text, flags=re.MULTILINE):
 
             links_nr += 1
 
             #l_text = match.group(1)
             l_path = match.group(2)
+            if l_path.startswith("http"):
+                continue
+            #    links[(outf, l_path)] = l_path
+            #    continue
 
             if l_path[0] == "/":
                 norm_path = l_path.split("/")
@@ -160,20 +200,36 @@ def parse_link(conv_list):
             if norm_path[-1] == norm_path[-2]:
                 norm_path = norm_path[:-1]
 
-
-            #print("")
-            #print(inf, l_text)
-            #print(rel.parts, l_path)
-            #print(norm_path)
-            ##print(l_text, l_path)
-
             #norm_path = ["", "asset-management"] + norm_path
-            norm_path = [".."] * len(rel.parts) + norm_path
-            url = "/".join(norm_path)
-            links[(outf, l_path)] = url
-            links_euristic[l_path] = url
+            url = "/".join([".."] * len(rel.parts) + norm_path)
 
-            end += match.end()
+            if not test_url(outf, url):
+                replaced_url = correct_url(outf, url)
+                if replaced_url is None:
+                    dead_url.append((outf, l_path, rel, norm_path))
+                    continue
+                else:
+                    url = replaced_url
+                    links_dest[replaced_url.split("/")[-1]] = replaced_url
+            else:
+                links_dest[url.split("/")[-1]] = norm_path
+
+            # we can store the final url
+            links[(outf, l_path)] = url
+
+            # we need to store the relative path of the url,
+            # it will be joined with a number of ".." depending 
+            # the link starting point
+            links_euristic[l_path] = norm_path
+    
+    for outf, l_path, rel, norm_path in dead_url:
+        name = norm_path[-1]
+        if name in links_dest:
+            norm_path = links_dest[name]
+            url = "/".join([".."] * len(rel.parts) + norm_path)
+            links[(outf, l_path)] = url
+            print(f"Replacing {name} in {outf} with {url}")
+            
 
     print(f"internal links: {links_nr}")
     return links, links_euristic
@@ -216,13 +272,13 @@ if __name__ == "__main__":
     # fix hard (for pandoc) to interpret rst directives
     prepare_sources([x[0] for x in fmap])
 
-    # parse links
-    link_replacement, links_euristic = parse_link(fmap)
-
     # create md files as result from pandoc conversion    
     if not args.skip_conversion:
         for in_file, rel_dir, out_file in fmap: 
             convert_to_md(in_file, out_file)
+    
+    # parse links
+    link_replacement, links_euristic = parse_link(fmap)
     
     # write docusaurs header to files
     for _, _, out_file in fmap: 
@@ -251,7 +307,7 @@ if __name__ == "__main__":
     tot_links = 0
     replaced_links = 0
 
-    def replace_links(match, outfile):
+    def replace_links(match, rel_dir, outfile):
 
         global tot_links
         global replaced_links
@@ -265,7 +321,11 @@ if __name__ == "__main__":
 
         if url is None:
             replaced_links += 1
-            url = links_euristic.get(link_path, link_path)
+            url = links_euristic.get(link_path)
+            if url is None:
+                return link_text
+            
+            url = "/".join([".."] * len(rel_dir.parts) + url)
 
         new_text = f"[{link_text}]({url})"
         return new_text
@@ -324,7 +384,7 @@ if __name__ == "__main__":
 
         lambda x, rd, f: re.sub(
             r"\`([\-\w \"\'>]+) <([ \.\w/_\-]+)>\`", 
-            partial(replace_links, outfile=f), 
+            partial(replace_links, rel_dir=rd, outfile=f), 
             x, 
             flags=re.MULTILINE),
         
