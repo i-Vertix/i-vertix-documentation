@@ -35,10 +35,6 @@ sidebar:
           - first-web-access
       - attach-a-poller-to-a-central-server
       - fail2ban
-  - id: upgrade
-    label: Update / Upgrade 
-    items:
-      - upgrade-from-4-2
   - id: monitoring-resources
     label: Monitoring Resources
     items:
@@ -218,4 +214,8 @@ sidebar:
       - rest-api-v1
       - rest-api-v2
       - api-tokens
+  - id: upgrade
+    label: Update / Upgrade
+    items:
+      - upgrade-from-4-2
   - glossary
