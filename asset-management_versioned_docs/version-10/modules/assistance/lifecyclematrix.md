@@ -19,8 +19,8 @@ See
 
 ![The life cycle matrix of a problem (standard interface)](../../assets/modules/assistance/images/lifecycle_tickets_standard.png)
 
-In example above, a [New] ticket will never be put to
-[Waiting], this status being not proposed in the ticket.
+In example above, a *New* ticket will never be put to
+*Waiting*, this status being not proposed in the ticket.
 
 Furthermore, a requester will not have access to solution validation
 form, because a solved ticket for which solution has been approved
@@ -39,8 +39,8 @@ See
 
 ![The life cycle matrix of a problem](../../assets/modules/assistance/images/lifecycle_problems.png)
 
-In example above, a [New] problem will never be put directly
-to status [Solved], this status being not proposed in the
+In example above, a *New* problem will never be put directly
+to status *Solved*, this status being not proposed in the
 problem.
 
 ## Change life cycle matrix
@@ -50,7 +50,7 @@ See
 
 ![The life cycle matrix of a change](../../assets/modules/assistance/images/lifecycle_changes.png)
 
-In example above, a [New] change will never be
-[Accepted] before having its status put to
-[Evaluation] or [Validation], this status being
+In example above, a *New* change will never be
+*Accepted* before having its status put to
+*Evaluation* or *Validation*, this status being
 not proposed in the change.

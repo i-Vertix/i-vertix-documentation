@@ -5,8 +5,8 @@ title: Antivirus
 
 # Antivirus
 
-This tab, named [Antivirus] and visible in a
-[Computer] entry, allows to manage the antivirus running on
+This tab, named *Antivirus* and visible in a
+*Computer* entry, allows to manage the antivirus running on
 a computer.
 
 ![Antivirus screen](../../../assets/modules/assets/images/antivirus.png)

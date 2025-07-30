@@ -33,7 +33,7 @@ inventory numbers.
 :::info
 
 The deletion of a connection can be made from the entry of each
-connected hardware (tab [Connections]) via mass actions.
+connected hardware (tab *Connections*) via mass actions.
 
 :::
 

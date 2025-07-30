@@ -111,7 +111,7 @@ The automatic task that triggers the survey must be activated.
 When ticket is closed, a notification that includes a link to the
 satisfaction survey can be sent to the requester. The requester will
 also have access to the survey from the ticket form in tab
-[Satisfaction].
+*Satisfaction*.
 
 The requester can then select the satisfaction level (from 0 to 5, given
 as stars) about the ticket solution. A comment can also be added.

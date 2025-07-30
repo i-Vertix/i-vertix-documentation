@@ -5,7 +5,7 @@ title: Cartridges
 
 # Cartridges
 
-This functionality of [Asset] module allows to create
+This functionality of *Asset* module allows to create
 cartridges models and corresponding cartridges.
 
 In a cartridge form, the following information is available:
@@ -243,7 +243,7 @@ element.
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

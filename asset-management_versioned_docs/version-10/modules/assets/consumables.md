@@ -36,8 +36,8 @@ notification management.
 
 :::
 
-Changing the state of a consumable from [new] to
-[used] requires to set involved user or group.
+Changing the state of a consumable from *new* to
+*used* requires to set involved user or group.
 
 Management of shared stocks is possible by defining the element as
 recursive on an entity. The elements will then be available for all
@@ -216,7 +216,7 @@ information. Notes are displayed in the order of their creation.
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

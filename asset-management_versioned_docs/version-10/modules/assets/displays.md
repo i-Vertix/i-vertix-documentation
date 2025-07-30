@@ -76,7 +76,7 @@ inventory numbers.
 :::info
 
 The deletion of a connection can be made from the entry of each
-connected hardware (tab [Connections]) via mass actions.
+connected hardware (tab *Connections*) via mass actions.
 
 :::
 
@@ -342,7 +342,7 @@ element.
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

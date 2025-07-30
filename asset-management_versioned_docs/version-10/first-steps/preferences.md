@@ -5,12 +5,12 @@ title: Preferences
 
 # Manage your Preferences
 
-User preferences are accessible from the [Preferences] tab
+User preferences are accessible from the *Preferences* tab
 of the user form by clicking on your name at the top right of the
 interface, from any page.
 
 Each authenticated user has the possibility to modify his preferences if
-they have the [Personalize] update right in their profile.
+they have the *Personalize* update right in their profile.
 
 :::info
 

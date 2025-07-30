@@ -31,7 +31,7 @@ Reports can be parameterized on a given time slot.
   - Number of opened , solved, late and closed tickets;
   - Number of opened satisfaction surveys, number of answers and average
     satisfaction;
-  - Average [Take into account] time (duration between
+  - Average *Take into account* time (duration between
     ticket opening and first action on ticket, follow-up, task or
     solution), resolution time or closure time;
   - Real ticket duration, average and total (real duration of allocated

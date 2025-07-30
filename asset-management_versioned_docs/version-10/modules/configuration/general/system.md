@@ -23,7 +23,7 @@ information to be recorded.
   these actions one by one. It possible to increase the number of
   executions launched simultaneously.
 - **SQL replica** Enable to usage of one or more replica databases. The
-  replicas can be further configured in the [SQL replicas]
+  replicas can be further configured in the *SQL replicas*
   tab after this option is enabled.
 
 ![image](../../../assets/modules/configuration/images/system_maintenance.png)
@@ -43,7 +43,7 @@ checking of new versions, fetching RSS feeds, etc.
 
 The following screen lists all the information of i-Vertix ITAM necessary to
 report a malfunction to the i-Vertix ITAM development team. It is preferred to
-click the [Copy system information] button which will add a
+click the *Copy system information* button which will add a
 rich-text version of the system information tables to your clipboard.
 This format shows up in a cleaner format on GitHub than if you copy it
 directly.

@@ -108,7 +108,7 @@ entity.
 
 Three options are available for generic entity assignment rules: the
 `TAG` coming from inventory tool, the LDAP information representing the
-entity (for example the [DN] of the entity) and the email
+entity (for example the *DN* of the entity) and the email
 domain associated with the entity.
 
 ### Notifications
@@ -185,28 +185,28 @@ tickets:
 ::: 
 **List of available tags for survey URL:**
 
-- `[TICKET_ID]`: ticket id
-- `[TICKET_NAME]`: ticket name
-- `[TICKET_CREATEDATE]`: ticket creation date
-- `[TICKET_SOLVEDATE]`: ticket resolution date
-- `[REQUESTTYPE_ID]`: request source id
-- `[REQUESTTYPE_NAME]`: request source name (phone, help desk...)
-- `[ITEMTYPE]`: type of item associated to the ticket (computer,
+- `*TICKET_ID*`: ticket id
+- `*TICKET_NAME*`: ticket name
+- `*TICKET_CREATEDATE*`: ticket creation date
+- `*TICKET_SOLVEDATE*`: ticket resolution date
+- `*REQUESTTYPE_ID*`: request source id
+- `*REQUESTTYPE_NAME*`: request source name (phone, help desk...)
+- `*ITEMTYPE*`: type of item associated to the ticket (computer,
   printer...)
-- `[ITEM_ID]`: id of item associated to the ticket
-- `[ITEM_NAME]`: name of item associated to the ticket
-- `[TICKET_PRIORITY]`: ticket priority
-- `[TICKETCATEGORY_ID]`: ticket category id
-- `[TICKETCATEGORY_NAME]`: ticket category name
-- `[TICKETTYPE_ID]`: ticket type
-- `[TICKETTYPE_NAME]`: ticket type name (incident management or service
+- `*ITEM_ID*`: id of item associated to the ticket
+- `*ITEM_NAME*`: name of item associated to the ticket
+- `*TICKET_PRIORITY*`: ticket priority
+- `*TICKETCATEGORY_ID*`: ticket category id
+- `*TICKETCATEGORY_NAME*`: ticket category name
+- `*TICKETTYPE_ID*`: ticket type
+- `*TICKETTYPE_NAME*`: ticket type name (incident management or service
   request)
-- `[SOLUTIONTYPE_ID]`: solution type id
-- `[SOLUTIONTYPE_NAME]`: solution name
-- `[SLA_ID]`: id of SLA associated to the ticket
-- `[SLA_NAME]`: name of SLA associated to the ticket
-- `[SLALEVEL_ID]`: id of SLA level
-- `[SLALEVEL_NAME]`: name of SLA level
+- `*SOLUTIONTYPE_ID*`: solution type id
+- `*SOLUTIONTYPE_NAME*`: solution name
+- `*SLA_ID*`: id of SLA associated to the ticket
+- `*SLA_NAME*`: name of SLA associated to the ticket
+- `*SLALEVEL_ID*`: id of SLA level
+- `*SLALEVEL_NAME*`: name of SLA level
 :::
 
 ### Assets

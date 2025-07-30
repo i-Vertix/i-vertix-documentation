@@ -67,7 +67,7 @@ child of] is defined.
 
 A GANTT diagram is available for each project. A global GANTT diagram is
 also available, including projects defined as visible in this global
-diagram (field [Show on global GANTT] of the project form).
+diagram (field *Show on global GANTT* of the project form).
 
 ![GANTT diagram](../../assets/modules/tools/images/gantt-project.png)
 
@@ -168,7 +168,7 @@ element.
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 
@@ -206,7 +206,7 @@ and contacts.
 :::info
 
 A project task is not an independent item, it can only be accessed
-through the [Project tasks] tab of the project owning the
+through the *Project tasks* tab of the project owning the
 task.
 
 :::

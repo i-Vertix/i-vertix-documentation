@@ -7,7 +7,7 @@ title: Contacts
 
 i-Vertix ITAM users are the persons having an authentication for the i-Vertix ITAM
 application. External persons, usually associated with contracts, are
-known to i-Vertix ITAM as [Contacts].
+known to i-Vertix ITAM as *Contacts*.
 
 A contact is characterized by usual identity informations as well as
 title, phone number, mail address... Defining a list of contact types

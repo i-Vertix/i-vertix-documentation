@@ -5,7 +5,7 @@ title: Debug
 
 # Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

@@ -5,8 +5,8 @@ title: Volumes
 
 # Volumes
 
-This tab, named [Volumes] and visible in a
-[Computer] entry, allows to manage the volumes attached to a
+This tab, named *Volumes* and visible in a
+*Computer* entry, allows to manage the volumes attached to a
 computer.
 
 ![Volumes screen](../../../assets/modules/assets/images/volumes_list.png)
@@ -21,12 +21,12 @@ A volume attached to a computer is characterized by:
 - available size
 - ciphering algorithm and type
 
-It is possible from a [Computer] entry to add a volume by
+It is possible from a *Computer* entry to add a volume by
 clicking on button `Add a volume`.
 
 ![Adding volumes](../../../assets/modules/assets/images/volumes_add.png)
 
-It is possible from a [Computer] entry to modify an existing
+It is possible from a *Computer* entry to modify an existing
 volume by clicking on the link under its name.
 
 ![Modify a volume](../../../assets/modules/assets/images/volumes_update.png)

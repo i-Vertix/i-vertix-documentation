@@ -66,15 +66,15 @@ For all inventory objects, creation is realized in the same way:
 
 ## Display
 
-The permission to display an object depend on [read]
+The permission to display an object depend on *read*
 permission in user profile.
 
 If the permission to display an object is not granted, the name of this
 object will not appear in i-Vertix ITAM different menus. For example, if the
-permission to read a [Computer] type object is not granted
-in the user's profile, the sub-menu [Computer] will not
-appear in menu [Assets], even if the permission to modify a
-[Computer] is granted.
+permission to read a *Computer* type object is not granted
+in the user's profile, the sub-menu *Computer* will not
+appear in menu *Assets*, even if the permission to modify a
+*Computer* is granted.
 
 For all inventory objects, displaying an object is realized in the same
 way:
@@ -158,7 +158,7 @@ In order to make a transfer:
 2.  Check that profile performing transfer has permission on the origin
     entity and on the destination entity (simplest solution is to use a
     recursive profile from root entity) ;
-3.  Go to root entity ([See all]) ;
+3.  Go to root entity (*See all*) ;
 4.  From objects list, select the element to be transferred ;
 5.  Choose **Add to transfer list** then **Validate** ;
 6.  In **Transfer mode**, select a transfer configuration profile that
@@ -172,7 +172,7 @@ In order to make a transfer:
 If a linked element does not exist in destination entity, it will be
 automatically created if transfer profile asks to keep it.
 
-Example : transfer of a [Computer] with a provider defined
+Example : transfer of a *Computer* with a provider defined
 in accounting informations: if this provider exists only in origin
 entity, it will be created in destination entity; however, a provider
 defined in root entity with recursivity enable will not be recreated.
@@ -187,7 +187,7 @@ Location and group must be updated for destination entity.
 
 ## Deletion
 
-The permission to delete an object depend on [delete]
+The permission to delete an object depend on *delete*
 permission in user profile.
 
 For all inventory objects, deleting an object is realized in the same

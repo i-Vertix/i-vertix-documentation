@@ -117,7 +117,7 @@ Direct connection
 
 Active Directory service
 
-    Directory service compatible with `LDAP directory`, provided by Microsoft. Also known as [AD].
+    Directory service compatible with `LDAP directory`, provided by Microsoft. Also known as *AD*.
 
 LDAP directory
 
@@ -181,11 +181,11 @@ Label FQDN
     separated by dots ('\`.\`').
 
     For example, [www.glpi-project.org] is composed of
-    labels [www], [glpi-project] and
-    [org].
+    labels *www*, [glpi-project] and
+    *org*.
 
     A computer name is composed of a label and the name of the domain it
-    belongs to, for example [www] name in domain
+    belongs to, for example *www* name in domain
     [glpi-project.org].
 
     In i-Vertix ITAM, labels are compliant with section 2.1 of RFC 1123.
@@ -438,7 +438,7 @@ Express renewal
 Standard interface
 
     i-Vertix ITAM user interface that gives access to all functionalities
-    (opposite to [simplified interface]).
+    (opposite to *simplified interface*).
 
 Statistics
 

@@ -28,7 +28,7 @@ user's (www-data, apache, etc) crontab:
     * * * * * php i-Vertix ITAM/front/cron.php
 
 You will need to replace [i-Vertix ITAM] with the path to your i-Vertix ITAM
-folder. You may also need to replace [php] with the full
+folder. You may also need to replace *php* with the full
 path to your php binary if it is not in the PATH.
 
 ## Force execution of action from CLI

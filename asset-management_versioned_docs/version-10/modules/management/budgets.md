@@ -18,7 +18,7 @@ of each attached item.
 :::info
 
 Attaching a i-Vertix ITAM item to a budget is done via tab
-[Management] of the item!
+*Management* of the item!
 
 :::
 
@@ -60,7 +60,7 @@ value.
 :::info
 
 Attaching a i-Vertix ITAM item to a budget is done via tab
-[Management] of the item!
+*Management* of the item!
 
 :::
 

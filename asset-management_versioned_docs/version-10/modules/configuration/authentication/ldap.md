@@ -226,7 +226,7 @@ On an OpenLDAP directory, the default limit is 500 and in Active
 Directory, it is 1000.
 
 In Active Directory it is possible to modify the value of
-[MaxPageSize] with the following commands (This
+*MaxPageSize* with the following commands (This
 modification is global for the whole directory):
 
 ``` none

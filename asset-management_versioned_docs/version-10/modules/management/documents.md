@@ -43,7 +43,7 @@ The *Items* tab is used to show or add linked assets.
 ### Documents
 
 It is possible in i-Vertix ITAM to attach other documents to a document, which
-explains why a [Document] has a [Document] tab.
+explains why a *Document* has a *Document* tab.
 
 ### Notes
 

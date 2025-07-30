@@ -5,8 +5,8 @@ title: Components
 
 # Components
 
-This tab, named [Components] and visible in a
-[Computer] entry, allows to manage the hardware components
+This tab, named *Components* and visible in a
+*Computer* entry, allows to manage the hardware components
 of a computer.
 
 ![Components screen](../../../assets/modules/assets/images/component.png)
@@ -41,7 +41,7 @@ clicking on the link under its name.
 To act on several components (for example modify an element of the
 component, activate accounting information or modify them, delete a
 component...), first select the components and then use the
-[Actions] button present at the top or the bottom of the
+*Actions* button present at the top or the bottom of the
 list.
 
 If several types of different components, not having the same

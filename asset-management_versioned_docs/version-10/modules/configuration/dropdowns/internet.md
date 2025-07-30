@@ -45,7 +45,7 @@ i-Vertix ITAM uses two representations for the IP addresses (IPv6 ad IPv4):
 
 IPv4 addresses and masks are represented in their classic form (e.g.,
 [212.85.137.66], [255.255.255.0]). The
-[representation of IPv6 addresses is the canonical notation]
+*representation of IPv6 addresses is the canonical notation*
 (ie: [2001:db8:0:85a3:0:0:ac1f:8001] rather than
 [2001:0db8:0000:85a3:0000:0000:ac1f:8001]). In this form,
 you may omit 1 - 3 leading zeros in each group. IPv6 masks are
@@ -176,7 +176,7 @@ Displays a list of aliases for this network and allows adding new ones.
 
 Traditionally, the network name is the one used by DNS for reverse
 resolution of an IP address, while the aliases correspond to the
-[CNAME] of the `FQDN` name.
+*CNAME* of the `FQDN` name.
 
 Similarly, the alias name must have a valid `FQDN` label
 

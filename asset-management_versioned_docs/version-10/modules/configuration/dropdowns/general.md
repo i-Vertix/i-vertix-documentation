@@ -81,10 +81,10 @@ device, only the available network sockets of the device location (and
 child locations) are shown. The addition can be single via the top part
 or multiple via the bottom part. For adding multiple sockets, you can
 prefix the socket number as shown in the screenshot. Another example:
-considering the prefix [bru], [9] and
-[11] the socket numbers and [srv] the suffix;
-the network sockets created will be named: [bru09srv],
-[bru10srv] and [bru11srv].
+considering the prefix *bru*, *9* and
+*11* the socket numbers and *srv* the suffix;
+the network sockets created will be named: *bru09srv*,
+*bru10srv* and *bru11srv*.
 
 ### All Information
 

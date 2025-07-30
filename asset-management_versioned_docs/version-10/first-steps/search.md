@@ -133,7 +133,7 @@ Two search criteria linked by the operator `AND NOT`
 
     ![Search interface](../assets/first-steps/images/search_example.png)
 
-`[Year]-[Month]-[Day]` (YYYY-MM-DD)
+`*Year*-*Month*-*Day*` (YYYY-MM-DD)
 
     Search by date.
 
@@ -162,7 +162,7 @@ If the data exported in CSV format is imported into Microsoft Excel
 software, accented characters may not be displayed correctly. This
 software seems to have difficulty with data encoded in UTF-8.
 
-You can export search results by clicking on the [Export]
+You can export search results by clicking on the *Export*
 button above the search results list.
 
 ## Search views

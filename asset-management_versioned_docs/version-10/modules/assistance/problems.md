@@ -12,10 +12,10 @@ Creating a problem object can be done either from the ticket form, in
 tab *Problem*, or directly from menu *Assistance \> Problems*.
 
 The problem creation form is very similar to the ticket creation form
-and shares with it many concepts: [Requester],
-[Watcher], [Assigned to], [Status],
-[Urgency], [Impact], [Priority],
-[Category]. For more information, see
+and shares with it many concepts: *Requester*,
+*Watcher*, *Assigned to*, *Status*,
+*Urgency*, *Impact*, *Priority*,
+*Category*. For more information, see
 [Manage tickets](../../modules/assistance/tickets/ticketmanagement).
 
 

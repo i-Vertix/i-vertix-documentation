@@ -77,7 +77,7 @@ having this version installed) and finally on a computer form (list of
 versions of installed software, sorted by category).
 :::note
 
-- Column [license] is filled only when the license is
+- Column *license* is filled only when the license is
   affected to the concerned computer
 - The initial display of different categories depend upon user
   preferences (see \[manage   preferences\](01-premiers-pas/03_Utiliser_i-Vertix ITAM/04_Gérer_ses_préférences.rst").
@@ -364,8 +364,8 @@ How to realize a grouping:
     name of software in child entities
 2.  Open the form of the software of the mother entity
 3.  Activate recursivity (sub-entities to Yes at top right); this will
-    make a new tab [Grouping] appear after tab
-    [History]
+    make a new tab *Grouping* appear after tab
+    *History*
 4.  Open this tab; a list displays software having same names in child
     entities
 5.  Select appropriate lines and validate grouping
@@ -398,7 +398,7 @@ created
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

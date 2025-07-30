@@ -40,8 +40,8 @@ deprecated in favor of the JSON format, but it remains the default for
 backwards compatibility.
 
 The following formats are currently supported and can be chosen by using
-the HTTP [Accept] header or the [format] query
-parameter. When using the [format] parameter, the short
+the HTTP *Accept* header or the *format* query
+parameter. When using the *format* parameter, the short
 format identifier should be used.
 
 > - JSON
@@ -52,7 +52,7 @@ format identifier should be used.
 >   - Format parameter - plain
 
 You can filter the output to a specific service using the
-[service] query parameter.
+*service* query parameter.
 
 ## CLI Command
 

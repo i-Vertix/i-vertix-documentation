@@ -121,7 +121,7 @@ The PHP email method is blocked by most hosting providers.
 ## Email Method - SMTP
 
 The following configuration options are available for the
-[SMTP] email method(s):
+*SMTP* email method(s):
 
 - Check certificate - Verify the email server has a valid certificate.
 
@@ -144,13 +144,13 @@ The following configuration options are available for the
 
 ## Email Method - SMTP+SSL
 
-The configuration options are the same as the [SMTP] option
-but i-Vertix ITAM will use [SSL] security for the connection.
+The configuration options are the same as the *SMTP* option
+but i-Vertix ITAM will use *SSL* security for the connection.
 
 ## Email Method - SMTP+TLS
 
-The configuration options are the same as the [SMTP] option
-but i-Vertix ITAM will use [TLS] security for the connection.
+The configuration options are the same as the *SMTP* option
+but i-Vertix ITAM will use *TLS* security for the connection.
 
 ## Entity Configuration
 
@@ -164,11 +164,11 @@ in the entity's form.
 
 The following options can only be configured at the entity level:
 
-- [Prefix for notifications] - Text to prefix to the subject
+- *Prefix for notifications* - Text to prefix to the subject
   of email notifications.
-- [Delay to send email notifications] - Optional delay to
+- *Delay to send email notifications* - Optional delay to
   the initial sending of notifications.
-- [Enable notifications by default] - If enabled, a user is
+- *Enable notifications by default* - If enabled, a user is
   automatically set to receive notifications in some cases such as when
   they are assigned to a ticket.
 

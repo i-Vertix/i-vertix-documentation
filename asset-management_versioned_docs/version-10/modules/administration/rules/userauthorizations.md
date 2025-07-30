@@ -53,16 +53,16 @@ used to define authorizations.
 
 Authentication uses the following IMAP/POP servers: `imap.exemple.fr` et
 `imap.exemple.be`. Each server is defined as an authentication source.
-This information allows to assign user to [France] or
-[Belgium] entities. To achieve that, two static rules are
+This information allows to assign user to *France* or
+*Belgium* entities. To achieve that, two static rules are
 necessary:
 
 - Rule for \`Belgium\`:
   - Criteria: IMAP/POP is `imap.exemple.be`
-  - Actions: assign entity [Belgium]
+  - Actions: assign entity *Belgium*
 - Rule for \`France\`:
   - Criteria: IMAP/POP is `imap.exemple.fr`
-  - Actions: assign entity [France]
+  - Actions: assign entity *France*
 :::
 
 ### Email identifier based authorizations
@@ -78,15 +78,15 @@ entity. The email domain used by the entity is defined in the
 Users authenticate using e-mail addresses of the following form:
 `user@example.fr` and `user@example.be`. It does not matter if one or
 more mail servers are used for authentication. This information is used
-to assign the user to the [France] or [Belgium]
+to assign the user to the *France* or *Belgium*
 entity. For this purpose two static rules will be necessary:
 
 - Rule for \`Belgium\`:
   - Criteria: IMAP/POP identifier ends with `exemple.be`
-  - Actions: assign entity [Belgium]
+  - Actions: assign entity *Belgium*
 - Rule for \`France\`:
   - Criteria: IMAP/POP identifier ends with `exemple.fr`
-  - Actions: assign entity [France]
+  - Actions: assign entity *France*
 :::
 
 ## Authorizations based on LDAP directories
@@ -100,7 +100,7 @@ best solution depend on the context of the directory implementation.
 
 Given an LDAP directory where the organization of branches
 (organizational units) corresponds to the organization of i-Vertix ITAM entities.
-Each organizational unit ([ou]) contains the users, either
+Each organizational unit (*ou*) contains the users, either
 directly or in a sub-branch. Each of the branches can be used to
 establish a rule for assigning a user to an entity. The case of users
 belonging to several entities must be dealt with elsewhere. This model
@@ -141,7 +141,7 @@ The user has two options: a static rule set or an adaptive rule.
 
   - Criteria: (LDAP)DistinguishedName ends with:
     `ou=lyon,ou=france,dc=exemple,dc=org`
-  - Actions: assign entity [lyon]
+  - Actions: assign entity *lyon*
 
 - Adaptive rule: a single rule based on regular expressions is
   sufficient to define the assignment to all entities:
@@ -229,7 +229,7 @@ define the following rules:
   - Criteria: Group directory LDAP is [post-only]
   - Actions: Profile assign [post-only]
 - for assigning to an entity:
-  - Criteria: Group directory LDAP is [paris]
+  - Criteria: Group directory LDAP is *paris*
   - Actions: Entity assign *Exemple \> France \> Paris*
 :::
 

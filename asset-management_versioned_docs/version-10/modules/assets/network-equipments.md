@@ -19,8 +19,8 @@ It is possible to use
 
 ### Components
 
-This tab, named [Components] and visible in a
-[Computer] entry, allows to manage the hardware components
+This tab, named *Components* and visible in a
+*Computer* entry, allows to manage the hardware components
 of a computer.
 
 ![Components screen](../../assets/modules/assets/images/component.png)
@@ -55,7 +55,7 @@ clicking on the link under its name.
 To act on several components (for example modify an element of the
 component, activate accounting information or modify them, delete a
 component...), first select the components and then use the
-[Actions] button present at the top or the bottom of the
+*Actions* button present at the top or the bottom of the
 list.
 
 If several types of different components, not having the same
@@ -114,8 +114,8 @@ components information can be automatically imported and updated.
 
 ### Network ports
 
-This tab, named [Network ports] and visible in a
-[Computer] entry, allows to manage the network ports
+This tab, named *Network ports* and visible in a
+*Computer* entry, allows to manage the network ports
 attached to a computer.
 
 ![List of network ports](../../assets/modules/assets/images/ports.png)
@@ -130,7 +130,7 @@ being defined by a name, an optional comment and a VLAN number.
 
 One or more
 [network name](../../modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
-tab [Network name].
+tab *Network name*.
 
 ![Network name](../../assets/modules/assets/images/ports_network_name.png)
 
@@ -153,7 +153,7 @@ Network ports can be of different types:
   loop-back, alias, aggregates...
 - point to point: switched network...
 
-The [Network port] tab groups in a table the ports that are
+The *Network port* tab groups in a table the ports that are
 available on the equipment. The table header contains the total number
 of ports and a link that allows to choose display options. This allows
 to selectively display or mask information such as network data
@@ -215,7 +215,7 @@ A network port alias is a virtual port that can refine a physical port.
 On Linux, to each VLAN, when transmitted
 ["tagged"](glossary/tagged_vlan.html), is associated a port alias, for
 example [eth2.50] to represent VLAN 50 on port
-[eth2].
+*eth2*.
 
 A port alias contains its base port and a MAC address.
 
@@ -499,7 +499,7 @@ element.
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

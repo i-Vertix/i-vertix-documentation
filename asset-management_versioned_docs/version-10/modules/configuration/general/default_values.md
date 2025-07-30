@@ -35,7 +35,7 @@ default. They can be overridden for each user (see [manage preferences](../../..
 - **Display order of surnames/firstnames** Display order for a user's
   first and last name
 - **Display counters** If enabled, the number of elements will be shown
-  next to some tab names such as the [Items] tab in a
+  next to some tab names such as the *Items* tab in a
   Ticket.
 - **CSV delimiter** Character to delimit fields in a CSV export
 - **Results to display on home page** The number of items to display in

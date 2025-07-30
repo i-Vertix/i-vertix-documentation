@@ -438,6 +438,8 @@ if __name__ == "__main__":
             r"^\s*:\s[\s]+", 
             lambda x: " " * (x.end()-x.start() - 1), 
             x, flags=re.MULTILINE),
+        
+        lambda x, _, f: re.sub(r"\[([\w ]*)\](?!\()", r"*\1*", x),
     
     ]
     

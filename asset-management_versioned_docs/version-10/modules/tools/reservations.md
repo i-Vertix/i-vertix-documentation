@@ -16,7 +16,7 @@ it is possible to declare a reservation as recurrent.
 By default, an equipment is not reservable!
 
 Making an equipment reservable is done from the
-[Reservation] tab of the equipment's form.
+*Reservation* tab of the equipment's form.
 
 :::
 

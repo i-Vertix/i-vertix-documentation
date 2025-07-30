@@ -36,7 +36,7 @@ Network] tab.
 
 ### Finding plugins
 
-In the plugin marketplace UI, click on the [Discovery] tab
+In the plugin marketplace UI, click on the *Discovery* tab
 to view the list of all plugins offered through the marketplace. These
 include official plugins (free and subscription) and community plugins.
 On the left, you can select a category to filter plugins and use the
@@ -46,7 +46,7 @@ search bar to further limit the results.
 
 Any plugin that has a [i-Vertix ITAM NETWORK] requires a non-free
 subscription. These plugins will also indicate the tier required such as
-[BASIC] or [STANDARD]. Each paid tier includes
+*BASIC* or *STANDARD*. Each paid tier includes
 the plugins from the lower tiers.
 
 ### Installing plugins
@@ -58,7 +58,7 @@ automatically download the latest version available for your i-Vertix ITAM
 version and install it.
 
 Plugins installed via the marketplace are stored in the
-[marketplace] folder in the root of your i-Vertix ITAM instance.
+*marketplace* folder in the root of your i-Vertix ITAM instance.
 
 After installation, the install button will change to an enable toggle.
 You will need to click that button to enable the plugin after
@@ -66,7 +66,7 @@ installation.
 
 ### Updating plugins
 
-In the marketplace UI on the [Installed] tab, you can see
+In the marketplace UI on the *Installed* tab, you can see
 all the plugins currently installed.
 
 Similar to installing plugins, there will be an update button showing if
@@ -92,13 +92,13 @@ version, it should tell you in the i-Vertix ITAM web interface.
 :::
 
 After you download the plugin, you will need to extract it to the
-[plugins] folder in your i-Vertix ITAM directory. The new folder
-inside [plugins] should be the "internal" name of the
+*plugins* folder in your i-Vertix ITAM directory. The new folder
+inside *plugins* should be the "internal" name of the
 plugin. This is an all lowercase identifier containing no spaces. Inside
 that folder should be at least two files named [hook.php]
 and [setup.php].
 
-Once the plugin is in the [plugins] folder, it will be
+Once the plugin is in the *plugins* folder, it will be
 automatically detected by i-Vertix ITAM and will show up in your plugin list.
 
 All plugins listed will have a group of actions along the right side (or

@@ -6,7 +6,7 @@ title: Os
 # Operating systems
 
 The information on operating systems for a computer are visible in tabs
-[Operating system] for a Computer entry.
+*Operating system* for a Computer entry.
 
 ![Screen presenting an operating system](../../../assets/modules/assets/images/os.png)
 

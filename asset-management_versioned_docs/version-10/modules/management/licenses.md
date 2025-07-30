@@ -38,10 +38,10 @@ It is possible to use
 - **Version in use**: the version of the software associated with the
   license;
 - **Purchase version**: the purchase version, which can differ from
-  [Version in use]; if different, this field indicates it;
+  *Version in use*; if different, this field indicates it;
 - **Number**: the maximum number of uses of the license by assets;
 - **Allow Over-Quota**: allow or not the overflow of maximum number
-  configured in field [Number];
+  configured in field *Number*;
 - **Expiration date**: expiration date of the license, useful to
   configure alerts and anticipate renewal.
 
@@ -67,10 +67,10 @@ This tab lists all types and entities of items linked to this license.
 :::info
 
 The number of installations must be carefully checked against the
-field [Number] of the license.
+field *Number* of the license.
 
 Creating a link between an asset and the license id done in tab
-[Softwares] of the asset.
+*Softwares* of the asset.
 
 :::
 

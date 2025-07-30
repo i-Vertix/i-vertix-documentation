@@ -12,7 +12,7 @@ rooms and racks, allows to:
   organization;
 - Include data centers in i-Vertix ITAM financial management;
 - Use other modules for data centers management, in particular
-  [Assets] module which provides a detailed graphical
+  *Assets* module which provides a detailed graphical
   representation of racks.
 
 ## Data center

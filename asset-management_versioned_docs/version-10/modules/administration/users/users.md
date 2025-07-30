@@ -48,7 +48,7 @@ To note:
 
 This tab allows to manage user authorizations. To add an authorization,
 select entity for which authorizations must be given, then select the
-profile to attribute. the option [Recursive] allows to
+profile to attribute. the option *Recursive* allows to
 associate the chosen profile to all sub-entities of selected entities.
 
 A summary tab displays already attributed authorizations for the user.
@@ -181,7 +181,7 @@ element.
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

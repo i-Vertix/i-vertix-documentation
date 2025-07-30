@@ -24,7 +24,7 @@ files, to manage several languages for example.
 
 :::
 
-The file must be a valid [gettext] file. You can use
+The file must be a valid *gettext* file. You can use
 [Poedit](https://poedit.net/) to create it.
 
 ``` po

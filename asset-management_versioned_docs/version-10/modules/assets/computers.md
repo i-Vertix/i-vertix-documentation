@@ -28,8 +28,8 @@ In a computer form, the following information is available:
 - Users:
   - Computer users, either known by i-Vertix ITAM or not
 
-Other fields are informative, such as [Network] (connexion
-type) and [Update source] (where are computer updates coming
+Other fields are informative, such as *Network* (connexion
+type) and *Update source* (where are computer updates coming
 from (Windows update, yum, apt...).
 
 It is possible to use
@@ -39,7 +39,7 @@ It is possible to use
 - when i-Vertix ITAM is used with an inventory tool, various information provided
   by the tool itself are also available
 - a computer can be a server, a desktop computer or a laptop; to
-  differentiate them, it is possible to use the [type] field
+  differentiate them, it is possible to use the *type* field
 :::
 
 ## The different tabs
@@ -47,7 +47,7 @@ It is possible to use
 ### Operating systems
 
 The information on operating systems for a computer are visible in tabs
-[Operating system] for a Computer entry.
+*Operating system* for a Computer entry.
 
 ![Screen presenting an operating system](../../assets/modules/assets/images/os.png)
 
@@ -88,8 +88,8 @@ system information can be automatically imported and updated.
 
 ### Components
 
-This tab, named [Components] and visible in a
-[Computer] entry, allows to manage the hardware components
+This tab, named *Components* and visible in a
+*Computer* entry, allows to manage the hardware components
 of a computer.
 
 ![Components screen](../../assets/modules/assets/images/component.png)
@@ -124,7 +124,7 @@ clicking on the link under its name.
 To act on several components (for example modify an element of the
 component, activate accounting information or modify them, delete a
 component...), first select the components and then use the
-[Actions] button present at the top or the bottom of the
+*Actions* button present at the top or the bottom of the
 list.
 
 If several types of different components, not having the same
@@ -183,8 +183,8 @@ components information can be automatically imported and updated.
 
 ### Volumes
 
-This tab, named [Volumes] and visible in a
-[Computer] entry, allows to manage the volumes attached to a
+This tab, named *Volumes* and visible in a
+*Computer* entry, allows to manage the volumes attached to a
 computer.
 
 ![Volumes screen](../../assets/modules/assets/images/volumes_list.png)
@@ -199,12 +199,12 @@ A volume attached to a computer is characterized by:
 - available size
 - ciphering algorithm and type
 
-It is possible from a [Computer] entry to add a volume by
+It is possible from a *Computer* entry to add a volume by
 clicking on button `Add a volume`.
 
 ![Adding volumes](../../assets/modules/assets/images/volumes_add.png)
 
-It is possible from a [Computer] entry to modify an existing
+It is possible from a *Computer* entry to modify an existing
 volume by clicking on the link under its name.
 
 ![Modify a volume](../../assets/modules/assets/images/volumes_update.png)
@@ -225,8 +225,8 @@ information can be automatically imported and updated.
 
 ### Software
 
-This tab, named [Softwares] and visible in a
-[Computer] entry, allows to manage the software installed on
+This tab, named *Softwares* and visible in a
+*Computer* entry, allows to manage the software installed on
 a computer. Those software are sorted by their category and are
 characterized by name, version and version status.
 
@@ -311,7 +311,7 @@ inventory numbers.
 :::info
 
 The deletion of a connection can be made from the entry of each
-connected hardware (tab [Connections]) via mass actions.
+connected hardware (tab *Connections*) via mass actions.
 
 :::
 
@@ -331,8 +331,8 @@ connections informations can be automatically imported and updated.
 
 ### Network ports
 
-This tab, named [Network ports] and visible in a
-[Computer] entry, allows to manage the network ports
+This tab, named *Network ports* and visible in a
+*Computer* entry, allows to manage the network ports
 attached to a computer.
 
 ![List of network ports](../../assets/modules/assets/images/ports.png)
@@ -347,7 +347,7 @@ being defined by a name, an optional comment and a VLAN number.
 
 One or more
 [network name](../../modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
-tab [Network name].
+tab *Network name*.
 
 ![Network name](../../assets/modules/assets/images/ports_network_name.png)
 
@@ -370,7 +370,7 @@ Network ports can be of different types:
   loop-back, alias, aggregates...
 - point to point: switched network...
 
-The [Network port] tab groups in a table the ports that are
+The *Network port* tab groups in a table the ports that are
 available on the equipment. The table header contains the total number
 of ports and a link that allows to choose display options. This allows
 to selectively display or mask information such as network data
@@ -432,7 +432,7 @@ A network port alias is a virtual port that can refine a physical port.
 On Linux, to each VLAN, when transmitted
 ["tagged"](glossary/tagged_vlan.html), is associated a port alias, for
 example [eth2.50] to represent VLAN 50 on port
-[eth2].
+*eth2*.
 
 A port alias contains its base port and a MAC address.
 
@@ -638,8 +638,8 @@ virtualization information can be automatically imported and updated.
 
 ### Antivirus
 
-This tab, named [Antivirus] and visible in a
-[Computer] entry, allows to manage the antivirus running on
+This tab, named *Antivirus* and visible in a
+*Computer* entry, allows to manage the antivirus running on
 a computer.
 
 ![Antivirus screen](../../assets/modules/assets/images/antivirus.png)
@@ -802,7 +802,7 @@ element.
 
 ### Debugging information
 
-If you have [Debug] mode enabled in your preferences, a
+If you have *Debug* mode enabled in your preferences, a
 *Debug* tab will appear before the *All* tab. This tab offers
 information to help you resolve an issue.
 

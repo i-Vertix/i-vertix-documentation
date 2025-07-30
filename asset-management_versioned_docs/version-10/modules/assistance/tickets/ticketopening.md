@@ -75,7 +75,7 @@ easily contacted by technicians.
 Specific fields:
 
 - **Inform me about he actions take**: Appears if email followup are
-  configured, see notification management. If set to [Yes],
+  configured, see notification management. If set to *Yes*,
   the requester will be kept informed by mail of the different
   processing of the ticket. The field *Mail* contains the email address
   to which notifications will be sent. If several email addresses are

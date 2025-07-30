@@ -26,14 +26,14 @@ domains) and domain records:
 
 :::info
 
-Access to list of domain [Records] is done via the list of
-[Domains].
+Access to list of domain *Records* is done via the list of
+*Domains*.
 
 :::
 
 ## Domain object
 
-A [Domain] object represents an Internet domain, with its
+A *Domain* object represents an Internet domain, with its
 name, expire date... This object can be attached to other objects in
 i-Vertix ITAM assistance (tickets, problems, changes).
 
@@ -331,10 +331,10 @@ below the other.
 
 ## Record object
 
-A [Record] object stores all record types that can be found
+A *Record* object stores all record types that can be found
 in a DNS zone or DNS configuration file: TXT, A, PTR, SDA, CNAME...
 
-This object must be associated to a [Domain] object
+This object must be associated to a *Domain* object
 described earlier.
 
 ![Creation of a domain record](../../assets/modules/management/images/recordsadd-domains.png)

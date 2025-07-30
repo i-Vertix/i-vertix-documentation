@@ -9,7 +9,7 @@ From users list, three options are available for adding a user
 ![addUserAll](../../../assets/modules/administration/images/addUserAll.png):
 
 > - **Add user**: Opens a user creation form, similar to the
->   [Add] button; requires profile to be granted user
+>   *Add* button; requires profile to be granted user
 >   creation authorization
 > - **...From an external source**: Import users from external source
 > - **LDAP directory link**: Import and synchronize users from LDAP
@@ -78,7 +78,7 @@ both LDAP directory and i-Vertix ITAM users management.
 :::
 
 Once imported from a directory, i-Vertix ITAM stores user's LDAP unique
-identifier (the [distinguedName] or [DN]) in
+identifier (the *distinguedName* or *DN*) in
 addition to connection identifier. This allows to manage updating
 connection identifier when DN is left untouched. For example, if
 connection identifier is email address, i-Vertix ITAM will be able to update it
