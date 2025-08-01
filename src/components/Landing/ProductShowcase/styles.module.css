@@ -7,15 +7,22 @@
 .container {
     max-width: 1000px;
     width: 100%;
-    margin: 0 128px;
+    margin: 0 10vw;
 }
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(1, minmax(18rem, 1fr));
     gap: 1rem;
     width: 100%;
-    min-height: 400px;
+    min-height: 300px;
+    grid-template-columns: repeat(1, minmax(18rem, 1fr));
+}
+
+@media (min-width: 720px) {
+    /* CHANGE THE REPEAT ACCORDING TO THE CARDS PRESENT */
+	.cards {
+		grid-template-columns: repeat(2, minmax(18rem, 1fr));
+	}
 }
 
 .card {
@@ -50,7 +57,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 16rem;
+    max-width: 16rem;
     height: 16rem;
 }
 
