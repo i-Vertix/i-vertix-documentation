@@ -62,5 +62,5 @@ request. You need to clear the cache to see your changes. To do so, in
 Debug mode, go to "Setup \> General", "Performance" tab and click on
 "Reset" button on the "Translation cache" section. If you have
 command-line access, you may also clear this cache using the
-[glpi:cache:clear] CLI command. If you clear the cache with
+*glpi:cache:clear* CLI command. If you clear the cache with
 the CLI command, make sure you run the command as the web server user.

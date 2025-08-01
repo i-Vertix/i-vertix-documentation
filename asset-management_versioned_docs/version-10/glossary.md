@@ -451,8 +451,8 @@ Status
 Simplified interface
 
     i-Vertix ITAM user interface that gives access to a reduced set of
-    functionalities and that targets end users (opposite to [standard
-    interface]).
+    functionalities and that targets end users (opposite to *standard
+    interface*).
 
 Sub-entity
 

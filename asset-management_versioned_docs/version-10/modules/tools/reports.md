@@ -46,8 +46,8 @@ i-Vertix ITAM allows to generate reports based on managed items:
 
 - **Other financial and administrative information**
 
-  Same as [Hardware financial and administrative
-  information], but for cartridges, licenses and
+  Same as *Hardware financial and administrative
+  information*, but for cartridges, licenses and
   consumables.
 
 - **Network report**

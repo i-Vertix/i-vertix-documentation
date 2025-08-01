@@ -87,5 +87,5 @@ without recreating a new user in the case of a change.
 If an external authentication source is configured, it becomes possible
 to import and synchronize users using this source. For regular
 maintenance of the users base, it is recommended to use the i-Vertix ITAM CLI
-command [glpi:ldap:synchronize_users]. For daily management,
+command *glpi:ldap:synchronize_users*. For daily management,
 the manual import mechanism is available (see above).

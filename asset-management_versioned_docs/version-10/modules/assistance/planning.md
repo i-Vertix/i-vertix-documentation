@@ -9,8 +9,8 @@ Planning view allows to display planned tasks attached to a ticket, a
 problem or a change as well as planned notes or plugins' planned
 elements.
 
-This menu is only visible if profile includes [View
-planning] authorization.
+This menu is only visible if profile includes *View
+planning* authorization.
 
 Date and time slot can be selected. A filtering on objects to include in
 planning is also available.

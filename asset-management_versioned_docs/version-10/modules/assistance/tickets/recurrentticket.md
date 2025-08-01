@@ -27,8 +27,8 @@ Using templates, it is possible to program recurrent ticket opening.
 :::info
 
 Tickets will only be created if *Active* is
-*Yes* and if current date is between [Start
-date] and *End date*.
+*Yes* and if current date is between *Start
+date* and *End date*.
 
 :::
 

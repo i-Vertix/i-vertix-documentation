@@ -256,7 +256,7 @@ Otherwise it will be displayed in a separate table.
 
 - the drop-down list enumerates the software that are available in the
   entity
-- licenses management can be found in [Assets \Softwares].
+- licenses management can be found in *Assets \Softwares*.
   See [Manage software](../../modules/assets/softwares)
 :::
 
@@ -431,7 +431,7 @@ A network port alias is a virtual port that can refine a physical port.
 
 On Linux, to each VLAN, when transmitted
 ["tagged"](glossary/tagged_vlan.html), is associated a port alias, for
-example [eth2.50] to represent VLAN 50 on port
+example *eth2.50* to represent VLAN 50 on port
 *eth2*.
 
 A port alias contains its base port and a MAC address.

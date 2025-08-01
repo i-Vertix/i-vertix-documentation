@@ -16,7 +16,7 @@ information to be recorded.
 - **Logs in files (SQL, email, automatic action...)** : It is possible
   to record certain additional events (SQL, notifications, automatic
   action...) in files. These files are then available in the
-  [files/\_log] directory.
+  *files/\_log* directory.
 - **Maximum number of automatic actions (run by CLI)** When configuring
   automatic actions, it is possible to determine that they will be
   executed by a system external to i-Vertix ITAM (CLI). By default, it executes

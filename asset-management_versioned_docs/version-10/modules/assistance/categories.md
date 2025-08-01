@@ -7,8 +7,8 @@ title: Categories
 
 A category can be made hierarchical:
 
-- by selecting a parent category using in first tab the field [As child
-  of]
+- by selecting a parent category using in first tab the field *As child
+  of*
 - by adding a new child category in tab *ITIL Categories*
 
 ## ITIL categories

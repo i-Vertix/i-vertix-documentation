@@ -5,7 +5,7 @@ title: Global
 
 # Global search
 
-Menu [Asset \> Global] allows to perform a global search on
+Menu *Asset \> Global* allows to perform a global search on
 default view columns for allowed elements. This search is limited to
 following assets:
 

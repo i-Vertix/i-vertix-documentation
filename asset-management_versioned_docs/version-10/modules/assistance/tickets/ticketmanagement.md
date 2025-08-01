@@ -116,8 +116,8 @@ It is possible to choose the source of the followup, see
 [Configure dropdown](../../../modules/configuration/dropdowns/index.md).
 
 A followup can be public or private. A private followup is only visible
-by i-Vertix ITAM users having the authorization [See all followup and
-tasks]. It allows for instance to have an exchange between
+by i-Vertix ITAM users having the authorization *See all followup and
+tasks*. It allows for instance to have an exchange between
 technician which is not visible by requester.
 
 Adding, modifying and deleting a followup is submited to authorizations

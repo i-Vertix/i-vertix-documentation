@@ -104,7 +104,7 @@ Represents a regular expression
 
 As you type, the list of suggested tags will be adjusted to match what
 you have typed. You can manually add a filter by typing it out such as:
-[title:this] or [!title:notthis] You can also
+*title:this* or *!title:notthis* You can also
 select the tag or modifier from the list of suggestions using your mouse
 (or touch) or using the keyboard arrow keys to navigate and the enter
 key to select. If you select a tag or modifier from the suggestion list,

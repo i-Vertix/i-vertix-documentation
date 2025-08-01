@@ -214,7 +214,7 @@ A network port alias is a virtual port that can refine a physical port.
 
 On Linux, to each VLAN, when transmitted
 ["tagged"](glossary/tagged_vlan.html), is associated a port alias, for
-example [eth2.50] to represent VLAN 50 on port
+example *eth2.50* to represent VLAN 50 on port
 *eth2*.
 
 A port alias contains its base port and a MAC address.

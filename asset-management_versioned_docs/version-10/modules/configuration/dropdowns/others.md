@@ -53,7 +53,7 @@ The application offers a number of types by default, but it is possible
 to add more by providing the following information:
 
 - the name of the document type
-- the extension, for example: [.txt] or [.pdf];
+- the extension, for example: *.txt* or *.pdf*;
   the detection of the documents that can be added is based on this
   information
 - the file name for the desired document icon (Place the icon files in

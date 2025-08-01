@@ -18,7 +18,7 @@ actions may support only one of the modes.
 ## Configure CLI mode
 
 To run CLI mode tasks, you will need to configure your external task
-scheduler to call i-Vertix ITAM's [front/cron.php] file
+scheduler to call i-Vertix ITAM's *front/cron.php* file
 periodically. It is recommended to have it run every minute to ensure
 that actions that are ready to run, get ran as soon as possible.
 
@@ -88,7 +88,7 @@ Checks for a new i-Vertix ITAM version.
 
 ### circularlogs (CronTask)
 
-Removes entries in logs in the [files/\_log] folder that are
+Removes entries in logs in the *files/\_log* folder that are
 older than a certain number of days which is configurable within the
 action form itself.
 

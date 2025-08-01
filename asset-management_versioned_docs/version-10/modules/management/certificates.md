@@ -28,11 +28,11 @@ It is possible to use
 - **Self-signed**: Tells whether certificate is self-signed;
 - **DNS name**: The prefix of the domain name associated with the
   certificate (for example, if domain name is
-  [server.mycompany.com], DNS name is *server*);
+  *server.mycompany.com*, DNS name is *server*);
 - **DNS suffix**: The suffix of the domain name associated with the
   certificate (for example, if domain name is
-  [server.mycompany.com], DNS suffix is
-  [mycompany.com]);
+  *server.mycompany.com*, DNS suffix is
+  *mycompany.com*);
 - **Expiration date**: Expiration date of the certificate, useful to
   configure alerts and anticipate renewal;
 - **Command used**: Can store the system command that generated the

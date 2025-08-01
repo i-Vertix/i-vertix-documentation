@@ -134,7 +134,7 @@ Microsystems, Inc sous le nom Sun Microsystems.
 
 This dictionary allows to modify printer information based on
 manufacturer and/or name. It is possible to reject an import (for
-example printer name starting with [//]), to group printers
+example printer name starting with *//*), to group printers
 under same name, to assign a manufacturer or to force management type
 (global or unitary).
 

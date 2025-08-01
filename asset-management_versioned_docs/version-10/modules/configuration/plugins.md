@@ -17,8 +17,8 @@ perform a backup of your i-Vertix ITAM database.
 Starting in i-Vertix ITAM 9.5.0, you can install and update plugins directly from
 the i-Vertix ITAM web interface.
 
-The first time you go to the plugins page under [Setup \>
-Plugins], you will be asked if you want to use the
+The first time you go to the plugins page under *Setup \>
+Plugins*, you will be asked if you want to use the
 marketplace UI by default or the older plugin list. Regardless of your
 choice, you can always switch UIs by clicking the "Marketplace" and
 "Plugins" buttons at the top of the page. You may install plugins
@@ -31,7 +31,7 @@ will be used.
 To use the marketplace, you will need a i-Vertix ITAM Network registration key.
 If you are not paying for a i-Vertix ITAM Network subscription, you can still get
 a free key from [https://services.glpi-network.com](https://services.glpi-network.com). After you get the
-key, you may enter it under [Setup \> General] on the [i-Vertix ITAM
+key, you may enter it under *Setup \> General* on the [i-Vertix ITAM
 Network] tab.
 
 ### Finding plugins
@@ -95,8 +95,8 @@ After you download the plugin, you will need to extract it to the
 *plugins* folder in your i-Vertix ITAM directory. The new folder
 inside *plugins* should be the "internal" name of the
 plugin. This is an all lowercase identifier containing no spaces. Inside
-that folder should be at least two files named [hook.php]
-and [setup.php].
+that folder should be at least two files named *hook.php*
+and *setup.php*.
 
 Once the plugin is in the *plugins* folder, it will be
 automatically detected by i-Vertix ITAM and will show up in your plugin list.

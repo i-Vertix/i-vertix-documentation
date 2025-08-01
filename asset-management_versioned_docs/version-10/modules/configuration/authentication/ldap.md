@@ -24,7 +24,7 @@ It is possible to import and synchronize users in 2 ways:
   an existing user, the unknown email address will be searched in the
   directory to create the associated user.
 - In mass either via the web interface or the CLI
-  [glpi:ldap:synchronize_users] command.
+  *glpi:ldap:synchronize_users* command.
 
 :::warning
 
@@ -133,7 +133,7 @@ betwen the parts. Examples:
 
 The parameters to enter are simple. For example:
 
-- Server: [ldap.mycompany.fr]
+- Server: *ldap.mycompany.fr*
 - BaseDN: [dc=mycompany,dc=fr]
 
 This should be enough if anonymous binds are allowed. If not, and if all

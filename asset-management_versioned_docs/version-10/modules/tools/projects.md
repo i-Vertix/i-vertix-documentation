@@ -58,8 +58,8 @@ team with for each member its type.
 ### Project
 
 This tab displays project's sub-projects. A sub-project is defined the
-same way as a project, the only difference being that the field [As
-child of] is defined.
+same way as a project, the only difference being that the field *As
+child of* is defined.
 
 ![A project's sub-projects](../../assets/modules/tools/images/subprojects-project.png)
 

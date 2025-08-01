@@ -7,8 +7,8 @@ title: Imap
 
 The interfacing of i-Vertix ITAM with mail servers as a source of authentication.
 
-This authentication source is configured from the menu [Setup \>
-Authentication \> Mail servers].
+This authentication source is configured from the menu *Setup \>
+Authentication \> Mail servers*.
 
 This ability can compensate for the absence of directory or of CAS
 server. However, contrary to what is possible with other sources of

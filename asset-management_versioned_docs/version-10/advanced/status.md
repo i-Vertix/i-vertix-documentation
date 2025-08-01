@@ -6,8 +6,8 @@ title: Status
 # i-Vertix ITAM Status Monitoring
 
 i-Vertix ITAM contains a helpful endpoint for monitoring its health at
-[/status.php] and the [glpi:system:status] CLI
-command. The [/status.php] endpoint does not require you to
+*/status.php* and the *glpi:system:status* CLI
+command. The */status.php* endpoint does not require you to
 be logged in and therefore only shows basic status information.
 Sensitive information like the i-Vertix ITAM version and plugin names and
 versions (could be used to identify vulerabilities) are not shown. The
@@ -18,7 +18,7 @@ too.
 ## Services
 
 The status of i-Vertix ITAM is separated into multiple "services". These
-services can be listed using the [glpi:system:list_services]
+services can be listed using the *glpi:system:list_services*
 CLI command.
 
 A non exhaustive list of services available:
@@ -34,7 +34,7 @@ A non exhaustive list of services available:
 
 ## Status Endpoint
 
-By default, the [/status.php] endpoint provides a plain-text
+By default, the */status.php* endpoint provides a plain-text
 output of the public status information. The plain-text output is
 deprecated in favor of the JSON format, but it remains the default for
 backwards compatibility.
@@ -56,8 +56,8 @@ You can filter the output to a specific service using the
 
 ## CLI Command
 
-Similar to the [/status.php] endpoint, the CLI command
-[glpi:system:status] only shows the public status
+Similar to the */status.php* endpoint, the CLI command
+*glpi:system:status* only shows the public status
 information by default. However, since this tool is not available from
 the web interface, you may add the [-p] or
 [\--private] option to see all of the status information.

@@ -17,4 +17,4 @@ i-Vertix ITAM including:
 You also have the ability to clear the different caches from here.
 
 The cache systems for user data and translations can be changed or
-configured from the [cache:configure] CLI command.
+configured from the *cache:configure* CLI command.

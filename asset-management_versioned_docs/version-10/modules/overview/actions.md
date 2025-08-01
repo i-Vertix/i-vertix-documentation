@@ -23,7 +23,7 @@ profile.
 For all inventory objects, creation is realized in the same way:
 
 1.  Connect to i-Vertix ITAM ;
-2.  Go to the object page, for example [Assets \> Computers]
+2.  Go to the object page, for example *Assets \> Computers*
     to add a computer ;
 3.  Click on the "+" button located in horizontal menu ;
 4.  If the inventory object has a template management, choose the
@@ -45,7 +45,7 @@ For all inventory objects, creation is realized in the same way:
 
 1.  Connect to i-Vertix ITAM ;
 2.  Go to the object page, for example, to modify a computer, go to
-    [Assets \> Computers] ;
+    *Assets \> Computers* ;
 3.  Or alternatively: search the object in the search engine available
     on top of objects list ;
 4.  Two choices of modification are then possible:
@@ -81,7 +81,7 @@ way:
 
 1.  Connect to i-Vertix ITAM ;
 2.  Go to the object page, for example, to display a computer, go to
-    [Assets \> Computers] ;
+    *Assets \> Computers* ;
 3.  Or alternatively: search the object in the search engine available
     on top of objects list ;
 4.  Click on object name..
@@ -93,7 +93,7 @@ the same way:
 
 1.  Connect to i-Vertix ITAM ;
 2.  Go to the object menu, for example, to attach to a computer, go to
-    [Assets \> Computers] ;
+    *Assets \> Computers* ;
 3.  Or alternatively: search the object in the search engine available
     on top of objects list ;
 
@@ -121,7 +121,7 @@ the same way:
 
 1.  Connect to i-Vertix ITAM ;
 2.  Go to the object menu, for example, to attach to a computer, go to
-    [Assets \> Computers] ;
+    *Assets \> Computers* ;
 3.  Or alternatively: search the object in the search engine available
     on top of objects list ;
 
@@ -195,7 +195,7 @@ way:
 
 1.  Connect to i-Vertix ITAM ;
 2.  Go to the object page, for example, to delete a computer, go to
-    [Assets \> Computers] ;
+    *Assets \> Computers* ;
 3.  Or alternatively: search the object in the search engine available
     on top of objects list ;
 4.  Two choices of deletion are then possible:

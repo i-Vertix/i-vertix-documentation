@@ -30,8 +30,8 @@ format of the addresses and masks.
 
 :::
 
-[212.85.137.66] is an IPv4 address, while
-[2a00:1450:4007:803::1012] is an IPv6 address.
+*212.85.137.66* is an IPv4 address, while
+*2a00:1450:4007:803::1012* is an IPv6 address.
 
 i-Vertix ITAM considers IPv4 as a subset of IPv6 through IPv4-mapped IPv6
 addresses and treats them the same.
@@ -44,10 +44,10 @@ i-Vertix ITAM uses two representations for the IP addresses (IPv6 ad IPv4):
 - The textual representation is used for displaying and entering data.
 
 IPv4 addresses and masks are represented in their classic form (e.g.,
-[212.85.137.66], [255.255.255.0]). The
+*212.85.137.66*, *255.255.255.0*). The
 *representation of IPv6 addresses is the canonical notation*
-(ie: [2001:db8:0:85a3:0:0:ac1f:8001] rather than
-[2001:0db8:0000:85a3:0000:0000:ac1f:8001]). In this form,
+(ie: *2001:db8:0:85a3:0:0:ac1f:8001* rather than
+*2001:0db8:0000:85a3:0000:0000:ac1f:8001*). In this form,
 you may omit 1 - 3 leading zeros in each group. IPv6 masks are
 represented in the form of the subnetwork prefix (ie: number of bits to
 1 in the mask).
@@ -60,8 +60,8 @@ by the network administrators' addressing plan.
 
 They can be nested, and the hierarchy of IP networks depends on the
 addresses and masks of these networks as as well as their associated
-identities. For example, [192.168.1.0/255.255.255.0] is a
-sub-network of [192.168.0.0/255.255.254.0].
+identities. For example, *192.168.1.0/255.255.255.0* is a
+sub-network of *192.168.0.0/255.255.254.0*.
 
 :::warning
 
@@ -80,8 +80,8 @@ Generally a network with a gateway is addressable because the gateway is
 known by all the equipment and it can only belong to one subnet. But an
 addressable network does not necessarily have a gateway. This is for
 example the case of private networks
-([192.168.48.0/255.255.255.0]...) or the local loop
-([127.0.0.0/255.255.255.0] or [::1/128]).
+(*192.168.48.0/255.255.255.0*...) or the local loop
+(*127.0.0.0/255.255.255.0* or *::1/128*).
 
 ### VLAN
 

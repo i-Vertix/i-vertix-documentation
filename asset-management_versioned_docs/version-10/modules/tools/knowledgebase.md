@@ -21,8 +21,8 @@ Other elements are visible only to technicians via standard interface.
 Each article of the knowledge base must have one or more targets, being
 entities, groups, profiles or users, to be readable. As long as an
 article has no target, it is visible only by its writer, is flagged as
-*unpublished* and appears in table [Unpublished
-articles] on the home page of the knowledge base.
+*unpublished* and appears in table *Unpublished
+articles* on the home page of the knowledge base.
 
 :::info
 

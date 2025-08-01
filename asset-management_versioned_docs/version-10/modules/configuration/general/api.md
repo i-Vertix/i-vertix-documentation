@@ -8,7 +8,7 @@ title: Api
 API configuration parameters and access limitations.
 
 Here you can see/set the URL for the API. This should match your i-Vertix ITAM
-URL with [/apirest.php] at the end.
+URL with */apirest.php* at the end.
 
 There is also a link for the API documentation.
 

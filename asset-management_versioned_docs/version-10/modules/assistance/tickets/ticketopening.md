@@ -39,7 +39,7 @@ to the help desk. Once filled and submitted, a mail will confirm the
 ticket opening.
 
 The form can be customized by modifying directly file
-[helpdesk.html].
+*helpdesk.html*.
 
 By default, ticket is created in root entity.
 
