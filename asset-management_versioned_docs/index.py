@@ -108,7 +108,12 @@ def write_index(fmap, index_file):
     #build index
     acc = {"items": []}
     indexes = {}
-    for in_file, rel_dir, out_file in fmap: 
+    #for in_file, rel_dir, out_file in fmap: 
+    for c in fmap: 
+
+        in_file = c.inf
+        rel_dir = c.rel
+        out_file = c.out
 
         rel_out = rel_dir / out_file.name
 
@@ -139,13 +144,12 @@ def replace_index(rel_dir, text):
         return text
 
     def build_link(l, rel_dir):
-        url = ["/asset-management"]
-        url.extend(list(rel_dir.parts))
+
+        url = ["."]
         
         text = l.split("/")
         if text[-1] == "index":
             text.pop(-1)
-
 
         if len(text) > 1 and text[-1] == text[-2]:
             text = text[:-1]

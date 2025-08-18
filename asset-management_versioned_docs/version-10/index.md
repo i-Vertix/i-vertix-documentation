@@ -27,8 +27,8 @@ separately.
 
 ## Table of contents
 
-- [First Steps](/asset-management/first-steps)
-- [Modules](/asset-management/modules)
-- [Advanced](/asset-management/advanced)
-- [Cli](/asset-management/cli)
-- [Glossary](/asset-management/glossary)
+- [First Steps](./first-steps)
+- [Modules](./modules)
+- [Advanced](./advanced)
+- [Cli](./cli)
+- [Glossary](./glossary)

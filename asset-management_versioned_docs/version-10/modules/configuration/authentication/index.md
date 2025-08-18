@@ -62,7 +62,7 @@ Authentication \> Setup** form. When using LDAP directories, it is
 possible to configure the action that i-Vertix ITAM takes when a user is no
 longer present in the LDAP directory from this same form.
 
-- [Configuration](/asset-management/modules/configuration/authentication/configuration)
-- [Ldap](/asset-management/modules/configuration/authentication/ldap)
-- [Imap](/asset-management/modules/configuration/authentication/imap)
-- [Other](/asset-management/modules/configuration/authentication/other)
+- [Configuration](./configuration)
+- [Ldap](./ldap)
+- [Imap](./imap)
+- [Other](./other)

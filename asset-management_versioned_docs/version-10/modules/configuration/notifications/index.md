@@ -16,11 +16,11 @@ To do this, you must activate the **Enable followup** option then
 **Enable followup via email** or **Browser followups from browser** to
 display the settings menu:
 
-- [Templates](/asset-management/modules/configuration/notifications/templates)
-- [Template Example](/asset-management/modules/configuration/notifications/template_example)
-- [Definitions](/asset-management/modules/configuration/notifications/definitions)
-- [Email Notifications](/asset-management/modules/configuration/notifications/email_notifications)
-- [Alarm Options](/asset-management/modules/configuration/notifications/alarm_options)
+- [Templates](./templates)
+- [Template Example](./template_example)
+- [Definitions](./definitions)
+- [Email Notifications](./email_notifications)
+- [Alarm Options](./alarm_options)
 
 :::info
 

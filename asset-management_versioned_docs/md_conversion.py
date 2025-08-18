@@ -5,11 +5,16 @@ import subprocess as sb
 import argparse
 import shutil
 import re
+
 from functools import partial
+from collections import namedtuple
 
 import index 
 import images
 import utils
+
+
+ConvSpec = namedtuple("ConvSpec", "inf, rel, out, orig_out")
 
 
 def add_header(file_path):
@@ -73,10 +78,12 @@ def compute_conversion_list(input_dir, output_dir, skip_list=[]):
             out_filename = rel_path.name
             out_filename = out_filename.replace("glpi", "itam")
             
+            orig_out = output_dir / rel_path.with_suffix(".md")
+            
             rel_path = rel_path.with_name(out_filename)
             out_path = output_dir / rel_path.with_suffix(".md")
 
-            res.append((in_path, rel_dir, out_path))
+            res.append(ConvSpec(in_path, rel_dir, out_path, orig_out))
     
     return res
 
@@ -183,7 +190,12 @@ def parse_link(conv_list):
     
     links_nr = 0
 
-    for inf, rel, outf in conv_list:
+    for c in conv_list:
+
+        inf = c.inf
+        rel = c.rel
+        outf = c.out
+
         with open(inf, "r", encoding="utf8") as fd:
             text = fd.read()
 
@@ -290,15 +302,15 @@ if __name__ == "__main__":
 
     # create md files as result from pandoc conversion    
     if not args.skip_conversion:
-        for in_file, rel_dir, out_file in fmap: 
-            convert_to_md(in_file, out_file)
+        for c in fmap: 
+            convert_to_md(c.inf, c.out)
     
     # parse links
     link_replacement, links_euristic = parse_link(fmap)
     
     # write docusaurs header to files
-    for _, _, out_file in fmap: 
-        add_header(out_file)
+    for c in fmap: 
+        add_header(c.out)
 
     # compute and write the index yaml file
     index.write_index(
@@ -459,8 +471,12 @@ if __name__ == "__main__":
     
     ]
     
-    for inf, rel_dir, f in fmap:
+    #for inf, rel_dir, f in fmap:
+    for c in fmap:
 
+        inf = c.inf
+        rel_dir = c.rel
+        f = c.out
         
         lines = []
         with open(f, "r", encoding="utf8") as fd:

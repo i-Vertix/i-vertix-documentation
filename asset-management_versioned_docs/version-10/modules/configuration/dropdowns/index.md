@@ -35,8 +35,8 @@ forms by hovering over the **Help** icon next to the dropdown.
 The types of dropdowns that can be associated with specific entities
 will show a "stack" icon (Same as the Entity menu item).
 
-- [General](/asset-management/modules/configuration/dropdowns/general)
-- [Assistance](/asset-management/modules/configuration/dropdowns/assistance)
-- [Calendar](/asset-management/modules/configuration/dropdowns/calendar)
-- [Internet](/asset-management/modules/configuration/dropdowns/internet)
-- [Others](/asset-management/modules/configuration/dropdowns/others)
+- [General](./general)
+- [Assistance](./assistance)
+- [Calendar](./calendar)
+- [Internet](./internet)
+- [Others](./others)
