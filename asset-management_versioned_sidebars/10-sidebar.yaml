@@ -13,8 +13,8 @@ sidebar:
   - view
   - search
   - saved-searches
-  - access-glpi
   - conclusion
+  - access-itam
 - id: modules
   label: Modules
   items:
@@ -183,7 +183,6 @@ sidebar:
       - api
       - impact_analysis
       - sql_replicas
-      - glpi_network
     - external_links
     - plugins
   - id: tabs

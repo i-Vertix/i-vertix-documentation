@@ -26,6 +26,7 @@ def add_header(file_path):
             title = module_name.title()
             title = title.replace("_", " ")
             title = title.replace("-", " ")
+            title = re.sub("GLPI", "i-Vertix ITAM", title, flags=re.IGNORECASE)
 
             header = [
                 "---\n",
@@ -48,7 +49,7 @@ def convert_to_md(in_path, out_path):
     return
 
 
-def compute_conversion_list(input_dir, output_dir):
+def compute_conversion_list(input_dir, output_dir, skip_list=[]):
     """
     returns a list of (input_file, relative path in input dir, output_file)
     """
@@ -62,8 +63,17 @@ def compute_conversion_list(input_dir, output_dir):
             in_path = root / f
 
             rel_path = in_path.relative_to(input_dir)
+
+            if rel_path.as_posix() in skip_list:
+                print(f"skipping {rel_path}")
+                continue
+
             rel_dir = rel_path.parent
             
+            out_filename = rel_path.name
+            out_filename = out_filename.replace("glpi", "itam")
+            
+            rel_path = rel_path.with_name(out_filename)
             out_path = output_dir / rel_path.with_suffix(".md")
 
             res.append((in_path, rel_dir, out_path))
@@ -266,7 +276,13 @@ if __name__ == "__main__":
 
     # compute the list of (input, red_dir, output) that will be used in all
     # following ops
-    fmap = compute_conversion_list(input_dir, output_dir)
+    fmap = compute_conversion_list(
+        input_dir, 
+        output_dir,
+        skip_list=[
+            "modules/configuration/general/glpi_network.rst",
+            ]
+        )
    
     # fix errors in glpi sources, 
     # fix hard (for pandoc) to interpret rst directives

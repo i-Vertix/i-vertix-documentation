@@ -20,4 +20,3 @@ parameters can be changed by users in their session.
 - [Api](/asset-management/modules/configuration/general/api)
 - [Impact Analysis](/asset-management/modules/configuration/general/impact_analysis)
 - [Sql Replicas](/asset-management/modules/configuration/general/sql_replicas)
-- [Glpi Network](/asset-management/modules/configuration/general/glpi_network)

@@ -16,5 +16,5 @@ title: Index
 - [View](/asset-management/first-steps/view)
 - [Search](/asset-management/first-steps/search)
 - [Saved Searches](/asset-management/first-steps/saved-searches)
-- [Access Glpi](/asset-management/first-steps/access-glpi)
+- [Access i-Vertix ITAM](/asset-management/first-steps/access-glpi)
 - [Conclusion](/asset-management/first-steps/conclusion)

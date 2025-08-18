@@ -156,6 +156,7 @@ def replace_index(rel_dir, text):
         link_text = text[0].title()
         link_text= link_text.replace("_", " ")
         link_text= link_text.replace("-", " ")
+        link_text = re.sub("GLPI", "i-Vertix ITAM", link_text, flags=re.IGNORECASE)
 
         return (link_text, "/".join(url))
                                         

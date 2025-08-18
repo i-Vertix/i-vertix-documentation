@@ -1,6 +1,6 @@
 ---
-id: access-glpi
-title: Access Glpi
+id: access-itam
+title: Access Itam
 ---
 
 # Administering access controls
