@@ -17,10 +17,10 @@ def process_images(
     realpath_to_incpath = {}
 
     img_nr = 0
-    for _, rel_path, f in fmap:
+    for c in fmap:
 
         lines = []
-        with open(f, "r", encoding="utf8") as fd:
+        with open(c.out, "r", encoding="utf8") as fd:
             lines = fd.readlines()
 
         for l in lines:
@@ -33,7 +33,7 @@ def process_images(
                 
                 #if it is relative, make it absolute
                 #if not img.is_absolute():
-                img = utils.merge_path(rel_path.parts, img.parts)
+                img = utils.merge_path(c.rel.parts, img.parts)
                 img = pathlib.Path(*img)
                 if img.parts[0] == "\\":
                     img = pathlib.Path(*img.parts[1:])
@@ -44,7 +44,7 @@ def process_images(
                 # I need a bi-directional association for replacements
                 realpath_to_incpath[img] = orig_img
 
-                img_include_from[img] = f
+                img_include_from[img] = c.out
 
     print(f"images nr: {img_nr}")
     images = list(set(images))
@@ -73,6 +73,7 @@ def process_images(
         if real_copy:
             out_path = assets_dir / c
             utils.makedir(out_path)
+            print(f"{in_path} -> {out_path}")
             shutil.copy(in_path, out_path)
 
     return incpath_to_realpath
