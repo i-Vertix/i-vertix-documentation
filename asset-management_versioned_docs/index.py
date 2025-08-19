@@ -162,6 +162,10 @@ def replace_index(rel_dir, text):
         link_text= link_text.replace("-", " ")
         link_text = re.sub("GLPI", "i-Vertix ITAM", link_text, flags=re.IGNORECASE)
 
+        # docusaurus needs a / at the end of the link...
+        if url[-1] != "":
+            url.append("")
+
         return (link_text, "/".join(url))
                                         
     links = match.group(1).split()

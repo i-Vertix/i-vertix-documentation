@@ -86,6 +86,24 @@ def compute_conversion_list(input_dir, output_dir, skip_list=[]):
             res.append(ConvSpec(in_path, rel_dir, out_path, orig_out))
     
     return res
+    
+    
+def overwrite_files(overwrite_dir, output_dir):
+
+    print(overwrite_dir)
+
+    for root, _, files in overwrite_dir.walk():
+
+        for f in files: 
+            ov_path = root / f
+            ov_rel_path = ov_path.relative_to(overwrite_dir)
+            src = overwrite_dir / ov_rel_path
+            dst = output_dir / ov_rel_path
+            shutil.copy(src, dst)
+
+            print(f"overwriting: {src} -> {dst}")
+
+    return
 
 
 
@@ -271,11 +289,17 @@ if __name__ == "__main__":
     parser.add_argument("--skip-post", action="store_true", default=False)
     parser.add_argument("--copy-images", action="store_true", default=False)
     parser.add_argument("--tmp-dir", default="itam_tmp", dest="tmp_dir")
+    parser.add_argument(
+        "--overwrite-dir", 
+        default="asset-management_versioned_docs/itam_overwrite", 
+        dest="overwrite_dir"
+        )
     args = parser.parse_args()
 
     input_dir = pathlib.Path(args.input_dir)
     output_dir = pathlib.Path(args.output_dir)
     tmp_dir = pathlib.Path(args.tmp_dir)
+    overwrite_dir = pathlib.Path(args.overwrite_dir)
 
     output_dir.mkdir(exist_ok=True)
     
@@ -405,7 +429,8 @@ if __name__ == "__main__":
         lambda x, rd, f: index.replace_index(rd, x),
 
         # replace glpi_address
-        lambda x, _, f: x.replace("{glpi_address}", "glpi_address"),
+        lambda x, _, f: x.replace("{glpi_address}", "itam_address"),
+        lambda x, _, f: x.replace("glpi://", "itam://"),
 
         # Removing all { .attrib=value }
         lambda x, _, f: re.sub(r"\{.*?\}", "", x, flags=re.DOTALL),
@@ -493,4 +518,9 @@ if __name__ == "__main__":
         
     print(f"tot_links: {tot_links}")
     print(f"replaced_links: {replaced_links}")
+
+
+    # Then, overwriting some of the md files, needed for some rst
+    # files for which search/replace is not enough
+    overwrite_files(overwrite_dir, output_dir)
 

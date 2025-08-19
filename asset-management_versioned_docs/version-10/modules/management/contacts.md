@@ -67,7 +67,7 @@ Examples:
 
 - A web link: [http://192.168.0.1](http://192.168.0.1) (IP retrieved from the network port
   of the hardware) ;
-- A RDP link for remote access: glpi://MSTSC.EXE,pc001 (name "pc001"
+- A RDP link for remote access: itam://MSTSC.EXE,pc001 (name "pc001"
   retrieved from the hardware).
 
 ### Notes

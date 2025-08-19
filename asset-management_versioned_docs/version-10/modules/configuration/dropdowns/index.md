@@ -35,8 +35,8 @@ forms by hovering over the **Help** icon next to the dropdown.
 The types of dropdowns that can be associated with specific entities
 will show a "stack" icon (Same as the Entity menu item).
 
-- [General](./general)
-- [Assistance](./assistance)
-- [Calendar](./calendar)
-- [Internet](./internet)
-- [Others](./others)
+- [General](./general/)
+- [Assistance](./assistance/)
+- [Calendar](./calendar/)
+- [Internet](./internet/)
+- [Others](./others/)

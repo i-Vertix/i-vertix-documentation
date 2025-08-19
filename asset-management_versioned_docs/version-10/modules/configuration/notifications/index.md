@@ -16,11 +16,11 @@ To do this, you must activate the **Enable followup** option then
 **Enable followup via email** or **Browser followups from browser** to
 display the settings menu:
 
-- [Templates](./templates)
-- [Template Example](./template_example)
-- [Definitions](./definitions)
-- [Email Notifications](./email_notifications)
-- [Alarm Options](./alarm_options)
+- [Templates](./templates/)
+- [Template Example](./template_example/)
+- [Definitions](./definitions/)
+- [Email Notifications](./email_notifications/)
+- [Alarm Options](./alarm_options/)
 
 :::info
 

@@ -24,7 +24,7 @@ versions of the supported browsers.
 ## How to connect
 
 Open your browser and go to the i-Vertix ITAM homepage
-([https://glpi_address/](https://glpi_address)).
+([https://itam_address/](https://itam_address)).
 
 Access to the full functionality of the application requires
 authentication. An unauthenticated user can possibly access certain
