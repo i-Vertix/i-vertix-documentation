@@ -27,8 +27,8 @@ separately.
 
 ## Table of contents
 
-- [First Steps](./first-steps)
-- [Modules](./modules)
-- [Advanced](./advanced)
-- [Cli](./cli)
-- [Glossary](./glossary)
+- [First Steps](./first-steps/)
+- [Modules](./modules/)
+- [Advanced](./advanced/)
+- [Cli](./cli/)
+- [Glossary](./glossary/)
