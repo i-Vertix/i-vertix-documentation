@@ -8,6 +8,13 @@ node scripts/build-sidebar.js  --versioning=10 --docs=asset-management \
 && npm run start
 
 TODO:
+
+- come verrà mantenuto il manuale? 
+  - aggiornamenti?
+  - merge quando verrà modificata la doc originale?
+- come gestire gli errori nella documentazione originale?
+  - fork sorgenti + sottomodulo git
+
 - modules/overview/kanban:
   - the lists are messed up, even in original sources
 - modules/assets:
@@ -18,7 +25,9 @@ TODO:
   - bridges link is broken
 - modules/assets/software 
   - broken link
-- modules/assets/tabs:
-  - the whole section provides rst files that are included in modules/assets, maybe could be skipped or still interesting?
-- modules/assistance/tickets
-  - in the index all links are called ticket 
+- modules/assistance/tickets/ticketopening/:
+  - all links are broken
+- modules/administration/groups 
+  - broken link
+  
+  

@@ -121,7 +121,41 @@ def write_index(fmap, index_file):
             index_path = tuple(rel_out.parent.parts)
             indexes[index_path] = parse_index(in_file)
         
-        set_path(acc, rel_out)
+
+        skip_list = set([
+            r"modules/administration/profiles/administrationtab.md",
+            r"modules/administration/profiles/assistancetab.md",
+            r"modules/administration/profiles/configurationtab.md",
+            r"modules/administration/profiles/toolstab.md",
+            r"modules/tabs/all.md",
+            r"modules/tabs/changes.md",
+            r"modules/tabs/contacts.md",
+            r"modules/tabs/contracts.md",
+            r"modules/tabs/debug.md",
+            r"modules/tabs/documents.md",
+            r"modules/tabs/elements.md",
+            r"modules/tabs/external-links.md",
+            r"modules/tabs/historical.md",
+            r"modules/tabs/knowledgebase.md",
+            r"modules/tabs/management.md",
+            r"modules/tabs/notes.md",
+            r"modules/tabs/problems.md",
+            r"modules/tabs/suppliers.md",
+            r"modules/tabs/templates.md",
+            r"modules/tabs/tickets.md",
+            r"modules/assistance/tickets/recurrentticket.md",
+            r"modules/assistance/tickets/ticketadvanced.md",
+            r"modules/assistance/tickets/ticketlifecycle.md",
+            r"modules/assistance/tickets/ticketmanagement.md",
+            r"modules/assistance/tickets/ticketopening.md",
+        ])
+
+        #print("AA", rel_out.as_posix())
+
+        if rel_out.as_posix() not in skip_list:
+            set_path(acc, rel_out)
+        else:
+            print(f"skipping indexing for {rel_out}")
 
     # dump index 
     items = acc.pop("items")

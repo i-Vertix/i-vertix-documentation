@@ -85,14 +85,6 @@ sidebar:
     - actors
     - prioritymatrix
     - tickets
-    - id: tickets
-      label: Tickets
-      items:
-      - recurrentticket
-      - ticketadvanced
-      - ticketlifecycle
-      - ticketmanagement
-      - ticketopening
     - problems
     - changes
     - lifecyclematrix
@@ -121,11 +113,7 @@ sidebar:
     - id: profiles
       label: Profiles
       items:
-      - administrationtab
-      - assistancetab
-      - configurationtab
       - profiles
-      - toolstab
     - mailqueue
     - logs
   - id: configuration
@@ -185,25 +173,6 @@ sidebar:
       - sql_replicas
     - external_links
     - plugins
-  - id: tabs
-    label: Tabs
-    items:
-    - all
-    - changes
-    - contacts
-    - contracts
-    - debug
-    - documents
-    - elements
-    - external-links
-    - historical
-    - knowledgebase
-    - management
-    - notes
-    - problems
-    - suppliers
-    - templates
-    - tickets
 - id: advanced
   label: Advanced
   items:
