@@ -34,4 +34,4 @@ date* and *End date*.
 
 Reccurent ticket opening is done through an automatic action named
 *recurrent ticket*, see
-[Configure automatic actions](../../../modules/configuration/crontasks).
+[Configure automatic actions](../../../modules/configuration/crontasks.md).

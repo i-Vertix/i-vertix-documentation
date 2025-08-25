@@ -33,7 +33,7 @@ type) and *Update source* (where are computer updates coming
 from (Windows update, yum, apt...).
 
 It is possible to use
-[templates with computers](../../modules/overview/templates).
+[templates with computers](../../modules/overview/templates.md).
 :::note
 
 - when i-Vertix ITAM is used with an inventory tool, various information provided
@@ -825,7 +825,7 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](../../modules/overview/actions), some actions are specific to computers:
+Apart from [common actions](../../modules/overview/actions.md), some actions are specific to computers:
 
 - **Install a software with a license on a computer** From the tab
   *Softwares*, add a license by choosing the name of the software

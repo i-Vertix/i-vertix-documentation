@@ -10,7 +10,7 @@ characterized by periods of opening as well as periods of closing.
 
 These calendars are used in the `SLA`
 (see Configure SLAs) and the
-[configuration of entities](../../../modules/administration/entities).
+[configuration of entities](../../../modules/administration/entities.md).
 
 ## Calendar
 

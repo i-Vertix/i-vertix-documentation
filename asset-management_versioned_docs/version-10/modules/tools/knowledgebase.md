@@ -32,7 +32,7 @@ You can publish an article for everyone by targeting the root entity.
 
 By default, articles are not translatable. However, this functionality
 can be activated, see
-[general configuration](../../modules/configuration/general/general_configuration).
+[general configuration](../../modules/configuration/general/general_configuration.md).
 
 It is possible to attach documents to articles of the knowledge base.
 

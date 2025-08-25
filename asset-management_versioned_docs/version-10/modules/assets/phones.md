@@ -39,7 +39,7 @@ Global management allows to limit the number of elements to manage when
 these elements are not a strategic data in the assets management.
 
 It is possible to use
-[templates with phones](../../modules/overview/templates).
+[templates with phones](../../modules/overview/templates.md).
 
 ## The different tabs
 
@@ -594,4 +594,4 @@ below the other.
 ## The different actions
 
 Phones do not have specific actions; report to
-[common actions](../../modules/overview/actions).
+[common actions](../../modules/overview/actions.md).

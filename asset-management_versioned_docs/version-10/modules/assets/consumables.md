@@ -239,7 +239,7 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](../../modules/overview/actions), some actions are specific to consumables:
+Apart from [common actions](../../modules/overview/actions.md), some actions are specific to consumables:
 
 - Add new consumables to a model ;
 

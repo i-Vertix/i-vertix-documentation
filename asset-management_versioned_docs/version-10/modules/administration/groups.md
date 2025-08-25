@@ -25,7 +25,7 @@ persons to be notified.
 The options available to adjust these behaviors are: \* **Visible in a
 ticket**: requesting group and/or assignment to this group; \* **Can be
 notified**: recipient of notifications; \* **Can be supervisor**: only
-for a [project](../../modules/tools/projects);
+for a [project](../../modules/tools/projects.md);
 \* **May contain**: assets and/or users.
 
 In an item form, 2 notions of groups are available: \* *technical group*
@@ -40,7 +40,7 @@ a group of technicians, see the ticket categories in the chapter: doc:
 [Configure dropdowns
 \</modules/configuration/dropdowns/assistance.rst\>].
 Likewise, it can be used in
-[Business rules for tickets](../../modules/administration/rules/ticketbusinessrules).
+[Business rules for tickets](../../modules/administration/rules/ticketbusinessrules.md).
 
 :::
 :::tip
@@ -92,7 +92,7 @@ its visibility in the sub-entities.
 importing groups cannot be filtered by entity. In addition, no group
 synchronization function is available. The only way to refresh from a
 directory the list of group members is to resynchronize users, see
-[Import users from an external source](../../modules/administration/users/usersimport).
+[Import users from an external source](../../modules/administration/users/usersimport.md).
 
 :::
 

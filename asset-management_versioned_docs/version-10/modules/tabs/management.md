@@ -47,7 +47,7 @@ Financial information consists of the following items:
 ## Financial and administrative information
 
 - Supplier: Third party who sold the equipment. See
-  [Managing suppliers](../../modules/management/suppliers). Suppliers are managed from the menu **Management \>
+  [Managing suppliers](../../modules/management/suppliers.md). Suppliers are managed from the menu **Management \>
   Suppliers**.
 - Order number : number of the order of the equipment.
 - Asset number.
@@ -68,7 +68,7 @@ Financial information consists of the following items:
 - TCO (value+amount of interventions): the total cost of ownership which
   includes all the constituent elements of an invoiced product.
 - Budget: the budget on which this equipment was purchased See
-  [Managing the budget](../../modules/management/budgets).
+  [Managing the budget](../../modules/management/budgets.md).
 - Order date: date on which the material was ordered.
 - Purchase date: date on which the equipment was purchased.
 - Delivery date: date on which the equipment was delivered.
@@ -101,7 +101,7 @@ another date. All this configuration is done by
 i-Vertix ITAM allows you to configure a notification on the expiry of the
 hardware warranty. This is configurable by entity in notification
 management to define the models and recipients used and in
-[the administration of entities](../../modules/administration/entities) to enable or disable this feature, define the default values
+[the administration of entities](../../modules/administration/entities.md) to enable or disable this feature, define the default values
 and anticipate the sending of the notification if necessary.
 
 i-Vertix ITAM can perform a simple net book value calculation based on

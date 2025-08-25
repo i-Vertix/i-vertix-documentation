@@ -14,6 +14,7 @@ TODO:
   - merge quando verrà modificata la doc originale?
 - come gestire gli errori nella documentazione originale?
   - fork sorgenti + sottomodulo git
+- cosa fare con i comandi cli? sono tipo glpi:
 
 - modules/overview/kanban:
   - the lists are messed up, even in original sources
@@ -23,11 +24,23 @@ TODO:
   - available types list is messed up
 - modules/assets/computers
   - bridges link is broken
-- modules/assets/software 
+- modules/assets/software
   - broken link
 - modules/assistance/tickets/ticketopening/:
   - all links are broken
-- modules/administration/groups 
+- modules/administration/groups
   - broken link
-  
-  
+- modules/configuration/collectors
+  - broken link
+- modules/configuration/notifications/alarm_options
+  - list is messed up, even in original sources
+- modules/configuration/crontasks
+  - fix crontab entry
+- modules/configuration/external_links
+  - list items are not italic or bold
+- modules/configuration/plugins
+  - is it something that should be published?
+- glossary:
+  - wrong format
+- cli:
+  - needs to be published?

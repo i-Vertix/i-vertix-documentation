@@ -154,7 +154,7 @@ Administration \--\> Transfer read permission]).
 In order to make a transfer:
 
 1.  Configure the actions performed by the transfer
-    [Administration Rules Transfer](../../modules/administration/rules/rulesmanagement) ;
+    [Administration Rules Transfer](../../modules/administration/rules/rulesmanagement.md) ;
 2.  Check that profile performing transfer has permission on the origin
     entity and on the destination entity (simplest solution is to use a
     recursive profile from root entity) ;

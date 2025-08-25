@@ -8,7 +8,7 @@ title: Projects
 Project management in i-Vertix ITAM allows to follow entirely a project's
 progress by creating tasks and building teams; projects can be
 optionally linked to a
-[change](../../modules/assistance/changes).
+[change](../../modules/assistance/changes.md).
 
 A i-Vertix ITAM project allows:
 
@@ -78,7 +78,7 @@ This tab provides an interface to use Kanban method.
 ![Kanban interface in i-Vertix ITAM](../../assets/modules/tools/images/kanban-project.png)
 
 For more information about the Kanban feature, please refer to the
-[full documentation](../../modules/overview/kanban).
+[full documentation](../../modules/overview/kanban.md).
 
 ### Costs
 

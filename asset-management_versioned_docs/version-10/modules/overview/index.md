@@ -5,7 +5,7 @@ title: Index
 
 # Overview
 
-- [Actions](./actions/)
-- [Templates](./templates/)
-- [Status](./status/)
-- [Kanban](./kanban/)
+- [Actions](./actions.md)
+- [Templates](./templates.md)
+- [Status](./status.md)
+- [Kanban](./kanban.md)

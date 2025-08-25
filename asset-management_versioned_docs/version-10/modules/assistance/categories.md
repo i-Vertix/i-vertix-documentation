@@ -48,7 +48,7 @@ allow you to correctly qualify the demand.
 
 Ticket categories allow to do automatic processing when creating a
 ticket, for instance modify ticket attributes; see
-[Business rules for tickets](../../modules/administration/rules/ticketbusinessrules).
+[Business rules for tickets](../../modules/administration/rules/ticketbusinessrules.md).
 :::
 
 ## Task categories

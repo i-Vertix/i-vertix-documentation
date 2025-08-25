@@ -8,7 +8,7 @@ title: Users
 User management allows to add, modify, delete, search users and to
 import and export users list.
 
-- [Usersimport](./usersimport/)
+- [Usersimport](./usersimport.md)
 
 It is possible to deactivate a user if needed. If deactivated, the user
 can no longer be selected in drop-down menu for tickets or inventories,
@@ -19,7 +19,7 @@ can be defined independently.
 
 A photo can be added manually or imported automatically from a directory
 (see
-[Authenticate users with LDAP](../../../modules/configuration/authentication/ldap)).
+[Authenticate users with LDAP](../../../modules/configuration/authentication/ldap.md)).
 
 ## Impersonate
 
@@ -58,7 +58,7 @@ A summary tab displays already attributed authorizations for the user.
 This tab lists the groups associated to the user. Table includes group
 name, whether the group is dynamic (i.e. linked to a directory service),
 whether the user is delegatee or manager for the group (see
-[Manage groups](../../../modules/administration/groups)).
+[Manage groups](../../../modules/administration/groups.md)).
 
 If modify user authorization is granted, it is also possible from this
 tab to assign a group to the user.
@@ -66,7 +66,7 @@ tab to assign a group to the user.
 ### Settings
 
 This tab allows to edit user's settings (see
-[Manage settings](../../../first-steps/preferences)). In order to be able to modify data in this tab, general
+[Manage settings](../../../first-steps/preferences.md)). In order to be able to modify data in this tab, general
 configuration modification authorization must be granted.
 
 ### Used items
@@ -106,7 +106,7 @@ and to force its synchronization.
 
 This tab list external links defined for users.
 
-See [Tab "Links"](../../../modules/tabs/external-links)
+See [Tab "Links"](../../../modules/tabs/external-links.md)
 
 ### Tickets
 

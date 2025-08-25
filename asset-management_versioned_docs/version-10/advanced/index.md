@@ -5,6 +5,6 @@ title: Index
 
 # Advanced Configuration
 
-- [Cache](./cache/)
-- [Status](./status/)
-- [Override Locales](./override-locales/)
+- [Cache](./cache.md)
+- [Status](./status.md)
+- [Override Locales](./override-locales.md)

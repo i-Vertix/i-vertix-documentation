@@ -45,7 +45,7 @@ connected user is granted authorization (see
 or if connected user is granted authorization for several entities), a
 list of criteria is displayed, based on personal information collected
 from directory. The search syntax for fields is similar to the syntax of
-i-Vertix ITAM search engine (see [Search](../../../first-steps/search)). Search can be limited to users added or modified in the
+i-Vertix ITAM search engine (see [Search](../../../first-steps/search.md)). Search can be limited to users added or modified in the
 directory during given time slot by following link *Activate date
 filtering*.
 :::note

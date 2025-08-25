@@ -45,7 +45,7 @@ made recursive.
 :::
 
 It is possible to use
-[templates with software](../../modules/overview/templates).
+[templates with software](../../modules/overview/templates.md).
 
 ## The different tabs
 
@@ -421,7 +421,7 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](../../modules/overview/actions), some actions are specific to software:
+Apart from [common actions](../../modules/overview/actions.md), some actions are specific to software:
 
 - Add a version to a software
 - **\[Manage   licenses\](03_Module_Parc/04_Logiciels/Onglet_Licences.rst)** From

@@ -6,7 +6,7 @@ title: Ticketlifecycle
 # Ticket life cycle
 
 Ticket life cycle is defined at *profile* level in a
-[life cycle matrix](../../../modules/assistance/lifecyclematrix). To display a life cycle and modify it, it is therefore done
+[life cycle matrix](../../../modules/assistance/lifecyclematrix.md). To display a life cycle and modify it, it is therefore done
 in profile management form (menu **Administration \> Profiles**).
 
 ## Ticket types
@@ -14,9 +14,9 @@ in profile management form (menu **Administration \> Profiles**).
 i-Vertix ITAM tickets are either incidents or requests, this type being stored in
 field *Type* of the ticket. This type field allows to perform actions
 based on ticket type (see
-[business rules for tickets modification and assignment](../../../modules/administration/rules/ticketbusinessrules),
-[ticket templates](../../../modules/overview/templates) and
-[problem management](../../../modules/assistance/problems)) and to customize the list of available categories.
+[business rules for tickets modification and assignment](../../../modules/administration/rules/ticketbusinessrules.md),
+[ticket templates](../../../modules/overview/templates.md) and
+[problem management](../../../modules/assistance/problems.md)) and to customize the list of available categories.
 
 ## Status
 
@@ -35,13 +35,13 @@ These status can neither be parameterized nor modified.
 :::info
 
 It is therefore possible to hide some status according to profile (see
-[Life cycle matrix](../../../modules/assistance/lifecyclematrix)).\*
+[Life cycle matrix](../../../modules/assistance/lifecyclematrix.md)).\*
 
 :::
 
 To go further in status management, refer to
-[ticket templates](../../../modules/overview/templates) and
-[business rules for tickets modification and assignment](../../../modules/administration/rules/ticketbusinessrules).
+[ticket templates](../../../modules/overview/templates.md) and
+[business rules for tickets modification and assignment](../../../modules/administration/rules/ticketbusinessrules.md).
 
 ## Scheduling
 
@@ -57,7 +57,7 @@ using a matrix and provides the true importance of the ticket.
 :::info
 
 To go further on this matrix configuration, see
-[Define the matrix of calculus for priority](../../../modules/assistance/prioritymatrix).
+[Define the matrix of calculus for priority](../../../modules/assistance/prioritymatrix.md).
 
 :::
 

@@ -42,7 +42,7 @@ Global management allows to limit the number of elements to manage when
 these elements are not a strategic data in the assets management.
 
 It is possible to use
-[templates with displays](../../modules/overview/templates).
+[templates with displays](../../modules/overview/templates.md).
 
 ## The different tabs
 
@@ -365,6 +365,6 @@ below the other.
 
 ## The different actions
 
-Apart from [common actions](../../modules/overview/actions), some actions are specific to displays:
+Apart from [common actions](../../modules/overview/actions.md), some actions are specific to displays:
 
 - connect a display to a monitor

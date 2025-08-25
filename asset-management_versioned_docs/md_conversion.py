@@ -254,7 +254,13 @@ def parse_link(conv_list):
             else:
                 links_dest[url.split("/")[-1]] = norm_path
 
+                # test is performed with .md suffix, if success add the md extension
+                # to point to the files, instead of http paths/endpoints
+                url = f"{url}.md"
+
             # we can store the final url
+            #links[(outf, l_path)] = url
+            #print(url)
             links[(outf, l_path)] = url
 
             # we need to store the relative path of the url,
@@ -426,7 +432,7 @@ if __name__ == "__main__":
         lambda x, _, f: re.sub(r"::: {\.todo}\n(.*?):::\n", "", x, flags=re.DOTALL),
 
         # replace index
-        lambda x, rd, f: index.replace_index(rd, x),
+        lambda x, rd, f: index.replace_index(rd, x, output_dir),
 
         # replace glpi_address
         lambda x, _, f: x.replace("{glpi_address}", "itam_address"),
@@ -477,12 +483,21 @@ if __name__ == "__main__":
                 incpath_to_realpath=incpath_to_realpath), 
             x),
 
+        # adds escape chars
         lambda x, _, f: x.replace("\\\'", "'"),
         lambda x, _, f: x.replace("\\\"", "\""),
         lambda x, _, f: x.replace("\\.", "."),
+
+        # removes style= tags
         lambda x, _, f: re.sub(r"style=\".*\"", "", x),
+
+        # escapes "export" at the beginning of lines that are interpreted as
+        # react syntax
         lambda x, _, f: re.sub(r"^export", r" export", x, flags=re.MULTILINE),
+        
         lambda x, _, f: re.sub(r"^-[ ]+[\n]+\s*", r"- ", x, flags=re.MULTILINE),
+        
+        # handles semicolons at the beginning of the line with some spaces after
         lambda x, _, f: re.sub(r"^:\s[\s]+", r"    ", x, flags=re.MULTILINE),
 
         # Replace (spaces):(spaces) with the same number of spaces to 
@@ -491,7 +506,8 @@ if __name__ == "__main__":
             r"^\s*:\s[\s]+", 
             lambda x: " " * (x.end()-x.start() - 1), 
             x, flags=re.MULTILINE),
-        
+
+        # replaces some links with just the text        
         lambda x, _, f: re.sub(r"\[([\w \\>\n:\./!\+]*)\](?!\()", r"*\1*", x, flags=re.MULTILINE),
     
     ]

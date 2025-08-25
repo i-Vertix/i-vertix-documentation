@@ -16,14 +16,14 @@ and shares with it many concepts: *Requester*,
 *Watcher*, *Assigned to*, *Status*,
 *Urgency*, *Impact*, *Priority*,
 *Category*. For more information, see
-[Manage tickets](../../modules/assistance/tickets/ticketmanagement).
+[Manage tickets](../../modules/assistance/tickets/ticketmanagement.md).
 
 
 Problems use their own notifications, see
 [configuration of email follow-ups](../../modules/configuration/notifications/email_notifications).
 
 Statistics similar to tickets are available for problems, see
-[Display statistics](../../modules/assistance/statistics).
+[Display statistics](../../modules/assistance/statistics.md).
 
 ## The different tabs
 

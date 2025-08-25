@@ -36,7 +36,7 @@ must be used.
 Using i-Vertix ITAM blacklist mechanism, it is possible to exclude certain values
 ​​from processing by the rules engine such as certain IP or MAC addresses,
 for example an IP 127.0.0.1; see
-[Blacklists](../../../modules/administration/rules/rulesmanagement).
+[Blacklists](../../../modules/administration/rules/rulesmanagement.md).
 
 # Rules for importing and linking computers
 

@@ -15,7 +15,7 @@ mandatory to follow these best practices and freedom is given to
 implement an incident management best tailored for organization's need.
 
 Statistics are available for tickets, see
-[Display statistics](../../../modules/assistance/statistics).
+[Display statistics](../../../modules/assistance/statistics.md).
 
 ## Description of specific fields
 
@@ -37,8 +37,8 @@ Statistics are available for tickets, see
 
 - **Status**: status attributed manualy by the technician or dynamically
   by performed actions, see
-  [Management rules](../../../modules/assistance/tickets/ticketlifecycle) and
-  [life cycle matrix](../../../modules/assistance/lifecyclematrix);
+  [Management rules](../../../modules/assistance/tickets/ticketlifecycle.md) and
+  [life cycle matrix](../../../modules/assistance/lifecyclematrix.md);
 
 - **Request Source**: indicates the channel used to create the ticket,
   see
@@ -50,7 +50,7 @@ Statistics are available for tickets, see
 
 - **Priority**: importance of the ticket automaticaly computed from
   defined impact and urgency using a predefined calculus matrix, see
-  [life cycle matrix](../../../modules/assistance/lifecyclematrix);
+  [life cycle matrix](../../../modules/assistance/lifecyclematrix.md);
 
 - **Approval**: by default the ticket is *Not subject to approval*;
 
@@ -64,7 +64,7 @@ Statistics are available for tickets, see
 
 - **Actor**: implied actors are referenced in the ticket, which allows
   them to be notified during ticket life cycle, see
-  [Defining actors and roles](../../../modules/assistance/actors).
+  [Defining actors and roles](../../../modules/assistance/actors.md).
 
   If email followup have been configured (see notification management),
   information about notifications are displayed for a user or a

@@ -15,10 +15,10 @@ authentication server with matching credentials.
 
 The general authentication configuration and the management of external
 authentication servers can be done in the
-[Setup > Authentication menu](../../../modules/configuration/authentication/configuration).
+[Setup > Authentication menu](../../../modules/configuration/authentication/configuration.md).
 
 The attribution of authorizations is described in the
-[Rules for assigning authorizations to a user](../../../modules/administration/rules/userauthorizations) documentation.
+[Rules for assigning authorizations to a user](../../../modules/administration/rules/userauthorizations.md) documentation.
 
 :::info
 
@@ -62,7 +62,7 @@ Authentication \> Setup** form. When using LDAP directories, it is
 possible to configure the action that i-Vertix ITAM takes when a user is no
 longer present in the LDAP directory from this same form.
 
-- [Configuration](./configuration/)
-- [Ldap](./ldap/)
-- [Imap](./imap/)
-- [Other](./other/)
+- [Configuration](./configuration.md)
+- [Ldap](./ldap.md)
+- [Imap](./imap.md)
+- [Other](./other.md)

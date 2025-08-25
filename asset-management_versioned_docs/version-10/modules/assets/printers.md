@@ -39,7 +39,7 @@ Global management allows to limit the number of elements to manage when
 these elements are not a strategic data in the assets management.
 
 It is possible to use
-[templates with printers](../../modules/overview/templates).
+[templates with printers](../../modules/overview/templates.md).
 
 ## The different tabs
 
@@ -151,7 +151,7 @@ model:
 :::info
 
 For cartridge adding or removing, report to
-[cartridges management](../../modules/assets/cartridges).
+[cartridges management](../../modules/assets/cartridges.md).
 
 :::
 
@@ -611,4 +611,4 @@ below the other.
 ## The different actions
 
 Printers do not have specific actions; report to
-[common actions](../../modules/overview/actions).
+[common actions](../../modules/overview/actions.md).

@@ -7,14 +7,14 @@ title: Ticketadvanced
 
 ## Tickets categories
 
-See [Categories](../../../modules/assistance/categories)
+See [Categories](../../../modules/assistance/categories.md)
 
 ## Tickets templates
 
 Using ticket templates, it is possible to customize ticket creation form
 by masking, pre-defining or making mandatory some fields.
 
-See [Ticket templates](../../../modules/overview/templates)
+See [Ticket templates](../../../modules/overview/templates.md)
 
 ## Collectors
 
@@ -34,10 +34,10 @@ A mail message will go through the following steps:
 
 - Mail box;
 - Collector, configured using
-  [Configure collectors](../../../modules/configuration/collectors);
+  [Configure collectors](../../../modules/configuration/collectors.md);
 - Rules, see Assigned a ticked opened by mail to an entity
 - Business rules, see
-  [Business rules for tickets](../../../modules/administration/rules/ticketbusinessrules)
+  [Business rules for tickets](../../../modules/administration/rules/ticketbusinessrules.md)
 - Ticket is created
 
 An answer to a mail coming from i-Vertix ITAM will go through the following
@@ -50,12 +50,12 @@ steps:
 ## Recurrent tickets
 
 See
-[Recurrent tickets](../../../modules/assistance/tickets/recurrentticket)
+[Recurrent tickets](../../../modules/assistance/tickets/recurrentticket.md)
 
 ## Attached costs
 
 See
-[Attached costs](../../../modules/assistance/tickets/ticketmanagement)
+[Attached costs](../../../modules/assistance/tickets/ticketmanagement.md)
 
 ## Links between tickets
 
@@ -63,7 +63,7 @@ It is possible to define links between tickets or to mark tickets as
 duplicates.
 
 See
-[Links between tickets](../../../modules/assistance/tickets/ticketmanagement)
+[Links between tickets](../../../modules/assistance/tickets/ticketmanagement.md)
 
 ## Processing time
 
@@ -77,7 +77,7 @@ Configure SLAs.
 Business rules can be defined to modify and assign tickets.
 
 See
-[Business rules for tickets](../../../modules/administration/rules/ticketbusinessrules).
+[Business rules for tickets](../../../modules/administration/rules/ticketbusinessrules.md).
 
 ## Administrative closure
 
@@ -90,7 +90,7 @@ technician corresponds to the demand. However, if the requester does not
 fulfill this validation, it is possible to parameterize an
 administrative closure after a delay which can be configured at entity
 level (see
-[Assistance tab](../../../modules/administration/entities)). If this delay is set to zero, the ticket is automatically
+[Assistance tab](../../../modules/administration/entities.md)). If this delay is set to zero, the ticket is automatically
 closed.
 
 ## Satisfaction
@@ -100,7 +100,7 @@ closed.
 A satisfaction survey is triggered when the ticket status is set to
 *Closed* and the triggering delay is elapsed. This triggering delay is
 parameterized at entity level (see
-[Delegate administration at entity level](../../../modules/administration/entities)).
+[Delegate administration at entity level](../../../modules/administration/entities.md)).
 
 :::info
 
@@ -117,7 +117,7 @@ The requester can then select the satisfaction level (from 0 to 5, given
 as stars) about the ticket solution. A comment can also be added.
 
 Statistics on surveys are available in
-[statistics](../../../modules/assistance/statistics).
+[statistics](../../../modules/assistance/statistics.md).
 :::note
 
 - the requester can change the answer to the satisfaction survey within
@@ -129,4 +129,4 @@ Statistics on surveys are available in
 ## See also
 
 See
-[Advanced configuration](../../../modules/assistance/categories).
+[Advanced configuration](../../../modules/assistance/categories.md).

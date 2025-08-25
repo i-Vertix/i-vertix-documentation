@@ -31,8 +31,8 @@ It is also at this level that the time zone of i-Vertix ITAM is set.
 
 External authentication sources that can be used inside i-Vertix ITAM are:
 
-- [LDAP directories](../../../modules/configuration/authentication/ldap)
-- [Email servers](../../../modules/configuration/authentication/imap)
+- [LDAP directories](../../../modules/configuration/authentication/ldap.md)
+- [Email servers](../../../modules/configuration/authentication/imap.md)
 - CAS server
 - x509 certificate
 - Delegate authentication to web server

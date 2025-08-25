@@ -17,16 +17,16 @@ best practises is recommanded but not mandatory and it is perfectly
 feasible, thanks to module's flexibility, to implement an assistance
 service tailored to the organization's needs.
 
-- [Actors](./actors/)
-- [Prioritymatrix](./prioritymatrix/)
-- [Tickets](./tickets/)
-- [Problems](./problems/)
-- [Changes](./changes/)
-- [Lifecyclematrix](./lifecyclematrix/)
-- [Planning](./planning/)
-- [Statistics](./statistics/)
-- [Categories](./categories/)
+- [Actors](./actors.md)
+- [Prioritymatrix](./prioritymatrix.md)
+- [Tickets](./tickets.md)
+- [Problems](./problems.md)
+- [Changes](./changes.md)
+- [Lifecyclematrix](./lifecyclematrix.md)
+- [Planning](./planning.md)
+- [Statistics](./statistics.md)
+- [Categories](./categories.md)
 
 Tickets, Changes and Problems can be viewed globally in a Kanban view.
 For more information about the Kanban feature, please refer to the
-[full documentation](../../modules/overview/kanban).
+[full documentation](../../modules/overview/kanban.md).

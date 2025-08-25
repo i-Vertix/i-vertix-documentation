@@ -14,7 +14,7 @@ The form to create a change is similar to the ticket creation form and
 shares with it many terms: *requester*, *watcher*, *assigned to*,
 *status*, *urgency*, *impact*, *priority*, *category*. For more
 information see
-[Manage tickets](../../modules/assistance/tickets/ticketmanagement). The validation process is also the same as tickets in order
+[Manage tickets](../../modules/assistance/tickets/ticketmanagement.md). The validation process is also the same as tickets in order
 to allow preliminary validation of the change (tab *Validations*).
 
 Once the change is created, it is possible to attach tickets but also
@@ -26,7 +26,7 @@ this change through a deployment plan, a backup plan and a checklist
 Same as tickets, task, costs and solution allow to follow and solve the
 change. For complex changes management, a change can be linked with one
 or several projects allowing a mode detailed management
-([Manage projects](../../modules/tools/projects)).
+([Manage projects](../../modules/tools/projects.md)).
 
 Changes use their own notifications (see
 [configuration of email follow-ups](../../modules/configuration/notifications/email_notifications)).

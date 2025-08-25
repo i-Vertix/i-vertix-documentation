@@ -171,7 +171,7 @@ def write_index(fmap, index_file):
     return
 
 
-def replace_index(rel_dir, text):
+def replace_index(rel_dir, text, outdir):
     
     match = re.search(r"::: \{\.toctree .*\}\n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)
     if match is None:
@@ -196,11 +196,20 @@ def replace_index(rel_dir, text):
         link_text= link_text.replace("-", " ")
         link_text = re.sub("GLPI", "i-Vertix ITAM", link_text, flags=re.IGNORECASE)
 
-        # docusaurus needs a / at the end of the link...
-        if url[-1] != "":
-            url.append("")
+        link_file_dest = "/".join(url) + ".md"
+        if (outdir / rel_dir / link_file_dest).exists():
+            #pointing to a file
+            url = link_file_dest
+        else:
+            # pointing to a directory
+            if url[-1] != "":
+                # docusaurus needs a / at the end of the link...
+                url.append("")
+                url = "/".join(url)
 
-        return (link_text, "/".join(url))
+        #print(f"BL {rel_dir} {url} {test}")
+
+        return (link_text, url)
                                         
     links = match.group(1).split()
     links = [build_link(l, rel_dir) for l in links]

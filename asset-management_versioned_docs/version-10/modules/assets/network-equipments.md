@@ -13,7 +13,7 @@ A network equipment can be a switch, an Ethernet hub, a router, a
 firewall or a WiFi access point.
 
 It is possible to use
-[templates with network equipments](../../modules/overview/templates).
+[templates with network equipments](../../modules/overview/templates.md).
 
 ## The different tabs
 
@@ -523,4 +523,4 @@ below the other.
 ## The different actions
 
 Network equipments do not have specific actions; report to
-[common actions](../../modules/overview/actions).
+[common actions](../../modules/overview/actions.md).

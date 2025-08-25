@@ -56,13 +56,13 @@ component.
 
   - \`Element - Component name link tab\`: lists the characteristics of
     this component
-  - [Management tab](../../modules/tabs/management):
+  - [Management tab](../../modules/tabs/management.md):
     manage financial and administrative information
-  - [Documents tab](../../modules/tabs/documents)
-  - [Historical tab](../../modules/tabs/historical)
-  - [Debug tab](../../modules/tabs/debug): only
+  - [Documents tab](../../modules/tabs/documents.md)
+  - [Historical tab](../../modules/tabs/historical.md)
+  - [Debug tab](../../modules/tabs/debug.md): only
     shown if you have debug mode enabled
-  - [All tab](../../modules/tabs/all): for an item,
+  - [All tab](../../modules/tabs/all.md): for an item,
     all information is displayed on a page
 :::
 

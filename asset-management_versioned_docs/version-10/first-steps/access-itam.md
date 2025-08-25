@@ -30,11 +30,11 @@ means of determining usage contexts.
 
 Groups allow users to be grouped according to similarities in skills or
 organizational units. See
-[Administering groups](../modules/administration/groups) for more information.
+[Administering groups](../modules/administration/groups.md) for more information.
 
 Entities allow you to segment your asset fleet, help desk, etc into
 departments that are isolated from each other. See
-[Administering entities](../modules/administration/entities) for more information.
+[Administering entities](../modules/administration/entities.md) for more information.
 
 Profiles are sets of permissions that can be granted to users. Multiple
 profiles can be given to a user but only one can be active at a time.
@@ -42,5 +42,5 @@ See
 [Administering profiles](../modules/administration/profiles) for more information.
 
 Finally, you can configure
-[Rules for assigning authorizations to a user](../modules/administration/rules/userauthorizations) to dynamically assign entities, groups and profiles to
+[Rules for assigning authorizations to a user](../modules/administration/rules/userauthorizations.md) to dynamically assign entities, groups and profiles to
 users.

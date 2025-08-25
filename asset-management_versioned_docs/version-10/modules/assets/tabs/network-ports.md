@@ -20,7 +20,7 @@ being defined by a name, an optional comment and a VLAN number.
 ![VLAN](../../../assets/modules/assets/images/ports_vlan.png)
 
 One or more
-[network name](../../../modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
+[network name](../../../modules/configuration/dropdowns/internet.md) can be associated to each network port. This can be done in
 tab *Network name*.
 
 ![Network name](../../../assets/modules/assets/images/ports_network_name.png)
