@@ -25,20 +25,20 @@ that actions that are ready to run, get ran as soon as possible.
 For Linux/MacOS, you should add the following to the web server's
 user's (www-data, apache, etc) crontab:
 
-    * * * * * php i-Vertix ITAM/front/cron.php
+`* * * * * <php> <install_folder>/front/cron.php`
 
-You will need to replace [i-Vertix ITAM] with the path to your i-Vertix ITAM
-folder. You may also need to replace *php* with the full
-path to your php binary if it is not in the PATH.
+You will need to replace `<install_folder>` with the path to your i-Vertix ITAM
+folder. You may also need to replace `<php>` with the full path to your
+php binary if it is not in the PATH.
 
 ## Force execution of action from CLI
 
 To execute a specific action from the command-line, you can run (for
 mailgate action):
 
-    php i-Vertix ITAM/front/cron.php --force mailgate
+`<php> <install_folder>/front/cron.php --force mailgate`
 
-You will need to replace [i-Vertix ITAM] with the path to your i-Vertix ITAM
+You will need to replace `<install_folder>` with the path to your i-Vertix ITAM
 folder.
 
 Forcing the action to run will ensure it is run even if it is not
