@@ -34,13 +34,13 @@ sidebar:
     - computers
     - displays
     - softwares
+    - network-equipments
     - peripherals
     - printers
     - cartridges
     - consumables
     - phones
     - global
-    - network-equipments
     - id: tabs
       label: Tabs
       items:

@@ -16,10 +16,9 @@ with this software.
 
 Software can be imported automatically using a third-party inventory
 tool; in this case a dictionary can be used to filter or clean the
-import data (see \[Configure data
-dictionaries\](07_Module_Administration/06_Dictionnaires.rst "The
-dictionaries are managed from menu entry Administration \>
-Dictionaries")).
+import data (see
+[Configure data dictionaries](../../modules/administration/dictionnaries.md) . The dictionaries are managed from menu entry
+Administration \> Dictionaries).
 
 Some fields are specific in the software form:
 
@@ -80,7 +79,8 @@ versions of installed software, sorted by category).
 - Column *license* is filled only when the license is
   affected to the concerned computer
 - The initial display of different categories depend upon user
-  preferences (see \[manage   preferences\](01-premiers-pas/03_Utiliser_i-Vertix ITAM/04_Gérer_ses_préférences.rst").
+  preferences (see
+  [manage preferences](../../first-steps/preferences.md)).
 :::
 
 Two options are available on the list of installations of software on a
@@ -424,6 +424,5 @@ below the other.
 Apart from [common actions](../../modules/overview/actions.md), some actions are specific to software:
 
 - Add a version to a software
-- **\[Manage   licenses\](03_Module_Parc/04_Logiciels/Onglet_Licences.rst)** From
-  menu **\*Assets \> Softwares**\* click on license name in tab
-  *Licenses*.
+- [Manage licenses](../../modules/management/licenses.md) From menu **\*Assets \> Softwares**\* click on license
+  name in tab *Licenses*.

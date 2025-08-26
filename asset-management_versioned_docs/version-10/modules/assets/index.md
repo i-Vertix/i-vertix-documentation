@@ -34,15 +34,17 @@ but not limited to:
 - The [Fusion   Inventory](https://github.com/fusioninventory/fusioninventory-for-glpi/)
   plugin transforms i-Vertix ITAM into an inventory server with the Fusion
   Inventory agents interfacing directly with the i-Vertix ITAM server.
-- The [ocsinventoryng](https://github.com/pluginsi-Vertix ITAM/ocsinventoryng)
-  plugin allow to synchronize the i-Vertix ITAM database with the [OCS Inventory   NG](http://www.ocsinventory-ng.org) inventory tool: the agents
-  installed on the computers interface directly the the OCS Inventory NG
-  server.
 
 ## Available types
 
-::: 
-computers displays softwares Network equipments \<network-equipments\>
-peripherals printers cartridges consumables phones global
-:::
+- [Computers](./computers.md)
+- [Displays](./displays.md)
+- [Softwares](./softwares.md)
+- [Network Equipments](./network-equipments.md)
+- [Peripherals](./peripherals.md)
+- [Printers](./printers.md)
+- [Cartridges](./cartridges.md)
+- [Consumables](./consumables.md)
+- [Phones](./phones.md)
+- [Global](./global.md)
 

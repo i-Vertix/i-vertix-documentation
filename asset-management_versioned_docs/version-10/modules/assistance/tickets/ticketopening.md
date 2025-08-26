@@ -9,7 +9,7 @@ A requester formulating a need can use several tools:
 
 - filling an online form, the requester being known to i-Vertix ITAM or not;
 - asking a delegate in the group to open the ticket (see
-  [Administer groups](../../../modules/administration/groups.md). In simplified interface, this is put into evidence by an
+  [Administer groups](../../../modules/administration/groups.md)). In simplified interface, this is put into evidence by an
   option allowing to indicate if the ticket concerns the requesting user
   or another user. In standard interface, this mechanism is active as
   long as authorization **See all tickets** is set to *No* in the
@@ -86,7 +86,7 @@ Specific fields:
 - **Associated elements**: Allows to associate an item of the inventory
   with the ticket. The content of the list depends upon parameters
   defined in user's profile (see
-  [Administer user profile](../../../modules/administration/profiles).
+  [Administer user profile](../../../modules/administration/profiles)).
 
 - **Watchers**: Allows to add a watcher and to define notification
   parameters.
@@ -136,7 +136,7 @@ simplified view of current tickets for this item is displayed.
 
 Opening a ticket by mail is done by sending a mail to an email address
 defined in the collector (see
-[Configure collectors](../../../modules/configuration/collectors.md)
+[Configure collectors](../../../modules/configuration/collectors.md))
 
 On reception of the mail, a ticket will be opened automatically:
 

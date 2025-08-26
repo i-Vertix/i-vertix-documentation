@@ -11,35 +11,38 @@ Groups can be defined in a hierarchical structure in order to ease
 navigation and search.
 :::note[**Example: groups**]
 
-::
-
-    Management \> Division \> Service or N3 Support \> Network \> LAN
+Management \> Division \> Service or N3 Support \> Network \> LAN
 :::
 
-Groups can be used in several way to group users by: \* *skills*: for
-the helpdesk, for example network technicians, or database
-administrators, \* *organizational groups*: for example all the
-computers of the management or the accounting department but also set of
-persons to be notified.
+Groups can be used in several way to group users by:
 
-The options available to adjust these behaviors are: \* **Visible in a
-ticket**: requesting group and/or assignment to this group; \* **Can be
-notified**: recipient of notifications; \* **Can be supervisor**: only
-for a [project](../../modules/tools/projects.md);
-\* **May contain**: assets and/or users.
+    - *skills*: for the helpdesk, for example network technicians, or
+      database administrators,
+    - *organizational groups*: for example all the computers of the
+      management or the accounting department but also set of persons to
+      be notified.
 
-In an item form, 2 notions of groups are available: \* *technical group*
-which indicates which group of people is in charge of the asset
-(equivalent for a group of the technical manager) \* *group* which
-indicates to which group of items it belongs.
+The options available to adjust these behaviors are:
+
+    - **Visible in a ticket**: requesting group and/or assignment to
+      this group;
+    - **Can be notified**: recipient of notifications;
+    - **Can be supervisor**: only for a
+      [project](../../modules/tools/projects.md);
+    - **May contain**: assets and/or users.
+
+In an item form, 2 notions of groups are available:
+
+    - *technical group* which indicates which group of people is in
+      charge of the asset (equivalent for a group of the technical
+      manager)
+    - *group* which indicates to which group of items it belongs.
 
 :::info
 
 the technical group can allow the automatic assignment of a ticket to
-a group of technicians, see the ticket categories in the chapter: doc:
-[Configure dropdowns
-\</modules/configuration/dropdowns/assistance.rst\>].
-Likewise, it can be used in
+a group of technicians, see the ticket categories in the chapter:
+[Configure dropdowns](../../modules/configuration/dropdowns/assistance.md). Likewise, it can be used in
 [Business rules for tickets](../../modules/administration/rules/ticketbusinessrules.md).
 
 :::
@@ -79,13 +82,11 @@ The assignment of users to groups will be automatic, see
 directories is proposed, otherwise the search form is directly
 accessible.
 
-Depending on how you search for groups (see: doc: [Authenticating users
-from LDAP directories
-\</modules/configuration/authentication/ldap\>]), a **Search
-filter in groups** and/or a **User search filter** appear: these allow
-to refine the list to be imported. If i-Vertix ITAM is used in multi-entities, it
-is necessary to select the destination entity of the group as well as
-its visibility in the sub-entities.
+Depending on how you search for groups (see:
+[Authenticating users from LDAP directories](../../modules/configuration/authentication/ldap.md)), a **Search filter in groups** and/or a **User search
+filter** appear: these allow to refine the list to be imported. If i-Vertix ITAM
+is used in multi-entities, it is necessary to select the destination
+entity of the group as well as its visibility in the sub-entities.
 
 :::info
 

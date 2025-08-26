@@ -48,8 +48,12 @@ def parse_index(fpath):
         text = text[match.start():match.end()]
         lines = text.split("\n")
         lines = [l.strip() for l in lines]
+        
+        #removing index from <subdir>/index
         lines = [l.split("/")[0] for l in lines]
+        
         lines.insert(0, "index")
+
         return lines
     else:
         return []
@@ -149,8 +153,6 @@ def write_index(fmap, index_file):
             r"modules/assistance/tickets/ticketmanagement.md",
             r"modules/assistance/tickets/ticketopening.md",
         ])
-
-        #print("AA", rel_out.as_posix())
 
         if rel_out.as_posix() not in skip_list:
             set_path(acc, rel_out)

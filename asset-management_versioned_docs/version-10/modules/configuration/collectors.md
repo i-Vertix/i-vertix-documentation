@@ -5,8 +5,8 @@ title: Collectors
 
 # Receivers
 
-Receivers configuration can be reached from [Configuration -\> Receivers
-] menu.
+Receivers configuration can be reached from *Configuration \>
+Receivers* menu.
 
 A receiver allow to import emails from a mailbox ans turn them into i-Vertix ITAM
 tickets. A routing mechanism will bring them to the destination entity.
@@ -19,8 +19,8 @@ To declare a new collector, you will have to provide a server name, as
 well as connection options (IMAP or POP, SSL, TLS, certificate
 validation). It is possible to limit the maximum size for attachments
 (no import, or from 1 to 100 Mio). This configuration value is inherited
-from the main configuration ([Setup -\> General -\>
-Assistance]) A configuration option permit to switch tickets
+from the main configuration (*Setup \> General \>
+Assistance*) A configuration option permit to switch tickets
 creation date between import date or email date.
 
 Optionally, you can set an archive directory in the mailbox where
@@ -37,8 +37,8 @@ An automatic action will do the import on configured receivers ; time
 between two executions can be configured in automated task form.
 
 Another automatic action will send notifications when any collector
-repetitively fails to import emails. See [notifications configuration
-\<modules/configuration/notifications\>].
+repetitively fails to import emails. See
+[notifications configuration](../../modules/configuration/notifications/index.md).
 
 :::warning
 

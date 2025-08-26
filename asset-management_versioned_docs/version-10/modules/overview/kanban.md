@@ -14,8 +14,8 @@ its child Projects and tasks.
 
 For Tickets, Changes, and Problems, only a global Kanban is available
 and is specific to each type (you cannot view tickets and changes on the
-same Kanban). For the sake of berevity, the Kanban for Tickets, Changes
-and Problems is refered to as the *ITIL Kanban* in the rest of this
+same Kanban). For the sake of brevity, the Kanban for Tickets, Changes
+and Problems is referred to as the *ITIL Kanban* in the rest of this
 document.
 
 Currently, the columns of the Kanban represent the status of the items.
@@ -33,24 +33,29 @@ update their status, but they will not be displayed here.
 
 ## Cards
 
-Each card on the Kanban shows some basic information including: - The
-name of the item which is shown as the card's titles - The progress of
-sub-tasks (Project tasks and child projects for Project Kanban and child
-tickets for Ticket Kanban) - If the item is a milestone (Project
-Kanban) - The team for the item shown
+Each card on the Kanban shows some basic information including:
+
+    - The name of the item which is shown as the card's titles
+    - The progress of sub-tasks (Project tasks and child projects for
+      Project Kanban and child tickets for Ticket Kanban)
+    - If the item is a milestone (Project Kanban)
+    - The team for the item shown
 
 Hovering over the title of a Kanban card will show a preview of the
 item's content/description.
 
-Each card also has a "..." menu which includes: - Goto: Navigates to
-the item's full form - Delete: Delete the item (this actually deletes
-the item and doesn't just remove it from the Kanban)
+Each card also has a "..." menu which includes:
 
-Clicking on the card's title will display a flyout panel which displays
-some of the same information as the card itself but also includes: - A
-read-only view of the item's content - A full list of the item's team
-along with the ability to add and remove team members directly without
-having to go to the item's full form
+    - Goto: Navigates to the item's full form
+    - Delete: Delete the item (this actually deletes the item and
+      doesn't just remove it from the Kanban)
+
+Clicking on the card's title will display a flyout panel which displays some of the same information as the card itself but also includes:
+
+    - A read-only view of the item's content
+    - A full list of the item's team along with the ability to add and
+      remove team members directly without having to go to the item's
+      full form
 
 ## Team management
 
@@ -86,21 +91,27 @@ items are shown on the Kanban.
 Regular searches can be done by simply typing one or more search terms
 into the search box.
 
-When you click in the search box, a suggestion tooltop will be displayed
+When you click in the search box, a suggestion tooltip will be displayed
 that shows a list of the available filter *tags*. There are different
 tags depending on which Kanban you are using and new tags can be added
 by plugins.
 
-Some of these tags incluse: - title: The name or title of the item -
-type: The type of the item (On the Project Kanban you can use this to
-filter Projects or Project tasks) - content: The content of the item -
-team: The team of the item (searches regardless of the member type)
+Some of these tags include:
+
+    - title: The name or title of the item
+    - type: The type of the item (On the Project Kanban you can use this
+      to filter Projects or Project tasks)
+    - content: The content of the item
+    - team: The team of the item (searches regardless of the member
+      type)
 
 Each suggested tag may have zero or more buttons with an icon or
 character in them which represent different modifiers for the filter.
 
-The common modifiers: - !: Represents a negation or exclusion - \#:
-Represents a regular expression
+The common modifiers:
+
+    - !: Represents a negation or exclusion
+    - \#: Represents a regular expression
 
 As you type, the list of suggested tags will be adjusted to match what
 you have typed. You can manually add a filter by typing it out such as:

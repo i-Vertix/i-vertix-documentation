@@ -444,10 +444,9 @@ port is affected to the port alias.
 A network port aggregate is a virtual port that allows to group several
 physical ports.
 
-On Linux, aggregates are represented by bridges [bridges
-\[http://www.linuxfoundation.org/collaborate/workgroups/networking/bridge\](http://www.linuxfoundation.org/collaborate/workgroups/networking/bridge\)]
-linking together different ports. In the same way, an Ethernet firewall
-uses a bridge that links interfaces to be filtered.
+On Linux, aggregates are represented by bridges linking together
+different ports. In the same way, an Ethernet firewall uses a bridge
+that links interfaces to be filtered.
 
 A port aggregate contains the origin ports and a MAC address.
 

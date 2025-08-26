@@ -9,7 +9,7 @@ node scripts/build-sidebar.js  --versioning=10 --docs=asset-management \
 
 TODO:
 
-- come verrà mantenuto il manuale? 
+- come verrà mantenuto il manuale?
   - aggiornamenti?
   - merge quando verrà modificata la doc originale?
 - come gestire gli errori nella documentazione originale?
@@ -21,7 +21,6 @@ TODO:
 - modules/assets:
   - a link points to the glpi plugin repository
   - wrong link
-  - available types list is messed up
 - modules/assets/computers
   - bridges link is broken
 - modules/assets/software
