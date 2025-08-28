@@ -3,7 +3,7 @@ id: saved-searches
 title: Saved Searches
 ---
 
-# Saved Searches 
+# Saved Searches
 
 i-Vertix ITAM offers a system for saving searches (bookmarks). Once the search is
 done, it is possible to save it from a star-shaped button accessible in

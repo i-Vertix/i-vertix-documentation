@@ -17,6 +17,7 @@ import utils
 ConvSpec = namedtuple("ConvSpec", "inf, rel, out, orig_out")
 
 
+#def add_header(file_path, titles, out_dir):
 def add_header(file_path):
 
     lines = []
@@ -26,12 +27,11 @@ def add_header(file_path):
     if lines:
         if not (lines[0].startswith('---') or lines[0].startswith(r'\-\--')):
 
-            module_name = os.path.basename(file_path)
-            module_name = module_name[:-3]
-            title = module_name.title()
-            title = title.replace("_", " ")
-            title = title.replace("-", " ")
-            title = re.sub("GLPI", "i-Vertix ITAM", title, flags=re.IGNORECASE)
+            module_name = file_path.with_suffix("").name
+            title = index.format_menu_line(module_name)
+
+            #title_key = file_path.relative_to(out_dir).as_posix()
+            #title = titles.get(title_key, module_name.title())
 
             header = [
                 "---\n",
@@ -99,6 +99,7 @@ def overwrite_files(overwrite_dir, output_dir):
             ov_rel_path = ov_path.relative_to(overwrite_dir)
             src = overwrite_dir / ov_rel_path
             dst = output_dir / ov_rel_path
+            dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(src, dst)
 
             print(f"overwriting: {src} -> {dst}")
@@ -322,13 +323,18 @@ if __name__ == "__main__":
         input_dir, 
         output_dir,
         skip_list=[
-            "modules/configuration/general/glpi_network.rst",
+            r"modules/configuration/general/glpi_network.rst",
+            r"first-steps/conclusion.rst",
+            r"modules/configuration/plugins.rst",
+            r"cli.rst",
             ]
         )
    
     # fix errors in glpi sources, 
     # fix hard (for pandoc) to interpret rst directives
     prepare_sources([x[0] for x in fmap])
+
+    page_titles = index.parse_titles(fmap)
 
     # create md files as result from pandoc conversion    
     if not args.skip_conversion:
@@ -337,15 +343,18 @@ if __name__ == "__main__":
     
     # parse links
     link_replacement, links_euristic = parse_link(fmap)
+    titles = index.parse_titles(fmap)
     
     # write docusaurs header to files
     for c in fmap: 
+        #add_header(c.out, titles, output_dir)
         add_header(c.out)
 
     # compute and write the index yaml file
     index.write_index(
         fmap, 
-        "asset-management_versioned_sidebars/10-sidebar.yaml"
+        "asset-management_versioned_sidebars/10-sidebar.yaml",
+        titles
     )
 
     #images

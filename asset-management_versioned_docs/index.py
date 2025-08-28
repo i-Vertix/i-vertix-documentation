@@ -1,11 +1,53 @@
 import yaml
 import pathlib
-from collections import OrderedDict
+#from collections import OrderedDict
 import re
 
-yaml.add_representer(OrderedDict, lambda dumper, data: dumper.represent_mapping('tag:yaml.org,2002:map', data.items()))
+#yaml.add_representer(OrderedDict, lambda dumper, data: dumper.represent_mapping('tag:yaml.org,2002:map', data.items()))
+        
 
-def set_path(root, path):
+# Pages that should not be included in the index / menu
+
+skip_list = set([
+    r"modules/administration/profiles/administrationtab.md",
+    r"modules/administration/profiles/assistancetab.md",
+    r"modules/administration/profiles/configurationtab.md",
+    r"modules/administration/profiles/toolstab.md",
+    r"modules/tabs/all.md",
+    r"modules/tabs/changes.md",
+    r"modules/tabs/contacts.md",
+    r"modules/tabs/contracts.md",
+    r"modules/tabs/debug.md",
+    r"modules/tabs/documents.md",
+    r"modules/tabs/elements.md",
+    r"modules/tabs/external-links.md",
+    r"modules/tabs/historical.md",
+    r"modules/tabs/knowledgebase.md",
+    r"modules/tabs/management.md",
+    r"modules/tabs/notes.md",
+    r"modules/tabs/problems.md",
+    r"modules/tabs/suppliers.md",
+    r"modules/tabs/templates.md",
+    r"modules/tabs/tickets.md",
+    r"modules/assistance/tickets/recurrentticket.md",
+    r"modules/assistance/tickets/ticketadvanced.md",
+    r"modules/assistance/tickets/ticketlifecycle.md",
+    r"modules/assistance/tickets/ticketmanagement.md",
+    r"modules/assistance/tickets/ticketopening.md",
+    r"modules/configuration/plugins.md",
+    r"first-steps/conclusion.md",
+])
+
+
+def format_menu_line(text):
+    text = text.title()
+    text = text.replace("_", " ")
+    text = text.replace("-", " ")
+    text = re.sub("GLPI", "i-Vertix ITAM", text, flags=re.IGNORECASE)
+    return text
+
+
+def set_path(root, path, titles):
 
     curr = root
     for p in path.parts:
@@ -13,14 +55,24 @@ def set_path(root, path):
         items = curr["items"]
 
         if p.endswith(".md"):
-            curr["items"].append(p[:-3])
+
+            label = format_menu_line(p[:-3])
+            label = titles.get(path.as_posix(), label)
+            label = format_menu_line(label)
+
+            curr["items"].append(
+                {
+                    "id": p[:-3],
+                    "label": label,
+                }
+                )
             break
 
         pres = [e for e in items if isinstance(e, dict) and e["id"] == p]
         if not pres:
             next_elem = {
                 "id": p,
-                "label": p.title().replace("_", " ").replace("-", " "),
+                "label": format_menu_line(p),
                 "items": []
             }
             items.append(next_elem)
@@ -63,22 +115,43 @@ def sort_index_tree(tree, indexes):
     
     def ordered_dict_rec(tree, indexes=indexes, cpath=[]):
 
-        if isinstance(tree, dict):
+        # it's a subtree, recursive call
+        if isinstance(tree, dict) and "items" in tree:
 
             newl = list(cpath)
             newl.append(tree["id"])
+                
 
-            return OrderedDict([
-                ("id", tree["id"]),
-                ("label", tree["label"]),
-                ("items", ordered_dict_rec(
+            # Changed from OrderedDict because
+            # newer python preserves key ordering
+            # by default in dicts
+            
+            return {
+                "id": tree["id"],
+                "label": tree["label"],
+                "items": ordered_dict_rec(
                     tree["items"], 
                     indexes,
                     newl
                     )
-                )
-            ]
-            )
+                }
+
+            #return OrderedDict([
+            #    ("id", tree["id"]),
+            #    ("label", tree["label"]),
+            #    ("items", ordered_dict_rec(
+            #        tree["items"], 
+            #        indexes,
+            #        newl
+            #        )
+            #    )
+            #])
+
+        # it's a leaf 
+        elif isinstance(tree, dict) and "items" not in tree:
+            return tree
+
+        # it's a list of items that should be ordered
         elif isinstance(tree, list):
             
             res = [ordered_dict_rec(x, indexes, cpath) for x in tree]
@@ -86,9 +159,9 @@ def sort_index_tree(tree, indexes):
             def sorter(x): 
                 index = indexes.get(tuple(cpath), [])
 
-                if isinstance(x, OrderedDict):
+                if isinstance(x, dict):
                     x = x["id"]
-                
+ 
                 #print(f"sorter {cpath} {x} {index}")
 
                 if x in index:
@@ -98,7 +171,8 @@ def sort_index_tree(tree, indexes):
 
             res = sorted(res, key=sorter)
             return res
-        
+
+        # should not happen
         elif isinstance(tree, str):
             return tree
 
@@ -107,12 +181,12 @@ def sort_index_tree(tree, indexes):
     return tree
 
 
-def write_index(fmap, index_file):
+def write_index(fmap, index_file, titles):
     
     #build index
     acc = {"items": []}
     indexes = {}
-    #for in_file, rel_dir, out_file in fmap: 
+    
     for c in fmap: 
 
         in_file = c.inf
@@ -124,38 +198,9 @@ def write_index(fmap, index_file):
         if in_file.name == "index.rst":
             index_path = tuple(rel_out.parent.parts)
             indexes[index_path] = parse_index(in_file)
-        
-
-        skip_list = set([
-            r"modules/administration/profiles/administrationtab.md",
-            r"modules/administration/profiles/assistancetab.md",
-            r"modules/administration/profiles/configurationtab.md",
-            r"modules/administration/profiles/toolstab.md",
-            r"modules/tabs/all.md",
-            r"modules/tabs/changes.md",
-            r"modules/tabs/contacts.md",
-            r"modules/tabs/contracts.md",
-            r"modules/tabs/debug.md",
-            r"modules/tabs/documents.md",
-            r"modules/tabs/elements.md",
-            r"modules/tabs/external-links.md",
-            r"modules/tabs/historical.md",
-            r"modules/tabs/knowledgebase.md",
-            r"modules/tabs/management.md",
-            r"modules/tabs/notes.md",
-            r"modules/tabs/problems.md",
-            r"modules/tabs/suppliers.md",
-            r"modules/tabs/templates.md",
-            r"modules/tabs/tickets.md",
-            r"modules/assistance/tickets/recurrentticket.md",
-            r"modules/assistance/tickets/ticketadvanced.md",
-            r"modules/assistance/tickets/ticketlifecycle.md",
-            r"modules/assistance/tickets/ticketmanagement.md",
-            r"modules/assistance/tickets/ticketopening.md",
-        ])
 
         if rel_out.as_posix() not in skip_list:
-            set_path(acc, rel_out)
+            set_path(acc, rel_out, titles)
         else:
             print(f"skipping indexing for {rel_out}")
 
@@ -221,3 +266,25 @@ def replace_index(rel_dir, text, outdir):
     text = text[:match.start()] + links + "\n" + text[match.end():]
     
     return text
+
+
+def parse_titles(fmap):
+
+    res = {}
+
+    for c in fmap: 
+
+        rel_file = (c.rel / c.out.name).as_posix()
+        
+        with open(c.inf, "r", encoding="utf-8") as fd:
+            text = fd.readlines()
+            if text[1][0] in ["=", "~", "-"]:
+                res[rel_file] = text[0].strip()
+            else:
+                res[rel_file] = c.inf.with_suffix("").name
+
+
+    for r in res:
+        print(f"{r} -> {res[r]}")
+
+    return res

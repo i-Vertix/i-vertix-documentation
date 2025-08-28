@@ -5,9 +5,16 @@ title: Index
 
 # Configuration
 
-Configuration module gives access to all i-Vertix ITAM configuration options such
-as: - Global configuration - Notifications - Receivers - Automatic
-actions - Authentication - Plugins - Unicity criteria - External links
+Configuration module gives access to all i-Vertix ITAM configuration options such as:
+
+    - Global configuration
+    - Notifications
+    - Receivers
+    - Automatic actions
+    - Authentication
+    - Plugins
+    - Unicity criteria
+    - External links
 
 - [Authentication](./authentication/)
 - [Dropdowns](./dropdowns/)
@@ -19,4 +26,4 @@ actions - Authentication - Plugins - Unicity criteria - External links
 - [Service Levels](./service_levels.md)
 - [General](./general/)
 - [External Links](./external_links.md)
-- [Plugins](./plugins.md)
+- [Plugins](./plugins/)
