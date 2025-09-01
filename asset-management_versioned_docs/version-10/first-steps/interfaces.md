@@ -65,23 +65,6 @@ displayed.
 
 :::
 
-:::info
-
-Two security messages may be displayed when you log in for the first
-time after completing the installation procedure.
-
-The first asks you to change the passwords of the accounts created by
-default in i-Vertix ITAM, the second asks you to delete the directory
-`glpi/install`. There may also be one or more other messages here
-related to security or needed database schema changes
-
-![Security messages](../assets/first-steps/images/security-messages.png)
-
-As long as you have not performed these operations, the messages will
-remain.
-
-:::
-
 ## Simplified Interface 
 
 It is the most restrictive interface of the application and is built for
