@@ -301,6 +301,14 @@ if __name__ == "__main__":
         default="asset-management_versioned_docs/itam_overwrite", 
         dest="overwrite_dir"
         )
+    
+    parser.add_argument(
+        "--overwrite-only", 
+        action="store_true", 
+        default=False, 
+        dest="overwrite_only"
+        )
+    
     args = parser.parse_args()
 
     input_dir = pathlib.Path(args.input_dir)
@@ -309,6 +317,11 @@ if __name__ == "__main__":
     overwrite_dir = pathlib.Path(args.overwrite_dir)
 
     output_dir.mkdir(exist_ok=True)
+
+    if args.overwrite_only:
+        overwrite_files(overwrite_dir, output_dir)
+        exit(0)
+
     
     # copy tmp dir    
     if os.path.exists(tmp_dir):
