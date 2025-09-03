@@ -2,6 +2,7 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Notifications
 
@@ -16,11 +17,7 @@ To do this, you must activate the **Enable followup** option then
 **Enable followup via email** or **Browser followups from browser** to
 display the settings menu:
 
-- [Templates](./templates.md)
-- [Template Example](./template_example.md)
-- [Definitions](./definitions.md)
-- [Email Notifications](./email_notifications.md)
-- [Alarm Options](./alarm_options.md)
+<DocCardList />
 
 :::info
 

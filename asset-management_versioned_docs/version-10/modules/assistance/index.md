@@ -2,6 +2,7 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Assistance
 
@@ -17,15 +18,7 @@ best practises is recommanded but not mandatory and it is perfectly
 feasible, thanks to module's flexibility, to implement an assistance
 service tailored to the organization's needs.
 
-- [Actors](./actors.md)
-- [Prioritymatrix](./prioritymatrix.md)
-- [Tickets](./tickets.md)
-- [Problems](./problems.md)
-- [Changes](./changes.md)
-- [Lifecyclematrix](./lifecyclematrix.md)
-- [Planning](./planning.md)
-- [Statistics](./statistics.md)
-- [Categories](./categories.md)
+<DocCardList />
 
 Tickets, Changes and Problems can be viewed globally in a Kanban view.
 For more information about the Kanban feature, please refer to the

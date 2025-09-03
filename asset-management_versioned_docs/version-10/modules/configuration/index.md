@@ -2,6 +2,7 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Configuration
 
@@ -16,14 +17,4 @@ Configuration module gives access to all i-Vertix ITAM configuration options suc
     - Unicity criteria
     - External links
 
-- [Authentication](./authentication/)
-- [Dropdowns](./dropdowns/)
-- [Components](./components.md)
-- [Collectors](./collectors.md)
-- [Notifications](./notifications/)
-- [Crontasks](./crontasks.md)
-- [Fields Unicity](./fields-unicity.md)
-- [Service Levels](./service_levels.md)
-- [General](./general/)
-- [External Links](./external_links.md)
-- [Plugins](./plugins/)
+<DocCardList />

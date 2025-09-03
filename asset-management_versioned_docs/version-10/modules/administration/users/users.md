@@ -2,13 +2,14 @@
 id: users
 title: Users
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Users
 
 User management allows to add, modify, delete, search users and to
 import and export users list.
 
-- [Usersimport](./usersimport.md)
+<DocCardList />
 
 It is possible to deactivate a user if needed. If deactivated, the user
 can no longer be selected in drop-down menu for tickets or inventories,

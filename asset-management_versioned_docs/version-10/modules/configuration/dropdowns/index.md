@@ -2,6 +2,7 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Dropdowns
 
@@ -35,8 +36,4 @@ forms by hovering over the **Help** icon next to the dropdown.
 The types of dropdowns that can be associated with specific entities
 will show a "stack" icon (Same as the Entity menu item).
 
-- [General](./general.md)
-- [Assistance](./assistance.md)
-- [Calendar](./calendar.md)
-- [Internet](./internet.md)
-- [Others](./others.md)
+<DocCardList />

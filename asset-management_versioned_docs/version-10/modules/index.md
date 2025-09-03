@@ -2,13 +2,8 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Modules
 
-- [Overview](./overview/)
-- [Assets](./assets/)
-- [Management](./management/)
-- [Tools](./tools/)
-- [Assistance](./assistance/)
-- [Administration](./administration/)
-- [Configuration](./configuration/)
+<DocCardList />

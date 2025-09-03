@@ -2,10 +2,8 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Overview
 
-- [Actions](./actions.md)
-- [Templates](./templates.md)
-- [Status](./status.md)
-- [Kanban](./kanban.md)
+<DocCardList />

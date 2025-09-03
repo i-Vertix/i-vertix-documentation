@@ -2,6 +2,7 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Authentication
 
@@ -62,7 +63,4 @@ Authentication \> Setup** form. When using LDAP directories, it is
 possible to configure the action that i-Vertix ITAM takes when a user is no
 longer present in the LDAP directory from this same form.
 
-- [Configuration](./configuration.md)
-- [Ldap](./ldap.md)
-- [Imap](./imap.md)
-- [Other](./other.md)
+<DocCardList />

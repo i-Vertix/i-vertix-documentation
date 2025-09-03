@@ -2,6 +2,7 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Assets
 
@@ -37,14 +38,5 @@ but not limited to:
 
 ## Available types
 
-- [Computers](./computers.md)
-- [Displays](./displays.md)
-- [Softwares](./softwares.md)
-- [Network Equipments](./network-equipments.md)
-- [Peripherals](./peripherals.md)
-- [Printers](./printers.md)
-- [Cartridges](./cartridges.md)
-- [Consumables](./consumables.md)
-- [Phones](./phones.md)
-- [Global](./global.md)
+<DocCardList />
 

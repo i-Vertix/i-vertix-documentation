@@ -2,9 +2,8 @@
 id: index
 title: Index
 ---
+import DocCardList from '@theme/DocCardList';
 
 # Advanced Configuration
 
-- [Cache](./cache.md)
-- [Status](./status.md)
-- [Override Locales](./override-locales.md)
+<DocCardList />

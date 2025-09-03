@@ -218,52 +218,68 @@ def write_index(fmap, index_file, titles):
     return
 
 
+#def replace_index(rel_dir, text, outdir):
+#    
+#    match = re.search(r"::: \{\.toctree .*\}\n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)
+#    if match is None:
+#        return text
+#
+#    def build_link(l, rel_dir):
+#
+#        url = ["."]
+#        
+#        text = l.split("/")
+#        if text[-1] == "index":
+#            text.pop(-1)
+#
+#        if len(text) > 1 and text[-1] == text[-2]:
+#            text = text[:-1]
+#
+#        url.extend(text)
+#        url = [x for x in url if x]
+#
+#        link_text = text[0].title()
+#        link_text= link_text.replace("_", " ")
+#        link_text= link_text.replace("-", " ")
+#        link_text = re.sub("GLPI", "i-Vertix ITAM", link_text, flags=re.IGNORECASE)
+#
+#        link_file_dest = "/".join(url) + ".md"
+#        if (outdir / rel_dir / link_file_dest).exists():
+#            #pointing to a file
+#            url = link_file_dest
+#        else:
+#            # pointing to a directory
+#            if url[-1] != "":
+#                # docusaurus needs a / at the end of the link...
+#                url.append("")
+#                url = "/".join(url)
+#
+#        #print(f"BL {rel_dir} {url} {test}")
+#
+#        return (link_text, url)
+#                                        
+#    links = match.group(1).split()
+#    links = [build_link(l, rel_dir) for l in links]
+#    links = [f"- [{text}]({url})" for text, url in links]
+#    links = "\n".join(links)
+#
+#    text = text[:match.start()] + links + "\n" + text[match.end():]
+#    
+#    return text
+
+
 def replace_index(rel_dir, text, outdir):
     
     match = re.search(r"::: \{\.toctree .*\}\n([\w/\-\n ]*)\n:::\n", text, flags=re.MULTILINE)
     if match is None:
         return text
-
-    def build_link(l, rel_dir):
-
-        url = ["."]
-        
-        text = l.split("/")
-        if text[-1] == "index":
-            text.pop(-1)
-
-        if len(text) > 1 and text[-1] == text[-2]:
-            text = text[:-1]
-
-        url.extend(text)
-        url = [x for x in url if x]
-
-        link_text = text[0].title()
-        link_text= link_text.replace("_", " ")
-        link_text= link_text.replace("-", " ")
-        link_text = re.sub("GLPI", "i-Vertix ITAM", link_text, flags=re.IGNORECASE)
-
-        link_file_dest = "/".join(url) + ".md"
-        if (outdir / rel_dir / link_file_dest).exists():
-            #pointing to a file
-            url = link_file_dest
-        else:
-            # pointing to a directory
-            if url[-1] != "":
-                # docusaurus needs a / at the end of the link...
-                url.append("")
-                url = "/".join(url)
-
-        #print(f"BL {rel_dir} {url} {test}")
-
-        return (link_text, url)
-                                        
-    links = match.group(1).split()
-    links = [build_link(l, rel_dir) for l in links]
-    links = [f"- [{text}]({url})" for text, url in links]
-    links = "\n".join(links)
-
+    
+    links = "<DocCardList />"
     text = text[:match.start()] + links + "\n" + text[match.end():]
+
+    text = text.split("\n")
+    text.insert(4, "import DocCardList from '@theme/DocCardList';")
+    text = "\n".join(text) 
     
     return text
 
