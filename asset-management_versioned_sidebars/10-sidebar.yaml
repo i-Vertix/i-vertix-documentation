@@ -1,6 +1,17 @@
 sidebar:
 - id: index
   label: i-Vertix ITAM User Documentation
+- id: install
+  label: Installation
+  items:
+  - id: index
+    label: Installation
+  - id: import-vm
+    label: Import Virtual Machine
+  - id: configure-vm
+    label: Initial Configuration
+  - id: license-vm
+    label: License activation
 - id: first-steps
   label: First Steps
   items:

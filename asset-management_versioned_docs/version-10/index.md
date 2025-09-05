@@ -3,6 +3,8 @@ id: index
 title: Index
 ---
 
+import DocCardList from '@theme/DocCardList';
+
 # i-Vertix ITAM User Documentation
 
 ## Preface
@@ -27,8 +29,4 @@ separately.
 
 ## Table of contents
 
-- [First Steps](./first-steps/)
-- [Modules](./modules/)
-- [Advanced](./advanced/)
-- [Cli](./cli/)
-- [Glossary](./glossary/)
+<DocCardList />

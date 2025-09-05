@@ -32,3 +32,8 @@ i-vertix-documentation.code-workspace
 *.pyc
 venv/*
 glpi_orig_agent/*
+images/*
+
+settings.json
+launch.json
+*.bak

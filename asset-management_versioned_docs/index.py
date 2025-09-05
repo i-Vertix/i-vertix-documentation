@@ -210,6 +210,32 @@ def write_index(fmap, index_file, titles):
     acc.extend(items)
     acc = sort_index_tree(acc, indexes)
     acc = {"sidebar" : acc}
+
+    acc["sidebar"].insert(
+        1,
+        {
+            "id": "install",
+            "label": "Installation",
+            "items": [
+                {
+                    "id": "index",
+                    "label": "Installation"
+                },
+                {
+                    "id": "import-vm",
+                    "label": "Import Virtual Machine"
+                },
+                {
+                    "id": "configure-vm",
+                    "label": "Initial Configuration",
+                },
+                {
+                    "id": "license-vm",
+                    "label": "License activation",
+                },
+            ]
+        }                
+    )
     
     #print(yaml.dump(acc, sort_keys=False))
     with open(index_file, "w") as fd:
