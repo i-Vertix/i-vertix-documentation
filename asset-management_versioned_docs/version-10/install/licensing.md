@@ -17,7 +17,7 @@ i-Vertix ITAM needs a working Internet access to activate the license.
 
    ![iVertix menu](../assets/install/itam_menu.png)
 
-3. Choose `9) i-Vertix license management`
+3. Choose `8) i-Vertix license management`
 
    ![License menu](../assets/install/itam_license.png)
 
@@ -39,18 +39,15 @@ i-Vertix ITAM needs a working Internet access to activate the license.
 
 You will receive an email from i-Vertix tech support that confirms the license activation.
 
-Follow the instructions in the email and download the license using the following steps:
+Follow the instructions in the email and download the license using the following steps (most of them are the same as above):
 
 1. Access *Central Manager CLI* and authenticate via SSH
 2. Launch the command **menu**
-
-   ![iVertix menu](../assets/install/itam_menu.png)
-
-3. Select `9) i-Vertix license management`
+3. Select `8) i-Vertix license management`
 
    ![License menu](../assets/install/itam_license.png)
 
-4. Type `3) Download license key informations`
+4. Type `3) Download license key information`
 
 5. If the vm can go on the internet (tcp 80, 443 enabled) it will download the license and install it. Command lines will appear and then press "Enter"
 
@@ -62,6 +59,6 @@ Follow the instructions in the email and download the license using the followin
         to
         `License       [ VALID ]`
 
-8. Type 2 to reboot the VM so that all the services will be started
+8. Type `2) Reboot i-Vertix` to reboot the VM so that all the services will be started
 
 The system is now ready. Proceed with the [first access to the web console](../first-steps/general.md).

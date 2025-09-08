@@ -5,7 +5,7 @@ title: Import Virtual Machine
 
 ## i-Vertix ITAM OVA
 
-**i-Vertix ITAM** support provides a ready-to-use virtual machine.
+**i-Vertix** support provides a ready-to-use virtual machine.
 This virtual machine is available in **OVA** format for VMware environments.
 
 It's based on the **Oracle Linux 8** (and all required packages) operating
@@ -19,12 +19,11 @@ start your asset tracking.
 The resources needed for optimal performance depend on the product configuration.
 
 Adding more assets or other configuration options may increase the server and database workload.
-Therefore, server configuration adjustments may be necessary to optimize performance for your specific environment.
+Therefore, some server configuration adjustments may be necessary to optimize performance for your specific environment.
 
 #### Database
 
-The database used is **MariaDB** (10.5.x) and is already included in the  Manager System Image.
-
+The database used is **MariaDB** (10.11.x) and is already included in the  Manager System Image.
 
 #### i-Vertix ITAM recommended specifications
 

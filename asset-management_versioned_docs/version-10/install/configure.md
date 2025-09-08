@@ -17,9 +17,7 @@ Once the VM is started, the following screen with a login prompt will be display
 
 ![Login](../assets/install/first-login.png)
 
-On an **i-Vertix ITAM** system you will need to log into the i-Vertix 
-Monitoring console to configure the network settings, using the following 
-credentials:
+On an **i-Vertix ITAM** system you will need to log into the i-Vertix console to configure the various settings, using the following credentials:
 
 - User: '**admin**'
 
@@ -33,22 +31,11 @@ If you fail the login process 3 times from ssh, the IP Address will be blocked f
 :::
 --->
 
-## Password change
-
-In order to **modify the password**:
-1. Select option `11) set i-Vertix system passwords`
-2. Type the new password **_(min. 6 characters)_** for **SSH user admin** and press Enter
-3. Confirm the password and press enter.
-
-![ivertix menu](../assets/install/change-pwd-2.png)
-
-## Network setup
-
 After the authentication, a menu that allows you to configure the vm is displayed.
 
 ![iVertix menu](../assets/install/itam_menu.png)
 
-:::info
+:::tip
 
 If the menu doesn’t appear automatically at startup, simply type on the console the command
 
@@ -58,6 +45,17 @@ menu
 
 :::
 
+## Password change
+
+In order to **modify the password**:
+
+1. Select option `9) set i-Vertix system passwords`
+2. Type the new password **_(min. 6 characters)_** for **SSH user admin** and press Enter
+3. Confirm the password and press enter.
+
+![ivertix menu](../assets/install/change-pwd-2.png)
+
+## Network setup
 
 :::warning
 
@@ -65,7 +63,7 @@ Before proceeding to modify the network, be sure to operate from the hypervisor 
 
 :::
 
-1. Select option `6) Network settings` from the menu
+1. Select option `5) Network settings` from the menu
 2. Select Edit Connection
 3. Select the proper NIC (for example **ens192**) and then **Modify** followed by your network settings:
 4. IPv4 Configuration: **Manual**
@@ -84,7 +82,7 @@ Confirm the settings with **OK**
 Get back to main menu NMTUI (on the left-hand side)
 
 1. To activate the new settings, select **Activate a connection** from the NMTUI menu
-2. Select the **NIC** (ens192 by default ), then
+2. Select the **NIC** (ens192 by default), then
 3. **Deactivate**
 4. **Activate**
 5. Finally select **Back**
@@ -101,7 +99,7 @@ Get back to the main NMTUI menu
 ---
 
 Now the network configuration is complete.
-Restart the system if necessary selecting 2 in the menu.
+Restart the system if necessary selecting `2) Reboot i-Vertix` in the menu.
 Afterwards the system should be accessible via a network connection (for example using **Putty**).
 
 Before moving on, please ensure that the **DNS** is working
@@ -126,31 +124,27 @@ Address: 2a00:1450:4002:402::2004
 
 ## NTP settings (optional)
 
-Choose option **5** (i-Vertix Settings) in the menu.
+Choose option `4) i-Vertix Settings` in the menu.
 
-![ivertix-menu-opt5](../assets/install/ivertix-menu-opt5.png)
+![ivertix-menu-ntp](../assets/install/ivertix-menu-ntp.png)
 
 The options will be displayed:
 
-1. NTP time settigs
+- `1) NTP time settings`, to configure the NTP servers
 
-2. change timezone
-
-By choosing option **1**, you will be able to configure the NTP servers.
-
-By choosing option **2**, you will be able to change the default timezone (Europe/Rome)
+- `2) change timezone`, to change the default timezone (Europe/Rome)
 
 ## SMTP Configuration (optional)
 
-* Select option **`7`** - SMTP settings (e-mail)
+Select option `6) SMTP settings (e-mail)`
 
 ![i-Vertix menu](../assets/install/itam_menu.png)
 
-* a new menu shows up which displays what the current relayhost configurations are
+A new menu shows up which displays what the current relay host configurations are:
 
 ![Relay host](../assets/install/relay-host.png)
 
-* Select the proper SMTP option among the proposed ones
+Select the proper SMTP option among the proposed ones
 
 ![SMTP options](../assets/install/relay-options.png)
 
