@@ -68,6 +68,6 @@ i-Vertix ITAM allows to generate reports based on managed items:
 :::info
 
 The range of possible reports can be increased by adding to i-Vertix ITAM the
-following plugin: \[https://plugins.glpi-project.org/#/plugin/reports](https://plugins.glpi-project.org/#/plugin/reports)
+following plugin: \[https://plugins.itam-project.org/#/plugin/reports](https://plugins.itam-project.org/#/plugin/reports)
 
 :::

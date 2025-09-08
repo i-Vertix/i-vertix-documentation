@@ -459,7 +459,8 @@ if __name__ == "__main__":
         # replace glpi_address
         lambda x, _, f: x.replace("{glpi_address}", "itam_address"),
         lambda x, _, f: x.replace("glpi://", "itam://"),
-
+        lambda x, _, f: x.replace("glpi-project", "itam-project"),
+        
         # Removing all { .attrib=value }
         lambda x, _, f: re.sub(r"\{.*?\}", "", x, flags=re.DOTALL),
 
@@ -509,7 +510,7 @@ if __name__ == "__main__":
         lambda x, _, f: x.replace("\\\'", "'"),
         lambda x, _, f: x.replace("\\\"", "\""),
         lambda x, _, f: x.replace("\\.", "."),
-
+        
         # removes style= tags
         lambda x, _, f: re.sub(r"style=\".*\"", "", x),
 

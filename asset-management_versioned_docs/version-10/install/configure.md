@@ -128,7 +128,7 @@ Choose option `4) i-Vertix Settings` in the menu.
 
 ![ivertix-menu-ntp](../assets/install/ivertix-menu-ntp.png)
 
-The options will be displayed:
+The displayed options will be:
 
 - `1) NTP time settings`, to configure the NTP servers
 
