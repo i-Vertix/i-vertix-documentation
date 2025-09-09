@@ -326,7 +326,7 @@ def parse_titles(fmap):
                 res[rel_file] = c.inf.with_suffix("").name
 
 
-    for r in res:
-        print(f"{r} -> {res[r]}")
+    #for r in res:
+    #    print(f"{r} -> {res[r]}")
 
     return res

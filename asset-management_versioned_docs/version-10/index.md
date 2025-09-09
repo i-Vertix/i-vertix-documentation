@@ -22,11 +22,6 @@ administrators and users.
 Each part can be consulted independently even if for reasons of logic we
 recommend that you read this documentation entirely.
 
-## Installation
-
-The [i-Vertix ITAM installation documentation](../install) is available
-separately.
-
 ## Table of contents
 
 <DocCardList />

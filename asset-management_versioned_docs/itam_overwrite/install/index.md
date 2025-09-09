@@ -1,6 +1,6 @@
 ---
 id: index
-title: Install
+title: Installation
 ---
 import DocCardList from '@theme/DocCardList';
 
