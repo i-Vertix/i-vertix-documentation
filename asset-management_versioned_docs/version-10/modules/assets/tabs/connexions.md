@@ -47,6 +47,6 @@ of the computer.
 :::info
 
 If using native inventory or third-party inventory tool, the
-connections informations can be automatically imported and updated.
+connections information can be automatically imported and updated.
 
 :::

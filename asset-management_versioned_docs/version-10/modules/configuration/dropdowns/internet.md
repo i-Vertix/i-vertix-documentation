@@ -96,7 +96,7 @@ You can sort this list by IP number by clicking on the IP Addresses link
 or by type of equipment by clicking on the Sort by Item Type link. In
 this case, you will have a table by type of element.
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -122,7 +122,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one
@@ -180,7 +180,7 @@ resolution of an IP address, while the aliases correspond to the
 
 Similarly, the alias name must have a valid `FQDN` label
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -206,7 +206,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

@@ -71,7 +71,7 @@ modify an object, read permission must also be granted.
 
 Permissions after migration: migration takes over old permissions in
 full, regardless of the purpose, and activates the corresponding values
-​​in the new system. Previous *Write* permission is transformed into
+in the new system. Previous *Write* permission is transformed into
 *Read*, *Update*, *Create*, *Delete* and *Purge* for most objects and
 must then be refined if needed. For others, the permissions are grouped
 by object, for example, FAQ permission are permissions of the Knowledge

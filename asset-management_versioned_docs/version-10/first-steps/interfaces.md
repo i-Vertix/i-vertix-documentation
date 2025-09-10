@@ -7,7 +7,7 @@ title: Interfaces
 
 :::info
 
-The choice of the default interface as well as the visiblity of
+The choice of the default interface as well as the visibility of
 different modules can be configured in the profiles or from
 [the user's preferences](../first-steps/preferences.md).
 
@@ -33,7 +33,7 @@ It is divided into 5 views:
 - *Personal view*
 
   > Shows the tickets opened, rejected, to be processed, to be approved
-  > (for which the logged-in user is the requestor) or those on which
+  > (for which the logged-in user is the requester) or those on which
   > this user has an interaction as a validator or technician (awaiting
   > validation, in progress, to be closed, in waiting). This view also
   > offers him current issues, his schedule and available notes.

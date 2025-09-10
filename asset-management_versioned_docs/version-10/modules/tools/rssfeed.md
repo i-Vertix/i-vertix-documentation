@@ -35,7 +35,7 @@ is the one displayed on home page.
 This tab allows to display and modify the list of targets of the RSS
 feed.
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -61,7 +61,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

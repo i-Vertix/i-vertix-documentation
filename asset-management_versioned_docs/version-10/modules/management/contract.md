@@ -14,12 +14,14 @@ Contracts management allows to:
 - integrate contracts in i-Vertix ITAM financial management
 - anticipate and follow contract renewal.
 
-![Main fields of a contract](../../assets/modules/management/images/contract.png)
+![Main fields of a contract](../../assets/modules/tabs/images/contract-view.png)
 
-:::info
+- To add a new contract, click on **+ Add** at the top of the screen
 
-It is possible to use
-[templates to generate this object](../../modules/overview/templates).
+:::tip
+
+You can use
+[template](../../modules/overview/templates.md) to add a new contract
 
 :::
 
@@ -66,19 +68,41 @@ i-Vertix ITAM budget: the cost of the contract will be imputed to this budget.
 
 ![A cost associated to a contract](../../assets/modules/management/images/cost.png)
 
+- To add cost, click on **Add a new cost**
+- Enter a **name**
+- The **start** and **end dates** of the costs covered by the contract
+- If a **budget** has already been created, select it from the list,
+  otherwise go to
+  [budget](../../modules/management/budgets.md)
+- Enter the real cost
+
+All the costs you add will be visible and added together in this same
+tab.
+
+![total cost of expenses](../../assets/modules/management/images/cost-total.png)
+
 ### Suppliers
 
 This tab allows to associate one or several suppliers to the contract.
 
 ![Suppliers associated to a contract](../../assets/modules/management/images/suppliers-contract.png)
 
-### Associated elements
+- To add a supplier, select it from the drop-down list
+- If there are none, go to
+  [supplier](../../modules/management/suppliers.md)
 
-The *Items* tab is used to show or add linked assets.
+### Items
 
-![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
+The [Items](../../tabs/item) tab is used
+to show or add linked assets.
 
-### Documents
+![Adding and viewing an element](../../assets/modules/tabs/images/items.png)
+
+- To link an item to a i-Vertix ITAM object, you need to go to the item in
+  question (e.g. a computer).
+- In the item tab of this object, select the appropriate item
+
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -100,14 +124,16 @@ itself is still present.
 
 :::
 
-### Associated External Links
+### External Links
 
 The *External links* tab is used to show associated external links.
 
 For some items, external links are managed from the menu **Setup \>
 External links**.
 
-These links can use object fields such as IP, name, etc. See
+These links can use object fields such as IP, name, etc.
+
+See
 [Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
@@ -120,11 +146,35 @@ Examples:
 ### Notes
 
 The *Notes* tab provides a free text field for storing additional
-information. Notes are displayed in the order of their creation.
+information. Notes are displayed in the order of their creation. You can
+also add a document
 
 ![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
-### History
+#### Add a note
+
+- To add a note, click on **+Add**
+- You can add text and format it to suit your needs
+- You can add a document to this note
+
+![Edit a note](../../assets/modules/tabs/images/notes-add.png)
+
+#### Delete a note
+
+- To delete a note, you need to click on **delete**
+- You can delete only the attachment by clicking on delete (the option
+  appears when you move your mouse over the attachment)
+
+![delete a note](../../assets/modules/tabs/images/notes-delete.png)
+
+:::tip
+
+When you delete an attachment, it is not completely deleted, you can
+find it in **Management** \> **Documents**
+
+:::
+
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -167,7 +217,7 @@ the notifications that will be triggered on this computer with:
 
 ![Debugging page](../../assets/modules/tabs/images/debug.png)
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

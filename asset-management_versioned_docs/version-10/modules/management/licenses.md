@@ -45,9 +45,7 @@ It is possible to use
 - **Expiration date**: expiration date of the license, useful to
   configure alerts and anticipate renewal.
 
-## The different tabs
-
-### Licenses
+## Licenses
 
 This tab lists all licenses declared as child of this license.
 
@@ -58,9 +56,17 @@ child/parent relationship allows to declare it.
 
 :::
 
-![List of child licenses](../../assets/modules/management/images/child-licenses.png)
+![List of child licenses](../../assets/modules/management/images/licenses-child.png)
 
-### Summary
+To add a child license, you need to create a license from software and
+enter the parent license in the **as child of** field.
+
+![Add license child](../../assets/modules/management/images/licenses-child-add.png)
+
+To unlink/modify/delete a child/parent, you can modify the entry in this
+same field
+
+## Summary
 
 This tab lists all types and entities of items linked to this license.
 
@@ -74,13 +80,13 @@ Creating a link between an asset and the license id done in tab
 
 :::
 
-![Summary of item types linked to the license](../../assets/modules/management/images/summary-licenses.png)
+![Summary of item types linked to the license](../../assets/modules/management/images/licenses-summary.png)
 
-### Items
+## Items
 
 This tab details each item linked to the license.
 
-![List of items linked to the license](../../assets/modules/management/images/elements-licenses.png)
+![List of items linked to the license](../../assets/modules/management/images/licenses-elements.png)
 
 ### Management
 
@@ -205,7 +211,7 @@ the date is earlier than the current date.
 Refer to
 [contract management](../../modules/management/contract) for more information.
 
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -227,19 +233,20 @@ itself is still present.
 
 :::
 
-### Knowledge base
-
-The *Knowledge base* tab is used to show or add linked knowledge base
-articles.
-
-![Viewing or adding a knowledge base entry](../../assets/modules/tabs/images/knowledgebase.png)
-
 ### Tickets
 
 The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
 ![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
+
+You can create a new one and then link it by clicking on **New tickets
+for this item**.
+
+You cannot link an existing ticket here. If you want to link an existing
+ticket, go to **assistance** \>
+[tickets](../../modules/assistance/tickets). Select
+the relevant ticket and go to the item tab
 
 :::info
 
@@ -264,7 +271,7 @@ This summary table includes for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the problem)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -295,7 +302,7 @@ This summary table includes the following fields for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the change)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -318,17 +325,41 @@ Any deletion or addition of a change is recorded in the history.
 ### Notes
 
 The *Notes* tab provides a free text field for storing additional
-information. Notes are displayed in the order of their creation.
+information. Notes are displayed in the order of their creation. You can
+also add a document
 
 ![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
-### Certificates
+#### Add a note
+
+- To add a note, click on **+Add**
+- You can add text and format it to suit your needs
+- You can add a document to this note
+
+![Edit a note](../../assets/modules/tabs/images/notes-add.png)
+
+#### Delete a note
+
+- To delete a note, you need to click on **delete**
+- You can delete only the attachment by clicking on delete (the option
+  appears when you move your mouse over the attachment)
+
+![delete a note](../../assets/modules/tabs/images/notes-delete.png)
+
+:::tip
+
+When you delete an attachment, it is not completely deleted, you can
+find it in **Management** \> **Documents**
+
+:::
+
+## Certificates
 
 This tab allows to attach a certificate present in i-Vertix ITAM to the license.
 
 ![image](../../assets/modules/management/images/certificates-licenses.png)
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -354,8 +385,16 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one
 below the other.
+
+:::info
+
+You can prevent certain software, such as Microsoft KBs, from being
+brought up. To do this, you need to set their parameters in
+[Management > Dictionaries](../../modules/administration/dictionnaries.md)
+
+:::

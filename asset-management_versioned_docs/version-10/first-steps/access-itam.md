@@ -21,7 +21,7 @@ authentication to an external service like LDAP. See
 [Configuring authentication methods](../modules/configuration/authentication/index.md) for more information.
 
 The import or creation of new users and management of users known to
-i-Vertix ITAM including deletion, syncronization, activation/deactivation and
+i-Vertix ITAM including deletion, synchronization, activation/deactivation and
 management of information such as email, phone, etc is covered in
 [the user administration documentation](../modules/administration/users).
 

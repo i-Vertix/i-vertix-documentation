@@ -27,9 +27,7 @@ created.
 
 ![List of components](../../assets/modules/configuration/images/component_list.png)
 
-## The different tabs
-
-### Main
+## Main
 
 Information that defines a hardware component (different information
 depending on the type of component).
@@ -38,7 +36,7 @@ Example for a Processor:
 
 ![Processor component details](../../assets/modules/configuration/images/component_details.png)
 
-### Items
+## Items
 
 The elements tab allows to visualize the computers linked to the
 component.
@@ -59,14 +57,29 @@ component.
   - [Management tab](../../modules/tabs/management.md):
     manage financial and administrative information
   - [Documents tab](../../modules/tabs/documents.md)
+  - [Locks tab](../../modules/assets/tabs/locks.md)
   - [Historical tab](../../modules/tabs/historical.md)
-  - [Debug tab](../../modules/tabs/debug.md): only
-    shown if you have debug mode enabled
+  - [Contracts tab](../../modules/tabs/contacts.md)
   - [All tab](../../modules/tabs/all.md): for an item,
     all information is displayed on a page
+
+![Processor component updating](../../assets/modules/configuration/images/component_update.png)
 :::
 
-### Documents
+## Projects
+
+This tab allows you to view the projects associated with the component.
+From this tab, you can add existing projects, but you cannot create new
+ones.
+
+![Component associated projects](../../assets/modules/configuration/images/component_projects.png)
+
+- To link or unlink a project, go to
+  [link or unlink a project](../../tabs/projects.md)
+- To create a new project, go to
+  [manage projects](../../modules/tools/projects.md)
+
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -88,7 +101,7 @@ itself is still present.
 
 :::
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -114,7 +127,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

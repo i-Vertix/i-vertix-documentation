@@ -56,8 +56,8 @@ heavy.
 backup database before production launch of the dictionary or before
 inserting new rules \* a script is available in directory *scripts* of
 i-Vertix ITAM installation, named *compute_dictionnary.php*, that allows to
-launch dictionnary processing in command line mode; this allows to
-bypass problems of execution limit and provides a significant speedup
+launch dictionary processing in command line mode; this allows to bypass
+problems of execution limit and provides a significant speedup
 :::
 
 ### Global dictionaries
@@ -79,7 +79,7 @@ entity configuration.
 :::info
 
 for an optimal management of software and licenses in a multi-entity
-environment, it is possible to use the software dictionnary
+environment, it is possible to use the software dictionary
 simultaneously with software visible in sub-entities and thus to use
 grouping functionality.
 

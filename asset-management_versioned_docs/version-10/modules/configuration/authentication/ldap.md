@@ -180,7 +180,7 @@ mapped for you but can still be changed.
 
 ### Groups
 
-Allows you to configure the method for retreiving groups from the LDAP
+Allows you to configure the method for retrieving groups from the LDAP
 directory.
 
 ![Confiuguration of LDAP groups](../../../assets/modules/configuration/authentication/images/ldap-groups.png)
@@ -195,7 +195,8 @@ for the difference.
 
 **Limit of the number of records returned**
 
-There are often two limits on the number of records retured per request.
+There are often two limits on the number of records returned per
+request.
 
 - The client limit (defined for example on Debian/Ubuntu in
   `/etc/ldap/ldap.conf`)
@@ -215,7 +216,7 @@ results** in the **Advanced Information** tab of the LDAP directory in
 i-Vertix ITAM. This will split requests into smaller requests that are under the
 configured limit.
 
-The **Page size** option adjusts the number of results retreived per
+The **Page size** option adjusts the number of results retrieved per
 "page" with pagination enabled. The **Maximum number of results**
 option is the limit for the total number of records. This option may be
 useful to avoid high memory usage.
@@ -261,7 +262,7 @@ your server entry with *ldaps://* and change the port to the LDAPS one
 of your LDAP directory (default 636). There is no limit to the number of
 replicates per LDAP directory.
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -287,7 +288,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

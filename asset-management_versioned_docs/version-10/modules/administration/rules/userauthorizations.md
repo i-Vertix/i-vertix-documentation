@@ -159,7 +159,7 @@ The user has two options: a static rule set or an adaptive rule.
     entity \> `#0`
 
 Running the rule retrieves its organizational unit (`ou`) from the
-user's *distinguished name*. It will then compare it to the values ​​of
+user's *distinguished name*. It will then compare it to the values of
 the LDAP Information attribute representing the entity in the database.
 If an entity has the attribute whose value matches, then that attribute
 is used as the result of the rule.

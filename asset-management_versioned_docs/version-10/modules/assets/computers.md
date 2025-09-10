@@ -5,53 +5,67 @@ title: Computers
 
 # Computers
 
-In a computer form, the following information is available:
+Each computer has its own information and related hardware (monitor,
+components, etc.). All this information is divided into tabs. You can
+find your computers in **Assets \> Computers**:
 
-- Operating system:
-  - Name
-  - Version
-  - Service pack
-  - Serial number
-  - Product ID
-  - ...
-- General characteristics:
-  - Manufacturer
-  - Model
-  - Type
-  - Serial number
-  - ...
-- Management information:
-  - Technical manager
-  - Status
-  - Location
-  - ...
-- Users:
-  - Computer users, either known by i-Vertix ITAM or not
+:::tip
 
-Other fields are informative, such as *Network* (connexion
-type) and *Update source* (where are computer updates coming
-from (Windows update, yum, apt...).
+Note that if you modify a field manually, it will be considered
+locked. This will prevent it from being modified the next time the
+automatic inventory is uploaded.
 
-It is possible to use
-[templates with computers](../../modules/overview/templates.md).
-:::note
+For more information, see
+[lock](../../modules/assets/tabs/locks)
 
-- when i-Vertix ITAM is used with an inventory tool, various information provided
-  by the tool itself are also available
-- a computer can be a server, a desktop computer or a laptop; to
-  differentiate them, it is possible to use the *type* field
 :::
 
-## The different tabs
+## Computer
 
-### Operating systems
+Computer tab, includes basic information about the machine :
 
-The information on operating systems for a computer are visible in tabs
-*Operating system* for a Computer entry.
+![module assets - computer](../../assets/modules/assets/images/computer-view.png)
 
-![Screen presenting an operating system](../../assets/modules/assets/images/os.png)
+- Name
+- [Location](../../tabs/common_fields/location.md)
+- [Technician in charge](../../tabs/common_fields/technician_in_charge.md)
+- [Group in charge](../../tabs/common_fields/group_in_charge.md)
+- [Alternate usernmame number](../../tabs/common_fields/alternate_username.md)
+- [Alternate usernmame](../../tabs/common_fields/alternate_user.md)
+- [User](../../tabs/common_fields/user.md)
+- [Group](../../tabs/common_fields/group.md)
+- [Comments](../../tabs/common_fields/comments.md)
+- [Status](../../tabs/common_fields/status.md)
+- [Computer type](../../tabs/common_fields/asset_type.md)
+- [Manufacturer](../../tabs/common_fields/manufacturer.md)
+- [Model](../../tabs/common_fields/model.md)
+- [Serial number](../../tabs/common_fields/serial_number.md)
+- [Inventory number](../../tabs/common_fields/inventory_number.md)
+- [Network](../../tabs/common_fields/network.md)
+- [UUID](../../tabs/common_fields/uuid.md)
+- [Update source](../../tabs/common_fields/update_source.md)
 
-An operating system is associated with the following elements:
+If your computer has been inventoried by the automatic inventory, you
+can find information about the [i-Vertix ITAM Agent](https://glpi-agent.readthedocs.io/en/latest/)
+
+- Agents
+- Public contact address
+- Agents Status
+- Useragent
+- Last contact
+- Request inventory
+- Inventory tag
+- Last inventory update
+
+## Impact Analysis
+
+[Impact analysis](../../tabs/impact_analysis.md) enables an infrastructure diagram to be drawn up, showing
+the dependencies and impacts in the event of equipment loss. This can be
+saved and exported
+
+## Operating systems
+
+[Operating systems](../../tabs/operating_systems.md) includes information about your machine's OS :
 
 - Name
 - Version
@@ -61,719 +75,229 @@ An operating system is associated with the following elements:
 - Edition
 - Product ID
 - Serial number
+- Company
+- Owner
+- Host ID
+- Installation date
 
-:::info
+## Components
 
-The creation and management of the titles for operating systems is
-located in the menu [Setup \> Drop-downs \> Operating
-systems].
+This tab lists the PC's
+[components](../../tabs/components.md) :
 
-![Screen of titles definition for operating systems](../../assets/modules/assets/images/os_dropdown.png)
+- BIOS
+- Processor
+- Memory
+- Hard Drive
+- Network card
+- Drive
+- Battery
+- Graphics card
+- Sound card
+- Controller
 
-:::
+Each item has its
+[own information](../../tabs/components.md)
+(name, model, brand, memory capacity, number of cores/threads, etc.).
 
-:::info
+## Lines
 
-A deletion or addition of an operating system is recorded in the
-history of the computer.
+You can add telephone lines created in [Lines](../management/lines.html)
 
-:::
+## Volumes
 
-:::info
+Summarises all the [volumes](../../tabs/volume.md) present (hard disk, DVD) as well as the partitions present
+on the workstation (virtual disks such as Google Cloud may appear if
+they are installed as a network drive).
 
-If using native inventory or third-party inventory tool, the operation
-system information can be automatically imported and updated.
-
-:::
-
-### Components
-
-This tab, named *Components* and visible in a
-*Computer* entry, allows to manage the hardware components
-of a computer.
-
-![Components screen](../../assets/modules/assets/images/component.png)
-
-:::info
-
-Adding or managing components is located in menu
-[Setup > Components](../../modules/configuration/components).
-
-:::
-
-:::info
-
-If several components of the same type are used, they will be grouped
-in the view.
-
-![Grouped components](../../assets/modules/assets/images/component_group.png)
-
-:::
-
-It is possible to add a component by first selecting its family in the
-drop-down list at the top of the table and then its name and the number
-of components to add.
-
-![Adding a component](../../assets/modules/assets/images/component_add.png)
-
-Starting from a computer view, it is possible to modify a component by
-clicking on the link under its name.
-
-![Modify a component](../../assets/modules/assets/images/component_update.png)
-
-To act on several components (for example modify an element of the
-component, activate accounting information or modify them, delete a
-component...), first select the components and then use the
-*Actions* button present at the top or the bottom of the
-list.
-
-If several types of different components, not having the same
-characteristics, are selected for modification, in the actions it will
-be asked on which component modification must be applied.
-
-![Mass actions on a component](../../assets/modules/assets/images/component_computer_massives_actions.png)
-
-Selection button in left column allows to select all the components at
-once.
-
-![Component selection (left)](../../assets/modules/assets/images/component_select_group_left.png)
-
-Selection at right of type column (grayed line) allows to select all
-components of the same type (processor, memory, network interface...).
-
-![Component selection (right)](../../assets/modules/assets/images/component_select_group_right.png)
-
-:::info
-
-It is possible to modify the characteristics of a component only for
-one computer
-
-From tab *Elements* of the component, click on the link **Update**.
-
-![Modify a component](../../assets/modules/assets/images/component_update_link.png)
-
-Several tabs are then displayed:
-
-- Tab "Element - Link name of component" : list the
-characteristics of this component
-- [Tab "Management"](../../modules/tabs/management) : manage administrative and accounting information
-- [Tab "Documents"](../../modules/tabs/documents) : attached documents
-- [Tab "History"](../../modules/tabs/historical) : history of modifications
-- [Tab "Contract"](../../modules/tabs/contracts) : contracts management
-- [Tab "Debug"](../../modules/tabs/debug)
-: only if you are connected in Debug mode
-- [Tab "All"](../../modules/tabs/all) :
-all the information are displayed on a single page
-
-:::
-
-:::info
-
-Every deletion or addition of a component is recorded in the history
-of the computer.
-
-:::
-
-:::info
-
-If using native inventory or third-party inventory tool, the
-components information can be automatically imported and updated.
-
-:::
-
-### Volumes
-
-This tab, named *Volumes* and visible in a
-*Computer* entry, allows to manage the volumes attached to a
-computer.
-
-![Volumes screen](../../assets/modules/assets/images/volumes_list.png)
-
-A volume attached to a computer is characterized by:
-
-- name
-- physical partition
-- mount point
-- file system
-- total size
-- available size
-- ciphering algorithm and type
-
-It is possible from a *Computer* entry to add a volume by
-clicking on button `Add a volume`.
-
-![Adding volumes](../../assets/modules/assets/images/volumes_add.png)
-
-It is possible from a *Computer* entry to modify an existing
-volume by clicking on the link under its name.
-
-![Modify a volume](../../assets/modules/assets/images/volumes_update.png)
-
-:::info
-
-Every deletion or addition of a volume is recorded in the history of
-the computer.
-
-:::
-
-:::info
-
-If using native inventory or third-party inventory tool, the volumes
-information can be automatically imported and updated.
-
-:::
-
-### Software
-
-This tab, named *Softwares* and visible in a
-*Computer* entry, allows to manage the software installed on
-a computer. Those software are sorted by their category and are
-characterized by name, version and version status.
-
-![Software list](../../assets/modules/assets/images/softwares_list.png)
-
-To install a software, first select its name in the drop-down list, then
-its version.
-
-![Adding a software](../../assets/modules/assets/images/softwares_add.png)
-
-It is possible to associate a license to a software on a computer.
-
-To associate a license, first select the software in the drop-down list,
-then the wanted license.
-
-![Adding a license](../../assets/modules/assets/images/softwares_licence_add.png)
-
-If the license is associated with a software that is already installed
-on the computer, it will be presented in the list of software.
-
-![License from a software](../../assets/modules/assets/images/softwares_licence.png)
-
-Otherwise it will be displayed in a separate table.
-
-![List of licenses](../../assets/modules/assets/images/softwares_licence_list.png)
-:::note
-
-- the drop-down list enumerates the software that are available in the
-  entity
-- licenses management can be found in *Assets \Softwares*.
-  See [Manage software](../../modules/assets/softwares)
-:::
-
-:::info
-
-It is possible via mass actions to install on a computer a software
-selected from its license.
-
-:::
-
-:::info
-
-Every deletion or addition of a software or a license is recorded in
-the history of the computer.
-
-:::
-
-:::info
-
-If using native inventory or third-party inventory tool, the software
-information can be automatically imported and updated.
-
-:::
-
-### Connections
-
-This tab allows to manage the direct connections between a computer and
-its connected elements.
-
-Direct connections represent the relation between different hardwares
-linked either physically or virtually.
-
-#### From a computer
-
-The connection can be made toward one or several elements of type
-display, printer, peripheral or phone. For each type of connected
-object, its name, serial number and inventory number are displayed.
-
-![List of connections](../../assets/modules/assets/images/connections_computer_list.png)
-
-#### From an element other than a computer
-
-To add a connection, select the computer in the drop-down list presented
-at top of the table.
-
-![List of connections](../../assets/modules/assets/images/connections_monitor_list.png)
-
-If this case, the connection can only be made to a single computer. The
-table will list the name of this computer as well as its serial and
-inventory numbers.
-
-:::info
-
-The deletion of a connection can be made from the entry of each
-connected hardware (tab *Connections*) via mass actions.
-
-:::
-
-:::info
-
-Every deletion or addition of a connection is recorded in the history
-of the computer.
-
-:::
-
-:::info
-
-If using native inventory or third-party inventory tool, the
-connections informations can be automatically imported and updated.
-
-:::
-
-### Network ports
-
-This tab, named *Network ports* and visible in a
-*Computer* entry, allows to manage the network ports
-attached to a computer.
-
-![List of network ports](../../assets/modules/assets/images/ports.png)
-
-A network port represents the output of a network interface on a given
-hardware. A port is characterized by a number and a name.
-
-It is possible on a network port to add one or more VLAN, these VLANs
-being defined by a name, an optional comment and a VLAN number.
-
-![VLAN](../../assets/modules/assets/images/ports_vlan.png)
-
-One or more
-[network name](../../modules/configuration/dropdowns/internet) can be associated to each network port. This can be done in
-tab *Network name*.
-
-![Network name](../../assets/modules/assets/images/ports_network_name.png)
-
-:::info
-
-When a network port has only one network name, this name is displayed
-in the network port form itself and it is possible to modify the name
-directly. It is also possible to modify the network name via its own
-form, accessible by clicking on the link under the name.
-
-When a network port has several network names, the only way to modify
-the network names is via the network name form.
-
-:::
-
-Network ports can be of different types:
-
-- physical port: ethernet, WiFi...
-- `Virtual network port`: local
-  loop-back, alias, aggregates...
-- point to point: switched network...
-
-The *Network port* tab groups in a table the ports that are
-available on the equipment. The table header contains the total number
-of ports and a link that allows to choose display options. This allows
-to selectively display or mask information such as network data
-(IP...), port characteristics depending on its type, MAC address,
-VLANs...
-
-:::info
-
-i-Vertix ITAM allows to present complex network connection with for example
-WiFi or Ethernet port aliases associated to VLANs grouped in
-aggregates...
-
-:::
-
-#### Management of Ethernet network ports
-
-The Ethernet protocol is classically used on internal networks.
-
-An Ethernet port is characterized by its type (twisted pair,
-mono-mode/multi-mode optical fiber...), a transfer rate ((10Mb, 100Mb,
-1Gb, 10Gb...) and a MAC address. It is possible to associate to the
-port a network card and a network plug.
-
-Ethernet connections are realized by linking two Ethernet ports, which
-requires that there is a free port on each equipment to be connected. In
-general, a connection links a port attached to a computer, a peripheral
-or a printer and a port attached to a network equipment (hub, switch).
-
-#### Management of WiFi network ports
-
-The WiFi protocol is widely used on wireless networks.
-
-A WiFi port is characterized by the mode of the network card (ad-hoc,
-access point, repeater...), the WiFi protocol version (ab, g...) and
-its MAX address.
-
-It is possible to associate a network card to the port, similarly to
-Ethernet ports.
-
-A WiFi network can be associated to a given port. Apart from its name, a
-WiFi network has an ESSID and is characterized by its type:
-
-*Infrastructure:* WiFi network with on or several access points and
-connected clients *Ad-hoc:* WiFi network between similar systems without
-access points
-
-#### Management of local loop-back ports
-
-The local loop-back is a virtual port used by most equipments for
-internal communication. It is this port that is used when connecting to
-`localhost` or `127.0.0.1`.
-
-Local loop-back has no specific attribute.
-
-#### Management of network port aliases
-
-A network port alias is a virtual port that can refine a physical port.
-
-On Linux, to each VLAN, when transmitted
-["tagged"](glossary/tagged_vlan.html), is associated a port alias, for
-example *eth2.50* to represent VLAN 50 on port
-*eth2*.
-
-A port alias contains its base port and a MAC address.
-
-Note that when the origin port is changed, the MAC address of the new
-port is affected to the port alias.
-
-#### Management of network port aggregates
-
-A network port aggregate is a virtual port that allows to group several
-physical ports.
-
-On Linux, aggregates are represented by bridges linking together
-different ports. In the same way, an Ethernet firewall uses a bridge
-that links interfaces to be filtered.
-
-A port aggregate contains the origin ports and a MAC address.
-
-:::info
-
-Every deletion or addition of a network port is recorded in the
-history of the computer.
-
-:::
-
-:::info
-
-If using native inventory or third-party inventory tool, the network
-ports information can be automatically imported and updated.
-
-:::
-
-### Management
-
-Management of financial and administrative information, this information
-is visible in the 'Management' tab on the computer's form.
-
-![Management screen](../../assets/modules/tabs/images/management.png)
-
-By default this management is disabled. It is possible to activate the
-financial information on any type of object in the inventory by using
-the link in the *Management* tab of the material detail.
-
-![Enable management](../../assets/modules/tabs/images/management_enable.png)
-
-:::info
-
-It is possible to activate the administrative and financial
-information from the massive actions on a set of elements (computer,
-monitor, ...)
-
-:::
-
-:::info
-
-It is possible to activate the administrative and financial
-information as soon as an element is created. See "Enable default
-administrative and financial information" option in Setup \> General
-\> Asset tab.
-
-:::
-
-Financial information consists of the following items:
-
-#### Lifecycle
-
-- Order date
-- Date of purchase
-- Delivery date
-- Date of implementation
-- Date of last physical inventory
-- Date of reform
-
-#### Financial and administrative information
-
-- Supplier: Third party who sold the equipment. See
-  [Managing suppliers](../../modules/management/suppliers). Suppliers are managed from the menu **Management \>
-  Suppliers**.
-- Order number : number of the order of the equipment.
-- Asset number.
-- Invoice number: equipment invoice number.
-- Delivery note: delivery note for the equipment.
-- Value: cost of the equipment.
-- Warranty extension value: cost of the warranty extension, but
-  preferably use contracts.
-- Account net value: this is the automatic calculation of the gross
-  value of a piece of equipment minus the amount of depreciation.
-- Type of depreciation: choice of the type of depreciation between
-  linear and declining balance.
-- Depreciation period: depreciation period expressed in years.
-- Depreciation coefficient: coefficient applied to a straight-line
-  depreciation type in order to obtain the values of the declining
-  balance type. It is therefore only used if the type of depreciation is
-  declining balance.
-- TCO (value+amount of interventions): the total cost of ownership which
-  includes all the constituent elements of an invoiced product.
-- Budget: the budget on which this equipment was purchased See
-  [Managing the budget](../../modules/management/budgets).
-- Order date: date on which the material was ordered.
-- Purchase date: date on which the equipment was purchased.
-- Delivery date: date on which the equipment was delivered.
-- Startup date: date on which the equipment was put into service.
-- Date of last physical inventory: date of the last physical inventory
-  of the equipment.
-- Comments.
-- Monthly TCO: TCO divided by the number of months between today's date
-  and the date of purchase of the equipment.
-
-#### Warranty information
-
-- Warranty start date: date on which the warranty of the equipment
-  starts
-
-- Warranty information: text qualifying the warranty
-
-- Warranty period: duration of the warranty expressed in months
-      If a warranty start date and a warranty period are set, the
-      information "Expires on" will appear with a date in red if it is
-      earlier than the current date
-
-All the dates defined can be managed automatically according to changes
-in the status of the equipment. Some dates can also be copied from
-another date. All this configuration is done by
-\[entity\](administration_entity_delegation.dita).
-
-#### Tips
-
-i-Vertix ITAM allows you to configure a notification on the expiry of the
-hardware warranty. This is configurable by entity in notification
-management to define the models and recipients used and in
-[the administration of entities](../../modules/administration/entities) to enable or disable this feature, define the default values
-and anticipate the sending of the notification if necessary.
-
-i-Vertix ITAM can perform a simple net book value calculation based on
-straight-line or declining balance depreciation. To do so, a certain
-amount of information (value, date, etc.) must be entered. The user must
-also enter the date of the financial year the general configuration.
-
-The display of financial information for each type of equipment depends
-on the profile of the user logged in.
-
-### Associated Contracts
-
-The *Contracts* tab is used to show or add linked contracts.
-
-![Contract display screen](../../assets/modules/tabs/images/contract.png)
-
-For each associated contract, the name, number, contract type, supplier,
-start date and initial duration of the contract are listed. In the last
-field, the end date of the contract is also shown with a red display if
-the date is earlier than the current date.
-
-Refer to
-[contract management](../../modules/management/contract) for more information.
-
-### Documents
-
-Additional information is stored in the form of external documents which
-are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
-associated and unlinked with the selected item. The
-[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
-
-It is also possible to quickly create a document via this tab by
-specifying the desired file and optionally the field in which the new
-document is to be placed. The name of the created document will be based
-on the name of the added file.
-
-![Document creation screen](../../assets/modules/tabs/images/documents.png)
-
-:::info
-
-When you delete a document from this tab via mass actions, you only
-remove the link between the object and the document; the document
-itself is still present.
-
-:::
-
-### Virtualization
-
-This tab displays the virtualization systems (virtual machines,
-containers, jails....) associated to a host.
-
-The available information vary from one system to another: for a virtual
-machine for instance, it includes name, virtualization system,
-virtualization model, state, allocated memory, number of logical
-processors... as well as the name of the physical machine (the host).
-
-i-Vertix ITAM establishes the link between a host and a virtual machine based on
-the unique identifier (UUID). In some case, it is possible that the UUID
-is different inside the physical machine and the virtual machine; it is
-therefore impossible to make the link automatically.
-
-The only way to link manually a virtual machine to a physical machine is
-to attribute the *same* UUID to the virtual machine declared on the host
-and to the virtual machine inside i-Vertix ITAM.
-
-:::info
-
-If using native inventory or third-party inventory tool, the
-virtualization information can be automatically imported and updated.
-
-:::
-
-### Antivirus
-
-This tab, named *Antivirus* and visible in a
-*Computer* entry, allows to manage the antivirus running on
-a computer.
-
-![Antivirus screen](../../assets/modules/assets/images/antivirus.png)
-
-An antivirus is characterized by:
-
-- name
-- active/non active
-- vendor
-- update status
-- antivirus version
-- signature database version
-- expiration date
-
-:::info
-
-Every deletion or addition of an antivirus is recorded in the history
-of the computer.
-
-:::
-
-:::info
-
-If using native inventory or third-party inventory tool, the antivirus
-information can be automatically imported and updated.
-
-:::
-
-### Tickets
-
-The *Tickets* tab is used to create a ticket associated with the current
-object. It also lists the tickets already linked to the object.
-
-![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
-
-:::info
-
-A second table lists the tickets attached to the linked elements
-
-:::
-
-:::info
-
-Any deletion or addition of a ticket is recorded in the history.
-
-:::
-
-### Problems
-
-The *Problems* tab is used to create a problem associated with the
-current object. It also lists the changes already linked to the object.
-
-This summary table includes for each object:
-
-- Status
-- Date (opening or expiry date, resolution or closing date depending on
-  the status of the problem)
-- Priority
-- Requestor(s) and assigned technician(s)
-- Associated elements
-- Category
 - Name
-- Column indicating the number of scheduled tasks
+- Automatic inventory (Yes /No)
+- partition
+- Mount point
+- File system
+- Global size
+- Free size
+- Free percentage
+- Encryption (if the disk is encrypted, a padlock will be displayed)
 
-![Creation and list of associated problems](../../assets/modules/tabs/images/problems.png)
+## Software
 
-:::info
+Lists all the [software](../../tabs/software.md) brought up during the inventory and those added manually
 
-A second table lists the problems attached to the related elements
+It is possible to install (in the logical sense) software on a PC
+manually.
 
-:::
+To add new [software](../../modules/assets/softwares.md) to the list of applications, you need to go to the Assets \>
+Software tab, which will then be visible from the software tab of the
+various elements of the installed base.
 
-:::info
+## Connections
 
-Any deletion or addition of a problem is recorded in the history.
+The [connections](../../tabs/connections.md)
+are all the other hardware connected to the machine :
 
-:::
+- [Device](devices.html)
+- [Monitor](monitors.html)
+- [Phone](phones.html)
+- [Printers](printers.html)
 
-### Changes
+These items can be updated by the automatic inventory, but you can also
+connect them manually.
 
-The *Changes* tab is used to create a change associated with the current
-object. It also lists the changes already linked to the object.
+## Network Ports
 
-This summary table includes the following fields for each object:
+This tab allows to manage the
+[network ports](../../tabs/network_ports.md)
+attached to an equipment. The information that can be viewed is:
 
-- Status
-- Date (opening or expiry date, resolution or closing date depending on
-  the status of the change)
-- Priority
-- Requestor(s) and assigned technician(s)
-- Associated elements
-- Category
 - Name
-- Number of scheduled tasks
+- Port number
+- MTU
+- Speed
+- Internal status
+- Last change
+- Number of I/O bytes
+- Number of I/O errors
+- Duplex
+- VLAN
+- Connected to
+- Connection
+- Deleted
 
-![Creation and list of associated changes](../../assets/modules/tabs/images/changes.png)
+## Sockets
 
-:::info
+[Sockets](../../tabs/sockets.md) are the
+list of physical sockets present on the hardware. These sockets can be
+Ethernet, USB, HDMI, etc. This information cannot be returned by the
+automatic inventory, so you have to add it manually.
 
-A second table lists the changes attached to the related elements
+It enables hardware to be linked by cables. Socket is also linked to the
+[cables](../../modules/assets/cables) object
 
-:::
+## Remote management
 
-:::info
+[Remote management](../../tabs/remote-management.md) is used to reference the remote access software installed on
+the workstation, such as Teamviewer, Anydesk, etc. It is possible to add
+software manually if required, but the information can be fed back via
+the automatic inventory.
 
-Any deletion or addition of a change is recorded in the history.
+## Management
 
-:::
+[Management](../../modules/tabs/management.md) of financial and administrative information, this
+information is visible in the 'Management' tab on the computer's
+form.
 
-### Associated External Links
+## Contracts
 
-The *External links* tab is used to show associated external links.
+i-Vertix ITAM supports [contracts](../../modules/management/contract.md) management, in order to manage contract types such as loan,
+maintenance, support...
 
-For some items, external links are managed from the menu **Setup \>
-External links**.
+Contracts management allows to:
 
-These links can use object fields such as IP, name, etc. See
-[Configure protocol external links](../../modules/configuration/external_links).
+- make an inventory of all contracts related to the organization assets
+- integrate contracts in i-Vertix ITAM financial management
+- anticipate and follow contract renewal.
 
-Examples:
+## Documents
 
-- A web link: [http://192.168.0.1](http://192.168.0.1) (IP retrieved from the network port
-  of the hardware) ;
-- A RDP link for remote access: itam://MSTSC.EXE,pc001 (name "pc001"
-  retrieved from the hardware).
+The [document](../../modules/management/documents.md)
+tab lets you link different types of file to a material (PDF, txt, png,
+etc.) You can attach a document already uploaded to i-Vertix ITAM or add a new
+one directly from this tab.
 
-### Notes
+## Virtualization
 
-The *Notes* tab provides a free text field for storing additional
-information. Notes are displayed in the order of their creation.
+[Virtualization](../../modules/assets/tabs/virtualization.md)
+lists all the virtual machines present on the computer. Depending on the
+configuration, it is possible to create a new computer for each VM found
+or to reference the VMs in this tab.
 
-![View and enter a note](../../assets/modules/tabs/images/notes.png)
+## Antiviruses
 
+[Antiviruses](../../modules/assets/tabs/antivirus.md) lists all
+the antivirus programs detected on the computer. For Windows, it must be
+detected in the Windows Security Center in order to be listed in this
+tab.
 
-### History
+## Knowledge Base
+
+Lists all the articles in the
+[knowledge base](../../modules/tabs/knowledgebase.md)
+relating to the material.
+
+## Tickets
+
+View all [tickets](../../modules/tabs/tickets.md)
+linked to the computer
+
+## Problems
+
+This tab refers to all hardware-related
+[problems](../../modules/assistance/problems.md).
+Problems can also be linked to tickets, projects, etc. This allows you
+to have a complete scenario when necessary.
+
+## Changes
+
+[Changes](../../modules/assistance/changes.md) lists
+all changes related to a material. From this tab, you can't link a
+change directly, you can do it from **Assistance** \> **Changes** \>
+**Items**. You can create a new change from this page, which will be
+linked to the material you have selected.
+
+## Links
+
+[Links](../../modules/configuration/external_links.md)
+offer several possibilities. Send the i-Vertix ITAM object file to another URL of
+your choice, or generate an RDP file, for example.
+
+## Certificates
+
+Link a
+[certificate](../../modules/management/certificates.md) to your registration. You can manage certificates in
+**Management** \> **Certificates**
+
+## Locks
+
+[Locks](../../modules/assets/tabs/locks.md) are
+used to prevent a field from being modified when the inventory is
+uploaded. You can lock/unlock the fields you wish in a i-Vertix ITAM object.
+
+## Notes
+
+[Note](../../modules/tabs/notes.md) lets you add
+enriched text and attach a document.
+
+## Reservations
+
+The [reservation](../../modules/tools/reservations.md) tab lets you reserve equipment, view the reservation
+schedule, or cancel the possibility of reserving this equipment. By
+default, equipment cannot be reserved; you must first authorize this
+action manually.
+
+## Domains
+
+You can attach [Domains](../../modules/management/domains.md) to your computer. Domains are also linked to other objects
+such as records, problems, etc.
+
+## Appliances
+
+[Appliances](../../modules/management/appliance.md) includes all business applications managed within i-Vertix ITAM. They
+can be linked to another i-Vertix ITAM object (computer, application, etc.) as
+well as to another appliance.
+
+## Databases
+
+Databases list databases discovered by automatic inventory and those
+entered manually
+
+## Import information
+
+Import information is information that is uploaded and governed by
+equipment import rules (administration \> rules \> Rules for import and
+link equipments)
+
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -799,41 +323,8 @@ element.
 
 :::
 
-### Debugging information
-
-If you have *Debug* mode enabled in your preferences, a
-*Debug* tab will appear before the *All* tab. This tab offers
-information to help you resolve an issue.
-
-For example, for a computer, you have one or more tables depending on
-the affected object (financial information, reservations...) listing
-the notifications that will be triggered on this computer with:
-
-- Triggering event
-- Recipient(s)
-- Notification model used
-- Recipient(s) email address
-
-![Debugging page](../../assets/modules/tabs/images/debug.png)
-
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one
 below the other.
-
-## The different actions
-
-Apart from [common actions](../../modules/overview/actions.md), some actions are specific to computers:
-
-- **Install a software with a license on a computer** From the tab
-  *Softwares*, add a license by choosing the name of the software
-  followed by the name of the license. From the *Mass actions* of
-  summary table, choose **Install**
-
-:::warning
-
-A software can only be installed if its license has a version in use
-or a purchase version.
-
-:::

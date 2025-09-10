@@ -32,7 +32,7 @@ This information can be exported in two formats:
   planning.
 :::note
 
-- Access to Ical and Webcall feed is protected by a security key
+- Access to Ical and Webcal feed is protected by a security key
   integrated into the URL. It is possible to regenerate this key in menu
   *Preferences*. See
   [Manage preferences](../../first-steps/preferences.md).

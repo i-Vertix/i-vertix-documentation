@@ -62,8 +62,8 @@ sidebar:
       label: Assets
     - id: computers
       label: Computers
-    - id: displays
-      label: Displays
+    - id: monitors
+      label: Monitors
     - id: softwares
       label: Software
     - id: network-equipments
@@ -78,8 +78,24 @@ sidebar:
       label: Consumables
     - id: phones
       label: Phones
+    - id: racks
+      label: Racks
+    - id: enclosures
+      label: Enclosures
+    - id: pdus
+      label: Pdus
+    - id: passives_devices
+      label: Passive Devices
+    - id: unmanaged_assets
+      label: Unmanaged Assets
+    - id: cables
+      label: Cables
+    - id: sim
+      label: Sim
     - id: global
       label: Global Search
+    - id: databases
+      label: Databases
     - id: tabs
       label: Tabs
       items:
@@ -89,12 +105,22 @@ sidebar:
         label: Components
       - id: connexions
         label: Connections
+      - id: enclosures_items
+        label: Items
       - id: links
-        label: Links
+        label: External Links
+      - id: locks
+        label: Locks
       - id: network-ports
         label: Network Ports
+      - id: network_name
+        label: Network Name
       - id: os
         label: Operating Systems
+      - id: plugs
+        label: Plugs
+      - id: rack_items
+        label: Items
       - id: softwares
         label: Software
       - id: virtualization
@@ -110,10 +136,10 @@ sidebar:
       label: Licenses
     - id: budgets
       label: Budgets
-    - id: certificates
-      label: Certificates
     - id: suppliers
       label: Suppliers
+    - id: certificates
+      label: Certificates
     - id: contacts
       label: Contacts
     - id: contract
@@ -128,6 +154,17 @@ sidebar:
       label: Clusters
     - id: domains
       label: Domains
+    - id: domains_records
+      label: Domains Records
+    - id: appliance
+      label: Appliances
+    - id: databases
+      label: Databases
+    - id: tabs
+      label: Tabs
+      items:
+      - id: database_instances
+        label: Database Instances
   - id: tools
     label: Tools
     items:
@@ -168,6 +205,11 @@ sidebar:
       label: Display Statistics
     - id: categories
       label: Categories
+    - id: tabs
+      label: Tabs
+      items:
+      - id: analysis
+        label: Analysis
   - id: administration
     label: Administration
     items:
@@ -180,10 +222,20 @@ sidebar:
         label: Users
       - id: usersimport
         label: Import Users
+      - id: tabs
+        label: Tabs
+        items:
+        - id: authorizations
+          label: Authorizations
+        - id: groups
+          label: Groups
     - id: groups
       label: Groups
-    - id: entities
-      label: Entities
+    - id: entity
+      label: Entity
+      items:
+      - id: entities
+        label: Entities
     - id: rules
       label: Rules
       items:
@@ -206,6 +258,11 @@ sidebar:
       label: Mailing Queue
     - id: logs
       label: Logs
+    - id: forms
+      label: Forms
+      items:
+      - id: forms
+        label: Forms
   - id: configuration
     label: Configuration
     items:
@@ -239,6 +296,8 @@ sidebar:
         label: Internet
       - id: others
         label: Others
+      - id: network-name
+        label: Network Name
       - id: tabs
         label: Tabs
         items:
@@ -300,6 +359,18 @@ sidebar:
         label: Sql Replicas
     - id: external_links
       label: External Links
+  - id: user-settings
+    label: User Settings
+    items:
+    - id: index
+      label: User'S Settings
+    - id: authorized-substitutes
+      label: Authorized Substitutes
+  - id: tabs
+    label: Tabs
+    items:
+    - id: items
+      label: Items
 - id: advanced
   label: Advanced
   items:
@@ -311,5 +382,109 @@ sidebar:
     label: i-Vertix ITAM Status Monitoring
   - id: override-locales
     label: Override i-Vertix ITAM Locales
+  - id: custom_palettes
+    label: Create Custom Palettes
 - id: glossary
   label: Glossary
+- id: tabs
+  label: Tabs
+  items:
+  - id: approvals
+    label: Approvals
+  - id: cartridges
+    label: Cartridges
+  - id: components
+    label: Components
+  - id: connections
+    label: Connections
+  - id: consumables
+    label: Consumables
+  - id: consumable_type
+    label: Consumable Type
+  - id: contracts
+    label: Contracts
+  - id: cost
+    label: Cost
+  - id: impact_analysis
+    label: Impact Analysis
+  - id: item
+    label: Items
+  - id: knowledgebase
+    label: Knowledge Base
+  - id: links
+    label: Links
+  - id: network_ports
+    label: Network Ports
+  - id: operating_systems
+    label: Operating Systems
+  - id: printer_models
+    label: Printer Models
+  - id: projects
+    label: Projects
+  - id: remote-management
+    label: Remote Management
+  - id: sockets
+    label: Sockets
+  - id: software
+    label: Software
+  - id: volume
+    label: Volumes
+  - id: common_fields
+    label: Common Fields
+    items:
+    - id: alert_threshold
+      label: Alert Threshold
+    - id: alternate_user
+      label: Alternate Username
+    - id: alternate_username
+      label: Alternate Username Number
+    - id: asset_type
+      label: Asset Type
+    - id: cartridge_type
+      label: Cartridge Type
+    - id: color
+      label: Color
+    - id: comments
+      label: Comments
+    - id: data_center_position
+      label: Data Center Position
+    - id: group
+      label: Group
+    - id: group_in_charge
+      label: Group In Charge
+    - id: inventory_number
+      label: Inventory Number
+    - id: location
+      label: Location
+    - id: management_type
+      label: Management Type
+    - id: manufacturer
+      label: Manufacturer
+    - id: model
+      label: Model
+    - id: network
+      label: Network
+    - id: pictures
+      label: Pictures
+    - id: ports
+      label: Ports
+    - id: reference
+      label: Reference
+    - id: serial_number
+      label: Serial Number
+    - id: SNMP_credentials
+      label: Snmp Credentials
+    - id: status
+      label: Status
+    - id: stock_target
+      label: Stock Target
+    - id: sysdescr
+      label: Sysdescr
+    - id: technician_in_charge
+      label: Technician In Charge
+    - id: update_source
+      label: Update Source
+    - id: user
+      label: User
+    - id: uuid
+      label: Uuid

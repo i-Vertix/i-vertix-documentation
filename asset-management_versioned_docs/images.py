@@ -71,10 +71,13 @@ def process_images(
                 continue
  
         if real_copy:
-            out_path = assets_dir / c
-            utils.makedir(out_path)
-            print(f"{in_path} -> {out_path}")
-            shutil.copy(in_path, out_path)
+            if in_path.exists():
+                out_path = assets_dir / c
+                utils.makedir(out_path)
+                print(f"{in_path} -> {out_path}")
+                shutil.copy(in_path, out_path)
+            else:
+                print(f"image {in_path} does not exist")
 
     return incpath_to_realpath
 

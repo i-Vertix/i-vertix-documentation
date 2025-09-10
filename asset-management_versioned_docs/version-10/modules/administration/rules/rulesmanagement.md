@@ -106,7 +106,7 @@ See
     deleted
 
 - **Blacklists** Thanks to the i-Vertix ITAM blacklist mechanism, it is possible
-  to exclude certain values ​​from processing by the rules engine. The
+  to exclude certain values from processing by the rules engine. The
   types that can be taken into account are:
 
   - IP address;
@@ -155,3 +155,56 @@ Criteria : name matching regular expression `/DESKTOP\_(.\*)/` If object
 is named `DESKTOP_0001`, then it will be possible to use `0001` in the
 actions of the rules using parameter `#0`
 :::
+
+**KEEP ?**
+
+You need to create **location rules** to affect a location to a
+computer. Before, you need to define the criteria which will trigger the
+rule (a tag inventory, a subnet, a domain, etc.) In our example, we're
+going to create a rule that takes the [inventory tag](https://glpi-agent.readthedocs.io/en/latest/man/glpi-agent.html#execution-mode-options)
+into account. If the tag is France, then apply the Paris location
+
+- In **administration \> Rules \> Location Rules**
+
+- Click **+ Add**
+
+- You can add different information (name, logical operator, comments,
+  description, active)
+
+:::warning
+
+**Logical operator AND / OR**
+
+- **"OR"** the rule will then apply from the 1st corresponding
+criterion. It will ignore all subsequent criteria.
+- **"AND"**, on the other hand, will have to take all the
+criteria into account for the rule to be applied.
+
+:::
+
+- **Active** your rule
+
+- Clik **+ Add**
+
+- In **Criteria**, click **Add a new criterion**
+
+- Select **Agent \> Inventory tag**
+
+- Enter **France**
+
+- Click **+ Add**
+
+  > ![add rule location](../../../assets/tabs/common_fields/images/add-rule-location-criteria.png)
+
+- In **Actions** tab, click **Add a new action**
+
+- Select the location to assign
+
+- Click **+ Add**
+
+  > ![add rule location](../../../assets/tabs/common_fields/images/add-rule-location-action.png)
+
+You can test the rule location by clicking on **Test rules engines** in
+**Administration \> Locations rules**
+
+![add rule location](../../../assets/tabs/common_fields/images/test-rule-location.png)

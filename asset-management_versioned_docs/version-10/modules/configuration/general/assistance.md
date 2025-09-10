@@ -23,10 +23,10 @@ This tab allows management of i-Vertix ITAM assistance part.
 - **Keep tickets when purging hardware in the inventory** If enabled,
   the tickets related to an asset being purged will remain. Otherwise,
   they are purged along with the asset.
-- **Allow anonymous ticket creation (helpdesk.receiver)** Anonymous
-  ticket creation is disabled by default. Activating the option is
-  necessary when using a collector or the anonymous ticket entry form to
-  allow the creation of tickets by users not recognized by i-Vertix ITAM.
+- **Allow anonymous ticket creation (receiver)** Anonymous ticket
+  creation is disabled by default. Activating the option is necessary
+  when using an email collector to allow the creation of tickets by
+  users not recognized by i-Vertix ITAM.
 - **Limit of the schedules for planning** Time range displayed in the
   planning screen.
 - **By default, a software may be linked to a ticket** Allow associating

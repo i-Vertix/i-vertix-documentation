@@ -5,67 +5,59 @@ title: Groups
 
 # Groups
 
-Groups tab allows to add, modify, delete, search, export groups.
+![i-Vertix ITAMroups - Global view](../../assets/modules/administration/images/group_view.png)
+
+Groups tab allows to add, modify, delete, search groups.
 
 Groups can be defined in a hierarchical structure in order to ease
 navigation and search.
-:::note[**Example: groups**]
 
-Management \> Division \> Service or N3 Support \> Network \> LAN
-:::
+`Management > Division > Service` or `N3 Support > Network > LAN`
 
 Groups can be used in several way to group users by:
 
-    - *skills*: for the helpdesk, for example network technicians, or
-      database administrators,
-    - *organizational groups*: for example all the computers of the
-      management or the accounting department but also set of persons to
-      be notified.
+> - **Skills**: for the helpdesk, for example network technicians, or
+>   database administrators,
+> - **Organizational groups**: for example all the computers of the
+>   management or the accounting department but also set of persons to
+>   be notified.
 
 The options available to adjust these behaviors are:
 
-    - **Visible in a ticket**: requesting group and/or assignment to
-      this group;
-    - **Can be notified**: recipient of notifications;
-    - **Can be supervisor**: only for a
-      [project](../../modules/tools/projects.md);
-    - **May contain**: assets and/or users.
+> - **Visible in a ticket**: requesting group and/or assignment to this
+>   group;
+> - **Can be notified**: recipient of notifications;
+> - **Can be manager**: only for a
+>   [project](../../modules/tools/projects.md);
+> - **Can contain**: assets and/or users.
 
 In an item form, 2 notions of groups are available:
 
-    - *technical group* which indicates which group of people is in
-      charge of the asset (equivalent for a group of the technical
-      manager)
-    - *group* which indicates to which group of items it belongs.
+> - [Technical group](../../tabs/common_fields/group_in_charge.md) which indicates which group of people is in charge of
+>   the asset (equivalent for a group of the technical manager)
+> - [Group](../../tabs/common_fields/group.md)
+>   which indicates to which group of items it belongs.
 
 :::info
 
-the technical group can allow the automatic assignment of a ticket to
-a group of technicians, see the ticket categories in the chapter:
-[Configure dropdowns](../../modules/configuration/dropdowns/assistance.md). Likewise, it can be used in
+The technical group can allow the automatic assignment of a ticket to
+a group of technicians, see the ticket categories in the chapter
+[configure dropdowns](../../modules/configuration/dropdowns/assistance.md). Likewise, it can be used in
 [Business rules for tickets](../../modules/administration/rules/ticketbusinessrules.md).
 
 :::
 :::tip
 
-if all options are set to *No*, the group will not appear in any
+If all options are set to *No*, the group will not appear in any
 selection list; this can be useful for a group that is deleted and kept
 for history or for adding empty groups in the hierarchical structure.
 :::
 
-A group can have one or more supervisors, concept which can then be used
-for notifications, for example to send an email to the supervisor(s) of
-the group when a ticket is opened, see notification management.
+A group can have one or more managers, concept which can then be used
+for notifications, for example to send an email to the manager(s) of the
+group when a ticket is opened, see notification management.
 
-A **delegation** mechanism allows a user to declare incidents not for
-himself but for one of the members of this group.
-:::note[**Example: delegation**]
-
-an assistant declaring incidents for all persons of the management
-:::
-
-The concepts of delegation and supervisor can be configured in the
-"Users" tab (see below).
+The concepts of manager can be configured in the "Users" tab.
 
 Assigning a user o a group is either static and done using the i-Vertix ITAM
 interface, or dynamic when this is automatically extracted from the LDAP
@@ -90,87 +82,95 @@ entity of the group as well as its visibility in the sub-entities.
 
 :::info
 
-importing groups cannot be filtered by entity. In addition, no group
+Importing groups cannot be filtered by entity. In addition, no group
 synchronization function is available. The only way to refresh from a
 directory the list of group members is to resynchronize users, see
 [Import users from an external source](../../modules/administration/users/usersimport.md).
 
 :::
 
-:::warning
+## Import groups
 
-when migrating from a version of i-Vertix ITAM lower 0.80, any manual
-connection previously carried out on a group coming from the LDAP
-directory will be lost.
+In `Administration` \> `Groups` \> `LDAP directory link` (at the top of
+the page), you have the option to import groups. Depending on the
+settings made, users will be managed dynamically.
 
-:::
+![add groups from LDAP](../../assets/modules/administration/images/group_import.png)
 
-## The different tabs
+For more information go to
+[setup LDAP](../../modules/configuration/authentication/ldap.md)
 
-### Sub-groups
+## Child groups
 
 This tab allows to add a subgroup to the selected group and lists the
-existing subgroups.
+existing subgroups. Each subgroup created will also be visible in
+`Administration` \> `Groups`
 
-### Used items
+## Used items
 
-This tab lists the elements for which the *Group* field corresponds to
-the current group. The search can be extended to sub-groups as well as
-to the members of the group (*User* field of the item).
+[Tab Used Items](../../tabs/common_fields/group.md) tab lists the elements for which the *Group* field
+corresponds to the current group. The search can be extended to
+sub-groups as well as to the members of the group (*User* field of the
+item).
 
-See
-Tab "Used Items"
+## Managed items
 
-### Managed items
-
-This tab lists the elements for which the *Technical Group* field
+[Managed Items](../../tabs/common_fields/group_in_charge.md) tab lists the elements for which the *Technical Group* field
 corresponds to the current group. The search can be extended to
 sub-groups as well as to the members of the group (*Technical manager*
 field of the item).
 
-See
-Tab "Managed Items"
-
-### LDAP directory link
+## LDAP directory link
 
 This tab only appears if the "Auth and sync update" authorization is
 granted in profile; it gathers the information allowing i-Vertix ITAM to find the
 group and its users in the LDAP directory.
 
-### Users
+## Security
+
+In this tab you can force or not the use of
+[2FA](/first-steps/preferences.html#two-factor-authentication-tab) for a
+specific group
+
+## Users
 
 This tab allows to add a user to this group by defining whether the
-added user is *delegatee* and/or *supervisor* of the group. It also
-lists the users of this group with possible search by criteria
-(delegatee or supervisor) and also in the subgroups of the current
-group.
+added user is *manager* of the group. It also lists the users of this
+group with possible search by this criteria and also in the subgroups of
+the current group.
 
-### Notifications
+## Notifications
 
 ![List of notifications for which destination is group or group supervisor](../../assets/modules/administration/images/notifGroup.png)
 
-### Tickets
+## Created tickets
 
-The *Tickets* tab is used to create a ticket associated with the current
-object. It also lists the tickets already linked to the object.
+List all [tickets](../../modules/assistance/problems.md) created or assigned to the group. If a ticket is created by
+a group member, but the requester is not explicitly the group, the
+tickets will not be visible here. `Show all` allows you to show all
+tickets created or assigned, you will then be redirected to `Assistance`
+\> `Tickets`
 
-![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
+## Problems
 
-:::info
+List all
+[problems](../../modules/assistance/tickets/ticketopening.md) created by the group. `Show all` allows you to show all
+problems created by the group, you will then be redirected to
+`Assistance` \> `Problems`
 
-A second table lists the tickets attached to the linked elements
+## Changes
 
-:::
+List all
+[changes](../../modules/assistance/tickets/ticketopening.md) created or assigned to the group. `Show all` allows you to
+show all changes created by the group, you will then be redirected to
+`Assistance` \> `Changes`
 
-:::info
+## Notes
 
-Any deletion or addition of a ticket is recorded in the history.
+[Note](../../modules/tabs/notes.md) lets you add
+enriched text and attach a document.
 
-:::
-
-For groups, this tab allows to list as well sub-groups tickets.
-
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -196,24 +196,7 @@ element.
 
 :::
 
-### Debugging information
-
-If you have *Debug* mode enabled in your preferences, a
-*Debug* tab will appear before the *All* tab. This tab offers
-information to help you resolve an issue.
-
-For example, for a computer, you have one or more tables depending on
-the affected object (financial information, reservations...) listing
-the notifications that will be triggered on this computer with:
-
-- Triggering event
-- Recipient(s)
-- Notification model used
-- Recipient(s) email address
-
-![Debugging page](../../assets/modules/tabs/images/debug.png)
-
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

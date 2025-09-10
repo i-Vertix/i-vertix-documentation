@@ -3,14 +3,16 @@ id: external-links
 title: External Links
 ---
 
-# Associated External Links
+# External Links
 
 The *External links* tab is used to show associated external links.
 
 For some items, external links are managed from the menu **Setup \>
 External links**.
 
-These links can use object fields such as IP, name, etc. See
+These links can use object fields such as IP, name, etc.
+
+See
 [Configure protocol external links](../../modules/configuration/external_links.md).
 
 Examples:

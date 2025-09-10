@@ -31,7 +31,7 @@ add new rooms.
 
 ![List of server rooms attached to the data center](../../assets/modules/management/images/serversrooms-data-centers.png)
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one
@@ -198,7 +198,7 @@ the date is earlier than the current date.
 Refer to
 [contract management](../../modules/management/contract) for more information.
 
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -220,14 +220,16 @@ itself is still present.
 
 :::
 
-### Associated External Links
+### External Links
 
 The *External links* tab is used to show associated external links.
 
 For some items, external links are managed from the menu **Setup \>
 External links**.
 
-These links can use object fields such as IP, name, etc. See
+These links can use object fields such as IP, name, etc.
+
+See
 [Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
@@ -243,6 +245,14 @@ The *Tickets* tab is used to create a ticket associated with the current
 object. It also lists the tickets already linked to the object.
 
 ![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
+
+You can create a new one and then link it by clicking on **New tickets
+for this item**.
+
+You cannot link an existing ticket here. If you want to link an existing
+ticket, go to **assistance** \>
+[tickets](../../modules/assistance/tickets). Select
+the relevant ticket and go to the item tab
 
 :::info
 
@@ -267,7 +277,7 @@ This summary table includes for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the problem)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -298,7 +308,7 @@ This summary table includes the following fields for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the change)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -318,7 +328,7 @@ Any deletion or addition of a change is recorded in the history.
 
 :::
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -344,7 +354,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

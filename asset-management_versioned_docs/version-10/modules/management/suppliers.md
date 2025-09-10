@@ -59,13 +59,7 @@ the date is earlier than the current date.
 Refer to
 [contract management](../../modules/management/contract) for more information.
 
-### Associated elements
-
-The *Items* tab is used to show or add linked assets.
-
-![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
-
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -94,6 +88,14 @@ object. It also lists the tickets already linked to the object.
 
 ![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
+You can create a new one and then link it by clicking on **New tickets
+for this item**.
+
+You cannot link an existing ticket here. If you want to link an existing
+ticket, go to **assistance** \>
+[tickets](../../modules/assistance/tickets). Select
+the relevant ticket and go to the item tab
+
 :::info
 
 A second table lists the tickets attached to the linked elements
@@ -117,7 +119,7 @@ This summary table includes for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the problem)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -148,7 +150,7 @@ This summary table includes the following fields for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the change)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -168,14 +170,16 @@ Any deletion or addition of a change is recorded in the history.
 
 :::
 
-### Associated External Links
+### External Links
 
 The *External links* tab is used to show associated external links.
 
 For some items, external links are managed from the menu **Setup \>
 External links**.
 
-These links can use object fields such as IP, name, etc. See
+These links can use object fields such as IP, name, etc.
+
+See
 [Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
@@ -188,18 +192,35 @@ Examples:
 ### Notes
 
 The *Notes* tab provides a free text field for storing additional
-information. Notes are displayed in the order of their creation.
+information. Notes are displayed in the order of their creation. You can
+also add a document
 
 ![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
-### Knowledge base
+#### Add a note
 
-The *Knowledge base* tab is used to show or add linked knowledge base
-articles.
+- To add a note, click on **+Add**
+- You can add text and format it to suit your needs
+- You can add a document to this note
 
-![Viewing or adding a knowledge base entry](../../assets/modules/tabs/images/knowledgebase.png)
+![Edit a note](../../assets/modules/tabs/images/notes-add.png)
 
-### History
+#### Delete a note
+
+- To delete a note, you need to click on **delete**
+- You can delete only the attachment by clicking on delete (the option
+  appears when you move your mouse over the attachment)
+
+![delete a note](../../assets/modules/tabs/images/notes-delete.png)
+
+:::tip
+
+When you delete an attachment, it is not completely deleted, you can
+find it in **Management** \> **Documents**
+
+:::
+
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -225,7 +246,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

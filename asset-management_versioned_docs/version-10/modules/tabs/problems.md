@@ -14,7 +14,7 @@ This summary table includes for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the problem)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name

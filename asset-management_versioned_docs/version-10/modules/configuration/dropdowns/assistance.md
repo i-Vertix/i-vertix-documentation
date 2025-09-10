@@ -15,7 +15,7 @@ this category including but not limited to:
 
 - Responsible and technical group for the automatic assignment of
   tickets
-- Default category of the knowledgebase when you want to add a solution
+- Default category of the knowledge base when you want to add a solution
   of a ticket
 - Visibility of the category depending on the interface
   (simplified/standard) or object
@@ -35,7 +35,7 @@ category.
 
 Displays a list of child ticket categories and allows adding new ones.
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -76,7 +76,7 @@ category including but not limited to:
 
 Displays a list of child task categories and allows adding new ones.
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -126,7 +126,7 @@ Solution templates cannot be translated
 
 :::
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -183,7 +183,7 @@ dropdown names has been enabled in the general configuration.
 This tab lists all current translations of the dropdown name and allows
 you to add new ones.
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

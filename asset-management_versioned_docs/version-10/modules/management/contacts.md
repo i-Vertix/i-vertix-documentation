@@ -9,7 +9,7 @@ i-Vertix ITAM users are the persons having an authentication for the i-Vertix IT
 application. External persons, usually associated with contracts, are
 known to i-Vertix ITAM as *Contacts*.
 
-A contact is characterized by usual identity informations as well as
+A contact is characterized by usual identity information as well as
 title, phone number, mail address... Defining a list of contact types
 allows to sort contacts by types. It is also possible to export a
 contact in vCard format.
@@ -31,7 +31,7 @@ The *Suppliers* tab is used to show or add linked suppliers.
 
 ![Screen for creating a link with a supplier](../../assets/modules/tabs/images/suppliers.png)
 
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -53,14 +53,16 @@ itself is still present.
 
 :::
 
-### Associated External Links
+### External Links
 
 The *External links* tab is used to show associated external links.
 
 For some items, external links are managed from the menu **Setup \>
 External links**.
 
-These links can use object fields such as IP, name, etc. See
+These links can use object fields such as IP, name, etc.
+
+See
 [Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
@@ -73,11 +75,35 @@ Examples:
 ### Notes
 
 The *Notes* tab provides a free text field for storing additional
-information. Notes are displayed in the order of their creation.
+information. Notes are displayed in the order of their creation. You can
+also add a document
 
 ![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
-### History
+#### Add a note
+
+- To add a note, click on **+Add**
+- You can add text and format it to suit your needs
+- You can add a document to this note
+
+![Edit a note](../../assets/modules/tabs/images/notes-add.png)
+
+#### Delete a note
+
+- To delete a note, you need to click on **delete**
+- You can delete only the attachment by clicking on delete (the option
+  appears when you move your mouse over the attachment)
+
+![delete a note](../../assets/modules/tabs/images/notes-delete.png)
+
+:::tip
+
+When you delete an attachment, it is not completely deleted, you can
+find it in **Management** \> **Documents**
+
+:::
+
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -103,7 +129,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

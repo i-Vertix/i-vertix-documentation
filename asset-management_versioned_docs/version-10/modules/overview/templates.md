@@ -35,6 +35,9 @@ When creating a new printer from this template, serial number and
 inventory number are the only fields to be entered; other fields are
 already set.
 
+You may retroactively create a template from an asset using the "Create
+template" action from the "Actions" menu within an asset's form.
+
 ### Increment
 
 A automatic fill and increment mechanism is provided for some fields

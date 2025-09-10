@@ -26,6 +26,15 @@ articles* on the home page of the knowledge base.
 
 :::info
 
+.. versionchanged:: 11
+
+Targeting applies in the same way whether the article is in the FAQ or
+only in the knowledge base.
+
+:::
+
+:::info
+
 You can publish an article for everyone by targeting the root entity.
 
 :::
@@ -46,7 +55,7 @@ date and an end date.
 :::warning
 
 Elements which should not be interpreted when displayed can be defined
-with preformated style (`<pre>` in HTML). Tags like `<VirtualHost>`
+with pre-formated style (`<pre>` in HTML). Tags like `<VirtualHost>`
 can therefore be inserted and will be displayed. Other HTML tags
 (`<TAG>...</TAG>` may disappear when editing; to have complete
 visibility of the text, it is possible to switch to HTML mode where
@@ -146,13 +155,7 @@ will be able to consult the article.
 This tab allows, if appropriate permission, to modify or delete an
 article.
 
-### Associated elements
-
-The *Items* tab is used to show or add linked assets.
-
-![Adding and viewing an element](../../assets/modules/tabs/images/elements.png)
-
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -174,7 +177,7 @@ itself is still present.
 
 :::
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -217,7 +220,7 @@ article.
 
 ![Article comments](../../assets/modules/tools/images/comments-knowledgebase.png)
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

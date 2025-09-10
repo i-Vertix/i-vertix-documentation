@@ -27,26 +27,64 @@ Statistics similar to tickets are available for problems, see
 
 ## The different tabs
 
-### Changes
-
-This tab allows to display changes associated with the problem and add
-new changes. See
-Solutions
-
 ### Analysis
 
-This tab contains problem analysis and describes impacts, causes and
-symptoms.
+This tab contains problem analysis.
 
-### Solutions
+It consists of 3 inserts:
 
-This tab allows to describe the resolution of the problem. See
-Solutions
+- Impacts
+- Causes
+- Symptoms
+
+![View analysis](../../assets/modules/assistance/tabs/images/analysis-view.png)
 
 ### Statistics
 
-Statistics similar to tickets are available for problems. See
-Statistics
+Statistics similar to tickets are available for problems.
+
+![statistics tab for problems](../../assets/modules/assistance/images/problems-statistics.png)
+
+### Tickets
+
+List all [tickets](../../modules/assistance/tickets.md) are linked to
+the problem. You can add a new ticket or link an existing ticket
+
+![Ticket linked on problems](../../assets/modules/assistance/tabs/images/problem-view-ticket.png)
+
+![add tickets exists](../../assets/modules/assistance/tabs/images/problem-add-ticket.png)
+
+![View ticket in problem body](../../assets/modules/assistance/tabs/images/problem-view-ticket-body.png)
+
+### Changes
+
+This tab allows to display changes associated with the problem and add
+new changes. See [changes](../../modules/assistance/changes.md)
+
+![changes tab for problems](../../assets/modules/assistance/images/problems-changes.png)
+
+### Costs
+
+The cost represents the financial impact of the problem encountered. It
+can be human, material or fixed.
+
+:::warning
+
+A cost cannot be added once the problem has been closed or resolved.
+
+:::
+
+![view cost](../../assets/modules/assistance/tabs/images/problem-cost.png)
+
+![add cost for problem](../../assets/modules/assistance/tabs/images/problem-add-cost.png)
+
+### Projects
+
+You can attach or add one or more
+[projects](../../modules/tools/projects.md) to your
+problem.
+
+![add project for problem](../../assets/modules/assistance/tabs/images/problem-project.png)
 
 ### Tasks
 
@@ -54,66 +92,54 @@ A task is an action linked with a problem, usually a technical
 intervention. See
 Tasks
 
-### Costs
-
-This tab defines the costs applicable to this problem. See
-Costs
-
-### Elements
+### Items
 
 This tab allows to attach an item to the problem by choosing the type
-and the selected item. See
-Items
+and the selected item. See [Items](../../modules/tabs/items.md)
 
-### Tickets
+### Impact analisys
 
-The *Tickets* tab is used to create a ticket associated with the current
-object. It also lists the tickets already linked to the object.
-
-![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
-
-:::info
-
-A second table lists the tickets attached to the linked elements
-
-:::
-
-:::info
-
-Any deletion or addition of a ticket is recorded in the history.
-
-:::
-
-### Documents
-
-Additional information is stored in the form of external documents which
-are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
-associated and unlinked with the selected item. The
-[management of the documents themselves](../../modules/management/documents) is dealt with in another chapter.
-
-It is also possible to quickly create a document via this tab by
-specifying the desired file and optionally the field in which the new
-document is to be placed. The name of the created document will be based
-on the name of the added file.
-
-![Document creation screen](../../assets/modules/tabs/images/documents.png)
-
-:::info
-
-When you delete a document from this tab via mass actions, you only
-remove the link between the object and the document; the document
-itself is still present.
-
-:::
+[Impact analysis](../../tabs/impact_analysis.md) enables you to visualise the impact of failures on an entire
+infrastructure
 
 ### Notes
 
 The *Notes* tab provides a free text field for storing additional
-information. Notes are displayed in the order of their creation.
+information. Notes are displayed in the order of their creation. You can
+also add a document
 
 ![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
-### History
+#### Add a note
+
+- To add a note, click on **+Add**
+- You can add text and format it to suit your needs
+- You can add a document to this note
+
+![Edit a note](../../assets/modules/tabs/images/notes-add.png)
+
+#### Delete a note
+
+- To delete a note, you need to click on **delete**
+- You can delete only the attachment by clicking on delete (the option
+  appears when you move your mouse over the attachment)
+
+![delete a note](../../assets/modules/tabs/images/notes-delete.png)
+
+:::tip
+
+When you delete an attachment, it is not completely deleted, you can
+find it in **Management** \> **Documents**
+
+:::
+
+### Knowledge Base
+
+You can link an article from the
+[knowledge base](../../modules/tabs/knowledgebase.md).
+It is possible to add a new article by clicking on **i**
+
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -139,7 +165,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

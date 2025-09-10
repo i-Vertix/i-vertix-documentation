@@ -140,8 +140,8 @@
             },
             {
               "type": "doc",
-              "id": "modules/assets/displays",
-              "label": "Displays"
+              "id": "modules/assets/monitors",
+              "label": "Monitors"
             },
             {
               "type": "doc",
@@ -180,8 +180,48 @@
             },
             {
               "type": "doc",
+              "id": "modules/assets/racks",
+              "label": "Racks"
+            },
+            {
+              "type": "doc",
+              "id": "modules/assets/enclosures",
+              "label": "Enclosures"
+            },
+            {
+              "type": "doc",
+              "id": "modules/assets/pdus",
+              "label": "Pdus"
+            },
+            {
+              "type": "doc",
+              "id": "modules/assets/passives_devices",
+              "label": "Passive Devices"
+            },
+            {
+              "type": "doc",
+              "id": "modules/assets/unmanaged_assets",
+              "label": "Unmanaged Assets"
+            },
+            {
+              "type": "doc",
+              "id": "modules/assets/cables",
+              "label": "Cables"
+            },
+            {
+              "type": "doc",
+              "id": "modules/assets/sim",
+              "label": "Sim"
+            },
+            {
+              "type": "doc",
               "id": "modules/assets/global",
               "label": "Global Search"
+            },
+            {
+              "type": "doc",
+              "id": "modules/assets/databases",
+              "label": "Databases"
             },
             {
               "type": "category",
@@ -205,8 +245,18 @@
                 },
                 {
                   "type": "doc",
+                  "id": "modules/assets/tabs/enclosures_items",
+                  "label": "Items"
+                },
+                {
+                  "type": "doc",
                   "id": "modules/assets/tabs/links",
-                  "label": "Links"
+                  "label": "External Links"
+                },
+                {
+                  "type": "doc",
+                  "id": "modules/assets/tabs/locks",
+                  "label": "Locks"
                 },
                 {
                   "type": "doc",
@@ -215,8 +265,23 @@
                 },
                 {
                   "type": "doc",
+                  "id": "modules/assets/tabs/network_name",
+                  "label": "Network Name"
+                },
+                {
+                  "type": "doc",
                   "id": "modules/assets/tabs/os",
                   "label": "Operating Systems"
+                },
+                {
+                  "type": "doc",
+                  "id": "modules/assets/tabs/plugs",
+                  "label": "Plugs"
+                },
+                {
+                  "type": "doc",
+                  "id": "modules/assets/tabs/rack_items",
+                  "label": "Items"
                 },
                 {
                   "type": "doc",
@@ -258,13 +323,13 @@
             },
             {
               "type": "doc",
-              "id": "modules/management/certificates",
-              "label": "Certificates"
+              "id": "modules/management/suppliers",
+              "label": "Suppliers"
             },
             {
               "type": "doc",
-              "id": "modules/management/suppliers",
-              "label": "Suppliers"
+              "id": "modules/management/certificates",
+              "label": "Certificates"
             },
             {
               "type": "doc",
@@ -300,6 +365,33 @@
               "type": "doc",
               "id": "modules/management/domains",
               "label": "Domains"
+            },
+            {
+              "type": "doc",
+              "id": "modules/management/domains_records",
+              "label": "Domains Records"
+            },
+            {
+              "type": "doc",
+              "id": "modules/management/appliance",
+              "label": "Appliances"
+            },
+            {
+              "type": "doc",
+              "id": "modules/management/databases",
+              "label": "Databases"
+            },
+            {
+              "type": "category",
+              "collapsed": true,
+              "label": "Tabs",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "modules/management/tabs/database_instances",
+                  "label": "Database Instances"
+                }
+              ]
             }
           ],
           "link": {
@@ -397,6 +489,18 @@
               "type": "doc",
               "id": "modules/assistance/categories",
               "label": "Categories"
+            },
+            {
+              "type": "category",
+              "collapsed": true,
+              "label": "Tabs",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "modules/assistance/tabs/analysis",
+                  "label": "Analysis"
+                }
+              ]
             }
           ],
           "link": {
@@ -423,6 +527,23 @@
                   "type": "doc",
                   "id": "modules/administration/users/usersimport",
                   "label": "Import Users"
+                },
+                {
+                  "type": "category",
+                  "collapsed": true,
+                  "label": "Tabs",
+                  "items": [
+                    {
+                      "type": "doc",
+                      "id": "modules/administration/users/tabs/authorizations",
+                      "label": "Authorizations"
+                    },
+                    {
+                      "type": "doc",
+                      "id": "modules/administration/users/tabs/groups",
+                      "label": "Groups"
+                    }
+                  ]
                 }
               ]
             },
@@ -432,9 +553,16 @@
               "label": "Groups"
             },
             {
-              "type": "doc",
-              "id": "modules/administration/entities",
-              "label": "Entities"
+              "type": "category",
+              "collapsed": true,
+              "label": "Entity",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "modules/administration/entity/entities",
+                  "label": "Entities"
+                }
+              ]
             },
             {
               "type": "category",
@@ -489,6 +617,18 @@
               "type": "doc",
               "id": "modules/administration/logs",
               "label": "Logs"
+            },
+            {
+              "type": "category",
+              "collapsed": true,
+              "label": "Forms",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "modules/administration/forms/forms",
+                  "label": "Forms"
+                }
+              ]
             }
           ],
           "link": {
@@ -561,6 +701,11 @@
                   "type": "doc",
                   "id": "modules/configuration/dropdowns/others",
                   "label": "Others"
+                },
+                {
+                  "type": "doc",
+                  "id": "modules/configuration/dropdowns/network-name",
+                  "label": "Network Name"
                 },
                 {
                   "type": "category",
@@ -722,6 +867,34 @@
             "type": "doc",
             "id": "modules/configuration/index"
           }
+        },
+        {
+          "type": "category",
+          "collapsed": true,
+          "label": "User Settings",
+          "items": [
+            {
+              "type": "doc",
+              "id": "modules/user-settings/authorized-substitutes",
+              "label": "Authorized Substitutes"
+            }
+          ],
+          "link": {
+            "type": "doc",
+            "id": "modules/user-settings/index"
+          }
+        },
+        {
+          "type": "category",
+          "collapsed": true,
+          "label": "Tabs",
+          "items": [
+            {
+              "type": "doc",
+              "id": "modules/tabs/items",
+              "label": "Items"
+            }
+          ]
         }
       ],
       "link": {
@@ -748,6 +921,11 @@
           "type": "doc",
           "id": "advanced/override-locales",
           "label": "Override i-Vertix ITAM Locales"
+        },
+        {
+          "type": "doc",
+          "id": "advanced/custom_palettes",
+          "label": "Create Custom Palettes"
         }
       ],
       "link": {
@@ -759,6 +937,260 @@
       "type": "doc",
       "id": "glossary",
       "label": "Glossary"
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Tabs",
+      "items": [
+        {
+          "type": "doc",
+          "id": "tabs/approvals",
+          "label": "Approvals"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/cartridges",
+          "label": "Cartridges"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/components",
+          "label": "Components"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/connections",
+          "label": "Connections"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/consumables",
+          "label": "Consumables"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/consumable_type",
+          "label": "Consumable Type"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/contracts",
+          "label": "Contracts"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/cost",
+          "label": "Cost"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/impact_analysis",
+          "label": "Impact Analysis"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/item",
+          "label": "Items"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/knowledgebase",
+          "label": "Knowledge Base"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/links",
+          "label": "Links"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/network_ports",
+          "label": "Network Ports"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/operating_systems",
+          "label": "Operating Systems"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/printer_models",
+          "label": "Printer Models"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/projects",
+          "label": "Projects"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/remote-management",
+          "label": "Remote Management"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/sockets",
+          "label": "Sockets"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/software",
+          "label": "Software"
+        },
+        {
+          "type": "doc",
+          "id": "tabs/volume",
+          "label": "Volumes"
+        },
+        {
+          "type": "category",
+          "collapsed": true,
+          "label": "Common Fields",
+          "items": [
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/alert_threshold",
+              "label": "Alert Threshold"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/alternate_user",
+              "label": "Alternate Username"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/alternate_username",
+              "label": "Alternate Username Number"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/asset_type",
+              "label": "Asset Type"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/cartridge_type",
+              "label": "Cartridge Type"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/color",
+              "label": "Color"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/comments",
+              "label": "Comments"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/data_center_position",
+              "label": "Data Center Position"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/group",
+              "label": "Group"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/group_in_charge",
+              "label": "Group In Charge"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/inventory_number",
+              "label": "Inventory Number"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/location",
+              "label": "Location"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/management_type",
+              "label": "Management Type"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/manufacturer",
+              "label": "Manufacturer"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/model",
+              "label": "Model"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/network",
+              "label": "Network"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/pictures",
+              "label": "Pictures"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/ports",
+              "label": "Ports"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/reference",
+              "label": "Reference"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/serial_number",
+              "label": "Serial Number"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/SNMP_credentials",
+              "label": "Snmp Credentials"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/status",
+              "label": "Status"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/stock_target",
+              "label": "Stock Target"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/sysdescr",
+              "label": "Sysdescr"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/technician_in_charge",
+              "label": "Technician In Charge"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/update_source",
+              "label": "Update Source"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/user",
+              "label": "User"
+            },
+            {
+              "type": "doc",
+              "id": "tabs/common_fields/uuid",
+              "label": "Uuid"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

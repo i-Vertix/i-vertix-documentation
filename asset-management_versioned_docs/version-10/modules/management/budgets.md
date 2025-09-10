@@ -22,8 +22,6 @@ Attaching a i-Vertix ITAM item to a budget is done via tab
 
 :::
 
-![Main fields of a budget](../../assets/modules/management/images/budgets.png)
-
 :::info
 
 When displaying a budget from a sub-entity, the budget remaining total
@@ -41,14 +39,34 @@ It is possible to use
 
 :::
 
+## Add a new budget
+
+- To add a new budget, click on **+ Add** at the top of the screen
+
+- Enter the information required
+      ![Main fields of a budget](../../assets/modules/management/images/budgets.png)
+
+- You can add a budget type (administrative value)
+      ![Main fields of a budget](../../assets/modules/management/images/budgets-type.png)
+
+:::tip
+
+You can manage your budget type in **Setup** \> **Dropdowns** \>
+**Types** \> **Budget types**
+
+:::
+
 ## The different tabs
 
 ### Main tab
 
 This tab provides a summary table giving the expended amount of the
-budget, sorted by item type, as well as total remaining amount.
+budget, sorted by item type, as well as total remaining amount. You
+cannot add a cost directly from this tab. Costs are deducted via the
+tabs of the same name in the various i-Vertix ITAM objects (changes, tickets,
+etc).
 
-![Budget summary table](../../assets/modules/management/images/main-budgets.png)
+![Budget summary table](../../assets/modules/management/images/budgets-main.png)
 
 ### Items
 
@@ -64,7 +82,7 @@ Attaching a i-Vertix ITAM item to a budget is done via tab
 
 :::
 
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -86,21 +104,16 @@ itself is still present.
 
 :::
 
-### Knowledge base
-
-The *Knowledge base* tab is used to show or add linked knowledge base
-articles.
-
-![Viewing or adding a knowledge base entry](../../assets/modules/tabs/images/knowledgebase.png)
-
-### Associated External Links
+### External Links
 
 The *External links* tab is used to show associated external links.
 
 For some items, external links are managed from the menu **Setup \>
 External links**.
 
-These links can use object fields such as IP, name, etc. See
+These links can use object fields such as IP, name, etc.
+
+See
 [Configure protocol external links](../../modules/configuration/external_links).
 
 Examples:
@@ -113,11 +126,35 @@ Examples:
 ### Notes
 
 The *Notes* tab provides a free text field for storing additional
-information. Notes are displayed in the order of their creation.
+information. Notes are displayed in the order of their creation. You can
+also add a document
 
 ![View and enter a note](../../assets/modules/tabs/images/notes.png)
 
-### History
+#### Add a note
+
+- To add a note, click on **+Add**
+- You can add text and format it to suit your needs
+- You can add a document to this note
+
+![Edit a note](../../assets/modules/tabs/images/notes-add.png)
+
+#### Delete a note
+
+- To delete a note, you need to click on **delete**
+- You can delete only the attachment by clicking on delete (the option
+  appears when you move your mouse over the attachment)
+
+![delete a note](../../assets/modules/tabs/images/notes-delete.png)
+
+:::tip
+
+When you delete an attachment, it is not completely deleted, you can
+find it in **Management** \> **Documents**
+
+:::
+
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -143,7 +180,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

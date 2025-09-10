@@ -40,7 +40,7 @@ its end date.
 
 ## The different tabs
 
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -76,7 +76,7 @@ profile has read permission for public reminders.
 
 ![A reminder's targets](../../assets/modules/tools/images/targets-notes.png)
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -102,7 +102,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

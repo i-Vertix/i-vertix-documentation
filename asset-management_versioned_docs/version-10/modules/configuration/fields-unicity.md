@@ -34,7 +34,7 @@ ignored when calculating uniqueness.
 The duplicates tab lists all the values corresponding to the criteria
 that are currently duplicated.
 
-#### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -77,7 +77,7 @@ the notifications that will be triggered on this computer with:
 
 ![Debugging page](../../assets/modules/tabs/images/debug.png)
 
-#### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

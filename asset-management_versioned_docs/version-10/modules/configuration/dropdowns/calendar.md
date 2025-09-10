@@ -24,7 +24,7 @@ as necessary per day as long as these slots do not overlap.
 Lists the closing periods assigned to this calendar and allows you to
 add a new one; see lca configuration of closing periods.
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

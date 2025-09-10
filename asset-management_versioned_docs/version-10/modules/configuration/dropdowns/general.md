@@ -35,7 +35,7 @@ Displays a list of items that have this location assigned to them. You
 are able to filter this list by a specific item type (Computers,
 Monitors, etc).
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -86,7 +86,7 @@ considering the prefix *bru*, *9* and
 the network sockets created will be named: *bru09srv*,
 *bru10srv* and *bru11srv*.
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one
@@ -113,7 +113,7 @@ dropdown names has been enabled in the general configuration.
 This tab lists all current translations of the dropdown name and allows
 you to add new ones.
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one
@@ -135,7 +135,7 @@ for automatic imports via an inventory agent or by the receiver.
 
 This dropdown type cannot be translated.
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -161,7 +161,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

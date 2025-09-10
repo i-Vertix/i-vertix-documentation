@@ -14,7 +14,7 @@ follow and process problems and changes.
 
 i-Vertix ITAM assistance module is compliant with ITIL best practises guide and
 integrates therefore some fields normalization. However, following ITIL
-best practises is recommanded but not mandatory and it is perfectly
+best practises is recommended but not mandatory and it is perfectly
 feasible, thanks to module's flexibility, to implement an assistance
 service tailored to the organization's needs.
 

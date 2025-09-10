@@ -17,7 +17,7 @@ connection parameters. It is advisable to use a login that has only read
 privileges on the database.
 
 You can use several replicates by separating them with a **blank
-space**. As the result in the config_db_slave.php file, the dbhost
+space**. As the result in the config_db_slave.php file, the `dbhost`
 parameter will be an array.
 
 A specific port can also be added.

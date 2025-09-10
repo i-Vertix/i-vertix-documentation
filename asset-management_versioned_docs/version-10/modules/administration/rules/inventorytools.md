@@ -34,7 +34,7 @@ must be used.
 :::
 
 Using i-Vertix ITAM blacklist mechanism, it is possible to exclude certain values
-​​from processing by the rules engine such as certain IP or MAC addresses,
+from processing by the rules engine such as certain IP or MAC addresses,
 for example an IP 127.0.0.1; see
 [Blacklists](../../../modules/administration/rules/rulesmanagement.md).
 
@@ -82,7 +82,7 @@ Linking machine:
 
 ``` 
 if machine to import : serial number is already present in i-Vertix ITAM yes AND Lookup computers in i-Vertix ITAM which status is in stock
-then link assing link if possible, else no import
+then link assign link if possible, else no import
 ```
 
 Refuse a computer because of wrong serial number:

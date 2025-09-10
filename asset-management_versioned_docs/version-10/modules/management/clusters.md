@@ -65,7 +65,7 @@ the date is earlier than the current date.
 Refer to
 [contract management](../../modules/management/contract) for more information.
 
-### Documents
+## Documents
 
 Additional information is stored in the form of external documents which
 are files uploaded into i-Vertix ITAM. In the *Documents* tab, documents can be
@@ -94,6 +94,14 @@ object. It also lists the tickets already linked to the object.
 
 ![Image of the ticket list](../../assets/modules/tabs/images/tickets.png)
 
+You can create a new one and then link it by clicking on **New tickets
+for this item**.
+
+You cannot link an existing ticket here. If you want to link an existing
+ticket, go to **assistance** \>
+[tickets](../../modules/assistance/tickets). Select
+the relevant ticket and go to the item tab
+
 :::info
 
 A second table lists the tickets attached to the linked elements
@@ -117,7 +125,7 @@ This summary table includes for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the problem)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -148,7 +156,7 @@ This summary table includes the following fields for each object:
 - Date (opening or expiry date, resolution or closing date depending on
   the status of the change)
 - Priority
-- Requestor(s) and assigned technician(s)
+- Requester(s) and assigned technician(s)
 - Associated elements
 - Category
 - Name
@@ -168,7 +176,7 @@ Any deletion or addition of a change is recorded in the history.
 
 :::
 
-### History
+## History
 
 The *History* tab is used to show any changes made to an item. The
 following information about the changes is available:
@@ -194,7 +202,7 @@ element.
 
 :::
 
-### All Information
+## All Information
 
 For an item, all information is displayed on one page from the *All*
 tab. This shows all of the tabs of an object's form in one view, one

@@ -187,7 +187,7 @@ the map view toggle will be hidden.
 
 In the table view, you have the option to sort the results by any of the
 displayed fields by clicking on the relevant column headers. You may
-perform a multi-sort by holding the `Ctrl` or `Command (MacOS)` keys
+perform a multi-sort by holding the `Ctrl` or `Command` (MacOS) keys
 while left clicking on the column header. Clicking on column headers
 multiple times will cycle between sort directions and removing the sort.
 
@@ -235,7 +235,7 @@ presented at the end of the execution of all the actions.
 :::warning
 
 The number of elements that can be handled simultaneously is limited
-by the values ​​of `max_input_vars` or `suhosin.post.max_vars` in your
+by the values of `max_input_vars` or `suhosin.post.max_vars` in your
 PHP configuration. You may therefore get a message indicating that
 massive edits are disabled. You just need to increase the values ​​of
 your PHP configuration or reduce the number of items displayed.

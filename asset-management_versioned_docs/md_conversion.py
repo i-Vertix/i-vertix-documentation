@@ -238,7 +238,7 @@ def parse_link(conv_list):
             if norm_path[-1] == "index":
                 norm_path = norm_path[:-1]
 
-            if norm_path[-1] == norm_path[-2]:
+            if len(norm_path) > 1 and norm_path[-1] == norm_path[-2]:
                 norm_path = norm_path[:-1]
 
             #norm_path = ["", "asset-management"] + norm_path

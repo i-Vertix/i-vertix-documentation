@@ -9,7 +9,7 @@ This tab, named *Components* and visible in a
 *Computer* entry, allows to manage the hardware components
 of a computer.
 
-![Components screen](../../../assets/modules/assets/images/component.png)
+![Components screen](../../../assets/tabs/images/component.png)
 
 :::info
 

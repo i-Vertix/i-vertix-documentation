@@ -21,7 +21,7 @@ to a specific page after they log out from i-Vertix ITAM.
 Once the CAS authentication is activated, each authentication is
 automatically redirected to the CAS server. In order to log into an
 internal account or one authenticated through a different method, you
-have to add "?noAUTO=1" to the login URL.
+have to add `?noAUTO=1` to the login URL.
 
 :::
 
@@ -35,12 +35,12 @@ required to be enabled for CAS authentication to function.
 ## x509 certificate 
 
 The **Email attribute for x509 authentication** tells i-Vertix ITAM to look at
-the value of this attribute in the SSL_CLIENT_S_DN HTTP request variable
-passed by the authentication system.
+the value of this attribute in the `SSL\_CLIENT\_S\_DN` HTTP request
+variable passed by the authentication system.
 
-It is possible to restrict the accepted values for the O, OR, and CN
-fields of the client certificate. In order to specify multiple values
-for each field, you may separate each value with the *\$* symbol.
+It is possible to restrict the accepted values for the `O`, `OR`, and
+`CN` fields of the client certificate. In order to specify multiple
+values for each field, you may separate each value with the *\$* symbol.
 
 ## Other automatic authentications 
 

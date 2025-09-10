@@ -9,8 +9,6 @@ i-Vertix ITAM includes an equipment reservation tool that allows to select asset
 in order to reserve them for a time slot. For repetitive reservations,
 it is possible to declare a reservation as recurrent.
 
-![Characteristics of a reservation](../../assets/modules/tools/images/details-booking.png)
-
 :::info
 
 By default, an equipment is not reservable!
@@ -19,6 +17,62 @@ Making an equipment reservable is done from the
 *Reservation* tab of the equipment's form.
 
 :::
+
+![Characteristics of a reservation](../../assets/modules/tools/images/details-booking.png)
+
+## Add a reservation
+
+- To add a reservation, you can either :
+  - Go to the object to be reserved (depending on the profile
+    authorizations)
+  - Go to **Tools** \> **Reservation** (depending on the profile
+    authorizations)
+- Click on the desired date to display the reservation box
+  - If you have used the reservation tab of the i-Vertix ITAM object, the
+    hardware will already be defined.
+  - If you've gone to the **Tools** \> **Reservation** \> **View all
+    items** tab, you'll need to select the desired item.
+
+![add a reservation](../../assets/modules/tools/images/planning-add-reservation.png)
+
+- Select **user** if not already preselected
+- Select the **start date**
+- Select the duration (you can specify an end date if the reservation
+  exceeds 1 day)
+- Add a comment if it's necessary
+
+### Add a repetition
+
+If your booking is to be repeated or spread over several
+**days/weeks/months**, you can add a repeat to it
+
+#### Daily repetition
+
+- Select **daily** in repetition
+- select the **end date** (the reservation will also be added to the
+  last day selected)
+
+#### Weekly repetition
+
+- Select **weekly** in repetition
+- select the **end date** (the reservation will also be added to the
+  last day selected)
+- Select the days on which the rehearsal will take place
+
+#### Monthly repetition
+
+- Select **monthly** in repetition
+- select the **end date** (the reservation will also be added to the
+  last day selected)
+
+In the dropdown list select :
+
+> - Each month, same date
+> - Each month, same day of weekly (for example, if your booking is on
+>   the Tuesday of the 2nd of the month, the repeat will take place on
+>   the same day of the following month.)
+
+## View a reservation
 
 A reserved equipment will be displayed in global reservation planning.
 
@@ -29,14 +83,58 @@ equipment. A reservation can also be created from this planning.
 
 ![Specific reservation planning](../../assets/modules/tools/images/planningspe-booking.png)
 
-## The different tabs
+You can see all the reservation by clicking on View calendar for all
+items (**Tools** \> **Reservations**)
 
-### Reservations
+## Find a free item
 
-This main tab of the tool allows to display and select available
-reservable equipments.
+- To simplify your equipment search, you can go to **Tools** \>
+  **Reservation** \> **Find a free item in a specific period**
 
-### Administration
+![Find a free item with no result](../../assets/modules/tools/images/planning-free-item-not-found.png)
 
-This tab display all reservable items and not only the available ones.
-As for main i-Vertix ITAM items, it offers a search engine with mass actions.
+- If you don't have result, you can extend your search to all i-Vertix ITAM
+  object types without all locations
+
+![Find a free item with results](../../assets/modules/tools/images/planning-free-item-found.png)
+
+- To proceed to booking click on booking calendar and follow the
+  previous steps.
+
+## Delete or modify a reservation
+
+You can modify a reservation by clicking on it. If you modify an
+occurrence, only the selected one is modified. If you wish to modify the
+whole series, you will either have to delete it and start again, or
+modify them one by one.
+
+To delete a reservation, click on it and click delete permanently. If
+you wish to delete all occurrences, you can click on delete all and
+delete permanently.
+
+![Delete a reservation](../../assets/modules/tools/images/planning-delete-reservation.png)
+
+## Disable reservation
+
+From the i-Vertix ITAM object, you can deactivate the reservation or remove the
+reservation option.
+
+![Delete a reservation](../../assets/modules/tools/images/planning-disable.png)
+
+1.  **Make unavailable** : deactivates the reservation feature,
+    reservations are also deactivated. If the object is reservable
+    again, the reservations that were present will be visible again.
+2.  **Prohibit reservations** : deactivates and deletes all current
+    reservations. The equipment can no longer be reserved.
+
+## Administration tab
+
+This tab display all reservable items. As for main i-Vertix ITAM items, it offers
+a search engine with mass actions.
+
+![Administration tab](../../assets/modules/tools/images/planning-administration.png)
+
+- If you click on the item name, you'll be taken back to the equipment
+  sheet
+- If you click on the schedule icon, you will be redirected to the
+  equipment schedule.
