@@ -1,0 +1,3 @@
+[submodule "glpi_orig"]
+	path = glpi_orig
+	url = https://github.com/i-Vertix/glpi-docs-user.git

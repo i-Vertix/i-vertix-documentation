@@ -3,7 +3,8 @@ const fs = require("fs");
 const jsYaml = require('js-yaml');
 
 const args = require('minimist')(process.argv.slice(2));
-console.log(args);
+console.log("Args:", args);
+
 if (!args.versioning) {
     console.error("parameter --versioning missing (e.g. --versioning=22.04)");
     process.exit(1);
@@ -39,15 +40,17 @@ try {
     return;
 }
 
-const content = [];
+let content = [];
 
 const addCategory = (obj, categoryPath, category) => {
+
     obj.push({
         type: "category",
         collapsed: true,
         label: category.label,
         items: []
     });
+
     const arr = obj[obj.length - 1].items;
     for (const item of category.items) {
         if (typeof item === "string") {
@@ -76,6 +79,42 @@ const addDoc = (obj, category, doc) => {
     });
 }
 
+
+const setCategoryIndex = (items) => {
+
+    let res = []
+
+    for (const item of items.filter(
+        (x) => !("id" in x && x.id.endsWith("index"))
+    )) {
+
+        if (item.type === "category") {
+
+            const category = item
+
+            let index_elem = item.items.find(
+                (x) => ("id" in x && x.id.endsWith("index"))
+            )
+            if (index_elem) {
+                category.link = {
+                    type: "doc",
+                    id: index_elem.id
+                }
+            }
+            category.items = setCategoryIndex(item.items)
+            res.push(category)
+        }
+        else if (item.type === "doc") {
+            res.push(item)
+        }
+        else {
+            console.log("ERROR!")
+            //should not happen!
+        }
+    }
+    return res
+}
+
 for (const item of yaml.sidebar) {
     if (typeof item === "string") {
         addDoc(content, '', item);
@@ -86,12 +125,22 @@ for (const item of yaml.sidebar) {
     }
 }
 
+// restricting index categories processing to asset-management
+// i.e. make all sidebar categories become a link pointing
+// to the index page
+if (args.docs === "asset-management") {
+    //we need to keep the - otherwise filtered - first element
+    content = [content[0]].concat(setCategoryIndex(content.slice(1)))
+}
 
 const sidebar = JSON.stringify({
     [`docs`]: content
-});
+},
+    null,
+    2
+);
 
 const outputPath = path.resolve(`${__dirname}/../${docs}_versioned_sidebars/version-${version}-sidebars.json`);
-console.log(sidebar);
-fs.writeFileSync(outputPath, sidebar, {encoding: 'utf8'});
+//console.log(sidebar);
+fs.writeFileSync(outputPath, sidebar, { encoding: 'utf8' });
 process.exit(0);

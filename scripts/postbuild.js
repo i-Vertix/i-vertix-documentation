@@ -9,27 +9,35 @@ if (!fs.existsSync(outputDir)) {
     process.exit(1);
 }
 
-const monitoringVersionsFile = path.resolve(__dirname, '..', 'monitoring_versions.json');
+const rootDir = fs.readdirSync(path.resolve(__dirname, '..'), { withFileTypes: true, recursive: false });
 
-if (!fs.existsSync(monitoringVersionsFile)) {
-    console.log("monitoring_versions.json not found");
-    process.exit(1);
+const buildJson = {
+    timestamp: new Date().getTime()
+};
+
+for (const item of rootDir) {
+    if (!item.isFile()) continue;
+    const matches = item.name.match(/^([a-zA-Z_-]+)_versions\.json$/);
+    if (!matches || !matches[1]) continue;
+
+    const versionsFile = path.resolve(__dirname, '..', matches[0]);
+    const docId = matches[1];
+
+    const versions = JSON.parse(fs.readFileSync(versionsFile, 'utf8'));
+
+    buildJson[`${docId}Indexes`] = {};
+
+    versions.forEach((version, index) => {
+        if (index === 0) {
+            buildJson[`${docId}Indexes`][version] = `/search-index-${docId}.json`;
+        } else {
+            fs.renameSync(
+                path.resolve(outputDir, docId, version, `search-index-${docId}.json`),
+                path.resolve(outputDir, docId, version, `search-index.json`),
+            );
+            buildJson[`${docId}Indexes`][version] = `/${docId}/${version}/search-index.json`;
+        }
+    });
 }
 
-const timestamp = new Date().getTime();
-
-const monitoringVersions = JSON.parse(fs.readFileSync(monitoringVersionsFile, 'utf8'));
-
-const monitoringVersionsIndexMapping = {};
-monitoringVersions.forEach((version, index) => {
-    if (index === 0) {
-        monitoringVersionsIndexMapping[version] = `/search-index.json`;
-    } else {
-        monitoringVersionsIndexMapping[version] = `/monitoring/${version}/search-index.json`;
-    }
-});
-
-fs.writeFileSync(filePath, JSON.stringify({
-    timestamp: timestamp,
-    monitoringIndexes: monitoringVersionsIndexMapping
-}), 'utf8');
+fs.writeFileSync(filePath, JSON.stringify(buildJson), 'utf8');

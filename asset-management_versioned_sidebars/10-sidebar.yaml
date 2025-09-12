@@ -1,0 +1,315 @@
+sidebar:
+- id: index
+  label: i-Vertix ITAM User Documentation
+- id: install
+  label: Installation
+  items:
+  - id: index
+    label: Installation
+  - id: import-vm
+    label: Import Virtual Machine
+  - id: configure-vm
+    label: Initial Configuration
+  - id: license-vm
+    label: License activation
+- id: first-steps
+  label: First Steps
+  items:
+  - id: index
+    label: First Steps With i-Vertix ITAM
+  - id: general
+    label: General
+  - id: discovery
+    label: Understanding The Interface
+  - id: manage-your-password
+    label: Manage Your Password
+  - id: preferences
+    label: Manage Your Preferences
+  - id: navigation-modules
+    label: Navigate i-Vertix ITAM Modules
+  - id: interfaces
+    label: User Interfaces
+  - id: view
+    label: View And Manage Records
+  - id: search
+    label: Search For Information In i-Vertix ITAM
+  - id: saved-searches
+    label: Saved Searches
+  - id: access-itam
+    label: Administering Access Controls
+- id: modules
+  label: Modules
+  items:
+  - id: index
+    label: Modules
+  - id: overview
+    label: Overview
+    items:
+    - id: index
+      label: Overview
+    - id: actions
+      label: Actions
+    - id: templates
+      label: Template Management In i-Vertix ITAM
+    - id: status
+      label: Status In i-Vertix ITAM, Specific View
+    - id: kanban
+      label: Kanban
+  - id: assets
+    label: Assets
+    items:
+    - id: index
+      label: Assets
+    - id: computers
+      label: Computers
+    - id: displays
+      label: Displays
+    - id: softwares
+      label: Software
+    - id: network-equipments
+      label: Network Equipments
+    - id: peripherals
+      label: Peripherals
+    - id: printers
+      label: Printers
+    - id: cartridges
+      label: Cartridges
+    - id: consumables
+      label: Consumables
+    - id: phones
+      label: Phones
+    - id: global
+      label: Global Search
+    - id: tabs
+      label: Tabs
+      items:
+      - id: antivirus
+        label: Antivirus
+      - id: components
+        label: Components
+      - id: connexions
+        label: Connections
+      - id: links
+        label: Links
+      - id: network-ports
+        label: Network Ports
+      - id: os
+        label: Operating Systems
+      - id: softwares
+        label: Software
+      - id: virtualization
+        label: Virtualization
+      - id: volumes
+        label: Volumes
+  - id: management
+    label: Management
+    items:
+    - id: index
+      label: Management
+    - id: licenses
+      label: Licenses
+    - id: budgets
+      label: Budgets
+    - id: certificates
+      label: Certificates
+    - id: suppliers
+      label: Suppliers
+    - id: contacts
+      label: Contacts
+    - id: contract
+      label: Contracts
+    - id: documents
+      label: Documents
+    - id: lines
+      label: Phone Lines
+    - id: data-centers
+      label: Data Centers
+    - id: clusters
+      label: Clusters
+    - id: domains
+      label: Domains
+  - id: tools
+    label: Tools
+    items:
+    - id: index
+      label: Tools
+    - id: projects
+      label: Manage Projects
+    - id: reminders
+      label: Manage Personal Or Public Reminders
+    - id: reports
+      label: Generate Reports
+    - id: reservations
+      label: Manage Reservations
+    - id: rssfeed
+      label: Manage Rss Feeds
+    - id: knowledgebase
+      label: Manage Knowledge Base
+  - id: assistance
+    label: Assistance
+    items:
+    - id: index
+      label: Assistance
+    - id: actors
+      label: Defining Actors And Roles
+    - id: prioritymatrix
+      label: Matrix Of Calculus For Priority
+    - id: tickets
+      label: Tickets
+    - id: problems
+      label: Manage Problems
+    - id: changes
+      label: Manage Changes
+    - id: lifecyclematrix
+      label: Life Cycle Matrix
+    - id: planning
+      label: Managing Plannings
+    - id: statistics
+      label: Display Statistics
+    - id: categories
+      label: Categories
+  - id: administration
+    label: Administration
+    items:
+    - id: index
+      label: Administration
+    - id: users
+      label: Users
+      items:
+      - id: users
+        label: Users
+      - id: usersimport
+        label: Import Users
+    - id: groups
+      label: Groups
+    - id: entities
+      label: Entities
+    - id: rules
+      label: Rules
+      items:
+      - id: inventorytools
+        label: Inventorytools
+      - id: rulesmanagement
+        label: Rules
+      - id: ticketbusinessrules
+        label: Ticketbusinessrules
+      - id: userauthorizations
+        label: Userauthorizations
+    - id: dictionnaries
+      label: Dictionaries
+    - id: profiles
+      label: Profiles
+      items:
+      - id: profiles
+        label: User Profiles
+    - id: mailqueue
+      label: Mailing Queue
+    - id: logs
+      label: Logs
+  - id: configuration
+    label: Configuration
+    items:
+    - id: index
+      label: Configuration
+    - id: authentication
+      label: Authentication
+      items:
+      - id: index
+        label: Authentication
+      - id: configuration
+        label: Configure External Authentication
+      - id: ldap
+        label: Ldap Directories
+      - id: imap
+        label: Authenticate From Imap
+      - id: other
+        label: Other External Authentication Methods
+    - id: dropdowns
+      label: Dropdowns
+      items:
+      - id: index
+        label: Dropdowns
+      - id: general
+        label: General
+      - id: assistance
+        label: Assistance
+      - id: calendar
+        label: Calendar
+      - id: internet
+        label: Internet
+      - id: others
+        label: Others
+      - id: tabs
+        label: Tabs
+        items:
+        - id: translation
+          label: Translation
+    - id: components
+      label: Components
+    - id: collectors
+      label: Receivers
+    - id: notifications
+      label: Notifications
+      items:
+      - id: index
+        label: Notifications
+      - id: templates
+        label: Notification Templates
+      - id: template_example
+        label: Template Example
+      - id: definitions
+        label: Notification Definitions
+      - id: email_notifications
+        label: Email Follow Ups Configuration
+      - id: alarm_options
+        label: Alarm Options
+    - id: crontasks
+      label: Configure Automatic Actions
+    - id: fields-unicity
+      label: Fields Unicity
+    - id: service_levels
+      label: Service Levels
+    - id: general
+      label: General
+      items:
+      - id: index
+        label: General Configuration
+      - id: general_configuration
+        label: General Configuration
+      - id: default_values
+        label: Default Values
+      - id: assets
+        label: Assets
+      - id: assistance
+        label: Assistance
+      - id: management
+        label: Management
+      - id: logs_purge
+        label: Logs Purge
+      - id: system
+        label: System
+      - id: security
+        label: Security
+      - id: performances
+        label: Performances
+      - id: api
+        label: Api
+      - id: impact_analysis
+        label: Impact Analysis
+      - id: sql_replicas
+        label: Sql Replicas
+    - id: external_links
+      label: External Links
+- id: advanced
+  label: Advanced
+  items:
+  - id: index
+    label: Advanced Configuration
+  - id: cache
+    label: Using The Cache
+  - id: status
+    label: i-Vertix ITAM Status Monitoring
+  - id: override-locales
+    label: Override i-Vertix ITAM Locales
+- id: glossary
+  label: Glossary
