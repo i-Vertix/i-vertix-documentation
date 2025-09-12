@@ -92,12 +92,11 @@ const config = {
 
     themes: [
         [
-            require.resolve('@easyops-cn/docusaurus-search-local'),
-            /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+            require.resolve('./plugins/docusaurus-search-local'),
+            /** @type {import("./plugins/docusaurus-search-local").PluginOptions} */
             ({
                 hashed: true,
                 indexBlog: false,
-                docsPluginIdForPreferredVersion: "monitoring",
                 docsRouteBasePath: ["monitoring", "asset-management"],
                 docsDir: ["monitoring_versioned_docs", "asset-management_versioned_docs"],
                 searchContextByPaths: [
@@ -110,7 +109,7 @@ const config = {
                         path: "asset-management"
                     }
                 ],
-                useAllContextsWithNoSearchContext: false,
+                useAllContextsWithNoSearchContext: true,
                 explicitSearchResultPath: true,
                 language: ["en"],
                 ignoreFiles: [/rest-api-v/]

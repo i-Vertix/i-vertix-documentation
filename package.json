@@ -22,7 +22,6 @@
     "@docusaurus/core": "3.8.1",
     "@docusaurus/faster": "3.8.1",
     "@docusaurus/preset-classic": "3.8.1",
-    "@easyops-cn/docusaurus-search-local": "^0.51.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^1.2.1",
     "js-yaml": "^4.1.0",
@@ -41,6 +40,9 @@
     "typescript": "~5.2.2",
     "typescript-plugin-css-modules": "^5.1.0"
   },
+  "workspaces": [
+    "plugins/*"
+  ],
   "browserslist": {
     "production": [
       ">0.5%",

@@ -1,0 +1,41 @@
+{
+  "name": "docusaurus-search-local",
+  "version": "0.51.1",
+  "description": "An offline/local search plugin for Docusaurus v3",
+  "main": "dist/server/server/index.js",
+  "typings": "dist/types/index.d.ts",
+  "files": [
+    "/dist",
+    "!/dist/generated.js"
+  ],
+  "engines": {
+    "node": ">=12"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@docusaurus/plugin-content-docs": "^2 || ^3",
+    "@docusaurus/theme-translations": "^2 || ^3",
+    "@docusaurus/utils": "^2 || ^3",
+    "@docusaurus/utils-common": "^2 || ^3",
+    "@docusaurus/utils-validation": "^2 || ^3",
+    "@easyops-cn/autocomplete.js": "^0.38.1",
+    "@node-rs/jieba": "^1.6.0",
+    "cheerio": "^1.0.0",
+    "clsx": "^2.1.1",
+    "comlink": "^4.4.2",
+    "debug": "^4.2.0",
+    "fs-extra": "^10.0.0",
+    "klaw-sync": "^6.0.0",
+    "lunr": "^2.3.9",
+    "lunr-languages": "^1.4.0",
+    "mark.js": "^8.11.1",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+  },
+  "peerDependencies": {
+    "@docusaurus/theme-common": "^2 || ^3",
+    "react": "^16.14.0 || ^17 || ^18 || ^19",
+    "react-dom": "^16.14.0 || 17 || ^18 || ^19"
+  }
+}
