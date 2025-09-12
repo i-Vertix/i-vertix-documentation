@@ -29,7 +29,8 @@ This tab permits to customize main application appearance.
 - **Default decimals limit**: number of decimals displayed for amounts
 - **Translation of dropdowns**: allows dropdowns do be translated. Once
   this parameter enabled, a translation tab will be added on dropdown
-  forms (see [dropdowns   translations](08_Module_Configuration/02_Intitulés/02_Onglet_Traduction.rst))
+  forms (see
+  [dropdowns translations](../../../modules/configuration/dropdowns/tabs/translation.md))
 - **Translation of reminders**: same as the above, but applying on
   reminders
 - **Knowledge base translation**: same as the above, but applying on

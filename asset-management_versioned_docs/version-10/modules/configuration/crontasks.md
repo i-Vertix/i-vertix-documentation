@@ -68,11 +68,11 @@ warning delay can be changed for each Entity.
 ### checkAllUpdates (GlpiMarketplaceController)
 
 Checks all installed plugins to see if there is an update available. The
-plugins must be available via the [marketplace](plugins.html) even if
-they weren't installed that way in order for the update detection to
-work. If you have notifications enabled, you can receive a notification
-regarding the available updates. Otherwise, the available updates are
-listed in the action's log.
+plugins must be available via the marketplace even if they weren't
+installed that way in order for the update detection to work. If you
+have notifications enabled, you can receive a notification regarding the
+available updates. Otherwise, the available updates are listed in the
+action's log.
 
 ### checkdbreplicate (DBconnection)
 
@@ -181,7 +181,8 @@ entries can be changed for each automatic action.
 
 ### mailgate (MailCollector)
 
-Retrieves emails from [configured mailboxes](collectors.html) and
+Retrieves emails from
+[configured mailboxes](../../modules/configuration/./collectors.md) and
 creates tickets from the mail.
 
 ### mailgateerror (MailCollector)

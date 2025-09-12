@@ -6,7 +6,7 @@ title: Default Values
 # Default values
 
 This tabs allows to configure the display preferences that are used by
-default. They can be overridden for each user (see [manage preferences](../../../first-steps/preferences.html)).
+default. They can be overridden for each user (see [manage preferences](../../../first-steps/preferences)).
 
 ## Personalization
 
