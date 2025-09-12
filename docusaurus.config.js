@@ -59,7 +59,7 @@ const config = {
             //     to: '/log-management/intro'
             // },
             {
-                id: 'itam',
+                id: 'asset-management',
                 label: 'IT Asset Management',
                 description: 'i-Vertix IT Asset Management & Inventory automatically detects, updates and manages all IT assets, providing a complete overview of their use and performance over time',
                 icon: '/img/logo-asset-management-1000.png',
@@ -98,8 +98,19 @@ const config = {
                 hashed: true,
                 indexBlog: false,
                 docsPluginIdForPreferredVersion: "monitoring",
-                docsRouteBasePath: ["monitoring"],
-                docsDir: ["monitoring_versioned_docs"],
+                docsRouteBasePath: ["monitoring", "asset-management"],
+                docsDir: ["monitoring_versioned_docs", "asset-management_versioned_docs"],
+                searchContextByPaths: [
+                    {
+                        label: "Monitoring",
+                        path: "monitoring"
+                    },
+                    {
+                        label: "IT Asset Mangement",
+                        path: "asset-management"
+                    }
+                ],
+                useAllContextsWithNoSearchContext: false,
                 explicitSearchResultPath: true,
                 language: ["en"],
                 ignoreFiles: [/rest-api-v/]
