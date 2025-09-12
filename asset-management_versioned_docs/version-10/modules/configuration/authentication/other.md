@@ -63,6 +63,7 @@ testuser).
 :::info
 
 The list of possible names for the headers is configurable, although
-the most common ones are already provided by i-Vertix ITAM. See [Configuring headings](/modules/configuration/dropdowns/index).
+the most common ones are already provided by i-Vertix ITAM. See
+[Configuring headings](../../../modules/configuration/dropdowns/index.md).
 
 :::

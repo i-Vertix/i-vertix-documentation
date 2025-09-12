@@ -8,7 +8,8 @@ title: Sql Replicas
 i-Vertix ITAM can be configured to use replica databases in some cases to improve
 performance.
 
-This tab is only visible if the option has been enabled in the [system tab](system.html).
+This tab is only visible if the option has been enabled in the
+[system tab](../../../modules/configuration/general/./system.md).
 
 ![image](../../../assets/modules/configuration/images/sql_replicas.png)
 

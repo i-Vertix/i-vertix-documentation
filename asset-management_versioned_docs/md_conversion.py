@@ -192,7 +192,7 @@ def correct_url(outf, url):
     return None
 
 
-def parse_link(conv_list):
+def parse_links(conv_list):
 
     links = {}
     
@@ -224,6 +224,7 @@ def parse_link(conv_list):
 
             #l_text = match.group(1)
             l_path = match.group(2)
+
             if l_path.startswith("http"):
                 continue
             #    links[(outf, l_path)] = l_path
@@ -355,7 +356,7 @@ if __name__ == "__main__":
             convert_to_md(c.inf, c.out)
     
     # parse links
-    link_replacement, links_euristic = parse_link(fmap)
+    link_replacement, links_euristic = parse_links(fmap)
     titles = index.parse_titles(fmap)
     
     # write docusaurs header to files

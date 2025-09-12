@@ -15,7 +15,8 @@ they have the *Personalize* update right in their profile.
 :::info
 
 These options override the default ones set in the general setup. For
-more information about the available options refer to the [general setup documentation](../../../modules/configuration/general/default_values.html).
+more information about the available options refer to the
+[general setup documentation](../modules/configuration/general/default_values.md).
 
 :::
 

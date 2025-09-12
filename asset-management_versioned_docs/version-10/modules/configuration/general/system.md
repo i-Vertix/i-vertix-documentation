@@ -12,7 +12,8 @@ information to be recorded.
 ![image](../../../assets/modules/configuration/images/system_config.png)
 
 - **Logging level** Each internal event of the application is recorded
-  in the logs which are visible in [Administration \>   Logs](../../administration/logs.html).
+  in the logs which are visible in
+  [Administration > Logs](../../../modules/administration/logs.md).
 - **Logs in files (SQL, email, automatic action...)** : It is possible
   to record certain additional events (SQL, notifications, automatic
   action...) in files. These files are then available in the

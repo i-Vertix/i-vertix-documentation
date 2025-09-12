@@ -16,8 +16,9 @@ This tab allows management of i-Vertix ITAM assistance part.
   shows 5, 10, 15, 20, ..., 55, 60.
 - **Default file size limit imported by the mails receiver** Maximum
   size of files to allow to import by the receiver. This should be
-  adjusted along with the maximum file size option on the [management   tab](management.html) and the *max_upload_size* PHP
-  directive.
+  adjusted along with the maximum file size option on the
+  [management tab](../../../modules/configuration/general/./management.md) and the
+  *max_upload_size* PHP directive.
 - **Default heading when adding a document to a ticket** Allows you to
   set a default classification for documents uploaded to a ticket.
 - **Keep tickets when purging hardware in the inventory** If enabled,
