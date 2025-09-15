@@ -297,7 +297,7 @@ if __name__ == "__main__":
     parser.add_argument("--skip-post", action="store_true", default=False)
     parser.add_argument("--copy-images", action="store_true", default=False)
     parser.add_argument("--tmp-dir", 
-                        default="asset_management_versioned_docs/itam_tmp", 
+                        default="asset-management_versioned_docs/itam_tmp", 
                         dest="tmp_dir"
                         )
     
@@ -325,7 +325,7 @@ if __name__ == "__main__":
     if args.overwrite_only:
         for ovd in overwrite_dirs:
             overwrite_files(ovd, output_dir)
-            exit(0)
+        exit(0)
 
     
     # copy tmp dir    
@@ -580,5 +580,6 @@ if __name__ == "__main__":
     # Operation is needed for the files for which search/replace is not enough
     for ovd in overwrite_dirs:
         overwrite_files(ovd, output_dir)
-        exit(0)
+    
+    exit(0)
 
