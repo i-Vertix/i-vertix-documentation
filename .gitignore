@@ -22,7 +22,7 @@
 .env.production.local
 
 #ITAM tmp
-itam_tmp/*
+*/itam_tmp/*
 
 npm-debug.log*
 yarn-debug.log*

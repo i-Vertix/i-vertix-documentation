@@ -296,12 +296,10 @@ if __name__ == "__main__":
     parser.add_argument("--skip-conversion", action="store_true", default=False)
     parser.add_argument("--skip-post", action="store_true", default=False)
     parser.add_argument("--copy-images", action="store_true", default=False)
-    parser.add_argument("--tmp-dir", default="itam_tmp", dest="tmp_dir")
-    parser.add_argument(
-        "--overwrite-dir", 
-        default="asset-management_versioned_docs/itam_overwrite", 
-        dest="overwrite_dir"
-        )
+    parser.add_argument("--tmp-dir", 
+                        default="asset_management_versioned_docs/itam_tmp", 
+                        dest="tmp_dir"
+                        )
     
     parser.add_argument(
         "--overwrite-only", 
@@ -315,13 +313,19 @@ if __name__ == "__main__":
     input_dir = pathlib.Path(args.input_dir)
     output_dir = pathlib.Path(args.output_dir)
     tmp_dir = pathlib.Path(args.tmp_dir)
-    overwrite_dir = pathlib.Path(args.overwrite_dir)
 
     output_dir.mkdir(exist_ok=True)
 
+    overwrite_dirs = [
+        "asset-management_versioned_docs/itam_overwrite_version-10",
+        "asset-management_versioned_docs/images_overwrite_version-10",
+    ]
+    overwrite_dirs = map(lambda x: pathlib.Path(x), overwrite_dirs)
+
     if args.overwrite_only:
-        overwrite_files(overwrite_dir, output_dir)
-        exit(0)
+        for ovd in overwrite_dirs:
+            overwrite_files(ovd, output_dir)
+            exit(0)
 
     
     # copy tmp dir    
@@ -572,7 +576,9 @@ if __name__ == "__main__":
     print(f"replaced_links: {replaced_links}")
 
 
-    # Then, overwriting some of the md files, needed for some rst
-    # files for which search/replace is not enough
-    overwrite_files(overwrite_dir, output_dir)
+    # Then, overwriting images and some of the md files, 
+    # Operation is needed for the files for which search/replace is not enough
+    for ovd in overwrite_dirs:
+        overwrite_files(ovd, output_dir)
+        exit(0)
 
