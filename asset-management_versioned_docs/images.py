@@ -83,7 +83,13 @@ def process_images(
 ## asset dir
 def replace_image(match, rel_dir, incpath_to_realpath):
     path = match.group(2)
-    link = incpath_to_realpath[path] 
+    link = incpath_to_realpath.get(path)
+
+    # should not happen, but don't crash the script
+    # when the image is missing
+    if link is None:
+        print(f"image {path} is not included by any rst file")
+        return ""
 
     lev = len(rel_dir.parts) * [".."]
     lev = pathlib.Path(*lev)

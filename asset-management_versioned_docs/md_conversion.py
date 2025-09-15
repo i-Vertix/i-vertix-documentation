@@ -491,6 +491,18 @@ if __name__ == "__main__":
         # Changing GLPI to i-Vertix ITAM
         lambda x, _, f: x.replace("GLPI", "i-Vertix ITAM"),
         
+        # To check all glpi replacements 
+        # (most of them are in commands or links)
+        #lambda x, _, f: x.replace("glpi", "itam"),
+
+        # Change glpi to itam but not when:
+        # - followed by :, -, _, / (cmds, links, etc)
+        # - in a .png, .pot or blacklist filename
+        lambda x, _, f: re.sub(
+            r"glpi(?!([:\-_/]|.*\.pot|.*\.png|.*\.blacklist))", 
+            "itam", 
+            x),
+                
         # replace https and redis links, for some reason they are converted wrongly
         lambda x, _, f: re.sub(r"<((?:https*|redis+)://.*)>", lambda m: f"[{m.group(1)}]({m.group(1)})", x),
 

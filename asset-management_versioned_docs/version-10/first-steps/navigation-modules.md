@@ -102,7 +102,7 @@ components).
 In this window, additional shortcuts are available:
 
 - `↑` and `↓` in order to navigate through the results
-- `Enter` to change the active glpi page on the selected result
+- `Enter` to change the active itam page on the selected result
 - `Esc` to close the window.
 
 ![Navigation "Fuzzy"](../assets/first-steps/images/fuzzyglpi.png)
