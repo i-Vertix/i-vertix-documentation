@@ -1,11 +1,10 @@
 ---
-id: prerequisites-works
-title: Prerequisites
+id: ncb-features
+title: Features
+hide_table_of_contents: true
 ---
 
-## Key features
-
-* Automatic backup of network devices configurations 
+* Automatic backup of network devices configurations
 * Multi brand support
 * Configurations saved in a GIT repository
 * Versions comparison
@@ -14,7 +13,7 @@ title: Prerequisites
 
 ![image](../assets/ncb/ncb.png)
 
-### Technical diagram and data flow
+## Technical diagram and data flow
 
 ![image](../assets/ncb/ncb1.png)
 

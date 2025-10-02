@@ -29,10 +29,7 @@ sidebar:
           - smtp-configuration
           - password-modification
           - license
-      - id: first-web-access
-        label: First web access
-        items:
-          - first-web-access
+      - first-web-access
       - attach-a-poller-to-a-central-server
       - fail2ban
   - id: monitoring-resources
@@ -137,21 +134,21 @@ sidebar:
       - graph-template
       - chart-curves
       - virtual-metrics
-  - id: i-vertix-maps
-    label: i-Vertix Maps
+  - id: maps
+    label: Interactive Maps
     items:
       - map-types
       - managing-maps
       - visualize-maps
       - edit-maps
-  - id: i-vertix-ncb
-    label: i-Vertix NCB
+  - id: ncb
+    label: Network Configuration Backup
     items:
-      - prerequisites-works
-      - managing-ncb
-      - visualize-ncb
-  - id: i-vertix-netflow
-    label: i-Vertix Netflow
+      - ncb-features
+      - ncb-config
+      - ncb-view-backups
+  - id: netflow
+    label: NetFlow (NTA)
     items:
       - netflow-overview
       - netflow-setup
@@ -159,12 +156,12 @@ sidebar:
       - netflow-flow-history
       - netflow-flow-alerts
       - netflow-traffic-report
-  - id: i-vertix-reporting
+  - id: reporting
     label: Reporting
     items:
       - availability-reports
-      - id: i-vertix-bi
-        label: i-Vertix Business Intelligence
+      - id: business-intelligence
+        label: Business Intelligence
         items:
           - bi-overview
           - bi-requirements

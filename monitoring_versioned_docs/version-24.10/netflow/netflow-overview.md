@@ -3,9 +3,9 @@ id: netflow-overview
 title: Introduction
 ---
 
-The *i-Vertix IT Monitoring Netflow module* brings a complete new functionality and a lot of helpful views and reports
-to the IT Monitoring solution. As the name *Netflow* already states, the new module is all about monitoring network
-flows.
+The *i-Vertix IT Monitoring NetFlow module* (also called **N**etwork **T**raffic **A**nalyzer or **NTA**) brings a complete new functionality and a lot of helpful views and reports
+to the IT Monitoring solution. As the name *NetFlow* already states, the new module is all about monitoring network
+traffic and flows.
 Practically saying:
 
 - Who is talking to whom in your network?
@@ -16,14 +16,14 @@ Practically saying:
 
 :::info
 
-*i-Vertix IT Monitoring Netflow* is an additional add-on. Contact the [i-Vertix Sales Team](mailto:sales@i-vertix.com) for
+*i-Vertix IT Monitoring NetFlow* is an additional add-on. Contact the [i-Vertix Sales Team](mailto:sales@i-vertix.com) for
 further information.
 
 :::
 
 ## Key features
 
-Using the *i-Vertix IT Monitoring Netflow module* you can:
+Using the *i-Vertix IT Monitoring NetFlow module* you can:
 
 - view network flows in real time
 - view recent network flows grouped by different values (e.g. application, protocol, client, server etc.)
@@ -42,18 +42,18 @@ The infrastructure for collecting network flows is similar to the normal monitor
 decentralized collectors and a central processing and storage system. Some of the infrastructure, such as the i-Vertix
 Pollers can also be re-used (upgraded) to collect also flows.
 
-### Netflow collector
+### NetFlow Collector
 
-Flows are sent from your L3 network devices, such as switches, routers or firewalls to our i-Vertix Netflow collector,
+Flows are sent from your L3 network devices, such as switches, routers or firewalls to our i-Vertix NetFlow collector,
 which can be installed on any existing [i-Vertix Poller](../glossary.md#smart-poller) (hardware or virtual machine) when
 enough hardware resources are available.
 
 Like the monitoring data which is gathered by the i-Vertix Poller engine, also the flows are sent to a centralized
 managing system.
 
-### Netflow Analyzer
+### NetFlow Analyzer
 
-The centralized **i-Vertix Netflow analyzer** receives all collected flows from the netflow collectors and processes,
-aggregates, stores and provides the data afterwards for further use. It is best practice to align the Netflow analyzer
-system next to the *Central Monitoring Manager* to minify the time of data exchange between the monitoring system and
+The centralized **i-Vertix NetFlow Analyzer** (NTA) receives all collected flows from the netflow collectors and processes,
+aggregates, stores and provides the data afterwards for further use. It is best practice to align the *NetFlow Analyzer system*
+next to the *Monitoring Central system* to minify the time of data exchange between the monitoring system and
 the netflow analyzer when interacting with flows.

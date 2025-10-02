@@ -6,19 +6,19 @@ title: Setup & Configuration
 import Breadcrumb from "../../../src/components/Breadcrumb";
 import ImageCounter from "../../../src/components/ImageCounter";
 
-[License acquired](mailto:sales@i-vertix.com) and ready? Let's install the new *i-Vertix IT Monitoring Netflow module* on
+[License acquired](mailto:sales@i-vertix.com) and ready? Let's install the new *i-Vertix IT Monitoring NetFlow module* on
 your existing i-Vertix monitoring system!
 
-To understand the main components, which are part of the *i-Vertix IT Monitoring Netflow module*,
+To understand the main components, which are part of the *i-Vertix IT Monitoring NetFlow module*,
 please read the [netflow infrastructure chapter](./netflow-overview#main-components).
 
 ## Setup
 
-To provide a fast and easy setup of the new netflow functionality, we prepared production-ready virtual images for the Netflow analyzer with a short guided setup process and a new package for the i-Vertix Poller.
+To provide a fast and easy setup of the new netflow functionality, we prepared production-ready virtual images for the *NetFlow Analyzer* with a short guided setup process and a new package for the i-Vertix Poller.
 
-### Prepare the Netflow Analyzer
+### Prepare the NetFlow Analyzer System
 
-When you pruchase the license for the netflow add-on you receive the latest version of our Netflow analyzer image for VMware.
+When you pruchase the license for the netflow add-on you receive the latest version of our NetFlow analyzer image for VMware.
 Let us know if you need other virtual image formats.
 
 Here is a guide on [how to import a virtual appliance into VMware](../installation/setup-central-poller/import-virtual-appliance.md).
@@ -26,16 +26,16 @@ Here is a guide on [how to import a virtual appliance into VMware](../installati
 <details>
 <summary>System requirements</summary>
 
-It is not easy to determine the required hardware resources for the netflow analyzer system just from the beginning.
+It is not easy to determine the required hardware resources for the *NetFlow Analyzer system* just from the beginning.
 It may be necessary to tune the resources over time, depending on the count of incoming flows.
 
 #### Network definitions
 
 |                       | Small Network | Medium Network    | Large Network |
 | --------------------- | ------------- | ----------------- | ------------- |
-| Network Traffic       | &lt;100 Mbps    | 100 Mbps - 1 Gbps | > 1 Gbps      |
+| Network Traffic       | &lt;100 Mbps  | 100 Mbps - 1 Gbps | > 1 Gbps      |
 | Hosts in your Network | 0-1k          | 1k - 50k          | > 50k         |
-| Flows\*                | 0-1k          | 350 GB            | 500 GB        |
+| Flows\*               | 0-1k          | 350 GB            | 500 GB        |
 
 *Flows: flows processed at the same time (Live flows)
 
@@ -52,7 +52,23 @@ It may be necessary to tune the **retention** or add additional storage to the s
 
 </details>
 
-#### First start of the Netflow analyzer system
+<details>
+<summary>Ports</summary>
+
+To make sure everything works the way it should, have a look at the below port table to understand, which ports are used for communication between the different systems.
+
+Additional to the below ports, the **[default monitoring port mappings](../installation/before-you-start/technical-information#tables-of-platform-flows-centralpoller) between *Central* and *Poller* are also used**.
+
+| Source System              | Destination System         | Protocol | Port                                                    | Description                                                               |
+| -------------------------- | -------------------------- | -------- | ------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Monitoring Central         | NTA System    | SSH      | TCP 22                                                  | Used to deploy NetFlow Collectors                                         |
+| Monitoring Central         | NTA System    | HTTPS    | TCP 8443                                                | Used to query data from the NTA API                                       |
+| Poller (NetFlow Collector) | NTA System    | ZMQ      | TCP 5556-5656 (*NetFlow Analyzer Interface Port*)       | Used to send flows from the collector to the centralized NetFlow Analyzer |
+| NetFlow Device             | Poller (NetFlow Collector) | NetFlow  | default UDP 6363 or UDP 2055 (*NetFlow Collector Port*) | Used to send flows from a device to the NetFlow Collector                 |
+
+</details>
+
+#### First start of the NetFlow analyzer system
 
 After you have imported the netflow analyzer image, start the new virtual machine and use the provided credentials to log in.
 
@@ -94,15 +110,15 @@ sudo dnf install ivertix-netflow-module
 
 After the install is complete, log into your monitoring system with an administrator account.
 
-Perform the extension installation from the `Extension Manager` under <Breadcrumb crumbs={["Administration", "Extensions", "Manager"]} /> and install the new `Netflow by i-Vertix` extension.
+Perform the extension installation from the `Extension Manager` under <Breadcrumb crumbs={["Administration", "Extensions", "Manager"]} /> and install the new `NetFlow by i-Vertix` extension.
 
-Now we need to configure the connection between the monitoring and the Netflow analyzer system.
+Now we need to configure the connection between the monitoring and the *NetFlow Analyzer system*.
 
-Navigate to <Breadcrumb crumbs={["Administration", "Additional Modules", "Netflow Settings"]} /> to perform the initial module setup.
+Navigate to <Breadcrumb crumbs={["Administration", "Additional Modules", "NetFlow Settings"]} /> to perform the initial module setup.
 
 ![Module setup](../assets/i-vertix-netflow/module-setup.png)
 
-Please insert the IP address of the *Netflow Analyzer* system, as seen by the monitoring central system into the form.
+Please insert the IP address of the *NetFlow Analyzer* system, as seen by the monitoring central system into the form.
 
 Below you can choose to use the default credentials or insert custom ones for the admin account.
 Keep using the default credentials if you are setting up a fresh netflow system.
@@ -115,7 +131,7 @@ If you are relocating your netflow system to a new monitoring system you may nee
 
 When hitting save, the following tasks will be executed:
 
-- Connection check to Netflow analyzer API
+- Connection check to NetFlow Analyzer API
 - Login with provided (or default) credentials and check user permissions (admin account required)
 - Generate a new secure random password for the provided admin user
 - Create a new vault credential and save the connection information to the monitoring configuration db
@@ -124,7 +140,7 @@ When hitting save, the following tasks will be executed:
 
 When you encounter any problems during the connectivity check or password reset, please check the provided error message for further information.
 
-Most likely the monitoring system is not able to connect to the Netflow analyzer system due to firewall or network problems. Also make sure that the [Netflow analyzer system is properly set up!](#first-start-of-the-netflow-analyzer-system)
+Most likely the monitoring system is not able to connect to the NetFlow Analyzer system due to firewall or network problems. Also make sure that the [NetFlow Analyzer system is properly set up!](#first-start-of-the-netflow-analyzer-system)
 
 :::
 
@@ -134,9 +150,9 @@ After the connection information is successfully saved we can now set up and con
 
 As already stated in the introduction, *NetFlow collectors* receive the flows from network devices and send them to the central *NetFlow analyzer* system.
 
-You can easily upgrade any existing i-Vertix Poller that is already connected to your monitoring system to become also a *Netflow collector*.
+You can easily upgrade any existing i-Vertix Poller that is already connected to your monitoring system to become also a *NetFlow collector*.
 
-Please keep in mind that upgrading your poller to a *Poller + Netflow collector* increases the hardware consumption.
+Please keep in mind that upgrading your poller to a *Poller + NetFlow collector* increases the hardware consumption.
 If your poller, which you want to upgrade, is already scratching the limit of it's available hardware resources you need to add further hardware resources.
 
 You can also add a new dedicated poller which only functions as a *NetFlow collector*. Please follow [these steps to attach a new poller to the monitoring system](../installation/attach-a-poller-to-a-central-server).
@@ -186,7 +202,7 @@ These settings are deployed to the poller.
 
 - **NetFlow Collector Port**: this is the port to which the network devices send their flows
 - **NetFlow Analyzer IP**: IP address of the NetFlow Analyzer system as seen by the poller (collector)
-- **Netflow Analyzer Interface Port**: interface port to which the collector sends the flows to - by default the above configured interface port and this one are equal - only change if a firewall or proxy forwards the port
+- **NetFlow Analyzer Interface Port**: interface port to which the collector sends the flows to - by default the above configured interface port and this one are equal - only change if a firewall or proxy forwards the port
 
 Save the new collector after you have filled all fields. A new netflow API user will be created for the new collector which is used to display the collected flows.
 
@@ -226,7 +242,7 @@ Make sure to back up your device settings before making any changes.
 :::
 
 | Vendor        |                                                                                                                                                                                                                                                                                                                                                                                                                             |
-|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Cisco         | [https://www.cisco.com/c/dam/en/us/td/docs/security/stealthwatch/netflow/Cisco_NetFlow_Configuration.pdf](https://www.cisco.com/c/dam/en/us/td/docs/security/stealthwatch/netflow/Cisco_NetFlow_Configuration.pdf)                                                                                                                                                                                                          |
 | Juniper       | [https://www.juniper.net/documentation/us/en/software/junos/flow-monitoring/topics/example/jflow-v9-configuring-on-ms-mic.html](https://www.juniper.net/documentation/us/en/software/junos/flow-monitoring/topics/example/jflow-v9-configuring-on-ms-mic.html)                                                                                                                                                              |
 | Fortinet      | [https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-Configure-Netflow/ta-p/196080](https://community.fortinet.com/t5/FortiGate/Technical-Tip-How-to-Configure-Netflow/ta-p/196080)                                                                                                                                                                                                                            |

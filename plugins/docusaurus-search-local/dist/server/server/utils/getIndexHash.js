@@ -39,7 +39,7 @@ function getIndexHash(config) {
         // since the index maybe changed between versions.
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const pluginVersion = require(path_1.default.resolve(__dirname, "../../../../package.json")).version;
-        (0, debug_1.debugInfo)("using @easyops-cn/docusaurus-search-local v%s", pluginVersion);
+        (0, debug_1.debugInfo)("using docusaurus-search-local v%s", pluginVersion);
         md5sum.update(pluginVersion, "utf8");
         for (const item of files) {
             md5sum.update(fs_1.default.readFileSync(item.path));

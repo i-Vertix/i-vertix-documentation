@@ -50,11 +50,8 @@ function generate(config, dir) {
     if (language.includes("ja") || language.includes("jp")) {
         constantContents.push(`require(${JSON.stringify(require.resolve("lunr-languages/tinyseg"))})(lunr);`);
     }
-    for (const lang of language.filter((item) => item !== "en" && item !== "zh")) {
+    for (const lang of language.filter((item) => item !== "en")) {
         constantContents.push(`require(${JSON.stringify(require.resolve(`lunr-languages/lunr.${lang}`))})(lunr);`);
-    }
-    if (language.includes("zh")) {
-        constantContents.push(`require(${JSON.stringify(require.resolve("@easyops-cn/docusaurus-search-local/dist/client/shared/lunrLanguageZh"))}).lunrLanguageZh(lunr);`);
     }
     if (language.length > 1) {
         constantContents.push(`require(${JSON.stringify(require.resolve("lunr-languages/lunr.multi"))})(lunr);`);

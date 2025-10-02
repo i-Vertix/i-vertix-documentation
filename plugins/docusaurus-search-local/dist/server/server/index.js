@@ -9,7 +9,7 @@ const theme_translations_1 = require("@docusaurus/theme-translations");
 const processPluginOptions_1 = require("./utils/processPluginOptions");
 const postBuildFactory_1 = require("./utils/postBuildFactory");
 const generate_1 = require("./utils/generate");
-const PLUGIN_NAME = "@easyops-cn/docusaurus-search-local";
+const PLUGIN_NAME = "docusaurus-search-local";
 function DocusaurusSearchLocalPlugin(context, options) {
     const config = (0, processPluginOptions_1.processPluginOptions)(options, context);
     const dir = path_1.default.join(context.generatedFilesDir, PLUGIN_NAME, "default");

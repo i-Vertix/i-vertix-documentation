@@ -21,7 +21,7 @@ The list tab displays the hosts that were detected by the discovery, along with 
 * **Device status**: status can be online, offline, alerting, dormant
 * **Name**: Device name
 * **Serial**: serial number
-* **Model**: Host/device model 
+* **Model**: Host/device model
 * **Public ip**: Host IP Address
 * **Local ip**: Host IP Address
 * **Ethernet**:

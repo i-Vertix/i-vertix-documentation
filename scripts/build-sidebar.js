@@ -27,7 +27,6 @@ if (!validDocs.includes(docs)) {
 if (docs === "monitoring") {
     version = version.toFixed(2);
 }
-
 // fs.writeFileSync(path.resolve(`${__dirname}/../alert.js`), fileContent, {enconding: 'utf8'});
 
 const yamlPath = path.resolve(`${__dirname}/../${docs}_versioned_sidebars/${version}-sidebar.yaml`);
@@ -82,7 +81,7 @@ const addDoc = (obj, category, doc) => {
 
 const setCategoryIndex = (items) => {
 
-    let res = []
+    let res = [];
 
     for (const item of items.filter(
         (x) => !("id" in x && x.id.endsWith("index"))
@@ -90,31 +89,30 @@ const setCategoryIndex = (items) => {
 
         if (item.type === "category") {
 
-            const category = item
+            const category = item;
 
             let index_elem = item.items.find(
                 (x) => ("id" in x && x.id.endsWith("index"))
-            )
+            );
             if (index_elem) {
                 category.link = {
                     type: "doc",
                     id: index_elem.id
-                }
+                };
             }
-            category.items = setCategoryIndex(item.items)
-            res.push(category)
+            category.items = setCategoryIndex(item.items);
+            res.push(category);
         }
         else if (item.type === "doc") {
-            res.push(item)
+            res.push(item);
         }
         else {
-            console.log("ERROR!")
+            console.log("ERROR!");
             //should not happen!
         }
     }
-    return res
+    return res;
 }
-
 for (const item of yaml.sidebar) {
     if (typeof item === "string") {
         addDoc(content, '', item);
@@ -130,7 +128,7 @@ for (const item of yaml.sidebar) {
 // to the index page
 if (args.docs === "asset-management") {
     //we need to keep the - otherwise filtered - first element
-    content = [content[0]].concat(setCategoryIndex(content.slice(1)))
+    content = [content[0]].concat(setCategoryIndex(content.slice(1)));
 }
 
 const sidebar = JSON.stringify({

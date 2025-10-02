@@ -1,9 +1,10 @@
 ---
-id: visualize-ncb
-title: Visualize NCB
+id: ncb-view-backups
+title: View Backups
+hide_table_of_contents: true
 ---
 
-Go to **Monitoring > NCB > Backup Details
+Go to **Monitoring > NCB > Backup Details**
 
 The view shows the list of connected devices where the configuration can be saved and not connected. In this section the available filters are: Device, Poller, Hostgroup, Devicegroup, Vendor, Status. Status can be: no Connectio, Success and Pending.
 

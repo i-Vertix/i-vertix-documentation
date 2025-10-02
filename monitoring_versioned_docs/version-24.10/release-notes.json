@@ -1,0 +1,35 @@
+[
+  {
+    "component": "i-Vertix Centreon Web",
+    "version": "24.10.12-1",
+    "date": 1759221417000,
+    "sections": [
+      {
+        "name": "Fixes",
+        "listItems": [
+          "Fixed stuff",
+          "Created other bugs"
+        ]
+      },
+      {
+        "name": "Features",
+        "listItems": [
+            "Nothing special lol"
+        ]
+      }
+    ]
+  },
+  {
+    "component": "i-Vertix Vault",
+    "version": "24.10.1-1",
+    "date": 1759221658000,
+    "sections": [
+      {
+        "name": "Fixes",
+        "listItems": [
+            "Fixed WSMAN credential mappings (used by VMWare OS Discovery)"
+        ]
+      }
+    ]
+  }
+]
