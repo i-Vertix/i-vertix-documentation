@@ -91,6 +91,7 @@ sidebar:
           - create-snmp-traps-definitions
           - monitoring-with-snmp-traps
           - debug-snmp-traps-management
+      - troubleshooting
   - id: events-alerts
     label: Events & Alerts
     items:

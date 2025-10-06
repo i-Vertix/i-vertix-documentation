@@ -305,6 +305,10 @@
               "id": "monitoring-resources/passive-monitoring/debug-snmp-traps-management"
             }
           ]
+        },
+        {
+          "type": "doc",
+          "id": "monitoring-resources/troubleshooting"
         }
       ]
     },
