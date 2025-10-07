@@ -133,8 +133,9 @@ Click on one of the two sections (*Macros* or *Thresholds*) to expand the list:
 - <ImageCounter num={3} /> *Macro value*: the current macro value (check the <ImageCounter num={2} disableMargin /> macro source to see where it is defined)
 - <ImageCounter num={4} /> *Macro description*
 - <ImageCounter num={5} /> *Macro help*: opens a small popover showing the help text for the underlying command option linked to the macro
-- <ImageCounter num={6} /> *Import credential*: opens the credential list with the following credential types available: SNMP, SSH, Agent, and WSMAN  
+- <ImageCounter num={6} /> *Import credential*: opens the credential list with the following credential types available: SNMP, SSH, Agent, and WSMAN
 - <ImageCounter num={7} /> *Plugin help*: opens a new browser tab with the complete monitoring plugin help
+- <ImageCounter num={7} /> *Reset value* (only available when macro value changed): resets the current value to the originally configured value
 
 You can perform the following actions:
 
@@ -212,8 +213,8 @@ first import values from the *Host* and then import the desired *SNMP Credential
 
 Some parameters may become invalid during configuration. When hovering over the **red dot**, you can see the reason why.
 
-For example, when selecting *Version* "3", the *Community* parameter becomes obsolete.  
-In that case, you need to delete or clear its value.  
+For example, when selecting *Version* "3", the *Community* parameter becomes obsolete.
+In that case, you need to delete or clear its value.
 The same applies for *Version* "2c" or "1" — in those cases, clear all version "3"-related parameters (username, authentication protocol, passphrases, etc.).
 
 :::
@@ -337,26 +338,26 @@ On the opened page, define the <ImageCounter num={1} disableMargin /> poller fro
 
 ![Command](../assets/monitoring-resources/troubleshooter/commands_1.png)
 
-The *indicator dot* next to each parameter shows its validity.  
+The *indicator dot* next to each parameter shows its validity.
 Required parameters are always displayed; additional optional parameters can be added by clicking the <ImageCounter num={3} disableMargin /> `+` button at the bottom of the page.
 
 For some commands, it is also possible to <ImageCounter num={4} disableMargin /> import values from *configured hosts* or *SNMP credentials*.
 
 ### Execute Command
 
-After defining the parameters and setting the *Poller*, execute the command by clicking the <ImageCounter num={5} disableMargin /> `Execute` button.  
+After defining the parameters and setting the *Poller*, execute the command by clicking the <ImageCounter num={5} disableMargin /> `Execute` button.
 It is also possible to run the command automatically *every x seconds*. To do so, first select the automatic execution interval, then click `Execute`.
 
 ![Command result](../assets/monitoring-resources/troubleshooter/commands_2.png)
 
 The result is displayed as follows:
 
-- <ImageCounter num={1} /> *Output* (default selected): in some cases, the output is formatted or truncated. In such cases, an additional `Raw` output option is available to view the original content.  
-- <ImageCounter num={2} /> *Executed command*  
-- <ImageCounter num={3} /> *Status*  
-- <ImageCounter num={4} /> *Execution time*  
-- <ImageCounter num={5} /> *Output* (depending on <ImageCounter num={1} disableMargin /> / <ImageCounter num={2} disableMargin /> selection)  
-- <ImageCounter num={6} /> *Clear output*  
+- <ImageCounter num={1} /> *Output* (default selected): in some cases, the output is formatted or truncated. In such cases, an additional `Raw` output option is available to view the original content.
+- <ImageCounter num={2} /> *Executed command*
+- <ImageCounter num={3} /> *Status*
+- <ImageCounter num={4} /> *Execution time*
+- <ImageCounter num={5} /> *Output* (depending on <ImageCounter num={1} disableMargin /> / <ImageCounter num={2} disableMargin /> selection)
+- <ImageCounter num={6} /> *Clear output*
 
 :::note
 
