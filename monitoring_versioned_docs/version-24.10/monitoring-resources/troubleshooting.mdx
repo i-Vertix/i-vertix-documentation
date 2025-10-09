@@ -35,11 +35,11 @@ Configure and test services on the fly, without the need to export the configura
 ![Monitoring Plugin](../assets/monitoring-resources/troubleshooter/monitoring_plugin.png)
 
 </TabItem>
-<TabItem value="snmp" label="SNMP walks">
+<TabItem value="snmp" label="SNMP">
 
-Launch SNMP walks from any poller.
+Launch snmpget requests or snmpwalks from any poller.
 
-![SNMP walks](../assets/monitoring-resources/troubleshooter/snmp.png)
+![SNMP](../assets/monitoring-resources/troubleshooter/snmp.png)
 
 </TabItem>
 <TabItem value="commands" label="Utility Commands">
@@ -95,6 +95,20 @@ By first clicking the <ImageCounter num={1} disableMargin /> `i-Vertix` icon and
 the *Troubleshooter* popup opens by default on the `Monitoring Plugin` tab with the last used host/service resource pre-selected.
 
 ![Troubleshoot Monitoring Plugin](../assets/monitoring-resources/troubleshooter/monitoring_plugin.png)
+
+### Grant Access to Functionalities
+
+The Troubleshooter is enabled by default only for administrators, who have full access to all monitoring features by default.
+If you want to grant access to specific Troubleshooter functionalities to other users, you must configure the permissions in the *Menu ACL*.
+
+Navigate to <Breadcrumbs crumbs={["Administration", "ACL", "Menu Access"]} /> and select the *Menu ACL* to which you want to grant access.
+
+Then, expand the `Monitoring` → `Troubleshooter` section and select the features (`Monitoring Plugin`, `SNMP`, `Utility Commands`) you want to make accessible.
+
+![Menu ACL](../assets/monitoring-resources/troubleshooter/acl.png)
+
+Click `Save` once you are done.
+After saving, all monitoring users associated with the *access groups* assigned to the modified *Menu ACL* will have access to the selected Troubleshooter features.
 
 ## Troubleshooting Monitoring Plugins
 
@@ -160,13 +174,15 @@ The result view appears below the `Execute` button and shows the following infor
 - <ImageCounter num={8} /> *Debug* & *Verbose*: select to include debug and/or extended information (displayed according to the selected output mode)
 - <ImageCounter num={9} /> *Update Service* or *Create Service* (only visible when changes were made): updates the modified macro values on the current service, or creates a new service on the selected host when using a service template 
 
-## Launch SNMP walks
+## Launch SNMP commands
 
 *accessible from the **SNMP** tab*
 
-![SNMP walk list](../assets/monitoring-resources/troubleshooter/snmp_1.png)
+![SNMP commands](../assets/monitoring-resources/troubleshooter/snmp_1.png)
 
-Click the <ImageCounter num={1} disableMargin /> `+` button to start a new SNMP walk.
+Click the <ImageCounter num={1} disableMargin /> `+` button to start a new SNMP-Get request or <ImageCounter num={2} disableMargin /> to start a new SNMP walk.
+
+Let's start off with a new snmpwalk.
 
 ### Define walk properties
 
@@ -323,6 +339,14 @@ Archived walks are automatically deleted after *7 days*.
 Use the <ImageCounter num={6} disableMargin /> `of all users` checkbox to view **all** archived SNMP walks of all users.
 
 :::
+
+### Execute SNMP-Get Request
+
+As previously stated you can also launch a new SNMP-Get Request from the *SNMP* tab.
+
+The definition and handling of the command paramters is equal to the parameters of the snmpwalk command.
+The only noticeable difference between these two commands are, that snmpget requests only query one value and walks can request more values.
+`snmpget` results also won't be archived.
 
 ## Execute Utility Commands
 
