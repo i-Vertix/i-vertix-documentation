@@ -9,3 +9,7 @@ RewriteRule ^monitoring/i-vertix-reporting/availability-reports/?$ /monitoring/r
 RewriteRule ^monitoring/i-vertix-ncb/prerequisites-works/?$ /monitoring/ncb/ncb-features [L,R=301]
 RewriteRule ^monitoring/i-vertix-ncb/managing-ncb/?$ /monitoring/ncb/ncb-config [L,R=301]
 RewriteRule ^monitoring/i-vertix-ncb/visualize-ncb/?$ /monitoring/ncb/ncb-view-backups [L,R=301]
+
+Options -Indexes
+
+ErrorDocument 404 /404.html
