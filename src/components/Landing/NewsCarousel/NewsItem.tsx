@@ -10,7 +10,7 @@ const NewsItem = (props: News & { onClick: () => void }) => {
             <div className={clsx(styles.newsItem, props.position === "center" && styles.newsItemActive)}>
                 {props.position && props.position !== "center" && <div
                     className={clsx(styles.newsItemInactive, props.position === "left" ? styles.left : styles.right)}/>}
-                <img className={styles.newsImage} src={props.image} alt={props.title}/>
+                <img className={styles.newsImage} src={props.image} alt={props.title} draggable={false} />
                 <div className={styles.newsContentContainer}>
                     <h2 className={styles.newsTitle}>{props.title}</h2>
                     <div className={styles.newsContent}>

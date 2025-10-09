@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from "react";
+import React, { useMemo, useState } from "react";
 
 type Position = "left" | "center" | "right";
 export type News = {
@@ -18,36 +18,47 @@ const useNewsCarousel = () => {
 
     const news = useMemo((): News[] => [
         {
-            title: "24.10 on the way",
-            image: "/img/landing/news/news_1.png",
+            title: "NEW Network Traffic Analyzer",
+            image: "/img/landing/news/netflow.jpg",
             text: <p>
-                We are finalizing our latest work to release a new major update of the i-Vertix monitoring.
-                You can expect new features, new functionalities and improvements, always suited for your needs.
-                During the next few weeks and months we will get in touch with you and roll-out the update on your systems.
-                As always: if you have any questions or find something missing, something broken or something which
-                could be improved, feel
-                free to contact us via <a href={"mailto:support@i-vertix.com"}>Email</a>.
+                We're excited to introduce the i-Vertix Network Traffic Analyzer — our latest module designed to give you deeper insights into your network.
+                <br />
+                Monitor, visualize, and understand your traffic patterns like never before to keep your infrastructure running smoothly and efficiently.
+                For more information or a personal demo, feel free to contact us at <a href={"mailto:sales@i-vertix.com"}>sales@i-vertix.com</a>.
             </p>,
+            buttonLabel: "Read more",
+            buttonLink: "./monitoring/netflow/netflow-overview",
         },
         {
-            title: "Monitoring - Integrated Documentation",
-            image: "/img/landing/news/news_2.png",
+            title: "NEW i-Vertix Monitoring 4.3",
+            image: "/img/landing/news/new-release.jpg",
             text: <p>
-                With our new monitoring version we introduced the functionality to access the documentation' search
-                directly from the monitoring web interface!<br/>
-                On the left screen-corner you will find the i-Vertix icon which opens up a list of various helpful
-                links, including the documentation search.
-            </p>
+                Check out the new features and functionalities of our new i-Vertix Monitoring version 4.3.
+                <br />
+                Brand new Dashboards, Widgets and improvements are waiting for you to discover!
+            </p>,
+            buttonLabel: "Blog",
+            buttonLink: "https://i-vertix.com/en/i-vertix-it-monitoring-4-3/",
+        },
+        {
+            title: "NEW i-Vertix Monitoring Troubleshooter",
+            image: "/img/landing/news/troubleshooter.jpg",
+            text: <p>
+                Mid-October we introduced a great new addition to i-Vertix Monitoring — the Monitoring Troubleshooter.
+                It helps you test connectivity, run SNMP walks, and analyze routing or DNS issues directly within your monitoring interface.
+            </p>,
+            buttonLabel: "Read more",
+            buttonLink: "https://i-vertix.com/en/i-vertix-it-monitoring-4-3/",
         },
         {
             title: "Stay up to date",
-            image: "/img/landing/news/news_3.png",
+            image: "/img/landing/news/newsletter.jpg",
             text: <p>
                 Don't want to miss any new features or news from i-Vertix?
                 We got you covered! Simply subscribe to our newsletter which we publish every month to not miss a thing.
                 If you'd like to further stay in touch with us you can follow us on <a
-                href={"https://www.linkedin.com/company/i-vertix/"} target={"_blank"}
-                rel={"noopener"}>LinkedIn</a>!
+                    href={"https://www.linkedin.com/company/i-vertix/"} target={"_blank"}
+                    rel={"noopener"}>LinkedIn</a>!
             </p>,
             buttonLabel: "Subscribe",
             buttonLink: "https://eepurl.com/gW63E1",
@@ -94,16 +105,19 @@ const useNewsCarousel = () => {
                 positions.push(undefined);
             }
         }
-        return {styles, positions};
+        return { styles, positions };
     }, [news.length, selectedIndex]);
 
     const _news = useMemo((): News[] =>
-            news.map((n, i) => ({...n, style: additionalProps.styles[i], position: additionalProps.positions[i]})),
+        news.map((n, i) => ({ ...n, style: additionalProps.styles[i], position: additionalProps.positions[i] })),
         [news, additionalProps, selectedIndex]);
 
     return {
         news: _news,
-        setSelectedNews: setSelectedIndex
+        setSelectedNews: (index: number) => {
+            setSelectedIndex(index)
+        },
+        currentNewsIndex: selectedIndex 
     };
 }
 
