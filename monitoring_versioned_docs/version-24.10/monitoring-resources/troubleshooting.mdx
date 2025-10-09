@@ -4,6 +4,7 @@ title: Troubleshooting
 ---
 
 import ImageCounter from "@site/src/components/ImageCounter";
+import Breadcrumb from "@site/src/components/Breadcrumb";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -101,11 +102,13 @@ the *Troubleshooter* popup opens by default on the `Monitoring Plugin` tab with 
 The Troubleshooter is enabled by default only for administrators, who have full access to all monitoring features by default.
 If you want to grant access to specific Troubleshooter functionalities to other users, you must configure the permissions in the *Menu ACL*.
 
-Navigate to <Breadcrumbs crumbs={["Administration", "ACL", "Menu Access"]} /> and select the *Menu ACL* to which you want to grant access.
-
-Then, expand the `Monitoring` → `Troubleshooter` section and select the features (`Monitoring Plugin`, `SNMP`, `Utility Commands`) you want to make accessible.
+Navigate to <Breadcrumb crumbs={["Administration", "ACL", "Menu Access"]} /> and select the *Menu ACL* to which you want to grant access.
 
 ![Menu ACL](../assets/monitoring-resources/troubleshooter/acl.png)
+
+Expand the `Monitoring` → `Troubleshooter` section and select the features
+(<ImageCounter num={1} disableMargin /> `Monitoring Plugin`, <ImageCounter num={2} disableMargin /> `SNMP`, <ImageCounter num={3} disableMargin /> `Utility Commands`)
+you want to make accessible.
 
 Click `Save` once you are done.
 After saving, all monitoring users associated with the *access groups* assigned to the modified *Menu ACL* will have access to the selected Troubleshooter features.
