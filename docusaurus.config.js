@@ -4,6 +4,7 @@ const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
+    
     title: 'i-Vertix Documentation',
     tagline: 'Managing an IT infrastructure has never been easier',
     favicon: 'img/logo-ivertix-blue-100.png',
@@ -57,14 +58,14 @@ const config = {
             //     Image: '/img/logo-log-management-1000.png',
             //     to: '/log-management/intro'
             // },
-            // {
-            //     id: 'asset-management',
-            //     label: 'IT Asset Management',
-            //     description: 'Hi, this is a description text. I am very long',
-            //     icon: '/img/logo-asset-management-1000.png',
-            //     Image: '/img/logo-asset-management-1000.png',
-            //     to: '/asset-management/intro'
-            // },
+            {
+                id: 'asset-management',
+                label: 'IT Asset Management',
+                description: 'i-Vertix IT Asset Management & Inventory automatically detects, updates and manages all IT assets, providing a complete overview of their use and performance over time',
+                icon: '/img/logo-asset-management-1000.png',
+                Image: '/img/logo-asset-management-1000.png',
+                to: '/asset-management/'
+            },
         ]
     },
 
@@ -91,14 +92,24 @@ const config = {
 
     themes: [
         [
-            require.resolve('@easyops-cn/docusaurus-search-local'),
-            /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
+            require.resolve('./plugins/docusaurus-search-local'),
+            /** @type {import("./plugins/docusaurus-search-local").PluginOptions} */
             ({
                 hashed: true,
                 indexBlog: false,
-                docsPluginIdForPreferredVersion: "monitoring",
-                docsRouteBasePath: ["monitoring"],
-                docsDir: ["monitoring_versioned_docs"],
+                docsRouteBasePath: ["monitoring", "asset-management"],
+                docsDir: ["monitoring_versioned_docs", "asset-management_versioned_docs"],
+                searchContextByPaths: [
+                    {
+                        label: "Monitoring",
+                        path: "monitoring"
+                    },
+                    {
+                        label: "IT Asset Mangement",
+                        path: "asset-management"
+                    }
+                ],
+                useAllContextsWithNoSearchContext: true,
                 explicitSearchResultPath: true,
                 language: ["en"],
                 ignoreFiles: [/rest-api-v/]
@@ -107,7 +118,7 @@ const config = {
     ],
 
     plugins: [
-        'plugin-image-zoom',
+        'docusaurus-plugin-image-zoom',
         [
             '@docusaurus/plugin-content-docs',
             {
@@ -139,16 +150,32 @@ const config = {
                 }
             },
         ],
-/*         [
+                [
             '@docusaurus/plugin-content-docs',
             {
-                id: 'plugin-packs',
-                path: 'plugin-packs',
-                routeBasePath: 'plugin-packs',
-                sidebarPath: require.resolve('./plugin-packs/sidebar.js'),
-                // ... other options
+                id: 'asset-management',
+                path: 'asset-management',
+                routeBasePath: 'asset-management',
+                includeCurrentVersion: false,
+                versions: {
+                    "10": {
+                        label: "✨ 10",
+                        banner: "none",
+                        badge: true
+                    }
+                }
             },
-        ], */
+        ],
+        /*         [
+                    '@docusaurus/plugin-content-docs',
+                    {
+                        id: 'plugin-packs',
+                        path: 'plugin-packs',
+                        routeBasePath: 'plugin-packs',
+                        sidebarPath: require.resolve('./plugin-packs/sidebar.js'),
+                        // ... other options
+                    },
+                ], */
     ],
 
     themeConfig:
@@ -162,14 +189,10 @@ const config = {
                 }
             },
             imageZoom: {
-                // CSS selector to apply the plugin to, defaults to '.markdown img'
-                selector: '.markdown img',
-                // Optional medium-zoom options
-                // see: https://www.npmjs.com/package/medium-zoom#options
-                options: {
-                    margin: 24,
-                    scrollOffset: 0,
-                    background: 'rgba(0,0,0,0.8)',
+                selector: '.markdown > img',
+                background: {
+                light: 'rgb(255, 255, 255)',
+                dark: 'rgb(50, 50, 50)'
                 },
             },
             // algolia: {
@@ -226,13 +249,13 @@ const config = {
                             //     id: "ivertix-log-management",
                             //     docsPluginId: "log-management"
                             // },
-                            // {
-                            //     label: "IT Asset Management",
-                            //     description: "Automatically manage, track, inventory and update your IT assets",
-                            //     icon: "/img/logo-asset-management-100.png",
-                            //     id: "ivertix-asset-management",
-                            //     docsPluginId: "asset-management"
-                            // }
+                            {
+                                label: "IT Asset Management",
+                                description: "Automatically manage, track, inventory and update your IT assets",
+                                icon: "/img/logo-asset-management-100.png",
+                                id: "asset-management",
+                                docsPluginId: "asset-management"
+                            }
                         ]
                     },
                     {
@@ -290,10 +313,10 @@ const config = {
                             //     label: 'Plugin Packs',
                             //     to: '/plugin-packs/intro',
                             // },
-                            // {
-                            //     label: 'Asset Management',
-                            //     to: '/asset-management/intro',
-                            // },
+                            {
+                                label: 'Asset Management',
+                                to: '/asset-management/',
+                            },
                             // {
                             //     label: 'Log Management',
                             //     to: '/log-management/intro',

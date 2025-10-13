@@ -1,6 +1,9 @@
 # Dependencies
 /node_modules
 
+# Plugins
+/plugins/*/node_modules
+
 # Production
 /build
 
@@ -18,6 +21,9 @@
 .env.test.local
 .env.production.local
 
+#ITAM tmp
+itam_tmp/*
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -25,3 +31,12 @@ yarn-error.log*
 i-vertix-documentation.code-workspace
 
 .env
+
+*.pyc
+venv/*
+glpi_orig_agent/*
+images/*
+
+settings.json
+launch.json
+*.bak

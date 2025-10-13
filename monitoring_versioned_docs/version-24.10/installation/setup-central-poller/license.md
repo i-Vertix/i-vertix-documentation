@@ -63,7 +63,7 @@ Follow the instructions in the email and download the license using the followin
 
 8. Type 2 to reboot the VM so that all the services will be started
 
-The system is now ready. Proceed with the [first access to the web console](../first-web-access/first-web-access.md)
+The system is now ready. Proceed with the [first access to the web console](../first-web-access.md)
 
 :::note
 

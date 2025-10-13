@@ -1,0 +1,19 @@
+.heading {
+    display: inline-block;
+    margin: 0;
+}
+
+.heading:first-of-type {
+
+}
+
+.date {
+    display: inline-block;
+    margin-right: 1em;
+    vertical-align: text-bottom;
+    line-height: var(--ifm-heading-line-height);
+}
+
+.section {
+    margin-top: 1em;
+}
