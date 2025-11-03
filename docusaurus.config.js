@@ -1,10 +1,10 @@
-const {themes} = require('prism-react-renderer');
+const { themes } = require('prism-react-renderer');
 const lightTheme = themes.github;
 const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-    
+
     title: 'i-Vertix Documentation',
     tagline: 'Managing an IT infrastructure has never been easier',
     favicon: 'img/logo-ivertix-blue-100.png',
@@ -79,7 +79,11 @@ const config = {
                 },
                 sitemap: {
                     ignorePatterns: ['**/api/rest-api-v2', '**/api/rest-api-v1']
-                }
+                },
+                gtag: {
+                    trackingID: 'G-L8P31DR244',
+                    anonymizeIP: true,
+                },
             }
         ],
         [
@@ -150,7 +154,7 @@ const config = {
                 }
             },
         ],
-                [
+        [
             '@docusaurus/plugin-content-docs',
             {
                 id: 'asset-management',
@@ -191,8 +195,8 @@ const config = {
             imageZoom: {
                 selector: '.markdown > img',
                 background: {
-                light: 'rgb(255, 255, 255)',
-                dark: 'rgb(50, 50, 50)'
+                    light: 'rgb(255, 255, 255)',
+                    dark: 'rgb(50, 50, 50)'
                 },
             },
             // algolia: {
