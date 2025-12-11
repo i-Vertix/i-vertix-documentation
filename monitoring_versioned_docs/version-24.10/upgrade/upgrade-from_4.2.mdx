@@ -39,7 +39,7 @@ Make sure that the version reported in the login banner is `4.2.0`.
 
 Install the automated upgrade scripts with following command:
 ```bash
-sudo dnf install ivertix-ansible-playbooks
+sudo dnf clean all && sudo dnf install --repo=i-vertix-monitoring-stable ivertix-ansible-playbooks
 ```
 
 In the case that some question are asked during the installation, please reply `y` (type y and confirm with Enter).
