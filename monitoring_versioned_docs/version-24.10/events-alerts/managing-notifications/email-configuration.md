@@ -3,29 +3,24 @@ id: email-configuration
 title: Sender email address configuration
 ---
 
-The steps are the following:
+import Breadcrumb from "../../../../src/components/Breadcrumb";
+
+The sender email address can be customized for each Poller, since the mail notifications are sent
+from the Poller itself.
 
 1. [Enable SMTP](../../installation/setup-central-poller/smtp-configuration.md)
 
-2. [Configuring notification](configuring-notification.md)
+2. [Configure notification](configuring-notification.md)
 
-3. Sender email address configuration
+3. Go to <Breadcrumb crumbs={["Configuration", "Pollers", "Engine configuration"]} />
 
-**Configuration -> Commands -> Notifications**
+4. Click on the poller for which the address should be changed
 
-Here you can set the email notification sender
+5. Enter Admin Tab
+![image](../../assets/managing-alarms/sender_email_admin_tab.png)
 
-**For Host email notifications**
-* Select **host-notify-by-email** template
-* Replace "i-Vertix alert@i-vertix.com" with the **email address** you want IT Monitor to use when sending email notifications related to Hosts
-* Click on **Save**
-
-**For Service email notifications**
-* Select **service-notify-by-email** template
-* Replace "i-Vertix alert@i-vertix.com" with the **email address** you want IT Monitor to use when sending email notifications related to Services
-* Click on **Save**
+6. Change the `Administrator Email Address` field
 
 ![image](../../assets/managing-alarms/sender_email.png)
 
-
-
+7. Click `Save` to to save the new changes
