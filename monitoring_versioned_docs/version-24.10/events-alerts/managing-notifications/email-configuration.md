@@ -1,26 +1,52 @@
 ---
 id: email-configuration
-title: Sender email address configuration
+title: Configure email notifications
 ---
 
 import Breadcrumb from "../../../../src/components/Breadcrumb";
 
-The sender email address can be customized for each Poller, since the mail notifications are sent
-from the Poller itself.
+:::info
+Before configuring email notifications, please note that each Poller manages email notifications independently.
+As a result, since emails are sent through the SMTP relay, every Poller must have a working SMTP configuration.
+:::
 
-1. [Enable SMTP](../../installation/setup-central-poller/smtp-configuration.md)
+:::info
+The email sender address can—and must—be customized individually on each Poller.
+:::
 
-2. [Configure notification](configuring-notification.md)
 
-3. Go to <Breadcrumb crumbs={["Configuration", "Pollers", "Engine configuration"]} />
+## Enable SMTP
+The first step to configure email notification is to Enable SMTP using the Poller CLI.
+Please see page [Enable SMTP](../../installation/setup-central-poller/smtp-configuration.md)
+if not already done.
 
-4. Click on the poller for which the address should be changed
+## Enable Notifications
+Email Notifications are enabled through the procedure
+reported in this page: [Configure notification](configuring-notification.md).
 
-5. Enter Admin Tab
+Please make sure to select
+`host-notify-by-email` and `service-notify-by-email`
+in the Contact User configuration page.
+![image](../../assets/managing-alarms/email_notifications.png)
+
+
+## Change sender for email notifications
+
+1. Visit <Breadcrumb crumbs={["Configuration", "Pollers", "Engine configuration"]} />
+
+2. Click on the poller for which the address should be changed
+![image](../../assets/managing-alarms/poller_selection.png)
+
+3. Enter Admin Tab
 ![image](../../assets/managing-alarms/sender_email_admin_tab.png)
 
-6. Change the `Administrator Email Address` field
+4. Change the `Administrator Email Address` field
 
 ![image](../../assets/managing-alarms/sender_email.png)
 
-7. Click `Save` to to save the new changes
+5. Click `Save` to to save the new changes
+
+:::warning
+To really apply the setting export the configuration to the Poller, making sure to
+select the `Restart` Method for the `Restart Monitoring Engine` Field.
+:::
