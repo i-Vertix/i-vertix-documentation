@@ -268,6 +268,11 @@ const config = {
                         target: '_blank'
                     },
                     {
+                        to: "https://i-vertix.com/webinar-2/",
+                        label: "Academy & Webinars",
+                        target: '_blank'
+                    },
+                    {
                         to: "https://helpdesk.i-vertix.cloud/",
                         position: "right",
                         label: "Helpdesk Portal"
