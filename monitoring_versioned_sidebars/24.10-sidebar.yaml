@@ -116,10 +116,13 @@ sidebar:
         items:
           - how-notifications-works
           - configuring-notification
+          - id: notification-types
+            label: Notification types
+            items:
+              - notification-email
           - dependencies
           - escalation
           - flapping
-          - email-configuration
   - id: managing-users-contacts
     label: Managing Users & Contacts
     items:

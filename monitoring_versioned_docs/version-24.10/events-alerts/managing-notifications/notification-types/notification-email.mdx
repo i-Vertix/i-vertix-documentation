@@ -1,0 +1,57 @@
+---
+id: notification-email
+title: Email notifications
+---
+
+import Breadcrumb from "@site/src/components/Breadcrumb";
+
+Notifications by email is the standard way to receive notifications in the i-Vertix monitoring system.
+
+:::note
+Be aware that email notifications are sent by the Poller that monitors the host/service resource.
+As a result, since emails are sent through the SMTP relay, every Poller you want to use for email notifications,
+must have a working SMTP configuration.
+:::
+
+:::info[Additional info]
+The email *sender address* can and **must be** customized individually on each Poller.
+:::
+
+## SMTP Configuration on the Poller
+
+Before configuring email notifications itself, you **must enable** SMTP on every Poller you want to use for email notifications.
+Have a look at the documentation on how to [Enable SMTP on a Poller](../../../installation/setup-central-poller/smtp-configuration.md)
+in case you did not configure it already.
+
+## Setup email notifications for contacts/contactgroups
+
+Like for any other notification configuration you can follow the general [Configure notification](configuring-notification.md) procedure.
+While configuring contacts or contactgroups during the procedure on page <Breadcrumb crumbs={["Configuration", "Users", "Contacts / Users"]} />,
+select the notification commands `host-notify-by-email` *(for host email notifications)* and/or 
+`service-notify-by-email` *(for service email notifications)* to enable email notifications for the contact/contactgroup.
+
+![image](../../../assets/managing-alarms/email_notifications.png)
+
+## Change sender for email notifications
+
+In some cases it is useful to change the sender for the email notifications.
+For example, it is needed in the case that the SMTP relay accepts emails only with a given sender.
+
+To change the sender of any email notification for a given Poller, perform the following steps:
+
+1. Navigate to <Breadcrumb crumbs={["Configuration", "Pollers", "Engine configuration"]} />
+
+2. Click on the poller for which the address should be changed
+    ![image](../../../assets/managing-alarms/poller_selection.png)
+
+3. Enter Admin tab
+   ![image](../../../assets/managing-alarms/sender_email_admin_tab.png)
+
+4. Change the `Administrator Email Address` field
+   ![image](../../../assets/managing-alarms/sender_email.png)
+
+5. Click `Save` to to save the new changes
+
+:::warning
+To make your changes take effect, export each changed poller configuration and select the method `Restart` for field *Restart Monitoring Engine*.
+:::
