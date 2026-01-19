@@ -385,6 +385,17 @@
               "id": "events-alerts/managing-notifications/configuring-notification"
             },
             {
+              "type": "category",
+              "collapsed": true,
+              "label": "Notification types",
+              "items": [
+                {
+                  "type": "doc",
+                  "id": "events-alerts/managing-notifications/notification-types/notification-email"
+                }
+              ]
+            },
+            {
               "type": "doc",
               "id": "events-alerts/managing-notifications/dependencies"
             },
@@ -395,10 +406,6 @@
             {
               "type": "doc",
               "id": "events-alerts/managing-notifications/flapping"
-            },
-            {
-              "type": "doc",
-              "id": "events-alerts/managing-notifications/email-configuration"
             }
           ]
         }
