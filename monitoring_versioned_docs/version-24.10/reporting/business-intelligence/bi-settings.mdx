@@ -11,11 +11,11 @@ This page is divided by the single tabs present on the Settings page.
 
 Here is a list of the most common settings:
 
-- [Database update](./bi-settings#-versions)
-- [Configure SMTP for i-Vertix BI](./bi-settings#smtp-configuration)
-- [Add timeperiods to be used in BI](./bi-settings#-timeperiods)
-- [Exclude pollers from BI](./bi-settings#-pollers)
-- [Exclude hostgroups from BI](./bi-settings#-hostgroups)
+- [Database update](./bi-settings.mdx#-versions)
+- [Configure SMTP for i-Vertix BI](./bi-settings.mdx#smtp-configuration)
+- [Add timeperiods to be used in BI](./bi-settings.mdx#-timeperiods)
+- [Exclude pollers from BI](./bi-settings.mdx#-pollers)
+- [Exclude hostgroups from BI](./bi-settings.mdx#-hostgroups)
 
 ## Maintenance
 
@@ -60,7 +60,7 @@ Premature cancellation of the ETL job will result in data warehouse inconsistenc
 :::
 
 If you are worried that the ETL job is taking longer than expected,
-please search the [Report generation failing troubleshooting section](./bi-troubleshooting#report-generation-is-failing) for *ETL job still running*`.
+please search the [Report generation failing troubleshooting section](./bi-troubleshooting.mdx#report-generation-is-failing) for *ETL job still running*`.
 
 ### <ImageCounter num={3} /> Reports Building
 
@@ -314,7 +314,7 @@ Please make sure the monitoring central server is able to reach the i-Vertix BI 
 
 The Business Intelligence Server API token is used to authenticate with the i-Vertix Business Intelligence API.
 
-The API token was generated and presented during the [setup process of the i-Vertix BI server](./bi-setup#configure-bunsiness-intelligence-services-and-database).
+The API token was generated and presented during the [setup process of the i-Vertix BI server](./bi-setup.mdx#configure-bunsiness-intelligence-services-and-database).
 To re-generate a new API token, re-run the setup on the *i-Vertix Business Intelligence* machine (you will be asked if you want to generate a new token).
 After you have generated a new token, update the <ImageCounter num={2} disableMargin /> existing record.
 
@@ -334,7 +334,7 @@ Please change the <ImageCounter num={1} /> *Business Intelligence Server IP* and
 ### <ImageCounter num={4} /> Monitoring
 
 The select holds the reference to the monitored Business Intelligence host created during the
-[4th step of the module setup process](./bi-setup#4th-step-monitor-the-i-vertix-business-intelligence-server).
+[4th step of the module setup process](./bi-setup.mdx#4th-step-monitor-the-i-vertix-business-intelligence-server).
 
 If you did not create the host during the setup process you have here the possibility to create a new host with
 all interesting checks assigned for the i-Vertix Business Intelligence Server bny clicking on the `+` button next to the select input.

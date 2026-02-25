@@ -55,6 +55,6 @@ To create a severity:
 1. Edit the host or service (go to **Configuration > Hosts > Hosts** or **Configuration > Services > Services by Host** and then click on the host or service).
 2. In the **Extended Info** tab, in the **Monitoring Engine** section, select the required severity from the **Severity Level** list.
 3. Click on **Save**.
-4. [Deploy the monitoring configuration](../export-configuration)
+4. [Deploy the monitoring configuration](../export-configuration.mdx)
 
 On the **Resource Status** page, the severity icon will appear in the **S** column. A tooltip displays the level and name of the severity. Clicking the column header will sort the view by severity level.

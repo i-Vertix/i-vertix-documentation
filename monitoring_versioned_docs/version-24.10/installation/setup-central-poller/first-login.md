@@ -22,7 +22,7 @@ On an **i-Vertix4** system you will need to log into the i-Vertix Monitoring con
 
 :::danger
 
-If you fail the login process 3 times, the IP Address will be blocked for 30 minutes (see [fail2ban](../../installation/fail2ban)).
+If you fail the login process 3 times, the IP Address will be blocked for 30 minutes (see [fail2ban](../../installation/fail2ban.md)).
 
 :::
 
@@ -56,8 +56,8 @@ An internet connection should always be available, most importantly for:
 
 - [License installation](./license.md)
 
-- [Plugin Packs installation](../../monitoring-resources/plugin-packs)
+- [Plugin Packs installation](../../monitoring-resources/plugin-packs.mdx)
 
-- [NTP configuration](./ntp-configuration)
+- [NTP configuration](./ntp-configuration.md)
 
 :::

@@ -9,7 +9,7 @@ title: Monitoring principles
 - In order to be executed, a plugin needs a set of arguments that define, for example, which host to connect to or through which protocol.
   The plugin and its arguments form a [**command**](../monitoring-resources/generic-object-actions/commands.md).
 
-For example, to monitor a host with i-Vertix, configure all the commands needed to measure the desired indicators, and then [deploy that configuration](./export-configuration) to the collection engine so that those commands are run periodically.
+For example, to monitor a host with i-Vertix, configure all the commands needed to measure the desired indicators, and then [deploy that configuration](./export-configuration.mdx) to the collection engine so that those commands are run periodically.
 
 Once hosts and services are monitored, they have a [status](../events-alerts/viewing-events/concepts.md) in i-Vertix (e.g. **OK**, **Warning**, **Critical**...). You can keep track of any changes using the [Resources Status](../events-alerts/viewing-events/resources-status.md) page.
 
@@ -19,6 +19,6 @@ In i-Vertix, monitoring is facilitated by the following elements:
 
 - [Host templates](../monitoring-resources/monitoring-hosts/host-templates.md) and [service templates](../monitoring-resources/monitoring-services/service-template.md), which allow you to define defaults to speed up the creation of these objects.
 
-- [Plugin Packs](./plugin-packs), which provide out-of-the-box host and service templates. These greatly simplify the configuration of hosts and services: for example, you only need to apply Plugin Pack templates to a host in order to monitor it.
+- [Plugin Packs](./plugin-packs.mdx), which provide out-of-the-box host and service templates. These greatly simplify the configuration of hosts and services: for example, you only need to apply Plugin Pack templates to a host in order to monitor it.
 
-- The [Host and service auto-discovery](../monitoring-resources/discovery/description), which allows you to obtain a list of new hosts and services and automatically add them to the list of monitored resources.
+- The [Host and service auto-discovery](../monitoring-resources/discovery/description.mdx), which allows you to obtain a list of new hosts and services and automatically add them to the list of monitored resources.

@@ -16,9 +16,9 @@ It is possible to:
 
 1. Create a service:
 
-    - Use the [host autodiscovery feature](../discovery/description): the corresponding services will be created automatically.
+    - Use the [host autodiscovery feature](../discovery/description.mdx): the corresponding services will be created automatically.
 
-    - [Create a host manually](../monitoring-hosts/create-host-manually.md) using a [Plugin Pack](../plugin-packs), and select **Create Services linked to the Template too**: the services for the host will be created automatically.
+    - [Create a host manually](../monitoring-hosts/create-host-manually.md) using a [Plugin Pack](../plugin-packs.mdx), and select **Create Services linked to the Template too**: the services for the host will be created automatically.
 
     - Use the [service discovery feature](create-service-automatically.md).
 
@@ -26,4 +26,4 @@ It is possible to:
 
     - Create a check [command](../generic-object-actions/commands.md) or use an existing one, and link it to a service you have [created manually](create-service-manually.md).
 
-2. [Export the configuration](../export-configuration).
+2. [Export the configuration](../export-configuration.mdx).

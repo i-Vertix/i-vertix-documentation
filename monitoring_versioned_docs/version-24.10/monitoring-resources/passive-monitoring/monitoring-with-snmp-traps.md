@@ -30,7 +30,7 @@ To be able to export the OID present in the database in the configuration file t
 4. In the drop-down list **Send signal** (the **Reload** option is preferable)
 ![image](../../assets/monitoring-resources/passive-monitoring/apply.png)
 5. Click on the **Generate** button
-6. [*Export the monitoring configuration*](../export-configuration)
+6. [*Export the monitoring configuration*](../export-configuration.mdx)
 
 ## Advanced settings
 

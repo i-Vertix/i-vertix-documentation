@@ -10,7 +10,7 @@ import ImageCounter from "../../../src/components/ImageCounter";
 your existing i-Vertix monitoring system!
 
 To understand the main components, which are part of the *i-Vertix IT Monitoring NetFlow module*,
-please read the [netflow infrastructure chapter](./netflow-overview#main-components).
+please read the [netflow infrastructure chapter](./netflow-overview.md#main-components).
 
 ## Setup
 
@@ -57,7 +57,7 @@ It may be necessary to tune the **retention** or add additional storage to the s
 
 To make sure everything works the way it should, have a look at the below port table to understand, which ports are used for communication between the different systems.
 
-Additional to the below ports, the **[default monitoring port mappings](../installation/before-you-start/technical-information#tables-of-platform-flows-centralpoller) between *Central* and *Poller* are also used**.
+Additional to the below ports, the **[default monitoring port mappings](../installation/before-you-start/technical-information.md#tables-of-platform-flows-centralpoller) between *Central* and *Poller* are also used**.
 
 | Source System              | Destination System         | Protocol | Port                                                    | Description                                                               |
 | -------------------------- | -------------------------- | -------- | ------------------------------------------------------- | ------------------------------------------------------------------------- |
@@ -81,7 +81,7 @@ menu
 ```
 
 Before starting with the setup procedure, please configure the system's network settings by choosing option `5) Network settings`.
-Here is a guide on [how to configure the network](../installation/setup-central-poller/network-configuration).
+Here is a guide on [how to configure the network](../installation/setup-central-poller/network-configuration.mdx).
 
 After configuring the network settings, you can proceed with the initial setup.
 From the menu, choose option `9) Setup i-Vertix NetFlow services` to start the setup script.
@@ -155,7 +155,7 @@ You can easily upgrade any existing i-Vertix Poller that is already connected to
 Please keep in mind that upgrading your poller to a *Poller + NetFlow collector* increases the hardware consumption.
 If your poller, which you want to upgrade, is already scratching the limit of it's available hardware resources you need to add further hardware resources.
 
-You can also add a new dedicated poller which only functions as a *NetFlow collector*. Please follow [these steps to attach a new poller to the monitoring system](../installation/attach-a-poller-to-a-central-server).
+You can also add a new dedicated poller which only functions as a *NetFlow collector*. Please follow [these steps to attach a new poller to the monitoring system](../installation/attach-a-poller-to-a-central-server.mdx).
 
 After you have added a new poller or made sure enough hardware resources are available on your existing poller we can proceed with the installation of the netflow collector packages.
 

@@ -28,7 +28,7 @@ There could be several reasons which may lead to connection issues to your i-Ver
 
 If you are not able to log into your account using the correct password, your IP address may be blocked by fail2ban, a service we are running to block undesired authentication attempts (brute-force attempts).
 
-Our [dedicated Fail2ban article](../../installation/fail2ban) may help you to check or unblock banned IP addresses.
+Our [dedicated Fail2ban article](../../installation/fail2ban.md) may help you to check or unblock banned IP addresses.
 
 ### Data outdated / ETL job not running
 
@@ -74,7 +74,7 @@ If the i-Vertix BI server address has changed recently it is necessary to set th
 After the ip address was updated on the settings, it is also required to reconnect the monitoring database to ensure that the daily
 ETL job is able to sync data from the monitoring server to the data warehouse on the i-Vertix BI system.
 
-You can find more information in our dedicated [Connection-Settings](./bi-settings#-monitoring-database-connection) documentation.
+You can find more information in our dedicated [Connection-Settings](./bi-settings.mdx#-monitoring-database-connection) documentation.
 
 </details>
 
@@ -196,7 +196,7 @@ If the i-Vertix BI server address has changed recently it is necessary to set th
 After the ip address was updated on the settings, it is also required to reconnect the BI with the monitoring database to ensure that the daily
 ETL job is able to sync data from the monitoring server to the data warehouse on the i-Vertix BI system.
 
-You can find more information in our dedicated [Connection-Settings](./bi-settings#-monitoring-database-connection) documentation.
+You can find more information in our dedicated [Connection-Settings](./bi-settings.mdx#-monitoring-database-connection) documentation.
 
 </details>
 
@@ -223,7 +223,7 @@ Most of the above problems can be verified by checking the monitored services in
 
 The following solutions can be applied to the above mentioned problems:
 
-1. [Troubleshoot the i-Vertix BI API](./bi-troubleshooting#rest-api-not-responding)
+1. [Troubleshoot the i-Vertix BI API](./bi-troubleshooting.mdx#rest-api-not-responding)
 2. Restart the gorgone service on the monitoring central server with `systemctl restart gorgoned`
 3. Contact our [Sales Team](mailto:sales@i-vertix.com)
 4. Allocate and mount more disk space to the i-Vertix BI server

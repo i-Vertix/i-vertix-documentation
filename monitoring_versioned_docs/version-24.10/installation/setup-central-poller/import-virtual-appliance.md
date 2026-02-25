@@ -39,7 +39,7 @@ Screen resolution should be at least 1280x768
 
 #### i-Vertix Central Manager recommended specifications
 
-- Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/requirements)
+- Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/requirements.mdx)
 - CPU: 4 vCPU (*)
 - RAM: 8 GB
 - HDD: 150 GB or greater (**)
@@ -54,7 +54,7 @@ Screen resolution should be at least 1280x768
 
 #### i-Vertix Smart Poller recommended specifications
 
-- Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/requirements)
+- Hypervisor: [Full list of compatible Hypervisor](../../quick-start-guide/requirements.mdx)
 - CPU: 2 vCPU
 - RAM: 8 GB (***)
 - HDD: 60 GB

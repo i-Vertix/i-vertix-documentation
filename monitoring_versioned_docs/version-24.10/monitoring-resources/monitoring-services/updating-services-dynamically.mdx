@@ -44,7 +44,7 @@ On the list page, you will see:
 - <ImageCounter num={4} /> a button to add a new ruleset
 - <ImageCounter num={5} /> a button to simulate all rulesets and to analyze which services will be updated
 - <ImageCounter num={6} /> a button to apply all rulesets manually
-- <ImageCounter num={7} /> the possibility to [reorder rules](./updating-services-dynamically#order-rulesets)
+- <ImageCounter num={7} /> the possibility to [reorder rules](./updating-services-dynamically.mdx#order-rulesets)
 
 ## Create a new ruleset
 
@@ -249,7 +249,7 @@ If you encounter conflicts during simulation, you may decide to adjust rule conf
 Keep in mind that rule application relies on order. For example, if multiple rules affect a service,
 it may not be necessary to adjust a rule if the **last** value applied is the desired one.
 
-Using the [simulation conflict detail](./updating-services-dynamically?simulation=conflicts#test-your-rulesets) view during
+Using the [simulation conflict detail](./updating-services-dynamically.mdx?simulation=conflicts#test-your-rulesets) view during
 simulation helps you identify conflicting rules and view different values set for a field.
 
 To resolve conflicts, you have several options:
@@ -272,7 +272,7 @@ When many conflicts exist across different rules, this process can become confus
 By default, **all enabled** rules are **applied every hour**.
 
 To apply rules manually, click the <ImageCounter num={6} disableMargin /> `Apply Rules` button above the list.
-After applying, ensure that you [export the corresponding poller configurations](../export-configuration) for your rules to take full effect.
+After applying, ensure that you [export the corresponding poller configurations](../export-configuration.mdx) for your rules to take full effect.
 
 ## Other Actions
 

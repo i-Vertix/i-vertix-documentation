@@ -26,9 +26,6 @@ To upgrade the systems, a stable internet connection is required on the Central 
 
 :::
 
-
-## Upgrade Central Server
-
 ### Prepare the Upgrade
 
 Start by logging in the system using ssh.
@@ -42,12 +39,13 @@ Install the automated upgrade scripts with following command:
 sudo dnf clean all && sudo dnf install --repo=i-vertix-monitoring-stable ivertix-ansible-playbooks
 ```
 
-In the case that some question are asked during the installation, please reply `y` (type y and confirm with Enter).
+In case some questions are asked during the installation, please reply `y` (type y and confirm with Enter).
 
 ![dnf install](../assets/upgrade/upgrade-from_4.2/dnf_install.png)
 
+## Upgrade Central Server
 
-### Perform Upgrade Step 1
+### Upgrade Step 1
 
 Launch the first step of the Central system upgrade with following command:
 ```bash
@@ -64,7 +62,7 @@ depending on the hardware resources and the internet connection of the Central M
 After the execution, the report on performed operations (PLAY RECAP) should look like this:
 ![ansible first step finish](../assets/upgrade/upgrade-from_4.2/ansible_step_1_finish.png)
 
-### Perform Application Upgrade
+### Application Upgrade
 
 After the first upgrade step is complete you need to perform the application upgrade.
 
@@ -105,7 +103,7 @@ Then, login with an administrator account and navigate to <Breadcrumb crumbs={["
 After the updates are complete, every module should turn green (up-to-date).
 ![extensions update final](../assets/upgrade/upgrade-from_4.2/update_extensions_finish.png)
 
-### Perform Upgrade Step 2
+### Upgrade Step 2
 
 Return to the *Central's* CLI and run the next upgrade script:
 
@@ -115,13 +113,13 @@ sudo ansible-playbook /opt/i-vertix/scripts/ansible/upgrade-i-vertix-4.3/upgrade
 
 ![ansible 2](../assets/upgrade/upgrade-from_4.2/ansible_step_2.png)
 
-### Perform Upgrade Step 3
+### Upgrade Step 3
 
 After Step 2 is finished, we need to upgrade the MariaDB database. 
 
 The procedure varies depending on whether the database is embedded (i.e. located on Central server)
 or deployed on a remote server.
-See [Remote Database Management architecture](../installation/before-you-start/architecture#dbms)
+See [Remote Database Management architecture](../installation/before-you-start/architecture.mdx#dbms)
 for more details.
 
 <Tabs>
@@ -164,7 +162,10 @@ It is strongly suggested to **clean the Browser cache** before logging in again 
 
 ## Upgrade Pollers
 
-### Perform Automatic Upgrade
+The poller upgrade should be performed **after** the Central server upgrade is complete and is relying on the same 
+[Prerequisites](#prerequisites) as the Central server upgrade.
+
+### Automatic Upgrade
 
 To upgrade all *Pollers*, we need to run the following command in the *Central server* CLI:
 
@@ -194,7 +195,7 @@ Check the following properties:
 - <ImageCounter num={3} /> is the poller updated to the new major version (24.10)?
 
 If the poller is not running, check the upgrade log for any errors.
-You can also try to [export the monitoring configuration to the poller](../monitoring-resources/export-configuration).
+You can also try to [export the monitoring configuration to the poller](../monitoring-resources/export-configuration.mdx).
 When doing so, make sure to select `Restart` instead of `Reload` for the *Restart Monitoring Engine* option.
 
 :::note

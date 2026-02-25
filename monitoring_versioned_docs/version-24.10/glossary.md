@@ -89,7 +89,7 @@ Devices that have an IP address or FQDN and the host monitoring refers to the pr
 
 A host can have one of the following [statuses](#status): OK, DOWN, UNREACHABLE.
 
-See also: [Monitoring a host](./quick-start-guide/monitoring-the-first-host) and the other topics in this section.
+See also: [Monitoring a host](./quick-start-guide/monitoring-the-first-host.mdx) and the other topics in this section.
 
 ## LVM
 
@@ -208,7 +208,7 @@ A service can consist of one or several [metrics](#metric).
 
 A service can have one of the following [statuses](#status): OK, WARNING, CRITICAL, UNKNOWN.
 
-**See also**: [Monitoring a service](./quick-start-guide/monitoring-the-first-host) and the other topics in this section.
+**See also**: [Monitoring a service](./quick-start-guide/monitoring-the-first-host.mdx) and the other topics in this section.
 
 ## State
 

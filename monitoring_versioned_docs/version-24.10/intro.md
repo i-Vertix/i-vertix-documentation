@@ -15,9 +15,9 @@ Otherwise you can read the full [i-Vertix Installation](./installation/before-yo
 ## Before you start
 
 * [Elements of i-Vertix platform](./installation/before-you-start/platform.md)
-* [Requirements](./quick-start-guide/requirements)
-* [Architectures](./installation/before-you-start/architecture)
+* [Requirements](./quick-start-guide/requirements.mdx)
+* [Architectures](./installation/before-you-start/architecture.mdx)
 
 ## Configuration
 
-* [Setup Central and Poller](./quick-start-guide/setup-central-poller)
+* [Setup Central and Poller](./quick-start-guide/setup-central-poller.mdx)

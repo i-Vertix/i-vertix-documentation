@@ -112,7 +112,7 @@ When all conditions of a rule match a device, the template rule with it's host t
 interface mapping and service discovery configuration will be assigned to the device.
 
 Some template rules are already preconfigured and maintained by the i-Vertix team.
-They come along with the plugins installed from the [Plugin Store](../../monitoring-resources/plugin-packs).
+They come along with the plugins installed from the [Plugin Store](../../monitoring-resources/plugin-packs.mdx).
 
 ![image](../../assets/discovery/nedi_template_rules.png)
 
@@ -120,7 +120,7 @@ They come along with the plugins installed from the [Plugin Store](../../monitor
 
 It can happen that some **Template Rules** are missing. In such a case:
 
-1. **Download the relevant plugin** from the [Plugin Store](../../monitoring-resources/plugin-packs) and install it
+1. **Download the relevant plugin** from the [Plugin Store](../../monitoring-resources/plugin-packs.mdx) and install it
 2. Click on <ImageCounter num={1} /> **Load Defaults** to add Template Rules included in the plugin you have just installed to the Template Rule list
 
 Should the desired template rule still not be available, contact support@i-vertix.com.
@@ -284,7 +284,7 @@ The discovered devices are filtered by the above filters and displayed in the ta
 * **SNMP**: determines if the discovery was able to access the device using SNMP
 * **Templates**: clickable - shows the assigned host templates
 * **Root**: determines if the device was flagged as "Relation Root", thus as a starting point from which the parent/child relations are calculated from  
-* **Status**: [discovery status](./nedi#status-discovery-status)
+* **Status**: [discovery status](./nedi.mdx#status-discovery-status)
 
 #### Monitor Devices
 
@@ -416,7 +416,7 @@ Following information is displayed:
 * **IP**: discovered ip address - can be set manually if not discovered
 * **Discovered**: timestamps when the node was first and last discovered
 * **Interface**: device's interface & vlan to which the node is connected to, the timestamp represents the last time the interface was changed
-* **Shadow IT status**: current shadow IT status for this node - can be changed from the [Nodes tab](./nedi#nodes)
+* **Shadow IT status**: current shadow IT status for this node - can be changed from the [Nodes tab](./nedi.mdx#nodes)
 * **ARP**: clickable - displays discovered ARP information such as ip address, name, the device from which the node was routed and more 
 
 The list can also be filtered using the above filters: **MAC or Name**, **Vendor** and **IP**-address.
@@ -453,7 +453,7 @@ This section is enabled only when the network device  discovered by “Network D
 
 The network topology map is designed to give you a graphical overview of your network devices and how the devices are connected to each other.
 
-The <ImageCounter num={2} /> items on the map are filtered by the <ImageCounter num={1} /> [device list filters](./nedi#-device-filters). 
+The <ImageCounter num={2} /> items on the map are filtered by the <ImageCounter num={1} /> [device list filters](./nedi.mdx#-device-filters). 
 
 Possible actions on the map:
 
@@ -501,7 +501,7 @@ After a device is assigned the relation root status, the device will be circled 
 
 ![Relation Root](../../assets/discovery/nedi_results_2_root.png)
 
-You can verify the **Relation Root** status also from the [network device list](./nedi#-device-list).
+You can verify the **Relation Root** status also from the [network device list](./nedi.mdx#-device-list).
 
 ### Discovered Nodes & Shadow IT
 

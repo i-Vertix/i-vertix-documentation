@@ -18,14 +18,14 @@
   },
   "servers": [
     {
-      "url": "{protocol}://{server}:{port}/centreon/api/{version}",
+      "url": "{protocol}://{server}:{port}/centreon/api/latest",
       "variables": {
         "protocol": {
           "enum": [
             "http",
             "https"
           ],
-          "default": "http",
+          "default": "https",
           "description": "HTTP schema"
         },
         "server": {
@@ -33,12 +33,8 @@
           "description": "IP address or hostname of i-Vertix monitoring server"
         },
         "port": {
-          "default": "80",
+          "default": "443",
           "description": "Port used by HTTP server"
-        },
-        "version": {
-          "default": "v24.10",
-          "description": "Version of the API"
         }
       }
     }
@@ -9861,7 +9857,7 @@
   "components": {
     "securitySchemes": {
       "Token": {
-        "description": "The use of the API requires a security token.\n\nTo retrieve it, you will need to authenticate yourself with your login credentials.\n\nThe token will be deleted if it has not been used for more than one hour.\n",
+        "description": "The use of the API requires a security token.\n\nTo retrieve it, you will need to authenticate yourself with your login credentials or use a pre-generated API token.\n\nThe token will be deleted if it has not been used for more than one hour.\n",
         "type": "apiKey",
         "name": "X-AUTH-TOKEN",
         "in": "header"

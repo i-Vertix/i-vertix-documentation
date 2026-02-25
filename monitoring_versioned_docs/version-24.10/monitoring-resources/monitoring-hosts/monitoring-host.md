@@ -30,4 +30,4 @@ Before you run automatic network scans and start monitoring hosts/services, make
 > - VMware: a read-only vCenter user
 > - Meraki: token API
 
-- you installed from all the **Plugin Packs** needed to monitor your IT environment, otherwise see the [Plugin Packs](../plugin-packs) section of this guide
+- you installed from all the **Plugin Packs** needed to monitor your IT environment, otherwise see the [Plugin Packs](../plugin-packs.mdx) section of this guide

@@ -7,7 +7,7 @@ To create a host manually these activities must be carried out:
 
 1. Go to **Configuration \> Hosts \> Hosts** and then click **Add**.
 2. Fill in the fields (see [below](#host-configuration-tab)), then click on **Save**.
-3. [Export the configuration](../export-configuration).
+3. [Export the configuration](../export-configuration.mdx).
 
 ## Host configuration tab
 

@@ -5,11 +5,11 @@ title: VMware integrated OS Discovery
 
 First, configure a new **VMware discovery job**
 
-[How to configure a new job](./vmware-discovery)
+[How to configure a new job](./vmware-discovery.mdx)
 
 ![image](../../assets/discovery/vmware_scans.png)
 
-On the "Three View" page, in the top right-hand corner click on button: 
+On the "Three View" page, in the top right-hand corner click on button:
 
 ![image](../../assets/discovery/os_discovery_button.png)
 

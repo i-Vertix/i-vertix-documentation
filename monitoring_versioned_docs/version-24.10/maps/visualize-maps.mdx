@@ -31,7 +31,7 @@ It is possible to display maps as *"widgets"* on the `Home -> Custom Views`.
 
 :::tip
 
-Topology Map widgets can be directly created from the [topology map view](./managing-maps#other-actions).
+Topology Map widgets can be directly created from the [topology map view](./managing-maps.mdx#other-actions).
 
 :::
 
@@ -46,7 +46,7 @@ After you have saved the new widget, select the map in the widget preferences.
 
 ## View graphical and geographical maps
 
-To view graphical or geographical maps, choose the map from the [Map overview](./visualize-maps#map-overview).
+To view graphical or geographical maps, choose the map from the [Map overview](./visualize-maps.mdx#map-overview).
 
 <Tabs groupId="type">
 <TabItem value="normal" label="Graphical (normal)">
@@ -59,7 +59,7 @@ This is an example of a graphical (normal) map with custom background.
 <TabItem value="geo" label="Geographical">
 
 When someone opens a geographic map, the previously saved viewpoint is restored.
-You find more information about viewpoints in the [next chapter](./edit-maps#viewpoints) of our maps documentation.
+You find more information about viewpoints in the [next chapter](./edit-maps.mdx#viewpoints) of our maps documentation.
 
 ---
 
@@ -208,7 +208,7 @@ In the above example a log storage (all metrics) was used.
 
 This type of gadget represents a single metric value as a large text.
 
-The [text color](./visualize-maps#map-objects) indicates the status of the service.
+The [text color](./visualize-maps.mdx#map-objects) indicates the status of the service.
 
 :::note
 
@@ -228,13 +228,13 @@ In the above example a mysql storage (metric *used*) was used.
 
 This type of gadget represents a nested map.
 
-The [color](./visualize-maps#map-objects) of the square in the top right corner indicates the summarized status of all resources on the map.
+The [color](./visualize-maps.mdx#map-objects) of the square in the top right corner indicates the summarized status of all resources on the map.
 
 :::note
 
 Only maps can be connected to map gadgets.
 
-It is also possible to visualize maps as an [icon object](./visualize-maps#icon-objects).
+It is also possible to visualize maps as an [icon object](./visualize-maps.mdx#icon-objects).
 
 :::
 
@@ -243,7 +243,7 @@ It is also possible to visualize maps as an [icon object](./visualize-maps#icon-
 ---
 
 Now you should know about the basics of viewing and understanding a map.
-To understand now how to place objects on the map, check the [next Chapter of our i-Vertix Map Documentation](./edit-maps).
+To understand now how to place objects on the map, check the [next Chapter of our i-Vertix Map Documentation](./edit-maps.mdx).
 
 If you are already familiar with the principle of editing maps have a look at further actions which are possible on a map.
 
@@ -268,7 +268,7 @@ When acknowledging a problem, you can define:
 - to recheck the resource as soon as possible
 - a comment describing the issue
 
-You can learn more about acknowledging problems in our [Acknowledgement-Guide](../events-alerts/managing-alarms/acknowledge).
+You can learn more about acknowledging problems in our [Acknowledgement-Guide](../events-alerts/managing-alarms/acknowledge.md).
 
 Click `Submit` to confirm and send the acknowledgement.
 
@@ -284,7 +284,7 @@ When scheduling a downtime, you can define:
 - if the downtime should also be applied on services (only available when the main resource is a host)
 - a comment describing the issue
 
-You can learn more about scheduling downtimes in our [Downtime-Guide](../events-alerts/managing-alarms/downtimes).
+You can learn more about scheduling downtimes in our [Downtime-Guide](../events-alerts/managing-alarms/downtimes.md).
 
 Click `Submit` to confirm and schedule the downtime.
 
@@ -293,7 +293,7 @@ Click `Submit` to confirm and schedule the downtime.
 
 ## View topology maps
 
-To view topology maps, choose the map from the [Map overview](./visualize-maps#map-overview) or navigate directly to `Monitoring -> Maps -> Topology Maps`.
+To view topology maps, choose the map from the [Map overview](./visualize-maps.mdx#map-overview) or navigate directly to `Monitoring -> Maps -> Topology Maps`.
 
 ![Topology map](../assets/maps/map_topology.png)
 
@@ -313,8 +313,8 @@ The arrows between nodes represent their relation.
 > **Example:**
 > The arrow from node `A` points towards node `B` - this means host `A` is the parent of node `B` and node `B` therefore the child of node `A`.
 >
-> The principle of host-relations enables the monitoring to display the status `Unreachable`. Find more about this behaviour in our [documentation about Host dependencies](../events-alerts/managing-notifications/dependencies#hosts-dependencies).
+> The principle of host-relations enables the monitoring to display the status `Unreachable`. Find more about this behaviour in our [documentation about Host dependencies](../events-alerts/managing-notifications/dependencies.md#hosts-dependencies).
 
 ---
 
-If you are interested on how to create a new topology map, read our [dedicated section for creating topology maps](./managing-maps#create-a-new-topology-map).
+If you are interested on how to create a new topology map, read our [dedicated section for creating topology maps](./managing-maps.mdx#create-a-new-topology-map).

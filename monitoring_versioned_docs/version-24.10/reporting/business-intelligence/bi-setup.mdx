@@ -12,11 +12,11 @@ import Breadcrumb from "../../../../src/components/Breadcrumb";
 
 The pre-configured i-Vertix Business Intelligence instance is available in OVA format for virtualization environments. Please contact our support ([support@i-vertix.com](mailto:support@i-vertix.com)) if you need other virtualization formats for your environment.
 
-Please have a look at the [system requirements](./bi-requirements) when creating the new virtual machine.
+Please have a look at the [system requirements](./bi-requirements.md) when creating the new virtual machine.
 
 :::info
 
-If you need help on how to import the OVA into your VMware environment, please have a look at our [How to import a Virtual appliance](../../installation/setup-central-poller/import-virtual-appliance#steps-to-import-a-vm-in-vmware) documentation
+If you need help on how to import the OVA into your VMware environment, please have a look at our [How to import a Virtual appliance](../../installation/setup-central-poller/import-virtual-appliance.md#steps-to-import-a-vm-in-vmware) documentation
 
 :::
 
@@ -37,7 +37,7 @@ Perform the extension installation from the `Extension Manager` under <Breadcrum
 
 #### Install the Business Intelligence Plugin Pack
 
-To monitor your Business Intelligence system, we created a new plugin pack which you can download from the [*Plugin Store*](../../monitoring-resources/plugin-packs).
+To monitor your Business Intelligence system, we created a new plugin pack which you can download from the [*Plugin Store*](../../monitoring-resources/plugin-packs.mdx).
 
 ```text
 i-Vertix Business Intelligence Server
@@ -216,7 +216,7 @@ After a successful connection you can proceed with the next step by clicking `Ne
 
 :::note
 
-If the connection cannot be established, head over to the [Troubleshooting](./bi-troubleshooting) section which may help you finding the cause
+If the connection cannot be established, head over to the [Troubleshooting](./bi-troubleshooting.mdx) section which may help you finding the cause
 
 :::
 
@@ -246,7 +246,7 @@ To create the new user with all required access permissions, a command is prepar
 
       :::
 
-   - In case you have a [remote database server architecture](../../installation/before-you-start/architecture#dbms), use the **IP of the remote database server** (must be reachable by the BI server)
+   - In case you have a [remote database server architecture](../../installation/before-you-start/architecture.mdx#dbms), use the **IP of the remote database server** (must be reachable by the BI server)
 - <ImageCounter>2</ImageCounter> Monitoring database port (default <code>3306</code>)
 - <ImageCounter>3</ImageCounter> Username (default <code>ivertix_bi</code>)
 - <ImageCounter>4</ImageCounter> Password (pre-generated randomly, change as you like)
@@ -299,4 +299,4 @@ The setup is now complete, you can <ImageCounter disableMargin>1</ImageCounter> 
 
 ![Maintenance](../../assets/bi/maintenance.png)
 
-To create your first report job, Report Templates are required. You can get them from the [i-Vertix Report Store](./bi-report-store).
+To create your first report job, Report Templates are required. You can get them from the [i-Vertix Report Store](./bi-report-store.mdx).

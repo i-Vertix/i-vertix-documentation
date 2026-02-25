@@ -59,7 +59,7 @@ Press the button + Add Scenario:
 
 ![image](../../assets/quick-start/crme2e.png)
 
-Press the button Save and then [export the configuration](../export-configuration) to the Poller.
+Press the button Save and then [export the configuration](../export-configuration.mdx) to the Poller.
 
 ## Resource Status
 
