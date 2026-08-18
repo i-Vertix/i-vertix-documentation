@@ -227,6 +227,10 @@
             {
               "type": "doc",
               "id": "monitoring-resources/discovery/meraki-discovery"
+            },
+            {
+              "type": "doc",
+              "id": "monitoring-resources/discovery/common-discovery"
             }
           ]
         },
