@@ -67,6 +67,7 @@ sidebar:
           - vmware-os-discovery
           - nedi
           - meraki-discovery
+          - common-discovery
       - id: i-vertix-e2e
         label: Synthetic User Monitoring
         items:
