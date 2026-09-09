@@ -3,34 +3,41 @@ id: service-discovery
 title: Service Discovery
 ---
 
+import Breadcrumb from "../../../../src/components/Breadcrumb";
+
+The service discovery helps you find additional services you can monitor for any existing host, which are not automatically added out-of-the-box by the host's monitoring template.
+There are two ways how you can use the service discovery: either perform a manual scan or configure a periodically scheduled job which performs the discovery.
+
 ## Manual Discovery
 
-From the sidemenu, select **Configuration > Services > Manual Discovery** to enter the manual discovery dedicated page.
+To perform a manual service scan for a host, navigate to <Breadcrumb crumbs={["Configuration", "Services", "Manual Discovery"]} />.
 
 ![image](../../assets/discovery/sd_manual1.png)
 
-To simply start a service discovery scan, select a host and a discovery template (which are installed by our [Plugin Store](../../monitoring-resources/plugin-packs.mdx)). You can pre-filter hosts by selecting a poller and/or a hostgroup.
+Now you need to select the host you want to scan for additional services. In case you have a lot of hosts, you can pre-filter them by selecting a poller.
+After selecting a host, the available discovery templates are shown in the *Discovery Template* lookup.
 
-By enabling the **Filtered** flag next to the discovery template lookup, only relevant discovery templates depending on your selected host are available to select. Otherwise all installed discovery templates are selectable.
+:::info
+The discovery templates are installed by the [Plugin Store](../../monitoring-resources/plugin-packs.mdx) and contain the discovery command to execute, as well as
+the resulting service name and service macros to set.
+:::
 
-Filtered **checked**:
+:::note
+By default, only pre-filtered discovery templates are shown, which corrispond with the assigned monitoring templates of the selected host.
+To disable this behavior, uncheck the *Filtered* flag next to the discovery template lookup.
+:::
 
-![image](../../assets/discovery/sd_manual3.png)
+Start the scan by clicking on the **Scan** button. The scan may take a few seconds to complete, depending on the discovery template and the host's response time.
+In case the scan fails due to a timeout, you can try to increase the scan timeout using the stopwatch icon near the *Discovery Template* lookup.
 
-Filtered **not checked**:
+### Scan results
 
-![image](../../assets/discovery/sd_manual4.png)
-
-### Discovered services
-
-After hitting **Scan**, the scan results are shown below.
+After a scan is completed, the results are shown in a table below the scan controls.
 
 ![image](../../assets/discovery/sd_manual5.png)
 
-:::note
-
-During scanning, the SCAN button is replaced by the ABORT button, which can be pressed to cancel the scan.
-
+:::tip
+While scanning you have the possibility to cancel/abort the scan, in case the configuration of the scan is not correct or the scan takes too long.
 :::
 
 A scan result (service) always has a status, which indicates it's current monitoring configuration situation (*1st* column), a key value (*2nd* column), a generated service name (*3rd* column, defined by the discovery template) and other values reported by the scan.
@@ -56,13 +63,13 @@ You can show and hide all non-relevant columns using following control:
 
 ![image](../../assets/discovery/sd_manual7.png)
 
-### Syncing services
+### Sync services with Monitoring
 
-#### Sync selected
+#### Sync selected services
 
 Check any services you want to add to your monitoring configuration and hit **Sync with Monitoring**. All checked services are created shortly after. If you encounter a problem with any service you can expand the sync-results and identify the problem.
 
-#### Sync all
+#### Sync all services
 
 By clicking on the expand button on the right of **Sync with Monitoring** you can choose between **Sync selected services** or **Sync all services**. The first one is the default option and equal to clicking the **Sync with Monitoring** button.
 By choosing **Sync all services**, ***all*** services are created (also services with status *excluded*). Again in any case of failure, you can analyze the problem of a given service by expanding the sync-results.
