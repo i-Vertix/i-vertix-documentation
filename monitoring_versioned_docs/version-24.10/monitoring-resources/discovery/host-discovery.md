@@ -1,7 +1,11 @@
 ---
 id: host-discovery
-title: Host Discovery
+title: Network Scan
 ---
+
+The network scan discovery is a basic discovery based on nmap and snmp and checks for pingable devices in your network along with additional snmp access checks.
+To create a new network scan job, have a look at the [job creation dialogue](./description.mdx#create-discovery-jobs) and select
+`Network Scan`.
 
 ## Job settings
 

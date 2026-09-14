@@ -284,6 +284,12 @@ html .footer {
     color: var(--ivertix-secondary-color);
 }
 
+/* MARKDOWN HEADINGS IN SUMMARY */
+
+.markdown summary h3, .markdown summary h4, .markdown summary h5, .markdown summary h6 {
+    margin: 0;
+}
+
 /*TO OVERWRITE GENERAL COLORS*/
 html[data-theme='dark'] {
     /*--ifm-background-color: #414141;*/

@@ -1,9 +1,9 @@
 import React from "react";
 
-export default ({children, num, disableMargin = false}: {children?: React.ReactNode, num?: number, disableMargin?: boolean}) => (
+export default ({children, num, color = "#8B0000", disableMargin = false}: {children?: React.ReactNode, num?: number, disableMargin?: boolean, color?: string}) => (
     <span
         style={{
-            backgroundColor: "#8B0000",
+            backgroundColor: color,
             borderRadius: "50%",
             color: "#fff",
             height: "1em",

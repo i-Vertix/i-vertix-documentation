@@ -192,7 +192,16 @@ const config = {
                     autoCollapseCategories: true
                 }
             },
-            zoom: {},
+            zoom: {
+                selector: '.markdown img',
+                background: {
+                    light: 'rgba(255, 255, 255, 0.7)',
+                    dark: 'rgba(50, 50, 50, 0.7)'
+                },
+                config: {
+                    margin: 35
+                }
+            },
             // algolia: {
             //     // The application ID provided by Algolia
             //     appId: '26QPCG4J0S',
