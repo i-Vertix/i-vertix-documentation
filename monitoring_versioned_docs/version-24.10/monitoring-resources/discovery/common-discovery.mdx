@@ -489,11 +489,13 @@ depending on what you want to discover/monitor:
 | cloudwatch:GetMetricStatistics | Get metrics from the S3 namespace on Cloudwatch      |
 </details>
 
-Once you created the user with the required permissions, you can move to the discovery wizard and [create the new *AWS credential*](#configuration-parameters).
+Once you created the user with the required permissions, you can move to the discovery wizard
+and [create the new *AWS credential*](#configuration-parameters).
 
 ### Azure
 
-To use Azure discovery features and later also the Azure monitoring, you must prepare a new *Application* in Azure to obtain following following credentials:
+To use Azure discovery features and later also the Azure monitoring, you must prepare a new *Application* in Azure
+to obtain following following credentials:
 
 * Subscription ID
 * Tenant ID
@@ -533,4 +535,57 @@ Now you need to obtain the above mentioned credential information, needed for th
   * Click on `+ New client secret` and choose a description and expiration date for the new secret
   * Add the new secret and copy and temporarily store the generated *Client Secret* (only shown once)
 
-With roles assigned and credential information retrieved, you can proceed to the discovery wizard and [create the new *Azure credential*](#configuration-parameters).
+With roles assigned and credential information retrieved, you can proceed to the discovery wizard
+and [create the new *Azure credential*](#configuration-parameters).
+
+### Cisco Webex
+
+#### Retrieve credentials and tokens
+
+To discover and monitor **Cisco Webex**, you must first create a new **Service App** in the **Webex Developer Portal**.
+
+Please refer to the [Cisco Developer Documentation](https://developer.webex.com/admin/docs/service-apps) for a 
+step-by-step guide on how to create the Service App and retrieve the required information:
+
+* Client ID
+* Client Secret
+* Access Token
+* Refresh Token
+
+These credentials are required to authenticate against the Cisco Webex API and allow the monitoring system to
+access Webex-related information.
+
+#### Create Webex API Cache Host
+
+In addition, you must configure a dedicated monitoring host that is responsible for maintaining the **Webex API Cache**.
+
+The public Cisco Webex API enforces request rate limits. To avoid exceeding these limits,
+the monitoring system continuously retrieves all required Webex information through a centralized cache mechanism.
+The collected data is stored locally and reused by discovery and monitoring processes.
+
+This approach provides several advantages:
+
+- Significantly reduces the number of API requests sent to Cisco Webex.
+- Prevents rate-limit issues in larger environments.
+- Improves monitoring performance and response times.
+- Allows you to monitor and discover an unlimited number of Webex-related hosts and services without
+  generating additional API requests for each individual object.
+
+You can find more information about the API rate limit on the [Webex Developer Docs](https://developer.webex.com/meeting/docs/basics#rate-limiting).
+
+:::warning
+You need to create a dedicated cache host on every poller on which you want to perform *Webex* monitoring/discovery.
+:::
+
+Please use the following configuration-preset to create the required Host:
+
+* **Host Name**: `Cisco-Webex-Cache-{Poller Name}`
+* **Host Alias**: `Cisco Webex Cache {Poller Name}`
+* **Host Address**: `127.0.0.1`
+* **Host Template**: `Webex-API-cache`
+* Make sure that you select *Create Services linked to the Template too* when creating the host
+
+---
+
+After you have retrieved the credential information and created the cache host, you can proceed to the discovery wizard
+and [create the new *Cisco Webex credential*](#configuration-parameters).
