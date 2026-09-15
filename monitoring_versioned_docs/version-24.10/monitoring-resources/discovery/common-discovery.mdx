@@ -593,3 +593,18 @@ Please use the following configuration-preset to create the required Host:
 
 After you have retrieved the credential information and created the cache host, you can proceed to the discovery wizard
 and [create the new *Cisco Webex credential*](#configuration-parameters).
+
+### Proxmox Virtual Environment
+
+To monitor and discovery any resources from *Proxmox VE (Virtual Environment)* you must prepare a user with the following permissions:
+
+* VM Monitor
+* VM Audit
+* Datastore Audit
+* Sys Audit
+* Sys Syslog
+
+To assign the above permissions to the requested user, create a new role with these permissions and assign the role to the user.
+
+After you created the user with the new role, you can proceed to the discovery wizard and 
+[create the new *Proxmix VE credential*](#configuration-parameters) using the new user credentials.
