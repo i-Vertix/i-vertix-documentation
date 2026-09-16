@@ -206,11 +206,11 @@
             },
             {
               "type": "doc",
-              "id": "monitoring-resources/discovery/host-discovery"
+              "id": "monitoring-resources/discovery/nedi"
             },
             {
               "type": "doc",
-              "id": "monitoring-resources/discovery/service-discovery"
+              "id": "monitoring-resources/discovery/host-discovery"
             },
             {
               "type": "doc",
@@ -222,15 +222,15 @@
             },
             {
               "type": "doc",
-              "id": "monitoring-resources/discovery/nedi"
-            },
-            {
-              "type": "doc",
               "id": "monitoring-resources/discovery/meraki-discovery"
             },
             {
               "type": "doc",
               "id": "monitoring-resources/discovery/common-discovery"
+            },
+            {
+              "type": "doc",
+              "id": "monitoring-resources/discovery/service-discovery"
             }
           ]
         },
