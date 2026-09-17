@@ -18,16 +18,15 @@ const useNewsCarousel = () => {
 
     const news = useMemo((): News[] => [
         {
-            title: "NEW Network Traffic Analyzer",
-            image: "/img/landing/news/netflow.jpg",
+            title: "NEW Cloud Discovoery",
+            image: "/img/landing/news/cloud-discovery.png",
             text: <p>
-                We're excited to introduce the i-Vertix Network Traffic Analyzer — our latest module designed to give you deeper insights into your network.
+                We're excited to introduce the latest update of our i-Vertix Discovery module, now including the new discovery type: Cloud discovery.
                 <br />
-                Monitor, visualize, and understand your traffic patterns like never before to keep your infrastructure running smoothly and efficiently.
-                For more information or a personal demo, feel free to contact us at <a href={"mailto:sales@i-vertix.com"}>sales@i-vertix.com</a>.
+                This new functionality enables the discovery for a lot of cloud technologies, such as AWS, Azure, VMware VeloCloud, ExtremeCloud IQ, Cisco Webex and more.
             </p>,
             buttonLabel: "Read more",
-            buttonLink: "./monitoring/netflow/netflow-overview",
+            buttonLink: "./monitoring/monitoring-resources/discovery/common-discovery",
         },
         {
             title: "NEW i-Vertix Monitoring 4.3",
