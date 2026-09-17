@@ -61,12 +61,13 @@ sidebar:
         label: Discovery
         items:
           - description
+          - nedi
           - host-discovery
-          - service-discovery
           - vmware-discovery
           - vmware-os-discovery
-          - nedi
           - meraki-discovery
+          - common-discovery
+          - service-discovery
       - id: i-vertix-e2e
         label: Synthetic User Monitoring
         items:

@@ -7,6 +7,6 @@ Services can be created automatically in several ways:
 
 - When you [create a host manually](../monitoring-hosts/create-host-manually.md) using a [Plugin Pack](../plugin-packs.mdx), and select **Create Services linked to the Template too**, the services for the host will be created automatically.
 
-- Using the [services discovery feature](../discovery/service-discovery.md) to detect services and create them automatically in i-Vertix IT Monitoring.
+- Using the [services discovery feature](../discovery/service-discovery.mdx) to detect services and create them automatically in i-Vertix IT Monitoring.
 
 - Most host discoveries include automatic service discovery out-of-the-box
