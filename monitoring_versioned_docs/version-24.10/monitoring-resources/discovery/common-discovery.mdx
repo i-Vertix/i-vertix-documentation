@@ -490,6 +490,15 @@ depending on what you want to discover/monitor:
 | cloudwatch:GetMetricStatistics | Get metrics from the S3 namespace on Cloudwatch      |
 </details>
 
+<details>
+<summary><h4 id="aws-sqs">SQS</h4></summary>
+| Privilege                      | Description                                          |
+|--------------------------------|------------------------------------------------------|
+| sqs:ListQueues                 | Display Messaging Queue Services                     |
+| cloudwatch:GetMetricStatistics | Get metrics statistics from the SQS on Cloudwatch    |
+| cloudwatch:listMetrics         | List metrics from the SQS on Cloudwatch              |
+</details>
+
 Once you created the user with the required permissions, you can move to the discovery wizard
 and [create the new *AWS credential*](#configuration-parameters).
 
