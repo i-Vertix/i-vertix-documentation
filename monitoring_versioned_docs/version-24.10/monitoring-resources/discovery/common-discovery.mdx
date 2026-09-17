@@ -31,7 +31,7 @@ therefore also each wizard for the discovery job creation has the same structure
 
 ### Main Settings
 
-This step of the wizard configures basic information for the job aswell as anything regarding access, 
+This step of the wizard configures basic information for the job as well as anything regarding access, 
 authentication and other information required by the discovery type and filters.
 
 #### Basic information
@@ -54,7 +54,7 @@ After configuring the basic information for you job you can move to the next sec
 ### Configuration Parameters
 
 In this section of the *Main Settings* step you need to configure anything regarding access, authentication and other information required by the discovery type.
-This section is different for each discovery type. The below image shows an example of a discovery job related to *Azure*.
+This section is different for each discovery type. The image below shows an example of a discovery job related to *Azure*.
 We use this example to explain the different fields and their meaning.
 
 ![Azure Configuration Parameters](../../assets/discovery/cd_ms_configuration_parameters.png)
@@ -158,7 +158,7 @@ It is possible to add hosts, which are discovered by the discovery job, automati
 To do so, you need to set the *Default Host Geo Coordinates Pattern* field with a pattern that contains the latitude and longitude of the discovered devices.
 The pattern must follow the format: `latitude,longitude` (for example: `46.49067,11.33982`).
 You can use result properties in the pattern to dynamically set the coordinates based on the discovered device's properties.
-Please note that not every discovery type returns the latitude and logitude coordinates.
+Please note that not every discovery type returns the latitude and longitude coordinates.
 
 #### Template Rules
 
@@ -184,7 +184,7 @@ Most discovery types only have one default template rule, some may come with two
 * <ImageCounter num={2} /> **Host Template**: the selected host template will be assigned to any result/host of the discovery,
   that satisfies the configured <ImageCounter num={3} /> conditions
 * <ImageCounter num={3} /> **Conditions**: configured conditions are applied to every discovery result and decide,
-  whether the template rule will applied to the result/host or not. **In case no condition is present, the template rule will be applied to every result automatically**
+  whether the template rule will be applied to the result/host or not. **In case no condition is present, the template rule will be applied to every result automatically**
 * <ImageCounter num={4} /> **Macro Mappings**: define, how and which *Host macros* are populated for every result/host.
   The value of a host macro can either be a <ImageCounter color="#88B922">R</ImageCounter> *result property*, 
   <ImageCounter color="#2E68AA">R</ImageCounter> *job configuration parameter* or a <ImageCounter color="#BDBDBD">C</ImageCounter> *custom value*
@@ -227,7 +227,7 @@ The last step of the wizard contains the *Update Profiles* for the discovery job
 
 Currently you can only modify the *Manual Configuration Update Profile*.
 The idea behind these update profiles is that you can manage, which properties of
-a host get updated when when you select results to update the monitoring configuration from.
+a host get updated when you select results to update the monitoring configuration from.
 
 ![Update profiles](../../assets/discovery/cd_up_profiles.png)
 
@@ -246,7 +246,7 @@ the default profile during when updating the monitoring configuration on the res
 :::tip Custom Profile
 It is also possible to create a custom profile for a discovery job. To create the custom profile,
 exand the profile and click `Customize` while having selected a preset, otherwise you can directly select the *Custom* profile from the dropdown.
-All update-options should be avaialble to be selected/removed from the profile.
+All update-options should be available to be selected/removed from the profile.
 :::
 
 ---
@@ -350,7 +350,7 @@ In case an additional discovery was also performed, the discovery results of the
 The second tab *Host Configuration* displays the values for the monitoring host.
 ![Host configruation](../../assets/discovery/cd_detail_host_configuration.png)
 
-The first section in this tab covers the generatetd main host information, such as:
+The first section in this tab covers the generated main host information, such as:
 
 * <ImageCounter num={6} /> Host name
 * <ImageCounter num={7} /> Host address
@@ -513,7 +513,7 @@ The below walkthrough helps you preparing the Azure application and roles, requi
 4. Click `+ New registration` and choose a name for the application (e.g. *i-Vertix Monitoring*)
 5. Return to the main page of the Azure Portal
 6. Switch to **Resource groups**
-7. Choose or create a resource group containing the resoruces you want to monitor/discover
+7. Choose or create a resource group containing the resources you want to monitor/discover
 8. Click on `Access Control (IAM)` and `+ Add`, `Add role assignment`
 9. Select the built-in **Monitoring Reader** role and click `Next`
 10. Select the new application you previously created as a member for this resource group by clicking `+ Select members`
@@ -526,7 +526,7 @@ Now you need to obtain the above mentioned credential information, needed for th
   * Copy the *Subscription ID* next to the name of your subscription
 13. Retrieve the *Tenant ID*
   * Switch to **Azure Active Directory**
-  * Naviate to **Overview** and copy the *Tenant ID*
+  * Navigate to **Overview** and copy the *Tenant ID*
 14. Retrieve the *Client ID*
   * Switch to **Azure Active Directory**
   * Navigate to **App registrations** using the left sidebar
@@ -566,7 +566,7 @@ In addition, you must configure a dedicated monitoring host that is responsible 
 
 The public Cisco Webex API enforces request rate limits. To avoid exceeding these limits,
 the monitoring system continuously retrieves all required Webex information through a centralized cache mechanism.
-The collected data is stored locally and reused by discovery and monitoring processes.
+The collected data is stored locally and reused by discover and monitoring processes.
 
 This approach provides several advantages:
 
@@ -608,4 +608,4 @@ To monitor and discovery any resources from *Proxmox VE (Virtual Environment)* y
 To assign the above permissions to the requested user, create a new role with these permissions and assign the role to the user.
 
 After you created the user with the new role, you can proceed to the discovery wizard and 
-[create the new *Proxmix VE credential*](#configuration-parameters) using the new user credentials.
+[create the new *Proxmox VE credential*](#configuration-parameters) using the new user credentials.
