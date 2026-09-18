@@ -21,7 +21,7 @@ Therefore, server configuration adjustments may be necessary to optimize perform
 
 #### Database
 
-The database used is **MariaDB** (10.5.x) and is already included in the Central Manager System Image.
+The database used is **MariaDB** (10.11.x) and is already included in the Central Manager System Image.
 
 #### Web browser to access the Central Manager web user interface**
 
