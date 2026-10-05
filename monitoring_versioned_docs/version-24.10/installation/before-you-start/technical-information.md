@@ -34,7 +34,7 @@ If you are using a **SSL VPN** connection between Smart Poller and Central Manag
 
 | From           | To             | Protocol     | Port         | Application                                                        |
 |----------------|----------------|--------------|--------------|--------------------------------------------------------------------|
-| Central  | Poller         | ZMQ          | TCP 5666     | Export of configuration |
+| Central  | Poller         | ZMQ          | TCP 5556     | Export of configuration |
 | Central  | Poller         | SSH  | TCP 22       | Export of configuration (legacy), NCB, Sync Job |
 | Poller         | Central  | BBDO         | TCP 5669     | Transfer of collected data                                         |
 
