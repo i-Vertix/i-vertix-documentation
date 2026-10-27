@@ -499,11 +499,23 @@
         },
         {
           "type": "doc",
+          "id": "ncb/ncb-glossary"
+        },
+        {
+          "type": "doc",
           "id": "ncb/ncb-config"
         },
         {
           "type": "doc",
-          "id": "ncb/ncb-view-backups"
+          "id": "ncb/ncb-events"
+        },
+        {
+          "type": "doc",
+          "id": "ncb/ncb-view-configuration"
+        },
+        {
+          "type": "doc",
+          "id": "ncb/ncb-administration"
         }
       ]
     },
