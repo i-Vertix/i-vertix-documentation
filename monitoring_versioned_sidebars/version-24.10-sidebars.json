@@ -491,11 +491,11 @@
     {
       "type": "category",
       "collapsed": true,
-      "label": "Network Configuration Backup",
+      "label": "Network Configuration Backup (NCB)",
       "items": [
         {
           "type": "doc",
-          "id": "ncb/ncb-features"
+          "id": "ncb/ncb-introduction"
         },
         {
           "type": "doc",
@@ -503,7 +503,15 @@
         },
         {
           "type": "doc",
-          "id": "ncb/ncb-view-backups"
+          "id": "ncb/ncb-events"
+        },
+        {
+          "type": "doc",
+          "id": "ncb/ncb-view-configuration"
+        },
+        {
+          "type": "doc",
+          "id": "ncb/ncb-administration"
         }
       ]
     },
