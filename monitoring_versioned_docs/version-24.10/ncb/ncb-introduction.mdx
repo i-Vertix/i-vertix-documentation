@@ -1,8 +1,11 @@
 ---
-id: ncb-features
-title: Features
-hide_table_of_contents: true
+id: ncb-introduction
+title: Introduction
 ---
+
+NCB is an additional module for your i-Vertix IT Monitoring setup. It allows to easily backup the network configuration of devices in the network. 
+
+## Key features:
 
 * Automatic backup of network device configurations
 * Mass device onboarding
@@ -10,11 +13,11 @@ hide_table_of_contents: true
 * Configurations saved in a GIT repository
 * Versions comparison
 * Backup content search (contains, not contains or matches regex)
-* Integrated in i-Vertix IT Monitoring
+* Integrated into i-Vertix IT Monitoring
 * Utilises i-Vertix Vault credentials
 * MSP ready
 
-![image](../assets/ncb/diff-view.png)
+![image](../assets/ncb/configuration_viewer_content_search.png)
 
 ## Technical diagram and data flow
 
@@ -22,7 +25,7 @@ hide_table_of_contents: true
 
 **Central**: data visualisation via HTTPS, backup storage on GIT repository, monitored device configurations. Users can access data according to the type of permissions assigned to them via ACLs.
 
-**Git**: the repository is private and not accessible from outside, data is read and updated from Central.
+**Git**: the repository is private and inaccessible from the outside, data is read and updated from and to Central.
 
 **Poller**: [SSH](https://en.wikipedia.org/wiki/Secure_Shell) is used to communicate with Central to send configuration backups.
 
