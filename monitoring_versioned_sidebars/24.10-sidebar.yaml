@@ -147,11 +147,13 @@ sidebar:
       - visualize-maps
       - edit-maps
   - id: ncb
-    label: Network Configuration Backup
+    label: Network Configuration Backup (NCB)
     items:
-      - ncb-features
+      - ncb-introduction
       - ncb-config
-      - ncb-view-backups
+      - ncb-events
+      - ncb-view-configuration
+      - ncb-administration
   - id: netflow
     label: NetFlow (NTA)
     items:

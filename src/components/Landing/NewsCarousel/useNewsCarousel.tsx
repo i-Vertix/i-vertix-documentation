@@ -18,7 +18,7 @@ const useNewsCarousel = () => {
 
     const news = useMemo((): News[] => [
         {
-            title: "NEW Cloud Discovoery",
+            title: "NEW Cloud Discovery",
             image: "/img/landing/news/cloud-discovery.png",
             text: <p>
                 We're excited to introduce the latest update of our i-Vertix Discovery module, now including the new discovery type: Cloud discovery.
