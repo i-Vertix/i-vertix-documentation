@@ -8,11 +8,12 @@ import ImageCounter from "../../../src/components/ImageCounter";
 
 <Breadcrumb crumbs={["Configuration", "NCB", "Show Network Configurations"]} />
 
-This page is divided into 2 parts. 
+On this page you can view the current and past configurations for your backed up devices. Using several filter options with regex matching you can find the devices of interest and view their configuration.
+The amount of configurations stored can be set by the administrator on the [Administration](./ncb-administration) page.
 
 ![image](../assets/ncb/configuration_viewer.png)
 
-## Left hand side: Devicelist
+## Devicelist
 On the left hand side you can see a **collapsible** list of devices that have at least one configuration backup up. If you cannot find your host in this list, make sure its backup configuration has the correct credential, vendor and OS model set, and is active. An inactive host is never backed up, even if the backup of said host is enabled.
 
 The list can be filtered by different parameters. Clicking the "Device filter" <ImageCounter num={1} /> button reveals the available filter options in a popover. Click the reset icon on top of the "Device filter" button or inside the popover to reload the list without those filters.
@@ -21,7 +22,7 @@ Located below the "Device filter" button is the backup content filter <ImageCoun
 
 After clicking the Search button, the list of devices with configurations <ImageCounter num={3} /> is refreshed.
 
-## Right hand side: Configuration viewer mode <ImageCounter num={4} />
+## Configuration viewer mode <ImageCounter num={4} />
 
 On the right hand side you can see the backed up configuration of the selected device. Normally the latest version will be shown upon device selection. However, if you clicked on "Show configuration" in the [Events](./ncb-events) list to reach this page, the selected version will be shown instead.
 Additionally, lines matching the content of "Backup content filter" will be highlighted, if "Contains" or "Matches" is selected and jump between hits.
@@ -30,7 +31,7 @@ Additionally, lines matching the content of "Backup content filter" will be high
 
 If there are at least 2 versions available the "Show diff" view can be selected using the Diff Button in the top right corner.
 
-## Right hand side: Diff viewer mode
+## Diff viewer mode
 
 ![image](../assets/ncb/configuration_changes.png)
 
