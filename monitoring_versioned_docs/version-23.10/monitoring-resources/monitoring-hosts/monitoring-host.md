@@ -32,7 +32,7 @@ Before you run automatic network scans and start monitoring hosts/services, make
 
 * you installed from all the **Plugin Packs** needed to monitor your IT environment, otherwise see the [Plugin Packs](../monitoring-basics/plugin-packs.md) section of this guide
 
-<!---
+{/*
 > Select: **Administration -> i-Vertix -> Plugin Store**.
 
 ![PluginStore](../../assets/monitoring-resources/monitoring-host/plugin-store.png)
@@ -47,4 +47,4 @@ Before you run automatic network scans and start monitoring hosts/services, make
 
 ![APC](../../assets/monitoring-resources/monitoring-host/plugin-install.png)
 
---->
+-*/}

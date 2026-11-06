@@ -25,7 +25,7 @@ In case you did not follow the Quick Start Guide, you must configure the Plugin 
 Contact the i-Vertix support (support@i-vertix.com) if not already done, to obtain your access.
 :::
 
-<!---
+{/*
 
 TODO: Temporarily commented because
 - the vmware agent is already installed
@@ -46,7 +46,7 @@ included in the Plugin Packs license.
 | VMWare          | Perl daemon using VMware SDK to monitor VMware platforms                      |
 | AS400           | Java-based connector allowing you to execute checks on an AS400               |
 
---->
+-*/}
 
 ### Browsing Plugin Packs
 
@@ -98,7 +98,7 @@ It is possible to select a group of Plugin Packs for installation like in the sc
 ![image](../../assets/monitoring-resources/monitoring-basics/multiple-install.png)
 and install all of them in a single operation clicking on <ImageCounter num={2} />
 
-<!--
+{/*
 
 TODO: What are the dependencies that still need to be managed?
 The section is not clear.
@@ -107,7 +107,7 @@ The section is not clear.
 
 During installation, some objects in the pack may not be installed. These objects are often additional configuration
 objects and are not required to deploy the configuration templates provided by the pack.
---->
+-*/}
 
 Please note that some Plugin Packs might require additional configuration to function correctly, particularly those involving Rest APIs, SNMP, SSH, and similar protocols.
 
@@ -138,9 +138,9 @@ which will show an overview like the following:
 
 ![image](../../assets/monitoring-resources/monitoring-basics/ver_2-pp.png)
 
-<!--
+{/*
 ![image](../../assets/monitoring-resources/monitoring-basics/upd-upg-pp.png)
--->
+*/}
 
 <Tabs>
 <TabItem value="update" label="Update" default>
@@ -194,7 +194,7 @@ See the link [Deploy the configuration](../../monitoring-resources/monitoring-ba
 
 ---
 
-<!---
+{/*
 
 TODO: Currently re-installation is not possible
 
@@ -211,4 +211,4 @@ Any custom data or setting of every template which is part of this plugin pack w
 
 ![image](../../assets/monitoring-resources/monitoring-basics/reinstall-pp.png)
 
---->
+-*/}

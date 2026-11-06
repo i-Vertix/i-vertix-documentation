@@ -102,7 +102,7 @@ a form will open where you can enter the required information for your new crede
 
 </details>
 
-:::info <ImageCounter num={3} /> Import Job Configuration
+:::info[<ImageCounter num={3} /> Import Job Configuration]
 It is possible to import configuration parameters from existing discovery jobs of the same vendor type.
 To import parameters, click the <ImageCounter num={3} /> `Import Job Configuration` button on the top right of the configuration parameters section.
 Please note that only parameters present in both source and current discovery job are imported.
@@ -139,7 +139,7 @@ Some fields can already be filled with default presets. Please note that these p
 The default *Host Name Pattern* and *Host Address Pattern* are required, otherwise the discovery is not able to generate fully qualified hosts. Any other fields are optional.
 It is also possible that some discovery types preset `127.0.0.1` for the *Host Address Pattern* because there is no realistic result address available.
 
-:::info Pattern Properties
+:::info[Pattern Properties]
 You can and should use result properties inside the pattern fields. You can identify a result property by the `$property$` syntax.
 To insert properties inside a pattern field you can use the <ImageCounter num={7} /> dropdown on the right side of the field.
 This dropdown contains all available result properties for the current discovery job.
@@ -205,7 +205,7 @@ host configuration problems or result in unusable discovery results.
 
 In case you modified a rule and want to revert back to it's original state you can click the `Rollback` button next to the delete button on the top right of a *Template rule*.
 
-:::warning Snapshots
+:::warning[Snapshots]
 When creating a new job from scratch, the latest rule-presets will be used. Once you save your new job,
 the rules are saved directly to the job and are no longer directly connected to the intial presets.
 As a result, the job doesn't automatically get rule-updates in case the presets changed.
@@ -220,7 +220,7 @@ You are free to create a custom *Template Rule* by clicking the <ImageCounter nu
 A new dialogue will open, asking you to choose a *rule name* and a *host template* for your new rule.
 Afterwards you can configure *conditions*, *host macro mappings* and *service discoveries*.
 
-:::danger Prevent multiple rule applications
+:::danger[Prevent multiple rule applications]
 When adding new rules you need to be very careful when it comes down to the question, when and which template rule needs to be applied to a result.
 The best practice should be to make sure (via conditions), that only one template rule gets applied to a result.
 
@@ -251,7 +251,7 @@ Default presets can be configured in <Breadcrumb crumbs={["Administration", "Dis
 What you can do now is to select the default-selected preset. The selected profile will later be used as
 the default profile during when updating the monitoring configuration on the results page.
 
-:::tip Custom Profile
+:::tip[Custom Profile]
 It is also possible to create a custom profile for a discovery job. To create the custom profile,
 exand the profile and click `Customize` while having selected a preset, otherwise you can directly select the *Custom* profile from the dropdown.
 All update-options should be available to be selected/removed from the profile.
@@ -371,7 +371,7 @@ The <ImageCounter color="#999999">P</ImageCounter> indicates, that the field is 
 [host configuration section of the wizard](#host-configuration) whilst a <ImageCounter color="#FD9F27">C</ImageCounter> marks,
 that the current set value was overwritten/customized.
 
-:::tip Customize fields
+:::tip[Customize fields]
 Fields managed by <ImageCounter color="#999999">P</ImageCounter> pattern are disabled. To enable editing/customizing the field, 
 click the <ImageCounter color="#999999">P</ImageCounter> icon.
 In case you want to reset a customized field, click the <ImageCounter color="#FD9F27">C</ImageCounter> icon to return to the pattern value.
@@ -381,7 +381,7 @@ To save any customizations, click the `Save` button at the right top of the side
 
 Below the fields the <ImageCounter num={11} /> host templates are displayed, which will be added/set on the host when updating the monitoring configruation.
 
-:::warning No host template present
+:::warning[No host template present]
 In case no host template is present, this usually means that no [Template rule](#template-rules) matched for this result.
 Please check the dedicated job configuration section to find the issue.
 :::

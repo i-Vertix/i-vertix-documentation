@@ -148,7 +148,7 @@ The following steps are mandatory to synchronize immediately the plugins with th
 At this stage of the setup, the Poller is fully configured and ready to begin monitoring.
 The following section covers advanced configuration options that may be useful for specific use cases.
 
-<!---
+{/*
 :::note
 
 If you want to start immediately with the monitoring, make sure to also manually synchronize the plugins from the central to the newly created poller!
@@ -165,7 +165,7 @@ you need to **execute following command** on the **Central Monitoring Server** t
 ```bash
 sudo /opt/i-vertix/scripts/i-vertix/sync_poller.sh
 ```
---->
+-*/}
 
 ## Additional configuration
 

@@ -19,7 +19,7 @@ const config = {
     // use rspack for building
     future: {
         v4: true,
-        experimental_faster: true,
+        faster: true,
     },
 
     // GitHub pages deployment config.
@@ -29,8 +29,13 @@ const config = {
     noIndex: false,
 
     onBrokenLinks: 'warn',
-    onBrokenMarkdownLinks: 'warn',
     onBrokenAnchors: 'warn',
+
+    markdown: {
+        hooks: {
+            onBrokenMarkdownLinks: 'warn',
+        },
+    },
 
     // Even if you don't use internalization, you can use this field to set useful
     // metadata like html lang. For example, if your site is Chinese, you may want
