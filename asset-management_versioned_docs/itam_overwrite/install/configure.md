@@ -23,13 +23,13 @@ On an **i-Vertix ITAM** system you will need to log into the i-Vertix console to
 
 - Password: '**changeme**' (please change the password as soon as possible)
 
-<!---
+{/*
 :::danger
 
 If you fail the login process 3 times from ssh, the IP Address will be blocked for 30 minutes (see [fail2ban](../../installation/fail2ban)).
 
 :::
---->
+-*/}
 
 After the authentication, a menu that allows you to configure the vm is displayed.
 
