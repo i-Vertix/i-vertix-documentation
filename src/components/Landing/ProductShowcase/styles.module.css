@@ -25,6 +25,12 @@
 	}
 }
 
+@media (min-width: 1120px) {
+	.cards {
+		grid-template-columns: repeat(3, minmax(18rem, 1fr));
+	}
+}
+
 .card {
     aspect-ratio: 1/1;
     display: flex;

@@ -1,0 +1,657 @@
+---
+title: "Azure SQL database"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Databases/Azure-SQL-DB.png";
+
+<PluginPackHeader name="Azure SQL database" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure SQL database monitoring
+protocols used: Rest API
+
+- Application ressources
+- Connections
+- CPU
+- Deadlocks
+- Health
+- Memory
+- Sessions
+- Storage
+- Workers
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](./azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-SQL-DB
+
+*Azure SQL database* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `TIMEFRAME` | `300` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `RESOURCE` |  | Set resource name or ID (required). It is the database name. |
+| `SERVER` |  | Set server name (required if resource's name is used). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#cloud-azure-database-sqldatabase-connections) | `cloud-azure-database-sqldatabase-connections` |
+| [CPU](#cloud-azure-database-sqldatabase-cpu) | `cloud-azure-database-sqldatabase-cpu` |
+| [Deadlocks](#cloud-azure-database-sqldatabase-deadlocks) | `cloud-azure-database-sqldatabase-deadlocks` |
+| [Health](#cloud-azure-database-sqldatabase-health) | `cloud-azure-database-sqldatabase-health` |
+| [Memory](#cloud-azure-database-sqldatabase-memory) | `cloud-azure-database-sqldatabase-memory` |
+| [Sessions](#cloud-azure-database-sqldatabase-sessions) | `cloud-azure-database-sqldatabase-sessions` |
+| [Storage](#cloud-azure-database-sqldatabase-storage) | `cloud-azure-database-sqldatabase-storage` |
+| [Workers](#cloud-azure-database-sqldatabase-workers) | `cloud-azure-database-sqldatabase-workers` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Application ressources](#cloud-azure-database-sqldatabase-app-resources) | `cloud-azure-database-sqldatabase-app-resources` |
+| [Server status](#cloud-azure-database-sqlserver-server-status) | `cloud-azure-database-sqlserver-server-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Azure-SQL-DB-serverless
+
+*Azure SQL serverless database* · Parent template: `Azure-SQL-DB`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `CLIENT-SECRET` |  | Set Azure client secret. |
+| `LOGIN-ENDPOINT` |  | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` |  | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `TIMEOUT` |  | Set timeout in seconds (default: 10). |
+| `RESOURCE` |  | Set resource name or ID (required). It is the database name. |
+| `SERVER` |  | Set server name (required if resource's name is used). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `TIMEFRAME` |  | Set timeframe in seconds (i.e. 3600 to check last hour). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Application ressources](#cloud-azure-database-sqldatabase-app-resources) | `cloud-azure-database-sqldatabase-app-resources` |
+| [Connections](#cloud-azure-database-sqldatabase-connections) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-connections` |
+| [CPU](#cloud-azure-database-sqldatabase-cpu) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-cpu` |
+| [Deadlocks](#cloud-azure-database-sqldatabase-deadlocks) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-deadlocks` |
+| [Health](#cloud-azure-database-sqldatabase-health) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-health` |
+| [Memory](#cloud-azure-database-sqldatabase-memory) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-memory` |
+| [Sessions](#cloud-azure-database-sqldatabase-sessions) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-sessions` |
+| [Storage](#cloud-azure-database-sqldatabase-storage) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-storage` |
+| [Workers](#cloud-azure-database-sqldatabase-workers) (inherited from `Azure-SQL-DB`) | `cloud-azure-database-sqldatabase-workers` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Server status](#cloud-azure-database-sqlserver-server-status) | `cloud-azure-database-sqlserver-server-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Azure-SQL-Server
+
+*Azure SQL server* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE-GROUP` |  | Set resource group. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Server status](#cloud-azure-database-sqlserver-server-status) | `cloud-azure-database-sqlserver-server-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Application ressources](#cloud-azure-database-sqldatabase-app-resources) | `cloud-azure-database-sqldatabase-app-resources` |
+| [Connections](#cloud-azure-database-sqldatabase-connections) | `cloud-azure-database-sqldatabase-connections` |
+| [CPU](#cloud-azure-database-sqldatabase-cpu) | `cloud-azure-database-sqldatabase-cpu` |
+| [Deadlocks](#cloud-azure-database-sqldatabase-deadlocks) | `cloud-azure-database-sqldatabase-deadlocks` |
+| [Health](#cloud-azure-database-sqldatabase-health) | `cloud-azure-database-sqldatabase-health` |
+| [Memory](#cloud-azure-database-sqldatabase-memory) | `cloud-azure-database-sqldatabase-memory` |
+| [Sessions](#cloud-azure-database-sqldatabase-sessions) | `cloud-azure-database-sqldatabase-sessions` |
+| [Storage](#cloud-azure-database-sqldatabase-storage) | `cloud-azure-database-sqldatabase-storage` |
+| [Workers](#cloud-azure-database-sqldatabase-workers) | `cloud-azure-database-sqldatabase-workers` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {#cloud-azure-database-sqldatabase-connections}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-connections` · Check command: `cloud-azure-database-sqldatabase-connections`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CONNECTION-FAILED` | `0` | Warning threshold connections failed |
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-CONNECTION-SUCCESSFUL` |  | Warning threshold connections successful |
+| `CRITICAL-CONNECTION-FAILED` |  | Critical  threshold connections failed |
+| `CRITICAL-CONNECTION-SUCCESSFUL` |  | Critical threshold connections successful |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.connection.blocked.count` |  | Blocked by firewall |  |
+| `sqldatabase.connection.failed.count` |  | Connection failed | `WARNING-CONNECTION-FAILED`, `CRITICAL-CONNECTION-FAILED` |
+| `sqldatabase.connection.successful.count` |  | Connection successful | `WARNING-CONNECTION-SUCCESSFUL`, `CRITICAL-CONNECTION-SUCCESSFUL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {#cloud-azure-database-sqldatabase-cpu}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-cpu` · Check command: `cloud-azure-database-sqldatabase-cpu`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PERCENTAGE` | `80` | Warning threshold for CPU used percent (%) |
+| `CRITICAL-USAGE-PERCENTAGE` | `90` | Critical threshold for CPU used percent (%) |
+| `AGGREGATION` | `maximum` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.cpu.usage.percentage` | `%` | CPU used percent | `WARNING-USAGE-PERCENTAGE`, `CRITICAL-USAGE-PERCENTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Deadlocks {#cloud-azure-database-sqldatabase-deadlocks}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-deadlocks` · Check command: `cloud-azure-database-sqldatabase-deadlocks`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-DEADLOCKS` | `0` | Critical threshold deadlocks |
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+| `WARNING-DEADLOCKS` |  | Warning threshold deadlocks |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.deadlocks.count` |  | Deadlocks | `WARNING-DEADLOCKS`, `CRITICAL-DEADLOCKS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {#cloud-azure-database-sqldatabase-health}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-health` · Check command: `cloud-azure-database-sqldatabase-health`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{status} =~ /^Unavailable$/` | Set critical threshold for status (Default: '%\{status\} =~ /^Unavailable$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `UNKNOWN-STATUS` | `%{status} =~ /^Unknown$/` | Set unknown threshold for status (Default: '%\{status\} =~ /^Unknown$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `OK-STATUS` | `%{status} =~ /^Available$/` | Set ok threshold for status (Default: '%\{status\} =~ /^Available$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{summary\} |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {#cloud-azure-database-sqldatabase-memory}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-memory` · Check command: `cloud-azure-database-sqldatabase-memory`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PERCENTAGE` | `80` | Warning threshold memory utilization (%) |
+| `CRITICAL-USAGE-PERCENTAGE` | `90` | Critical threshold memory utilization (%) |
+| `AGGREGATION` | `maximum` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.memory.usage.percentage` | `%` | Memory used percent | `WARNING-USAGE-PERCENTAGE`, `CRITICAL-USAGE-PERCENTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sessions {#cloud-azure-database-sqldatabase-sessions}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-sessions` · Check command: `cloud-azure-database-sqldatabase-sessions`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-SESSIONS` |  | Warning threshold sessions |
+| `CRITICAL-SESSIONS` |  | Critical threshold sessions |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.sessions.count` |  | Sessions | `WARNING-SESSIONS`, `CRITICAL-SESSIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {#cloud-azure-database-sqldatabase-storage}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-storage` · Check command: `cloud-azure-database-sqldatabase-storage`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PERCENT` | `90` | Warning threshold usage (%) |
+| `CRITICAL-USAGE-PERCENT` | `95` | Critical threshold usage (%) |
+| `AGGREGATION` | `maximum` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-USAGE-BYTES` |  | Warning threshold usage (B) |
+| `CRITICAL-USAGE-BYTES` |  | Critical threshold usage (B) |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.storage.space.usage.bytes` | `B` | Storage used | `WARNING-USAGE-BYTES`, `CRITICAL-USAGE-BYTES` |
+| `sqldatabase.storage.space.usage.percentage` | `%` | Storage used percent | `WARNING-USAGE-PERCENT`, `CRITICAL-USAGE-PERCENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Workers {#cloud-azure-database-sqldatabase-workers}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-workers` · Check command: `cloud-azure-database-sqldatabase-workers`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-WORKERS` | `10` | Warning threshold workers |
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `CRITICAL-WORKERS` |  | Critical threshold workers |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.workers.count` |  | Workers | `WARNING-WORKERS`, `CRITICAL-WORKERS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+`Ping-LAN` · Check command: `check_ivertix_ping`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Application ressources {#cloud-azure-database-sqldatabase-app-resources}
+
+</summary>
+
+`cloud-azure-database-sqldatabase-app-resources` · Check command: `cloud-azure-database-sqldatabase-app-resources`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-APP-CPU` | `80` | Warning threshold application CPU |
+| `WARNING-APP-MEMORY` | `80` | Warning threshold application memory |
+| `CRITICAL-APP-CPU` | `90` | Critical threshold application CPU |
+| `CRITICAL-APP-MEMORY` | `90` | Critical threshold application memory |
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqldatabase.serverless.app.cpu.percentage` | `%` | App CPU percent | `WARNING-APP-CPU`, `CRITICAL-APP-CPU` |
+| `sqldatabase.serverless.app.memory.percentage` | `%` | App Memory percent | `WARNING-APP-MEMORY`, `CRITICAL-APP-MEMORY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Server status {#cloud-azure-database-sqlserver-server-status}
+
+</summary>
+
+`cloud-azure-database-sqlserver-server-status` · Check command: `cloud-azure-database-sqlserver-server-status`
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{state} ne "Ready"` | Define the conditions to match for the status to be CRITICAL. (default: '%\{state\} ne "Ready"'). You can use the following variables: %\{state\}, %\{fqdn\}, %\{display\} |
+| `FILTER-NAME` |  | Filter server name (can be a regexp). |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. (default: ''). You can use the following variables: %\{state\}, %\{fqdn\}, %\{display\} |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20261000 - 20261029</summary>
+
+- Command `cloud-azure-database-sqldatabase-health`
+    - Option `--server=$_HOSTSERVER$` added
+    - Macro `SERVER` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260600 - 20260811</summary>
+
+- Host template `Azure-SQL-DB-serverless`
+    - Host template added
+- Host template `Azure-SQL-Server`
+    - Host template added
+- Service template [`cloud-azure-database-sqldatabase-app-resources`](#cloud-azure-database-sqldatabase-app-resources)
+    - Service template added
+- Service template [`cloud-azure-database-sqlserver-server-status`](#cloud-azure-database-sqlserver-server-status)
+    - Service template added
+- Command `cloud-azure-database-sqldatabase-app-resources`
+    - Command added
+- Command `cloud-azure-database-sqlserver-server-status`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260400 - 20260424</summary>
+
+- Host template `Azure-SQL-DB`
+    - Service template `cloud-azure-database-sqldatabase-app-resources` unlinked
+- Service template [`cloud-azure-database-sqldatabase-app-resources`](#cloud-azure-database-sqldatabase-app-resources)
+    - Service template removed
+- Command `cloud-azure-database-sqldatabase-app-resources`
+    - Command removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250617</summary>
+
+- Command `cloud-azure-database-sqldatabase-deadlocks`
+    - Option `--warning-deadlocks=$_SERVICEWARNING-DEADLOCKS$` added
+    - Option `--critical-deadlocks=$_SERVICECRITICAL-DEADLOCKS$` added
+    - Option `--warning-warning-deadlocks=$_SERVICEWARNING-DEADLOCKS$` removed
+    - Option `--critical-warning-deadlocks=$_SERVICECRITICAL-DEADLOCKS$` removed
+    - Macro `TIMEFRAME` added
+- Command `cloud-azure-database-sqldatabase-health`
+    - Option `--server=$_HOSTSERVER$` removed
+    - Macro `TIMEFRAME` added
+    - Macro `SERVER` removed
+
+</details>

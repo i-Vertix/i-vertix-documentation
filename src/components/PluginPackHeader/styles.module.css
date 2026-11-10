@@ -1,0 +1,22 @@
+.header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: var(--ifm-leading);
+}
+
+.image {
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.title {
+    margin-bottom: 0.5rem;
+    color: var(--ivertix-secondary-color);
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}

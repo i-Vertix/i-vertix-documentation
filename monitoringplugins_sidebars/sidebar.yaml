@@ -1,0 +1,928 @@
+# Source of the Monitoring Plugins sidebar.
+# Regenerate the JSON with: node scripts/build-sidebar.js --docs=monitoringplugins
+sidebar:
+  - id: monitoring-plugins
+    label: Monitoring Plugins
+    items:
+      - id: plugin-store
+        label: Plugin Store
+      - id: release-notes
+        label: Release Notes
+      - id: troubleshooter
+        label: Troubleshooter
+  - id: applications
+    label: Applications
+    items:
+      - id: 3cx-voip-pbx
+        label: 3CX Voip PBX
+      - id: active-directory-winrm
+        label: Active Directory (WinRM)
+      - id: activemq
+        label: ActiveMQ
+      - id: apache-kafka
+        label: Apache Kafka
+      - id: apache-solr
+        label: Apache Solr
+      - id: apache-zookeeper
+        label: Apache Zookeeper
+      - id: asterisk-voip
+        label: Asterisk VoIP
+      - id: ceph
+        label: Ceph
+      - id: cifs-smb
+        label: CIFS/SMB
+      - id: cisco-catalyst-center-dna
+        label: Cisco Catalyst Center (DNA)
+      - id: cisco-ise-indentity-service-engine
+        label: Cisco ISE (Indentity Service Engine)
+      - id: citrix-xendesktop-7-x-i-vertix-agent
+        label: Citrix XenDesktop 7.x (i-Vertix agent)
+      - id: commvault-commserve-backup
+        label: Commvault Commserve backup
+      - id: dhcp-requests-active
+        label: DHCP requests (active)
+      - id: dns-requests-active
+        label: DNS requests (active)
+      - id: dynatrace
+        label: Dynatrace
+      - id: eclipse-mosquitto-mqtt
+        label: Eclipse Mosquitto MQTT
+      - id: exchange-onpremise-i-vertix-agent
+        label: Exchange OnPremise (i-Vertix agent)
+      - id: exchange-onpremise-extended-i-vertix-agent
+        label: Exchange OnPremise Extended (i-Vertix agent)
+      - id: ftp-server-active
+        label: FTP Server (active)
+      - id: generic-snmp-request
+        label: Generic SNMP request
+      - id: grafana
+        label: Grafana
+      - id: graylog
+        label: Graylog
+      - id: haproxy-snmp
+        label: HAProxy (SNMP)
+      - id: haproxy-web-api
+        label: HAProxy (Web API)
+      - id: hashicorp-vault
+        label: Hashicorp Vault
+      - id: hpe-simplivity
+        label: HPE Simplivity
+      - id: http-s-or-website
+        label: HTTP(S) or website
+      - id: i-vertix-business-intelligence-server
+        label: i-Vertix Business Intelligence Server
+      - id: i-vertix4-monitoring-central
+        label: i-Vertix4 Monitoring Central
+      - id: i-vertix4-poller
+        label: i-Vertix4 Poller
+      - id: ibm-lotus-notes
+        label: IBM Lotus Notes
+      - id: imap-server-active
+        label: IMAP Server (active)
+      - id: internet-information-server-iis-i-vertix-agent
+        label: Internet Information Server - IIS (i-Vertix agent)
+      - id: internet-information-server-iis-rest-api
+        label: Internet Information Server - IIS (Rest API)
+      - id: internet-information-server-iis-winrm
+        label: Internet Information Server - IIS (WinRM)
+      - id: java-jvm-actuator
+        label: Java JVM Actuator
+      - id: jboss-java-red-hat
+        label: JBoss Java (Red Hat)
+      - id: kadiska
+        label: Kadiska
+      - id: kaspersky-security-center
+        label: Kaspersky Security Center
+      - id: keepalived-redhat
+        label: Keepalived (Redhat)
+      - id: ldap-active-directory-active
+        label: LDAP / Active Directory (active)
+      - id: libraesva-email-security-gateway
+        label: Libraesva eMail Security Gateway
+      - id: microsoft-hyper-v-i-vertix-agent
+        label: Microsoft Hyper-V (i-Vertix agent)
+      - id: microsoft-hyper-v-scvmm-i-vertix-agent
+        label: Microsoft Hyper-V SCVMM (i-Vertix agent)
+      - id: microsoft-sccm-i-vertix-agent
+        label: Microsoft SCCM (i-Vertix agent)
+      - id: microsoft-wsus-i-vertix-agent
+        label: Microsoft WSUS (i-Vertix agent)
+      - id: modbus
+        label: Modbus
+      - id: mscs-microsoft-cluster-server-i-vertix-agent
+        label: MSCS Microsoft Cluster Server (i-Vertix agent)
+      - id: netapp-snapcenter-backup
+        label: Netapp SnapCenter Backup
+      - id: network-path-mtr
+        label: Network path - MTR
+      - id: nginx-webserver
+        label: NGINX Webserver
+      - id: ntp-server-active
+        label: NTP Server (active)
+      - id: openvpn
+        label: OpenVPN
+      - id: oracle-vm-manager
+        label: Oracle VM Manager
+      - id: oracle-weblogic-application-server
+        label: Oracle Weblogic Application Server
+      - id: pacemaker
+        label: Pacemaker
+      - id: podman-container
+        label: Podman container
+      - id: proxmox-mail-gateway
+        label: Proxmox Mail Gateway
+      - id: proxmox-ve-virtual-environment
+        label: Proxmox VE (Virtual Environment)
+      - id: rabbitmq
+        label: RabbitMQ
+      - id: radius-server-active
+        label: Radius Server (active)
+      - id: redis-sentinel
+        label: Redis Sentinel
+      - id: rrdcached
+        label: RRDcached
+      - id: rubrik-enterprise-backup
+        label: Rubrik Enterprise backup
+      - id: sahi-pro-synthetic-monitoring
+        label: Sahi Pro synthetic monitoring
+      - id: salesforce
+        label: Salesforce
+      - id: sap-r3-or-s-4hana
+        label: SAP R3 or S/4HANA
+      - id: scale-computing
+        label: Scale Computing
+      - id: selenese-synthetic-monitoring
+        label: Selenese synthetic monitoring
+      - id: selenium-katalon-synthetic-monitoring
+        label: Selenium Katalon synthetic monitoring
+      - id: selenium-synthetic-monitoring
+        label: Selenium synthetic monitoring
+      - id: sftp-active
+        label: SFTP (active)
+      - id: slack
+        label: Slack
+      - id: smartermail
+        label: Smartermail
+      - id: smtp-server-active
+        label: SMTP Server (active)
+      - id: speedtest
+        label: Speedtest
+      - id: splunk
+        label: Splunk
+      - id: squid-http-proxy
+        label: Squid HTTP Proxy
+      - id: ssh-login-active
+        label: SSH login (active)
+      - id: tcp-ports-active
+        label: TCP ports (active)
+      - id: tomcat-jmx
+        label: Tomcat JMX
+      - id: udp-ports-active
+        label: UDP ports (active)
+      - id: varnish-cache
+        label: Varnish cache
+      - id: veeam-backup-em-enterprise-manager
+        label: Veeam Backup EM (Enterprise Manager)
+      - id: veeam-vbr-rest-api
+        label: Veeam VBR (Rest API)
+      - id: veeam-vbr-winrm
+        label: Veeam VBR (WinRM)
+      - id: vernemq
+        label: VerneMQ
+      - id: vmware-vsphere8-vcsa
+        label: VMware vSphere8 vCSA
+      - id: wallix-bastion
+        label: Wallix Bastion
+      - id: whois-domain-verification
+        label: Whois Domain verification
+  - id: cloud
+    label: Cloud
+    items:
+      - id: aws
+        label: AWS
+        items:
+          - id: aws-api-gateway
+            label: AWS API Gateway
+          - id: aws-application-elb
+            label: AWS Application ELB
+          - id: aws-backup
+            label: AWS Backup
+          - id: aws-classic-elb-availability-zone
+            label: AWS Classic ELB - Availability Zone
+          - id: aws-classic-elb-loadbalancer
+            label: AWS Classic ELB - Loadbalancer
+          - id: aws-cloudwatch
+            label: AWS Cloudwatch
+          - id: aws-cloudwatch-logs
+            label: AWS Cloudwatch Logs
+          - id: aws-direct-connect
+            label: AWS Direct Connect
+          - id: aws-ebs-volume
+            label: AWS EBS volume
+          - id: aws-ec2-asg
+            label: AWS EC2 ASG
+          - id: aws-ec2-instance
+            label: AWS EC2 instance
+          - id: aws-efs-elastic-file-system
+            label: AWS EFS (Elastic File System)
+          - id: aws-elasticache
+            label: AWS ElastiCache
+          - id: aws-kinesis
+            label: AWS Kinesis
+          - id: aws-lambda
+            label: AWS Lambda
+          - id: aws-network-loadbalancer
+            label: AWS Network Loadbalancer
+          - id: aws-rds-relational-database-service
+            label: AWS RDS (Relational Database Service)
+          - id: aws-s3
+            label: AWS S3
+          - id: aws-ses-simple-email-service
+            label: AWS SES (Simple Email Service)
+          - id: aws-sns-simple-notification-service
+            label: AWS SNS (Simple Notification Service)
+          - id: aws-sqs-simple-queue-service
+            label: AWS SQS (Simple Queue Service)
+          - id: aws-transit-gateway
+            label: AWS Transit Gateway
+      - id: azure
+        label: Azure
+        items:
+          - id: azure-prerequisites
+            label: Azure Prerequisites
+          - id: azure-api-management
+            label: Azure API Management
+          - id: azure-application-gateway
+            label: Azure Application Gateway
+          - id: azure-automation
+            label: Azure Automation
+          - id: azure-container-registry
+            label: Azure Container Registry
+          - id: azure-express-route
+            label: Azure Express Route
+          - id: azure-key-vault
+            label: Azure Key Vault
+          - id: azure-kubernetes-service
+            label: Azure Kubernetes Service
+          - id: azure-loadbalancer
+            label: Azure Loadbalancer
+          - id: azure-monitor
+            label: Azure Monitor
+          - id: azure-mysql
+            label: Azure MySQL
+          - id: azure-netapp-pools
+            label: Azure NetApp Pools
+          - id: azure-public-ip
+            label: Azure Public IP
+          - id: azure-sql-database
+            label: Azure SQL database
+          - id: azure-storage-account
+            label: Azure Storage Account
+          - id: azure-virtual-hub
+            label: Azure Virtual Hub
+          - id: azure-virtual-machine
+            label: Azure Virtual Machine
+          - id: azure-virtual-network
+            label: Azure Virtual Network
+          - id: azure-vpn-gateway
+            label: Azure VPN Gateway
+          - id: azure-web-application-firewall
+            label: Azure Web Application Firewall
+      - id: cisco-webex
+        label: Cisco Webex
+      - id: docker-rest-api
+        label: Docker (Rest API)
+      - id: docker-ssh
+        label: Docker (SSH)
+      - id: google-compute-engine
+        label: Google Compute Engine
+      - id: google-workspace
+        label: Google Workspace
+      - id: kubernetes-api
+        label: Kubernetes (API)
+      - id: nutanix-prism-enterprise-cloud
+        label: Nutanix Prism Enterprise Cloud
+      - id: office-365
+        label: Office 365
+      - id: openshift
+        label: Openshift
+      - id: prometheus-nginx-ingress-controller
+        label: Prometheus nginx ingress controller
+      - id: prometheus-query
+        label: Prometheus query
+      - id: velocloud
+        label: VeloCloud
+  - id: database
+    label: Database
+    items:
+      - id: apache-couchdb
+        label: Apache CouchDB
+      - id: azure-postgresql
+        label: Azure PostgreSQL
+      - id: elasticsearch
+        label: Elasticsearch
+      - id: firebird-database
+        label: Firebird Database
+      - id: ibm-db2
+        label: IBM DB2
+      - id: ibm-informix-database
+        label: IBM Informix database
+      - id: influxdb
+        label: InfluxDB
+      - id: mariadb-mysql
+        label: MariaDB/MySQL
+      - id: microsoft-sql-server
+        label: Microsoft SQL Server
+      - id: mongodb
+        label: MongoDB
+      - id: oracle-rdbms
+        label: Oracle RDBMS
+      - id: postgresql
+        label: PostgreSQL
+      - id: redis-in-memory
+        label: Redis in-memory
+      - id: redislabs-enterprise-cluster
+        label: Redislabs Enterprise Cluster
+      - id: sap-hana-db
+        label: SAP HANA DB
+      - id: sap-sybase-ase-database
+        label: SAP Sybase ASE database
+  - id: hardware
+    label: Hardware
+    items:
+      - id: abb-cms-700
+        label: ABB CMS 700
+      - id: akcp-environment-sensor
+        label: AKCP environment sensor
+      - id: alpha-ups
+        label: Alpha UPS
+      - id: apc-ats
+        label: APC ATS
+      - id: apc-netbotz
+        label: APC Netbotz
+      - id: apc-netbotz-250
+        label: APC Netbotz 250
+      - id: apc-pdu
+        label: APC PDU
+      - id: apc-ups
+        label: APC UPS
+      - id: appeartv
+        label: AppearTV
+      - id: avaya-aes
+        label: Avaya AES
+      - id: avaya-media-gateway
+        label: Avaya Media Gateway
+      - id: avigilon-camera
+        label: Avigilon camera
+      - id: avocent-acs-6000-kvm
+        label: Avocent ACS 6000 KVM
+      - id: avocent-acs-8000-kvm
+        label: Avocent ACS 8000 KVM
+      - id: axentia-e-paper
+        label: Axentia e-paper
+      - id: axis-video-camera
+        label: Axis Video Camera
+      - id: barco-clickshare
+        label: Barco Clickshare
+      - id: cisco-cts
+        label: Cisco CTS
+      - id: cisco-ucs-server
+        label: Cisco UCS Server
+      - id: cyberpower-pdu
+        label: Cyberpower PDU
+      - id: cyberpower-ups
+        label: Cyberpower UPS
+      - id: dell-cmc
+        label: Dell CMC
+      - id: dell-idrac
+        label: Dell iDRAC
+      - id: dell-openmanage
+        label: Dell OpenManage
+      - id: dell-vxrail-manager
+        label: Dell VxRail Manager
+      - id: easy-pdu
+        label: Easy PDU
+      - id: eaton-ats
+        label: Eaton ATS
+      - id: eaton-pdu
+        label: Eaton PDU
+      - id: eaton-powerware-ups
+        label: Eaton Powerware UPS
+      - id: emerson-pdu
+        label: Emerson PDU
+      - id: fujitsu-irmc
+        label: Fujitsu iRMC
+      - id: hanwha-camera
+        label: Hanwha camera
+      - id: hikvision-camera
+        label: Hikvision camera
+      - id: hikvision-nvr
+        label: Hikvision NVR
+      - id: himoinsa-generator-ups
+        label: Himoinsa Generator (UPS)
+      - id: hms-ewon-gateway-siemens-s7
+        label: HMS Ewon Gateway (Siemens S7)
+      - id: hms-netbiter-argos
+        label: HMS Netbiter Argos
+      - id: hp-ilo-2-api
+        label: HP iLO 2 API
+      - id: hp-ilo-2-3-4-api
+        label: HP iLO 2/3/4 API
+      - id: hp-ilo-3-api
+        label: HP iLO 3 API
+      - id: hp-ilo-5-api
+        label: HP iLO 5 API
+      - id: hp-proliant-ilo-snmp
+        label: HP Proliant ILO (snmp)
+      - id: hp-ups
+        label: HP UPS
+      - id: hpe-blade
+        label: HPE Blade
+      - id: hpe-oneview
+        label: HPE OneView
+      - id: huawei-hmm
+        label: Huawei HMM
+      - id: huawei-ibmc
+        label: Huawei iBMC
+      - id: hwg-ste-sensor
+        label: HWg STE Sensor
+      - id: ibm-bladecenter-server
+        label: IBM Bladecenter (Server)
+      - id: ibm-hmc-hardware-managemement-console
+        label: IBM HMC (Hardware Managemement Console)
+      - id: ibm-imm
+        label: IBM IMM
+      - id: jacarta-environment
+        label: Jacarta Environment
+      - id: lenovo-xcc
+        label: Lenovo XCC
+      - id: masterclock-ntp100-gps
+        label: Masterclock NTP100 GPS
+      - id: messpc-ethernetbox
+        label: MessPC Ethernetbox
+      - id: mobotix-camera
+        label: Mobotix camera
+      - id: nitram-ups
+        label: Nitram UPS
+      - id: nvidia-gpu
+        label: NVIDIA GPU
+      - id: openmanage-enterprise-ome
+        label: OpenManage Enterprise (OME)
+      - id: oracle-sun-server
+        label: Oracle Sun Server
+      - id: printer-rfc3805
+        label: Printer RFC3805
+      - id: raritan-pdu
+        label: Raritan PDU
+      - id: riello-ups
+        label: Riello UPS
+      - id: rittal-cmc-iii
+        label: Rittal CMC III
+      - id: sentry-pdu
+        label: Sentry PDU
+      - id: socomec-netvision-ups
+        label: Socomec Netvision UPS
+      - id: sun-sfxxk
+        label: Sun SFXXK
+      - id: supermicro-bmc
+        label: Supermicro BMC
+      - id: ups-standard-rfc1628
+        label: UPS standard (RFC1628)
+      - id: vertiv-geist-sensor
+        label: Vertiv Geist sensor
+      - id: vertiv-ups-ees
+        label: Vertiv UPS (EES)
+      - id: xfusion-ibmc
+        label: Xfusion iBMC
+      - id: xppc-phoenixtec-ups
+        label: XPPC Phoenixtec UPS
+  - id: network
+    label: Network
+    items:
+      - id: adva-fsp-150
+        label: ADVA FSP 150
+      - id: adva-fsp-3000
+        label: ADVA FSP 3000
+      - id: aerohive-access-points
+        label: Aerohive Access Points
+      - id: alcatel-omniswitch
+        label: Alcatel Omniswitch
+      - id: alcatel-oxe-pbx
+        label: Alcatel OXE PBX
+      - id: allied-telesis-network-devices
+        label: Allied Telesis network devices
+      - id: arista-switch
+        label: Arista switch
+      - id: aruba-clearpass
+        label: Aruba Clearpass
+      - id: aruba-cx-series
+        label: Aruba CX Series
+      - id: aruba-instant
+        label: Aruba Instant
+      - id: aruba-network-devices
+        label: Aruba network devices
+      - id: aruba-orchestrator
+        label: Aruba Orchestrator
+      - id: atto-fibrebridge
+        label: Atto Fibrebridge
+      - id: audiocodes-sbc
+        label: Audiocodes SBC
+      - id: avm-fritzbox
+        label: AVM Fritzbox
+      - id: barracuda-cloudgen-firewall
+        label: Barracuda Cloudgen Firewall
+      - id: barracuda-message-archiver
+        label: Barracuda Message Archiver
+      - id: bgp-border-gateway-protocol
+        label: BGP - Border Gateway Protocol
+      - id: bluecoat-web-security
+        label: Bluecoat Web Security
+      - id: brocade-foundry-switch
+        label: Brocade Foundry switch
+      - id: brocade-switch
+        label: Brocade switch
+      - id: cambium-cnmatrix
+        label: Cambium cnMatrix
+      - id: cambium-cnpilot
+        label: Cambium cnPilot
+      - id: cambium-epmp
+        label: Cambium ePMP
+      - id: checkpoint-firewall
+        label: Checkpoint Firewall
+      - id: cisco-application-policy-infrastructure-controller-apic
+        label: Cisco Application Policy Infrastructure Controller (APIC)
+      - id: cisco-asa-firewall
+        label: Cisco ASA Firewall
+      - id: cisco-call-manager-snmp
+        label: Cisco Call Manager (SNMP)
+      - id: cisco-call-manager-sxml-api
+        label: Cisco Call Manager (SXML/API)
+      - id: cisco-email-security-gateway
+        label: Cisco Email Security Gateway
+      - id: cisco-firepower-fmc-management
+        label: Cisco Firepower FMC (management)
+      - id: cisco-firepower-fxos
+        label: Cisco Firepower FXOS
+      - id: cisco-ironport-systems
+        label: Cisco IronPort Systems
+      - id: cisco-meraki-cloud-controller-api
+        label: Cisco Meraki Cloud Controller (API)
+      - id: cisco-prime
+        label: Cisco Prime
+      - id: cisco-smallbusiness-network-devices
+        label: Cisco SmallBusiness network devices
+      - id: cisco-standard-network-devices
+        label: Cisco standard network devices
+      - id: cisco-umbrella
+        label: Cisco Umbrella
+      - id: cisco-vcs-video-communication-server
+        label: Cisco VCS (Video Communication Server)
+      - id: cisco-voice-gateway
+        label: Cisco Voice Gateway
+      - id: cisco-wireless-access-point-wap
+        label: Cisco Wireless access point (WAP)
+      - id: cisco-wlc-wireless-lan-controller
+        label: Cisco WLC (Wireless Lan Controller)
+      - id: citrix-netscaler
+        label: Citrix Netscaler
+      - id: citrix-sdx
+        label: Citrix SDX
+      - id: dell-n-series-switch
+        label: Dell N-Series switch
+      - id: dell-os10-force10
+        label: Dell OS10 (Force10)
+      - id: dell-powerconnect-6200
+        label: Dell PowerConnect 6200
+      - id: dell-s-series-force10
+        label: Dell S-Series (Force10)
+      - id: dell-x-series-switch
+        label: Dell X-Series switch
+      - id: digi-anywhereusb
+        label: Digi AnywhereUSB
+      - id: dlink-switch-standard
+        label: DLink Switch (standard)
+      - id: enterasys-network-devices
+        label: Enterasys network devices
+      - id: extreme-cloudiq
+        label: Extreme CloudIQ
+      - id: extreme-mlx-switches
+        label: Extreme MLX switches
+      - id: extreme-network-devices
+        label: Extreme network devices
+      - id: f5-load-balancer
+        label: F5 Load Balancer
+      - id: fiberstore-fs
+        label: FiberStore (FS)
+      - id: forcepoint-firewall-stonesoft
+        label: Forcepoint Firewall (Stonesoft)
+      - id: forcepoint-sd-wan-firewall
+        label: Forcepoint SD-WAN Firewall
+      - id: fortinet-adc-application-delivery-controller
+        label: Fortinet ADC (Application Delivery Controller)
+      - id: fortinet-fortiauthenticator
+        label: Fortinet FortiAuthenticator
+      - id: fortinet-fortigate-fw
+        label: Fortinet Fortigate FW
+      - id: fortinet-fortimail
+        label: Fortinet FortiMail
+      - id: fortinet-fortimanager
+        label: Fortinet FortiManager
+      - id: fortinet-fortiswitch
+        label: Fortinet FortiSwitch
+      - id: fortinet-fortiweb
+        label: Fortinet Fortiweb
+      - id: fortinet-fortiwlc-meru-controller
+        label: Fortinet FortiWLC (Meru Controller)
+      - id: generic-snmp-trap
+        label: Generic SNMP trap
+      - id: h3c-switch
+        label: H3C switch
+      - id: hirschman-switch
+        label: Hirschman switch
+      - id: hp-officeconnect
+        label: HP OfficeConnect
+      - id: hp-standard-switch
+        label: HP standard switch
+      - id: hpe-procurve-switch
+        label: HPE Procurve switch
+      - id: hpe-virtual-connect
+        label: HPE Virtual Connect
+      - id: huawei-network-devices
+        label: Huawei network devices
+      - id: huawei-wlc
+        label: Huawei WLC
+      - id: i-vertix-standard-snmp
+        label: i-Vertix Standard SNMP
+      - id: ibm-bladecenter-network
+        label: IBM Bladecenter (Network)
+      - id: infoblox-dns-dhcp-ipam
+        label: Infoblox DNS, DHCP, IPAM
+      - id: juniper-ex-switch
+        label: Juniper EX switch
+      - id: juniper-mx-series
+        label: Juniper MX series
+      - id: juniper-srx-firewall
+        label: Juniper SRX Firewall
+      - id: kemp-load-balancer
+        label: Kemp Load Balancer
+      - id: lenovo-flexsystem-switches
+        label: Lenovo Flexsystem switches
+      - id: lenovo-rackswitch
+        label: Lenovo RackSwitch
+      - id: mellanox-network-devices
+        label: Mellanox network devices
+      - id: mikrotik-network-devices
+        label: Mikrotik network devices
+      - id: moxa-networks
+        label: Moxa networks
+      - id: netgear-m-series-switches
+        label: Netgear M-Series switches
+      - id: netgear-s-series-switches
+        label: Netgear S-Series switches
+      - id: nokia-isam-alcatel
+        label: Nokia ISAM (Alcatel)
+      - id: nokia-timos-7750sr-7210sas
+        label: Nokia TimOS (7750SR, 7210SAS)
+      - id: nortel-network-devices
+        label: Nortel network devices
+      - id: oracle-acme-packet-sbc
+        label: Oracle Acme Packet (SBC)
+      - id: ospf-open-shortest-path-first
+        label: OSPF - Open Shortest Path First
+      - id: paloalto-firewall
+        label: PaloAlto Firewall
+      - id: paloalto-firewall-rest-api
+        label: PaloAlto Firewall - Rest API
+      - id: paloalto-ion
+        label: PaloAlto ION
+      - id: paloalto-prisma-sase
+        label: PaloAlto Prisma SASE
+      - id: patton-smartnode-voip-gateway
+        label: Patton SmartNode VoIP Gateway
+      - id: peplink-loadbalancer
+        label: Peplink Loadbalancer
+      - id: pfsense-firewall
+        label: Pfsense Firewall
+      - id: radware-alteon-load-balancer
+        label: Radware Alteon Load Balancer
+      - id: raisecom-network-devices
+        label: Raisecom network devices
+      - id: ribbon-sonus-sbc
+        label: Ribbon (Sonus) SBC
+      - id: riverbed-steelhead
+        label: Riverbed Steelhead
+      - id: ruckus-access-points
+        label: Ruckus Access Points
+      - id: ruckus-icx-switch
+        label: Ruckus ICX switch
+      - id: ruckus-smartzone-wlan-controller
+        label: Ruckus Smartzone WLAN Controller
+      - id: ruckus-zonedirector
+        label: Ruckus Zonedirector
+      - id: securepoint-utm-firewall
+        label: Securepoint UTM Firewall
+      - id: siemens-ruggedcom
+        label: Siemens Ruggedcom
+      - id: smseagle
+        label: SMSEagle
+      - id: sonicwall-firewall
+        label: Sonicwall Firewall
+      - id: sophos-xg-cyberoam
+        label: Sophos XG / Cyberoam
+      - id: sophos-xgs-firewall
+        label: Sophos XGS Firewall
+      - id: stormshield-firewall-rest-api
+        label: Stormshield Firewall (Rest API)
+      - id: stormshield-firewall-snmp
+        label: Stormshield Firewall (SNMP)
+      - id: teldat
+        label: Teldat
+      - id: teltonika-networks
+        label: Teltonika Networks
+      - id: tp-link-network-devices
+        label: TP-Link network devices
+      - id: ubiquiti-airfiber
+        label: Ubiquiti Airfiber
+      - id: ubiquiti-edge-switch
+        label: Ubiquiti Edge switch
+      - id: ubiquiti-unifi-uap
+        label: Ubiquiti Unifi UAP
+      - id: ubiquiti-unifi-wlan-controller
+        label: Ubiquiti Unifi WLAN Controller
+      - id: viptela-cisco-networks
+        label: Viptela (Cisco) networks
+      - id: watchguard-firewall
+        label: Watchguard Firewall
+      - id: waystream-network-devices
+        label: Waystream network devices
+      - id: westermo-standard-network-devices
+        label: Westermo standard network devices
+      - id: zebra-rfs
+        label: Zebra RFS
+      - id: zyxel-network-devices
+        label: Zyxel network devices
+  - id: notification
+    label: Notification
+    items:
+      - id: html-e-mail-notification
+        label: HTML e-mail notification
+      - id: signl4-notification
+        label: Signl4 notification
+      - id: slack-notification
+        label: Slack notification
+      - id: smseagle-notification
+        label: SMSEagle notification
+      - id: smseagle-notification-v2
+        label: SMSEagle notification v2
+      - id: teams-notification-deprecated
+        label: Teams notification (deprecated)
+      - id: teams-notification-workflow-api
+        label: Teams notification (workflow api)
+      - id: telegram-notification
+        label: Telegram notification
+  - id: operating-system
+    label: Operating System
+    items:
+      - id: f5os
+        label: F5OS
+      - id: hp-ux-snmp
+        label: HP UX SNMP
+      - id: hp-ux-ssh
+        label: HP UX SSH
+      - id: ibm-aix-snmp
+        label: IBM AIX SNMP
+      - id: ibm-aix-ssh
+        label: IBM AIX SSH
+      - id: ibm-as400-iseries
+        label: IBM AS400 (iSeries)
+      - id: linux-snmp
+        label: Linux SNMP
+      - id: linux-ssh
+        label: Linux SSH
+      - id: oracle-solaris-snmp
+        label: Oracle Solaris SNMP
+      - id: oracle-solaris-ssh
+        label: Oracle Solaris SSH
+      - id: windows-i-vertix-agent
+        label: Windows (i-Vertix agent)
+      - id: windows-winrm
+        label: Windows (WinRM)
+      - id: windows-snmp
+        label: Windows SNMP
+  - id: storage
+    label: Storage
+    items:
+      - id: buffalo-terastation
+        label: Buffalo Terastation
+      - id: datacore
+        label: DataCore
+      - id: dell-compellent
+        label: Dell Compellent
+      - id: dell-emc-data-domain
+        label: Dell EMC Data Domain
+      - id: dell-emc-isilon
+        label: Dell EMC Isilon
+      - id: dell-emc-recoverypoint
+        label: Dell EMC Recoverypoint
+      - id: dell-emc-unisphere
+        label: Dell EMC Unisphere
+      - id: dell-emc-xtremio
+        label: Dell EMC XtremIO
+      - id: dell-equalogic
+        label: Dell EquaLogic
+      - id: dell-md3000
+        label: Dell MD3000
+      - id: dell-me4
+        label: Dell ME4
+      - id: dell-ml6000-tape-library
+        label: Dell ML6000 Tape library
+      - id: dell-powerstore
+        label: Dell Powerstore
+      - id: dell-tl2000-tape-library
+        label: Dell TL2000 Tape library
+      - id: exagrid-backup-storage
+        label: Exagrid Backup storage
+      - id: fujitsu-eternus-dx-storage
+        label: Fujitsu Eternus DX storage
+      - id: fujitsu-eternus-dx-storage-official-fujitsu-nagios-plugin
+        label: Fujitsu Eternus DX storage (official Fujitsu Nagios plugin)
+      - id: hitachi-hcp
+        label: Hitachi HCP
+      - id: hitachi-hnas
+        label: Hitachi HNAS
+      - id: hpe-3par-storage
+        label: HPE 3PAR storage
+      - id: hpe-alletra
+        label: HPE Alletra
+      - id: hpe-lefthand
+        label: HPE Lefthand
+      - id: hpe-msa-storage
+        label: HPE MSA storage
+      - id: hpe-msl-tape-library
+        label: HPE MSL Tape library
+      - id: hpe-nimble-storage-api
+        label: HPE Nimble storage (API)
+      - id: hpe-nimble-storage-snmp
+        label: HPE Nimble storage (SNMP)
+      - id: hpe-primera
+        label: HPE Primera
+      - id: hpe-storeonce-ssh
+        label: HPE Storeonce (ssh)
+      - id: hpe-storeonce-3-api
+        label: HPE Storeonce 3 (API)
+      - id: hpe-storeonce-4-api
+        label: HPE Storeonce 4 (API)
+      - id: huawei-oceanstor
+        label: Huawei OceanStor
+      - id: ibm-storwize-storage
+        label: IBM Storwize storage
+      - id: ibm-ts2900
+        label: IBM TS2900
+      - id: ibm-ts3100
+        label: IBM TS3100
+      - id: ibm-ts3200
+        label: IBM TS3200
+      - id: ibm-ts3500
+        label: IBM TS3500
+      - id: lenovo-iomega-nas-ix2
+        label: Lenovo Iomega NAS (ix2)
+      - id: lenovo-thinksystem
+        label: Lenovo Thinksystem
+      - id: netapp-ontap-oncommand
+        label: Netapp Ontap OnCommand
+      - id: netapp-ontap-rest-api
+        label: Netapp Ontap Rest API
+      - id: netapp-ontap-snmp
+        label: Netapp Ontap SNMP
+      - id: netapp-santricity
+        label: Netapp SANtricity
+      - id: netgear-readynas
+        label: Netgear ReadyNAS
+      - id: oracle-zs-rest-api
+        label: Oracle ZS (Rest API)
+      - id: oracle-zs-snmp
+        label: Oracle ZS (SNMP)
+      - id: pure-storage-snmp
+        label: Pure Storage (SNMP)
+      - id: pure-storage-flasharray
+        label: Pure Storage Flasharray
+      - id: pure-storage-flasharray-legacy
+        label: Pure Storage Flasharray (legacy)
+      - id: pure-storage-flashblade
+        label: Pure Storage Flashblade
+      - id: qnap-nas
+        label: QNAP NAS
+      - id: quantum-dxi-series
+        label: Quantum DXI series
+      - id: quantum-scalar-tape-library
+        label: Quantum Scalar Tape Library
+      - id: storagetek-sl
+        label: StorageTek SL
+      - id: stormagic-virtual-san
+        label: StorMagic Virtual SAN
+      - id: synology-nas
+        label: Synology NAS
+      - id: vmware-vsan
+        label: VMware vSAN
+      - id: wd-nas-western-digital
+        label: WD Nas (Western Digital)

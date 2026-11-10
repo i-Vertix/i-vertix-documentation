@@ -1,0 +1,2311 @@
+{
+  "docs": [
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Monitoring Plugins",
+      "items": [
+        {
+          "type": "doc",
+          "id": "monitoring-plugins/plugin-store",
+          "label": "Plugin Store"
+        },
+        {
+          "type": "doc",
+          "id": "monitoring-plugins/release-notes",
+          "label": "Release Notes"
+        },
+        {
+          "type": "doc",
+          "id": "monitoring-plugins/troubleshooter",
+          "label": "Troubleshooter"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Applications",
+      "items": [
+        {
+          "type": "doc",
+          "id": "applications/3cx-voip-pbx",
+          "label": "3CX Voip PBX"
+        },
+        {
+          "type": "doc",
+          "id": "applications/active-directory-winrm",
+          "label": "Active Directory (WinRM)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/activemq",
+          "label": "ActiveMQ"
+        },
+        {
+          "type": "doc",
+          "id": "applications/apache-kafka",
+          "label": "Apache Kafka"
+        },
+        {
+          "type": "doc",
+          "id": "applications/apache-solr",
+          "label": "Apache Solr"
+        },
+        {
+          "type": "doc",
+          "id": "applications/apache-zookeeper",
+          "label": "Apache Zookeeper"
+        },
+        {
+          "type": "doc",
+          "id": "applications/asterisk-voip",
+          "label": "Asterisk VoIP"
+        },
+        {
+          "type": "doc",
+          "id": "applications/ceph",
+          "label": "Ceph"
+        },
+        {
+          "type": "doc",
+          "id": "applications/cifs-smb",
+          "label": "CIFS/SMB"
+        },
+        {
+          "type": "doc",
+          "id": "applications/cisco-catalyst-center-dna",
+          "label": "Cisco Catalyst Center (DNA)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/cisco-ise-indentity-service-engine",
+          "label": "Cisco ISE (Indentity Service Engine)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/citrix-xendesktop-7-x-i-vertix-agent",
+          "label": "Citrix XenDesktop 7.x (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/commvault-commserve-backup",
+          "label": "Commvault Commserve backup"
+        },
+        {
+          "type": "doc",
+          "id": "applications/dhcp-requests-active",
+          "label": "DHCP requests (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/dns-requests-active",
+          "label": "DNS requests (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/dynatrace",
+          "label": "Dynatrace"
+        },
+        {
+          "type": "doc",
+          "id": "applications/eclipse-mosquitto-mqtt",
+          "label": "Eclipse Mosquitto MQTT"
+        },
+        {
+          "type": "doc",
+          "id": "applications/exchange-onpremise-i-vertix-agent",
+          "label": "Exchange OnPremise (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/exchange-onpremise-extended-i-vertix-agent",
+          "label": "Exchange OnPremise Extended (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/ftp-server-active",
+          "label": "FTP Server (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/generic-snmp-request",
+          "label": "Generic SNMP request"
+        },
+        {
+          "type": "doc",
+          "id": "applications/grafana",
+          "label": "Grafana"
+        },
+        {
+          "type": "doc",
+          "id": "applications/graylog",
+          "label": "Graylog"
+        },
+        {
+          "type": "doc",
+          "id": "applications/haproxy-snmp",
+          "label": "HAProxy (SNMP)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/haproxy-web-api",
+          "label": "HAProxy (Web API)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/hashicorp-vault",
+          "label": "Hashicorp Vault"
+        },
+        {
+          "type": "doc",
+          "id": "applications/hpe-simplivity",
+          "label": "HPE Simplivity"
+        },
+        {
+          "type": "doc",
+          "id": "applications/http-s-or-website",
+          "label": "HTTP(S) or website"
+        },
+        {
+          "type": "doc",
+          "id": "applications/i-vertix-business-intelligence-server",
+          "label": "i-Vertix Business Intelligence Server"
+        },
+        {
+          "type": "doc",
+          "id": "applications/i-vertix4-monitoring-central",
+          "label": "i-Vertix4 Monitoring Central"
+        },
+        {
+          "type": "doc",
+          "id": "applications/i-vertix4-poller",
+          "label": "i-Vertix4 Poller"
+        },
+        {
+          "type": "doc",
+          "id": "applications/ibm-lotus-notes",
+          "label": "IBM Lotus Notes"
+        },
+        {
+          "type": "doc",
+          "id": "applications/imap-server-active",
+          "label": "IMAP Server (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/internet-information-server-iis-i-vertix-agent",
+          "label": "Internet Information Server - IIS (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/internet-information-server-iis-rest-api",
+          "label": "Internet Information Server - IIS (Rest API)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/internet-information-server-iis-winrm",
+          "label": "Internet Information Server - IIS (WinRM)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/java-jvm-actuator",
+          "label": "Java JVM Actuator"
+        },
+        {
+          "type": "doc",
+          "id": "applications/jboss-java-red-hat",
+          "label": "JBoss Java (Red Hat)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/kadiska",
+          "label": "Kadiska"
+        },
+        {
+          "type": "doc",
+          "id": "applications/kaspersky-security-center",
+          "label": "Kaspersky Security Center"
+        },
+        {
+          "type": "doc",
+          "id": "applications/keepalived-redhat",
+          "label": "Keepalived (Redhat)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/ldap-active-directory-active",
+          "label": "LDAP / Active Directory (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/libraesva-email-security-gateway",
+          "label": "Libraesva eMail Security Gateway"
+        },
+        {
+          "type": "doc",
+          "id": "applications/microsoft-hyper-v-i-vertix-agent",
+          "label": "Microsoft Hyper-V (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/microsoft-hyper-v-scvmm-i-vertix-agent",
+          "label": "Microsoft Hyper-V SCVMM (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/microsoft-sccm-i-vertix-agent",
+          "label": "Microsoft SCCM (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/microsoft-wsus-i-vertix-agent",
+          "label": "Microsoft WSUS (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/modbus",
+          "label": "Modbus"
+        },
+        {
+          "type": "doc",
+          "id": "applications/mscs-microsoft-cluster-server-i-vertix-agent",
+          "label": "MSCS Microsoft Cluster Server (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/netapp-snapcenter-backup",
+          "label": "Netapp SnapCenter Backup"
+        },
+        {
+          "type": "doc",
+          "id": "applications/network-path-mtr",
+          "label": "Network path - MTR"
+        },
+        {
+          "type": "doc",
+          "id": "applications/nginx-webserver",
+          "label": "NGINX Webserver"
+        },
+        {
+          "type": "doc",
+          "id": "applications/ntp-server-active",
+          "label": "NTP Server (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/openvpn",
+          "label": "OpenVPN"
+        },
+        {
+          "type": "doc",
+          "id": "applications/oracle-vm-manager",
+          "label": "Oracle VM Manager"
+        },
+        {
+          "type": "doc",
+          "id": "applications/oracle-weblogic-application-server",
+          "label": "Oracle Weblogic Application Server"
+        },
+        {
+          "type": "doc",
+          "id": "applications/pacemaker",
+          "label": "Pacemaker"
+        },
+        {
+          "type": "doc",
+          "id": "applications/podman-container",
+          "label": "Podman container"
+        },
+        {
+          "type": "doc",
+          "id": "applications/proxmox-mail-gateway",
+          "label": "Proxmox Mail Gateway"
+        },
+        {
+          "type": "doc",
+          "id": "applications/proxmox-ve-virtual-environment",
+          "label": "Proxmox VE (Virtual Environment)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/rabbitmq",
+          "label": "RabbitMQ"
+        },
+        {
+          "type": "doc",
+          "id": "applications/radius-server-active",
+          "label": "Radius Server (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/redis-sentinel",
+          "label": "Redis Sentinel"
+        },
+        {
+          "type": "doc",
+          "id": "applications/rrdcached",
+          "label": "RRDcached"
+        },
+        {
+          "type": "doc",
+          "id": "applications/rubrik-enterprise-backup",
+          "label": "Rubrik Enterprise backup"
+        },
+        {
+          "type": "doc",
+          "id": "applications/sahi-pro-synthetic-monitoring",
+          "label": "Sahi Pro synthetic monitoring"
+        },
+        {
+          "type": "doc",
+          "id": "applications/salesforce",
+          "label": "Salesforce"
+        },
+        {
+          "type": "doc",
+          "id": "applications/sap-r3-or-s-4hana",
+          "label": "SAP R3 or S/4HANA"
+        },
+        {
+          "type": "doc",
+          "id": "applications/scale-computing",
+          "label": "Scale Computing"
+        },
+        {
+          "type": "doc",
+          "id": "applications/selenese-synthetic-monitoring",
+          "label": "Selenese synthetic monitoring"
+        },
+        {
+          "type": "doc",
+          "id": "applications/selenium-katalon-synthetic-monitoring",
+          "label": "Selenium Katalon synthetic monitoring"
+        },
+        {
+          "type": "doc",
+          "id": "applications/selenium-synthetic-monitoring",
+          "label": "Selenium synthetic monitoring"
+        },
+        {
+          "type": "doc",
+          "id": "applications/sftp-active",
+          "label": "SFTP (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/slack",
+          "label": "Slack"
+        },
+        {
+          "type": "doc",
+          "id": "applications/smartermail",
+          "label": "Smartermail"
+        },
+        {
+          "type": "doc",
+          "id": "applications/smtp-server-active",
+          "label": "SMTP Server (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/speedtest",
+          "label": "Speedtest"
+        },
+        {
+          "type": "doc",
+          "id": "applications/splunk",
+          "label": "Splunk"
+        },
+        {
+          "type": "doc",
+          "id": "applications/squid-http-proxy",
+          "label": "Squid HTTP Proxy"
+        },
+        {
+          "type": "doc",
+          "id": "applications/ssh-login-active",
+          "label": "SSH login (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/tcp-ports-active",
+          "label": "TCP ports (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/tomcat-jmx",
+          "label": "Tomcat JMX"
+        },
+        {
+          "type": "doc",
+          "id": "applications/udp-ports-active",
+          "label": "UDP ports (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/varnish-cache",
+          "label": "Varnish cache"
+        },
+        {
+          "type": "doc",
+          "id": "applications/veeam-backup-em-enterprise-manager",
+          "label": "Veeam Backup EM (Enterprise Manager)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/veeam-vbr-rest-api",
+          "label": "Veeam VBR (Rest API)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/veeam-vbr-winrm",
+          "label": "Veeam VBR (WinRM)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/vernemq",
+          "label": "VerneMQ"
+        },
+        {
+          "type": "doc",
+          "id": "applications/vmware-vsphere8-vcsa",
+          "label": "VMware vSphere8 vCSA"
+        },
+        {
+          "type": "doc",
+          "id": "applications/wallix-bastion",
+          "label": "Wallix Bastion"
+        },
+        {
+          "type": "doc",
+          "id": "applications/whois-domain-verification",
+          "label": "Whois Domain verification"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Cloud",
+      "items": [
+        {
+          "type": "category",
+          "collapsed": true,
+          "label": "AWS",
+          "items": [
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-api-gateway",
+              "label": "AWS API Gateway"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-application-elb",
+              "label": "AWS Application ELB"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-backup",
+              "label": "AWS Backup"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-classic-elb-availability-zone",
+              "label": "AWS Classic ELB - Availability Zone"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-classic-elb-loadbalancer",
+              "label": "AWS Classic ELB - Loadbalancer"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-cloudwatch",
+              "label": "AWS Cloudwatch"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-cloudwatch-logs",
+              "label": "AWS Cloudwatch Logs"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-direct-connect",
+              "label": "AWS Direct Connect"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-ebs-volume",
+              "label": "AWS EBS volume"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-ec2-asg",
+              "label": "AWS EC2 ASG"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-ec2-instance",
+              "label": "AWS EC2 instance"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-efs-elastic-file-system",
+              "label": "AWS EFS (Elastic File System)"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-elasticache",
+              "label": "AWS ElastiCache"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-kinesis",
+              "label": "AWS Kinesis"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-lambda",
+              "label": "AWS Lambda"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-network-loadbalancer",
+              "label": "AWS Network Loadbalancer"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-rds-relational-database-service",
+              "label": "AWS RDS (Relational Database Service)"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-s3",
+              "label": "AWS S3"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-ses-simple-email-service",
+              "label": "AWS SES (Simple Email Service)"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-sns-simple-notification-service",
+              "label": "AWS SNS (Simple Notification Service)"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-sqs-simple-queue-service",
+              "label": "AWS SQS (Simple Queue Service)"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/aws/aws-transit-gateway",
+              "label": "AWS Transit Gateway"
+            }
+          ]
+        },
+        {
+          "type": "category",
+          "collapsed": true,
+          "label": "Azure",
+          "items": [
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-prerequisites",
+              "label": "Azure Prerequisites"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-api-management",
+              "label": "Azure API Management"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-application-gateway",
+              "label": "Azure Application Gateway"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-automation",
+              "label": "Azure Automation"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-container-registry",
+              "label": "Azure Container Registry"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-express-route",
+              "label": "Azure Express Route"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-key-vault",
+              "label": "Azure Key Vault"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-kubernetes-service",
+              "label": "Azure Kubernetes Service"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-loadbalancer",
+              "label": "Azure Loadbalancer"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-monitor",
+              "label": "Azure Monitor"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-mysql",
+              "label": "Azure MySQL"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-netapp-pools",
+              "label": "Azure NetApp Pools"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-public-ip",
+              "label": "Azure Public IP"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-sql-database",
+              "label": "Azure SQL database"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-storage-account",
+              "label": "Azure Storage Account"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-virtual-hub",
+              "label": "Azure Virtual Hub"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-virtual-machine",
+              "label": "Azure Virtual Machine"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-virtual-network",
+              "label": "Azure Virtual Network"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-vpn-gateway",
+              "label": "Azure VPN Gateway"
+            },
+            {
+              "type": "doc",
+              "id": "cloud/azure/azure-web-application-firewall",
+              "label": "Azure Web Application Firewall"
+            }
+          ]
+        },
+        {
+          "type": "doc",
+          "id": "cloud/cisco-webex",
+          "label": "Cisco Webex"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/docker-rest-api",
+          "label": "Docker (Rest API)"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/docker-ssh",
+          "label": "Docker (SSH)"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/google-compute-engine",
+          "label": "Google Compute Engine"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/google-workspace",
+          "label": "Google Workspace"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/kubernetes-api",
+          "label": "Kubernetes (API)"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/nutanix-prism-enterprise-cloud",
+          "label": "Nutanix Prism Enterprise Cloud"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/office-365",
+          "label": "Office 365"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/openshift",
+          "label": "Openshift"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/prometheus-nginx-ingress-controller",
+          "label": "Prometheus nginx ingress controller"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/prometheus-query",
+          "label": "Prometheus query"
+        },
+        {
+          "type": "doc",
+          "id": "cloud/velocloud",
+          "label": "VeloCloud"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Database",
+      "items": [
+        {
+          "type": "doc",
+          "id": "database/apache-couchdb",
+          "label": "Apache CouchDB"
+        },
+        {
+          "type": "doc",
+          "id": "database/azure-postgresql",
+          "label": "Azure PostgreSQL"
+        },
+        {
+          "type": "doc",
+          "id": "database/elasticsearch",
+          "label": "Elasticsearch"
+        },
+        {
+          "type": "doc",
+          "id": "database/firebird-database",
+          "label": "Firebird Database"
+        },
+        {
+          "type": "doc",
+          "id": "database/ibm-db2",
+          "label": "IBM DB2"
+        },
+        {
+          "type": "doc",
+          "id": "database/ibm-informix-database",
+          "label": "IBM Informix database"
+        },
+        {
+          "type": "doc",
+          "id": "database/influxdb",
+          "label": "InfluxDB"
+        },
+        {
+          "type": "doc",
+          "id": "database/mariadb-mysql",
+          "label": "MariaDB/MySQL"
+        },
+        {
+          "type": "doc",
+          "id": "database/microsoft-sql-server",
+          "label": "Microsoft SQL Server"
+        },
+        {
+          "type": "doc",
+          "id": "database/mongodb",
+          "label": "MongoDB"
+        },
+        {
+          "type": "doc",
+          "id": "database/oracle-rdbms",
+          "label": "Oracle RDBMS"
+        },
+        {
+          "type": "doc",
+          "id": "database/postgresql",
+          "label": "PostgreSQL"
+        },
+        {
+          "type": "doc",
+          "id": "database/redis-in-memory",
+          "label": "Redis in-memory"
+        },
+        {
+          "type": "doc",
+          "id": "database/redislabs-enterprise-cluster",
+          "label": "Redislabs Enterprise Cluster"
+        },
+        {
+          "type": "doc",
+          "id": "database/sap-hana-db",
+          "label": "SAP HANA DB"
+        },
+        {
+          "type": "doc",
+          "id": "database/sap-sybase-ase-database",
+          "label": "SAP Sybase ASE database"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Hardware",
+      "items": [
+        {
+          "type": "doc",
+          "id": "hardware/abb-cms-700",
+          "label": "ABB CMS 700"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/akcp-environment-sensor",
+          "label": "AKCP environment sensor"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/alpha-ups",
+          "label": "Alpha UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/apc-ats",
+          "label": "APC ATS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/apc-netbotz",
+          "label": "APC Netbotz"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/apc-netbotz-250",
+          "label": "APC Netbotz 250"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/apc-pdu",
+          "label": "APC PDU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/apc-ups",
+          "label": "APC UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/appeartv",
+          "label": "AppearTV"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/avaya-aes",
+          "label": "Avaya AES"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/avaya-media-gateway",
+          "label": "Avaya Media Gateway"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/avigilon-camera",
+          "label": "Avigilon camera"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/avocent-acs-6000-kvm",
+          "label": "Avocent ACS 6000 KVM"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/avocent-acs-8000-kvm",
+          "label": "Avocent ACS 8000 KVM"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/axentia-e-paper",
+          "label": "Axentia e-paper"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/axis-video-camera",
+          "label": "Axis Video Camera"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/barco-clickshare",
+          "label": "Barco Clickshare"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/cisco-cts",
+          "label": "Cisco CTS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/cisco-ucs-server",
+          "label": "Cisco UCS Server"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/cyberpower-pdu",
+          "label": "Cyberpower PDU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/cyberpower-ups",
+          "label": "Cyberpower UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/dell-cmc",
+          "label": "Dell CMC"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/dell-idrac",
+          "label": "Dell iDRAC"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/dell-openmanage",
+          "label": "Dell OpenManage"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/dell-vxrail-manager",
+          "label": "Dell VxRail Manager"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/easy-pdu",
+          "label": "Easy PDU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/eaton-ats",
+          "label": "Eaton ATS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/eaton-pdu",
+          "label": "Eaton PDU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/eaton-powerware-ups",
+          "label": "Eaton Powerware UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/emerson-pdu",
+          "label": "Emerson PDU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/fujitsu-irmc",
+          "label": "Fujitsu iRMC"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hanwha-camera",
+          "label": "Hanwha camera"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hikvision-camera",
+          "label": "Hikvision camera"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hikvision-nvr",
+          "label": "Hikvision NVR"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/himoinsa-generator-ups",
+          "label": "Himoinsa Generator (UPS)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hms-ewon-gateway-siemens-s7",
+          "label": "HMS Ewon Gateway (Siemens S7)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hms-netbiter-argos",
+          "label": "HMS Netbiter Argos"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hp-ilo-2-api",
+          "label": "HP iLO 2 API"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hp-ilo-2-3-4-api",
+          "label": "HP iLO 2/3/4 API"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hp-ilo-3-api",
+          "label": "HP iLO 3 API"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hp-ilo-5-api",
+          "label": "HP iLO 5 API"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hp-proliant-ilo-snmp",
+          "label": "HP Proliant ILO (snmp)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hp-ups",
+          "label": "HP UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hpe-blade",
+          "label": "HPE Blade"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hpe-oneview",
+          "label": "HPE OneView"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/huawei-hmm",
+          "label": "Huawei HMM"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/huawei-ibmc",
+          "label": "Huawei iBMC"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/hwg-ste-sensor",
+          "label": "HWg STE Sensor"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/ibm-bladecenter-server",
+          "label": "IBM Bladecenter (Server)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/ibm-hmc-hardware-managemement-console",
+          "label": "IBM HMC (Hardware Managemement Console)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/ibm-imm",
+          "label": "IBM IMM"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/jacarta-environment",
+          "label": "Jacarta Environment"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/lenovo-xcc",
+          "label": "Lenovo XCC"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/masterclock-ntp100-gps",
+          "label": "Masterclock NTP100 GPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/messpc-ethernetbox",
+          "label": "MessPC Ethernetbox"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/mobotix-camera",
+          "label": "Mobotix camera"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/nitram-ups",
+          "label": "Nitram UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/nvidia-gpu",
+          "label": "NVIDIA GPU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/openmanage-enterprise-ome",
+          "label": "OpenManage Enterprise (OME)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/oracle-sun-server",
+          "label": "Oracle Sun Server"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/printer-rfc3805",
+          "label": "Printer RFC3805"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/raritan-pdu",
+          "label": "Raritan PDU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/riello-ups",
+          "label": "Riello UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/rittal-cmc-iii",
+          "label": "Rittal CMC III"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/sentry-pdu",
+          "label": "Sentry PDU"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/socomec-netvision-ups",
+          "label": "Socomec Netvision UPS"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/sun-sfxxk",
+          "label": "Sun SFXXK"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/supermicro-bmc",
+          "label": "Supermicro BMC"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/ups-standard-rfc1628",
+          "label": "UPS standard (RFC1628)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/vertiv-geist-sensor",
+          "label": "Vertiv Geist sensor"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/vertiv-ups-ees",
+          "label": "Vertiv UPS (EES)"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/xfusion-ibmc",
+          "label": "Xfusion iBMC"
+        },
+        {
+          "type": "doc",
+          "id": "hardware/xppc-phoenixtec-ups",
+          "label": "XPPC Phoenixtec UPS"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Network",
+      "items": [
+        {
+          "type": "doc",
+          "id": "network/adva-fsp-150",
+          "label": "ADVA FSP 150"
+        },
+        {
+          "type": "doc",
+          "id": "network/adva-fsp-3000",
+          "label": "ADVA FSP 3000"
+        },
+        {
+          "type": "doc",
+          "id": "network/aerohive-access-points",
+          "label": "Aerohive Access Points"
+        },
+        {
+          "type": "doc",
+          "id": "network/alcatel-omniswitch",
+          "label": "Alcatel Omniswitch"
+        },
+        {
+          "type": "doc",
+          "id": "network/alcatel-oxe-pbx",
+          "label": "Alcatel OXE PBX"
+        },
+        {
+          "type": "doc",
+          "id": "network/allied-telesis-network-devices",
+          "label": "Allied Telesis network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/arista-switch",
+          "label": "Arista switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/aruba-clearpass",
+          "label": "Aruba Clearpass"
+        },
+        {
+          "type": "doc",
+          "id": "network/aruba-cx-series",
+          "label": "Aruba CX Series"
+        },
+        {
+          "type": "doc",
+          "id": "network/aruba-instant",
+          "label": "Aruba Instant"
+        },
+        {
+          "type": "doc",
+          "id": "network/aruba-network-devices",
+          "label": "Aruba network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/aruba-orchestrator",
+          "label": "Aruba Orchestrator"
+        },
+        {
+          "type": "doc",
+          "id": "network/atto-fibrebridge",
+          "label": "Atto Fibrebridge"
+        },
+        {
+          "type": "doc",
+          "id": "network/audiocodes-sbc",
+          "label": "Audiocodes SBC"
+        },
+        {
+          "type": "doc",
+          "id": "network/avm-fritzbox",
+          "label": "AVM Fritzbox"
+        },
+        {
+          "type": "doc",
+          "id": "network/barracuda-cloudgen-firewall",
+          "label": "Barracuda Cloudgen Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/barracuda-message-archiver",
+          "label": "Barracuda Message Archiver"
+        },
+        {
+          "type": "doc",
+          "id": "network/bgp-border-gateway-protocol",
+          "label": "BGP - Border Gateway Protocol"
+        },
+        {
+          "type": "doc",
+          "id": "network/bluecoat-web-security",
+          "label": "Bluecoat Web Security"
+        },
+        {
+          "type": "doc",
+          "id": "network/brocade-foundry-switch",
+          "label": "Brocade Foundry switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/brocade-switch",
+          "label": "Brocade switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/cambium-cnmatrix",
+          "label": "Cambium cnMatrix"
+        },
+        {
+          "type": "doc",
+          "id": "network/cambium-cnpilot",
+          "label": "Cambium cnPilot"
+        },
+        {
+          "type": "doc",
+          "id": "network/cambium-epmp",
+          "label": "Cambium ePMP"
+        },
+        {
+          "type": "doc",
+          "id": "network/checkpoint-firewall",
+          "label": "Checkpoint Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-application-policy-infrastructure-controller-apic",
+          "label": "Cisco Application Policy Infrastructure Controller (APIC)"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-asa-firewall",
+          "label": "Cisco ASA Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-call-manager-snmp",
+          "label": "Cisco Call Manager (SNMP)"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-call-manager-sxml-api",
+          "label": "Cisco Call Manager (SXML/API)"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-email-security-gateway",
+          "label": "Cisco Email Security Gateway"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-firepower-fmc-management",
+          "label": "Cisco Firepower FMC (management)"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-firepower-fxos",
+          "label": "Cisco Firepower FXOS"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-ironport-systems",
+          "label": "Cisco IronPort Systems"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-meraki-cloud-controller-api",
+          "label": "Cisco Meraki Cloud Controller (API)"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-prime",
+          "label": "Cisco Prime"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-smallbusiness-network-devices",
+          "label": "Cisco SmallBusiness network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-standard-network-devices",
+          "label": "Cisco standard network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-umbrella",
+          "label": "Cisco Umbrella"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-vcs-video-communication-server",
+          "label": "Cisco VCS (Video Communication Server)"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-voice-gateway",
+          "label": "Cisco Voice Gateway"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-wireless-access-point-wap",
+          "label": "Cisco Wireless access point (WAP)"
+        },
+        {
+          "type": "doc",
+          "id": "network/cisco-wlc-wireless-lan-controller",
+          "label": "Cisco WLC (Wireless Lan Controller)"
+        },
+        {
+          "type": "doc",
+          "id": "network/citrix-netscaler",
+          "label": "Citrix Netscaler"
+        },
+        {
+          "type": "doc",
+          "id": "network/citrix-sdx",
+          "label": "Citrix SDX"
+        },
+        {
+          "type": "doc",
+          "id": "network/dell-n-series-switch",
+          "label": "Dell N-Series switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/dell-os10-force10",
+          "label": "Dell OS10 (Force10)"
+        },
+        {
+          "type": "doc",
+          "id": "network/dell-powerconnect-6200",
+          "label": "Dell PowerConnect 6200"
+        },
+        {
+          "type": "doc",
+          "id": "network/dell-s-series-force10",
+          "label": "Dell S-Series (Force10)"
+        },
+        {
+          "type": "doc",
+          "id": "network/dell-x-series-switch",
+          "label": "Dell X-Series switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/digi-anywhereusb",
+          "label": "Digi AnywhereUSB"
+        },
+        {
+          "type": "doc",
+          "id": "network/dlink-switch-standard",
+          "label": "DLink Switch (standard)"
+        },
+        {
+          "type": "doc",
+          "id": "network/enterasys-network-devices",
+          "label": "Enterasys network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/extreme-cloudiq",
+          "label": "Extreme CloudIQ"
+        },
+        {
+          "type": "doc",
+          "id": "network/extreme-mlx-switches",
+          "label": "Extreme MLX switches"
+        },
+        {
+          "type": "doc",
+          "id": "network/extreme-network-devices",
+          "label": "Extreme network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/f5-load-balancer",
+          "label": "F5 Load Balancer"
+        },
+        {
+          "type": "doc",
+          "id": "network/fiberstore-fs",
+          "label": "FiberStore (FS)"
+        },
+        {
+          "type": "doc",
+          "id": "network/forcepoint-firewall-stonesoft",
+          "label": "Forcepoint Firewall (Stonesoft)"
+        },
+        {
+          "type": "doc",
+          "id": "network/forcepoint-sd-wan-firewall",
+          "label": "Forcepoint SD-WAN Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-adc-application-delivery-controller",
+          "label": "Fortinet ADC (Application Delivery Controller)"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-fortiauthenticator",
+          "label": "Fortinet FortiAuthenticator"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-fortigate-fw",
+          "label": "Fortinet Fortigate FW"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-fortimail",
+          "label": "Fortinet FortiMail"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-fortimanager",
+          "label": "Fortinet FortiManager"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-fortiswitch",
+          "label": "Fortinet FortiSwitch"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-fortiweb",
+          "label": "Fortinet Fortiweb"
+        },
+        {
+          "type": "doc",
+          "id": "network/fortinet-fortiwlc-meru-controller",
+          "label": "Fortinet FortiWLC (Meru Controller)"
+        },
+        {
+          "type": "doc",
+          "id": "network/generic-snmp-trap",
+          "label": "Generic SNMP trap"
+        },
+        {
+          "type": "doc",
+          "id": "network/h3c-switch",
+          "label": "H3C switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/hirschman-switch",
+          "label": "Hirschman switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/hp-officeconnect",
+          "label": "HP OfficeConnect"
+        },
+        {
+          "type": "doc",
+          "id": "network/hp-standard-switch",
+          "label": "HP standard switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/hpe-procurve-switch",
+          "label": "HPE Procurve switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/hpe-virtual-connect",
+          "label": "HPE Virtual Connect"
+        },
+        {
+          "type": "doc",
+          "id": "network/huawei-network-devices",
+          "label": "Huawei network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/huawei-wlc",
+          "label": "Huawei WLC"
+        },
+        {
+          "type": "doc",
+          "id": "network/i-vertix-standard-snmp",
+          "label": "i-Vertix Standard SNMP"
+        },
+        {
+          "type": "doc",
+          "id": "network/ibm-bladecenter-network",
+          "label": "IBM Bladecenter (Network)"
+        },
+        {
+          "type": "doc",
+          "id": "network/infoblox-dns-dhcp-ipam",
+          "label": "Infoblox DNS, DHCP, IPAM"
+        },
+        {
+          "type": "doc",
+          "id": "network/juniper-ex-switch",
+          "label": "Juniper EX switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/juniper-mx-series",
+          "label": "Juniper MX series"
+        },
+        {
+          "type": "doc",
+          "id": "network/juniper-srx-firewall",
+          "label": "Juniper SRX Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/kemp-load-balancer",
+          "label": "Kemp Load Balancer"
+        },
+        {
+          "type": "doc",
+          "id": "network/lenovo-flexsystem-switches",
+          "label": "Lenovo Flexsystem switches"
+        },
+        {
+          "type": "doc",
+          "id": "network/lenovo-rackswitch",
+          "label": "Lenovo RackSwitch"
+        },
+        {
+          "type": "doc",
+          "id": "network/mellanox-network-devices",
+          "label": "Mellanox network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/mikrotik-network-devices",
+          "label": "Mikrotik network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/moxa-networks",
+          "label": "Moxa networks"
+        },
+        {
+          "type": "doc",
+          "id": "network/netgear-m-series-switches",
+          "label": "Netgear M-Series switches"
+        },
+        {
+          "type": "doc",
+          "id": "network/netgear-s-series-switches",
+          "label": "Netgear S-Series switches"
+        },
+        {
+          "type": "doc",
+          "id": "network/nokia-isam-alcatel",
+          "label": "Nokia ISAM (Alcatel)"
+        },
+        {
+          "type": "doc",
+          "id": "network/nokia-timos-7750sr-7210sas",
+          "label": "Nokia TimOS (7750SR, 7210SAS)"
+        },
+        {
+          "type": "doc",
+          "id": "network/nortel-network-devices",
+          "label": "Nortel network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/oracle-acme-packet-sbc",
+          "label": "Oracle Acme Packet (SBC)"
+        },
+        {
+          "type": "doc",
+          "id": "network/ospf-open-shortest-path-first",
+          "label": "OSPF - Open Shortest Path First"
+        },
+        {
+          "type": "doc",
+          "id": "network/paloalto-firewall",
+          "label": "PaloAlto Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/paloalto-firewall-rest-api",
+          "label": "PaloAlto Firewall - Rest API"
+        },
+        {
+          "type": "doc",
+          "id": "network/paloalto-ion",
+          "label": "PaloAlto ION"
+        },
+        {
+          "type": "doc",
+          "id": "network/paloalto-prisma-sase",
+          "label": "PaloAlto Prisma SASE"
+        },
+        {
+          "type": "doc",
+          "id": "network/patton-smartnode-voip-gateway",
+          "label": "Patton SmartNode VoIP Gateway"
+        },
+        {
+          "type": "doc",
+          "id": "network/peplink-loadbalancer",
+          "label": "Peplink Loadbalancer"
+        },
+        {
+          "type": "doc",
+          "id": "network/pfsense-firewall",
+          "label": "Pfsense Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/radware-alteon-load-balancer",
+          "label": "Radware Alteon Load Balancer"
+        },
+        {
+          "type": "doc",
+          "id": "network/raisecom-network-devices",
+          "label": "Raisecom network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/ribbon-sonus-sbc",
+          "label": "Ribbon (Sonus) SBC"
+        },
+        {
+          "type": "doc",
+          "id": "network/riverbed-steelhead",
+          "label": "Riverbed Steelhead"
+        },
+        {
+          "type": "doc",
+          "id": "network/ruckus-access-points",
+          "label": "Ruckus Access Points"
+        },
+        {
+          "type": "doc",
+          "id": "network/ruckus-icx-switch",
+          "label": "Ruckus ICX switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/ruckus-smartzone-wlan-controller",
+          "label": "Ruckus Smartzone WLAN Controller"
+        },
+        {
+          "type": "doc",
+          "id": "network/ruckus-zonedirector",
+          "label": "Ruckus Zonedirector"
+        },
+        {
+          "type": "doc",
+          "id": "network/securepoint-utm-firewall",
+          "label": "Securepoint UTM Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/siemens-ruggedcom",
+          "label": "Siemens Ruggedcom"
+        },
+        {
+          "type": "doc",
+          "id": "network/smseagle",
+          "label": "SMSEagle"
+        },
+        {
+          "type": "doc",
+          "id": "network/sonicwall-firewall",
+          "label": "Sonicwall Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/sophos-xg-cyberoam",
+          "label": "Sophos XG / Cyberoam"
+        },
+        {
+          "type": "doc",
+          "id": "network/sophos-xgs-firewall",
+          "label": "Sophos XGS Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/stormshield-firewall-rest-api",
+          "label": "Stormshield Firewall (Rest API)"
+        },
+        {
+          "type": "doc",
+          "id": "network/stormshield-firewall-snmp",
+          "label": "Stormshield Firewall (SNMP)"
+        },
+        {
+          "type": "doc",
+          "id": "network/teldat",
+          "label": "Teldat"
+        },
+        {
+          "type": "doc",
+          "id": "network/teltonika-networks",
+          "label": "Teltonika Networks"
+        },
+        {
+          "type": "doc",
+          "id": "network/tp-link-network-devices",
+          "label": "TP-Link network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/ubiquiti-airfiber",
+          "label": "Ubiquiti Airfiber"
+        },
+        {
+          "type": "doc",
+          "id": "network/ubiquiti-edge-switch",
+          "label": "Ubiquiti Edge switch"
+        },
+        {
+          "type": "doc",
+          "id": "network/ubiquiti-unifi-uap",
+          "label": "Ubiquiti Unifi UAP"
+        },
+        {
+          "type": "doc",
+          "id": "network/ubiquiti-unifi-wlan-controller",
+          "label": "Ubiquiti Unifi WLAN Controller"
+        },
+        {
+          "type": "doc",
+          "id": "network/viptela-cisco-networks",
+          "label": "Viptela (Cisco) networks"
+        },
+        {
+          "type": "doc",
+          "id": "network/watchguard-firewall",
+          "label": "Watchguard Firewall"
+        },
+        {
+          "type": "doc",
+          "id": "network/waystream-network-devices",
+          "label": "Waystream network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/westermo-standard-network-devices",
+          "label": "Westermo standard network devices"
+        },
+        {
+          "type": "doc",
+          "id": "network/zebra-rfs",
+          "label": "Zebra RFS"
+        },
+        {
+          "type": "doc",
+          "id": "network/zyxel-network-devices",
+          "label": "Zyxel network devices"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Notification",
+      "items": [
+        {
+          "type": "doc",
+          "id": "notification/html-e-mail-notification",
+          "label": "HTML e-mail notification"
+        },
+        {
+          "type": "doc",
+          "id": "notification/signl4-notification",
+          "label": "Signl4 notification"
+        },
+        {
+          "type": "doc",
+          "id": "notification/slack-notification",
+          "label": "Slack notification"
+        },
+        {
+          "type": "doc",
+          "id": "notification/smseagle-notification",
+          "label": "SMSEagle notification"
+        },
+        {
+          "type": "doc",
+          "id": "notification/smseagle-notification-v2",
+          "label": "SMSEagle notification v2"
+        },
+        {
+          "type": "doc",
+          "id": "notification/teams-notification-deprecated",
+          "label": "Teams notification (deprecated)"
+        },
+        {
+          "type": "doc",
+          "id": "notification/teams-notification-workflow-api",
+          "label": "Teams notification (workflow api)"
+        },
+        {
+          "type": "doc",
+          "id": "notification/telegram-notification",
+          "label": "Telegram notification"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Operating System",
+      "items": [
+        {
+          "type": "doc",
+          "id": "operating-system/f5os",
+          "label": "F5OS"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/hp-ux-snmp",
+          "label": "HP UX SNMP"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/hp-ux-ssh",
+          "label": "HP UX SSH"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/ibm-aix-snmp",
+          "label": "IBM AIX SNMP"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/ibm-aix-ssh",
+          "label": "IBM AIX SSH"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/ibm-as400-iseries",
+          "label": "IBM AS400 (iSeries)"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/linux-snmp",
+          "label": "Linux SNMP"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/linux-ssh",
+          "label": "Linux SSH"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/oracle-solaris-snmp",
+          "label": "Oracle Solaris SNMP"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/oracle-solaris-ssh",
+          "label": "Oracle Solaris SSH"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/windows-i-vertix-agent",
+          "label": "Windows (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/windows-winrm",
+          "label": "Windows (WinRM)"
+        },
+        {
+          "type": "doc",
+          "id": "operating-system/windows-snmp",
+          "label": "Windows SNMP"
+        }
+      ]
+    },
+    {
+      "type": "category",
+      "collapsed": true,
+      "label": "Storage",
+      "items": [
+        {
+          "type": "doc",
+          "id": "storage/buffalo-terastation",
+          "label": "Buffalo Terastation"
+        },
+        {
+          "type": "doc",
+          "id": "storage/datacore",
+          "label": "DataCore"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-compellent",
+          "label": "Dell Compellent"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-emc-data-domain",
+          "label": "Dell EMC Data Domain"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-emc-isilon",
+          "label": "Dell EMC Isilon"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-emc-recoverypoint",
+          "label": "Dell EMC Recoverypoint"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-emc-unisphere",
+          "label": "Dell EMC Unisphere"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-emc-xtremio",
+          "label": "Dell EMC XtremIO"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-equalogic",
+          "label": "Dell EquaLogic"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-md3000",
+          "label": "Dell MD3000"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-me4",
+          "label": "Dell ME4"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-ml6000-tape-library",
+          "label": "Dell ML6000 Tape library"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-powerstore",
+          "label": "Dell Powerstore"
+        },
+        {
+          "type": "doc",
+          "id": "storage/dell-tl2000-tape-library",
+          "label": "Dell TL2000 Tape library"
+        },
+        {
+          "type": "doc",
+          "id": "storage/exagrid-backup-storage",
+          "label": "Exagrid Backup storage"
+        },
+        {
+          "type": "doc",
+          "id": "storage/fujitsu-eternus-dx-storage",
+          "label": "Fujitsu Eternus DX storage"
+        },
+        {
+          "type": "doc",
+          "id": "storage/fujitsu-eternus-dx-storage-official-fujitsu-nagios-plugin",
+          "label": "Fujitsu Eternus DX storage (official Fujitsu Nagios plugin)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hitachi-hcp",
+          "label": "Hitachi HCP"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hitachi-hnas",
+          "label": "Hitachi HNAS"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-3par-storage",
+          "label": "HPE 3PAR storage"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-alletra",
+          "label": "HPE Alletra"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-lefthand",
+          "label": "HPE Lefthand"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-msa-storage",
+          "label": "HPE MSA storage"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-msl-tape-library",
+          "label": "HPE MSL Tape library"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-nimble-storage-api",
+          "label": "HPE Nimble storage (API)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-nimble-storage-snmp",
+          "label": "HPE Nimble storage (SNMP)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-primera",
+          "label": "HPE Primera"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-storeonce-ssh",
+          "label": "HPE Storeonce (ssh)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-storeonce-3-api",
+          "label": "HPE Storeonce 3 (API)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/hpe-storeonce-4-api",
+          "label": "HPE Storeonce 4 (API)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/huawei-oceanstor",
+          "label": "Huawei OceanStor"
+        },
+        {
+          "type": "doc",
+          "id": "storage/ibm-storwize-storage",
+          "label": "IBM Storwize storage"
+        },
+        {
+          "type": "doc",
+          "id": "storage/ibm-ts2900",
+          "label": "IBM TS2900"
+        },
+        {
+          "type": "doc",
+          "id": "storage/ibm-ts3100",
+          "label": "IBM TS3100"
+        },
+        {
+          "type": "doc",
+          "id": "storage/ibm-ts3200",
+          "label": "IBM TS3200"
+        },
+        {
+          "type": "doc",
+          "id": "storage/ibm-ts3500",
+          "label": "IBM TS3500"
+        },
+        {
+          "type": "doc",
+          "id": "storage/lenovo-iomega-nas-ix2",
+          "label": "Lenovo Iomega NAS (ix2)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/lenovo-thinksystem",
+          "label": "Lenovo Thinksystem"
+        },
+        {
+          "type": "doc",
+          "id": "storage/netapp-ontap-oncommand",
+          "label": "Netapp Ontap OnCommand"
+        },
+        {
+          "type": "doc",
+          "id": "storage/netapp-ontap-rest-api",
+          "label": "Netapp Ontap Rest API"
+        },
+        {
+          "type": "doc",
+          "id": "storage/netapp-ontap-snmp",
+          "label": "Netapp Ontap SNMP"
+        },
+        {
+          "type": "doc",
+          "id": "storage/netapp-santricity",
+          "label": "Netapp SANtricity"
+        },
+        {
+          "type": "doc",
+          "id": "storage/netgear-readynas",
+          "label": "Netgear ReadyNAS"
+        },
+        {
+          "type": "doc",
+          "id": "storage/oracle-zs-rest-api",
+          "label": "Oracle ZS (Rest API)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/oracle-zs-snmp",
+          "label": "Oracle ZS (SNMP)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/pure-storage-snmp",
+          "label": "Pure Storage (SNMP)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/pure-storage-flasharray",
+          "label": "Pure Storage Flasharray"
+        },
+        {
+          "type": "doc",
+          "id": "storage/pure-storage-flasharray-legacy",
+          "label": "Pure Storage Flasharray (legacy)"
+        },
+        {
+          "type": "doc",
+          "id": "storage/pure-storage-flashblade",
+          "label": "Pure Storage Flashblade"
+        },
+        {
+          "type": "doc",
+          "id": "storage/qnap-nas",
+          "label": "QNAP NAS"
+        },
+        {
+          "type": "doc",
+          "id": "storage/quantum-dxi-series",
+          "label": "Quantum DXI series"
+        },
+        {
+          "type": "doc",
+          "id": "storage/quantum-scalar-tape-library",
+          "label": "Quantum Scalar Tape Library"
+        },
+        {
+          "type": "doc",
+          "id": "storage/storagetek-sl",
+          "label": "StorageTek SL"
+        },
+        {
+          "type": "doc",
+          "id": "storage/stormagic-virtual-san",
+          "label": "StorMagic Virtual SAN"
+        },
+        {
+          "type": "doc",
+          "id": "storage/synology-nas",
+          "label": "Synology NAS"
+        },
+        {
+          "type": "doc",
+          "id": "storage/vmware-vsan",
+          "label": "VMware vSAN"
+        },
+        {
+          "type": "doc",
+          "id": "storage/wd-nas-western-digital",
+          "label": "WD Nas (Western Digital)"
+        }
+      ]
+    }
+  ]
+}
