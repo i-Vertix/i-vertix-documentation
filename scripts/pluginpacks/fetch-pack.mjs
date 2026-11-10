@@ -1,16 +1,16 @@
 // Writes the get_plugin_pack JSON of one plugin pack (all sections, plus its changelog from
 // get_plugin_pack_changelog under "changelog") to stdout, using the query layer of a
-// local, built checkout of the ivertix-pluginpack-mcp server (read-only DB access via its .env).
+// local, built checkout of the i-vertix-pluginpack-mcp server (read-only DB access via its .env).
 //
 //   node scripts/pluginpacks/fetch-pack.mjs <unique_id | name> [version] > pack.json
 //
-// The MCP checkout is taken from $IVERTIX_MCP_DIR or ../ivertix-pluginpack-mcp (next to this repository).
+// The MCP checkout is taken from $IVERTIX_MCP_DIR or ../i-vertix-pluginpack-mcp (next to this repository).
 // The same data is available through the MCP tool get_plugin_pack once the server runs the current code.
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const mcpDir = process.env.IVERTIX_MCP_DIR ?? path.resolve(repoRoot, "..", "ivertix-pluginpack-mcp");
+const mcpDir = process.env.IVERTIX_MCP_DIR ?? path.resolve(repoRoot, "..", "i-vertix-pluginpack-mcp");
 const load = (file) => import(pathToFileURL(path.join(mcpDir, "dist", file)).href);
 
 const [ref, version] = process.argv.slice(2);

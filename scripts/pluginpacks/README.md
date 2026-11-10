@@ -5,14 +5,14 @@ and the centreon-plugins sources.
 
 | File | |
 |---|---|
-| `fetch-pack.mjs` | Writes the JSON of one plugin pack (description, host/service templates with macros, commands) using a local build of [ivertix-pluginpack-mcp](../../../ivertix-pluginpack-mcp) |
+| `fetch-pack.mjs` | Writes the JSON of one plugin pack (description, host/service templates with macros, commands) using a local build of [i-vertix-pluginpack-mcp](../../../i-vertix-pluginpack-mcp) |
 | `genpage.py` | Renders the MDX page from that JSON |
 | `plugininfo.py` | Reads option help (POD) and metrics (perfdata) of a plugin mode from centreon-plugins, starting from a command line |
 | `prerequisites/*.md` | Content of the *Prerequisites* section, shared by the packs of one technology |
 
 ## Requirements
 
-- `../ivertix-pluginpack-mcp`, built (`npm run build`) and with a `.env` giving read access to the portal DB (or set `IVERTIX_MCP_DIR`)
+- `../i-vertix-pluginpack-mcp`, built (`npm run build`) and with a `.env` giving read access to the portal DB (or set `IVERTIX_MCP_DIR`)
 - `../centreon-plugins` checked out at the plugin version the docs describe (or set `CENTREON_PLUGINS_SRC` to its `src` folder)
 - Python 3, Node.js ≥ 20
 
