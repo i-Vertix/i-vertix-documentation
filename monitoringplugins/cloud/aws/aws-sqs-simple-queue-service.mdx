@@ -1,0 +1,187 @@
+---
+title: "AWS SQS (Simple Queue Service)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-SQS.png";
+
+<PluginPackHeader name="AWS SQS (Simple Queue Service)" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS SQS (Simple Queue Service)
+protocols used: Rest API
+
+- Queues
+
+### Discovery mode
+
+- Queues
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-SQS
+
+*AWS SQS (Simple Queue Service)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (1)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. *(not used by the check command)* |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SQS queues](#cloud-aws-sqs-queues) | `cloud-aws-sqs-queues` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SQS queues {#cloud-aws-sqs-queues}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `QUEUE-NAME` | `.*` | Set the SQS queue name (Required) |
+| `WARNING-MESSAGES-EMPTY-RECEIVERS` | `0` | Warning threshold empty receivers |
+| `WARNING-MESSAGES-OLDEST-AGE` |  | Warning threshold messages oldest age |
+| `WARNING-MESSAGES-DELAYED` |  | Warning threshold messages delayed |
+| `WARNING-MESSAGES-NOTVISIBLE` |  | Warning threshold messages not visible |
+| `WARNING-MESSAGES-VISIBLE` |  | Warning threshold messages visible |
+| `WARNING-MESSAGES-DELETED` |  | Warning threshold messages deleted |
+| `WARNING-MESSAGES-RECEIVED` |  | Warning threshold messages received |
+| `WARNING-MESSAGES-SENT` |  | Warning threshold messages sent |
+| `CRITICAL-MESSAGES-OLDEST-AGE` |  | Critical threshold messages oldest age |
+| `CRITICAL-MESSAGES-DELAYED` |  | Critical threshold messages delayed |
+| `CRITICAL-MESSAGES-NOTVISIBLE` |  | Critical threshold messages not visible |
+| `CRITICAL-MESSAGES-VISIBLE` |  | Critical threshold messages visible |
+| `CRITICAL-MESSAGES-DELETED` |  | Critical threshold messages deleted |
+| `CRITICAL-MESSAGES-RECEIVED` |  | Critical threshold messages received |
+| `CRITICAL-MESSAGES-SENT` |  | Critical threshold messages sent |
+| `CRITICAL-MESSAGES-EMPTY-RECEIVERS` |  | Critical threshold empty receivers |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqs.queue.messages.oldest.seconds` | `s` | age of oldest message | `WARNING-MESSAGES-OLDEST-AGE`, `CRITICAL-MESSAGES-OLDEST-AGE` |
+| `sqs.queue.messages.delayed.count` |  | delayed messages | `WARNING-MESSAGES-DELAYED`, `CRITICAL-MESSAGES-DELAYED` |
+| `sqs.queue.messages.notvisible.count` |  | approximate number of messages not visible | `WARNING-MESSAGES-NOTVISIBLE`, `CRITICAL-MESSAGES-NOTVISIBLE` |
+| `sqs.queue.messages.visible.count` |  | approximate number of messages visible | `WARNING-MESSAGES-VISIBLE`, `CRITICAL-MESSAGES-VISIBLE` |
+| `sqs.queue.messages.empty.count` |  | number of empty receives | `WARNING-MESSAGES-EMPTY-RECEIVERS`, `CRITICAL-MESSAGES-EMPTY-RECEIVERS` |
+| `sqs.queue.messages.deleted.count` |  | number of messages deleted | `WARNING-MESSAGES-DELETED`, `CRITICAL-MESSAGES-DELETED` |
+| `sqs.queue.messages.received.count` |  | number of messages received | `WARNING-MESSAGES-RECEIVED`, `CRITICAL-MESSAGES-RECEIVED` |
+| `sqs.queue.messages.sent.count` |  | number of messages sent | `WARNING-MESSAGES-SENT`, `CRITICAL-MESSAGES-SENT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800-new-discovery - 20260911</summary>
+
+- Host template `AWS-SQS`
+    - Macro `AWS-SECRET-KEY` added (default *(empty)*)
+    - Service template `cloud-aws-sqs-queues` unlinked
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231011</summary>
+
+- Command `cloud-aws-sqs-queues`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `AWS SQS (Simple Queue Service)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230810 - 20230920`.

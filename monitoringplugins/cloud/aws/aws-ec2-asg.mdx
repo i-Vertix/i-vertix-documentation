@@ -1,0 +1,148 @@
+---
+title: "AWS EC2 ASG"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS EC2.png";
+
+<PluginPackHeader name="AWS EC2 ASG" image={image} category="Cloud" metadata={[]} />
+
+## Description
+
+### AWS ASG (Auto Scaling Group) monitoring
+protocols used: awscli, Rest API
+
+- ASG status
+
+### Discovery modes
+
+- ASG
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-EC2-ASG
+
+*Amazon AWS EC2 Auto Scaling Group* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REGION` | `eu-west-1` | Set the region name (Required) |
+| `AWS-SECRET-KEY` |  | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [EC2 ASG status](#cloud-aws-ec2-asg-status) | `cloud-aws-ec2-asg-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### EC2 ASG status {#cloud-aws-ec2-asg-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-ASG` | `.*` | Filter by autoscaling group name (can be a regexp) |
+| `CRITICAL-INSTANCES` | `'%{health} =~ /Healthy/ && %{lifecycle} !~ /InService/'` | Set critical threshold for instances states (Default: '%\{health\} =~ /Healthy/ && %\{lifecycle\} !~ /InService/'). Can use special variables like: %\{health\}, %\{lifecycle\} |
+| `WARNING-INSTANCES` |  | Set warning threshold for status (Default: ''). Can use special variables like: %\{health\}, %\{lifecycle\} |
+| `WARNING-ASG-INSTANCE-CURRENT` |  | Threshold warning about number of instances in the autoscaling group |
+| `CRITICAL-ASG-INSTANCE-CURRENT` |  | Threshold critical about number of instances in the autoscaling group |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ec2.asg.instance.current.count` |  |  | `WARNING-ASG-INSTANCE-CURRENT`, `CRITICAL-ASG-INSTANCE-CURRENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Host template `AWS-EC2-ASG`
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-ec2-asg-status`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>

@@ -93,7 +93,8 @@ class Page:
         if macro['description'] and macro['description'].strip():
             return macro['description']
         key = scope + bare(macro['name'])
-        for name in command_names:
+        # commands using the macro first, then the other commands of the pack (an option may only be documented in one mode)
+        for name in list(command_names) + [n for n in self.infos if n not in command_names]:
             info = self.infos.get(name)
             if info and key in info['macro_options']:
                 text = option_description(info, info['macro_options'][key])

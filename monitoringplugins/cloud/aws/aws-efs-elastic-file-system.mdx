@@ -1,0 +1,199 @@
+---
+title: "AWS EFS (Elastic File System)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-EFS.png";
+
+<PluginPackHeader name="AWS EFS (Elastic File System)" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS EFS (Elastic File System) monitoring
+protocols used: Rest API
+
+- Connections
+- Data usage
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-EFS
+
+*AWS EFS - Elastic File System* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+| `NAME` |  | Set the instance name (Required) (can be defined multiple times) |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#cloud-aws-efs-connections) | `cloud-aws-efs-connections` |
+| [Data Usage](#cloud-aws-efs-datausage) | `cloud-aws-efs-datausage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {#cloud-aws-efs-connections}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CLIENT-CONNECTIONS` |  | Threshold warning client connections |
+| `CRITICAL-CLIENT-CONNECTIONS` |  | Threshold critical client connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `efs.clients.connections.count` |  | Client Connections | `WARNING-CLIENT-CONNECTIONS`, `CRITICAL-CLIENT-CONNECTIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Data Usage {#cloud-aws-efs-datausage}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter on a specific metric Can be: DataReadIOBytes, DataWriteIOBytes, MetaDataIOBytes, TotalIOBytes, BurstCreditBalance |
+| `WARNING-DATA-IOBYTES-READ` |  | Threshold warning data IO bytes read |
+| `WARNING-DATA-IOBYTES-WRITE` |  | Threshold warning data IO bytes write |
+| `WARNING-METADATA-IOBYTES` |  | Threshold warning metadata IO bytes |
+| `WARNING-TOTAL-IOBYTES` |  | Threshold warning total IO bytes |
+| `WARNING-BURST-BYTES` |  | Threshold warning burst bytes |
+| `CRITICAL-DATA-IOBYTES-READ` |  | Threshold critical data IO bytes read |
+| `CRITICAL-DATA-IOBYTES-WRITE` |  | Threshold critical data IO bytes write |
+| `CRITICAL-METADATA-IOBYTES` |  | Threshold critical metadata IO bytes |
+| `CRITICAL-TOTAL-IOBYTES` |  | Threshold critical total IO bytes |
+| `CRITICAL-BURST-BYTES` |  | Threshold critical burst bytes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `efs.data.iobytes.read.bytes` | `B` | Data Read IO Bytes | `WARNING-DATA-IOBYTES-READ`, `CRITICAL-DATA-IOBYTES-READ` |
+| `efs.data.iobytes.write.bytes` | `B` | Data Write IO Bytes | `WARNING-DATA-IOBYTES-WRITE`, `CRITICAL-DATA-IOBYTES-WRITE` |
+| `efs.metadata.iobytes.bytes` | `B` | MetaData IO Bytes | `WARNING-METADATA-IOBYTES`, `CRITICAL-METADATA-IOBYTES` |
+| `efs.total.iobytes.bytes` | `B` | Total IO Bytes | `WARNING-TOTAL-IOBYTES`, `CRITICAL-TOTAL-IOBYTES` |
+| `efs.creditbalance.burst.bytes` | `B` | Burst Credit Balance Bytes | `WARNING-BURST-BYTES`, `CRITICAL-BURST-BYTES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Command `cloud-aws-efs-connections`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-efs-datausage`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `AWS EFS (Elastic File System)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230810 - 20230920`.

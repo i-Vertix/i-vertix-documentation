@@ -1,0 +1,166 @@
+---
+title: "AWS Transit Gateway"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-TransitGW.png";
+
+<PluginPackHeader name="AWS Transit Gateway" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### AWS Transit Gateway monitoring
+Protocols used: Rest API (HTTPS)
+
+- Traffic
+
+### Discovery modes
+
+- Gateways
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-Transit-Gateway
+
+*AWS Transit Gateway* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Transit gateway](#cloud-aws-transitgateway-traffic) | `cloud-aws-transitgateway-traffic` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Transit gateway {#cloud-aws-transitgateway-traffic}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--verbose` | Additional options appended to the plugin command line (host level). |
+| `TIMEFRAME` | `300` | Set timeframe in seconds |
+| `WARNING-PACKETS-DROP-BLACKHOLE` | `500` | Threshold warning packets drop blackhole |
+| `CRITICAL-PACKETS-DROP-BLACKHOLE` | `1000` | Threshold critical packets drop blackhole |
+| `FILTER-GATEWAY` |  | Filter on a specific TransitGateway ID. This filter is based on the "TransitGatewayId" attribute of the gateway |
+| `FILTER-METRIC` |  | Filter on a specific metric. Can be: BytesIn, BytesOut, PacketsIn, PacketsOut, PacketDropCountBlackhole, PacketDropCountNoRoute |
+| `WARNING-BYTES-IN` |  | Threshold warning bytes in |
+| `WARNING-BYTES-OUT` |  | Threshold warning bytes out |
+| `WARNING-PACKETS-IN` |  | Threshold warning packets in |
+| `WARNING-PACKETS-OUT` |  | Threshold warning packets out |
+| `WARNING-PACKETS-DROP-NOROUTE` |  | Threshold warning packets drop no route |
+| `CRITICAL-BYTES-IN` |  | Threshold critical bytes in |
+| `CRITICAL-BYTES-OUT` |  | Threshold critical bytes out |
+| `CRITICAL-PACKETS-IN` |  | Threshold critical packets in |
+| `CRITICAL-PACKETS-OUT` |  | Threshold critical packets out |
+| `CRITICAL-PACKETS-DROP-NOROUTE` |  | Threshold critical packets drop no route |
+| `STATISTIC` |  | Set cloudwatch statistics (Can be: 'minimum', 'maximum', 'average', 'sum') |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `gateway.traffic.in.bytes` | `B` | Bytes In | `WARNING-BYTES-IN`, `CRITICAL-BYTES-IN` |
+| `gateway.traffic.out.bytes` | `B` | Bytes Out | `WARNING-BYTES-OUT`, `CRITICAL-BYTES-OUT` |
+| `gateway.packets.in.count` |  | Packets Received (In) | `WARNING-PACKETS-IN`, `CRITICAL-PACKETS-IN` |
+| `gateway.packets.out.count` |  | Packets Sent (Out) | `WARNING-PACKETS-OUT`, `CRITICAL-PACKETS-OUT` |
+| `gateway.packets.blackholedropped.count` |  | Packets Drop Blackhole | `WARNING-PACKETS-DROP-BLACKHOLE`, `CRITICAL-PACKETS-DROP-BLACKHOLE` |
+| `gateway.packets.noroutedropped.count` |  | Packets Drop No Route | `WARNING-PACKETS-DROP-NOROUTE`, `CRITICAL-PACKETS-DROP-NOROUTE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Host template `AWS-Transit-Gateway`
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-transitgateway-traffic`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>

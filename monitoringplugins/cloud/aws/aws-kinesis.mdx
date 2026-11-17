@@ -1,0 +1,216 @@
+---
+title: "AWS Kinesis"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-Kinesis.png";
+
+<PluginPackHeader name="AWS Kinesis" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS Kinesis monitoring
+protocols used: Rest API
+
+- Record statistics
+- Streams
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-Kinesis
+
+*AWS Kinesis* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+| `STREAM-NAME` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Kinesis - Record statistics](#cloud-aws-kinesis-records-stats) | `cloud-aws-kinesis-records-stats` |
+| [Kinesis - Streams](#cloud-aws-kinesis-streams) | `cloud-aws-kinesis-streams` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Kinesis - Record statistics {#cloud-aws-kinesis-records-stats}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RECORDS-GET-LATENCY` | `100` | Warning threshold Records get latency |
+| `WARNING-RECORDS-PUT-LATENCY` | `100` | Warning threshold Records put latency |
+| `CRITICAL-RECORDS-GET-LATENCY` | `250` | Critical threshold Records get latency |
+| `CRITICAL-RECORDS-PUT-LATENCY` | `250` | Critical threshold Records put latency |
+| `CRITICAL-RECORDS-GET-ITERATORAGE` |  | Critical threshold Records get iteratorage |
+| `CRITICAL-RECORDS-GET-SUCCESS` |  | Critical threshold Records get success |
+| `CRITICAL-RECORDS-GET-VOLUME` |  | Critical threshold Records get volume |
+| `CRITICAL-RECORDS-PUT-SUCCESS` |  | Critical threshold Records put success |
+| `CRITICAL-RECORDS-PUT-VOLUME` |  | Critical threshold Records put volume |
+| `WARNING-RECORDS-GET-ITERATORAGE` |  | Warning threshold Records get iteratorage |
+| `WARNING-RECORDS-GET-SUCCESS` |  | Warning threshold Records get success |
+| `WARNING-RECORDS-GET-VOLUME` |  | Warning threshold Records get volume |
+| `WARNING-RECORDS-PUT-SUCCESS` |  | Warning threshold Records put success |
+| `WARNING-RECORDS-PUT-VOLUME` |  | Warning threshold Records put volume |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `kinesis.stream.records.get.iteratorage.milliseconds` | `ms` | Get Records Iterator Age | `WARNING-RECORDS-GET-ITERATORAGE`, `CRITICAL-RECORDS-GET-ITERATORAGE` |
+| `kinesis.stream.records.get.volume.bytes` | `B` | Get Records Bytes | `WARNING-RECORDS-GET-VOLUME`, `CRITICAL-RECORDS-GET-VOLUME` |
+| `kinesis.stream.records.get.latency.milliseconds` | `ms` | Get Records Latency | `WARNING-RECORDS-GET-LATENCY`, `CRITICAL-RECORDS-GET-LATENCY` |
+| `kinesis.stream.records.get.success.count` |  | Get Records Success | `WARNING-RECORDS-GET-SUCCESS`, `CRITICAL-RECORDS-GET-SUCCESS` |
+| `kinesis.stream.records.put.latency.milliseconds` | `ms` | Put Records Latency | `WARNING-RECORDS-PUT-LATENCY`, `CRITICAL-RECORDS-PUT-LATENCY` |
+| `kinesis.stream.records.put.volume.bytes` | `B` | Put Records Bytes | `WARNING-RECORDS-PUT-VOLUME`, `CRITICAL-RECORDS-PUT-VOLUME` |
+| `kinesis.stream.records.put.success.count` |  | Put Records Success | `WARNING-RECORDS-PUT-SUCCESS`, `CRITICAL-RECORDS-PUT-SUCCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Kinesis - Streams {#cloud-aws-kinesis-streams}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-INCOMING-RECORDS` |  | Critical threshold incoming records |
+| `CRITICAL-INCOMING-VOLUME` |  | Critical threshold incoming volume |
+| `CRITICAL-OUTGOING-RECORDS` |  | Critical threshold outgoing records |
+| `CRITICAL-OUTGOING-VOLUME` |  | Critical threshold outgoing volume |
+| `WARNING-INCOMING-RECORDS` |  | Warning threshold incoming records |
+| `WARNING-INCOMING-VOLUME` |  | Warning threshold incoming volume |
+| `WARNING-OUTGOING-RECORDS` |  | Warning threshold outgoing records |
+| `WARNING-OUTGOING-VOLUME` |  | Warning threshold outgoing volume |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `kinesis.stream.records.get.iteratorage.milliseconds` | `ms` | Get Records Iterator Age |  |
+| `kinesis.stream.records.get.volume.bytes` | `B` | Get Records Bytes |  |
+| `kinesis.stream.records.get.latency.milliseconds` | `ms` | Get Records Latency |  |
+| `kinesis.stream.records.get.success.count` |  | Get Records Success |  |
+| `kinesis.stream.records.put.latency.milliseconds` | `ms` | Put Records Latency |  |
+| `kinesis.stream.records.put.volume.bytes` | `B` | Put Records Bytes |  |
+| `kinesis.stream.records.put.success.count` |  | Put Records Success |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Command `cloud-aws-kinesis-records-stats`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-kinesis-streams`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `AWS Kinesis`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230810 - 20230920`.

@@ -201,6 +201,8 @@ sidebar:
       - id: aws
         label: AWS
         items:
+          - id: aws-prerequisites
+            label: AWS Prerequisites
           - id: aws-api-gateway
             label: AWS API Gateway
           - id: aws-application-elb
@@ -213,8 +215,6 @@ sidebar:
             label: AWS Classic ELB - Loadbalancer
           - id: aws-cloudwatch
             label: AWS Cloudwatch
-          - id: aws-cloudwatch-logs
-            label: AWS Cloudwatch Logs
           - id: aws-direct-connect
             label: AWS Direct Connect
           - id: aws-ebs-volume

@@ -15,14 +15,15 @@ export default function DocBreadcrumbsWrapper(props) {
         return <DocBreadcrumbs {...props} />;
     }
 
+    // the latest release is the first entry of the release notes (its anchor is raw HTML in <summary>, which the
+    // build's broken-anchor check does not see, so the link points to the page)
     const label = `${release.plugin_version} - ${release.config_version}`;
-    const anchor = label.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     return (
         <div className={styles.row}>
             <DocBreadcrumbs {...props} />
             <Link
                 className={styles.release}
-                to={`/monitoringplugins/monitoring-plugins/release-notes#${anchor}`}
+                to="/monitoringplugins/monitoring-plugins/release-notes"
                 title="Latest published Plugin Store version - open the release notes">
                 <span className={styles.releaseLabel}>Plugin Store</span>
                 <span className={styles.releaseVersion}>{label}</span>

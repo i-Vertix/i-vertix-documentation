@@ -1,0 +1,556 @@
+---
+title: "AWS RDS (Relational Database Service)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Brands/AWS.png";
+
+<PluginPackHeader name="AWS RDS (Relational Database Service)" image={image} category="Cloud" metadata={[]} />
+
+## Description
+
+### AWS RDS (Relational Database Service) monitoring
+protocols used: awscli (Rest API)
+You can get an overview of all gathered metrics from AWS/RDS in the [official documentation](https://docs.aws.amazon.com/rds/index.html).
+
+**Monitored objects**
+
+- Instances (MySQL, MariaDB, Oracle, SQL Server ...)
+- Clusters (Aurora, ...)
+
+**Monitored metrics**
+
+- Connections
+- CPU usage
+- Disk IO
+- Instance status
+- Network
+- Query statistics (Only available on Aurora MySQL)
+- Storage usage
+- Transactions (Only available on Aurora MySQL and partially Postgres)
+- Volume usage (Only available on Aurora MySQL and Postgres)
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-RDS
+
+*Amazon AWS Relational Database Service* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REGION` |  | Set the region name (Required) |
+| `INSTANCE-TYPE` | `instance` | Set the instance type (Required) (Can be: 'cluster', 'instance') |
+| `AWS-SECRET-KEY` |  | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `INSTANCE-NAME` |  | Set the instance name (required) (can be defined multiple times). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#cloud-aws-rds-connections) | `cloud-aws-rds-connections` |
+| [CPU usage](#cloud-aws-rds-cpu) | `cloud-aws-rds-cpu` |
+| [Disk IO](#cloud-aws-rds-diskio) | `cloud-aws-rds-diskio` |
+| [Instance status](#cloud-aws-rds-instance-status) | `cloud-aws-rds-instance-status` |
+| [Network usage](#cloud-aws-rds-network) | `cloud-aws-rds-network` |
+| [Query statistics](#cloud-aws-rds-queries) | `cloud-aws-rds-queries` |
+| [Storage](#cloud-aws-rds-storage) | `cloud-aws-rds-storage` |
+| [Transactions](#cloud-aws-rds-transactions) | `cloud-aws-rds-transactions` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Volume usage](#cloud-aws-rds-volume) | `cloud-aws-rds-volume` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {#cloud-aws-rds-connections}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'DatabaseConnections') (Can be a regexp) |
+| `WARNING-DATABASECONNECTIONS-AVERAGE` |  | Warning threshold database connections |
+| `CRITICAL-DATABASECONNECTIONS-AVERAGE` |  | Critical threshold database connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `databaseconnections_minimum` |  | DatabaseConnections |  |
+| `databaseconnections_maximum` |  | DatabaseConnections |  |
+| `databaseconnections_average` |  | DatabaseConnections | `WARNING-DATABASECONNECTIONS-AVERAGE`, `CRITICAL-DATABASECONNECTIONS-AVERAGE` |
+| `databaseconnections_sum` |  | DatabaseConnections |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU usage {#cloud-aws-rds-cpu}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPUCREDITUSAGE-AVERAGE` | `5` | Warning threshold CPU credit usage |
+| `WARNING-CPUUTILIZATION-AVERAGE` | `80` | Warning threshold CPU utilization |
+| `CRITICAL-CPUCREDITUSAGE-AVERAGE` | `25` | Critical threshold CPU credit usage |
+| `CRITICAL-CPUUTILIZATION-AVERAGE` | `90` | Critical threshold CPU utilization |
+| `WARNING-CPUCREDITBALANCE-AVERAGE` | `250:` | Warning threshold CPU credit balance |
+| `CRITICAL-CPUCREDITBALANCE-AVERAGE` | `100:` | Critical threshold CPU credit balance |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'CPUCreditBalance', 'CPUCreditUsage', CPUUtilization') (Can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpuutilization_minimum` | `%` | CPUUtilization |  |
+| `cpuutilization_maximum` | `%` | CPUUtilization |  |
+| `cpuutilization_average` | `%` | CPUUtilization | `WARNING-CPUUTILIZATION-AVERAGE`, `CRITICAL-CPUUTILIZATION-AVERAGE` |
+| `cpuutilization_sum` | `%` | CPUUtilization |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk IO {#cloud-aws-rds-diskio}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-READLATENCY-AVERAGE` | `100` | Warning threshold Read latency |
+| `WARNING-WRITELATENCY-AVERAGE` | `100` | Warning threshold Write latency |
+| `WARNING-DISKQUEUEDEPTH-AVERAGE` | `1` | Warning threshold disk queue depth |
+| `CRITICAL-READLATENCY-AVERAGE` | `500` | Critical threshold Read latency |
+| `CRITICAL-WRITELATENCY-AVERAGE` | `500` | Critical threshold Write latency |
+| `CRITICAL-DISKQUEUEDEPTH-AVERAGE` | `250` | Critical threshold disk queue depth |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'ReadThroughput', 'WriteThroughput', 'ReadIOPS', 'WriteIOPS', 'ReadLatency', 'WriteLatency', 'DiskQueueDepth') (Can be a regexp) |
+| `WARNING-READTHROUGHPUT-AVERAGE` |  | Warning threshold Read throughput |
+| `WARNING-WRITETHROUGHPUT-AVERAGE` |  | Warning threshold Write throughput |
+| `WARNING-READIOPS-AVERAGE` |  | Warning threshold Read IOPS |
+| `WARNING-WRITEIOPS-AVERAGE` |  | Warning threshold Write IOPS |
+| `CRITICAL-READTHROUGHPUT-AVERAGE` |  | Critical threshold Read throughput |
+| `CRITICAL-WRITETHROUGHPUT-AVERAGE` |  | Critical threshold Write throughput |
+| `CRITICAL-READIOPS-AVERAGE` |  | Critical threshold Read IOPS |
+| `CRITICAL-WRITEIOPS-AVERAGE` |  | Critical threshold Write IOPS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `diskqueuedepth_minimum` | `B/s` | DiskQueueDepth:  /s |  |
+| `diskqueuedepth_maximum` | `B/s` | DiskQueueDepth:  /s |  |
+| `diskqueuedepth_average` | `B/s` | DiskQueueDepth:  /s | `WARNING-DISKQUEUEDEPTH-AVERAGE`, `CRITICAL-DISKQUEUEDEPTH-AVERAGE` |
+| `diskqueuedepth_sum` | `B/s` | DiskQueueDepth:  /s |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Instance status {#cloud-aws-rds-instance-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-MAINTENANCE` | `0` | Warning threshold total maintenance |
+| `CRITICAL-TOTAL-FAILED` | `0` | Critical threshold total failed |
+| `CRITICAL-TOTAL-STOPPED` | `0` | Critical threshold total stopped |
+| `CRITICAL-TOTAL-STORAGE-FULL` | `0` | Critical threshold total storage full |
+| `CRITICAL-TOTAL-AVAILABLE` | `1:` | Critical threshold total available |
+| `WARNING-TOTAL-AVAILABLE` |  | Warning threshold total available |
+| `WARNING-TOTAL-BACKING-UP` |  | Warning threshold total backing up |
+| `WARNING-TOTAL-FAILED` |  | Warning threshold total failed |
+| `WARNING-TOTAL-STOPPED` |  | Warning threshold total stopped |
+| `WARNING-TOTAL-STORAGE-FULL` |  | Warning threshold total storage full |
+| `CRITICAL-TOTAL-BACKING-UP` |  | Critical threshold total backing up |
+| `CRITICAL-TOTAL-MAINTENANCE` |  | Critical threshold total maintenance |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Network usage {#cloud-aws-rds-network}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'NetworkReceiveThroughput', 'NetworkTransmitThroughput') (Can be a regexp) |
+| `WARNING-NETWORK-RECEIVETHROUGHPUT-AVERAGE` |  | Warning threshold Network received throughput |
+| `WARNING-NETWORK-TRANSMITTHROUGHPUT-AVERAGE` |  | Warning threshold Network transmit throughput |
+| `CRITICAL-NETWORK-RECEIVETHROUGHPUT-AVERAGE` |  | Critical threshold Network received throughput |
+| `CRITICAL-NETWORK-TRANSMITTHROUGHPUT-AVERAGE` |  | Critical threshold Network transmit throughput |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `networkreceivethroughput_minimum` | `B/s` | NetworkReceiveThroughput:  /s |  |
+| `networktransmitthroughput_minimum` | `B/s` | NetworkTransmitThroughput:  /s |  |
+| `networkreceivethroughput_maximum` | `B/s` | NetworkReceiveThroughput:  /s |  |
+| `networktransmitthroughput_maximum` | `B/s` | NetworkTransmitThroughput:  /s |  |
+| `networkreceivethroughput_average` | `B/s` | NetworkReceiveThroughput:  /s | `WARNING-NETWORK-RECEIVETHROUGHPUT-AVERAGE`, `CRITICAL-NETWORK-RECEIVETHROUGHPUT-AVERAGE` |
+| `networktransmitthroughput_average` | `B/s` | NetworkTransmitThroughput:  /s | `WARNING-NETWORK-TRANSMITTHROUGHPUT-AVERAGE`, `CRITICAL-NETWORK-TRANSMITTHROUGHPUT-AVERAGE` |
+| `networkreceivethroughput_sum` | `B/s` | NetworkReceiveThroughput:  /s |  |
+| `networktransmitthroughput_sum` | `B/s` | NetworkTransmitThroughput:  /s |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Query statistics {#cloud-aws-rds-queries}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-INSERT-LATENCY-AVERAGE` | `100` | Warning threshold Insert latency |
+| `WARNING-DELETE-LATENCY-AVERAGE` | `100` | Warning threshold Delete latency |
+| `WARNING-SELECT-LATENCY-AVERAGE` | `100` | Warning threshold Select latency |
+| `WARNING-UPDATE-LATENCY-AVERAGE` | `100` | Warning threshold Update latency |
+| `WARNING-DML-LATENCY-AVERAGE` | `100` | Warning threshold DML latency |
+| `WARNING-DDL-LATENCY-AVERAGE` | `100` | Warning threshold DDL latency |
+| `CRITICAL-INSERT-LATENCY-AVERAGE` | `1000` | Critical threshold Insert latency |
+| `CRITICAL-DELETE-LATENCY-AVERAGE` | `1000` | Critical threshold Delete latency |
+| `CRITICAL-SELECT-LATENCY-AVERAGE` | `1000` | Critical threshold Select latency |
+| `CRITICAL-UPDATE-LATENCY-AVERAGE` | `1000` | Critical threshold Update latency |
+| `CRITICAL-DML-LATENCY-AVERAGE` | `1000` | Critical threshold DML latency |
+| `CRITICAL-DDL-LATENCY-AVERAGE` | `1000` | Critical threshold DDL latency |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'Queries', 'InsertThroughput', 'DeleteThroughput', 'SelectThroughput', 'UpdateThroughput',             'DMLThroughput', 'DDLThroughput', 'InsertLatency', 'DeleteLatency', 'SelectLatency', 'UpdateLatency', 'DMLLatency', 'DDLLatency') (Can be a regexp) |
+| `WARNING-INSERT-THROUGHPUT-AVERAGE` |  | Warning threshold Insert throughput |
+| `WARNING-DELETE-THROUGHPUT-AVERAGE` |  | Warning threshold Delete throughput |
+| `WARNING-SELECT-THROUGHPUT-AVERAGE` |  | Warning threshold Select throughput |
+| `WARNING-UPDATE-THROUGHPUT-AVERAGE` |  | Warning threshold Update throughput |
+| `WARNING-DML-THROUGHPUT-AVERAGE` |  | Warning threshold DML throughput |
+| `WARNING-DDL-THROUGHPUT-AVERAGE` |  | Warning threshold DDL throughput |
+| `CRITICAL-INSERT-THROUGHPUT-AVERAGE` |  | Critical threshold Insert throughput |
+| `CRITICAL-DELETE-THROUGHPUT-AVERAGE` |  | Critical threshold Delete throughput |
+| `CRITICAL-SELECT-THROUGHPUT-AVERAGE` |  | Critical threshold Select throughput |
+| `CRITICAL-UPDATE-THROUGHPUT-AVERAGE` |  | Critical threshold Update throughput |
+| `CRITICAL-DML-THROUGHPUT-AVERAGE` |  | Critical threshold DML throughput |
+| `CRITICAL-DDL-THROUGHPUT-AVERAGE` |  | Critical threshold DDL throughput |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `insertlatency_minimum` | `queries/s` | InsertLatency:  queries/s |  |
+| `deletelatency_minimum` | `queries/s` | DeleteLatency:  queries/s |  |
+| `selectlatency_minimum` | `queries/s` | SelectLatency:  queries/s |  |
+| `updatelatency_minimum` | `queries/s` | UpdateLatency:  queries/s |  |
+| `dmllatency_minimum` | `queries/s` | DMLLatency:  queries/s |  |
+| `ddllatency_minimum` | `queries/s` | DDLLatency:  queries/s |  |
+| `insertlatency_maximum` | `queries/s` | InsertLatency:  queries/s |  |
+| `deletelatency_maximum` | `queries/s` | DeleteLatency:  queries/s |  |
+| `selectlatency_maximum` | `queries/s` | SelectLatency:  queries/s |  |
+| `updatelatency_maximum` | `queries/s` | UpdateLatency:  queries/s |  |
+| `dmllatency_maximum` | `queries/s` | DMLLatency:  queries/s |  |
+| `ddllatency_maximum` | `queries/s` | DDLLatency:  queries/s |  |
+| `insertlatency_average` | `queries/s` | InsertLatency:  queries/s | `WARNING-INSERT-LATENCY-AVERAGE`, `CRITICAL-INSERT-LATENCY-AVERAGE` |
+| `deletelatency_average` | `queries/s` | DeleteLatency:  queries/s | `WARNING-DELETE-LATENCY-AVERAGE`, `CRITICAL-DELETE-LATENCY-AVERAGE` |
+| `selectlatency_average` | `queries/s` | SelectLatency:  queries/s | `WARNING-SELECT-LATENCY-AVERAGE`, `CRITICAL-SELECT-LATENCY-AVERAGE` |
+| `updatelatency_average` | `queries/s` | UpdateLatency:  queries/s | `WARNING-UPDATE-LATENCY-AVERAGE`, `CRITICAL-UPDATE-LATENCY-AVERAGE` |
+| `dmllatency_average` | `queries/s` | DMLLatency:  queries/s | `WARNING-DML-LATENCY-AVERAGE`, `CRITICAL-DML-LATENCY-AVERAGE` |
+| `ddllatency_average` | `queries/s` | DDLLatency:  queries/s | `WARNING-DDL-LATENCY-AVERAGE`, `CRITICAL-DDL-LATENCY-AVERAGE` |
+| `insertlatency_sum` | `queries/s` | InsertLatency:  queries/s |  |
+| `deletelatency_sum` | `queries/s` | DeleteLatency:  queries/s |  |
+| `selectlatency_sum` | `queries/s` | SelectLatency:  queries/s |  |
+| `updatelatency_sum` | `queries/s` | UpdateLatency:  queries/s |  |
+| `dmllatency_sum` | `queries/s` | DMLLatency:  queries/s |  |
+| `ddllatency_sum` | `queries/s` | DDLLatency:  queries/s |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {#cloud-aws-rds-storage}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STORAGE-SPACE-FREE-PRCT` | `90` | Warning threshold storage space free (%) |
+| `CRITICAL-STORAGE-SPACE-FREE-PRCT` | `95` | Critical threshold storage space free (%) |
+| `FILTER-METRIC` |  | Filter on a specific metric. Can be: FreeStorageSpace, FreeableMemory |
+| `WARNING-STORAGE-SPACE-FREE-THROUGHPUT` |  | Warning threshold storage space free throughput |
+| `WARNING-MEMORY-FREE` |  | Warning threshold storage memory free |
+| `CRITICAL-STORAGE-SPACE-FREE-THROUGHPUT` |  | Critical threshold storage space free throughput |
+| `CRITICAL-MEMORY-FREE` |  | Critical threshold storage memory free |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Transactions {#cloud-aws-rds-transactions}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BLOCKEDTRANSACTIONS-AVERAGE` | `0` | Warning threshold blocked transactions |
+| `WARNING-COMMITLATENCY-AVERAGE` | `100` | Warning threshold commit latency |
+| `CRITICAL-BLOCKEDTRANSACTIONS-AVERAGE` | `10` | Critical threshold blocked transactions |
+| `CRITICAL-COMITLATENCY-AVERAGE` | `500` | Critical threshold commit latency |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'ActiveTransactions', 'BlockedTransactions', 'CommitThroughput', 'CommitLatency') (Can be a regexp) |
+| `WARNING-ACTIVETRANSACTIONS-AVERAGE` |  | Warning threshold active transactions |
+| `WARNING-COMMITTHROUGHPUT-AVERAGE` |  | Warning threshold commit throughput |
+| `CRITICAL-ACTIVETRANSACTIONS-AVERAGE` |  | Critical threshold active transactions |
+| `CRITICAL-COMITTHROUGHPUT-AVERAGE` |  | Critical threshold commit throughput |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `commitlatency_minimum` | `ops` | CommitLatency:  ops |  |
+| `commitlatency_maximum` | `ops` | CommitLatency:  ops |  |
+| `commitlatency_average` | `ops` | CommitLatency:  ops | `WARNING-COMMITLATENCY-AVERAGE`, `CRITICAL-COMITLATENCY-AVERAGE` |
+| `commitlatency_sum` | `ops` | CommitLatency:  ops |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume usage {#cloud-aws-rds-volume}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'VolumeBytesUsed', 'VolumeReadIOPs', 'VolumeWriteIOPs') (Can be a regexp) |
+| `WARNING-VOLUME-BYTESUSED-AVERAGE` |  | Warning threshold volume bytes used |
+| `WARNING-VOLUME-READIOPS-AVERAGE` |  | Warning threshold volume read IOPS |
+| `WARNING-VOLUME-WRITEIOPS-AVERAGE` |  | Warning threshold volume write IOPS |
+| `CRITICAL-VOLUME-BYTESUSED-AVERAGE` |  | Critical threshold volume bytes used |
+| `CRITICAL-VOLUME-READIOPS-AVERAGE` |  | Critical threshold volume read IOPS |
+| `CRITICAL-VOLUME-WRITEIOPS-AVERAGE` |  | Critical threshold volume write IOPS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volumereadiops_minimum` | `B` | VolumeReadIOPs |  |
+| `volumewriteiops_minimum` | `B` | VolumeWriteIOPs |  |
+| `volumereadiops_maximum` | `B` | VolumeReadIOPs |  |
+| `volumewriteiops_maximum` | `B` | VolumeWriteIOPs |  |
+| `volumereadiops_average` | `B` | VolumeReadIOPs | `WARNING-VOLUME-READIOPS-AVERAGE`, `CRITICAL-VOLUME-READIOPS-AVERAGE` |
+| `volumewriteiops_average` | `B` | VolumeWriteIOPs | `WARNING-VOLUME-WRITEIOPS-AVERAGE`, `CRITICAL-VOLUME-WRITEIOPS-AVERAGE` |
+| `volumereadiops_sum` | `B` | VolumeReadIOPs |  |
+| `volumewriteiops_sum` | `B` | VolumeWriteIOPs |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800 - 20260827</summary>
+
+- Host template `AWS-RDS`
+    - Macro `REGION`: default changed from `eu-west-1` to *(empty)*
+    - Service template `cloud-aws-rds-volume` unlinked
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231011</summary>
+
+- Host template `AWS-RDS`
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-connections`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-cpu`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-diskio`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-instance-status`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-network`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-queries`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-storage`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-transactions`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-rds-volume`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>

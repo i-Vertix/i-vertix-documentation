@@ -88,19 +88,37 @@ def _value(body, key):
     return m.group(1) if m else None
 
 
-def _metrics_from_mapping(code):
-    """Azure/AWS style: sub get_metrics_mapping { my $metrics_mapping = { 'x' => { output, label, nlabel, unit } } }."""
+def _metrics_from_mapping(code, per_sec=False):
+    """Azure/AWS style: sub get_metrics_mapping { my $metrics_mapping = { 'x' => { output, label, nlabel, unit } } }.
+    AWS nests the entries under "metrics => { ... }" and gives nlabel per value type
+    ("nlabel => { absolute => 'a.count', per_second => 'a.persecond' }"); per_sec picks the --per-sec one."""
     m = re.search(r'sub\s+get_metrics_mapping\s*\{(.*?)\n\}', code, flags=re.S)
-    if not m:
-        return []
-    block = m.group(1)
-    start = block.find('{', block.find('='))
+    if m:
+        block = m.group(1)
+        block = block[block.find('{', block.find('=')) + 1:]
+    else:
+        # older AWS modes: file-level "my %metrics_mapping = ( 'x' => { ... }, ... );"
+        m = re.search(r'^my\s+%metrics_mapping\s*=\s*\((.*?)^\);', code, flags=re.S | re.M)
+        if not m:
+            return []
+        block = m.group(1)
     metrics = []
-    for _, body in _hash_entries(block[start + 1:]):
+    for _, body in _hash_entries(block):
+        if len(re.findall(r"['\"]?\boutput['\"]?\s*=>", body)) != 1:
+            continue  # container ("metrics => {...}") or a hash without a metric definition
         nlabel = _value(body, 'nlabel')
+        per_second = False
+        if not nlabel:
+            h = re.search(r"\bnlabel['\"]?\s*=>\s*\{(.*?)\}", body, flags=re.S)
+            variants = dict(re.findall(r"(\w+)\s*=>\s*['\"]([^'\"]+)['\"]", h.group(1))) if h else {}
+            per_second = per_sec and 'per_second' in variants
+            nlabel = variants.get('per_second' if per_second else 'absolute') or next(iter(variants.values()), None)
         if not nlabel:
             continue
-        metrics.append({'name': nlabel, 'unit': _value(body, 'unit') or '', 'description': _value(body, 'output') or '',
+        unit = _value(body, 'unit') or ''
+        if per_second and unit:
+            unit += '/s'
+        metrics.append({'name': nlabel, 'unit': unit, 'description': _value(body, 'output') or '',
                         'label': _value(body, 'label')})
     return metrics
 
@@ -264,7 +282,7 @@ def plugin_info(src, command_line):
     # metrics of the mode and its base classes (e.g. snmp_standard::mode::interfaces), first definition wins
     metrics, names = [], set()
     for _, code in _class_chain(src, mode_pkg):
-        for x in (_metrics_from_mapping(code) + _metrics_from_counters(code) + _metrics_from_counter_loops(code)
+        for x in (_metrics_from_mapping(code, per_sec=bool(re.search(r'--per-sec\b', command_line))) +_metrics_from_counters(code) + _metrics_from_counter_loops(code)
                   + _metrics_from_perfdata_add(code)):
             if x['name'] not in names:
                 names.add(x['name'])

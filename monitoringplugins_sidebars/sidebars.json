@@ -496,6 +496,11 @@
           "items": [
             {
               "type": "doc",
+              "id": "cloud/aws/aws-prerequisites",
+              "label": "AWS Prerequisites"
+            },
+            {
+              "type": "doc",
               "id": "cloud/aws/aws-api-gateway",
               "label": "AWS API Gateway"
             },
@@ -523,11 +528,6 @@
               "type": "doc",
               "id": "cloud/aws/aws-cloudwatch",
               "label": "AWS Cloudwatch"
-            },
-            {
-              "type": "doc",
-              "id": "cloud/aws/aws-cloudwatch-logs",
-              "label": "AWS Cloudwatch Logs"
             },
             {
               "type": "doc",

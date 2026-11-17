@@ -1,0 +1,271 @@
+---
+title: "AWS S3"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-S3.png";
+
+<PluginPackHeader name="AWS S3" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### AWS S3 monitoring
+protocols used: Rest API (HTTPS)
+
+- Bucket size
+- Objects
+- Requests
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-S3
+
+*Amazon S3 storage* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REGION` | `eu-west-1` | Set the region name (required). |
+| `BUCKET-NAME` |  | Set the instance name (required) (can be defined multiple times). |
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Bucket size](#cloud-aws-s3-bucket-size) | `cloud-aws-s3-bucket-size` |
+| [Objects](#cloud-aws-s3-objects) | `cloud-aws-s3-objects` |
+| [Requests](#cloud-aws-s3-requests) | `cloud-aws-s3-requests` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Bucket size {#cloud-aws-s3-bucket-size}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STORAGE-TYPE` | `StandardStorage` | Set the storage type of the bucket (Default: 'StandardStorage') (Can be multiple: 'StandardStorage', 'StandardIAStorage', 'ReducedRedundancyStorage') |
+| `WARNING-BUCKETSIZE-STANDARDSTORAGE` |  | Threshold warning bucket size standard storage |
+| `WARNING-BUCKETSIZE-STANDARDIASTORAGE` |  | Threshold warning bucket size standard IA storage |
+| `WARNING-BUCKETSIZE-REDUCEDREDUNDANCYSTORAGE` |  | Threshold warning bucket size reduced redundancy storage |
+| `CRITICAL-BUCKETSIZE-STANDARDSTORAGE` |  | Threshold critical bucket size standard storage |
+| `CRITICAL-BUCKETSIZE-STANDARDIASTORAGE` |  | Threshold critical bucket size standard IA storage |
+| `CRITICAL-BUCKETSIZE-REDUCEDREDUNDANCYSTORAGE` |  | Threshold critical bucket size reduced redundancy storage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `bucketsizebytes_standardstorage_minimum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_standardiastorage_minimum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_reducedredundancystorage_minimum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_standardstorage_maximum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_standardiastorage_maximum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_reducedredundancystorage_maximum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_standardstorage_average` | `B` | BucketSizeBytes | `WARNING-BUCKETSIZE-STANDARDSTORAGE`, `CRITICAL-BUCKETSIZE-STANDARDSTORAGE` |
+| `bucketsizebytes_standardiastorage_average` | `B` | BucketSizeBytes | `WARNING-BUCKETSIZE-STANDARDIASTORAGE`, `CRITICAL-BUCKETSIZE-STANDARDIASTORAGE` |
+| `bucketsizebytes_reducedredundancystorage_average` | `B` | BucketSizeBytes | `WARNING-BUCKETSIZE-REDUCEDREDUNDANCYSTORAGE`, `CRITICAL-BUCKETSIZE-REDUCEDREDUNDANCYSTORAGE` |
+| `bucketsizebytes_standardstorage_sum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_standardiastorage_sum` | `B` | BucketSizeBytes |  |
+| `bucketsizebytes_reducedredundancystorage_sum` | `B` | BucketSizeBytes |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Objects {#cloud-aws-s3-objects}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-NUMBEROFOBJECTS-AVERAGE` |  | Threshold warning average number of objects |
+| `CRITICAL-NUMBEROFOBJECTS-AVERAGE` |  | Threshold critical average number of objects |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `numberofobjects_minimum` | `objects` | NumberOfObjects:  objects |  |
+| `numberofobjects_maximum` | `objects` | NumberOfObjects:  objects |  |
+| `numberofobjects_average` | `objects` | NumberOfObjects:  objects | `WARNING-NUMBEROFOBJECTS-AVERAGE`, `CRITICAL-NUMBEROFOBJECTS-AVERAGE` |
+| `numberofobjects_sum` | `objects` | NumberOfObjects:  objects |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Requests {#cloud-aws-s3-requests}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'AllRequests', 'GetRequests', 'PutRequests', 'DeleteRequests', 'HeadRequests', 'PostRequests', 'ListRequests') (Can be a regexp) |
+| `WARNING-ALLREQUESTS-SUM` |  | Warning threshold All requests |
+| `WARNING-GETREQUESTS-SUM` |  | Warning threshold Get requests |
+| `WARNING-PUTREQUESTS-SUM` |  | Warning threshold Put requests |
+| `WARNING-DELETEREQUESTS-SUM` |  | Warning threshold Delete requests |
+| `WARNING-HEADREQUESTS-SUM` |  | Warning threshold Head requests |
+| `WARNING-POSTREQUESTS-SUM` |  | Warning threshold Post requests |
+| `WARNING-LISTREQUESTS-SUM` |  | Warning threshold List requests |
+| `CRITICAL-ALLREQUESTS-SUM` |  | Critical threshold All requests |
+| `CRITICAL-GETREQUESTS-SUM` |  | Critical threshold Get requests |
+| `CRITICAL-PUTREQUESTS-SUM` |  | Critical threshold Put requests |
+| `CRITICAL-DELETEREQUESTS-SUM` |  | Critical threshold Delete requests |
+| `CRITICAL-HEADREQUESTS-SUM` |  | Critical threshold Head requests |
+| `CRITICAL-POSTREQUESTS-SUM` |  | Critical threshold Post requests |
+| `CRITICAL-LISTREQUESTS-SUM` |  | Critical threshold List requests |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `allrequests_minimum` | `requests` | AllRequests:  requests |  |
+| `getrequests_minimum` | `requests` | GetRequests:  requests |  |
+| `putrequests_minimum` | `requests` | PutRequests:  requests |  |
+| `deleterequests_minimum` | `requests` | DeleteRequests:  requests |  |
+| `headrequests_minimum` | `requests` | HeadRequests:  requests |  |
+| `postrequests_minimum` | `requests` | PostRequests:  requests |  |
+| `listrequests_minimum` | `requests` | ListRequests:  requests |  |
+| `allrequests_maximum` | `requests` | AllRequests:  requests |  |
+| `getrequests_maximum` | `requests` | GetRequests:  requests |  |
+| `putrequests_maximum` | `requests` | PutRequests:  requests |  |
+| `deleterequests_maximum` | `requests` | DeleteRequests:  requests |  |
+| `headrequests_maximum` | `requests` | HeadRequests:  requests |  |
+| `postrequests_maximum` | `requests` | PostRequests:  requests |  |
+| `listrequests_maximum` | `requests` | ListRequests:  requests |  |
+| `allrequests_average` | `requests` | AllRequests:  requests |  |
+| `getrequests_average` | `requests` | GetRequests:  requests |  |
+| `putrequests_average` | `requests` | PutRequests:  requests |  |
+| `deleterequests_average` | `requests` | DeleteRequests:  requests |  |
+| `headrequests_average` | `requests` | HeadRequests:  requests |  |
+| `postrequests_average` | `requests` | PostRequests:  requests |  |
+| `listrequests_average` | `requests` | ListRequests:  requests |  |
+| `allrequests_sum` | `requests` | AllRequests:  requests | `WARNING-ALLREQUESTS-SUM`, `CRITICAL-ALLREQUESTS-SUM` |
+| `getrequests_sum` | `requests` | GetRequests:  requests | `WARNING-GETREQUESTS-SUM`, `CRITICAL-GETREQUESTS-SUM` |
+| `putrequests_sum` | `requests` | PutRequests:  requests | `WARNING-PUTREQUESTS-SUM`, `CRITICAL-PUTREQUESTS-SUM` |
+| `deleterequests_sum` | `requests` | DeleteRequests:  requests | `WARNING-DELETEREQUESTS-SUM`, `CRITICAL-DELETEREQUESTS-SUM` |
+| `headrequests_sum` | `requests` | HeadRequests:  requests | `WARNING-HEADREQUESTS-SUM`, `CRITICAL-HEADREQUESTS-SUM` |
+| `postrequests_sum` | `requests` | PostRequests:  requests | `WARNING-POSTREQUESTS-SUM`, `CRITICAL-POSTREQUESTS-SUM` |
+| `listrequests_sum` | `requests` | ListRequests:  requests | `WARNING-LISTREQUESTS-SUM`, `CRITICAL-LISTREQUESTS-SUM` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Command `cloud-aws-s3-bucket-size`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-s3-objects`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-s3-requests`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>

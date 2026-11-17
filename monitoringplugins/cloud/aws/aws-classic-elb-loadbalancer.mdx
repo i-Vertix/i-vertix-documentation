@@ -1,0 +1,351 @@
+---
+title: "AWS Classic ELB - Loadbalancer"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-classic-ELB.png";
+
+<PluginPackHeader name="AWS Classic ELB - Loadbalancer" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS classic ELB - Loadbalancer monitoring
+Protocols used: Rest API
+
+- HTTP codes
+- Performances (requests/latency)
+- Queues (spillover count/surgequeue lenght)
+- Target health
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-Classic-ELB-Loadbalancer
+
+*AWS Classic ELB Loadbalancer* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `TYPE` | `loadbalancer` | *(not used by the check command)* |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+| `NAME` |  | Set the instance name (required) (can be defined multiple times). |
+| `AVAILABILITY-ZONE` |  | Add Availability Zone dimension (only with --type='loadbalancer'). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HTTP codes](#cloud-aws-elb-classic-loadbalancer-http-codes) | `cloud-aws-elb-classic-loadbalancer-http-codes` |
+| [Performances Latency](#cloud-aws-elb-classic-loadbalancer-performances-latency) | `cloud-aws-elb-classic-loadbalancer-performances-latency` |
+| [Performances requests count](#cloud-aws-elb-classic-loadbalancer-performances-requests) | `cloud-aws-elb-classic-loadbalancer-performances-requests` |
+| [Queues SpilloverCount](#cloud-aws-elb-classic-loadbalancer-queues-spillovercount) | `cloud-aws-elb-classic-loadbalancer-queues-spillovercount` |
+| [Queues SurgeQueueLength](#cloud-aws-elb-classic-loadbalancer-queues-surgequeuelenght) | `cloud-aws-elb-classic-loadbalancer-queues-surgequeuelenght` |
+| [Targets Health](#cloud-aws-elb-classic-loadbalancer-targets-health) | `cloud-aws-elb-classic-loadbalancer-targets-health` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP codes {#cloud-aws-elb-classic-loadbalancer-http-codes}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STATISTIC` | `sum` | Set cloudwatch statistics (can be: 'minimum', 'maximum', 'average', 'sum') |
+| `WARNING-HTTPCODE-BACKEND-3XX` | `0` | Threshold warning HTTP code backend 3xx |
+| `WARNING-HTTPCODE-BACKEND-4XX` | `0` | Threshold warning HTTP code backend 4xx |
+| `WARNING-HTTPCODE-BACKEND-5XX` | `0` | Threshold warning HTTP code backend 5xx |
+| `WARNING-HTTPCODE-ELB-4XX` | `0` | Threshold warning HTTP code ELB 4xx |
+| `WARNING-HTTPCODE-ELB-5XX` | `0` | Threshold warning HTTP code ELB 5xx |
+| `WARNING-BACKENDCONNECTIONERRORS` | `0` | Threshold warning backend connection errors |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'HTTPCode_Backend_2XX', 'HTTPCode_Backend_3XX', 'HTTPCode_Backend_4XX', 'HTTPCode_Backend_5XX', 'HTTPCode_ELB_4XX', 'HTTPCode_ELB_5XX', 'BackendConnectionErrors') (Can be a regexp) |
+| `WARNING-HTTPCODE-BACKEND-2XX` |  | Threshold warning HTTP code backend 2xx |
+| `CRITICAL-HTTPCODE-BACKEND-2XX` |  | Threshold critical HTTP code backend 2xx |
+| `CRITICAL-HTTPCODE-BACKEND-3XX` |  | Threshold critical HTTP code backend 3xx |
+| `CRITICAL-HTTPCODE-BACKEND-4XX` |  | Threshold critical HTTP code backend 4xx |
+| `CRITICAL-HTTPCODE-BACKEND-5XX` |  | Threshold critical HTTP code backend 5xx |
+| `CRITICAL-HTTPCODE-ELB-4XX` |  | Threshold critical HTTP code ELB 4xx |
+| `CRITICAL-HTTPCODE-ELB-5XX` |  | Threshold critical HTTP code ELB 5xx |
+| `CRITICAL-BACKENDCONNECTIONERRORS` |  | Threshold critical backend connection errors |
+| `PERIOD` |  | Set period in seconds |
+| `TIMEFRAME` |  | Set timeframe in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.httpcode.backend.2xx.count` |  | HTTP 2XXs | `WARNING-HTTPCODE-BACKEND-2XX`, `CRITICAL-HTTPCODE-BACKEND-2XX` |
+| `elb.httpcode.backend.3xx.count` |  | HTTP 3XXs | `WARNING-HTTPCODE-BACKEND-3XX`, `CRITICAL-HTTPCODE-BACKEND-3XX` |
+| `elb.httpcode.backend.4xx.count` |  | HTTP 4XXs | `WARNING-HTTPCODE-BACKEND-4XX`, `CRITICAL-HTTPCODE-BACKEND-4XX` |
+| `elb.httpcode.backend.5xx.count` |  | HTTP 5XXs | `WARNING-HTTPCODE-BACKEND-5XX`, `CRITICAL-HTTPCODE-BACKEND-5XX` |
+| `elb.httpcode.elb.4xx.count` |  | ELB HTTP 4XXs | `WARNING-HTTPCODE-ELB-4XX`, `CRITICAL-HTTPCODE-ELB-4XX` |
+| `elb.httpcode.elb.5xx.count` |  | ELB HTTP 5XXs | `WARNING-HTTPCODE-ELB-5XX`, `CRITICAL-HTTPCODE-ELB-5XX` |
+| `elb.backendconnectionerrors.count` |  | Backend Connection Errors | `WARNING-BACKENDCONNECTIONERRORS`, `CRITICAL-BACKENDCONNECTIONERRORS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Performances Latency {#cloud-aws-elb-classic-loadbalancer-performances-latency}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STATISTIC` | `average` | Default statistic: 'sum', 'average' / Most useful statistics: RequestCount: 'sum', Latency: 'average' |
+| `FILTER-METRIC` | `Latency` | Filter metrics (Can be: 'RequestCount', 'Latency') (Can be a regexp) |
+| `WARNING-LATENCY` | `100` | Threshold warning latency |
+| `CRITICAL-LATENCY` | `500` | Threshold critical latency |
+| `WARNING-REQUESTCOUNT` |  | Threshold warning request count |
+| `CRITICAL-REQUESTCOUNT` |  | Threshold critical request count |
+| `PERIOD` |  | Set period in seconds. |
+| `TIMEFRAME` |  | Set timeframe in seconds. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.requestcount.count` |  | Requests | `WARNING-REQUESTCOUNT`, `CRITICAL-REQUESTCOUNT` |
+| `elb.latency.seconds` | `s` | Latency | `WARNING-LATENCY`, `CRITICAL-LATENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Performances requests count {#cloud-aws-elb-classic-loadbalancer-performances-requests}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STATISTIC` | `sum` | Default statistic: 'sum', 'average' / Most useful statistics: RequestCount: 'sum', Latency: 'average' |
+| `FILTER-METRIC` | `RequestCount` | Filter metrics (Can be: 'RequestCount', 'Latency') (Can be a regexp) |
+| `WARNING-LATENCY` |  | Threshold warning latency |
+| `CRITICAL-LATENCY` |  | Threshold critical latency |
+| `WARNING-REQUESTCOUNT` |  | Threshold warning request count |
+| `CRITICAL-REQUESTCOUNT` |  | Threshold critical request count |
+| `PERIOD` |  | Set period in seconds. |
+| `TIMEFRAME` |  | Set timeframe in seconds. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.requestcount.count` |  | Requests | `WARNING-REQUESTCOUNT`, `CRITICAL-REQUESTCOUNT` |
+| `elb.latency.seconds` | `s` | Latency | `WARNING-LATENCY`, `CRITICAL-LATENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Queues SpilloverCount {#cloud-aws-elb-classic-loadbalancer-queues-spillovercount}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STATISTIC` | `sum` | Set CloudWatch statistics (can be: 'minimum', 'maximum', 'average', 'sum'). |
+| `FILTER-METRIC` | `SpilloverCount` | Filter metrics (Can be: 'SpilloverCount', 'SurgeQueueLength') (Can be a regexp) |
+| `WARNING-SPILLOVERCOUNT` |  | Threshold warning spillover count |
+| `WARNING-SURGEQUEUELENGTH` |  | Threshold warning surge queue length |
+| `CRITICAL-SPILLOVERCOUNT` |  | Threshold critical spillover count |
+| `CRITICAL-SURGEQUEUELENGTH` |  | Threshold critical surge queue length |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.spillovercount.count` |  | Spillover Count | `WARNING-SPILLOVERCOUNT`, `CRITICAL-SPILLOVERCOUNT` |
+| `elb.surgequeuelength.count` |  | Surge Queue Length | `WARNING-SURGEQUEUELENGTH`, `CRITICAL-SURGEQUEUELENGTH` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Queues SurgeQueueLength {#cloud-aws-elb-classic-loadbalancer-queues-surgequeuelenght}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STATISTIC` | `maximum` | Set CloudWatch statistics (can be: 'minimum', 'maximum', 'average', 'sum'). |
+| `FILTER-METRIC` | `SurgeQueueLength` | Filter metrics (Can be: 'SpilloverCount', 'SurgeQueueLength') (Can be a regexp) |
+| `CRITICAL-SURGEQUEUELENGTH` | `25` | Threshold critical surge queue length |
+| `WARNING-SPILLOVERCOUNT` |  | Threshold warning spillover count |
+| `WARNING-SURGEQUEUELENGTH` |  | Threshold warning surge queue length |
+| `CRITICAL-SPILLOVERCOUNT` |  | Threshold critical spillover count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.spillovercount.count` |  | Spillover Count | `WARNING-SPILLOVERCOUNT`, `CRITICAL-SPILLOVERCOUNT` |
+| `elb.surgequeuelength.count` |  | Surge Queue Length | `WARNING-SURGEQUEUELENGTH`, `CRITICAL-SURGEQUEUELENGTH` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Targets Health {#cloud-aws-elb-classic-loadbalancer-targets-health}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STATISTIC` | `average` | Set CloudWatch statistics (can be: 'minimum', 'maximum', 'average', 'sum'). |
+| `CRITICAL-UNHEALTHYHOSTCOUNT` | `0` | Threshold critical unhealthy host count |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'HealthyHostCount', 'UnHealthyHostCount') (Can be a regexp) |
+| `WARNING-HEALTHYHOSTCOUNT` |  | Threshold warning healthy host count |
+| `WARNING-UNHEALTHYHOSTCOUNT` |  | Threshold warning unhealthy host count |
+| `CRITICAL-HEALTHYHOSTCOUNT` |  | Threshold critical healthy host count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.healthyhostcount.count` |  | Healthy Hosts | `WARNING-HEALTHYHOSTCOUNT`, `CRITICAL-HEALTHYHOSTCOUNT` |
+| `elb.unhealthyhostcount.count` |  | Unhealthy Hosts | `WARNING-UNHEALTHYHOSTCOUNT`, `CRITICAL-UNHEALTHYHOSTCOUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240909 - 20240925</summary>
+
+- Plugin pack `AWS Classic ELB - Loadbalancer`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240909 - 20240925`.

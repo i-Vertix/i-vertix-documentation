@@ -1,0 +1,284 @@
+---
+title: "AWS EC2 instance"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS EC2.png";
+
+<PluginPackHeader name="AWS EC2 instance" image={image} category="Cloud" metadata={[]} />
+
+## Description
+
+### AWS EC2 instance monitoring
+protocols used: awscli, Rest API
+
+- CPU usage
+- Disk IO
+- Network
+- Instance status
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-EC2-Instance
+
+*Amazon AWS EC2 Instance* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REGION` | `eu-west-1` | Set the region name (Required) |
+| `INSTANCE-TYPE` | `instance` | Set the instance type (Required) (Can be: 'asg', 'instance') |
+| `AWS-SECRET-KEY` |  | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `INSTANCE-NAME` |  | Set the instance name (required) (can be defined multiple times). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [EC2 CPU](#cloud-aws-ec2-cpu) | `cloud-aws-ec2-cpu` |
+| [EC2 Disk IO](#cloud-aws-ec2-diskio) | `cloud-aws-ec2-diskio` |
+| [EC2 Network](#cloud-aws-ec2-network) | `cloud-aws-ec2-network` |
+| [EC2 Instance status](#cloud-aws-ec2-status) | `cloud-aws-ec2-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### EC2 CPU {#cloud-aws-ec2-cpu}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-CREDIT-USAGE` | `5` | Thresholds warning CPU credit usage |
+| `WARNING-CPU-CREDIT-BALANCE` | `250:` | Thresholds warning CPU credit balance |
+| `WARNING-CPU-UTILIZATION` | `80` | Thresholds warning CPU utilization |
+| `CRITICAL-CPU-CREDIT-USAGE` | `20` | Thresholds critical CPU credit usage |
+| `CRITICAL-CPU-CREDIT-BALANCE` | `100:` | Thresholds critical CPU credit balance |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Thresholds critical CPU utilization |
+| `WARNING-CPU-SURPLUS-CREDIT-BALANCE` |  | Thresholds warning CPU surplus credit balance |
+| `WARNING-CPU-SURPLUS-CREDIT-CHARGED` |  | Thresholds warning CPU surplus credit charged |
+| `CRITICAL-CPU-SURPLUS-CREDIT-BALANCE` |  | Thresholds critical CPU surplus credit balance |
+| `CRITICAL-CPU-SURPLUS-CREDIT-CHARGED` |  | Thresholds critical CPU surplus credit charged |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ec2.cpu.utilization.percentage` | `%` | CPU Utilization | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `ec2.cpu.credit.balance.count` |  | CPU Credit Balance | `WARNING-CPU-CREDIT-BALANCE`, `CRITICAL-CPU-CREDIT-BALANCE` |
+| `ec2.cpu.credit.usage.count` |  | CPU Credit Usage | `WARNING-CPU-CREDIT-USAGE`, `CRITICAL-CPU-CREDIT-USAGE` |
+| `ec2.cpu.credit.surplus.balance.count` |  | CPU Surplus Credit Balance | `WARNING-CPU-SURPLUS-CREDIT-BALANCE`, `CRITICAL-CPU-SURPLUS-CREDIT-BALANCE` |
+| `ec2.cpu.credit.surplus.charged.count` |  | CPU Surplus Credit Charged | `WARNING-CPU-SURPLUS-CREDIT-CHARGED`, `CRITICAL-CPU-SURPLUS-CREDIT-CHARGED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### EC2 Disk IO {#cloud-aws-ec2-diskio}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'DiskReadBytes', 'DiskWriteBytes', 'DiskReadOps', 'DiskWriteOps') (Can be a regexp) |
+| `WARNING-DISK-BYTES-READ` |  | Warning threshold Disk bytes read |
+| `WARNING-DISK-BYTES-WRITE` |  | Warning threshold Disk bytes write |
+| `WARNING-DISK-OPS-READ` |  | Warning threshold Disk OPS read |
+| `WARNING-DISK-OPS-WRITE` |  | Warning threshold Disk OPS write |
+| `CRITICAL-DISK-BYTES-READ` |  | Critical threshold Disk bytes read |
+| `CRITICAL-DISK-BYTES-WRITE` |  | Critical threshold Disk bytes write |
+| `CRITICAL-DISK-OPS-READ` |  | Critical threshold Disk OPS read |
+| `CRITICAL-DISK-OPS-WRITE` |  | Critical threshold Disk OPS write |
+| `WARNING-EBS-BYTES-READ` |  | Warning threshold EBS bytes read |
+| `WARNING-EBS-BYTES-WRITE` |  | Warning threshold EBS bytes write |
+| `WARNING-EBS-OPS-READ` |  | Warning threshold EBS OPS read |
+| `WARNING-EBS-OPS-WRITE` |  | Warning threshold EBS OPS write |
+| `CRITICAL-EBS-BYTES-READ` |  | Critical threshold EBS bytes read |
+| `CRITICAL-EBS-BYTES-WRITE` |  | Critical threshold EBS bytes write |
+| `CRITICAL-EBS-OPS-READ` |  | Critical threshold EBS OPS read |
+| `CRITICAL-EBS-OPS-WRITE` |  | Critical threshold EBS OPS write |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ec2.disk.bytes.read.bytespersecond` | `B/s` | Disk Read Bytes | `WARNING-DISK-BYTES-READ`, `CRITICAL-DISK-BYTES-READ` |
+| `ec2.disk.bytes.write.bytespersecond` | `B/s` | Disk Write Bytes | `WARNING-DISK-BYTES-WRITE`, `CRITICAL-DISK-BYTES-WRITE` |
+| `ec2.disk.ops.read.persecond` | `ops/s` | Disk Read Ops | `WARNING-DISK-OPS-READ`, `CRITICAL-DISK-OPS-READ` |
+| `ec2.disk.ops.write.persecond` | `ops/s` | Disk Write Ops | `WARNING-DISK-OPS-WRITE`, `CRITICAL-DISK-OPS-WRITE` |
+| `ec2.ebs.bytes.write.bytespersecond` | `B/s` | EBS Write Bytes | `WARNING-EBS-BYTES-WRITE`, `CRITICAL-EBS-BYTES-WRITE` |
+| `ec2.ebs.ops.read.persecond` | `ops/s` | EBS Read Ops | `WARNING-EBS-OPS-READ`, `CRITICAL-EBS-OPS-READ` |
+| `ec2.ebs.ops.write.persecond` | `ops/s` | EBS Write Ops | `WARNING-EBS-OPS-WRITE`, `CRITICAL-EBS-OPS-WRITE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### EC2 Network {#cloud-aws-ec2-network}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'NetworkIn', 'NetworkOut', 'NetworkPacketsIn', 'NetworkPacketsOut') (Can be a regexp) |
+| `WARNING-NETWORK-IN` |  | Thresholds warning Network in |
+| `WARNING-NETWORK-OUT` |  | Thresholds warning Network out |
+| `WARNING-PACKETS-IN` |  | Thresholds warning Packets in |
+| `WARNING-PACKETS-OUT` |  | Thresholds warning Packets out |
+| `CRITICAL-NETWORK-IN` |  | Thresholds critical Network in |
+| `CRITICAL-NETWORK-OUT` |  | Thresholds critical Network out |
+| `CRITICAL-PACKETS-IN` |  | Thresholds critical  Packets in |
+| `CRITICAL-PACKETS-OUT` |  | Thresholds critical Packets out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ec2.network.in.bytespersecond` | `B/s` | Network In | `WARNING-NETWORK-IN`, `CRITICAL-NETWORK-IN` |
+| `ec2.network.out.bytespersecond` | `B/s` | Network Out | `WARNING-NETWORK-OUT`, `CRITICAL-NETWORK-OUT` |
+| `ec2.network.packets.in.persecond` | `packets/s` | Network Packets In | `WARNING-PACKETS-IN`, `CRITICAL-PACKETS-IN` |
+| `ec2.network.packets.out.persecond` | `packets/s` | Network Packets Out | `WARNING-PACKETS-OUT`, `CRITICAL-PACKETS-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### EC2 Instance status {#cloud-aws-ec2-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} =~ /failed/i'` | Set critical threshold for status (Default: '%\{status\} =~ /failed/i'). Can used special variables like: %\{status\}. 'status' can be: 'passed', 'failed' |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}. 'status' can be: 'passed', 'failed' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Host template `AWS-EC2-Instance`
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-ec2-cpu`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-ec2-diskio`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-ec2-network`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-ec2-status`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+
+</details>

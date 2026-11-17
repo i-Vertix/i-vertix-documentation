@@ -1,0 +1,170 @@
+---
+title: "AWS Backup"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-Backup.png";
+
+<PluginPackHeader name="AWS Backup" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS Backup monitoring
+protocols used: Rest API
+
+- Job status
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-Backup
+
+*AWS Backup* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AWS Backup Job status](#cloud-aws-backup-job-status) | `cloud-aws-backup-job-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### AWS Backup Job status {#cloud-aws-backup-job-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-NUMBER-BACKUP-JOBS-EXPIRED` | `0` | Warning threshold number of Backup jobs expired |
+| `WARNING-NUMBER-RECOVERY-JOBS-EXPIRED` | `0` | Warning threshold number of Recovery jobs expired |
+| `CRITICAL-NUMBER-BACKUP-JOBS-FAILED` | `0` | Critical threshold number of Backup jobs failed |
+| `CRITICAL-NUMBER-COPY-JOBS-FAILED` | `0` | Critical threshold number of Copy jobs failed |
+| `PERIOD` | `3600` | Set period in seconds (default 3600) |
+| `TIMEFRAME` | `86400` | Set timeframe in seconds (default 86400) |
+| `BACKUP-VAULT-NAME` |  | Name of the backup vault |
+| `FILTER-METRIC` |  | Filter on a specific metric. Can be: NumberOfBackupJobsCompleted, NumberOfBackupJobsFailed, NumberOfBackupJobsExpired, NumberOfCopyJobsCompleted, NumberOfCopyJobsFailed, NumberOfRecoveryPointsExpired. Can be regex, for example : --filter-metric="NumberOf(Backup\|Copy).*Failed" |
+| `WARNING-NUMBER-BACKUP-JOBS-COMPLETED` |  | Warning threshold number of Backup jobs completed |
+| `WARNING-NUMBER-BACKUP-JOBS-FAILED` |  | Warning threshold number of Backup jobs failed |
+| `WARNING-NUMBER-COPY-JOBS-COMPLETED` |  | Warning threshold number of Copy jobs completed |
+| `WARNING-NUMBER-COPY-JOBS-FAILED` |  | Warning threshold number of Copy jobs failed |
+| `CRITICAL-NUMBER-BACKUP-JOBS-COMPLETED` |  | Critical threshold number of Backup jobs completed |
+| `CRITICAL-NUMBER-BACKUP-JOBS-EXPIRED` |  | Critical threshold number of Backup jobs expired |
+| `CRITICAL-NUMBER-COPY-JOBS-COMPLETED` |  | Critical threshold number of Copy jobs completed |
+| `CRITICAL-NUMBER-RECOVERY-JOBS-EXPIRED` |  | Critical threshold number of Recovery jobs expired |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250501 - 20250622</summary>
+
+- Command `cloud-aws-backup-job-status`
+    - Option `--warning-number-backup-jobs-expired=$_SERVICEWARNING-NUMBER-BACKUP-JOBS-EXPIRED$` added
+    - Option `--critical-number-backup-jobs-expired=$_SERVICECRITICAL-NUMBER-BACKUP-JOBS-EXPIRED$` added
+    - Option `--warning-umber-backup-jobs-expired=$_SERVICEWARNING-NUMBER-BACKUP-JOBS-EXPIRED$` removed
+    - Option `--critical-umber-backup-jobs-expired=$_SERVICECRITICAL-NUMBER-BACKUP-JOBS-EXPIRED$` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250617</summary>
+
+- Service template [`cloud-aws-backup-job-status`](#cloud-aws-backup-job-status)
+    - Macro `PERIOD` added (default `3600`)
+    - Macro `TIMEFRAME` added (default `86400`)
+- Command `cloud-aws-backup-job-status`
+    - Option `--timeframe=$_SERVICETIMEFRAME$` added
+    - Option `--period=$_SERVICEPERIOD$` added
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `PERIOD` added
+    - Macro `TIMEFRAME` added
+    - Macro `TIMEOUT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `AWS Backup`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231215 - 20240130`.
