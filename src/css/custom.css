@@ -290,6 +290,46 @@ html .footer {
     margin: 0;
 }
 
+/* PLUGIN PACK MACRO TABLES: macro names always on one line */
+
+.plugin-pack-macros td:first-child,
+.plugin-pack-macros td:first-child code,
+.plugin-pack-templates td code {
+    white-space: nowrap;
+}
+
+/* PLUGIN PACK MACRO + TEMPLATE TABLES: macro names, default values and template names without code border and background */
+
+.plugin-pack-macros td code,
+.plugin-pack-templates td code {
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+/* PLUGIN PACK DETAILS: collapsible sections without the light-blue "alert--info" look of <details> */
+
+.alert.plugin-pack-details {
+    --ifm-alert-background-color: transparent;
+    --ifm-alert-background-color-highlight: transparent;
+    --ifm-alert-foreground-color: var(--ifm-font-color-base);
+    --ifm-alert-border-color: var(--ifm-color-emphasis-300);
+    --ifm-alert-border-left-width: var(--ifm-alert-border-width);
+    /* undo the alert overrides, use the page values again */
+    --ifm-code-background: inherit;
+    --ifm-link-color: inherit;
+    --ifm-link-hover-color: inherit;
+    --ifm-link-decoration: inherit;
+    --ifm-tabs-color: inherit;
+    --ifm-tabs-color-active: inherit;
+    --ifm-tabs-color-active-border: inherit;
+    box-shadow: none;
+}
+
+.alert.plugin-pack-details summary {
+    font-weight: var(--ifm-font-weight-bold);
+}
+
 /*TO OVERWRITE GENERAL COLORS*/
 html[data-theme='dark'] {
     /*--ifm-background-color: #414141;*/

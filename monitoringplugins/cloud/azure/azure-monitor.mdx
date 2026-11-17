@@ -1,0 +1,201 @@
+---
+title: "Azure Monitor"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-Monitor.png";
+
+<PluginPackHeader name="Azure Monitor" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### Azure Monitor monitoring
+protocols used: Rest API
+
+- Alerts
+- Health
+- Metrics
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-Monitor
+
+*Azure Monitor* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alert](#cloud-azure-management-monitor-alert) | `cloud-azure-management-monitor-alert` |
+| [Health](#cloud-azure-management-monitor-health) | `cloud-azure-management-monitor-health` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Metrics](#cloud-azure-management-monitor-get-metrics) | `cloud-azure-management-monitor-get-metrics` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alert {#cloud-azure-management-monitor-alert}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour) |
+| `INTERVAL` | `PT5M` | Set interval of the metric query (can be : PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, PT24H) |
+| `AGGREGATION` | `total` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+| `FILTER` |  | Filter on alert name. Can be a regexp) |
+| `WARNING-COUNT` |  | Warning threshold Alerts count |
+| `CRITICAL-COUNT` |  | Critical threshold Alerts count |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {#cloud-azure-management-monitor-health}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `INTERVAL` | `PT1M` | Set interval of the metric query (can be : `PT1M`, `PT5M`, `PT15M`, `PT30M`, `PT1H`, `PT6H`, `PT12H`, `PT24H`). |
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Metrics {#cloud-azure-management-monitor-get-metrics}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour) |
+| `INTERVAL` | `PT1M` | Set interval of the metric query (can be : PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, PT24H) |
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+| `METRIC` |  | Set monitor metrics (required) (can be defined multiple times) |
+| `METRIC-NAMESPACE` |  | Set monitor metric namespace |
+| `FILTER-DIMENSION` |  | Specify the metric dimension (required for some specific metrics) Syntax example: --filter-dimension="$metricname eq '$metricvalue'" |
+| `WARNING-METRIC` |  | Warning threshold |
+| `CRITICAL-METRIC` |  | Critical threshold |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240212 - 20240317</summary>
+
+- Plugin pack `Azure Monitor`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240212 - 20240317`.

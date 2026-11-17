@@ -5,17 +5,17 @@ const jsYaml = require('js-yaml');
 const args = require('minimist')(process.argv.slice(2));
 console.log("Args:", args);
 
-if (!args.versioning) {
-    console.error("parameter --versioning missing (e.g. --versioning=22.04)");
-    process.exit(1);
-}
 if (!args.docs) {
     console.error("parameter --docs missing (e.g. --docs=log-management)");
     process.exit(1);
 }
 
-const validDocs = ["monitoring", "log-management", "asset-management"];
+const versionedDocs = ["monitoring", "log-management", "asset-management"];
+// unversioned docs: <docs>_sidebars/sidebar.yaml -> <docs>_sidebars/sidebars.json
+const unversionedDocs = ["monitoringplugins"];
+const validDocs = [...versionedDocs, ...unversionedDocs];
 const docs = args.docs;
+const isVersioned = versionedDocs.includes(docs);
 let version = args.versioning;
 
 if (!validDocs.includes(docs)) {
@@ -24,12 +24,18 @@ if (!validDocs.includes(docs)) {
     return;
 }
 
+if (isVersioned && !version) {
+    console.error("parameter --versioning missing (e.g. --versioning=22.04)");
+    process.exit(1);
+}
+
 if (docs === "monitoring") {
     version = version.toFixed(2);
 }
-// fs.writeFileSync(path.resolve(`${__dirname}/../alert.js`), fileContent, {enconding: 'utf8'});
 
-const yamlPath = path.resolve(`${__dirname}/../${docs}_versioned_sidebars/${version}-sidebar.yaml`);
+const yamlPath = isVersioned
+    ? path.resolve(`${__dirname}/../${docs}_versioned_sidebars/${version}-sidebar.yaml`)
+    : path.resolve(`${__dirname}/../${docs}_sidebars/sidebar.yaml`);
 let yaml = [];
 try {
     yaml = jsYaml.load(fs.readFileSync(yamlPath, 'utf8'), {});
@@ -138,7 +144,9 @@ const sidebar = JSON.stringify({
     2
 );
 
-const outputPath = path.resolve(`${__dirname}/../${docs}_versioned_sidebars/version-${version}-sidebars.json`);
+const outputPath = isVersioned
+    ? path.resolve(`${__dirname}/../${docs}_versioned_sidebars/version-${version}-sidebars.json`)
+    : path.resolve(`${__dirname}/../${docs}_sidebars/sidebars.json`);
 //console.log(sidebar);
 fs.writeFileSync(outputPath, sidebar, { encoding: 'utf8' });
 process.exit(0);

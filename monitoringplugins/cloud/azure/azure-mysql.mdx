@@ -1,0 +1,411 @@
+---
+title: "Azure MySQL"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Databases/Azure-MySQL.png";
+
+<PluginPackHeader name="Azure MySQL" image={image} category="Cloud" metadata={["HTTPS"]} />
+
+## Description
+
+### Azure MySQL monitoring
+protocols used: Rest API (https)
+
+- Connections
+- CPU
+- IO consumption
+- Memory
+- Queries
+- Replication
+- Storage
+- Traffic
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-MySQL
+
+*Azure MySQL database* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `TIMEFRAME` | `300` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `RESOURCE-TYPE` | `servers` | Set resource type (Default: 'servers'). Can be 'servers', 'flexibleServers' |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#cloud-azure-database-mysql-connections) | `cloud-azure-database-mysql-connections` |
+| [CPU](#cloud-azure-database-mysql-cpu) | `cloud-azure-database-mysql-cpu` |
+| [IO consumption](#cloud-azure-database-mysql-io-consumption) | `cloud-azure-database-mysql-io-consumption` |
+| [Memory](#cloud-azure-database-mysql-memory) | `cloud-azure-database-mysql-memory` |
+| [Queries](#cloud-azure-database-mysql-queries) | `cloud-azure-database-mysql-queries` |
+| [Replication](#cloud-azure-database-mysql-replication) | `cloud-azure-database-mysql-replication` |
+| [Storage](#cloud-azure-database-mysql-storage) | `cloud-azure-database-mysql-storage` |
+| [Traffic](#cloud-azure-database-mysql-traffic) | `cloud-azure-database-mysql-traffic` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {#cloud-azure-database-mysql-connections}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-CONNECTIONS-FAILED` | `0` | Threshold warning failed connections |
+| `WARNING-CONNECTIONS-ABORTED` | `0` | Threshold warning aborted connections |
+| `WARNING-CONNECTIONS-ACTIVE` |  | Threshold warning active connections |
+| `WARNING-CONNECTIONS-TOTAL` |  | Threshold warning total connections |
+| `CRITICAL-CONNECTIONS-ACTIVE` |  | Threshold critical active connections |
+| `CRITICAL-CONNECTIONS-FAILED` |  | Threshold critical failed connections |
+| `CRITICAL-CONNECTIONS-ABORTED` |  | Threshold critical aborted connections |
+| `CRITICAL-CONNECTIONS-TOTAL` |  | Threshold critical total connections |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.connections.active.count` |  | Active Connections | `WARNING-CONNECTIONS-ACTIVE`, `CRITICAL-CONNECTIONS-ACTIVE` |
+| `azmysql.connections.failed.count` |  | Failed Connections | `WARNING-CONNECTIONS-FAILED`, `CRITICAL-CONNECTIONS-FAILED` |
+| `azmysql.connections.aborted.count` |  | Aborted Connections | `WARNING-CONNECTIONS-ABORTED`, `CRITICAL-CONNECTIONS-ABORTED` |
+| `azmysql.connections.total.count` |  | Total Connections | `WARNING-CONNECTIONS-TOTAL`, `CRITICAL-CONNECTIONS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {#cloud-azure-database-mysql-cpu}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-CPU-USAGE` | `80` | Threshold warning for CPU utilization in percent |
+| `CRITICAL-CPU-USAGE` | `90` | Threshold critical for CPU utilization in percent |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.cpu.utilization.percentage` | `%` | CPU percent | `WARNING-CPU-USAGE`, `CRITICAL-CPU-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IO consumption {#cloud-azure-database-mysql-io-consumption}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `maximum` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-IOCONSUMPTION-USAGE` |  | Threshold warning IO consumption usage |
+| `CRITICAL-IOCONSUMPTION-USAGE` |  | Threshold critical IO consumption usage |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.ioconsumption.usage.percentage` | `%` | IO Percent | `WARNING-IOCONSUMPTION-USAGE`, `CRITICAL-IOCONSUMPTION-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {#cloud-azure-database-mysql-memory}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning memory usage |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical memory usage |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.memory.usage.percentage` | `%` | Memory percent | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Queries {#cloud-azure-database-mysql-queries}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-QUERIES` |  | Threshold warning queries count |
+| `CRITICAL-QUERIES` |  | Threshold critical queries count |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.queries.count` |  | Queries | `WARNING-QUERIES`, `CRITICAL-QUERIES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Replication {#cloud-azure-database-mysql-replication}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `maximum` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-REPLICATION-LAG` | `1000` | Threshold warning replication lag |
+| `CRITICAL-REPLICATION-LAG` | `2000` | Threshold critical replication lag |
+| `WARNING-REPLICATION-LAG-COUNT` |  | Threshold warning replication lag count |
+| `CRITICAL-REPLICATION-LAG-COUNT` |  | Threshold critical replication lag count |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.replication.lag.seconds` | `s` | Replication Lag In Seconds | `WARNING-REPLICATION-LAG`, `CRITICAL-REPLICATION-LAG` |
+| `azmysql.replication.lag.count` |  | Replication lag in seconds | `WARNING-REPLICATION-LAG-COUNT`, `CRITICAL-REPLICATION-LAG-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {#cloud-azure-database-mysql-storage}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `maximum` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-SERVERLOG-PERCENT` | `90` | Threshold warning server log percent |
+| `WARNING-STORAGE-PERCENT` | `90` | Threshold warning storage percent |
+| `CRITICAL-SERVERLOG-PERCENT` | `95` | Threshold critical server log percent |
+| `CRITICAL-STORAGE-PERCENT` | `95` | Threshold critical storage percent |
+| `WARNING-STORAGE-BACKUP` |  | Threshold warning storage backup |
+| `WARNING-SERVERLOG-LIMIT` |  | Threshold warning server log limit |
+| `WARNING-SERVERLOG-USAGE` |  | Threshold warning serve log usage |
+| `WARNING-STORAGE-LIMIT` |  | Threshold warning storage limit |
+| `WARNING-STORAGE-USED` |  | Threshold warning storage used |
+| `CRITICAL-STORAGE-BACKUP` |  | Threshold critical storage backup |
+| `CRITICAL-SERVERLOG-LIMIT` |  | Threshold critical server log limit |
+| `CRITICAL-SERVERLOG-USAGE` |  | Threshold critical serve log usage |
+| `CRITICAL-STORAGE-LIMIT` |  | Threshold critical storage limit |
+| `CRITICAL-STORAGE-USED` |  | Threshold critical storage used |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.storage.backup.usage.bytes` | `B` | Backup Storage used | `WARNING-STORAGE-BACKUP`, `CRITICAL-STORAGE-BACKUP` |
+| `azmysql.storage.serverlog.limit.bytes` | `B` | Server Log storage limit | `WARNING-SERVERLOG-LIMIT`, `CRITICAL-SERVERLOG-LIMIT` |
+| `azmysql.storage.serverlog.usage.percentage` | `%` | Server Log storage percent | `WARNING-SERVERLOG-PERCENT`, `CRITICAL-SERVERLOG-PERCENT` |
+| `azmysql.storage.serverlog.usage.bytes` | `B` | Server Log storage used | `WARNING-SERVERLOG-USAGE`, `CRITICAL-SERVERLOG-USAGE` |
+| `azmysql.storage.limit.bytes` | `B` | Storage Limit | `WARNING-STORAGE-LIMIT`, `CRITICAL-STORAGE-LIMIT` |
+| `azmysql.storage.usage.percentage` | `%` | Storage Percent | `WARNING-STORAGE-PERCENT`, `CRITICAL-STORAGE-PERCENT` |
+| `azmysql.storage.usage.bytes` | `B` | Storage Used | `WARNING-STORAGE-USED`, `CRITICAL-STORAGE-USED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Traffic {#cloud-azure-database-mysql-traffic}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azmysql.traffic.out.bytes` | `B` | Network Out | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `azmysql.traffic.in.bytes` | `B` | Network In | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

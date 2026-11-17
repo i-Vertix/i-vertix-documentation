@@ -1,0 +1,198 @@
+---
+title: "Azure Public IP"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-Public-IP.png";
+
+<PluginPackHeader name="Azure Public IP" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure Public IP monitoring
+protocols used: HTTPS (Rest API)
+
+- Status
+- DDoS traffic
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-Public-IP
+
+*Azure Public IP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CUSTOMMODE` | `api` | *(not used by the check command)* |
+| `TIMEOUT` | `50` | Set timeout in seconds (default: 10). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [DDOS Traffic](#cloud-azure-network-publicip-ddos-traffic) | `cloud-azure-network-publicip-ddos-traffic` |
+| [Status](#cloud-azure-network-publicip-status) | `cloud-azure-network-publicip-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### DDOS Traffic {#cloud-azure-network-publicip-ddos-traffic}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERVAL` | `PT5M` | Set interval of the metric query (can be : C&lt;PT1M>, C&lt;PT5M>, C&lt;PT15M>, C&lt;PT30M>, C&lt;PT1H>, C&lt;PT6H>, C&lt;PT12H>, C&lt;PT24H>). |
+| `TIMEFRAME` | `900` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `WARNING-DDOS-DROPPED` |  | Threshold warning DDOS dropped |
+| `WARNING-DDOS-FORWARDED` |  | Threshold warning DDOS forwarded |
+| `WARNING-DDOS-INBOUND` |  | Threshold warning DDOS inbound |
+| `WARNING-DDOS-DROPPED-PACKETS` |  | Threshold warning DDOS dropped packets |
+| `WARNING-DDOS-FORWARDED-PACKETS` |  | Threshold warning DDOS forwarded packets |
+| `WARNING-DDOS-INBOUND-PACKETS` |  | Threshold warning DDOS inbound packets |
+| `CRITICAL-DDOS-DROPPED` |  | Threshold critical DDOS dropped |
+| `CRITICAL-DDOS-FORWARDED` |  | Threshold critical DDOS forwarded |
+| `CRITICAL-DDOS-INBOUND` |  | Threshold critical DDOS inbound |
+| `CRITICAL-DDOS-DROPPED-PACKETS` |  | Threshold critical DDOS dropped packets |
+| `CRITICAL-DDOS-FORWARDED-PACKETS` |  | Threshold critical DDOS forwarded packets |
+| `CRITICAL-DDOS-INBOUND-PACKETS` |  | Threshold critical DDOS inbound packets |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-PACKET-COUNT` |  | Threshold warning packet count |
+| `WARNING-SYN-COUNT` |  | Threshold warning SYN count |
+| `WARNING-BYTE-COUNT` |  | Threshold warning byte count |
+| `CRITICAL-PACKET-COUNT` |  | Threshold critical packet count |
+| `CRITICAL-SYN-COUNT` |  | Threshold critical SYN count |
+| `CRITICAL-BYTE-COUNT` |  | Threshold critical BYTE count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `publicip.ddos.dropped.bytes` | `B` | Inbound bytes dropped DDoS | `WARNING-DDOS-DROPPED`, `CRITICAL-DDOS-DROPPED` |
+| `publicip.ddos.forwarded.bytes` | `B` | Inbound bytes forwarded DDoS | `WARNING-DDOS-FORWARDED`, `CRITICAL-DDOS-FORWARDED` |
+| `publicip.ddos.inbound.bytes` | `B` | Inbound bytes DDoS | `WARNING-DDOS-INBOUND`, `CRITICAL-DDOS-INBOUND` |
+| `publicip.ddos.packets.countpersecond` | `/s` | Inbound packets dropped DDoS | `WARNING-DDOS-DROPPED-PACKETS`, `CRITICAL-DDOS-DROPPED-PACKETS` |
+| `publicip.ddos.forwarded.countpersecond` | `/s` | Inbound packets forwarded DDoS | `WARNING-DDOS-FORWARDED-PACKETS`, `CRITICAL-DDOS-FORWARDED-PACKETS` |
+| `publicip.ddos.inbound.packets.countpersecond` | `/s` | Inbound packets DDoS | `WARNING-DDOS-INBOUND-PACKETS`, `CRITICAL-DDOS-INBOUND-PACKETS` |
+| `publicip.packets.count` |  | Packet Count | `WARNING-PACKET-COUNT`, `CRITICAL-PACKET-COUNT` |
+| `publicip.bytes` | `B` | Byte Count | `WARNING-BYTE-COUNT`, `CRITICAL-BYTE-COUNT` |
+| `publicip.syn.count` | `B` | Syn Count | `WARNING-SYN-COUNT`, `CRITICAL-SYN-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Status {#cloud-azure-network-publicip-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DDOS-STATUS` |  | Warning threshold for DDOS attack status (Default: '') |
+| `WARNING-PROVISIONING-STATE` |  | Warning threshold for provisioning state (Default: '') |
+| `CRITICAL-DDOS-STATUS` |  | Critical threshold for DDOS attack status (Default: '%\{status\} =~ /DDOS Attack ongoing/i') |
+| `CRITICAL-PROVISIONING-STATE` |  | Critical threshold for provisioning state (Default: '%\{state\} =~ /Failed/i') |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260500 - 20260529</summary>
+
+- Plugin pack `Azure Public IP`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260500 - 20260529`.

@@ -1,0 +1,216 @@
+---
+title: "AWS Direct Connect"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-Direct-Connect.png";
+
+<PluginPackHeader name="AWS Direct Connect" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS Direct Connect monitoring
+Protocols used: Rest API
+
+- Connections
+- Virtual interfaces
+
+### Discovery modes
+
+- Connections
+- Virtual interfaces
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-Direct-Connect
+
+*AWS Direct-Connect* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` |  | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#cloud-aws-directconnect-connections) | `cloud-aws-directconnect-connections` |
+| [Virtual interaces](#cloud-aws-directconnect-virtual-interfaces) | `cloud-aws-directconnect-virtual-interfaces` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {#cloud-aws-directconnect-connections}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} !~ /available/'` | Set critical threshold for status. You can use the following variables: %\{state\}, %\{bandwidth\}, %\{connectionName\} |
+| `FILTER-CONNECTION-ID` |  | Filter connection id (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. You can use the following variables: %\{state\}, %\{bandwidth\}, %\{connectionName\} |
+| `WARNING-CONNECTION-EGRESS` |  | Warning threshold connection egress (b/s) |
+| `WARNING-CONNECTION-INGRESS` |  | Warning threshold connection ingress (b/s) |
+| `WARNING-CONNECTION-PACKETS-EGRESS` |  | Warning threshold packets egress (packets/s) |
+| `WARNING-CONNECTION-PACKETS-INGRESS` |  | Warning threshold packets ingress (packets/s) |
+| `CRITICAL-CONNECTION-EGRESS` |  | Critical threshold connection egress (b/s) |
+| `CRITICAL-CONNECTION-INGRESS` |  | Critical threshold connection ingress (b/s) |
+| `CRITICAL-CONNECTION-PACKETS-EGRESS` |  | Critical threshold packets egress (packets/s) |
+| `CRITICAL-CONNECTION-PACKETS-INGRESS` |  | Critical threshold packets ingress (packets/s) |
+| `WARNING-CONNECTION-LIGHT-LEVEL-OUTBOUND` |  | Warning threshold outbound light connection (bps) |
+| `WARNING-CONNECTION-LIGHT-LEVEL-INBOUND` |  | Warning threshold inbound light connection (bps) |
+| `CRITICAL-CONNECTION-LIGHT-LEVEL-OUTBOUND` |  | Critical threshold outbound light connection (bps) |
+| `CRITICAL-CONNECTION-LIGHT-LEVEL-INBOUND` |  | Critical threshold inbound light connection (bps) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.egress.bitspersecond` | `bps` | outbound data | `WARNING-CONNECTION-EGRESS`, `CRITICAL-CONNECTION-EGRESS` |
+| `connection.ingress.bitspersecond` | `bps` | inbound data | `WARNING-CONNECTION-INGRESS`, `CRITICAL-CONNECTION-INGRESS` |
+| `connection.egress.packets.persecond` | `/s` | outbound packets data | `WARNING-CONNECTION-PACKETS-EGRESS`, `CRITICAL-CONNECTION-PACKETS-EGRESS` |
+| `connection.ingress.packets.persecond` | `/s` | inbound packet data | `WARNING-CONNECTION-PACKETS-INGRESS`, `CRITICAL-CONNECTION-PACKETS-INGRESS` |
+| `connection.outbound.light.level.dbm` | `dBm` | outbound light level |  |
+| `connection.inbound.light.level.dbm` | `dBm` | inbound light level |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virtual interaces {#cloud-aws-directconnect-virtual-interfaces}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} !~ /available/'` | Set critical threshold for status. You can use the following variables: %\{state\}, %\{vlan\}, %\{type\}, %\{virtualInterfaceId\} |
+| `FILTER-CONNECTION-ID` |  | Filter connection id (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. You can use the following variables: %\{state\}, %\{vlan\}, %\{type\}, %\{virtualInterfaceId\} |
+| `FILTER-VIRTUAL-INTERFACE-ID` |  | Filter virtual interface id (can be a regexp) |
+| `WARNING-VIRTUAL-INTERFACE-EGRESS` |  | Warning threshold virtual interface egress (b/s) |
+| `WARNING-VIRTUAL-INTERFACE-INGRESS` |  | Warning threshold virtual interface ingress (b/s) |
+| `WARNING-VIRTUAL-INTERFACE-PACKETS-EGRESS` |  | Warning threshold virtual interface packet egress (b/s) |
+| `WARNING-VIRTUAL-INTERFACE-PACKETS-INGRESS` |  | Warning threshold virtual interface packet ingress (b/s) |
+| `CRITICAL-VIRTUAL-INTERFACE-EGRESS` |  | Critical threshold virtual interface egress (b/s) |
+| `CRITICAL-VIRTUAL-INTERFACE-INGRESS` |  | Critical threshold virtual interface ingress (b/s) |
+| `CRITICAL-VIRTUAL-INTERFACE-PACKETS-EGRESS` |  | Critical threshold virtual interface packet egress (b/s) |
+| `CRITICAL-VIRTUAL-INTERFACE-PACKETS-INGRESS` |  | Critical threshold virtual interface packet ingress (b/s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `virtual_interface.egress.bitspersecond` | `bps` | outbound data | `WARNING-VIRTUAL-INTERFACE-EGRESS`, `CRITICAL-VIRTUAL-INTERFACE-EGRESS` |
+| `virtual_interface.ingress.bitspersecond` | `bps` | inbound data | `WARNING-VIRTUAL-INTERFACE-INGRESS`, `CRITICAL-VIRTUAL-INTERFACE-INGRESS` |
+| `virtual_interface.egress.packets.persecond` | `/s` | outbound packets data | `WARNING-VIRTUAL-INTERFACE-PACKETS-EGRESS`, `CRITICAL-VIRTUAL-INTERFACE-PACKETS-EGRESS` |
+| `virtual_interface.ingress.packets.persecond` | `/s` | inbound packet data | `WARNING-VIRTUAL-INTERFACE-PACKETS-INGRESS`, `CRITICAL-VIRTUAL-INTERFACE-PACKETS-INGRESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Host template `AWS-Direct-Connect`
+    - Renamed from `Amazon-AWS-Direct-Connect`
+    - Alias changed from `Amazon AWS Direct-Connect` to `AWS Direct-Connect`
+- Command `cloud-aws-directconnect-connections`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+    - Macro `VOLUME-ID` removed
+- Command `cloud-aws-directconnect-virtual-interfaces`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+    - Macro `VOLUME-ID` removed
+
+</details>

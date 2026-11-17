@@ -1,0 +1,669 @@
+---
+title: "AWS ElastiCache"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-ElastiCache.png";
+
+<PluginPackHeader name="AWS ElastiCache" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS ElastiCache monitoring
+Protocols used: Rest API
+
+- Connections
+- CPU usage
+- Evictions
+- Items
+- Memcached commands
+- Memcached requests
+- Memcached usage
+- Network
+- Redis commands
+- Redis requests
+- Redis usage
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-ElastiCache-Memcached
+
+*AWS ElastiCache Memcached* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REGION` | `eu-west-1` | Set the region name (required). |
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `CLUSTER-NAME` |  | Set the cluster name (required) (can be defined multiple times). |
+| `NODE-ID` |  | Set the node ID (optional). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Memcached commands](#cloud-aws-elasticache-commands-memcached) | `cloud-aws-elasticache-commands-memcached` |
+| [Connections](#cloud-aws-elasticache-connections) | `cloud-aws-elasticache-connections` |
+| [CPU](#cloud-aws-elasticache-cpu) | `cloud-aws-elasticache-cpu` |
+| [Evictions](#cloud-aws-elasticache-evictions) | `cloud-aws-elasticache-evictions` |
+| [Items](#cloud-aws-elasticache-items) | `cloud-aws-elasticache-items` |
+| [Network](#cloud-aws-elasticache-network) | `cloud-aws-elasticache-network` |
+| [Replication](#cloud-aws-elasticache-replication) | `cloud-aws-elasticache-replication` |
+| [Memcached requests](#cloud-aws-elasticache-requests-memcached) | `cloud-aws-elasticache-requests-memcached` |
+| [Memcached usage](#cloud-aws-elasticache-usage-memcached) | `cloud-aws-elasticache-usage-memcached` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis commands](#cloud-aws-elasticache-commands-redis) | `cloud-aws-elasticache-commands-redis` |
+| [Redis requests](#cloud-aws-elasticache-requests-redis) | `cloud-aws-elasticache-requests-redis` |
+| [Redis usage](#cloud-aws-elasticache-usage-redis) | `cloud-aws-elasticache-usage-redis` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### AWS-ElastiCache-Redis
+
+*AWS ElastiCache Redis* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REGION` | `eu-west-1` | Set the region name (required). |
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `CLUSTER-NAME` |  | Set the cluster name (required) (can be defined multiple times). |
+| `NODE-ID` |  | Set the node ID (optional). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis commands](#cloud-aws-elasticache-commands-redis) | `cloud-aws-elasticache-commands-redis` |
+| [Connections](#cloud-aws-elasticache-connections) | `cloud-aws-elasticache-connections` |
+| [CPU](#cloud-aws-elasticache-cpu) | `cloud-aws-elasticache-cpu` |
+| [Evictions](#cloud-aws-elasticache-evictions) | `cloud-aws-elasticache-evictions` |
+| [Items](#cloud-aws-elasticache-items) | `cloud-aws-elasticache-items` |
+| [Network](#cloud-aws-elasticache-network) | `cloud-aws-elasticache-network` |
+| [Replication](#cloud-aws-elasticache-replication) | `cloud-aws-elasticache-replication` |
+| [Redis requests](#cloud-aws-elasticache-requests-redis) | `cloud-aws-elasticache-requests-redis` |
+| [Redis usage](#cloud-aws-elasticache-usage-redis) | `cloud-aws-elasticache-usage-redis` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Memcached commands](#cloud-aws-elasticache-commands-memcached) | `cloud-aws-elasticache-commands-memcached` |
+| [Memcached requests](#cloud-aws-elasticache-requests-memcached) | `cloud-aws-elasticache-requests-memcached` |
+| [Memcached usage](#cloud-aws-elasticache-usage-memcached) | `cloud-aws-elasticache-usage-memcached` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memcached commands {#cloud-aws-elasticache-commands-memcached}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'CmdFlush', 'CmdGet', 'CmdSet', 'CmdConfigGet', 'CmdConfigSet', 'CmdTouch') (Can be a regexp) |
+| `WARNING-CMDFLUSH-AVERAGE` |  | Threshold warning cmdflush average |
+| `WARNING-CMDGET-AVERAGE` |  | Threshold warning cmdget average |
+| `WARNING-CMDSET-AVERAGE` |  | Threshold warning cmdset average |
+| `WARNING-CMDCONFIGGET-AVERAGE` |  | Threshold warning cmdconfigget average |
+| `WARNING-CMDCONFIGSET-AVERAGE` |  | Threshold warning cmdconfigset average |
+| `WARNING-CMDTOUCH-AVERAGE` |  | Threshold warning cmdtouch average |
+| `CRITICAL-CMDFLUSH-AVERAGE` |  | Threshold critical cmdflush average |
+| `CRITICAL-CMDGET-AVERAGE` |  | Threshold critical cmdget average |
+| `CRITICAL-CMDSET-AVERAGE` |  | Threshold critical cmdset average |
+| `CRITICAL-CMDCONFIGGET-AVERAGE` |  | Threshold critical cmdconfigget average |
+| `CRITICAL-CMDCONFIGSET-AVERAGE` |  | Threshold critical cmdconfigset average |
+| `CRITICAL-CMDTOUCH-AVERAGE` |  | Threshold critical cmdtouch average |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {#cloud-aws-elasticache-connections}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'CurrConnections', 'NewConnections') (Can be a regexp) |
+| `WARNING-CURRCONNECTIONS-AVERAGE` |  | Threshold warning current connections |
+| `WARNING-NEWCONNECTIONS-AVERAGE` |  | Threshold warning new connections |
+| `CRITICAL-CURRCONNECTIONS-AVERAGE` |  | Threshold critical current connections |
+| `CRITICAL-NEWCONNECTIONS-AVERAGE` |  | Threshold critical new connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `newconnections_minimum` | `conn` | NewConnections:  connections |  |
+| `newconnections_maximum` | `conn` | NewConnections:  connections |  |
+| `newconnections_average` | `conn` | NewConnections:  connections | `WARNING-NEWCONNECTIONS-AVERAGE`, `CRITICAL-NEWCONNECTIONS-AVERAGE` |
+| `newconnections_sum` | `conn` | NewConnections:  connections |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {#cloud-aws-elasticache-cpu}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPUUTILIZATION-AVERAGE` | `80` | Threshold warning average CPU utilization |
+| `CRITICAL-CPUUTILIZATION-AVERAGE` | `90` | Threshold critical average CPU utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpuutilization_minimum` | `%` | CPUUtilization:  %% |  |
+| `cpuutilization_maximum` | `%` | CPUUtilization:  %% |  |
+| `cpuutilization_average` | `%` | CPUUtilization:  %% | `WARNING-CPUUTILIZATION-AVERAGE`, `CRITICAL-CPUUTILIZATION-AVERAGE` |
+| `cpuutilization_sum` | `%` | CPUUtilization:  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Evictions {#cloud-aws-elasticache-evictions}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'Evictions', 'Reclaimed') (Can be a regexp) |
+| `WARNING-EVICTIONS-AVERAGE` |  | Threshold warning evictions average |
+| `WARNING-RECLAIMED-AVERAGE` |  | Threshold warning reclaimed average |
+| `CRITICAL-EVICTIONS-AVERAGE` |  | Threshold critical evictions average |
+| `CRITICAL-RECLAIMED-AVERAGE` |  | Threshold critical reclaimed average |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Items {#cloud-aws-elasticache-items}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'CurrItems', 'NewItems') (Can be a regexp) |
+| `WARNING-CURRITEMS-AVERAGE` |  | Threshold warning current items average |
+| `WARNING-NEWITEMS-AVERAGE` |  | Threshold warning new items average |
+| `CRITICAL-CURRITEMS-AVERAGE` |  | Threshold critical current items average |
+| `CRITICAL-NEWITEMS-AVERAGE` |  | Threshold critical new items average |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `newitems_minimum` | `items` | NewItems:  items |  |
+| `newitems_maximum` | `items` | NewItems:  items |  |
+| `newitems_average` | `items` | NewItems:  items | `WARNING-NEWITEMS-AVERAGE`, `CRITICAL-NEWITEMS-AVERAGE` |
+| `newitems_sum` | `items` | NewItems:  items |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Network {#cloud-aws-elasticache-network}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'NetworkBytesIn', 'NetworkBytesOut') (Can be a regexp) |
+| `WARNING-NETWORKBYTESIN-AVERAGE` |  | Threshold warning network average bytes in |
+| `WARNING-NETWORKBYTESOUT-AVERAGE` |  | Threshold warning network average bytes out |
+| `CRITICAL-NETWORKBYTESIN-AVERAGE` |  | Threshold critical network average bytes in |
+| `CRITICAL-NETWORKBYTESOUT-AVERAGE` |  | Threshold critical network average bytes out |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Replication {#cloud-aws-elasticache-replication}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-REPLICATIONLAG-AVERAGE` | `2` | Threshold warning average replication lag |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'ReplicationBytes', 'ReplicationLag') (Can be a regexp) |
+| `WARNING-REPLICATIONBYTES-AVERAGE` |  | Threshold warning average replication bytes |
+| `CRITICAL-REPLICATIONBYTES-AVERAGE` |  | Threshold critical average replication bytes |
+| `CRITICAL-REPLICATIONLAG-AVERAGE` |  | Threshold critical average replication lag |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `replicationlag_minimum` | `s` | ReplicationLag:  s |  |
+| `replicationlag_maximum` | `s` | ReplicationLag:  s |  |
+| `replicationlag_average` | `s` | ReplicationLag:  s | `WARNING-REPLICATIONLAG-AVERAGE`, `CRITICAL-REPLICATIONLAG-AVERAGE` |
+| `replicationlag_sum` | `s` | ReplicationLag:  s |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memcached requests {#cloud-aws-elasticache-requests-memcached}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'CasHits', 'CasMisses', 'DecrHits', 'DecrMisses', 'DeleteHits', 'DeleteMisses', 'GetHits', 'GetMisses', 'IncrHits', 'IncrMisses', 'TouchHits', 'TouchMisses') (Can be a regexp) |
+| `WARNING-CASHITS-AVERAGE` |  | Threshold warning cache hits average |
+| `WARNING-DECRHITS-AVERAGE` |  | Threshold warning decrement hits average |
+| `WARNING-DECRMISSES-AVERAGE` |  | Threshold warning decrement misses average |
+| `WARNING-DELETEHITS-AVERAGE` |  | Threshold warning delete hits average |
+| `WARNING-DELETEMISSES-AVERAGE` |  | Threshold warning delete misses average |
+| `WARNING-GETHITS-AVERAGE` |  | Threshold warning get hits average |
+| `WARNING-GETMISSES-AVERAGE` |  | Threshold warning get misses average |
+| `WARNING-INCRHITS-AVERAGE` |  | Threshold warning increment hits average |
+| `WARNING-INCRMISSES-AVERAGE` |  | Threshold warning increment misses average |
+| `WARNING-TOUCHHITS-AVERAGE` |  | Threshold warning touch hits average |
+| `WARNING-TOUCHMISSES-AVERAGE` |  | Threshold warning touch misses average |
+| `CRITICAL-CASHITS-AVERAGE` |  | Threshold critical cache hits average |
+| `CRITICAL-DECRHITS-AVERAGE` |  | Threshold critical decrement hits average |
+| `CRITICAL-DECRMISSES-AVERAGE` |  | Threshold critical decrement misses average |
+| `CRITICAL-DELETEHITS-AVERAGE` |  | Threshold critical delete hits average |
+| `CRITICAL-DELETEMISSES-AVERAGE` |  | Threshold critical delete misses average |
+| `CRITICAL-GETHITS-AVERAGE` |  | Threshold critical get hits average |
+| `CRITICAL-GETMISSES-AVERAGE` |  | Threshold critical get misses average |
+| `CRITICAL-INCRHITS-AVERAGE` |  | Threshold critical increment hits average |
+| `CRITICAL-INCRMISSES-AVERAGE` |  | Threshold critical increment misses average |
+| `CRITICAL-TOUCHHITS-AVERAGE` |  | Threshold critical touch hits average |
+| `CRITICAL-TOUCHMISSES-AVERAGE` |  | Threshold critical touch misses average |
+| `WARNING-CASHMISSES-AVERAGE` |  | Threshold warning cache misses average |
+| `CRITICAL-CASHMISSES-AVERAGE` |  | Threshold critical cache misses average |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memcached usage {#cloud-aws-elasticache-usage-memcached}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BYTESUSEDFORCACHEITEMS-AVERAGE` |  | Threshold warning average bytes used for cache items |
+| `CRITICAL-BYTESUSEDFORCACHEITEMS-AVERAGE` |  | Threshold critical average bytes used for cache items |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `bytesusedforcacheitems_minimum` | `B` | BytesUsedForCacheItems |  |
+| `bytesusedforcacheitems_maximum` | `B` | BytesUsedForCacheItems |  |
+| `bytesusedforcacheitems_average` | `B` | BytesUsedForCacheItems | `WARNING-BYTESUSEDFORCACHEITEMS-AVERAGE`, `CRITICAL-BYTESUSEDFORCACHEITEMS-AVERAGE` |
+| `bytesusedforcacheitems_sum` | `B` | BytesUsedForCacheItems |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis commands {#cloud-aws-elasticache-commands-redis}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'GetTypeCmds', 'HashBasedCmds', 'KeyBasedCmds', 'ListBasedCmds', 'SetBasedCmds', 'SetTypeCmds', 'SortedSetBasedCmds', 'StringBasedCmds', 'HyperLogLogBasedCmds') (Can be a regexp) |
+| `WARNING-GETTYPECMDS-AVERAGE` |  | Threshold warning gettypecmds average |
+| `WARNING-HASHBASEDCMDS-AVERAGE` |  | Threshold warning hashbasedcmds average |
+| `WARNING-KEYBASEDCMDS-AVERAGE` |  | Threshold warning keybasedcmds average |
+| `WARNING-LISTBASEDCMDS-AVERAGE` |  | Threshold warning listbasedcmds average |
+| `WARNING-SETBASEDCMDS-AVERAGE` |  | Threshold warning setbasedcmds average |
+| `WARNING-SETTYPECMDS-AVERAGE` |  | Threshold warning setypecmds average |
+| `WARNING-SORTEDSETBASEDCMDS-AVERAGE` |  | Threshold warning sortedsetbasedcmds average |
+| `WARNING-STRINGBASEDCMDS-AVERAGE` |  | Threshold warning stringbasedcmds average |
+| `WARNING-HYPERLOGLOGBASEDCMDS-AVERAGE` |  | Threshold warning hyperloglogbasedcmds average |
+| `CRITICAL-GETTYPECMDS-AVERAGE` |  | Threshold critical gettypecmds average |
+| `CRITICAL-HASHBASEDCMDS-AVERAGE` |  | Threshold critical hashbasedcmds average |
+| `CRITICAL-KEYBASEDCMDS-AVERAGE` |  | Threshold critical keybasedcmds average |
+| `CRITICAL-LISTBASEDCMDS-AVERAGE` |  | Threshold critical listbasedcmds average |
+| `CRITICAL-SETBASEDCMDS-AVERAGE` |  | Threshold critical setbasedcmds average |
+| `CRITICAL-SETTYPECMDS-AVERAGE` |  | Threshold critical setypecmds average |
+| `CRITICAL-SORTEDSETBASEDCMDS-AVERAGE` |  | Threshold critical sortedsetbasedcmds average |
+| `CRITICAL-STRINGBASEDCMDS-AVERAGE` |  | Threshold critical stringbasedcmds average |
+| `CRITICAL-HYPERLOGLOGBASEDCMDS-AVERAGE` |  | Threshold critical hyperloglogbasedcmds average |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis requests {#cloud-aws-elasticache-requests-redis}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'CacheHits', 'CacheMisses') (Can be a regexp) |
+| `WARNING-CACHEHITS-AVERAGE` |  | Threshold warning cache hits average |
+| `WARNING-CACHEMISSES-AVERAGE` |  | Threshold warning cache misses average |
+| `CRITICAL-CACHEHITS-AVERAGE` |  | Threshold critical cache hits average |
+| `CRITICAL-CACHEMISSES-AVERAGE` |  | Threshold critical cache misses average |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis usage {#cloud-aws-elasticache-usage-redis}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BYTESUSEDFORCACHE-AVERAGE` |  | Threshold warning average bytes used for cache |
+| `CRITICAL-BYTESUSEDFORCACHE-AVERAGE` |  | Threshold critical average bytes used for cache |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `bytesusedforcache_minimum` | `B` | BytesUsedForCache |  |
+| `bytesusedforcache_maximum` | `B` | BytesUsedForCache |  |
+| `bytesusedforcache_average` | `B` | BytesUsedForCache | `WARNING-BYTESUSEDFORCACHE-AVERAGE`, `CRITICAL-BYTESUSEDFORCACHE-AVERAGE` |
+| `bytesusedforcache_sum` | `B` | BytesUsedForCache |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Host template `AWS-ElastiCache-Memcached`
+    - Host template added
+- Host template `AWS-ElastiCache-Redis`
+    - Renamed from `AWS-ElastiCache`
+    - Alias changed from `AWS ElastiCache` to `AWS ElastiCache Redis`
+    - Service template `cloud-aws-elasticache-commands-memcached` unlinked
+    - Service template `cloud-aws-elasticache-requests-memcached` unlinked
+    - Service template `cloud-aws-elasticache-usage-memcached` unlinked
+- Command `cloud-aws-elasticache-commands-memcached`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-elasticache-commands-redis`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-elasticache-connections`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-elasticache-cpu`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+- Command `cloud-aws-elasticache-evictions`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+- Command `cloud-aws-elasticache-items`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+- Command `cloud-aws-elasticache-network`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+- Command `cloud-aws-elasticache-replication`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+- Command `cloud-aws-elasticache-requests-memcached`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `TIMEOUT` removed
+- Command `cloud-aws-elasticache-requests-redis`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+- Command `cloud-aws-elasticache-usage-memcached`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+- Command `cloud-aws-elasticache-usage-redis`
+    - Option `--custommode` changed from `--custommode=awscli` to `--custommode=paws`
+    - Option `--timeout=$_HOSTTIMEOUT$` removed
+    - Macro `NODE-ID` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `AWS ElastiCache`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230810 - 20230920`.

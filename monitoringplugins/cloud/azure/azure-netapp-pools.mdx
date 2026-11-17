@@ -1,0 +1,261 @@
+---
+title: "Azure NetApp Pools"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-NetApp.png";
+
+<PluginPackHeader name="Azure NetApp Pools" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure NetApp pool monitoring
+protocols used: HTTPS (Rest API)
+
+- Pool volume
+- Pool capacity
+
+### Discovery modes
+
+- Volumes
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-NetApp-Pool
+
+*Azure Netapp Pool* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `ACCOUNT-NAME` |  | Filter resource by NetApp account name. |
+| `POOL-NAME` |  | Filter resource by NetApp account pool name. *(not used by the check command)* |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `TIMEOUT` |  | Set timeout in seconds (default: 10). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Pool Capacity](#cloud-azure-netapp-pool-capacity) | `cloud-azure-netapp-pool-capacity` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Pool Volume](#cloud-azure-netapp-pool-volume) | `cloud-azure-netapp-pool-volume` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pool Capacity {#cloud-azure-netapp-pool-capacity}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERVAL` | `PT1H` | Set interval of the metric query (can be : C&lt;PT1M>, C&lt;PT5M>, C&lt;PT15M>, C&lt;PT30M>, C&lt;PT1H>, C&lt;PT6H>, C&lt;PT12H>, C&lt;PT24H>). |
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-METRIC` |  | Filter metrics (can be: 'allocated-size', 'allocated-used', 'consumed-size', 'snapshot-size', 'allocated-throughput', 'provisioned-throughput'). Can be a regexp. |
+| `WARNING-ALLOCATED-SIZE` |  | Warning thresholds. |
+| `CRIITICAL-ALLOCATED-SIZE` |  | Critical thresholds. |
+| `WARNING-ALLOCATED-USED` |  | Warning thresholds. |
+| `CRIITICAL-ALLOCATED-USED` |  | Critical thresholds. |
+| `WARNING-CONSUMED-SIZE` |  | Warning thresholds. |
+| `CRIITICAL-CONSUMED-SIZE` |  | Critical thresholds. |
+| `WARNING-SNAPSHOT-SIZE` |  | Warning thresholds. |
+| `CRIITICAL-SNAPSHOT-SIZE` |  | Critical thresholds. |
+| `WARNING-ALLOCATED-THROUGHPUT` |  | Warning thresholds. |
+| `CRIITICAL-ALLOCATED-THROUGHPUT` |  | Critical thresholds. |
+| `WARNING-PROVISIONED-THROUGHPUT` |  | Warning thresholds. |
+| `CRIITICAL-PROVISIONED-THROUGHPUT` |  | Critical thresholds. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `aznetappaccount.pool.allocated.size.bytes` | `B` | Provisioned pool size |  |
+| `aznetappaccount.pool.allocated.used.size.bytes` | `B` | Pool allocated used size |  |
+| `aznetappaccount.pool.consumed.size.bytes` | `B` | Pool consumed size |  |
+| `aznetappaccount.pool.snapshot.size.bytes` | `B` | Pool snapshot size |  |
+| `aznetappaccount.pool.allocated.throughput.bytespersecond` | `B/s` | Pool allocated throughput |  |
+| `aznetappaccount.pool.provisioned.throughput.bytespersecond` | `B/s` | Pool provisioned throughput |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pool Volume {#cloud-azure-netapp-pool-volume}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERVAL` | `PT1H` | Set interval of the metric query (can be : C&lt;PT1M>, C&lt;PT5M>, C&lt;PT15M>, C&lt;PT30M>, C&lt;PT1H>, C&lt;PT6H>, C&lt;PT12H>, C&lt;PT24H>). |
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `FILTER-METRIC` |  | Filter metrics (can be: 'allocated-size', 'logical-used-size', 'snaphot-size', 'consumed-size', 'inodes-used-percentage', 'read-iops', 'write-iops', 'total-iops', 'read-throughput', 'write-throughput', 'total-throughput', 'read-latency', 'write-latency', 'throughput-limit-reached'). Ccan be a regexp. |
+| `WARNING-ALLOCATED-SIZE` |  | Warning thresholds. |
+| `CRIITICAL-ALLOCATED-SIZE` |  | Critical thresholds. |
+| `WARNING-CONSUMED-SIZE` |  | Warning thresholds. |
+| `CRIITICAL-CONSUMED-SIZE` |  | Critical thresholds. |
+| `WARNING-SNAPSHOT-SIZE` |  | Warning thresholds. |
+| `CRIITICAL-SNAPSHOT-SIZE` |  | Critical thresholds. |
+| `WARNING-LOGICAL-USED-SIZE` |  | Warning thresholds. |
+| `CRIITICAL-LOGICAL-USED-SIZE` |  | Critical thresholds. |
+| `WARNING-INODES-USED-PRECENT` |  | Warning thresholds. |
+| `CRIITICAL-INODES-USED-PRECENT` |  | Critical thresholds. |
+| `WARNING-READ-IOPS` |  | Warning thresholds. |
+| `CRIITICAL-READ-IOPS` |  | Critical thresholds. |
+| `WARNING-WRITE-IOPS` |  | Warning thresholds. |
+| `CRIITICAL-WRITE-IOPS` |  | Critical thresholds. |
+| `WARNING-TOTAL-IOPS` |  | Warning thresholds. |
+| `CRIITICAL-TOTAL-IOPS` |  | Critical thresholds. |
+| `WARNING-READ-THROUGHPUT` |  | Warning thresholds. |
+| `CRIITICAL-READ-THROUGHPUT` |  | Critical thresholds. |
+| `WARNING-WRITE-THROUGHPUT` |  | Warning thresholds. |
+| `CRIITICAL-WRITE-THROUGHPUT` |  | Critical thresholds. |
+| `WARNING-TOTAL-THROUGHPUT` |  | Warning thresholds. |
+| `CRIITICAL-TOTAL-THROUGHPUT` |  | Critical thresholds. |
+| `WARNING-READ-LATENCY` |  | Warning thresholds. |
+| `CRIITICAL-READ-LATENCY` |  | Critical thresholds. |
+| `WARNING-WRITE-LATENCY` |  | Warning thresholds. |
+| `CRIITICAL-WRITE-LATENCY` |  | Critical thresholds. |
+| `WARNING-THROUGHPUT-LIMIT-REACHED` |  | Warning thresholds. |
+| `CRIITICAL-THROUGHPUT-LIMIT-REACHED` |  | Critical thresholds. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `aznetappaccount.volume.allocated.size.bytes` | `B` | Volume allocated size | `WARNING-ALLOCATED-SIZE`, `CRIITICAL-ALLOCATED-SIZE` |
+| `aznetappaccount.volume.logical.used.size.bytes` | `B` | Volume logical size | `WARNING-LOGICAL-USED-SIZE`, `CRIITICAL-LOGICAL-USED-SIZE` |
+| `aznetappaccount.volume.snapshot.size.bytes` | `B` | Volume snapshot size | `WARNING-SNAPSHOT-SIZE`, `CRIITICAL-SNAPSHOT-SIZE` |
+| `aznetappaccount.volume.consumed.size.percentage` | `%` | Volume consumed size | `WARNING-CONSUMED-SIZE`, `CRIITICAL-CONSUMED-SIZE` |
+| `aznetappaccount.volume.inodes.used.percentage` | `%` | Volume Inodes size | `WARNING-INODES-USED-PRECENT`, `CRIITICAL-INODES-USED-PRECENT` |
+| `aznetappaccount.volume.read.iops` | `iops` | Volume read iops | `WARNING-READ-IOPS`, `CRIITICAL-READ-IOPS` |
+| `aznetappaccount.volume.write.iops` | `iops` | Volume write iops | `WARNING-WRITE-IOPS`, `CRIITICAL-WRITE-IOPS` |
+| `aznetappaccount.volume.total.iops` | `iops` | Volume total iops | `WARNING-TOTAL-IOPS`, `CRIITICAL-TOTAL-IOPS` |
+| `aznetappaccount.volume.throughput.read.bytespersecond` | `B/s` | Volume read throughput | `WARNING-READ-THROUGHPUT`, `CRIITICAL-READ-THROUGHPUT` |
+| `aznetappaccount.volume.throughput.write.bytespersecond` | `B/s` | Volume write throughput | `WARNING-WRITE-THROUGHPUT`, `CRIITICAL-WRITE-THROUGHPUT` |
+| `aznetappaccount.volume.throughput.total.bytespersecond` | `B/s` | Volume total throughput | `WARNING-TOTAL-THROUGHPUT`, `CRIITICAL-TOTAL-THROUGHPUT` |
+| `aznetappaccount.volume.latency.read.milliseconds` | `ms` | Average Read Latency | `WARNING-READ-LATENCY`, `CRIITICAL-READ-LATENCY` |
+| `aznetappaccount.volume.latency.write.milliseconds` | `ms` | Average Write Latency | `WARNING-WRITE-LATENCY`, `CRIITICAL-WRITE-LATENCY` |
+| `aznetappaccount.volume.throughput.limit` |  | Throughout Limit Reached | `WARNING-THROUGHPUT-LIMIT-REACHED`, `CRIITICAL-THROUGHPUT-LIMIT-REACHED` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800-new-discovery - 20260911</summary>
+
+- Command `cloud-azure-netapp-pool-list-volumes`
+    - Command removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260500 - 20260529</summary>
+
+- Plugin pack `Azure NetApp Pools`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260500 - 20260529`.

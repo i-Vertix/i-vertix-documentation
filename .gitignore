@@ -40,3 +40,6 @@ images/*
 settings.json
 launch.json
 *.bak
+
+# Python
+__pycache__/

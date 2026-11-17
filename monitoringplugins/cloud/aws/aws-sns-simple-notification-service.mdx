@@ -1,0 +1,155 @@
+---
+title: "AWS SNS (Simple Notification Service)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-SNS.png";
+
+<PluginPackHeader name="AWS SNS (Simple Notification Service)" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS SNS (Simple Notification Service) monitoring
+Protocols used: Rest API
+
+- Notifications
+
+### Service disocveries
+- Topics
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-SNS
+
+*AWS SNS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-SESSION-TOKEN` | *(password)* | Set AWS session token. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+| `TIMEOUT` |  | Timeout in seconds for connection. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Notifications](#cloud-aws-sns-notifications) | `cloud-aws-sns-notifications` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Notifications {#cloud-aws-sns-notifications}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TOPIC-NAME` |  | Filter on a specific SNS topic (Can be multiple, one instance per --topic-name option). Example: --topic-name="my_sns_topic_1" --topic-name="my_sns_topic_2" |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'NumberOfMessagesPublished', 'NumberOfNotificationsDelivered', 'NumberOfNotificationsFailed', 'NumberOfNotificationsFilteredOut'). (Can be a regexp) |
+| `WARNING-NOTIFICATIONS-PUBLISHED` |  | Threshold warning notifications published |
+| `WARNING-NOTIFICATIONS-DELIVERED` |  | Threshold warning notifications delivered |
+| `WARNING-NOTIFICATIONS-FAILED` |  | Threshold warning notifications failed |
+| `WARNING-NOTIFICATIONS-FILTERED` |  | Threshold warning notifications filtered |
+| `CRITICAL-NOTIFICATIONS-PUBLISHED` |  | Threshold critical notifications published |
+| `CRITICAL-NOTIFICATIONS-DELIVERED` |  | Threshold critical notifications delivered |
+| `CRITICAL-NOTIFICATIONS-FAILED` |  | Threshold critical notifications failed |
+| `CRITICAL-NOTIFICATIONS-FILTERED` |  | Threshold critical notifications filtered |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sns.notifications.published.count` |  | number of notifications published | `WARNING-NOTIFICATIONS-PUBLISHED`, `CRITICAL-NOTIFICATIONS-PUBLISHED` |
+| `sns.notifications.delivered.count` |  | number of notifications delivered | `WARNING-NOTIFICATIONS-DELIVERED`, `CRITICAL-NOTIFICATIONS-DELIVERED` |
+| `sns.notifications.failed.count` |  | number of notifications failed | `WARNING-NOTIFICATIONS-FAILED`, `CRITICAL-NOTIFICATIONS-FAILED` |
+| `sns.notifications.filtered.count` |  | number of notifications filtered | `WARNING-NOTIFICATIONS-FILTERED`, `CRITICAL-NOTIFICATIONS-FILTERED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Plugin pack `AWS SNS (Simple Notification Service)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260700 - 20260818`.

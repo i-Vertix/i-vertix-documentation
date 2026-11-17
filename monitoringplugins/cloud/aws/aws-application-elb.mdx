@@ -1,0 +1,303 @@
+---
+title: "AWS Application ELB"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/AWS-application-ELB.png";
+
+<PluginPackHeader name="AWS Application ELB" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### AWS Application ELB monitoring
+protocols used: Rest API
+
+- Connections
+- HTTP codes
+- Target availability
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). Before you can monitor the resources, you need an
+AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
+
+See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Host Templates
+
+### AWS-Application-ELB
+
+*AWS Application ELB* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AWS-SECRET-KEY` | *(password)* | Set AWS secret key. |
+| `AWS-ACCESS-KEY` |  | Set AWS access key. |
+| `REGION` |  | Set the region name (required). |
+| `AVAILABILITY-ZONE` |  | Add Availability Zone dimension. |
+| `NAME` |  | Set the instance name (required) (can be defined multiple times). |
+| `TARGET-GROUP` |  | Add target group dimension. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the AWS credentials and the region).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#cloud-aws-elb-application-connections) | `cloud-aws-elb-application-connections` |
+| [HTTP codes](#cloud-aws-elb-application-http-codes) | `cloud-aws-elb-application-http-codes` |
+| [Targets health](#cloud-aws-elb-application-targets-health) | `cloud-aws-elb-application-targets-health` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {#cloud-aws-elb-application-connections}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEFRAME` | `600` | Set timeframe in seconds. |
+| `PERIOD` | `60` | Set period in seconds. |
+| `STATISTIC` | `average` | Set CloudWatch statistics (can be: 'minimum', 'maximum', 'average', 'sum'). |
+| `FILTER-METRIC` |  | Filter metrics (Can be: ActiveConnectionCount', 'NewConnectionCount', 'RejectedConnectionCount', 'TargetConnectionErrorCount') (Can be a regexp) |
+| `WARNING-CONNECTION-ACTIVE` |  | Warning threshold active connections |
+| `WARNING-CONNECTION-NEW` |  | Warning threshold new connections |
+| `WARNING-CONNECTION-REJECTED` |  | Warning threshold rejected connections |
+| `WARNING-TARGET-CONNECTION-ERROR` |  | Warning threshold target connection errors |
+| `CRITICAL-CONNECTION-ACTIVE` |  | Critical threshold active connections |
+| `CRITICAL-CONNECTION-NEW` |  | Critical threshold new connections |
+| `CRITICAL-CONNECTION-REJECTED` |  | Critical threshold rejected connections |
+| `CRITICAL-TARGET-CONNECTION-ERROR` |  | Critical threshold target connection errors |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.connection.active.count` |  | Active Connection | `WARNING-CONNECTION-ACTIVE`, `CRITICAL-CONNECTION-ACTIVE` |
+| `elb.connection.new.count` |  | New Connection | `WARNING-CONNECTION-NEW`, `CRITICAL-CONNECTION-NEW` |
+| `elb.rejected.new.count` |  | Rejected Connection | `WARNING-CONNECTION-REJECTED`, `CRITICAL-CONNECTION-REJECTED` |
+| `elb.target.connection.error.count` |  | Target Connection Error | `WARNING-TARGET-CONNECTION-ERROR`, `CRITICAL-TARGET-CONNECTION-ERROR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP codes {#cloud-aws-elb-application-http-codes}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERIOD` | `60` | Set period in seconds. |
+| `TIMEFRAME` | `600` | Set timeframe in seconds. |
+| `STATISTIC` | `sum` | Set CloudWatch statistics (can be: 'minimum', 'maximum', 'average', 'sum'). |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'HTTPCode_Target_2XX_Count', 'HTTPCode_Target_3XX_Count', 'HTTPCode_Target_4XX_Count', 'HTTPCode_Target_5XX_Count', 'HTTPCode_ELB_3XX_Count', 'HTTPCode_ELB_4XX_Count', 'HTTP_Redirect_Count') (Can be a regexp) |
+| `WARNING-HTTPCODE-TARGET-2XX` |  | Threshold warning HTTP code target 2xx |
+| `WARNING-HTTPCODE-TARGET-3XX` |  | Threshold warning HTTP code target 3xx |
+| `WARNING-HTTPCODE-TARGET-4XX` |  | Threshold warning HTTP code target 4xx |
+| `WARNING-HTTPCODE-TARGET-5XX` |  | Threshold warning HTTP code target 5xx |
+| `WARNING-HTTPCODE-ELB-3XX` |  | Threshold warning HTTP code ELB 3xx |
+| `WARNING-HTTPCODE-ELB-4XX` |  | Threshold warning HTTP code ELB 4xx |
+| `WARNING-HTTP-REDIRECT` |  | Threshold warning HTTP redirect |
+| `CRITICAL-HTTPCODE-TARGET-2XX` |  | Threshold critical HTTP code target 2xx |
+| `CRITICAL-HTTPCODE-TARGET-3XX` |  | Threshold critical HTTP code target 3xx |
+| `CRITICAL-HTTPCODE-TARGET-4XX` |  | Threshold critical HTTP code target 4xx |
+| `CRITICAL-HTTPCODE-TARGET-5XX` |  | Threshold critical HTTP code target 5xx |
+| `CRITICAL-HTTPCODE-ELB-3XX` |  | Threshold critical HTTP code ELB 3xx |
+| `CRITICAL-HTTPCODE-ELB-4XX` |  | Threshold critical HTTP code ELB 4xx |
+| `CRITICAL-HTTP-REDIRECT` |  | Threshold critical HTTP redirect |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.httpcode.target.2xx.count` |  | Target HTTP 2XXs | `WARNING-HTTPCODE-TARGET-2XX`, `CRITICAL-HTTPCODE-TARGET-2XX` |
+| `elb.httpcode.target.3xx.count` |  | Target HTTP 3XXs | `WARNING-HTTPCODE-TARGET-3XX`, `CRITICAL-HTTPCODE-TARGET-3XX` |
+| `elb.httpcode.target.4xx.count` |  | Target HTTP 4XXs | `WARNING-HTTPCODE-TARGET-4XX`, `CRITICAL-HTTPCODE-TARGET-4XX` |
+| `elb.httpcode.target.5xx.count` |  | Target HTTP 5XXs | `WARNING-HTTPCODE-TARGET-5XX`, `CRITICAL-HTTPCODE-TARGET-5XX` |
+| `elb.httpcode.elb.3xx.count` |  | ELB HTTP 3XXs | `WARNING-HTTPCODE-ELB-3XX`, `CRITICAL-HTTPCODE-ELB-3XX` |
+| `elb.httpcode.elb.4xx.count` |  | ELB HTTP 4XXs | `WARNING-HTTPCODE-ELB-4XX`, `CRITICAL-HTTPCODE-ELB-4XX` |
+| `elb.http.redirect.count` |  | HTTP Redirect | `WARNING-HTTP-REDIRECT`, `CRITICAL-HTTP-REDIRECT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Targets health {#cloud-aws-elb-application-targets-health}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UNHEALTHYHOSTCOUNT` | `0` | Threshold warning unhealthy host count |
+| `PERIOD` | `60` | Set period in seconds. |
+| `TIMEFRAME` | `600` | Set timeframe in seconds. |
+| `STATISTIC` | `average` | Set CloudWatch statistics (can be: 'minimum', 'maximum', 'average', 'sum'). |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'HealthyHostCount', 'UnHealthyHostCount') (Can be a regexp) |
+| `WARNING-HEALTHYHOSTCOUNT` |  | Threshold warning healthy host count |
+| `CRITICAL-HEALTHYHOSTCOUNT` |  | Threshold critical healthy host count |
+| `CRITICAL-UNHEALTHYHOSTCOUNT` |  | Threshold critical unhealthy host count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `elb.healthyhostcount.count` |  | Healthy Hosts | `WARNING-HEALTHYHOSTCOUNT`, `CRITICAL-HEALTHYHOSTCOUNT` |
+| `elb.unhealthyhostcount.count` |  | Unhealthy Hosts | `WARNING-UNHEALTHYHOSTCOUNT`, `CRITICAL-UNHEALTHYHOSTCOUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231114 - 20231230</summary>
+
+- Service template [`cloud-aws-elb-application-connections`](#cloud-aws-elb-application-connections)
+    - Macro `TIMEFRAME` added (default `600`)
+    - Macro `PERIOD` added (default `60`)
+    - Macro `STATISTIC` added (default `average`)
+- Service template [`cloud-aws-elb-application-http-codes`](#cloud-aws-elb-application-http-codes)
+    - Macro `PERIOD` added (default `60`)
+    - Macro `TIMEFRAME` added (default `600`)
+    - Macro `STATISTIC` added (default `sum`)
+- Service template [`cloud-aws-elb-application-targets-health`](#cloud-aws-elb-application-targets-health)
+    - Macro `PERIOD` added (default `60`)
+    - Macro `TIMEFRAME` added (default `600`)
+    - Macro `STATISTIC` added (default `average`)
+- Command `cloud-aws-elb-application-connections`
+    - Option `--period` changed from `--period=$_HOSTPERIOD$` to `--period=$_SERVICEPERIOD$`
+    - Option `--timeframe` changed from `--timeframe=$_HOSTTIMEFRAME$` to `--timeframe=$_SERVICETIMEFRAME$`
+    - Option `--statistic` changed from `--statistic=$_HOSTSTATISTIC$` to `--statistic=$_SERVICESTATISTIC$`
+    - Option `--target-group` changed from `--target-group=$_HOSTARGET-GROUP$` to `--target-group=$_HOSTTARGET-GROUP$`
+    - Option `--namespace=$_HOSTNAMESPACE$` removed
+    - Macro `NAMESPACE` removed
+- Command `cloud-aws-elb-application-http-codes`
+    - Option `--period` changed from `--period=$_HOSTPERIOD$` to `--period=$_SERVICEPERIOD$`
+    - Option `--timeframe` changed from `--timeframe=$_HOSTTIMEFRAME$` to `--timeframe=$_SERVICETIMEFRAME$`
+    - Option `--statistic` changed from `--statistic=$_HOSTSTATISTIC$` to `--statistic=$_SERVICESTATISTIC$`
+    - Option `--target-group` changed from `--target-group=$_HOSTARGET-GROUP$` to `--target-group=$_HOSTTARGET-GROUP$`
+    - Option `--namespace=$_HOSTNAMESPACE$` removed
+    - Macro `AVAILABILITY-ZONE` added
+    - Macro `NAME` added
+    - Macro `PERIOD` added
+    - Macro `STATISTIC` added
+    - Macro `TARGET-GROUP` added
+    - Macro `TIMEFRAME` added
+    - Macro `TIMEOUT` removed
+    - Macro `CUSTOMMODE` removed
+    - Macro `INSTANCE-NAME` removed
+- Command `cloud-aws-elb-application-targets-health`
+    - Option `--period` changed from `--period=$_HOSTPERIOD$` to `--period=$_SERVICEPERIOD$`
+    - Option `--timeframe` changed from `--timeframe=$_HOSTTIMEFRAME$` to `--timeframe=$_SERVICETIMEFRAME$`
+    - Option `--statistic` changed from `--statistic=$_HOSTSTATISTIC$` to `--statistic=$_SERVICESTATISTIC$`
+    - Option `--target-group` changed from `--target-group=$_HOSTARGET-GROUP$` to `--target-group=$_HOSTTARGET-GROUP$`
+    - Option `--namespace=$_HOSTNAMESPACE$` removed
+    - Macro `AVAILABILITY-ZONE` added
+    - Macro `NAME` added
+    - Macro `PERIOD` added
+    - Macro `STATISTIC` added
+    - Macro `TARGET-GROUP` added
+    - Macro `TIMEFRAME` added
+    - Macro `CUSTOMMODE` removed
+    - Macro `TIMEOUT` removed
+    - Macro `INSTANCE-NAME` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231114 - 20231207</summary>
+
+- Plugin pack `AWS Application ELB`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231114 - 20231207`.

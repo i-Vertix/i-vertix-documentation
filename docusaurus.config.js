@@ -46,6 +46,10 @@ const config = {
     },
 
     customFields: {
+        // latest published Plugin Store release, written by scripts/pluginpacks/update-release.mjs
+        pluginStoreRelease: (({ plugin_version, config_version }) => ({ plugin_version, config_version }))(
+            require('./scripts/pluginpacks/packs.json').release
+        ),
         products: [
             {
                 id: 'monitoring',
@@ -54,6 +58,14 @@ const config = {
                 icon: '/img/logo-monitoring-1000.png',
                 Image: '/img/logo-monitoring-1000.png',
                 to: '/monitoring/intro',
+            },
+            {
+                id: 'monitoringplugins',
+                label: 'IT Monitoring Plugin Packs',
+                description: 'Collection of plugin packs to monitor your hardware, network, cloud services, databases and applications with i-Vertix IT Monitoring',
+                icon: '/img/logo-monitoring-1000.png',
+                Image: '/img/logo-monitoring-1000.png',
+                to: '/monitoringplugins/monitoring-plugins/plugin-store',
             },
             // {
             //     id: 'log-management',
@@ -73,6 +85,8 @@ const config = {
             },
         ]
     },
+
+    clientModules: [require.resolve('./src/clientModules/openDetailsOnHash.js')],
 
     presets: [
         [
@@ -106,12 +120,16 @@ const config = {
             ({
                 hashed: true,
                 indexBlog: false,
-                docsRouteBasePath: ["monitoring", "asset-management"],
-                docsDir: ["monitoring_versioned_docs", "asset-management_versioned_docs"],
+                docsRouteBasePath: ["monitoring", "monitoringplugins", "asset-management"],
+                docsDir: ["monitoring_versioned_docs", "monitoringplugins", "asset-management_versioned_docs"],
                 searchContextByPaths: [
                     {
                         label: "Monitoring",
                         path: "monitoring"
+                    },
+                    {
+                        label: "Monitoring Plugin Packs",
+                        path: "monitoringplugins"
                     },
                     {
                         label: "IT Asset Mangement",
@@ -157,6 +175,16 @@ const config = {
                     //     badge: true
                     // }
                 }
+            },
+        ],
+        [
+            '@docusaurus/plugin-content-docs',
+            {
+                // not bound to a monitoring version -> unversioned (current version only)
+                id: 'monitoringplugins',
+                path: 'monitoringplugins',
+                routeBasePath: 'monitoringplugins',
+                sidebarPath: require.resolve('./monitoringplugins_sidebars/sidebars.json'),
             },
         ],
         [
@@ -247,6 +275,13 @@ const config = {
                                 id: "ivertix-monitoring",
                                 docsPluginId: "monitoring"
                             },
+                            {
+                                label: "IT Monitoring Plugin Packs",
+                                description: "Collection of plugins to monitor your hardware and applications",
+                                icon: "/img/logo-monitoring-100.png",
+                                id: "ivertix-monitoringplugins",
+                                docsPluginId: "monitoringplugins"
+                            },
                             // {
                             //     label: "Monitoring Plugin Packs",
                             //     description: "Collection of plugins to monitor your hardware and applications",
@@ -325,6 +360,10 @@ const config = {
                             {
                                 label: 'Monitoring',
                                 to: '/monitoring/intro',
+                            },
+                            {
+                                label: 'Monitoring Plugin Packs',
+                                to: '/monitoringplugins/monitoring-plugins/plugin-store',
                             },
                             // {
                             //     label: 'Plugin Packs',
