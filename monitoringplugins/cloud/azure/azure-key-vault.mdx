@@ -1,0 +1,266 @@
+---
+title: "Azure Key Vault"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-Key-Vault.png";
+
+<PluginPackHeader name="Azure Key Vault" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure-Key-Vault monitoring
+
+protocols used: HTTPS (Rest API)
+
+* Service API latency
+* Service API requests
+* Vault availability
+* Vault capacity
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-Key-Vault
+
+*Azure Key Vault* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (11)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Azure login endpoint URL. |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Azure management endpoint URL. |
+| `TIMEFRAME` | `900` | Time frame in seconds over which the Azure metrics are retrieved. |
+| `TIMEOUT` | `10` | Timeout in seconds for the Azure API requests. |
+| `CLIENT-SECRET` | *(password)* | Client secret of the Azure application used for authentication. |
+| `SUBSCRIPTION` |  | Azure subscription ID. |
+| `TENANT` |  | Azure tenant ID. |
+| `CLIENT-ID` |  | Client ID of the Azure application used for authentication. |
+| `RESOURCE` |  | Name or full ID of the Azure key vault. |
+| `RESOURCE-GROUP` |  | Resource group of the key vault. Not needed when the resource is given as a full ID. |
+| `EXTRA-OPTS` |  | Additional plugin options for all services of this host. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Service API latency](#cloud-azure-security-keyvault-service-api-latency) | `cloud-azure-security-keyvault-service-api-latency` |
+| [Service API requests](#cloud-azure-security-keyvault-service-api-requests) | `cloud-azure-security-keyvault-service-api-requests` |
+| [Vault availability](#cloud-azure-security-keyvault-vault-availability) | `cloud-azure-security-keyvault-vault-availability` |
+| [Vault capacity](#cloud-azure-security-keyvault-vault-capacity) | `cloud-azure-security-keyvault-vault-capacity` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service API latency {#cloud-azure-security-keyvault-service-api-latency}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Aggregation of the Azure metric values. Can be 'minimum', 'maximum', 'average', 'total' or 'count'. |
+| `FILTER-METRIC` | `^serviceapilatency$` | Regular expression to select the metrics to check: 'serviceapihit', 'serviceapilatency' or 'serviceapiresult'. Leave empty to check all of them. |
+| `EXTRAOPTS` |  | Additional plugin options for this service. |
+| `WARNING-SERVICEAPI-HITS` |  | Warning threshold for the number of service API requests to the vault. |
+| `WARNING-SERVICEAPI-LATENCY` |  | Warning threshold for the latency of the service API requests in milliseconds. |
+| `WARNING-SERVICEAPI-RESULTS` |  | Warning threshold for the number of service API results of the vault. |
+| `CRITICAL-SERVICEAPI-HITS` |  | Critical threshold for the number of service API requests to the vault. |
+| `CRITICAL-SERVICEAPI-LATENCY` |  | Critical threshold for the latency of the service API requests in milliseconds. |
+| `CRITICAL-SERVICEAPI-RESULTS` |  | Critical threshold for the number of service API results of the vault. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `keyvault.serviceapi.hits.count` |  | Total Service Api Hits | `WARNING-SERVICEAPI-HITS`, `CRITICAL-SERVICEAPI-HITS` |
+| `keyvault.serviceapi.latency.milliseconds` | `ms` | Overall Service Api Latency | `WARNING-SERVICEAPI-LATENCY`, `CRITICAL-SERVICEAPI-LATENCY` |
+| `keyvault.serviceapi.results.count` |  | Total Service Api Results | `WARNING-SERVICEAPI-RESULTS`, `CRITICAL-SERVICEAPI-RESULTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service API requests {#cloud-azure-security-keyvault-service-api-requests}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Aggregation of the Azure metric values. Can be 'minimum', 'maximum', 'average', 'total' or 'count'. |
+| `FILTER-METRIC` | `^serviceapi(hit\|result)$` | Regular expression to select the metrics to check: 'serviceapihit', 'serviceapilatency' or 'serviceapiresult'. Leave empty to check all of them. |
+| `EXTRAOPTS` |  | Additional plugin options for this service. |
+| `WARNING-SERVICEAPI-HITS` |  | Warning threshold for the number of service API requests to the vault. |
+| `WARNING-SERVICEAPI-LATENCY` |  | Warning threshold for the latency of the service API requests in milliseconds. |
+| `WARNING-SERVICEAPI-RESULTS` |  | Warning threshold for the number of service API results of the vault. |
+| `CRITICAL-SERVICEAPI-HITS` |  | Critical threshold for the number of service API requests to the vault. |
+| `CRITICAL-SERVICEAPI-LATENCY` |  | Critical threshold for the latency of the service API requests in milliseconds. |
+| `CRITICAL-SERVICEAPI-RESULTS` |  | Critical threshold for the number of service API results of the vault. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `keyvault.serviceapi.hits.count` |  | Total Service Api Hits | `WARNING-SERVICEAPI-HITS`, `CRITICAL-SERVICEAPI-HITS` |
+| `keyvault.serviceapi.latency.milliseconds` | `ms` | Overall Service Api Latency | `WARNING-SERVICEAPI-LATENCY`, `CRITICAL-SERVICEAPI-LATENCY` |
+| `keyvault.serviceapi.results.count` |  | Total Service Api Results | `WARNING-SERVICEAPI-RESULTS`, `CRITICAL-SERVICEAPI-RESULTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Vault availability {#cloud-azure-security-keyvault-vault-availability}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Aggregation of the Azure metric values. Can be 'minimum', 'maximum', 'average', 'total' or 'count'. |
+| `EXTRAOPTS` |  | Additional plugin options for this service. |
+| `WARNING-VAULT-AVAILABILITY-PERCENTAGE` |  | Warning threshold for the availability of the vault requests in percent. Use a range like '99:' to warn below 99 percent. |
+| `CRITICAL-VAULT-AVAILABILITY-PERCENTAGE` |  | Critical threshold for the availability of the vault requests in percent. Use a range like '90:' to alert below 90 percent. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `keyvault.vault.availability.percentage` | `%` | Overall Vault Availability | `WARNING-VAULT-AVAILABILITY-PERCENTAGE`, `CRITICAL-VAULT-AVAILABILITY-PERCENTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Vault capacity {#cloud-azure-security-keyvault-vault-capacity}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Aggregation of the Azure metric values. Can be 'minimum', 'maximum', 'average', 'total' or 'count'. |
+| `WARNING-VAULT-SATURATION-PERCENTAGE` | `80` | Warning threshold for the used vault capacity in percent. |
+| `CRITICAL-VAULT-SATURATION-PERCENTAGE` | `90` | Critical threshold for the used vault capacity in percent. |
+| `EXTRAOPTS` |  | Additional plugin options for this service. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `keyvault.vault.saturation.percentage` | `%` | Overall Vault Saturation | `WARNING-VAULT-SATURATION-PERCENTAGE`, `CRITICAL-VAULT-SATURATION-PERCENTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20261000 - 20261116</summary>
+
+- Plugin pack `Azure Key Vault`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20261000 - 20261116`.

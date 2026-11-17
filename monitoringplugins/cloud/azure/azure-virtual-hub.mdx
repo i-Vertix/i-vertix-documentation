@@ -1,0 +1,205 @@
+---
+title: "Azure Virtual Hub"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-Virtual-WAN.png";
+
+<PluginPackHeader name="Azure Virtual Hub" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure Virtual Hub monitoring
+protocols used: HTTPS (Rest API)
+
+- Health
+- Hub traffic
+- Hub status
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-Virtual-Hub
+
+*Azure Virtual Hub* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `TIMEOUT` |  | Set timeout in seconds (default: 10). |
+| `RESOURCE-NAME` |  | Filter Virtual Hub by name (can be a regexp). |
+| `RESOURCE` |  | Set resource name or ID (required). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hub health](#cloud-azure-network-virtualhub-health) | `cloud-azure-network-virtualhub-health` |
+| [Hub status](#cloud-azure-network-virtualhub-status) | `cloud-azure-network-virtualhub-status` |
+| [Hub traffic](#cloud-azure-network-virtualhub-traffic) | `cloud-azure-network-virtualhub-traffic` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hub health {#cloud-azure-network-virtualhub-health}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} =~ /^Unavailable$/'` | Define the conditions to match for the status to be CRITICAL (default: C&lt;'%\{status\} =~ /^Unavailable$/'>). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{summary\}>. |
+| `UNKNOWN-STATUS` | `'%{status} =~ /^Unknown$/'` | Define the conditions to match for the status to be UNKNOWN (default: C&lt;'%\{status\} =~ /^Unknown$/'>). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{summary\}>. |
+| `OK-STATUS` | `'%{status} =~ /^Available$/'` | Define the conditions to match for the status to be OK (default: C&lt;'%\{status\} =~ /^Available$/''>). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{summary\}>. |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING (default: ''). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{summary\}>. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hub status {#cloud-azure-network-virtualhub-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{provisioning_state} ne "Succeeded" \|\| %{routing_state} ne "Provisioned"'` | Define the conditions to match for the status to be CRITICAL (default: C&lt;'%\{provisioning_state\} ne "Succeeded" \|\| %\{routing_state\} ne "Provisioned"'>).  You can use the following variables: %\{provisioning_state\}, %\{routing_state\}, %\{display\} |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN (default: ''). You can use the following variables: %\{provisioning_state\}, %\{routing_state\}>, %\{display\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING (default: ''). You can use the following variables: %\{provisioning_state\}, %\{routing_state\}>, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hub traffic {#cloud-azure-network-virtualhub-traffic}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UNITS-CONSUMED-MAXIMUM` |  | Warning thresholds |
+| `WARNING-SPOKE-VM-UTILIZATION-MAXIMUM` |  | Warning thresholds |
+| `WARNING-DATA-PROCESSED-TOTAL` |  | Warning thresholds |
+| `WARNING-ADVERTISED-TO-PEER-MAXIMUM` |  | Warning thresholds |
+| `CRITICAL-UNITS-CONSUMED-MAXIMUM` |  | Critical thresholds |
+| `CRITICAL-SPOKE-VM-UTILIZATION-MAXIMUM` |  | Critical thresholds |
+| `CRITICAL-DATA-PROCESSED-TOTAL` |  | Critical thresholds |
+| `CRITICAL-ADVERTISED-TO-PEER-MAXIMUM` |  | Critical thresholds |
+| `WARNING-LEARNED-FROM-PEER-MAXIMUM` |  | Warning thresholds |
+| `CRITICAL-LEARNED-FROM-PEER-MAXIMUM` |  | Critical thresholds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azvirtualhub.infrastructure.units.consumed.count` |  | Units consumed |  |
+| `azvirtualhub.spoke.vm.utilization.percentage` | `%` | Spoke VM Utilization |  |
+| `azvirtualhub.data.processed.bytes` | `B` | Data processed |  |
+| `azvirtualhub.route.learned.from.peer.count` |  | Count Of Routes Learned From Peer |  |
+| `azvirtualhub.route.advertised.to.peer.count` |  | Count Of Routes Advertised To Peer |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260500 - 20260529</summary>
+
+- Plugin pack `Azure Virtual Hub`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260500 - 20260529`.

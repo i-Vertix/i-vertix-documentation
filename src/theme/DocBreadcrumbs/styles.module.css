@@ -1,0 +1,40 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.row > nav {
+    margin-bottom: 0;
+}
+
+.release {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--ifm-color-primary);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    color: var(--ifm-color-primary);
+}
+
+.release:hover {
+    text-decoration: none;
+    color: var(--ifm-color-primary-darker);
+    border-color: var(--ifm-color-primary-darker);
+}
+
+.releaseLabel {
+    color: var(--ifm-color-emphasis-700);
+}
+
+.releaseVersion {
+    font-weight: 600;
+}

@@ -1,0 +1,147 @@
+{
+    "release": {
+        "id": 157,
+        "plugin_version": "20261000",
+        "config_version": "20261116",
+        "status": "published"
+    },
+    "plugins": {
+        "repo": "../centreon-plugins",
+        "base": "origin/develop",
+        "overlays": [
+            {
+                "ref": "origin/cloud-azure-netapp",
+                "paths": [
+                    "src/cloud/azure/netapp"
+                ]
+            },
+            {
+                "ref": "origin/cloud-azure-network-virtualhub",
+                "paths": [
+                    "src/cloud/azure/network/virtualhub"
+                ]
+            },
+            {
+                "ref": "origin/cloud-azure-network-virtualnetwork",
+                "paths": [
+                    "src/cloud/azure/network/virtualnetwork"
+                ]
+            },
+            {
+                "ref": "origin/cloud-azure-network-publicip",
+                "paths": [
+                    "src/cloud/azure/network/publicip"
+                ]
+            }
+        ]
+    },
+    "technologies": {
+        "azure": {
+            "match": "^Azure ",
+            "prerequisites": "prerequisites/azure.md",
+            "host_macro_hint": "e.g. the Azure credentials and the resource to monitor"
+        }
+    },
+    "packs": {
+        "147": {
+            "name": "Azure Virtual Machine",
+            "page": "cloud/azure/azure-virtual-machine.mdx",
+            "technology": "azure"
+        },
+        "245": {
+            "name": "Azure Express Route",
+            "page": "cloud/azure/azure-express-route.mdx",
+            "technology": "azure"
+        },
+        "254": {
+            "name": "Azure SQL database",
+            "page": "cloud/azure/azure-sql-database.mdx",
+            "technology": "azure"
+        },
+        "258": {
+            "name": "Azure MySQL",
+            "page": "cloud/azure/azure-mysql.mdx",
+            "technology": "azure"
+        },
+        "259": {
+            "name": "Azure Storage Account",
+            "page": "cloud/azure/azure-storage-account.mdx",
+            "technology": "azure"
+        },
+        "261": {
+            "name": "Azure Automation",
+            "page": "cloud/azure/azure-automation.mdx",
+            "technology": "azure"
+        },
+        "336": {
+            "name": "Azure Web Application Firewall",
+            "page": "cloud/azure/azure-web-application-firewall.mdx",
+            "technology": "azure"
+        },
+        "337": {
+            "name": "Azure Loadbalancer",
+            "page": "cloud/azure/azure-loadbalancer.mdx",
+            "technology": "azure"
+        },
+        "347": {
+            "name": "Azure Monitor",
+            "page": "cloud/azure/azure-monitor.mdx",
+            "technology": "azure"
+        },
+        "378": {
+            "name": "Azure Application Gateway",
+            "page": "cloud/azure/azure-application-gateway.mdx",
+            "technology": "azure"
+        },
+        "379": {
+            "name": "Azure VPN Gateway",
+            "page": "cloud/azure/azure-vpn-gateway.mdx",
+            "technology": "azure"
+        },
+        "428": {
+            "name": "Azure NetApp Pools",
+            "page": "cloud/azure/azure-netapp-pools.mdx",
+            "technology": "azure"
+        },
+        "429": {
+            "name": "Azure Virtual Hub",
+            "page": "cloud/azure/azure-virtual-hub.mdx",
+            "technology": "azure"
+        },
+        "430": {
+            "name": "Azure Virtual Network",
+            "page": "cloud/azure/azure-virtual-network.mdx",
+            "technology": "azure"
+        },
+        "431": {
+            "name": "Azure Public IP",
+            "page": "cloud/azure/azure-public-ip.mdx",
+            "technology": "azure"
+        },
+        "449": {
+            "name": "Azure PostgreSQL",
+            "page": "database/azure-postgresql.mdx",
+            "technology": "azure"
+        },
+        "450": {
+            "name": "Azure Container Registry",
+            "page": "cloud/azure/azure-container-registry.mdx",
+            "technology": "azure"
+        },
+        "451": {
+            "name": "Azure API Management",
+            "page": "cloud/azure/azure-api-management.mdx",
+            "technology": "azure"
+        },
+        "452": {
+            "name": "Azure Key Vault",
+            "page": "cloud/azure/azure-key-vault.mdx",
+            "technology": "azure"
+        },
+        "453": {
+            "name": "Azure Kubernetes Service",
+            "page": "cloud/azure/azure-kubernetes-service.mdx",
+            "technology": "azure"
+        }
+    }
+}

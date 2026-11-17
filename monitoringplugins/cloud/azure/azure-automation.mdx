@@ -1,0 +1,145 @@
+---
+title: "Azure Automation"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Other/AzureAutomation.png";
+
+<PluginPackHeader name="Azure Automation" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure Automation monitoring
+Protocols used: Rest API (https)
+
+- Jobs
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-Automation
+
+*Azure Automation* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `TIMEFRAME` | `300` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Automation Jobs](#cloud-azure-management-automation-jobs) | `cloud-azure-management-automation-jobs` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Automation Jobs {#cloud-azure-management-automation-jobs}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `CRITICAL-JOBS-TOTAL` | `0:` | Critical threshold total jobs |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+| `RESOURCE` |  | Set resource name or id (Required) |
+| `RESOURCE-GROUP` |  | Set resource group (Required if resource's name is used) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `WARNING-UPDATE-DEPLOYMENT-MACHINE-RUNS` |  | Warning threshold update deployment machine runs |
+| `WARNING-UPDATE-DEPLOYMENT-RUNS` |  | Warning threshold update deployment runs |
+| `CRITICAL-UPDATE-DEPLOYMENT-MACHINE-RUNS` |  | Critical threshold update deployment machine runs |
+| `CRITICAL-UPDATE-DEPLOYMENT-RUNS` |  | Critical threshold update deployment runs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `automation.jobs.total.count` |  | Total Jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+| `automation.machineruns.total.count` |  | Total Update Deployment Machine Runs | `WARNING-UPDATE-DEPLOYMENT-MACHINE-RUNS`, `CRITICAL-UPDATE-DEPLOYMENT-MACHINE-RUNS` |
+| `automation.runs.total.count` |  | Total Update Deployment Runs | `WARNING-UPDATE-DEPLOYMENT-RUNS`, `CRITICAL-UPDATE-DEPLOYMENT-RUNS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

@@ -15,7 +15,7 @@ type Props = {
 export default function PluginPackHeader({name, image, category, metadata = []}: Props) {
     return (
         <header className={styles.header}>
-            <img className={styles.image} src={image} alt={name} width={80} height={80}/>
+            <img className={styles.image} src={image} alt={name} width={64} height={64}/>
             <div>
                 <h1 className={styles.title}>{name}</h1>
                 <div className={styles.badges}>

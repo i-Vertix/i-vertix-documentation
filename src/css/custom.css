@@ -298,6 +298,15 @@ html .footer {
     white-space: nowrap;
 }
 
+/* PLUGIN PACK MACRO + TEMPLATE TABLES: macro names, default values and template names without code border and background */
+
+.plugin-pack-macros td code,
+.plugin-pack-templates td code {
+    border: none;
+    background: none;
+    padding: 0;
+}
+
 /* PLUGIN PACK DETAILS: collapsible sections without the light-blue "alert--info" look of <details> */
 
 .alert.plugin-pack-details {

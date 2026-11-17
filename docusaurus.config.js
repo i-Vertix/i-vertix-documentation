@@ -41,6 +41,10 @@ const config = {
     },
 
     customFields: {
+        // latest published Plugin Store release, written by scripts/pluginpacks/update-release.mjs
+        pluginStoreRelease: (({ plugin_version, config_version }) => ({ plugin_version, config_version }))(
+            require('./scripts/pluginpacks/packs.json').release
+        ),
         products: [
             {
                 id: 'monitoring',

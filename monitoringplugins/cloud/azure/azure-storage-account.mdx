@@ -1,0 +1,1143 @@
+---
+title: "Azure Storage Account"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Brands/Azure.png";
+
+<PluginPackHeader name="Azure Storage Account" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure Storage Account monitoring
+protocols used: Rest API (https)
+
+- Account used capacity
+- Blob capacity
+- Blob container count
+- Blob count
+- File capacity
+- File count
+- File share count
+- File share quota
+- Health
+- Queue capacity
+- Queue count
+- Queue message count
+- Table capacity
+- Table count
+- Table entity count
+- Transactions availability
+- Transactions count
+- Transactions latency
+- Transactions throughput
+
+### Discovery modes
+
+- File shares
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-StorageAccount-Blob
+
+*Azure Storage account blob* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (13)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `RESOURCE-NAMESPACE` | `Microsoft.Storage` | Specify resource namespace. Can be: 'Microsoft.Storage' or 'Microsoft.ClassicStorage'. Default: 'Microsoft.Storage'. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Blob capacity](#cloud-azure-storage-storageaccount-blob-capacity) | `cloud-azure-storage-storageaccount-blob-capacity` |
+| [Blob container count](#cloud-azure-storage-storageaccount-blob-container-count) | `cloud-azure-storage-storageaccount-blob-container-count` |
+| [Blob count](#cloud-azure-storage-storageaccount-blob-count) | `cloud-azure-storage-storageaccount-blob-count` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Account Resources used capacity](#cloud-azure-storage-storageaccount-account-used-capacity) | `cloud-azure-storage-storageaccount-account-used-capacity` |
+| [File capacity](#cloud-azure-storage-storageaccount-file-capacity) | `cloud-azure-storage-storageaccount-file-capacity` |
+| [File count](#cloud-azure-storage-storageaccount-file-count) | `cloud-azure-storage-storageaccount-file-count` |
+| [File share count](#cloud-azure-storage-storageaccount-file-share-count) | `cloud-azure-storage-storageaccount-file-share-count` |
+| [Health](#cloud-azure-storage-storageaccount-health) | `cloud-azure-storage-storageaccount-health` |
+| [Queue capacity](#cloud-azure-storage-storageaccount-queue-capacity) | `cloud-azure-storage-storageaccount-queue-capacity` |
+| [Queue count](#cloud-azure-storage-storageaccount-queue-count) | `cloud-azure-storage-storageaccount-queue-count` |
+| [Queue message count](#cloud-azure-storage-storageaccount-queue-message-count) | `cloud-azure-storage-storageaccount-queue-message-count` |
+| [Table capacity](#cloud-azure-storage-storageaccount-table-capacity) | `cloud-azure-storage-storageaccount-table-capacity` |
+| [Table count](#cloud-azure-storage-storageaccount-table-count) | `cloud-azure-storage-storageaccount-table-count` |
+| [Table entity count](#cloud-azure-storage-storageaccount-table-entity-count) | `cloud-azure-storage-storageaccount-table-entity-count` |
+| [Transactions availability](#cloud-azure-storage-storageaccount-transactions-availability) | `cloud-azure-storage-storageaccount-transactions-availability` |
+| [Transactions count](#cloud-azure-storage-storageaccount-transactions-count) | `cloud-azure-storage-storageaccount-transactions-count` |
+| [Transactions latency](#cloud-azure-storage-storageaccount-transactions-latency) | `cloud-azure-storage-storageaccount-transactions-latency` |
+| [Transactions throughput](#cloud-azure-storage-storageaccount-transactions-throughput) | `cloud-azure-storage-storageaccount-transactions-throughput` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Azure-StorageAccount-File
+
+*Azure Storage account file* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `RESOURCE-NAMESPACE` | `Microsoft.Storage` | Specify resource namespace. Can be: 'Microsoft.Storage' or 'Microsoft.ClassicStorage'. Default: 'Microsoft.Storage'. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [File capacity](#cloud-azure-storage-storageaccount-file-capacity) | `cloud-azure-storage-storageaccount-file-capacity` |
+| [File count](#cloud-azure-storage-storageaccount-file-count) | `cloud-azure-storage-storageaccount-file-count` |
+| [File share count](#cloud-azure-storage-storageaccount-file-share-count) | `cloud-azure-storage-storageaccount-file-share-count` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Account Resources used capacity](#cloud-azure-storage-storageaccount-account-used-capacity) | `cloud-azure-storage-storageaccount-account-used-capacity` |
+| [Blob capacity](#cloud-azure-storage-storageaccount-blob-capacity) | `cloud-azure-storage-storageaccount-blob-capacity` |
+| [Blob container count](#cloud-azure-storage-storageaccount-blob-container-count) | `cloud-azure-storage-storageaccount-blob-container-count` |
+| [Blob count](#cloud-azure-storage-storageaccount-blob-count) | `cloud-azure-storage-storageaccount-blob-count` |
+| [Health](#cloud-azure-storage-storageaccount-health) | `cloud-azure-storage-storageaccount-health` |
+| [Queue capacity](#cloud-azure-storage-storageaccount-queue-capacity) | `cloud-azure-storage-storageaccount-queue-capacity` |
+| [Queue count](#cloud-azure-storage-storageaccount-queue-count) | `cloud-azure-storage-storageaccount-queue-count` |
+| [Queue message count](#cloud-azure-storage-storageaccount-queue-message-count) | `cloud-azure-storage-storageaccount-queue-message-count` |
+| [Table capacity](#cloud-azure-storage-storageaccount-table-capacity) | `cloud-azure-storage-storageaccount-table-capacity` |
+| [Table count](#cloud-azure-storage-storageaccount-table-count) | `cloud-azure-storage-storageaccount-table-count` |
+| [Table entity count](#cloud-azure-storage-storageaccount-table-entity-count) | `cloud-azure-storage-storageaccount-table-entity-count` |
+| [Transactions availability](#cloud-azure-storage-storageaccount-transactions-availability) | `cloud-azure-storage-storageaccount-transactions-availability` |
+| [Transactions count](#cloud-azure-storage-storageaccount-transactions-count) | `cloud-azure-storage-storageaccount-transactions-count` |
+| [Transactions latency](#cloud-azure-storage-storageaccount-transactions-latency) | `cloud-azure-storage-storageaccount-transactions-latency` |
+| [Transactions throughput](#cloud-azure-storage-storageaccount-transactions-throughput) | `cloud-azure-storage-storageaccount-transactions-throughput` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Azure-StorageAccount-General
+
+*Azure Storage account general* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (14)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `RESOURCE-NAMESPACE` | `Microsoft.Storage` | Specify resource namespace. Can be: 'Microsoft.Storage' or 'Microsoft.ClassicStorage'. Default: 'Microsoft.Storage'. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Account Resources used capacity](#cloud-azure-storage-storageaccount-account-used-capacity) | `cloud-azure-storage-storageaccount-account-used-capacity` |
+| [Health](#cloud-azure-storage-storageaccount-health) | `cloud-azure-storage-storageaccount-health` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Blob capacity](#cloud-azure-storage-storageaccount-blob-capacity) | `cloud-azure-storage-storageaccount-blob-capacity` |
+| [Blob container count](#cloud-azure-storage-storageaccount-blob-container-count) | `cloud-azure-storage-storageaccount-blob-container-count` |
+| [Blob count](#cloud-azure-storage-storageaccount-blob-count) | `cloud-azure-storage-storageaccount-blob-count` |
+| [File capacity](#cloud-azure-storage-storageaccount-file-capacity) | `cloud-azure-storage-storageaccount-file-capacity` |
+| [File count](#cloud-azure-storage-storageaccount-file-count) | `cloud-azure-storage-storageaccount-file-count` |
+| [File share count](#cloud-azure-storage-storageaccount-file-share-count) | `cloud-azure-storage-storageaccount-file-share-count` |
+| [Queue capacity](#cloud-azure-storage-storageaccount-queue-capacity) | `cloud-azure-storage-storageaccount-queue-capacity` |
+| [Queue count](#cloud-azure-storage-storageaccount-queue-count) | `cloud-azure-storage-storageaccount-queue-count` |
+| [Queue message count](#cloud-azure-storage-storageaccount-queue-message-count) | `cloud-azure-storage-storageaccount-queue-message-count` |
+| [Table capacity](#cloud-azure-storage-storageaccount-table-capacity) | `cloud-azure-storage-storageaccount-table-capacity` |
+| [Table count](#cloud-azure-storage-storageaccount-table-count) | `cloud-azure-storage-storageaccount-table-count` |
+| [Table entity count](#cloud-azure-storage-storageaccount-table-entity-count) | `cloud-azure-storage-storageaccount-table-entity-count` |
+| [Transactions availability](#cloud-azure-storage-storageaccount-transactions-availability) | `cloud-azure-storage-storageaccount-transactions-availability` |
+| [Transactions count](#cloud-azure-storage-storageaccount-transactions-count) | `cloud-azure-storage-storageaccount-transactions-count` |
+| [Transactions latency](#cloud-azure-storage-storageaccount-transactions-latency) | `cloud-azure-storage-storageaccount-transactions-latency` |
+| [Transactions throughput](#cloud-azure-storage-storageaccount-transactions-throughput) | `cloud-azure-storage-storageaccount-transactions-throughput` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Azure-StorageAccount-Queue
+
+*Azure Storage account queue* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `TIMEFRAME` | `300` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `RESOURCE-NAMESPACE` | `Microsoft.Storage` | Specify resource namespace. Can be: 'Microsoft.Storage' or 'Microsoft.ClassicStorage'. Default: 'Microsoft.Storage'. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Queue capacity](#cloud-azure-storage-storageaccount-queue-capacity) | `cloud-azure-storage-storageaccount-queue-capacity` |
+| [Queue count](#cloud-azure-storage-storageaccount-queue-count) | `cloud-azure-storage-storageaccount-queue-count` |
+| [Queue message count](#cloud-azure-storage-storageaccount-queue-message-count) | `cloud-azure-storage-storageaccount-queue-message-count` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Account Resources used capacity](#cloud-azure-storage-storageaccount-account-used-capacity) | `cloud-azure-storage-storageaccount-account-used-capacity` |
+| [Blob capacity](#cloud-azure-storage-storageaccount-blob-capacity) | `cloud-azure-storage-storageaccount-blob-capacity` |
+| [Blob container count](#cloud-azure-storage-storageaccount-blob-container-count) | `cloud-azure-storage-storageaccount-blob-container-count` |
+| [Blob count](#cloud-azure-storage-storageaccount-blob-count) | `cloud-azure-storage-storageaccount-blob-count` |
+| [File capacity](#cloud-azure-storage-storageaccount-file-capacity) | `cloud-azure-storage-storageaccount-file-capacity` |
+| [File count](#cloud-azure-storage-storageaccount-file-count) | `cloud-azure-storage-storageaccount-file-count` |
+| [File share count](#cloud-azure-storage-storageaccount-file-share-count) | `cloud-azure-storage-storageaccount-file-share-count` |
+| [Health](#cloud-azure-storage-storageaccount-health) | `cloud-azure-storage-storageaccount-health` |
+| [Table capacity](#cloud-azure-storage-storageaccount-table-capacity) | `cloud-azure-storage-storageaccount-table-capacity` |
+| [Table count](#cloud-azure-storage-storageaccount-table-count) | `cloud-azure-storage-storageaccount-table-count` |
+| [Table entity count](#cloud-azure-storage-storageaccount-table-entity-count) | `cloud-azure-storage-storageaccount-table-entity-count` |
+| [Transactions availability](#cloud-azure-storage-storageaccount-transactions-availability) | `cloud-azure-storage-storageaccount-transactions-availability` |
+| [Transactions count](#cloud-azure-storage-storageaccount-transactions-count) | `cloud-azure-storage-storageaccount-transactions-count` |
+| [Transactions latency](#cloud-azure-storage-storageaccount-transactions-latency) | `cloud-azure-storage-storageaccount-transactions-latency` |
+| [Transactions throughput](#cloud-azure-storage-storageaccount-transactions-throughput) | `cloud-azure-storage-storageaccount-transactions-throughput` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Azure-StorageAccount-Table
+
+*Azure Storage account table* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `RESOURCE-NAMESPACE` | `Microsoft.Storage` | Specify resource namespace. Can be: 'Microsoft.Storage' or 'Microsoft.ClassicStorage'. Default: 'Microsoft.Storage'. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Table capacity](#cloud-azure-storage-storageaccount-table-capacity) | `cloud-azure-storage-storageaccount-table-capacity` |
+| [Table count](#cloud-azure-storage-storageaccount-table-count) | `cloud-azure-storage-storageaccount-table-count` |
+| [Table entity count](#cloud-azure-storage-storageaccount-table-entity-count) | `cloud-azure-storage-storageaccount-table-entity-count` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Account Resources used capacity](#cloud-azure-storage-storageaccount-account-used-capacity) | `cloud-azure-storage-storageaccount-account-used-capacity` |
+| [Blob capacity](#cloud-azure-storage-storageaccount-blob-capacity) | `cloud-azure-storage-storageaccount-blob-capacity` |
+| [Blob container count](#cloud-azure-storage-storageaccount-blob-container-count) | `cloud-azure-storage-storageaccount-blob-container-count` |
+| [Blob count](#cloud-azure-storage-storageaccount-blob-count) | `cloud-azure-storage-storageaccount-blob-count` |
+| [File capacity](#cloud-azure-storage-storageaccount-file-capacity) | `cloud-azure-storage-storageaccount-file-capacity` |
+| [File count](#cloud-azure-storage-storageaccount-file-count) | `cloud-azure-storage-storageaccount-file-count` |
+| [File share count](#cloud-azure-storage-storageaccount-file-share-count) | `cloud-azure-storage-storageaccount-file-share-count` |
+| [Health](#cloud-azure-storage-storageaccount-health) | `cloud-azure-storage-storageaccount-health` |
+| [Queue capacity](#cloud-azure-storage-storageaccount-queue-capacity) | `cloud-azure-storage-storageaccount-queue-capacity` |
+| [Queue count](#cloud-azure-storage-storageaccount-queue-count) | `cloud-azure-storage-storageaccount-queue-count` |
+| [Queue message count](#cloud-azure-storage-storageaccount-queue-message-count) | `cloud-azure-storage-storageaccount-queue-message-count` |
+| [Transactions availability](#cloud-azure-storage-storageaccount-transactions-availability) | `cloud-azure-storage-storageaccount-transactions-availability` |
+| [Transactions count](#cloud-azure-storage-storageaccount-transactions-count) | `cloud-azure-storage-storageaccount-transactions-count` |
+| [Transactions latency](#cloud-azure-storage-storageaccount-transactions-latency) | `cloud-azure-storage-storageaccount-transactions-latency` |
+| [Transactions throughput](#cloud-azure-storage-storageaccount-transactions-throughput) | `cloud-azure-storage-storageaccount-transactions-throughput` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Azure-StorageAccount-Transaction
+
+*Azure Storage account transaction* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (14)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `TIMEFRAME` | `300` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `RESOURCE-NAMESPACE` | `Microsoft.Storage` | Set resource namespace (Can be: 'Blob', 'File', 'Table', 'Queue'). Leave empty for account metric |
+| `STORAGE-TYPE` | `Account` | Set storage type (Can be: 'Account', 'Blob', 'File', 'Table', 'Queue') |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Transactions availability](#cloud-azure-storage-storageaccount-transactions-availability) | `cloud-azure-storage-storageaccount-transactions-availability` |
+| [Transactions count](#cloud-azure-storage-storageaccount-transactions-count) | `cloud-azure-storage-storageaccount-transactions-count` |
+| [Transactions latency](#cloud-azure-storage-storageaccount-transactions-latency) | `cloud-azure-storage-storageaccount-transactions-latency` |
+| [Transactions throughput](#cloud-azure-storage-storageaccount-transactions-throughput) | `cloud-azure-storage-storageaccount-transactions-throughput` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Account Resources used capacity](#cloud-azure-storage-storageaccount-account-used-capacity) | `cloud-azure-storage-storageaccount-account-used-capacity` |
+| [Blob capacity](#cloud-azure-storage-storageaccount-blob-capacity) | `cloud-azure-storage-storageaccount-blob-capacity` |
+| [Blob container count](#cloud-azure-storage-storageaccount-blob-container-count) | `cloud-azure-storage-storageaccount-blob-container-count` |
+| [Blob count](#cloud-azure-storage-storageaccount-blob-count) | `cloud-azure-storage-storageaccount-blob-count` |
+| [File capacity](#cloud-azure-storage-storageaccount-file-capacity) | `cloud-azure-storage-storageaccount-file-capacity` |
+| [File count](#cloud-azure-storage-storageaccount-file-count) | `cloud-azure-storage-storageaccount-file-count` |
+| [File share count](#cloud-azure-storage-storageaccount-file-share-count) | `cloud-azure-storage-storageaccount-file-share-count` |
+| [Health](#cloud-azure-storage-storageaccount-health) | `cloud-azure-storage-storageaccount-health` |
+| [Queue capacity](#cloud-azure-storage-storageaccount-queue-capacity) | `cloud-azure-storage-storageaccount-queue-capacity` |
+| [Queue count](#cloud-azure-storage-storageaccount-queue-count) | `cloud-azure-storage-storageaccount-queue-count` |
+| [Queue message count](#cloud-azure-storage-storageaccount-queue-message-count) | `cloud-azure-storage-storageaccount-queue-message-count` |
+| [Table capacity](#cloud-azure-storage-storageaccount-table-capacity) | `cloud-azure-storage-storageaccount-table-capacity` |
+| [Table count](#cloud-azure-storage-storageaccount-table-count) | `cloud-azure-storage-storageaccount-table-count` |
+| [Table entity count](#cloud-azure-storage-storageaccount-table-entity-count) | `cloud-azure-storage-storageaccount-table-entity-count` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Blob capacity {#cloud-azure-storage-storageaccount-blob-capacity}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-BLOBCAPACITY-TOTAL` |  | Threshold warning blob capacity total |
+| `CRITICAL-BLOBCAPACITY-TOTAL` |  | Threshold critical blob capacity total |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `blobcapacity_total` | `B` | BlobCapacity | `WARNING-BLOBCAPACITY-TOTAL`, `CRITICAL-BLOBCAPACITY-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Blob container count {#cloud-azure-storage-storageaccount-blob-container-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total', 'count') |
+| `WARNING-CONTAINER-COUNT-AVERAGE` |  | Threshold warning average container count |
+| `WARNING-CONTAINER-COUNT-TOTAL` |  | Threshold warning total container count |
+| `CRITICAL-CONTAINER-COUNT-AVERAGE` |  | Threshold critical average container count |
+| `CRITICAL-CONTAINER-COUNT-TOTAL` |  | Threshold critical total container count |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `containercount_average` |  | ContainerCount | `WARNING-CONTAINER-COUNT-AVERAGE`, `CRITICAL-CONTAINER-COUNT-AVERAGE` |
+| `containercount_total` |  | ContainerCount | `WARNING-CONTAINER-COUNT-TOTAL`, `CRITICAL-CONTAINER-COUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Blob count {#cloud-azure-storage-storageaccount-blob-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-BLOBCOUNT-TOTAL` |  | Threshold warning total blob count |
+| `CRITICAL-BLOBCOUNT-TOTAL` |  | Threshold critical total blob count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `blobcount_total` |  | BlobCount | `WARNING-BLOBCOUNT-TOTAL`, `CRITICAL-BLOBCOUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### File capacity {#cloud-azure-storage-storageaccount-file-capacity}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-FILECAPACITY-AVERAGE` |  | Threshold warning average file capacity |
+| `WARNING-FILECAPACITY-TOTAL` |  | Threshold warning total file capacity |
+| `CRITICAL-FILECAPACITY-AVERAGE` |  | Threshold critical average file capacity |
+| `CRITICAL-FILECAPACITY-TOTAL` |  | Threshold critical total file capacity |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `filecapacity_average` | `B` | FileCapacity | `WARNING-FILECAPACITY-AVERAGE`, `CRITICAL-FILECAPACITY-AVERAGE` |
+| `filecapacity_total` | `B` | FileCapacity | `WARNING-FILECAPACITY-TOTAL`, `CRITICAL-FILECAPACITY-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### File count {#cloud-azure-storage-storageaccount-file-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-FILECOUNT-AVERAGE` |  | Threshold warning average file count |
+| `WARNING-FILECOUNT-TOTAL` |  | Threshold warning total file count |
+| `CRITICAL-FILECOUNT-AVERAGE` |  | Threshold critical average file count |
+| `CRITICAL-FILECOUNT-TOTAL` |  | Threshold critical total file count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `filecount_average` |  | FileCount | `WARNING-FILECOUNT-AVERAGE`, `CRITICAL-FILECOUNT-AVERAGE` |
+| `filecount_total` |  | FileCount | `WARNING-FILECOUNT-TOTAL`, `CRITICAL-FILECOUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### File share count {#cloud-azure-storage-storageaccount-file-share-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-FILESHARECOUNT-AVERAGE` |  | Threshold warning average file share count |
+| `WARNING-FILESHARECOUNT-TOTAL` |  | Threshold warning total file share count |
+| `CRITICAL-FILESHARECOUNT-AVERAGE` |  | Threshold critical average file share count |
+| `CRITICAL-FILESHARECOUNT-TOTAL` |  | Threshold critical total file share count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `filesharecount_average` |  | FileShareCount | `WARNING-FILESHARECOUNT-AVERAGE`, `CRITICAL-FILESHARECOUNT-AVERAGE` |
+| `filesharecount_total` |  | FileShareCount | `WARNING-FILESHARECOUNT-TOTAL`, `CRITICAL-FILESHARECOUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Account Resources used capacity {#cloud-azure-storage-storageaccount-account-used-capacity}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-USEDCAPACITY-TOTAL` |  | Threshold warning used capacity total |
+| `CRITICAL-USEDCAPACITY-TOTAL` |  | Threshold critical used capacity total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `usedcapacity_total` | `B` | UsedCapacity | `WARNING-USEDCAPACITY-TOTAL`, `CRITICAL-USEDCAPACITY-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {#cloud-azure-storage-storageaccount-health}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} =~ /^Unavailable$/'` | Set critical threshold for status (Default: '%\{status\} =~ /^Unavailable$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `UNKNOWN-STATUS` | `'%{status} =~ /^Unknown$/'` | Set unknown threshold for status (Default: '%\{status\} =~ /^Unknown$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `OK-STATUS` | `'%{status} =~ /^Available$/'` | Set ok threshold for status (Default: '%\{status\} =~ /^Available$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{summary\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Queue capacity {#cloud-azure-storage-storageaccount-queue-capacity}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-QUEUECAPACITY-AVERAGE` |  | Threshold warning average queue capacity |
+| `WARNING-QUEUECAPACITY-TOTAL` |  | Threshold warning total queue capacity |
+| `CRITICAL-QUEUECAPACITY-AVERAGE` |  | Threshold critical average queue capacity |
+| `CRITICAL-QUEUECAPACITY-TOTAL` |  | Threshold critical total queue capacity |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queuecapacity_average` | `B` | QueueCapacity | `WARNING-QUEUECAPACITY-AVERAGE`, `CRITICAL-QUEUECAPACITY-AVERAGE` |
+| `queuecapacity_total` | `B` | QueueCapacity | `WARNING-QUEUECAPACITY-TOTAL`, `CRITICAL-QUEUECAPACITY-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Queue count {#cloud-azure-storage-storageaccount-queue-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-QUEUECOUNT-AVERAGE` |  | Threshold warning average queue count |
+| `WARNING-QUEUECOUNT-TOTAL` |  | Threshold warning total queue count |
+| `CRITICAL-QUEUECOUNT-AVERAGE` |  | Threshold critical average queue count |
+| `CRITICAL-QUEUECOUNT-TOTAL` |  | Threshold critical total queue count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queuecount_average` |  | QueueCount | `WARNING-QUEUECOUNT-AVERAGE`, `CRITICAL-QUEUECOUNT-AVERAGE` |
+| `queuecount_total` |  | QueueCount | `WARNING-QUEUECOUNT-TOTAL`, `CRITICAL-QUEUECOUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Queue message count {#cloud-azure-storage-storageaccount-queue-message-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-QUEUEMESSAGECOUNT-AVERAGE` |  | Threshold warning average queue message count |
+| `WARNING-QUEUEMESSAGECOUNT-TOTAL` |  | Threshold warning total queue message count |
+| `CRITICAL-QUEUEMESSAGECOUNT-AVERAGE` |  | Threshold critical average queue message count |
+| `CRITICAL-QUEUEMESSAGECOUNT-TOTAL` |  | Threshold critical total queue message count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queuemessagecount_average` |  | QueueMessageCount | `WARNING-QUEUEMESSAGECOUNT-AVERAGE`, `CRITICAL-QUEUEMESSAGECOUNT-AVERAGE` |
+| `queuemessagecount_total` |  | QueueMessageCount | `WARNING-QUEUEMESSAGECOUNT-TOTAL`, `CRITICAL-QUEUEMESSAGECOUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Table capacity {#cloud-azure-storage-storageaccount-table-capacity}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-TABLECAPACITY-AVERAGE` |  | Threshold warning average table capacity |
+| `WARNING-TABLECAPACITY-TOTAL` |  | Threshold warning total table capacity |
+| `CRITICAL-TABLECAPACITY-AVERAGE` |  | Threshold critical average table capacity |
+| `CRITICAL-TABLECAPACITY-TOTAL` |  | Threshold critical total table capacity |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tablecapacity_average` | `B` | TableCapacity | `WARNING-TABLECAPACITY-AVERAGE`, `CRITICAL-TABLECAPACITY-AVERAGE` |
+| `tablecapacity_total` | `B` | TableCapacity | `WARNING-TABLECAPACITY-TOTAL`, `CRITICAL-TABLECAPACITY-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Table count {#cloud-azure-storage-storageaccount-table-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-TABLECOUNT-AVERAGE` |  | Threshold warning average table count |
+| `WARNING-TABLECOUNT-TOTAL` |  | Threshold warning total table count |
+| `CRITICAL-TABLECOUNT-AVERAGE` |  | Threshold critical average table count |
+| `CRITICAL-TABLECOUNT-TOTAL` |  | Threshold critical total table count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tablecount_average` |  | TableCount | `WARNING-TABLECOUNT-AVERAGE`, `CRITICAL-TABLECOUNT-AVERAGE` |
+| `tablecount_total` |  | TableCount | `WARNING-TABLECOUNT-TOTAL`, `CRITICAL-TABLECOUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Table entity count {#cloud-azure-storage-storageaccount-table-entity-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-TABLEENTITYCOUNT-AVERAGE` |  | Threshold warning average table entity count |
+| `WARNING-TABLEENTITYCOUNT-TOTAL` |  | Threshold warning total table entity count |
+| `CRITICAL-TABLEENTITYCOUNT-AVERAGE` |  | Threshold critical average table entity count |
+| `CRITICAL-TABLEENTITYCOUNT-TOTAL` |  | Threshold critical total table entity count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tableentitycount_average` |  | TableEntityCount | `WARNING-TABLEENTITYCOUNT-AVERAGE`, `CRITICAL-TABLEENTITYCOUNT-AVERAGE` |
+| `tableentitycount_total` |  | TableEntityCount | `WARNING-TABLEENTITYCOUNT-TOTAL`, `CRITICAL-TABLEENTITYCOUNT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Transactions availability {#cloud-azure-storage-storageaccount-transactions-availability}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-AVAILABILITY-MINIMUM` |  | Threshold warning minimum availability |
+| `WARNING-AVAILABILITY-MAXIMUM` |  | Threshold warning maximum availability |
+| `WARNING-AVAILABILITY-AVERAGE` |  | Threshold warning average availability |
+| `CRITICAL-AVAILABILITY-MINIMUM` |  | Threshold critical minimum availability |
+| `CRITICAL-AVAILABILITY-MAXIMUM` |  | Threshold critical maximum availability |
+| `CRITICAL-AVAILABILITY-AVERAGE` |  | Threshold critical average availability |
+| `EXTRAOPTS` |  | Additional options appended to the plugin command line (service level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `availability_minimum` | `%` | Availability:  %% | `WARNING-AVAILABILITY-MINIMUM`, `CRITICAL-AVAILABILITY-MINIMUM` |
+| `availability_maximum` | `%` | Availability:  %% | `WARNING-AVAILABILITY-MAXIMUM`, `CRITICAL-AVAILABILITY-MAXIMUM` |
+| `availability_average` | `%` | Availability:  %% | `WARNING-AVAILABILITY-AVERAGE`, `CRITICAL-AVAILABILITY-AVERAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Transactions count {#cloud-azure-storage-storageaccount-transactions-count}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-TRANSACTIONS-TOTAL` |  | Threshold warning total transactions |
+| `CRITICAL-TRANSACTIONS-TOTAL` |  | Threshold critical total transactions |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Transactions latency {#cloud-azure-storage-storageaccount-transactions-latency}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-SUCCESSSERVERLATENCY-AVERAGE` |  | Threshold warning average success server latency |
+| `WARNING-SUCCESSE2ELATENCY-AVERAGE` |  | Threshold warning average success E2E latency |
+| `CRITICAL-SUCCESSSERVERLATENCY-AVERAGE` |  | Threshold critical average success server latency |
+| `CRITICAL-SUCCESSE2ELATENCY-AVERAGE` |  | Threshold critical average success E2E latency |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `successserverlatency_minimum` | `ms` | SuccessServerLatency:  ms |  |
+| `successe2elatency_minimum` | `ms` | SuccessE2ELatency:  ms |  |
+| `successserverlatency_maximum` | `ms` | SuccessServerLatency:  ms |  |
+| `successe2elatency_maximum` | `ms` | SuccessE2ELatency:  ms |  |
+| `successserverlatency_average` | `ms` | SuccessServerLatency:  ms | `WARNING-SUCCESSSERVERLATENCY-AVERAGE`, `CRITICAL-SUCCESSSERVERLATENCY-AVERAGE` |
+| `successe2elatency_average` | `ms` | SuccessE2ELatency:  ms | `WARNING-SUCCESSE2ELATENCY-AVERAGE`, `CRITICAL-SUCCESSE2ELATENCY-AVERAGE` |
+| `successserverlatency_total` | `ms` | SuccessServerLatency:  ms |  |
+| `successe2elatency_total` | `ms` | SuccessE2ELatency:  ms |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Transactions throughput {#cloud-azure-storage-storageaccount-transactions-throughput}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times. |
+| `WARNING-INGRESS-AVERAGE` |  | Threshold warning average ingress |
+| `WARNING-EGRESS-AVERAGE` |  | Threshold warning average egress |
+| `CRITICAL-INGRESS-AVERAGE` |  | Threshold critical average ingress |
+| `CRITICAL-EGRESS-AVERAGE` |  | Threshold critical average egress |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `Azure-StorageAccount-File`
+    - Macro `TIMEFRAME`: default changed from `300` to `3600`
+- Host template `Azure-StorageAccount-General`
+    - Macro `TIMEFRAME`: default changed from `300` to `3600`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201 - 20250217</summary>
+
+- Host template `Azure-StorageAccount-Blob`
+    - Macro `TIMEFRAME`: default changed from `300` to `3600`
+- Host template `Azure-StorageAccount-Table`
+    - Macro `TIMEFRAME`: default changed from `300` to `3600`
+- Service template [`cloud-azure-storage-storageaccount-health`](#cloud-azure-storage-storageaccount-health)
+    - Macro `AGGREGATION` added (default `average`)
+
+</details>

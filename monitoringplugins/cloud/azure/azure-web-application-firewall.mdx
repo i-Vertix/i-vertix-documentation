@@ -1,0 +1,219 @@
+---
+title: "Azure Web Application Firewall"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-firewall.png";
+
+<PluginPackHeader name="Azure Web Application Firewall" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+### Azure Web Application Firewall monitoring
+protocols used: Rest API
+
+- Health
+- Hits
+- Throughput
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-Firewall
+
+*Azure Web Application Firewall* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Health](#cloud-azure-network-firewall-health) | `cloud-azure-network-firewall-health` |
+| [Hits](#cloud-azure-network-firewall-hits) | `cloud-azure-network-firewall-hits` |
+| [Throughput](#cloud-azure-network-firewall-throughput) | `cloud-azure-network-firewall-throughput` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {#cloud-azure-network-firewall-health}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times |
+| `WARNING-FIREWALL-HEALTH-PERCENTAGE` | `100:` | Threshold warning firewall health percentage |
+| `CRITICAL-FIREWALL-HEALTH-PERCENTAGE` | `50:` | Threshold critical firewall health percentage |
+| `FILTER-DIMENSION` |  | Specify the metric dimension (required for some specific metrics) Syntax example: --filter-dimension="$metricname eq '$metricvalue'" |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `firewall.health.percentage` | `%` | Firewall health state | `WARNING-FIREWALL-HEALTH-PERCENTAGE`, `CRITICAL-FIREWALL-HEALTH-PERCENTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hits {#cloud-azure-network-firewall-hits}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `total` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times |
+| `WARNING-APPLICATION-RULES-HITS` |  | Threshold warning application rules hits |
+| `WARNING-NETWORK-RULES-HITS` |  | Threshold warning network rules hits |
+| `CRITICAL-APPLICATION-RULES-HITS` |  | Threshold critical application rules hits |
+| `CRITICAL-NETWORK-RULES-HITS` |  | Threshold critical network rules hits |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `firewall.applications.rules.hits.count` |  | Application rules hit count | `WARNING-APPLICATION-RULES-HITS`, `CRITICAL-APPLICATION-RULES-HITS` |
+| `firewall.newtork.rules.hits.count` |  | Network rules hit count | `WARNING-NETWORK-RULES-HITS`, `CRITICAL-NETWORK-RULES-HITS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Throughput {#cloud-azure-network-firewall-throughput}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Define how the data must be aggregated. Available aggregations: 'minimum', 'maximum', 'average', 'total' and 'count'. Can be called multiple times |
+| `WARNING-PROCESSED-DATA` |  | Threshold warning processed data |
+| `WARNING-THROUGHPUT` |  | Threshold warning throughput |
+| `CRITICAL-PROCESSED-DATA` |  | Threshold critical processed data |
+| `CRITICAL-THROUGHPUT` |  | Threshold critical throughput |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `firewall.data.processed.bytes` | `B` | Data processed | `WARNING-PROCESSED-DATA`, `CRITICAL-PROCESSED-DATA` |
+| `firewall.throughput.bitspersecond` | `b/s` | Throughput | `WARNING-THROUGHPUT`, `CRITICAL-THROUGHPUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `Azure Web Application Firewall`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231215 - 20240130`.

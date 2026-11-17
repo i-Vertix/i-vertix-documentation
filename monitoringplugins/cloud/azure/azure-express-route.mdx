@@ -1,0 +1,194 @@
+---
+title: "Azure Express Route"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-ExpressRoute.png";
+
+<PluginPackHeader name="Azure Express Route" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure Express Route monitoring
+protocols used: Rest API
+
+- Circuit status
+- Health
+- Traffic
+
+### Discovery modes
+
+- Circuits
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-ExpressRoute
+
+*Azure Express Route* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CUSTOMMODE` | `api` | When a plugin offers several ways (CLI, library, etc.) to get information the desired one must be defined with this option. |
+| `TIMEOUT` | `50` | Set timeout in seconds (default: 50). |
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+| `RESOURCE-GROUP` |  | Set resource group. |
+| `SUBSCRIPTION` |  | Set Azure subscription (required if logged to several subscriptions). |
+| `TENANT` |  | Set Azure tenant ID. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `LOCATION` |  | Set resource location. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Circuit status](#cloud-azure-network-expressroute-circuit-status) | `cloud-azure-network-expressroute-circuit-status` |
+| [Health](#cloud-azure-network-expressroute-health) | `cloud-azure-network-expressroute-health` |
+| [Traffic](#cloud-azure-network-expressroute-traffic) | `cloud-azure-network-expressroute-traffic` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Circuit status {#cloud-azure-network-expressroute-circuit-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter circuit name (Can be a regexp) |
+| `CRITICAL-STATUS` | `'%{circuit_status} ne "Enabled" \|\| %{provider_status} ne "Provisioned"'` | Set critical threshold for status (Default: '%\{circuit_status\} ne "Enabled" \|\| %\{provider_status\} ne "Provisioned"'). Can used special variables like: %\{circuit_status\}, %\{provider_status\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{circuit_status\}, %\{provider_status\}, %\{display\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {#cloud-azure-network-expressroute-health}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} =~ /^Unavailable$/'` | Set critical threshold for status (Default: '%\{status\} =~ /^Unavailable$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `UNKNOWN-STATUS` | `'%{status} =~ /^Unknown$/'` | Set unknown threshold for status (Default: '%\{status\} =~ /^Unknown$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `OK-STATUS` | `'%{status} =~ /^Available$/'` | Set ok threshold for status (Default: '%\{status\} =~ /^Available$/'). Can used special variables like: %\{status\}, %\{summary\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{summary\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Traffic {#cloud-azure-network-expressroute-traffic}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TRAFFIC-IN` |  | Warning threshold for BitsInPerSecond |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold for BitsInPerSecond |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold for BitsOutPerSecond |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azexpressroute.traffic.in.bitspersecond` | `b/s` | Traffic In | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `azexpressroute.traffic.out.bitspersecond` | `b/s` | Traffic Out | `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

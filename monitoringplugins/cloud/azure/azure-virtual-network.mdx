@@ -1,0 +1,175 @@
+---
+title: "Azure Virtual Network"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../../assets/pluginpacks/Infrastructure/Azure-Virtual-Network.png";
+
+<PluginPackHeader name="Azure Virtual Network" image={image} category="Cloud" metadata={["API", "HTTPS"]} />
+
+## Description
+
+### Azure Virtual Network monitoring
+protocols used: HTTPS (Rest API)
+
+- Peering status
+- Latency
+
+## Prerequisites
+
+The plugin pack retrieves the metrics through the Azure Rest API. Before you can monitor the resources, you need an
+Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
+
+See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Host Templates
+
+### Azure-Virtual-Network
+
+*Azure Virtual Network* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CLIENT-SECRET` | *(password)* | Set Azure client secret. |
+| `LOGIN-ENDPOINT` | `https://login.microsoftonline.com` | Set Azure login endpoint URL (default: 'https://login.microsoftonline.com') |
+| `MANAGEMENT-ENDPOINT` | `https://management.azure.com` | Set Azure management endpoint URL (default: 'https://management.azure.com') |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `CLIENT-ID` |  | Set Azure client ID. |
+| `RESOURCE-GROUP` |  | Set resource group (required if resource's name is used). |
+| `TIMEOUT` |  | Set timeout in seconds (default: 10). |
+| `SUBSCRIPTION` |  | Set Azure subscription ID. |
+| `TENANT` |  | Set Azure tenant ID. |
+| `RESOURCE` |  | Set resource name or ID (required). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed (e.g. the Azure credentials and the resource to monitor).
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Latency](#cloud-azure-network-virtual-network-latency) | `cloud-azure-network-virtual-network-latency` |
+| [Peerings Status](#cloud-azure-network-virtualnetwork-peerings-status) | `cloud-azure-network-virtualnetwork-peerings-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Latency {#cloud-azure-network-virtual-network-latency}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERVAL` | `PT1H` | Set interval of the metric query (can be : C&lt;PT1M>, C&lt;PT5M>, C&lt;PT15M>, C&lt;PT30M>, C&lt;PT1H>, C&lt;PT6H>, C&lt;PT12H>, C&lt;PT24H>). |
+| `TIMEFRAME` | `3600` | Set timeframe in seconds (i.e. 3600 to check last hour). |
+| `FILTER-METRIC` |  | Filter metrics (can be: 'roundtrip-time', 'failed-pings') (can be a regexp). |
+| `WARNING-ROUNDTRIP-TIME` |  | Warning threshold for roundtrip time (ms) |
+| `CRITICAL-FAILED-PINGS` |  | Critical threshold for failed pings (%) |
+| `CRITICAL-ROUNDTRIP-TIME` |  | Critical threshold for roundtrip time (ms) |
+| `WARNING-FAILED-PINGS` |  | Warning threshold for failed pings (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azvnet.ping.time.milliseconds` | `ms` | Round trip time for Pings to a VM |  |
+| `azvnet.ping.failed.percent` | `%` | Failed Pings to a VM |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Peerings Status {#cloud-azure-network-virtualnetwork-peerings-status}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter peering name (Can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{peering_state\}, %\{provisioning_state\}, %\{peer\}, %\{display\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{peering_state\} ne "Connected" \|\| %\{provisioning_state\} ne "Succeeded"'). Can used special variables like: %\{peering_state\}, %\{provisioning_state\}, %\{peer\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {#ping-lan}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260500 - 20260529</summary>
+
+- Plugin pack `Azure Virtual Network`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260500 - 20260529`.

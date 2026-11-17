@@ -112,7 +112,7 @@ def _metrics_from_counters(code):
     metrics = []
     for chunk in re.split(r'\{\s*label\s*=>', body)[1:]:
         label = re.match(r"\s*['\"]([^'\"]+)['\"]", chunk)
-        nlabel = re.search(r"nlabel\s*=>\s*['\"]([^'\"]+)['\"]", chunk)
+        nlabel = re.search(r"nlabel\s*=>\s*['\"]([^'\"]+)['\"](?!\s*\.)", chunk)
         if not nlabel:
             continue
         unit = re.search(r"perfdatas\s*=>.*?unit\s*=>\s*['\"]([^'\"]*)['\"]", chunk, flags=re.S)
@@ -123,10 +123,83 @@ def _metrics_from_counters(code):
     return metrics
 
 
+def _perl_str(expr, env):
+    """Value of a Perl string expression made of quoted strings, variables of env and lc()/uc() calls joined
+    with '.'; None when it contains anything else."""
+    funcs = {'lc': str.lower, 'uc': str.upper, 'ucfirst': lambda s: s[:1].upper() + s[1:],
+             'lcfirst': lambda s: s[:1].lower() + s[1:]}
+    out = []
+    for part in re.split(r'\s+\.\s+|\s*\.\s*(?=[\'"$a-z])', expr.strip()):
+        part = part.strip()
+        if m := re.fullmatch(r"'([^']*)'", part):
+            out.append(m.group(1))
+        elif m := re.fullmatch(r'"([^"]*)"', part):
+            text = m.group(1)
+            for var in re.findall(r'\$\{?(\w+)\}?', text):
+                if var not in env:
+                    return None
+            out.append(re.sub(r'\$\{?(\w+)\}?', lambda v: env[v.group(1)], text))
+        elif (m := re.fullmatch(r'\$(\w+)', part)) and m.group(1) in env:
+            out.append(env[m.group(1)])
+        elif (m := re.fullmatch(r'(\w+)\s*\(\s*\$(\w+)\s*\)', part)) and m.group(1) in funcs and m.group(2) in env:
+            out.append(funcs[m.group(1)](env[m.group(2)]))
+        else:
+            return None
+    return ''.join(out)
+
+
+def _metrics_from_counter_loops(code):
+    """Counter entries built in nested foreach loops over literal lists (older Azure modes), e.g.
+    foreach my $aggregation ('total') { foreach my $metric ('BlobCapacity') { my $metric_label = lc($metric);
+    { label => $metric_label . '-' . $aggregation, ... perfdatas => [ { label => $metric_label . '_' . $aggregation } ] } } }."""
+    body = ''.join(m.group(1) for m in re.finditer(r'sub\s+set_counters\w*\s*\{(.*?)\n\}', code, flags=re.S))
+    loops = list(re.finditer(r"foreach\s+my\s+\$(\w+)\s*\((?:\s*qw\s*\(([^)]*)\)|([^)]*))\)\s*\{", body))
+    if not loops:
+        return []
+    lists = []
+    for m in loops:
+        items = m.group(2).split() if m.group(2) is not None else re.findall(r"['\"]([^'\"]+)['\"]", m.group(3))
+        if not items or (m.group(3) is not None and re.search(r'[$%@]', m.group(3))):
+            return []  # loop over a runtime list (e.g. keys of a hash): names unknown
+        lists.append((m.group(1), items))
+    inner = body[loops[0].end():]
+    derived = re.findall(r'my\s+\$(\w+)\s*=\s*([^;]+);', inner)
+    entry = re.search(r'label\s*=>\s*([^,]+?)\s*,\s*(?:nlabel\s*=>\s*([^,]+?)\s*,\s*)?set\s*=>', inner)
+    perf = re.search(r'perfdatas\s*=>\s*\[\s*\{\s*label\s*=>\s*([^,]+?)\s*,', inner)
+    unit = re.search(r"perfdatas\s*=>.*?unit\s*=>\s*['\"]([^'\"]*)['\"]", inner, flags=re.S)
+    tpl = re.search(r'output_template\s*=>\s*([^,]+?)\s*,', inner)
+    if not entry:
+        return []
+
+    def product(i, env):
+        if i == len(lists):
+            yield dict(env)
+            return
+        var, items = lists[i]
+        for item in items:
+            env[var] = item
+            yield from product(i + 1, env)
+
+    metrics = []
+    for env in product(0, {}):
+        for var, expr in derived:
+            value = _perl_str(expr, env)
+            if value is not None:
+                env[var] = value
+        label = _perl_str(entry.group(1), env)
+        name = (_perl_str(entry.group(2), env) if entry.group(2) else None) or (_perl_str(perf.group(1), env) if perf else None)
+        if not name:
+            continue
+        desc = _perl_str(tpl.group(1), env) if tpl else ''
+        desc = re.sub(r'%[-+ 0-9.]*[a-z]', '', desc or '').strip(' :')
+        metrics.append({'name': name, 'unit': unit.group(1) if unit else '', 'description': desc, 'label': label})
+    return metrics
+
+
 def _metrics_from_perfdata_add(code):
     metrics = []
     for m in re.finditer(r'perfdata_add\s*\((.*?)\);', code, flags=re.S):
-        nlabel = re.search(r"nlabel\s*=>\s*['\"]([^'\"$]+)['\"]", m.group(1))
+        nlabel = re.search(r"nlabel\s*=>\s*['\"]([^'\"$]+)['\"](?!\s*\.)", m.group(1))
         if not nlabel:
             continue
         unit = re.search(r"unit\s*=>\s*['\"]([^'\"]*)['\"]", m.group(1))
@@ -162,7 +235,7 @@ def plugin_info(src, command_line):
 
     def mapped(kind, key):
         m = re.search(r"['\"]%s['\"]\s*=>\s*['\"]([\w:]+)['\"]" % re.escape(key), plugin_code) if kind == 'mode' else \
-            re.search(r"custom_modes\}?->\{['\"]?%s['\"]?\}\s*=\s*['\"]([\w:]+)['\"]" % re.escape(key), plugin_code)
+            re.search(r"custom_modes\}?(?:->)?\{['\"]?%s['\"]?\}\s*=\s*['\"]([\w:]+)['\"]" % re.escape(key), plugin_code)
         return m.group(1) if m else None
 
     mode_pkg = mapped('mode', mode.group(1))
@@ -191,7 +264,8 @@ def plugin_info(src, command_line):
     # metrics of the mode and its base classes (e.g. snmp_standard::mode::interfaces), first definition wins
     metrics, names = [], set()
     for _, code in _class_chain(src, mode_pkg):
-        for x in _metrics_from_mapping(code) + _metrics_from_counters(code) + _metrics_from_perfdata_add(code):
+        for x in (_metrics_from_mapping(code) + _metrics_from_counters(code) + _metrics_from_counter_loops(code)
+                  + _metrics_from_perfdata_add(code)):
             if x['name'] not in names:
                 names.add(x['name'])
                 if not x['unit']:

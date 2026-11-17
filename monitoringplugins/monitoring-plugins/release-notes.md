@@ -8,13 +8,31 @@ On this page, you can find the release notes of all published *Plugin Store* ver
 Each version is labeled as `<plugin version> - <configuration version>`, as shown in the *Version Overview* of the *Plugin Store*. For the update and upgrade procedure, see [Updating/Upgrading the Plugin Store](/monitoring/monitoring-resources/plugin-packs#updatingupgrading-the-plugin-store).
 
 <details open>
-<summary><h3 id="20261000-20261030-dev">20261000 - 20261030-dev</h3></summary>
+<summary><h3 id="20261000-20261116">20261000 - 20261116</h3></summary>
 
 #### News
 
+* Azure API Management
+* Azure Container Registry
+* Azure Key Vault
+* Azure Kubernetes Service
+
 i-Vertix *Common Cloud Discovery*:
 
-* **Azure**: Azure PostgreSQL
+* **Azure**: API Management, Container Registry, Key Vault, Kubernetes Service, PostgreSQL
+
+#### Enhancements
+
+* Mikrotik LTE interfaces: add options and default values for LTE signal quality (#5198)
+
+#### Fixes
+
+* Mikrotik LTE interfaces: removed wrong option (#5198)
+
+#### i-Vertix agent
+
+* download [i-Vertix Agent x64 25.0 - 20261000](https://i-vertix-downloads.s3.eu-west-1.amazonaws.com/i-Vertix+agent/mon/iVertix-NSClient-0.25.0-20261000-x64.exe)
+* download [i-Vertix Agent x86 25.0 - 20261000](https://i-vertix-downloads.s3.eu-west-1.amazonaws.com/i-Vertix+agent/mon/iVertix-NSClient-0.25.0-20261000-Win32.exe)
 
 </details>
 
