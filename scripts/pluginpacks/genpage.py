@@ -208,7 +208,7 @@ class Page:
             cmd = s['check_command']
             # collapsed by default; the markdown heading inside <summary> keeps the TOC entry,
             # src/clientModules/openDetailsOnHash.js opens it when its anchor is targeted
-            lines += [DETAILS_OPEN, '<summary>', '', f'### {s["alias"] or s["name"]} {{#{s["name"].lower()}}}', '', '</summary>', '']
+            lines += [DETAILS_OPEN, '<summary>', '', f'### {s["alias"] or s["name"]} {{/* #{s["name"].lower()} */}}', '', '</summary>', '']
             if s['macros']:
                 lines += ['#### Macros', '', self.macro_table(s['macros'], 'SERVICE', [cmd] if cmd else []), '']
             if cmd and self.infos.get(cmd) and self.infos[cmd]['metrics']:
