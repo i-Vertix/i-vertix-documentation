@@ -277,16 +277,18 @@ class Page:
                 found.append(f'* [{label}]({DISCOVERY_PAGES[kind]})')
         hosts = ['The hosts of this plugin pack are found by these host discoveries:', ''] + found + [''] if found else []
 
-        services = []
+        rows = []
         for r in d.get('discovery_templates') or []:
-            if not services:
-                services = ['The service discovery creates one service per discovered object, with these rules:', '',
-                            '| Service template | Service name |', '|------------------|--------------|']
             pattern = placeholders(re.sub(r'\$key_field\$', f'${r["xml_key_field"]}$', r['service_name_pattern'] or ''))
             ref = self.service_ref(r['service_template'], f'service discovery rule {r["name"]}')
-            services.append(f'| {ref} | {code(pattern)} |')
-        if services:
-            services += ['', 'See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.']
+            rows.append(f'| {ref} | {code(pattern)} |')
+        services = []
+        if rows:
+            # plugin-pack-templates: code values without border and background, like the template tables
+            services = ['The service discovery creates one service per discovered object, with these rules:', '',
+                        nowrap_table(['| Service template | Service name |', '|------------------|--------------|'] + rows,
+                                     'plugin-pack-templates'),
+                        '', 'See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.']
 
         if not hosts and not services:
             return []
