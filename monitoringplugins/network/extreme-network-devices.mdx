@@ -1,0 +1,417 @@
+---
+title: "Extreme network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Extreme.png";
+
+<PluginPackHeader name="Extreme network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Extreme network devices through SNMP: CPU and memory usage, hardware status, interfaces, stack status and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-extreme-snmp-cpu)
+* [Hardware status](#network-extreme-snmp-hardware)
+* [Interfaces](#network-extreme-snmp-interfaces)
+* [Memory](#network-extreme-snmp-memory)
+* [Stack status](#network-extreme-snmp-stack)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-extreme-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Extreme-Switch-SNMP
+
+*Extreme Networks Switch SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-extreme-snmp-cpu) | `network-extreme-snmp-cpu` |
+| [Hardware status](#network-extreme-snmp-hardware) | `network-extreme-snmp-hardware` |
+| [Memory](#network-extreme-snmp-memory) | `network-extreme-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-extreme-snmp-interfaces) | `network-extreme-snmp-interfaces` |
+| [Stack status](#network-extreme-snmp-stack) | `network-extreme-snmp-stack` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Extreme-Switch-Stack-SNMP
+
+*Extreme Networks Stack SNMP* · Parent template: `Extreme-Switch-SNMP`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Stack status](#network-extreme-snmp-stack) | `network-extreme-snmp-stack` |
+| [CPU](#network-extreme-snmp-cpu) (inherited from `Extreme-Switch-SNMP`) | `network-extreme-snmp-cpu` |
+| [Hardware status](#network-extreme-snmp-hardware) (inherited from `Extreme-Switch-SNMP`) | `network-extreme-snmp-hardware` |
+| [Memory](#network-extreme-snmp-memory) (inherited from `Extreme-Switch-SNMP`) | `network-extreme-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `Extreme-Switch-SNMP`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-extreme-snmp-interfaces) | `network-extreme-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-extreme-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL` | `80` | Warning threshold CPU total |
+| `CRITICAL-TOTAL` | `90` | Critical threshold CPU total |
+| `CRITICAL-10SECS` |  | Critical threshold CPU 10 seconds |
+| `CRITICAL-1MIN` |  | Critical threshold CPU 1 minute |
+| `CRITICAL-30SECS` |  | Critical threshold CPU 30 seconds |
+| `CRITICAL-5MIN` |  | Critical threshold CPU 5 minutes |
+| `CRITICAL-5SECS` |  | Critical threshold CPU 5 seconds |
+| `FILTER-COUNTER` |  | Only display some counters (regexp can be used). Example: --filter-counters='^(1min\|5min)$' |
+| `WARNING-10SECS` |  | Warning threshold CPU 10 seconds |
+| `WARNING-1MIN` |  | Warning threshold CPU 1 minute |
+| `WARNING-30SECS` |  | Warning threshold CPU 30 seconds |
+| `WARNING-5MIN` |  | Warning threshold CPU 5 minutes |
+| `WARNING-5SECS` |  | Warning threshold CPU 5 seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu_total` | `%` | Total CPU Usage :  %% | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `cpu_5secs` | `%` | 5 seconds :  %% | `WARNING-5SECS`, `CRITICAL-5SECS` |
+| `cpu_10secs` | `%` | 10 seconds :  %% | `WARNING-10SECS`, `CRITICAL-10SECS` |
+| `cpu_30secs` | `%` | 30 seconds :  %% | `WARNING-30SECS`, `CRITICAL-30SECS` |
+| `cpu_1min` | `%` | 1 minute :  %% | `WARNING-1MIN`, `CRITICAL-1MIN` |
+| `cpu_5min` | `%` | 5 minutes :  %% | `WARNING-5MIN`, `CRITICAL-5MIN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-extreme-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'slot', 'temperature', 'poe' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,101 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan', 'psu.fan', 'psu' (syntax: type,regexp,threshold) Example: --warning='psu.fan,1.1,5000' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan', 'psu.fan', 'psu' (syntax: type,regexp,threshold) Example: --critical='psu,.*,200' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(presentOK)$) |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-extreme-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Warning threshold memory usage |
+| `CRITICAL-USAGE` | `90` | Critical threshold memory usage |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Stack status {/* #network-extreme-snmp-stack */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-extreme-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifDesc` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `90` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.packets.out.congestion.dropped.count` |  |  |  |
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `network-extreme-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`network-extreme-snmp-interfaces`](#network-extreme-snmp-interfaces)
+    - Macro `UNITS-TRAFFIC`: default changed from `%` to `percent_delta`
+    - Macro `UNITS-ERROR`: default changed from `%` to `percent_delta`
+    - Macro `OID-EXTRA-DISPLAY` added (default `ifAlias`)
+- Command `network-extreme-snmp-interfaces`
+    - Option `--oid-extra-display=$_SERVICEOID-EXTRA-DISPLAY$` added
+    - Macro `OID-EXTRA-DISPLAY` added
+
+</details>

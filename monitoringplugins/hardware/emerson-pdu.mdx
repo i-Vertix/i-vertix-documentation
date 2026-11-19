@@ -1,0 +1,246 @@
+---
+title: "Emerson PDU"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Emerson.png";
+
+<PluginPackHeader name="Emerson PDU" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Emerson PDUs through SNMP: the global status, power source usage (power, energy, current) and the status of the receptacles.
+
+The plugin pack provides these checks:
+
+* [Global status](#hardware-pdu-emerson-snmp-global-status)
+* [PS usage](#hardware-pdu-emerson-snmp-ps-usage)
+* [Receptacles](#hardware-pdu-emerson-snmp-receptacles)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Emerson-PDU
+
+*Emerson PDU* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Global status](#hardware-pdu-emerson-snmp-global-status) | `hardware-pdu-emerson-snmp-global-status` |
+| [PS usage](#hardware-pdu-emerson-snmp-ps-usage) | `hardware-pdu-emerson-snmp-ps-usage` |
+| [Receptacles](#hardware-pdu-emerson-snmp-receptacles) | `hardware-pdu-emerson-snmp-receptacles` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Global status {/* #hardware-pdu-emerson-snmp-global-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~ /normalWithWarning/i'` | Set warning threshold for status (Default: '%\{status\} =~ /normalWithWarning/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /normalWithAlarm\|abnormalOperation/i'` | Set critical threshold for status (Default: '%\{status\} =~ /normalWithAlarm\|abnormalOperation/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `FILTER-NAME` |  | Filter PDU name (can be a regexp) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### PS usage {/* #hardware-pdu-emerson-snmp-ps-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LINE-LOAD` | `80` | Threshold warning line load |
+| `CRITICAL-LINE-LOAD` | `90` | Threshold critical line load |
+| `FILTER-NAME` |  | Filter power source name (can be a regexp) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^(power\|energy)$' |
+| `WARNING-POWER` |  | Threshold warning power in W |
+| `WARNING-ENERGY` |  | Threshold warning energy in kWh |
+| `WARNING-CURRENT-NEUTRAL` |  | Threshold warning current neutral in AmpAcRMS |
+| `WARNING-LINE-CURRENT` |  | Threshold warning line current in A |
+| `CRITICAL-POWER` |  | Threshold critical power in W |
+| `CRITICAL-ENERGY` |  | Threshold critical energy in kWh |
+| `CRITICAL-CURRENT-NEUTRAL` |  | Threshold critical current neutral in AmpAcRMS |
+| `CRITICAL-LINE-CURRENT` |  | Threshold critical line current in A |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `powersource.total.input.power.watt` | `W` | Total input power :  W | `WARNING-POWER`, `CRITICAL-POWER` |
+| `powersource.total.accumulated.energy.kilowatthour` | `kWh` | Total energy :  kWh | `WARNING-ENERGY`, `CRITICAL-ENERGY` |
+| `powersource.neutral.current.ampacrms` | `AmpAcRMS` | Current neutral :  Amp AC RMS | `WARNING-CURRENT-NEUTRAL`, `CRITICAL-CURRENT-NEUTRAL` |
+| `line.load.percentage` | `%` | Load :  %% | `WARNING-LINE-LOAD`, `CRITICAL-LINE-LOAD` |
+| `line.neutral.current.ampere` | `A` | Current :  A | `WARNING-LINE-CURRENT`, `CRITICAL-LINE-CURRENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Receptacles {/* #hardware-pdu-emerson-snmp-receptacles */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RCP-STATUS` | `'%{oper_state} =~ /warning\|alarm/'` | Set warning threshold for status (Default: '%\{oper_state\} =~ /warning\|alarm/'). Can used special variables like: %\{oper_state\}, %\{power_state\}, %\{display\} |
+| `CRITICAL-RCP-STATUS` | `'%{oper_state} =~ /abnormal/'` | Set critical threshold for status (Default: '%\{oper_state\} =~ /abnormal/'). Can used special variables like: %\{oper_state\}, %\{power_state\}, %\{display\} |
+| `FILTER-RB` |  | Filter receptable branch name (can be a regexp) |
+| `UNKNOWN-RCP-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{oper_state\}, %\{power_state\}, %\{display\} |
+| `WARNING-TOTAL-ACCUMULATED-ENERGY` |  | Threshold warning total accumulated energy in kWh |
+| `WARNING-LINE2NEUTRAL-REAL-POWER` |  | Threshold warning line2neutral real power in W |
+| `WARNING-LINE2NEUTRAL-APPARENT-POWER` |  | Threshold warning line2neutral apparent power in VA |
+| `CRITICAL-TOTAL-ACCUMULATED-ENERGY` |  | Threshold critical total accumulated energy in kWh |
+| `CRITICAL-LINE2NEUTRAL-REAL-POWER` |  | Threshold critical line2neutral real power in W |
+| `CRITICAL-LINE2NEUTRAL-APPARENT-POWER` |  | Threshold critical line2neutral apparent power in VA |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `receptaclebranch.total.accumulated.energy.kilowatthour` | `kWh` | total input power :  kWh | `WARNING-TOTAL-ACCUMULATED-ENERGY`, `CRITICAL-TOTAL-ACCUMULATED-ENERGY` |
+| `receptaclebranch.line2neutral.real.power.watt` | `W` | line-to-neutral real power :  W | `WARNING-LINE2NEUTRAL-REAL-POWER`, `CRITICAL-LINE2NEUTRAL-REAL-POWER` |
+| `receptaclebranch.line2neutral.apparent.power.voltampere` | `VA` | line-to-neutral apparent power :  VA | `WARNING-LINE2NEUTRAL-APPARENT-POWER`, `CRITICAL-LINE2NEUTRAL-APPARENT-POWER` |
+| `receptaclebranch.line2neutral.current.ampacrms` | `AmpAcRMS` | line-to-neutral current :  Amp AC RMS |  |
+| `receptaclebranch.line2neutral.potential.voltrms` | `VoltRMS` | line-to-neutral potential :  VoltRMS |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240311 - 20240411</summary>
+
+- Plugin pack `Emerson PDU`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240311 - 20240411`.

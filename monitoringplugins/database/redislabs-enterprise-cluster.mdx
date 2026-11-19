@@ -1,0 +1,394 @@
+---
+title: "Redislabs Enterprise Cluster"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Redis.png";
+
+<PluginPackHeader name="Redislabs Enterprise Cluster" image={image} category="Database" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Redis Enterprise clusters through the REST API: statistics of the cluster, nodes, databases and shards.
+
+The plugin pack provides these checks:
+
+* [Cluster Stats](#apps-redis-rlec-restapi-cluster-stats)
+* [Databases Stats](#apps-redis-rlec-restapi-databases-stats)
+* [Nodes Stats](#apps-redis-rlec-restapi-nodes-stats)
+* [Shards Stats](#apps-redis-rlec-restapi-shards-stats)
+
+
+## Host Templates
+
+### RedisLabs-Enterprise-Cluster
+
+*RedisLabs Enterprise Cluster - Rest API* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `9443` | Port used (default: 9443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `USERNAME` |  | Cluster username. |
+| `PASSWORD` |  | Cluster password. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster Stats](#apps-redis-rlec-restapi-cluster-stats) | `apps-redis-rlec-restapi-cluster-stats` |
+| [Databases Stats](#apps-redis-rlec-restapi-databases-stats) | `apps-redis-rlec-restapi-databases-stats` |
+| [Nodes Stats](#apps-redis-rlec-restapi-nodes-stats) | `apps-redis-rlec-restapi-nodes-stats` |
+| [Shards Stats](#apps-redis-rlec-restapi-shards-stats) | `apps-redis-rlec-restapi-shards-stats` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster Stats {/* #apps-redis-rlec-restapi-cluster-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` | `.*` | Only display some counters (regexp can be used). Example: --filter-counters='^cpu' |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-CPU-SYSTEM` | `80` | Threshold warning cpu system |
+| `WARNING-CPU-USER` | `80` | Threshold warning cpu user |
+| `WARNING-MEMORY` | `80` | Threshold warning memory |
+| `WARNING-FLASH-STORAGE` | `80` | Threshold warning flash storage |
+| `WARNING-PERSISTENT-STORAGE` | `80` | Threshold warning persistent storage |
+| `WARNING-EPHEMERAL-STORAGE` | `80` | Threshold warning ephemeral storage |
+| `CRITICAL-CPU-SYSTEM` | `90` | Threshold critical cpu system |
+| `CRITICAL-CPU-USER` | `90` | Threshold critical cpu user |
+| `CRITICAL-MEMORY` | `90` | Threshold critical memory |
+| `CRITICAL-FLASH-STORAGE` | `90` | Threshold critical flash storage |
+| `CRITICAL-PERSISTENT-STORAGE` | `90` | Threshold critical persistent storage |
+| `CRITICAL-EPHEMERAL-STORAGE` | `90` | Threshold critical ephemeral storage |
+| `WARNING-REQUESTS` |  | Threshold warning requests |
+| `WARNING-FLASH-IOPS` |  | Threshold warning flash iops |
+| `WARNING-FLASH-THROUGHPUT` |  | Threshold warning flash throughput |
+| `WARNING-CONNECTIONS` |  | Threshold warning connections |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-REQUESTS` |  | Threshold critical requests |
+| `CRITICAL-FLASH-IOPS` |  | Threshold critical flash iops |
+| `CRITICAL-FLASH-THROUGHPUT` |  | Threshold critical flash throughput |
+| `CRITICAL-CONNECTIONS` |  | Threshold critical connections |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu_system` | `%` | Cpu system:  %% | `WARNING-CPU-SYSTEM`, `CRITICAL-CPU-SYSTEM` |
+| `cpu_user` | `%` | Cpu user:  %% | `WARNING-CPU-USER`, `CRITICAL-CPU-USER` |
+| `flash_iops` | `ops/s` | Flash IOPS:  ops/s | `WARNING-FLASH-IOPS`, `CRITICAL-FLASH-IOPS` |
+| `flash_throughput` | `B/s` | Flash throughput:  /s | `WARNING-FLASH-THROUGHPUT`, `CRITICAL-FLASH-THROUGHPUT` |
+| `connections` |  | Connections | `WARNING-CONNECTIONS`, `CRITICAL-CONNECTIONS` |
+| `requests` | `ops/s` | Requests rate:  ops/s | `WARNING-REQUESTS`, `CRITICAL-REQUESTS` |
+| `traffic_in` | `b/s` | Traffic In:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `traffic_out` | `b/s` | Traffic Out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Databases Stats {/* #apps-redis-rlec-restapi-databases-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-CPU` | `80` | Threshold warning total cpu |
+| `WARNING-FORK-CPU` | `80` | Threshold warning fork cpu |
+| `WARNING-MAIN-THREAD-CPU` | `80` | Threshold warning main thread cpu |
+| `WARNING-MEMORY` | `80` | Threshold warning memory |
+| `WARNING-LATENCY` | `100` | Threshold warning latency |
+| `CRITICAL-STATUS` | `'%{status} =~ /creation-failed/i \| %{backup_status} =~ /failed/i \| %{export_status} =~ /failed/i \| %{import_status} =~ /failed/i'` | Set critical threshold for status (Default: '%\{status\} =~ /creation-failed/i \| %\{backup_status\} =~ /failed/i \| %\{export_status\} =~ /failed/i \| %\{import_status\} =~ /failed/i'). Can used special variables like: %\{status\}, %\{type\}, %\{backup_status\}, %\{export_status\}, %\{shard_list\} |
+| `CRITICAL-TOTAL-CPU` | `90` | Threshold warning total cpu |
+| `CRITICAL-FORK-CPU` | `90` | Threshold warning fork cpu |
+| `CRITICAL-MAIN-THREAD-CPU` | `90` | Threshold warning main thread cpu |
+| `CRITICAL-MEMORY` | `90` | Threshold warning memory |
+| `CRITICAL-LATENCY` | `250` | Threshold warning latency |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='rate\|latency' |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{type\}, %\{backup_status\}, %\{export_status\}, %\{shard_list\} |
+| `WARNING-MEM-FRAG-RATIO` |  | Threshold warning memory fragmentation ratio |
+| `WARNING-CONNECTIONS` |  | Threshold warning connections |
+| `WARNING-TOTAL-RATES` |  | Threshold warning total rates |
+| `WARNING-OTHER-RATES` |  | Threshold warning other rates |
+| `WARNING-OTHER-LATENCY` |  | Threshold warning other latency |
+| `WARNING-KEYS` |  | Threshold warning keys |
+| `WARNING-EVICTED-OBJECTS` |  | Threshold warning evicted objects |
+| `WARNING-EXPIRED-OBJECTS` |  | Threshold warning expired objects |
+| `WARNING-READ-RATES` |  | Threshold warning read rates |
+| `WARNING-READ-LATENCY` |  | Threshold warning read latency |
+| `WARNING-WRITE-RATES` |  | Threshold warning write rates |
+| `WARNING-WRITE-LATENCY` |  | Threshold warning write latency |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-MEM-FRAG-RATIO` |  | Threshold warning memory fragmentation ratio |
+| `CRITICAL-CONNECTIONS` |  | Threshold warning connections |
+| `CRITICAL-TOTAL-RATES` |  | Threshold warning total rates |
+| `CRITICAL-OTHER-RATES` |  | Threshold warning other rates |
+| `CRITICAL-OTHER-LATENCY` |  | Threshold warning other latency |
+| `CRITICAL-KEYS` |  | Threshold warning keys |
+| `CRITICAL-EVICTED-OBJECTS` |  | Threshold warning evicted objects |
+| `CRITICAL-EXPIRED-OBJECTS` |  | Threshold warning expired objects |
+| `CRITICAL-READ-RATES` |  | Threshold warning read rates |
+| `CRITICAL-READ-LATENCY` |  | Threshold warning read latency |
+| `CRITICAL-WRITE-RATES` |  | Threshold warning write rates |
+| `CRITICAL-WRITE-LATENCY` |  | Threshold warning write latency |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold warning traffic out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_cpu_user` | `%` |  | `WARNING-TOTAL-CPU`, `CRITICAL-TOTAL-CPU` |
+| `fork_cpu_user` | `%` |  | `WARNING-FORK-CPU`, `CRITICAL-FORK-CPU` |
+| `main_thread_cpu_user` | `%` |  | `WARNING-MAIN-THREAD-CPU`, `CRITICAL-MAIN-THREAD-CPU` |
+| `mem_frag_ratio` |  | Memory fragmentation ratio | `WARNING-MEM-FRAG-RATIO`, `CRITICAL-MEM-FRAG-RATIO` |
+| `connections` |  | Connections | `WARNING-CONNECTIONS`, `CRITICAL-CONNECTIONS` |
+| `total_hits` | `ops/s` |  | `WARNING-TOTAL-RATES`, `CRITICAL-TOTAL-RATES` |
+| `latency` | `ms` | Average latency:  ms | `WARNING-LATENCY`, `CRITICAL-LATENCY` |
+| `other_req` | `ops/s` |  | `WARNING-OTHER-RATES`, `CRITICAL-OTHER-RATES` |
+| `other_latency` | `ms` | Other latency:  ms | `WARNING-OTHER-LATENCY`, `CRITICAL-OTHER-LATENCY` |
+| `keys` |  | Total keys | `WARNING-KEYS`, `CRITICAL-KEYS` |
+| `evicted_objects` | `evictions/sec` | Evicted objects rate:  evictions/sec | `WARNING-EVICTED-OBJECTS`, `CRITICAL-EVICTED-OBJECTS` |
+| `expired_objects` | `expirations/sec` | Expired objects rate:  expirations/sec | `WARNING-EXPIRED-OBJECTS`, `CRITICAL-EXPIRED-OBJECTS` |
+| `read_hits` | `ops/s` |  | `WARNING-READ-RATES`, `CRITICAL-READ-RATES` |
+| `read_latency` | `ms` | Read latency:  ms | `WARNING-READ-LATENCY`, `CRITICAL-READ-LATENCY` |
+| `write_hits` | `ops/s` |  | `WARNING-WRITE-RATES`, `CRITICAL-WRITE-RATES` |
+| `write_latency` | `ms` | Write latency:  ms | `WARNING-WRITE-LATENCY`, `CRITICAL-WRITE-LATENCY` |
+| `traffic_in` | `b/s` | Traffic In:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `traffic_out` | `b/s` | Traffic Out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Nodes Stats {/* #apps-redis-rlec-restapi-nodes-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-CPU-SYSTEM` | `80` | Threshold warning cpu system |
+| `WARNING-CPU-USER` | `80` | Threshold warning cpu user |
+| `WARNING-MEMORY` | `80` | Threshold warning memory |
+| `WARNING-FLASH-STORAGE` | `80` | Threshold warning flash storage |
+| `WARNING-PERSISTENT-STORAGE` | `80` | Threshold warning persistent storage |
+| `WARNING-EPHEMERAL-STORAGE` | `80` | Threshold warning ephemeral storage |
+| `WARNING-UPTIME` | `1800:` | Threshold warning uptime |
+| `CRITICAL-STATUS` | `'%{status} =~ /down/i'` | Set critical threshold for status (Default: '%\{status\} =~ /down/i'). Can used special variables like: %\{status\}, %\{shard_list\}, %\{int_addr\}, %\{ext_addr\}. 'status' can be: 'active', 'going_offline', 'offline', 'provisioning', 'decommissioning', 'down' |
+| `CRITICAL-CPU-SYSTEM` | `90` | Threshold critical cpu system |
+| `CRITICAL-CPU-USER` | `90` | Threshold critical cpu user |
+| `CRITICAL-MEMORY` | `90` | Threshold critical memory |
+| `CRITICAL-FLASH-STORAGE` | `90` | Threshold critical flash storage |
+| `CRITICAL-PERSISTENT-STORAGE` | `90` | Threshold critical persistent storage |
+| `CRITICAL-EPHEMERAL-STORAGE` | `90` | Threshold critical ephemeral storage |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical uptime |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^cpu' |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{shard_list\}, %\{int_addr\}, %\{ext_addr\}. 'status' can be: 'active', 'going_offline', 'offline', 'provisioning', 'decommissioning', 'down' |
+| `WARNING-REQUESTS` |  | Threshold warning requests |
+| `WARNING-FLASH-IOPS` |  | Threshold warning flash iops |
+| `WARNING-FLASH-THROUGHPUT` |  | Threshold warning flash throughput |
+| `WARNING-CONNECTIONS` |  | Threshold warning connections |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-SHARD-COUNT` |  | Threshold warning shard count |
+| `CRITICAL-REQUESTS` |  | Threshold critical requests |
+| `CRITICAL-FLASH-IOPS` |  | Threshold critical flash iops |
+| `CRITICAL-FLASH-THROUGHPUT` |  | Threshold critical flash throughput |
+| `CRITICAL-CONNECTIONS` |  | Threshold critical connections |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-SHARD-COUNT` |  | Threshold critical shard count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `shard_count` |  | Shard count | `WARNING-SHARD-COUNT`, `CRITICAL-SHARD-COUNT` |
+| `uptime` | `s` | Uptime | `WARNING-UPTIME`, `CRITICAL-UPTIME` |
+| `cpu_system` | `%` | Cpu system:  %% | `WARNING-CPU-SYSTEM`, `CRITICAL-CPU-SYSTEM` |
+| `cpu_user` | `%` | Cpu user:  %% | `WARNING-CPU-USER`, `CRITICAL-CPU-USER` |
+| `flash_iops` | `ops/s` | Flash IOPS:  ops/s | `WARNING-FLASH-IOPS`, `CRITICAL-FLASH-IOPS` |
+| `flash_throughput` | `B/s` | Flash throughput:  /s | `WARNING-FLASH-THROUGHPUT`, `CRITICAL-FLASH-THROUGHPUT` |
+| `connections` |  | Connections | `WARNING-CONNECTIONS`, `CRITICAL-CONNECTIONS` |
+| `requests` | `ops/s` | Requests rate:  ops/s | `WARNING-REQUESTS`, `CRITICAL-REQUESTS` |
+| `traffic_in` | `b/s` | Traffic In:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `traffic_out` | `b/s` | Traffic Out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Shards Stats {/* #apps-redis-rlec-restapi-shards-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-CPU` | `80` | Threshold warning total cpu |
+| `WARNING-FORK-CPU` | `80` | Threshold warning fork cpu |
+| `WARNING-MAIN-THREAD-CPU` | `80` | Threshold warning main thread cpu |
+| `WARNING-MEMORY` | `80` | Threshold warning memory |
+| `WARNING-BLOCKED-CLIENTS` | `0` | Threshold warning blocked clients |
+| `CRITICAL-STATUS` | `'%{status} =~ /inactive/i \| %{backup} =~ /failed/i \| %{sync} =~ /link_down/i'` | Set critical threshold for status (Default: '%\{status\} =~ /inactive/i \| %\{backup\} =~ /failed/i \| %\{sync\} =~ /link_down/i'). Can used special variables like: %\{status\}, %\{detailed_status\}, %\{role\}, %\{loading\}, %\{sync\}, %\{backup\} |
+| `CRITICAL-TOTAL-CPU` | `90` | Threshold warning total cpu |
+| `CRITICAL-FORK-CPU` | `90` | Threshold warning fork cpu |
+| `CRITICAL-MAIN-THREAD-CPU` | `90` | Threshold warning main thread cpu |
+| `CRITICAL-MEMORY` | `90` | Threshold warning memory |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='clients' |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{detailed_status\}, %\{role\}, %\{loading\}, %\{sync\}, %\{backup\} |
+| `WARNING-MEM-FRAG-RATIO` |  | Threshold warning memory fragmentation ratio |
+| `WARNING-CONNECTED-CLIENTS` |  | Threshold warning connected clients |
+| `WARNING-REQUEST` |  | Threshold warning requests |
+| `WARNING-KEYS` |  | Threshold warning keys |
+| `WARNING-EVICTED-OBJECTS` |  | Threshold warning evicted objects |
+| `WARNING-EXPIRED-OBJECTS` |  | Threshold warning expired objects |
+| `WARNING-READ-RATES` |  | Threshold warning read rates |
+| `WARNING-WRITE-RATES` |  | Threshold warning write rates |
+| `WARNING-RDB-CHANGES-SINCE-LAST-SAVE` |  | Threshold warning rdb changes since last save |
+| `WARNING-LAST-SAVE-TIME` |  | Threshold warning last save time |
+| `CRITICAL-MEM-FRAG-RATIO` |  | Threshold warning memory fragmentation ratio |
+| `CRITICAL-CONNECTED-CLIENTS` |  | Threshold warning connected clients |
+| `CRITICAL-BLOCKED-CLIENTS` |  | Threshold warning blocked clients |
+| `CRITICAL-REQUEST` |  | Threshold warning requests |
+| `CRITICAL-KEYS` |  | Threshold warning keys |
+| `CRITICAL-EVICTED-OBJECTS` |  | Threshold warning evicted objects |
+| `CRITICAL-EXPIRED-OBJECTS` |  | Threshold warning expired objects |
+| `CRITICAL-READ-RATES` |  | Threshold warning read rates |
+| `CRITICAL-WRITE-RATES` |  | Threshold warning write rates |
+| `CRITICAL-RDB-CHANGES-SINCE-LAST-SAVE` |  | Threshold warning rdb changes since last save |
+| `CRITICAL-LAST-SAVE-TIME` |  | Threshold warning last save time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_cpu_user` | `%` |  | `WARNING-TOTAL-CPU`, `CRITICAL-TOTAL-CPU` |
+| `fork_cpu_user` | `%` |  | `WARNING-FORK-CPU`, `CRITICAL-FORK-CPU` |
+| `main_thread_cpu_user` | `%` |  | `WARNING-MAIN-THREAD-CPU`, `CRITICAL-MAIN-THREAD-CPU` |
+| `memory` | `B` | Memory used | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+| `mem_frag_ratio` |  | Memory fragmentation ratio | `WARNING-MEM-FRAG-RATIO`, `CRITICAL-MEM-FRAG-RATIO` |
+| `connected_clients` |  | Connected clients | `WARNING-CONNECTED-CLIENTS`, `CRITICAL-CONNECTED-CLIENTS` |
+| `blocked_clients` |  | Blocked clients | `WARNING-BLOCKED-CLIENTS`, `CRITICAL-BLOCKED-CLIENTS` |
+| `requests` | `ops/s` | Requests rate:  ops/s |  |
+| `keys` |  | Total keys | `WARNING-KEYS`, `CRITICAL-KEYS` |
+| `volatile_keys` |  | Volatile keys |  |
+| `evicted_objects` | `evictions/sec` | Evicted objects rate:  evictions/sec | `WARNING-EVICTED-OBJECTS`, `CRITICAL-EVICTED-OBJECTS` |
+| `expired_objects` | `expirations/sec` | Expired objects rate:  expirations/sec | `WARNING-EXPIRED-OBJECTS`, `CRITICAL-EXPIRED-OBJECTS` |
+| `read_hits` | `ops/s` |  | `WARNING-READ-RATES`, `CRITICAL-READ-RATES` |
+| `write_hits` | `ops/s` |  | `WARNING-WRITE-RATES`, `CRITICAL-WRITE-RATES` |
+| `rdb_changes_since_last_save` |  | Rdb changes since last save | `WARNING-RDB-CHANGES-SINCE-LAST-SAVE`, `CRITICAL-RDB-CHANGES-SINCE-LAST-SAVE` |
+| `last_save_time` | `s` | Last same time | `WARNING-LAST-SAVE-TIME`, `CRITICAL-LAST-SAVE-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

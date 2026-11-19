@@ -1,0 +1,191 @@
+---
+title: "Prometheus query"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Prometheus.png";
+
+<PluginPackHeader name="Prometheus query" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+Monitors Prometheus servers through the Prometheus API: scrape target status and the results of custom PromQL queries.
+
+The plugin pack provides these checks:
+
+* [Custom query](#cloud-prometheus-restapi-expression)
+* [Target status](#cloud-prometheus-restapi-target-status)
+
+
+## Host Templates
+
+### Prometheus-query
+
+*Prometheus query* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROMETHEUS-URLPATH` | `/api/v1` | API url path (default: '/api/v1') |
+| `PROMETHEUS-PORT` | `9090` | API port (default: 9090) |
+| `PROMETHEUS-PROTOCOL` | `http` | Specify https if needed (default: 'http') |
+| `PROMETHEUS-HOSTAME` |  | *(not used by the check command)* |
+| `PROMETHEUS-PASSWORD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified) |
+| `PROMETHEUS-USERNAME` |  | Specify the username for authentication (mandatory if --credentials is specified) |
+| `PROMETHEUS-EXTRA-OPTS` |  | if authentication needed set --credentials, if basic authentication then --basic |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Custom query](#cloud-prometheus-restapi-expression) | `cloud-prometheus-restapi-expression` |
+| [Target status](#cloud-prometheus-restapi-target-status) | `cloud-prometheus-restapi-target-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Custom query {/* #cloud-prometheus-restapi-expression */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEFRAME` | `900` | Set timeframe in seconds (i.e. 3600 to check last hour) (Required for --query-range queries, Default: '900') |
+| `STEP` | `1m` | Set the step of the metric query (Examples: '30s', '1m', '15m', '1h') (Required for --query-range queries, Default: '1m') |
+| `AGGREGATION` | `average` | Set the aggregation on metric values (Can be: 'average', 'min', 'max', 'sum') (Required for --query-range queries, Default: 'average') |
+| `INSTANCE` |  | Set the instance label on which the results should be calculate for (Example: --instance='name') |
+| `QUERY1` |  | Set a PromQL query. Query option must be like --query='label,query' |
+| `QUERY2` |  | Set a PromQL query. Query option must be like --query='label,query' |
+| `QUERY3` |  | Set a PromQL query. Query option must be like --query='label,query' |
+| `QUERY4` |  | Set a PromQL query. Query option must be like --query='label,query' |
+| `QUERY5` |  | Set a PromQL query. Query option must be like --query='label,query' |
+| `OUTPUT` |  | Set the output for each instances (Example: --output='Container %\{instance\} value is \{label\}') |
+| `QUERY-RANG1` |  | Set a PromQL query. Query option must be like --query-range='label,query'. This query type uses --step, --timeframe and --aggregation options to compute the values |
+| `QUERY-RANG2` |  | Set a PromQL query. Query option must be like --query-range='label,query'. This query type uses --step, --timeframe and --aggregation options to compute the values |
+| `QUERY-RANG3` |  | Set a PromQL query. Query option must be like --query-range='label,query'. This query type uses --step, --timeframe and --aggregation options to compute the values |
+| `QUERY-RANG4` |  | Set a PromQL query. Query option must be like --query-range='label,query'. This query type uses --step, --timeframe and --aggregation options to compute the values |
+| `QUERY-RANG5` |  | Set a PromQL query. Query option must be like --query-range='label,query'. This query type uses --step, --timeframe and --aggregation options to compute the values |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING (default: ''). Can use special variables like %\{instance\} and any other labels you set through --query and --query-range options |
+| `CRITICAL-STATUS` |  | Define the conditions to match for the status to be CRITICAL (default: ''). Can use special variables like %\{instance\} and any other labels you set through --query and --query-range options |
+| `MULTIPLE-OUTPUT` |  | Set the global output in case everything is fine for multiple instances (example: --multiple-output='Containers are OK') |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Target status {/* #cloud-prometheus-restapi-target-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{health} !~ /up/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{health\} !~ /up/'). You can use the following variables: %\{display\}, %\{health\} |
+| `TIMEFRAME` | `900` | Set timeframe in seconds (i.e. 3600 to check last hour) |
+| `STEP` | `1m` | Set the step of the metric query (examples: '30s', '1m', '15m', '1h') |
+| `FILTER-LABEL` |  | Set filter on label (regexp, can be defined multiple times) (example: --filter-label='job,kube.*') |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING (default: '') You can use the following variables: %\{display\}, %\{health\} |
+| `WARNING-ACTIVE` |  | Warning treshold targets active |
+| `WARNING-DROPPED` |  | Warning treshold targets dropped |
+| `WARNING-UP` |  | Warning treshold targets up |
+| `WARNING-DOWN` |  | Warning treshold targets down |
+| `CRITICAL-ACTIVE` |  | Critical treshold targets active |
+| `CRITICAL-DROPPED` |  | Critical treshold targets dropped |
+| `CRITICAL-UP` |  | Critical treshold targets up |
+| `CRITICAL-DOWN` |  | Critical treshold targets down |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `targets.active.count` |  | Active | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `targets.dropped.count` |  | Dropped | `WARNING-DROPPED`, `CRITICAL-DROPPED` |
+| `targets.up.count` |  | Up | `WARNING-UP`, `CRITICAL-UP` |
+| `targets.down.count` |  | Down | `WARNING-DOWN`, `CRITICAL-DOWN` |
+| `targets.unknown.count` |  | Unknown |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Plugin pack `Prometheus query`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20251100 - 20260120`.

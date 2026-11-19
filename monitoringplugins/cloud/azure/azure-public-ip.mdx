@@ -12,11 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-Public-IP.png";
 
 ## Description
 
-### Azure Public IP monitoring
-protocols used: HTTPS (Rest API)
+Monitors Azure public IP addresses: the status of the address, its traffic and SYN packets, and the traffic during DDoS attacks (inbound, forwarded and dropped).
 
-- Status
-- DDoS traffic
+The plugin pack provides these checks:
+
+* [DDOS Traffic](#cloud-azure-network-publicip-ddos-traffic)
+* [Status](#cloud-azure-network-publicip-status)
 
 ## Prerequisites
 
@@ -24,6 +25,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Public IP](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

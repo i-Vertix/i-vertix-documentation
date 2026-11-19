@@ -1,0 +1,978 @@
+---
+title: "Redis in-memory"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Redis.png";
+
+<PluginPackHeader name="Redis in-memory" image={image} category="Database" metadata={["SSH"]} />
+
+## Description
+
+Monitors Redis servers through SSH: clients, commands, connections, CPU, memory, persistence and replication.
+
+The plugin pack provides these checks:
+
+* [Redis Clients](#database-redis-cli-clients) (`database-redis-cli-clients`)
+* [Redis Clients](#database-redis-perlmod-clients) (`database-redis-perlmod-clients`)
+* [Redis Commands](#database-redis-cli-commands) (`database-redis-cli-commands`)
+* [Redis Commands](#database-redis-perlmod-commands) (`database-redis-perlmod-commands`)
+* [Redis Connections](#database-redis-cli-connections) (`database-redis-cli-connections`)
+* [Redis Connections](#database-redis-perlmod-connections) (`database-redis-perlmod-connections`)
+* [Redis CPU](#database-redis-cli-cpu) (`database-redis-cli-cpu`)
+* [Redis CPU](#database-redis-perlmod-cpu) (`database-redis-perlmod-cpu`)
+* [Redis Memory](#database-redis-cli-memory) (`database-redis-cli-memory`)
+* [Redis Memory](#database-redis-perlmod-memory) (`database-redis-perlmod-memory`)
+* [Redis Persistence](#database-redis-cli-persistence) (`database-redis-cli-persistence`)
+* [Redis Persistence](#database-redis-perlmod-persistence) (`database-redis-perlmod-persistence`)
+* [Redis Replication](#database-redis-cli-replication) (`database-redis-cli-replication`)
+* [Redis Replication](#database-redis-perlmod-replication) (`database-redis-perlmod-replication`)
+
+
+## Host Templates
+
+### Redis-DB-cli
+
+*Redis in-memory data structure store - CLI* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSHCLI-OPTION` | `-o=StrictHostKeyChecking=no` | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+| `REDIS-PORT` | `6379` | Redis port (default: 6379). |
+| `REDIS-SERVER` | `127.0.0.1` | Redis server. |
+| `SSHCLI-OPTION2` | `-o=LogLevel=ERROR` | hides the SSH banner |
+| `REDIS-EXTRAOPTS` |  |  |
+| `REDIS-USERNAME` |  | Redis username (redis-cli >= 6.x mandatory). |
+| `SSH-PASSWORD` |  | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Clients](#database-redis-cli-clients) | `database-redis-cli-clients` |
+| [Redis Commands](#database-redis-cli-commands) | `database-redis-cli-commands` |
+| [Redis Connections](#database-redis-cli-connections) | `database-redis-cli-connections` |
+| [Redis CPU](#database-redis-cli-cpu) | `database-redis-cli-cpu` |
+| [Redis Memory](#database-redis-cli-memory) | `database-redis-cli-memory` |
+| [Redis Persistence](#database-redis-cli-persistence) | `database-redis-cli-persistence` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Clients](#database-redis-perlmod-clients) | `database-redis-perlmod-clients` |
+| [Redis Commands](#database-redis-perlmod-commands) | `database-redis-perlmod-commands` |
+| [Redis Connections](#database-redis-perlmod-connections) | `database-redis-perlmod-connections` |
+| [Redis CPU](#database-redis-perlmod-cpu) | `database-redis-perlmod-cpu` |
+| [Redis Memory](#database-redis-perlmod-memory) | `database-redis-perlmod-memory` |
+| [Redis Persistence](#database-redis-perlmod-persistence) | `database-redis-perlmod-persistence` |
+| [Redis Replication](#database-redis-cli-replication) | `database-redis-cli-replication` |
+| [Redis Replication](#database-redis-perlmod-replication) | `database-redis-perlmod-replication` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Redis-DB-perl
+
+*Redis in-memory data structure store - Perl* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REDIS-PORT` | `6379` | Redis port (default: 6379). |
+| `REDIS-PASSWORD` | *(password)* | Redis password. |
+| `REDIS-USERNAME` |  | Redis username. Use of this option requires Perl Redis module v2.0 or higher. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Clients](#database-redis-perlmod-clients) | `database-redis-perlmod-clients` |
+| [Redis Commands](#database-redis-perlmod-commands) | `database-redis-perlmod-commands` |
+| [Redis Connections](#database-redis-perlmod-connections) | `database-redis-perlmod-connections` |
+| [Redis CPU](#database-redis-perlmod-cpu) | `database-redis-perlmod-cpu` |
+| [Redis Memory](#database-redis-perlmod-memory) | `database-redis-perlmod-memory` |
+| [Redis Persistence](#database-redis-perlmod-persistence) | `database-redis-perlmod-persistence` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Clients](#database-redis-cli-clients) | `database-redis-cli-clients` |
+| [Redis Commands](#database-redis-cli-commands) | `database-redis-cli-commands` |
+| [Redis Connections](#database-redis-cli-connections) | `database-redis-cli-connections` |
+| [Redis CPU](#database-redis-cli-cpu) | `database-redis-cli-cpu` |
+| [Redis Memory](#database-redis-cli-memory) | `database-redis-cli-memory` |
+| [Redis Persistence](#database-redis-cli-persistence) | `database-redis-cli-persistence` |
+| [Redis Replication](#database-redis-cli-replication) | `database-redis-cli-replication` |
+| [Redis Replication](#database-redis-perlmod-replication) | `database-redis-perlmod-replication` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Redis-DB-Replication-cli
+
+*Redis in-memory data structure store - Replication - CLI* · Parent template: `Redis-DB-cli`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REDIS-EXTRAOPTS` |  |  |
+| `REDIS-PORT` |  | Redis port (default: 6379). |
+| `REDIS-USERNAME` |  | Redis username (redis-cli >= 6.x mandatory). |
+| `SSH-BACKEND` |  | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-PASSWORD` |  | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSHCLI-OPTION` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+| `REDIS-SERVER` |  | Redis server. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Replication](#database-redis-cli-replication) | `database-redis-cli-replication` |
+| [Redis Clients](#database-redis-cli-clients) (inherited from `Redis-DB-cli`) | `database-redis-cli-clients` |
+| [Redis Commands](#database-redis-cli-commands) (inherited from `Redis-DB-cli`) | `database-redis-cli-commands` |
+| [Redis Connections](#database-redis-cli-connections) (inherited from `Redis-DB-cli`) | `database-redis-cli-connections` |
+| [Redis CPU](#database-redis-cli-cpu) (inherited from `Redis-DB-cli`) | `database-redis-cli-cpu` |
+| [Redis Memory](#database-redis-cli-memory) (inherited from `Redis-DB-cli`) | `database-redis-cli-memory` |
+| [Redis Persistence](#database-redis-cli-persistence) (inherited from `Redis-DB-cli`) | `database-redis-cli-persistence` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Clients](#database-redis-perlmod-clients) | `database-redis-perlmod-clients` |
+| [Redis Commands](#database-redis-perlmod-commands) | `database-redis-perlmod-commands` |
+| [Redis Connections](#database-redis-perlmod-connections) | `database-redis-perlmod-connections` |
+| [Redis CPU](#database-redis-perlmod-cpu) | `database-redis-perlmod-cpu` |
+| [Redis Memory](#database-redis-perlmod-memory) | `database-redis-perlmod-memory` |
+| [Redis Persistence](#database-redis-perlmod-persistence) | `database-redis-perlmod-persistence` |
+| [Redis Replication](#database-redis-perlmod-replication) | `database-redis-perlmod-replication` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Redis-DB-Replication-perl
+
+*Redis in-memory data structure store - Replication - Perl* · Parent template: `Redis-DB-perl`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (2)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `REDIS-USERNAME` |  | Redis username. Use of this option requires Perl Redis module v2.0 or higher. |
+| `REDIS-PASSWORD` |  | Redis password. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Replication](#database-redis-perlmod-replication) | `database-redis-perlmod-replication` |
+| [Redis Clients](#database-redis-perlmod-clients) (inherited from `Redis-DB-perl`) | `database-redis-perlmod-clients` |
+| [Redis Commands](#database-redis-perlmod-commands) (inherited from `Redis-DB-perl`) | `database-redis-perlmod-commands` |
+| [Redis Connections](#database-redis-perlmod-connections) (inherited from `Redis-DB-perl`) | `database-redis-perlmod-connections` |
+| [Redis CPU](#database-redis-perlmod-cpu) (inherited from `Redis-DB-perl`) | `database-redis-perlmod-cpu` |
+| [Redis Memory](#database-redis-perlmod-memory) (inherited from `Redis-DB-perl`) | `database-redis-perlmod-memory` |
+| [Redis Persistence](#database-redis-perlmod-persistence) (inherited from `Redis-DB-perl`) | `database-redis-perlmod-persistence` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Redis Clients](#database-redis-cli-clients) | `database-redis-cli-clients` |
+| [Redis Commands](#database-redis-cli-commands) | `database-redis-cli-commands` |
+| [Redis Connections](#database-redis-cli-connections) | `database-redis-cli-connections` |
+| [Redis CPU](#database-redis-cli-cpu) | `database-redis-cli-cpu` |
+| [Redis Memory](#database-redis-cli-memory) | `database-redis-cli-memory` |
+| [Redis Persistence](#database-redis-cli-persistence) | `database-redis-cli-persistence` |
+| [Redis Replication](#database-redis-cli-replication) | `database-redis-cli-replication` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Clients {/* #database-redis-cli-clients */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BLOCKED-CLIENTS` | `0` | Warning threshold for number of blocked clients |
+| `WARNING-CONNECTED-CLIENTS` |  | Warning threshold for number of connected clients |
+| `WARNING-CLIENT-LONGEST-OUTPUT-LIST` |  | Warning threshold for longest output list among current client connections |
+| `WARNING-CLIENT-BIGGEST-INPUT-BUF` |  | Warning threshold for biggest input buffer among current client connections |
+| `CRITICAL-CONNECTED-CLIENTS` |  | Critical threshold for number of connected clients |
+| `CRITICAL-BLOCKED-CLIENTS` |  | Critical threshold for number of blocked clients |
+| `CRITICAL-CLIENT-LONGEST-OUTPUT-LIST` |  | Critical threshold for longest output list among current client connections |
+| `CRITICAL-CLIENT-BIGGEST-INPUT-BUF` |  | Critical threshold for biggest input buffer among current client connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `clients.connected.count` |  | connected | `WARNING-CONNECTED-CLIENTS`, `CRITICAL-CONNECTED-CLIENTS` |
+| `clients.blocked.count` |  | blocked | `WARNING-BLOCKED-CLIENTS`, `CRITICAL-BLOCKED-CLIENTS` |
+| `clients.longest_output_list.count` |  | longest output list | `WARNING-CLIENT-LONGEST-OUTPUT-LIST`, `CRITICAL-CLIENT-LONGEST-OUTPUT-LIST` |
+| `clients.biggest_input_buffer.count` |  | client biggest input buffer | `WARNING-CLIENT-BIGGEST-INPUT-BUF`, `CRITICAL-CLIENT-BIGGEST-INPUT-BUF` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Commands {/* #database-redis-cli-commands */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PROCESSED-COMMANDS` |  | Warning threshold for number of commands processed by the server |
+| `WARNING-OPS-PER-SEC` |  | Warning threshold for number of commands processed per second |
+| `CRITICAL-PROCESSED-COMMANDS` |  | Critical threshold for number of commands processed by the server |
+| `CRITICAL-OPS-PER-SEC` |  | Critical threshold for number of commands processed per second |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `commands.processed.count` |  |  | `WARNING-PROCESSED-COMMANDS`, `CRITICAL-PROCESSED-COMMANDS` |
+| `commands.processed.persecond` | `/s` | /s | `WARNING-OPS-PER-SEC`, `CRITICAL-OPS-PER-SEC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Connections {/* #database-redis-cli-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-REJECTED-CONNECTIONS` | `0` | Warning threshold for rejected connections |
+| `WARNING-RECEIVED-CONNECTIONS` |  | Warning threshold for received connections |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold for inbound traffic (b/s) |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold for outbound traffic (b/s) |
+| `CRITICAL-RECEIVED-CONNECTIONS` |  | Critical threshold for received connections |
+| `CRITICAL-REJECTED-CONNECTIONS` |  | Critical threshold for rejected connections |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold for inbound traffic (b/s) |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold for outbound traffic (b/s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.received.count` |  | received | `WARNING-RECEIVED-CONNECTIONS`, `CRITICAL-RECEIVED-CONNECTIONS` |
+| `connections.rejected.count` |  | rejected | `WARNING-REJECTED-CONNECTIONS`, `CRITICAL-REJECTED-CONNECTIONS` |
+| `network.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `network.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis CPU {/* #database-redis-cli-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SYS` | `80` | Warning threshold for Sys CPU utilization |
+| `WARNING-USER` | `80` | Warning threshold for User CPU utilization |
+| `WARNING-SYS-CHILDREN` | `80` | Warning threshold for Sys Children CPU utilization |
+| `WARNING-USER-CHILDREN` | `80` | Warning threshold for User Children CPU utilization |
+| `CRITICAL-SYS` | `90` | Critical threshold for Sys CPU utilization |
+| `CRITICAL-USER` | `90` | Critical threshold for User CPU utilization |
+| `CRITICAL-SYS-CHILDREN` | `90` | Critical threshold for Sys Children CPU utilization |
+| `CRITICAL-USER-CHILDREN` | `90` | Critical threshold for User Children CPU utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.system.usage.percentage` | `%` | system:  %% | `WARNING-SYS`, `CRITICAL-SYS` |
+| `cpu.user.usage.percentage` | `%` | user:  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.system.children.usage.percentage` | `%` | system children:  %% | `WARNING-SYS-CHILDREN`, `CRITICAL-SYS-CHILDREN` |
+| `cpu.user.children.usage.percentage` | `%` | user children:  %% | `WARNING-USER-CHILDREN`, `CRITICAL-USER-CHILDREN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Memory {/* #database-redis-cli-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USED` | `80` | Warning threshold for Used memory utilization |
+| `CRITICAL-USED` | `90` | Critical threshold for Used memory utilization |
+| `WARNING-PEAK` |  | Warning threshold for Peak memory utilization |
+| `WARNING-OVERHEAD` |  | Warning threshold for Overhead memory utilization |
+| `WARNING-STARTUP` |  | Warning threshold for Startup memory utilization |
+| `WARNING-DATASET` |  | Warning threshold for Dataset memory utilization |
+| `WARNING-LUA` |  | Warning threshold for Lua memory utilization |
+| `WARNING-FRAGMENTATION-RATIO` |  | Warning threshold for Fragmentation Ratio |
+| `WARNING-DEFRAG-RUNNING` |  | Warning threshold for Running Defragmentation |
+| `WARNING-LAZYFREE-PENDING-OBJECTS` |  | Warning threshold for Lazyfree Pending Objects |
+| `CRITICAL-PEAK` |  | Critical threshold for Peak memory utilization |
+| `CRITICAL-OVERHEAD` |  | Critical threshold for Overhead memory utilization |
+| `CRITICAL-STARTUP` |  | Critical threshold for Startup memory utilization |
+| `CRITICAL-DATASET` |  | Critical threshold for Dataset memory utilization |
+| `CRITICAL-LUA` |  | Critical threshold for Lua memory utilization |
+| `CRITICAL-FRAGMENTATION-RATIO` |  | Critical threshold for Fragmentation Ratio |
+| `CRITICAL-DEFRAG-RUNNING` |  | Critical threshold for Running Defragmentation |
+| `CRITICAL-LAZYFREE-PENDING-OBJECTS` |  | Critical threshold for Lazyfree Pending Objects |
+| `WARNING-RSS` |  | Warning threshold for Rss memory utilization |
+| `CRITICAL-RSS` |  | Critical threshold for Rss memory utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USED`, `CRITICAL-USED` |
+| `memory.rss.usage.bytes` | `B` |  | `WARNING-RSS`, `CRITICAL-RSS` |
+| `memory.peak.usage.bytes` | `B` |  | `WARNING-PEAK`, `CRITICAL-PEAK` |
+| `memory.overhead.usage.bytes` | `B` |  | `WARNING-OVERHEAD`, `CRITICAL-OVERHEAD` |
+| `memory.startup.usage.bytes` | `B` |  | `WARNING-STARTUP`, `CRITICAL-STARTUP` |
+| `memory.dataset.usage.bytes` | `B` |  | `WARNING-DATASET`, `CRITICAL-DATASET` |
+| `memory.lua.usage.bytes` | `B` |  | `WARNING-LUA`, `CRITICAL-LUA` |
+| `memory.fragmentation.ratio.count` |  | fragmentation ratio | `WARNING-FRAGMENTATION-RATIO`, `CRITICAL-FRAGMENTATION-RATIO` |
+| `memory.defragmentation.running.count` |  | defragmentation running | `WARNING-DEFRAG-RUNNING`, `CRITICAL-DEFRAG-RUNNING` |
+| `memory.lazy_pending_objects.count` |  | lazyfree pending objects | `WARNING-LAZYFREE-PENDING-OBJECTS`, `CRITICAL-LAZYFREE-PENDING-OBJECTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Persistence {/* #database-redis-cli-persistence */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{progress_status} =~ /in progress/i'` | Set warning threshold for status (Default: '%\{progress_status\} =~ /in progress/i'). Can used special variables like: %\{progress_status\}, %\{status\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /fail/i'` | Set critical threshold for status (Default: '%\{status\} =~ /fail/i'). Can used special variables like: %\{progress_status\}, %\{status\} |
+| `WARNING-CHANGES` |  | Threshold warning changes |
+| `WARNING-LAST-SAVE` |  | Threshold warning last save |
+| `WARNING-SAVE-SIZE` |  | Threshold warning save size |
+| `WARNING-LAST-SAVE-DURATION` |  | Threshold warning last save duration |
+| `WARNING-CURRENT-SAVE-DURATION` |  | Threshold warning current save duration |
+| `CRITICAL-CHANGES` |  | Threshold critical changes |
+| `CRITICAL-LAST-SAVE` |  | Threshold critical last save |
+| `CRITICAL-SAVE-SIZE` |  | Threshold critical save size |
+| `CRITICAL-LAST-SAVE-DURATION` |  | Threshold critical last save duration |
+| `CRITICAL-CURRENT-SAVE-DURATION` |  | Threshold critical current save duration |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `rdb.changes.since_last_save.count` |  | number of changes since the last dump | `WARNING-CHANGES`, `CRITICAL-CHANGES` |
+| `rdb.last_successful_save.seconds` | `s` | time since last successful save | `WARNING-LAST-SAVE`, `CRITICAL-LAST-SAVE` |
+| `rdb.last_save.size.bytes` | `B` | size of last save | `WARNING-SAVE-SIZE`, `CRITICAL-SAVE-SIZE` |
+| `rdb.last_save.duration.seconds` | `s` | duration of last save:  s | `WARNING-LAST-SAVE-DURATION`, `CRITICAL-LAST-SAVE-DURATION` |
+| `rdb.current_save.duration.seconds` | `s` | duration of current save:  s | `WARNING-CURRENT-SAVE-DURATION`, `CRITICAL-CURRENT-SAVE-DURATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Clients {/* #database-redis-perlmod-clients */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BLOCKED-CLIENTS` | `0` | Warning threshold for number of blocked clients |
+| `WARNING-CONNECTED-CLIENTS` |  | Warning threshold for number of connected clients |
+| `WARNING-CLIENT-LONGEST-OUTPUT-LIST` |  | Warning threshold for longest output list among current client connections |
+| `WARNING-CLIENT-BIGGEST-INPUT-BUF` |  | Warning threshold for biggest input buffer among current client connections |
+| `CRITICAL-CONNECTED-CLIENTS` |  | Critical threshold for number of connected clients |
+| `CRITICAL-BLOCKED-CLIENTS` |  | Critical threshold for number of blocked clients |
+| `CRITICAL-CLIENT-LONGEST-OUTPUT-LIST` |  | Critical threshold for longest output list among current client connections |
+| `CRITICAL-CLIENT-BIGGEST-INPUT-BUF` |  | Critical threshold for biggest input buffer among current client connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `clients.connected.count` |  | connected | `WARNING-CONNECTED-CLIENTS`, `CRITICAL-CONNECTED-CLIENTS` |
+| `clients.blocked.count` |  | blocked | `WARNING-BLOCKED-CLIENTS`, `CRITICAL-BLOCKED-CLIENTS` |
+| `clients.longest_output_list.count` |  | longest output list | `WARNING-CLIENT-LONGEST-OUTPUT-LIST`, `CRITICAL-CLIENT-LONGEST-OUTPUT-LIST` |
+| `clients.biggest_input_buffer.count` |  | client biggest input buffer | `WARNING-CLIENT-BIGGEST-INPUT-BUF`, `CRITICAL-CLIENT-BIGGEST-INPUT-BUF` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Commands {/* #database-redis-perlmod-commands */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PROCESSED-COMMANDS` |  | Warning threshold for number of commands processed by the server |
+| `WARNING-OPS-PER-SEC` |  | Warning threshold for number of commands processed per second |
+| `CRITICAL-PROCESSED-COMMANDS` |  | Critical threshold for number of commands processed by the server |
+| `CRITICAL-OPS-PER-SEC` |  | Critical threshold for number of commands processed per second |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `commands.processed.count` |  |  | `WARNING-PROCESSED-COMMANDS`, `CRITICAL-PROCESSED-COMMANDS` |
+| `commands.processed.persecond` | `/s` | /s | `WARNING-OPS-PER-SEC`, `CRITICAL-OPS-PER-SEC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Connections {/* #database-redis-perlmod-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-REJECTED-CONNECTIONS` | `0` | Warning threshold for rejected connections |
+| `WARNING-RECEIVED-CONNECTIONS` |  | Warning threshold for received connections |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold for inbound traffic (b/s) |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold for outbound traffic (b/s) |
+| `CRITICAL-RECEIVED-CONNECTIONS` |  | Critical threshold for received connections |
+| `CRITICAL-REJECTED-CONNECTIONS` |  | Critical threshold for rejected connections |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold for inbound traffic (b/s) |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold for outbound traffic (b/s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.received.count` |  | received | `WARNING-RECEIVED-CONNECTIONS`, `CRITICAL-RECEIVED-CONNECTIONS` |
+| `connections.rejected.count` |  | rejected | `WARNING-REJECTED-CONNECTIONS`, `CRITICAL-REJECTED-CONNECTIONS` |
+| `network.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `network.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis CPU {/* #database-redis-perlmod-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SYS` | `80` | Warning threshold for Sys CPU utilization |
+| `WARNING-USER` | `80` | Warning threshold for User CPU utilization |
+| `WARNING-SYS-CHILDREN` | `80` | Warning threshold for Sys Children CPU utilization |
+| `WARNING-USER-CHILDREN` | `80` | Warning threshold for User Children CPU utilization |
+| `CRITICAL-SYS` | `90` | Critical threshold for Sys CPU utilization |
+| `CRITICAL-USER` | `90` | Critical threshold for User CPU utilization |
+| `CRITICAL-SYS-CHILDREN` | `90` | Critical threshold for Sys Children CPU utilization |
+| `CRITICAL-USER-CHILDREN` | `90` | Critical threshold for User Children CPU utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.system.usage.percentage` | `%` | system:  %% | `WARNING-SYS`, `CRITICAL-SYS` |
+| `cpu.user.usage.percentage` | `%` | user:  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.system.children.usage.percentage` | `%` | system children:  %% | `WARNING-SYS-CHILDREN`, `CRITICAL-SYS-CHILDREN` |
+| `cpu.user.children.usage.percentage` | `%` | user children:  %% | `WARNING-USER-CHILDREN`, `CRITICAL-USER-CHILDREN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Memory {/* #database-redis-perlmod-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USED` | `80` | Warning threshold for Used memory utilization |
+| `CRITICAL-USED` | `90` | Critical threshold for Used memory utilization |
+| `WARNING-PEAK` |  | Warning threshold for Peak memory utilization |
+| `WARNING-OVERHEAD` |  | Warning threshold for Overhead memory utilization |
+| `WARNING-STARTUP` |  | Warning threshold for Startup memory utilization |
+| `WARNING-DATASET` |  | Warning threshold for Dataset memory utilization |
+| `WARNING-LUA` |  | Warning threshold for Lua memory utilization |
+| `WARNING-FRAGMENTATION-RATIO` |  | Warning threshold for Fragmentation Ratio |
+| `WARNING-DEFRAG-RUNNING` |  | Warning threshold for Running Defragmentation |
+| `WARNING-LAZYFREE-PENDING-OBJECTS` |  | Warning threshold for Lazyfree Pending Objects |
+| `CRITICAL-PEAK` |  | Critical threshold for Peak memory utilization |
+| `CRITICAL-OVERHEAD` |  | Critical threshold for Overhead memory utilization |
+| `CRITICAL-STARTUP` |  | Critical threshold for Startup memory utilization |
+| `CRITICAL-DATASET` |  | Critical threshold for Dataset memory utilization |
+| `CRITICAL-LUA` |  | Critical threshold for Lua memory utilization |
+| `CRITICAL-FRAGMENTATION-RATIO` |  | Critical threshold for Fragmentation Ratio |
+| `CRITICAL-DEFRAG-RUNNING` |  | Critical threshold for Running Defragmentation |
+| `CRITICAL-LAZYFREE-PENDING-OBJECTS` |  | Critical threshold for Lazyfree Pending Objects |
+| `WARNING-RSS` |  | Warning threshold for Rss memory utilization |
+| `CRITICAL-RSS` |  | Critical threshold for Rss memory utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USED`, `CRITICAL-USED` |
+| `memory.rss.usage.bytes` | `B` |  | `WARNING-RSS`, `CRITICAL-RSS` |
+| `memory.peak.usage.bytes` | `B` |  | `WARNING-PEAK`, `CRITICAL-PEAK` |
+| `memory.overhead.usage.bytes` | `B` |  | `WARNING-OVERHEAD`, `CRITICAL-OVERHEAD` |
+| `memory.startup.usage.bytes` | `B` |  | `WARNING-STARTUP`, `CRITICAL-STARTUP` |
+| `memory.dataset.usage.bytes` | `B` |  | `WARNING-DATASET`, `CRITICAL-DATASET` |
+| `memory.lua.usage.bytes` | `B` |  | `WARNING-LUA`, `CRITICAL-LUA` |
+| `memory.fragmentation.ratio.count` |  | fragmentation ratio | `WARNING-FRAGMENTATION-RATIO`, `CRITICAL-FRAGMENTATION-RATIO` |
+| `memory.defragmentation.running.count` |  | defragmentation running | `WARNING-DEFRAG-RUNNING`, `CRITICAL-DEFRAG-RUNNING` |
+| `memory.lazy_pending_objects.count` |  | lazyfree pending objects | `WARNING-LAZYFREE-PENDING-OBJECTS`, `CRITICAL-LAZYFREE-PENDING-OBJECTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Persistence {/* #database-redis-perlmod-persistence */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{progress_status} =~ /in progress/i'` | Set warning threshold for status (Default: '%\{progress_status\} =~ /in progress/i'). Can used special variables like: %\{progress_status\}, %\{status\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /fail/i'` | Set critical threshold for status (Default: '%\{status\} =~ /fail/i'). Can used special variables like: %\{progress_status\}, %\{status\} |
+| `WARNING-CHANGES` |  | Threshold warning changes |
+| `WARNING-LAST-SAVE` |  | Threshold warning last save |
+| `WARNING-SAVE-SIZE` |  | Threshold warning save size |
+| `WARNING-LAST-SAVE-DURATION` |  | Threshold warning last save duration |
+| `WARNING-CURRENT-SAVE-DURATION` |  | Threshold warning current save duration |
+| `CRITICAL-CHANGES` |  | Threshold critical changes |
+| `CRITICAL-LAST-SAVE` |  | Threshold critical last save |
+| `CRITICAL-SAVE-SIZE` |  | Threshold critical save size |
+| `CRITICAL-LAST-SAVE-DURATION` |  | Threshold critical last save duration |
+| `CRITICAL-CURRENT-SAVE-DURATION` |  | Threshold critical current save duration |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `rdb.changes.since_last_save.count` |  | number of changes since the last dump | `WARNING-CHANGES`, `CRITICAL-CHANGES` |
+| `rdb.last_successful_save.seconds` | `s` | time since last successful save | `WARNING-LAST-SAVE`, `CRITICAL-LAST-SAVE` |
+| `rdb.last_save.size.bytes` | `B` | size of last save | `WARNING-SAVE-SIZE`, `CRITICAL-SAVE-SIZE` |
+| `rdb.last_save.duration.seconds` | `s` | duration of last save:  s | `WARNING-LAST-SAVE-DURATION`, `CRITICAL-LAST-SAVE-DURATION` |
+| `rdb.current_save.duration.seconds` | `s` | duration of current save:  s | `WARNING-CURRENT-SAVE-DURATION`, `CRITICAL-CURRENT-SAVE-DURATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Replication {/* #database-redis-cli-replication */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{sync_status} =~ /in progress/i'` | Set warning threshold for status (Default: '%\{sync_status\} =~ /in progress/i'). Can used special variables like: %\{sync_status\}, %\{link_status\}, %\{cluster_state\} |
+| `CRITICAL-STATUS` | `'%{link_status} =~ /down/i'` | Set critical threshold for status (Default: '%\{link_status\} =~ /down/i'). Can used special variables like: %\{sync_status\}, %\{link_status\}, %\{cluster_state\} |
+| `WARNING-CONNECTED-SLAVES` |  | Threshold warning connected slaves |
+| `WARNING-MASTER-REPL-OFFSET` |  | Threshold warning master replication offset |
+| `WARNING-MASTER-LAST-IO` |  | Threshold warning master last IO |
+| `WARNING-SLAVE-PRIORITY` |  | Threshold warning slave priority |
+| `WARNING-SLAVE-READ-ONLY` |  | Threshold warning slave read only |
+| `CRITICAL-CONNECTED-SLAVES` |  | Threshold critical connected slaves |
+| `CRITICAL-MASTER-REPL-OFFSET` |  | Threshold critical master replication offset |
+| `CRITICAL-MASTER-LAST-IO` |  | Threshold critical master last IO |
+| `CRITICAL-SLAVE-PRIORITY` |  | Threshold critical slave priority |
+| `CRITICAL-SLAVE-READ-ONLY` |  | Threshold critical slave read only |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `replication.slaves.connected.count` |  | number of connected slaves | `WARNING-CONNECTED-SLAVES`, `CRITICAL-CONNECTED-SLAVES` |
+| `replication.master.offset.count` |  | master replication offset | `WARNING-MASTER-REPL-OFFSET`, `CRITICAL-MASTER-REPL-OFFSET` |
+| `replication.master.last_interaction.seconds` | `s` | last interaction with master:  s | `WARNING-MASTER-LAST-IO`, `CRITICAL-MASTER-LAST-IO` |
+| `replication.slave.offset.count` |  | slave replication offset:  s |  |
+| `replication.slave.priority.count` |  | slave replication priority | `WARNING-SLAVE-PRIORITY`, `CRITICAL-SLAVE-PRIORITY` |
+| `replication.slave.readonly.count` |  | slave readonly | `WARNING-SLAVE-READ-ONLY`, `CRITICAL-SLAVE-READ-ONLY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Redis Replication {/* #database-redis-perlmod-replication */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{sync_status} =~ /in progress/i'` | Set warning threshold for status (Default: '%\{sync_status\} =~ /in progress/i'). Can used special variables like: %\{sync_status\}, %\{link_status\}, %\{cluster_state\} |
+| `CRITICAL-STATUS` | `'%{link_status} =~ /down/i'` | Set critical threshold for status (Default: '%\{link_status\} =~ /down/i'). Can used special variables like: %\{sync_status\}, %\{link_status\}, %\{cluster_state\} |
+| `WARNING-CONNECTED-SLAVES` |  | Threshold warning connected slaves |
+| `WARNING-MASTER-REPL-OFFSET` |  | Threshold warning master replication offset |
+| `WARNING-MASTER-LAST-IO` |  | Threshold warning master last IO |
+| `WARNING-SLAVE-PRIORITY` |  | Threshold warning slave priority |
+| `WARNING-SLAVE-READ-ONLY` |  | Threshold warning slave read only |
+| `CRITICAL-CONNECTED-SLAVES` |  | Threshold critical connected slaves |
+| `CRITICAL-MASTER-REPL-OFFSET` |  | Threshold critical master replication offset |
+| `CRITICAL-MASTER-LAST-IO` |  | Threshold critical master last IO |
+| `CRITICAL-SLAVE-PRIORITY` |  | Threshold critical slave priority |
+| `CRITICAL-SLAVE-READ-ONLY` |  | Threshold critical slave read only |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `replication.slaves.connected.count` |  | number of connected slaves | `WARNING-CONNECTED-SLAVES`, `CRITICAL-CONNECTED-SLAVES` |
+| `replication.master.offset.count` |  | master replication offset | `WARNING-MASTER-REPL-OFFSET`, `CRITICAL-MASTER-REPL-OFFSET` |
+| `replication.master.last_interaction.seconds` | `s` | last interaction with master:  s | `WARNING-MASTER-LAST-IO`, `CRITICAL-MASTER-LAST-IO` |
+| `replication.slave.offset.count` |  | slave replication offset:  s |  |
+| `replication.slave.priority.count` |  | slave replication priority | `WARNING-SLAVE-PRIORITY`, `CRITICAL-SLAVE-PRIORITY` |
+| `replication.slave.readonly.count` |  | slave readonly | `WARNING-SLAVE-READ-ONLY`, `CRITICAL-SLAVE-READ-ONLY` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Host template `Redis-DB-cli`
+    - Macro `SSHCLI-OPTION2` added (default `-o=LogLevel=ERROR`)
+- Command `database-redis-cli-clients`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `database-redis-cli-commands`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `database-redis-cli-connections`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `database-redis-cli-cpu`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `database-redis-cli-memory`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `database-redis-cli-persistence`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `database-redis-cli-replication`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `database-redis-perlmod-clients`
+    - Option `--username=$_HOSTREDIS-USERNAME$` added
+    - Macro `REDIS-USERNAME` added
+    - Macro `REDIS-PORT` removed
+- Command `database-redis-perlmod-commands`
+    - Option `--username=$_HOSTREDIS-USERNAME$` added
+    - Macro `REDIS-USERNAME` added
+    - Macro `REDIS-PORT` removed
+- Command `database-redis-perlmod-connections`
+    - Option `--username=$_HOSTREDIS-USERNAME$` added
+    - Macro `REDIS-USERNAME` added
+    - Macro `REDIS-PORT` removed
+- Command `database-redis-perlmod-cpu`
+    - Option `--username=$_HOSTREDIS-USERNAME$` added
+    - Macro `REDIS-USERNAME` added
+    - Macro `REDIS-PORT` removed
+- Command `database-redis-perlmod-memory`
+    - Option `--username=$_HOSTREDIS-USERNAME$` added
+    - Macro `REDIS-USERNAME` added
+    - Macro `REDIS-PORT` removed
+- Command `database-redis-perlmod-persistence`
+    - Option `--username=$_HOSTREDIS-USERNAME$` added
+    - Macro `REDIS-USERNAME` added
+    - Macro `REDIS-PORT` removed
+- Command `database-redis-perlmod-replication`
+    - Option `--username=$_HOSTREDIS-USERNAME$` added
+    - Macro `REDIS-USERNAME` added
+    - Macro `REDIS-PORT` removed
+
+</details>

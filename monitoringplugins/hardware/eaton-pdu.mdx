@@ -1,0 +1,239 @@
+---
+title: "Eaton PDU"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Eaton.png";
+
+<PluginPackHeader name="Eaton PDU" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Eaton PDUs through SNMP: environmental sensors (temperature, humidity), the voltage, current and power of groups and the status of the outlets.
+
+The plugin pack provides these checks:
+
+* [Environment](#hardware-pdu-eaton-snmp-environment)
+* [Groups](#hardware-pdu-eaton-snmp-group)
+* [Outlets](#hardware-pdu-eaton-snmp-outlet)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Eaton-PDU
+
+*Eaton PDU* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Environment](#hardware-pdu-eaton-snmp-environment) | `hardware-pdu-eaton-snmp-environment` |
+| [Groups](#hardware-pdu-eaton-snmp-group) | `hardware-pdu-eaton-snmp-group` |
+| [Outlets](#hardware-pdu-eaton-snmp-outlet) | `hardware-pdu-eaton-snmp-outlet` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #hardware-pdu-eaton-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TEMPERATURE` | `18:27` | Threshold warning temperature (°C) |
+| `WARNING-HUMIDITY` | `40:55` | Threshold warning humidity |
+| `CRITICAL-TEMPERATURE-STATUS` | `'%{status} eq "bad"'` | Set critical threshold for status (Default: '%\{status\} eq "bad"'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-HUMIDITY-STATUS` | `'%{status} eq "bad"'` | Set critical threshold for status (Default: '%\{status\} eq "bad"'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-TEMPERATURE` | `15:35` | Threshold critical temperature (°C) |
+| `CRITICAL-HUMIDITY` | `30:65` | Threshold critical humidity |
+| `UNKNOWN-TEMPERATURE-STATUS` |  | Set unknon threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TEMPERATURE-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `UNKNOWN-HUMIDITY-STATUS` |  | Set unknon threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-HUMIDITY-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sensor.temperature.celsius` | `C` | temperature  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `sensor.humidity.percentage` | `%` | humidity  %% | `WARNING-HUMIDITY`, `CRITICAL-HUMIDITY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Groups {/* #hardware-pdu-eaton-snmp-group */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter group name (can be a regexp) |
+| `WARNING-VOLTAGE` | `210:235` | Threshold warning voltage |
+| `CRITICAL-VOLTAGE` | `200:240` | Threshold critical voltage |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `WARNING-POWER` |  | Threshold warning power |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `CRITICAL-POWER` |  | Threshold critical power |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `group.current.ampere` | `A` | Current :  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `group.voltage.volt` | `V` | Voltage :  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `group.power.watt` | `W` | Power :  W | `WARNING-POWER`, `CRITICAL-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Outlets {/* #hardware-pdu-eaton-snmp-outlet */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter outlet name (can be a regexp) |
+| `WARNING-VOLTAGE` | `210:235` | Threshold warning voltage |
+| `CRITICAL-VOLTAGE` | `200:240` | Threshold critical voltage |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `WARNING-POWER` |  | Threshold warning power |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `CRITICAL-POWER` |  | Threshold critical power |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `outlet.current.ampere` | `A` | Current :  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `outlet.voltage.volt` | `V` | Voltage :  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `outlet.power.watt` | `W` | Power :  W | `WARNING-POWER`, `CRITICAL-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

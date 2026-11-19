@@ -1,0 +1,103 @@
+---
+title: "TCP ports (active)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/TCP.png";
+
+<PluginPackHeader name="TCP ports (active)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors TCP ports with active checks: connection status, response time, round-trip time and packet loss.
+
+The plugin pack provides these checks:
+
+* [TCP connection status](#apps-protocols-tcp-connection-status)
+* [TCP response time](#apps-protocols-tcp-response-time)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP connection status {/* #apps-protocols-tcp-connection-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+| `CRITICAL-STATUS` | `'%{status} eq "failed"'` | Set critical threshold for status (Default: '%\{status\} eq "failed"'). Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `2` | Threshold critical in seconds |
+| `PORT` |  | Port used |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `EXTRA-OPTS` |  | --ssl: Use SSL connection. (no attempt is made to check the certificate validity by default) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.response.time.seconds` | `s` |  | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP response time {/* #apps-protocols-tcp-response-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RTA` | `1000` | Threshold warning in seconds |
+| `CRITICAL-RTA` | `2000` | Threshold critical in seconds |
+| `TIMEOUT` | `5` | Set timeout in seconds (Default: 5) |
+| `PACKETS` | `5` | Number of packets to send (Default: 5) |
+| `WARNING-PL` | `0` | Packets lost threshold warning in % |
+| `CRITICAL-PL` | `80` | Packets lost threshold critical in % |
+| `PORT` |  | TCP port |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.roundtrip.time.average.milliseconds` | `ms` | rta ms | `WARNING-RTA`, `CRITICAL-RTA` |
+| `tcp.roundtrip.time.maximum.milliseconds` | `ms` |  |  |
+| `tcp.roundtrip.time.minimum.milliseconds` | `ms` |  |  |
+| `tcp.packets.loss.percentage` | `%` | lost %% | `WARNING-PL`, `CRITICAL-PL` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

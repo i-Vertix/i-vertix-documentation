@@ -1,0 +1,2981 @@
+---
+title: "Citrix XenDesktop 7.x (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Citrix.png";
+
+<PluginPackHeader name="Citrix XenDesktop 7.x (i-Vertix agent)" image={image} category="Application" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Citrix XenDesktop 7.x sites through the i-Vertix agent: Broker sessions, registrations and database connectivity and transactions, AD Identity database health and related Broker events.
+
+The plugin pack provides these checks:
+
+* [Citrix AD Identity: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected)
+* [Citrix AD Identity: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors)
+* [Citrix Broker: Brokered Sessions](#ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions)
+* [Citrix Broker: Database Avg. Transaction Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time)
+* [Citrix Broker: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected)
+* [Citrix Broker: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors)
+* [Citrix Broker: Database Transactions/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions)
+* [Citrix Broker: Event 1039 - The Citrix Broker Service failed to contact virtual machine](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039)
+* [Citrix Broker: Event 1194 - Registration request was rejected](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194)
+* [Citrix Broker: Event 1201 - The connection between the Citrix Broker Service and the database has been lost](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201)
+* [Citrix Broker: Event 505 - An import to the local DB failed](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-505)
+* [Citrix Broker: Expired Launches/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches)
+* [Citrix Broker: Expired Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations)
+* [Citrix Broker: Hard Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations)
+* [Citrix Broker: Registration Avg. Request Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time)
+* [Citrix Broker: Registration Rejects/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects)
+* [Citrix Broker: Registration Requests/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests)
+* [Citrix Broker: Soft Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests)
+* [Citrix Configuration Logging: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected)
+* [Citrix Configuration Logging: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors)
+* [Citrix Configuration Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected)
+* [Citrix Configuration Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors)
+* [Citrix Delegated Admin: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected)
+* [Citrix Delegated Admin: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors)
+* [Citrix Environment Test: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected)
+* [Citrix Environment Test: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors)
+* [Citrix Host Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected)
+* [Citrix Host Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors)
+* [Citrix License Server: Event 1151 - The Citrix Broker Service cannot contact the license server](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151)
+* [Citrix License Server: Event 1152 - This XenDesktop site does not have the required product licenses](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152)
+* [Citrix License Server: Event 1154 - This controller has entered an emergency licensing grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154)
+* [Citrix License Server: Event 1169 - This controller has entered the out-of-box grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169)
+* [Citrix License Server: Event 1171 - No license server has been specified](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171)
+* [Citrix Machine Creation Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected)
+* [Citrix Machine Creation Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors)
+* [Citrix Monitor: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected)
+* [Citrix Monitor: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors)
+* [Citrix Storefront: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected)
+* [Citrix Storefront: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors)
+* [License Server - TCP 27000](#apps-protocols-tcp-response-time-citrix-license-server-27000)
+* [License Server - TCP 7279](#apps-protocols-tcp-response-time-citrix-license-server-7279)
+* [License Server - TCP 8083](#apps-protocols-tcp-response-time-citrix-license-server-8083)
+* [Service Citrix AD Identity Service](#ivertix-agent-check_service-citrixadidentityservice)
+* [Service Citrix Analytics](#ivertix-agent-check_service-citrixanalytics)
+* [Service Citrix App Library](#ivertix-agent-check_service-citrixapplibrary)
+* [Service Citrix Audio Redirection Service](#ivertix-agent-check_service-ctxaudiosvc)
+* [Service Citrix Broker Service](#ivertix-agent-check_service-citrixbrokerservice)
+* [Service Citrix CEIP Service for Vda](#ivertix-agent-check_service-citrixvdaceipservice)
+* [Service Citrix Cluster Join Service](#ivertix-agent-check_service-citrixclusterservice)
+* [Service Citrix Config Synchronizer Service](#ivertix-agent-check_service-citrixconfigsyncservice)
+* [Service Citrix Configuration Logging Service](#ivertix-agent-check_service-citrixconfigurationlogging)
+* [Service Citrix Configuration Replication](#ivertix-agent-check_service-citrixconfigurationreplication)
+* [Service Citrix Configuration Service](#ivertix-agent-check_service-citrixconfigurationservice)
+* [Service Citrix Credential Wallet](#ivertix-agent-check_service-citrixcredentialwallet)
+* [Service Citrix Default Domain Service](#ivertix-agent-check_service-citrixdefaultdomainservice)
+* [Service Citrix Delegated Administration Service](#ivertix-agent-check_service-citrixdelegatedadmin)
+* [Service Citrix Desktop Service](#ivertix-agent-check_service-brokeragent)
+* [Service Citrix Device Redirector Service](#ivertix-agent-check_service-citrixredirector)
+* [Service Citrix Diagnostic Facility COM Server](#ivertix-agent-check_service-cdfsvc)
+* [Service Citrix Encryption Service](#ivertix-agent-check_service-citrixencryptionservice)
+* [Service Citrix End User Experiencing Monitoring](#ivertix-agent-check_service-citrixeuem)
+* [Service Citrix Environment Test Service](#ivertix-agent-check_service-citrixenvtest)
+* [Service Citrix Group Policy Engine](#ivertix-agent-check_service-citrixcseengine)
+* [Service Citrix HDX HTML5 Video Redirection Service](#ivertix-agent-check_service-ctxhdxwebsocketservice)
+* [Service Citrix HDX MediaStream for Flash Service](#ivertix-agent-check_service-ctxflashsvc)
+* [Service Citrix High Availability Service](#ivertix-agent-check_service-citrixhighavailabilityservice)
+* [Service Citrix Host Service](#ivertix-agent-check_service-citrixhostservice)
+* [Service Citrix Licensing](#ivertix-agent-check_service-citrixlicensing)
+* [Service Citrix Licensing WMI](#ivertix-agent-check_service-citrix_gtlicensingprov)
+* [Service Citrix Location and Sensor Virtual Channel Service](#ivertix-agent-check_service-ctxsensvcsvc)
+* [Service Citrix Machine Creation Service](#ivertix-agent-check_service-citrixmachinecreationservice)
+* [Service Citrix Mobile Receiver Virtual Channel Service](#ivertix-agent-check_service-mrvcsvc)
+* [Service Citrix Monitor Service](#ivertix-agent-check_service-citrixmonitor)
+* [Service Citrix MultiTouch Redirection Service](#ivertix-agent-check_service-ctxmultitouchsvc)
+* [Service Citrix Orchestration Service](#ivertix-agent-check_service-citrixorchestration)
+* [Service Citrix Peer Resolution Service](#ivertix-agent-check_service-citrixpeerresolutionservice)
+* [Service Citrix Print Manager Service](#ivertix-agent-check_service-cpsvc)
+* [Service Citrix Profile Management](#ivertix-agent-check_service-ctxprofile)
+* [Service Citrix PVS BOOTP Service](#ivertix-agent-check_service-bnbootp)
+* [Service Citrix Pvs for VMs agent](#ivertix-agent-check_service-pvsvmagent)
+* [Service Citrix PVS PXE Service](#ivertix-agent-check_service-bnpxe)
+* [Service Citrix PVS Soap Server](#ivertix-agent-check_service-soapserver)
+* [Service Citrix PVS Stream Service](#ivertix-agent-check_service-streamservice)
+* [Service Citrix PVS TFTP Service](#ivertix-agent-check_service-bntftp)
+* [Service Citrix PVS Two-Stage Boot Service](#ivertix-agent-check_service-pvstsb)
+* [Service Citrix Service Monitor](#ivertix-agent-check_service-citrixservicemonitor)
+* [Service Citrix Services Manager](#ivertix-agent-check_service-servicesmanager)
+* [Service Citrix Smart Card Service](#ivertix-agent-check_service-ctxsmartcardsvc)
+* [Service Citrix Smart Tools Agent Service](#ivertix-agent-check_service-citrixconnector)
+* [Service Citrix Stack Control Service](#ivertix-agent-check_service-stackcontrolservice)
+* [Service Citrix Storefront Privileged Administration Service](#ivertix-agent-check_service-citrixprivilegedservice)
+* [Service Citrix Storefront Service](#ivertix-agent-check_service-citrixstorefront)
+* [Service Citrix Subscriptions Store](#ivertix-agent-check_service-citrixsubscriptionsstore)
+* [Service Citrix Telemetry Service](#ivertix-agent-check_service-citrixtelemetryservice)
+* [Service Citrix Trust Service](#ivertix-agent-check_service-citrixtrust)
+* [Service Citrix UWA Cache Service](#ivertix-agent-check_service-citrixuwacacheservice)
+* [Service Citrix Web Services for Licensing](#ivertix-agent-check_service-citrixwebservicesforlicensing)
+
+
+## Host Templates
+
+### Citrix-XenDesktop-Broker
+
+*Citrix XenDesktop Broker - NSclient Restapi* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Service Citrix AD Identity Service](#ivertix-agent-check_service-citrixadidentityservice) | `ivertix-agent-check_service-CitrixADIdentityService` |
+| [Service Citrix Analytics](#ivertix-agent-check_service-citrixanalytics) | `ivertix-agent-check_service-CitrixAnalytics` |
+| [Service Citrix App Library](#ivertix-agent-check_service-citrixapplibrary) | `ivertix-agent-check_service-CitrixAppLibrary` |
+| [Service Citrix Broker Service](#ivertix-agent-check_service-citrixbrokerservice) | `ivertix-agent-check_service-CitrixBrokerService` |
+| [Service Citrix Config Synchronizer Service](#ivertix-agent-check_service-citrixconfigsyncservice) | `ivertix-agent-check_service-CitrixConfigSyncService` |
+| [Service Citrix Configuration Logging Service](#ivertix-agent-check_service-citrixconfigurationlogging) | `ivertix-agent-check_service-CitrixConfigurationLogging` |
+| [Service Citrix Configuration Service](#ivertix-agent-check_service-citrixconfigurationservice) | `ivertix-agent-check_service-CitrixConfigurationService` |
+| [Service Citrix Smart Tools Agent Service](#ivertix-agent-check_service-citrixconnector) | `ivertix-agent-check_service-CitrixConnector` |
+| [Service Citrix Delegated Administration Service](#ivertix-agent-check_service-citrixdelegatedadmin) | `ivertix-agent-check_service-CitrixDelegatedAdmin` |
+| [Service Citrix Environment Test Service](#ivertix-agent-check_service-citrixenvtest) | `ivertix-agent-check_service-CitrixEnvTest` |
+| [Service Citrix High Availability Service](#ivertix-agent-check_service-citrixhighavailabilityservice) | `ivertix-agent-check_service-CitrixHighAvailabilityService` |
+| [Service Citrix Host Service](#ivertix-agent-check_service-citrixhostservice) | `ivertix-agent-check_service-CitrixHostService` |
+| [Service Citrix Machine Creation Service](#ivertix-agent-check_service-citrixmachinecreationservice) | `ivertix-agent-check_service-CitrixMachineCreationService` |
+| [Service Citrix Monitor Service](#ivertix-agent-check_service-citrixmonitor) | `ivertix-agent-check_service-CitrixMonitor` |
+| [Service Citrix Orchestration Service](#ivertix-agent-check_service-citrixorchestration) | `ivertix-agent-check_service-CitrixOrchestration` |
+| [Service Citrix Storefront Privileged Administration Service](#ivertix-agent-check_service-citrixprivilegedservice) | `ivertix-agent-check_service-CitrixPrivilegedService` |
+| [Service Citrix Storefront Service](#ivertix-agent-check_service-citrixstorefront) | `ivertix-agent-check_service-CitrixStorefront` |
+| [Service Citrix Telemetry Service](#ivertix-agent-check_service-citrixtelemetryservice) | `ivertix-agent-check_service-CitrixTelemetryService` |
+| [Service Citrix Trust Service](#ivertix-agent-check_service-citrixtrust) | `ivertix-agent-check_service-CitrixTrust` |
+| [Citrix Broker: Event 1039 - The Citrix Broker Service failed to contact virtual machine](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039` |
+| [Citrix Broker: Event 1194 - Registration request was rejected](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194` |
+| [Citrix Broker: Event 1201 - The connection between the Citrix Broker Service and the database has been lost](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201` |
+| [Citrix Broker: Event 505 - An import to the local DB failed](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-505) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-505` |
+| [Citrix AD Identity: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected` |
+| [Citrix AD Identity: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors` |
+| [Citrix Broker: Brokered Sessions](#ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions` |
+| [Citrix Broker: Database Avg. Transaction Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time` |
+| [Citrix Broker: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected` |
+| [Citrix Broker: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors` |
+| [Citrix Broker: Database Transactions/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions` |
+| [Citrix Broker: Expired Launches/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches` |
+| [Citrix Broker: Expired Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations` |
+| [Citrix Broker: Hard Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations` |
+| [Citrix Broker: Registration Avg. Request Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time` |
+| [Citrix Broker: Registration Rejects/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects` |
+| [Citrix Broker: Registration Requests/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests` |
+| [Citrix Broker: Soft Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests` |
+| [Citrix Configuration Logging: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected` |
+| [Citrix Configuration Logging: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors` |
+| [Citrix Configuration Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected` |
+| [Citrix Configuration Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors` |
+| [Citrix Delegated Admin: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected` |
+| [Citrix Delegated Admin: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors` |
+| [Citrix Environment Test: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected` |
+| [Citrix Environment Test: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors` |
+| [Citrix Host Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected` |
+| [Citrix Host Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors` |
+| [Citrix Machine Creation Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected` |
+| [Citrix Machine Creation Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors` |
+| [Citrix Monitor: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected` |
+| [Citrix Monitor: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors` |
+| [Citrix Storefront: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected` |
+| [Citrix Storefront: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Citrix License Server: Event 1151 - The Citrix Broker Service cannot contact the license server](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151` |
+| [Citrix License Server: Event 1152 - This XenDesktop site does not have the required product licenses](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152` |
+| [Citrix License Server: Event 1154 - This controller has entered an emergency licensing grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154` |
+| [Citrix License Server: Event 1169 - This controller has entered the out-of-box grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169` |
+| [Citrix License Server: Event 1171 - No license server has been specified](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171` |
+| [License Server - TCP 27000](#apps-protocols-tcp-response-time-citrix-license-server-27000) | `apps-protocols-tcp-response-time-citrix-license-server-27000` |
+| [License Server - TCP 7279](#apps-protocols-tcp-response-time-citrix-license-server-7279) | `apps-protocols-tcp-response-time-citrix-license-server-7279` |
+| [License Server - TCP 8083](#apps-protocols-tcp-response-time-citrix-license-server-8083) | `apps-protocols-tcp-response-time-citrix-license-server-8083` |
+| [Service Citrix Audio Redirection Service](#ivertix-agent-check_service-ctxaudiosvc) | `ivertix-agent-check_service-CtxAudioSvc` |
+| [Service Citrix CEIP Service for Vda](#ivertix-agent-check_service-citrixvdaceipservice) | `ivertix-agent-check_service-CitrixVDACeipService` |
+| [Service Citrix Cluster Join Service](#ivertix-agent-check_service-citrixclusterservice) | `ivertix-agent-check_service-CitrixClusterService` |
+| [Service Citrix Configuration Replication](#ivertix-agent-check_service-citrixconfigurationreplication) | `ivertix-agent-check_service-CitrixConfigurationReplication` |
+| [Service Citrix Credential Wallet](#ivertix-agent-check_service-citrixcredentialwallet) | `ivertix-agent-check_service-CitrixCredentialWallet` |
+| [Service Citrix Default Domain Service](#ivertix-agent-check_service-citrixdefaultdomainservice) | `ivertix-agent-check_service-CitrixDefaultDomainService` |
+| [Service Citrix Desktop Service](#ivertix-agent-check_service-brokeragent) | `ivertix-agent-check_service-BrokerAgent` |
+| [Service Citrix Device Redirector Service](#ivertix-agent-check_service-citrixredirector) | `ivertix-agent-check_service-CitrixRedirector` |
+| [Service Citrix Diagnostic Facility COM Server](#ivertix-agent-check_service-cdfsvc) | `ivertix-agent-check_service-CdfSvc` |
+| [Service Citrix Encryption Service](#ivertix-agent-check_service-citrixencryptionservice) | `ivertix-agent-check_service-CitrixEncryptionService` |
+| [Service Citrix End User Experiencing Monitoring](#ivertix-agent-check_service-citrixeuem) | `ivertix-agent-check_service-CitrixEUEM` |
+| [Service Citrix Group Policy Engine](#ivertix-agent-check_service-citrixcseengine) | `ivertix-agent-check_service-CitrixCseEngine` |
+| [Service Citrix HDX HTML5 Video Redirection Service](#ivertix-agent-check_service-ctxhdxwebsocketservice) | `ivertix-agent-check_service-CtxHdxWebSocketService` |
+| [Service Citrix HDX MediaStream for Flash Service](#ivertix-agent-check_service-ctxflashsvc) | `ivertix-agent-check_service-CtxFlashSvc` |
+| [Service Citrix Licensing](#ivertix-agent-check_service-citrixlicensing) | `ivertix-agent-check_service-CitrixLicensing` |
+| [Service Citrix Licensing WMI](#ivertix-agent-check_service-citrix_gtlicensingprov) | `ivertix-agent-check_service-Citrix_GTLicensingProv` |
+| [Service Citrix Location and Sensor Virtual Channel Service](#ivertix-agent-check_service-ctxsensvcsvc) | `ivertix-agent-check_service-CtxSensVcSvc` |
+| [Service Citrix Mobile Receiver Virtual Channel Service](#ivertix-agent-check_service-mrvcsvc) | `ivertix-agent-check_service-MRVCSvc` |
+| [Service Citrix MultiTouch Redirection Service](#ivertix-agent-check_service-ctxmultitouchsvc) | `ivertix-agent-check_service-CtxMultiTouchSvc` |
+| [Service Citrix Peer Resolution Service](#ivertix-agent-check_service-citrixpeerresolutionservice) | `ivertix-agent-check_service-CitrixPeerResolutionService` |
+| [Service Citrix Print Manager Service](#ivertix-agent-check_service-cpsvc) | `ivertix-agent-check_service-cpsvc` |
+| [Service Citrix Profile Management](#ivertix-agent-check_service-ctxprofile) | `ivertix-agent-check_service-ctxProfile` |
+| [Service Citrix PVS BOOTP Service](#ivertix-agent-check_service-bnbootp) | `ivertix-agent-check_service-BNBOOTP` |
+| [Service Citrix Pvs for VMs agent](#ivertix-agent-check_service-pvsvmagent) | `ivertix-agent-check_service-PvsVmAgent` |
+| [Service Citrix PVS PXE Service](#ivertix-agent-check_service-bnpxe) | `ivertix-agent-check_service-BNPXE` |
+| [Service Citrix PVS Soap Server](#ivertix-agent-check_service-soapserver) | `ivertix-agent-check_service-soapserver` |
+| [Service Citrix PVS Stream Service](#ivertix-agent-check_service-streamservice) | `ivertix-agent-check_service-StreamService` |
+| [Service Citrix PVS TFTP Service](#ivertix-agent-check_service-bntftp) | `ivertix-agent-check_service-BNTFTP` |
+| [Service Citrix PVS Two-Stage Boot Service](#ivertix-agent-check_service-pvstsb) | `ivertix-agent-check_service-PVSTSB` |
+| [Service Citrix Service Monitor](#ivertix-agent-check_service-citrixservicemonitor) | `ivertix-agent-check_service-CitrixServiceMonitor` |
+| [Service Citrix Services Manager](#ivertix-agent-check_service-servicesmanager) | `ivertix-agent-check_service-ServicesManager` |
+| [Service Citrix Smart Card Service](#ivertix-agent-check_service-ctxsmartcardsvc) | `ivertix-agent-check_service-CtxSmartCardSvc` |
+| [Service Citrix Stack Control Service](#ivertix-agent-check_service-stackcontrolservice) | `ivertix-agent-check_service-StackControlService` |
+| [Service Citrix Subscriptions Store](#ivertix-agent-check_service-citrixsubscriptionsstore) | `ivertix-agent-check_service-CitrixSubscriptionsStore` |
+| [Service Citrix UWA Cache Service](#ivertix-agent-check_service-citrixuwacacheservice) | `ivertix-agent-check_service-CitrixUWACacheService` |
+| [Service Citrix Web Services for Licensing](#ivertix-agent-check_service-citrixwebservicesforlicensing) | `ivertix-agent-check_service-CitrixWebServicesforLicensing` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Citrix-XenDesktop-License-Server
+
+*Citrix XenDesktop License Server - NSclient Restapi* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [License Server - TCP 27000](#apps-protocols-tcp-response-time-citrix-license-server-27000) | `apps-protocols-tcp-response-time-citrix-license-server-27000` |
+| [License Server - TCP 7279](#apps-protocols-tcp-response-time-citrix-license-server-7279) | `apps-protocols-tcp-response-time-citrix-license-server-7279` |
+| [License Server - TCP 8083](#apps-protocols-tcp-response-time-citrix-license-server-8083) | `apps-protocols-tcp-response-time-citrix-license-server-8083` |
+| [Service Citrix Licensing](#ivertix-agent-check_service-citrixlicensing) | `ivertix-agent-check_service-CitrixLicensing` |
+| [Service Citrix Web Services for Licensing](#ivertix-agent-check_service-citrixwebservicesforlicensing) | `ivertix-agent-check_service-CitrixWebServicesforLicensing` |
+| [Service Citrix Licensing WMI](#ivertix-agent-check_service-citrix_gtlicensingprov) | `ivertix-agent-check_service-Citrix_GTLicensingProv` |
+| [Citrix License Server: Event 1151 - The Citrix Broker Service cannot contact the license server](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151` |
+| [Citrix License Server: Event 1152 - This XenDesktop site does not have the required product licenses](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152` |
+| [Citrix License Server: Event 1154 - This controller has entered an emergency licensing grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154` |
+| [Citrix License Server: Event 1169 - This controller has entered the out-of-box grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169` |
+| [Citrix License Server: Event 1171 - No license server has been specified](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Citrix AD Identity: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected` |
+| [Citrix AD Identity: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors` |
+| [Citrix Broker: Brokered Sessions](#ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions` |
+| [Citrix Broker: Database Avg. Transaction Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time` |
+| [Citrix Broker: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected` |
+| [Citrix Broker: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors` |
+| [Citrix Broker: Database Transactions/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions` |
+| [Citrix Broker: Event 1039 - The Citrix Broker Service failed to contact virtual machine](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039` |
+| [Citrix Broker: Event 1194 - Registration request was rejected](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194` |
+| [Citrix Broker: Event 1201 - The connection between the Citrix Broker Service and the database has been lost](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201` |
+| [Citrix Broker: Event 505 - An import to the local DB failed](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-505) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-505` |
+| [Citrix Broker: Expired Launches/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches` |
+| [Citrix Broker: Expired Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations` |
+| [Citrix Broker: Hard Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations` |
+| [Citrix Broker: Registration Avg. Request Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time` |
+| [Citrix Broker: Registration Rejects/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects` |
+| [Citrix Broker: Registration Requests/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests` |
+| [Citrix Broker: Soft Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests` |
+| [Citrix Configuration Logging: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected` |
+| [Citrix Configuration Logging: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors` |
+| [Citrix Configuration Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected` |
+| [Citrix Configuration Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors` |
+| [Citrix Delegated Admin: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected` |
+| [Citrix Delegated Admin: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors` |
+| [Citrix Environment Test: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected` |
+| [Citrix Environment Test: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors` |
+| [Citrix Host Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected` |
+| [Citrix Host Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors` |
+| [Citrix Machine Creation Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected` |
+| [Citrix Machine Creation Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors` |
+| [Citrix Monitor: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected` |
+| [Citrix Monitor: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors` |
+| [Citrix Storefront: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected` |
+| [Citrix Storefront: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors` |
+| [Service Citrix AD Identity Service](#ivertix-agent-check_service-citrixadidentityservice) | `ivertix-agent-check_service-CitrixADIdentityService` |
+| [Service Citrix Analytics](#ivertix-agent-check_service-citrixanalytics) | `ivertix-agent-check_service-CitrixAnalytics` |
+| [Service Citrix App Library](#ivertix-agent-check_service-citrixapplibrary) | `ivertix-agent-check_service-CitrixAppLibrary` |
+| [Service Citrix Audio Redirection Service](#ivertix-agent-check_service-ctxaudiosvc) | `ivertix-agent-check_service-CtxAudioSvc` |
+| [Service Citrix Broker Service](#ivertix-agent-check_service-citrixbrokerservice) | `ivertix-agent-check_service-CitrixBrokerService` |
+| [Service Citrix CEIP Service for Vda](#ivertix-agent-check_service-citrixvdaceipservice) | `ivertix-agent-check_service-CitrixVDACeipService` |
+| [Service Citrix Cluster Join Service](#ivertix-agent-check_service-citrixclusterservice) | `ivertix-agent-check_service-CitrixClusterService` |
+| [Service Citrix Config Synchronizer Service](#ivertix-agent-check_service-citrixconfigsyncservice) | `ivertix-agent-check_service-CitrixConfigSyncService` |
+| [Service Citrix Configuration Logging Service](#ivertix-agent-check_service-citrixconfigurationlogging) | `ivertix-agent-check_service-CitrixConfigurationLogging` |
+| [Service Citrix Configuration Replication](#ivertix-agent-check_service-citrixconfigurationreplication) | `ivertix-agent-check_service-CitrixConfigurationReplication` |
+| [Service Citrix Configuration Service](#ivertix-agent-check_service-citrixconfigurationservice) | `ivertix-agent-check_service-CitrixConfigurationService` |
+| [Service Citrix Credential Wallet](#ivertix-agent-check_service-citrixcredentialwallet) | `ivertix-agent-check_service-CitrixCredentialWallet` |
+| [Service Citrix Default Domain Service](#ivertix-agent-check_service-citrixdefaultdomainservice) | `ivertix-agent-check_service-CitrixDefaultDomainService` |
+| [Service Citrix Delegated Administration Service](#ivertix-agent-check_service-citrixdelegatedadmin) | `ivertix-agent-check_service-CitrixDelegatedAdmin` |
+| [Service Citrix Desktop Service](#ivertix-agent-check_service-brokeragent) | `ivertix-agent-check_service-BrokerAgent` |
+| [Service Citrix Device Redirector Service](#ivertix-agent-check_service-citrixredirector) | `ivertix-agent-check_service-CitrixRedirector` |
+| [Service Citrix Diagnostic Facility COM Server](#ivertix-agent-check_service-cdfsvc) | `ivertix-agent-check_service-CdfSvc` |
+| [Service Citrix Encryption Service](#ivertix-agent-check_service-citrixencryptionservice) | `ivertix-agent-check_service-CitrixEncryptionService` |
+| [Service Citrix End User Experiencing Monitoring](#ivertix-agent-check_service-citrixeuem) | `ivertix-agent-check_service-CitrixEUEM` |
+| [Service Citrix Environment Test Service](#ivertix-agent-check_service-citrixenvtest) | `ivertix-agent-check_service-CitrixEnvTest` |
+| [Service Citrix Group Policy Engine](#ivertix-agent-check_service-citrixcseengine) | `ivertix-agent-check_service-CitrixCseEngine` |
+| [Service Citrix HDX HTML5 Video Redirection Service](#ivertix-agent-check_service-ctxhdxwebsocketservice) | `ivertix-agent-check_service-CtxHdxWebSocketService` |
+| [Service Citrix HDX MediaStream for Flash Service](#ivertix-agent-check_service-ctxflashsvc) | `ivertix-agent-check_service-CtxFlashSvc` |
+| [Service Citrix High Availability Service](#ivertix-agent-check_service-citrixhighavailabilityservice) | `ivertix-agent-check_service-CitrixHighAvailabilityService` |
+| [Service Citrix Host Service](#ivertix-agent-check_service-citrixhostservice) | `ivertix-agent-check_service-CitrixHostService` |
+| [Service Citrix Location and Sensor Virtual Channel Service](#ivertix-agent-check_service-ctxsensvcsvc) | `ivertix-agent-check_service-CtxSensVcSvc` |
+| [Service Citrix Machine Creation Service](#ivertix-agent-check_service-citrixmachinecreationservice) | `ivertix-agent-check_service-CitrixMachineCreationService` |
+| [Service Citrix Mobile Receiver Virtual Channel Service](#ivertix-agent-check_service-mrvcsvc) | `ivertix-agent-check_service-MRVCSvc` |
+| [Service Citrix Monitor Service](#ivertix-agent-check_service-citrixmonitor) | `ivertix-agent-check_service-CitrixMonitor` |
+| [Service Citrix MultiTouch Redirection Service](#ivertix-agent-check_service-ctxmultitouchsvc) | `ivertix-agent-check_service-CtxMultiTouchSvc` |
+| [Service Citrix Orchestration Service](#ivertix-agent-check_service-citrixorchestration) | `ivertix-agent-check_service-CitrixOrchestration` |
+| [Service Citrix Peer Resolution Service](#ivertix-agent-check_service-citrixpeerresolutionservice) | `ivertix-agent-check_service-CitrixPeerResolutionService` |
+| [Service Citrix Print Manager Service](#ivertix-agent-check_service-cpsvc) | `ivertix-agent-check_service-cpsvc` |
+| [Service Citrix Profile Management](#ivertix-agent-check_service-ctxprofile) | `ivertix-agent-check_service-ctxProfile` |
+| [Service Citrix PVS BOOTP Service](#ivertix-agent-check_service-bnbootp) | `ivertix-agent-check_service-BNBOOTP` |
+| [Service Citrix Pvs for VMs agent](#ivertix-agent-check_service-pvsvmagent) | `ivertix-agent-check_service-PvsVmAgent` |
+| [Service Citrix PVS PXE Service](#ivertix-agent-check_service-bnpxe) | `ivertix-agent-check_service-BNPXE` |
+| [Service Citrix PVS Soap Server](#ivertix-agent-check_service-soapserver) | `ivertix-agent-check_service-soapserver` |
+| [Service Citrix PVS Stream Service](#ivertix-agent-check_service-streamservice) | `ivertix-agent-check_service-StreamService` |
+| [Service Citrix PVS TFTP Service](#ivertix-agent-check_service-bntftp) | `ivertix-agent-check_service-BNTFTP` |
+| [Service Citrix PVS Two-Stage Boot Service](#ivertix-agent-check_service-pvstsb) | `ivertix-agent-check_service-PVSTSB` |
+| [Service Citrix Service Monitor](#ivertix-agent-check_service-citrixservicemonitor) | `ivertix-agent-check_service-CitrixServiceMonitor` |
+| [Service Citrix Services Manager](#ivertix-agent-check_service-servicesmanager) | `ivertix-agent-check_service-ServicesManager` |
+| [Service Citrix Smart Card Service](#ivertix-agent-check_service-ctxsmartcardsvc) | `ivertix-agent-check_service-CtxSmartCardSvc` |
+| [Service Citrix Smart Tools Agent Service](#ivertix-agent-check_service-citrixconnector) | `ivertix-agent-check_service-CitrixConnector` |
+| [Service Citrix Stack Control Service](#ivertix-agent-check_service-stackcontrolservice) | `ivertix-agent-check_service-StackControlService` |
+| [Service Citrix Storefront Privileged Administration Service](#ivertix-agent-check_service-citrixprivilegedservice) | `ivertix-agent-check_service-CitrixPrivilegedService` |
+| [Service Citrix Storefront Service](#ivertix-agent-check_service-citrixstorefront) | `ivertix-agent-check_service-CitrixStorefront` |
+| [Service Citrix Subscriptions Store](#ivertix-agent-check_service-citrixsubscriptionsstore) | `ivertix-agent-check_service-CitrixSubscriptionsStore` |
+| [Service Citrix Telemetry Service](#ivertix-agent-check_service-citrixtelemetryservice) | `ivertix-agent-check_service-CitrixTelemetryService` |
+| [Service Citrix Trust Service](#ivertix-agent-check_service-citrixtrust) | `ivertix-agent-check_service-CitrixTrust` |
+| [Service Citrix UWA Cache Service](#ivertix-agent-check_service-citrixuwacacheservice) | `ivertix-agent-check_service-CitrixUWACacheService` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Citrix-XenDesktop-Provisioning-Server
+
+*Citrix XenDesktop Provisioning Server - NSclient Restapi* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Service Citrix PVS BOOTP Service](#ivertix-agent-check_service-bnbootp) | `ivertix-agent-check_service-BNBOOTP` |
+| [Service Citrix PVS PXE Service](#ivertix-agent-check_service-bnpxe) | `ivertix-agent-check_service-BNPXE` |
+| [Service Citrix PVS TFTP Service](#ivertix-agent-check_service-bntftp) | `ivertix-agent-check_service-BNTFTP` |
+| [Service Citrix Diagnostic Facility COM Server](#ivertix-agent-check_service-cdfsvc) | `ivertix-agent-check_service-CdfSvc` |
+| [Service Citrix Telemetry Service](#ivertix-agent-check_service-citrixtelemetryservice) | `ivertix-agent-check_service-CitrixTelemetryService` |
+| [Service Citrix PVS Two-Stage Boot Service](#ivertix-agent-check_service-pvstsb) | `ivertix-agent-check_service-PVSTSB` |
+| [Service Citrix PVS Soap Server](#ivertix-agent-check_service-soapserver) | `ivertix-agent-check_service-soapserver` |
+| [Service Citrix PVS Stream Service](#ivertix-agent-check_service-streamservice) | `ivertix-agent-check_service-StreamService` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Citrix AD Identity: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected` |
+| [Citrix AD Identity: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors` |
+| [Citrix Broker: Brokered Sessions](#ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions` |
+| [Citrix Broker: Database Avg. Transaction Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time` |
+| [Citrix Broker: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected` |
+| [Citrix Broker: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors` |
+| [Citrix Broker: Database Transactions/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions` |
+| [Citrix Broker: Event 1039 - The Citrix Broker Service failed to contact virtual machine](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039` |
+| [Citrix Broker: Event 1194 - Registration request was rejected](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194` |
+| [Citrix Broker: Event 1201 - The connection between the Citrix Broker Service and the database has been lost](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201` |
+| [Citrix Broker: Event 505 - An import to the local DB failed](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-505) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-505` |
+| [Citrix Broker: Expired Launches/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches` |
+| [Citrix Broker: Expired Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations` |
+| [Citrix Broker: Hard Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations` |
+| [Citrix Broker: Registration Avg. Request Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time` |
+| [Citrix Broker: Registration Rejects/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects` |
+| [Citrix Broker: Registration Requests/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests` |
+| [Citrix Broker: Soft Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests` |
+| [Citrix Configuration Logging: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected` |
+| [Citrix Configuration Logging: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors` |
+| [Citrix Configuration Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected` |
+| [Citrix Configuration Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors` |
+| [Citrix Delegated Admin: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected` |
+| [Citrix Delegated Admin: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors` |
+| [Citrix Environment Test: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected` |
+| [Citrix Environment Test: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors` |
+| [Citrix Host Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected` |
+| [Citrix Host Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors` |
+| [Citrix License Server: Event 1151 - The Citrix Broker Service cannot contact the license server](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151` |
+| [Citrix License Server: Event 1152 - This XenDesktop site does not have the required product licenses](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152` |
+| [Citrix License Server: Event 1154 - This controller has entered an emergency licensing grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154` |
+| [Citrix License Server: Event 1169 - This controller has entered the out-of-box grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169` |
+| [Citrix License Server: Event 1171 - No license server has been specified](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171` |
+| [Citrix Machine Creation Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected` |
+| [Citrix Machine Creation Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors` |
+| [Citrix Monitor: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected` |
+| [Citrix Monitor: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors` |
+| [Citrix Storefront: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected` |
+| [Citrix Storefront: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors` |
+| [License Server - TCP 27000](#apps-protocols-tcp-response-time-citrix-license-server-27000) | `apps-protocols-tcp-response-time-citrix-license-server-27000` |
+| [License Server - TCP 7279](#apps-protocols-tcp-response-time-citrix-license-server-7279) | `apps-protocols-tcp-response-time-citrix-license-server-7279` |
+| [License Server - TCP 8083](#apps-protocols-tcp-response-time-citrix-license-server-8083) | `apps-protocols-tcp-response-time-citrix-license-server-8083` |
+| [Service Citrix AD Identity Service](#ivertix-agent-check_service-citrixadidentityservice) | `ivertix-agent-check_service-CitrixADIdentityService` |
+| [Service Citrix Analytics](#ivertix-agent-check_service-citrixanalytics) | `ivertix-agent-check_service-CitrixAnalytics` |
+| [Service Citrix App Library](#ivertix-agent-check_service-citrixapplibrary) | `ivertix-agent-check_service-CitrixAppLibrary` |
+| [Service Citrix Audio Redirection Service](#ivertix-agent-check_service-ctxaudiosvc) | `ivertix-agent-check_service-CtxAudioSvc` |
+| [Service Citrix Broker Service](#ivertix-agent-check_service-citrixbrokerservice) | `ivertix-agent-check_service-CitrixBrokerService` |
+| [Service Citrix CEIP Service for Vda](#ivertix-agent-check_service-citrixvdaceipservice) | `ivertix-agent-check_service-CitrixVDACeipService` |
+| [Service Citrix Cluster Join Service](#ivertix-agent-check_service-citrixclusterservice) | `ivertix-agent-check_service-CitrixClusterService` |
+| [Service Citrix Config Synchronizer Service](#ivertix-agent-check_service-citrixconfigsyncservice) | `ivertix-agent-check_service-CitrixConfigSyncService` |
+| [Service Citrix Configuration Logging Service](#ivertix-agent-check_service-citrixconfigurationlogging) | `ivertix-agent-check_service-CitrixConfigurationLogging` |
+| [Service Citrix Configuration Replication](#ivertix-agent-check_service-citrixconfigurationreplication) | `ivertix-agent-check_service-CitrixConfigurationReplication` |
+| [Service Citrix Configuration Service](#ivertix-agent-check_service-citrixconfigurationservice) | `ivertix-agent-check_service-CitrixConfigurationService` |
+| [Service Citrix Credential Wallet](#ivertix-agent-check_service-citrixcredentialwallet) | `ivertix-agent-check_service-CitrixCredentialWallet` |
+| [Service Citrix Default Domain Service](#ivertix-agent-check_service-citrixdefaultdomainservice) | `ivertix-agent-check_service-CitrixDefaultDomainService` |
+| [Service Citrix Delegated Administration Service](#ivertix-agent-check_service-citrixdelegatedadmin) | `ivertix-agent-check_service-CitrixDelegatedAdmin` |
+| [Service Citrix Desktop Service](#ivertix-agent-check_service-brokeragent) | `ivertix-agent-check_service-BrokerAgent` |
+| [Service Citrix Device Redirector Service](#ivertix-agent-check_service-citrixredirector) | `ivertix-agent-check_service-CitrixRedirector` |
+| [Service Citrix Encryption Service](#ivertix-agent-check_service-citrixencryptionservice) | `ivertix-agent-check_service-CitrixEncryptionService` |
+| [Service Citrix End User Experiencing Monitoring](#ivertix-agent-check_service-citrixeuem) | `ivertix-agent-check_service-CitrixEUEM` |
+| [Service Citrix Environment Test Service](#ivertix-agent-check_service-citrixenvtest) | `ivertix-agent-check_service-CitrixEnvTest` |
+| [Service Citrix Group Policy Engine](#ivertix-agent-check_service-citrixcseengine) | `ivertix-agent-check_service-CitrixCseEngine` |
+| [Service Citrix HDX HTML5 Video Redirection Service](#ivertix-agent-check_service-ctxhdxwebsocketservice) | `ivertix-agent-check_service-CtxHdxWebSocketService` |
+| [Service Citrix HDX MediaStream for Flash Service](#ivertix-agent-check_service-ctxflashsvc) | `ivertix-agent-check_service-CtxFlashSvc` |
+| [Service Citrix High Availability Service](#ivertix-agent-check_service-citrixhighavailabilityservice) | `ivertix-agent-check_service-CitrixHighAvailabilityService` |
+| [Service Citrix Host Service](#ivertix-agent-check_service-citrixhostservice) | `ivertix-agent-check_service-CitrixHostService` |
+| [Service Citrix Licensing](#ivertix-agent-check_service-citrixlicensing) | `ivertix-agent-check_service-CitrixLicensing` |
+| [Service Citrix Licensing WMI](#ivertix-agent-check_service-citrix_gtlicensingprov) | `ivertix-agent-check_service-Citrix_GTLicensingProv` |
+| [Service Citrix Location and Sensor Virtual Channel Service](#ivertix-agent-check_service-ctxsensvcsvc) | `ivertix-agent-check_service-CtxSensVcSvc` |
+| [Service Citrix Machine Creation Service](#ivertix-agent-check_service-citrixmachinecreationservice) | `ivertix-agent-check_service-CitrixMachineCreationService` |
+| [Service Citrix Mobile Receiver Virtual Channel Service](#ivertix-agent-check_service-mrvcsvc) | `ivertix-agent-check_service-MRVCSvc` |
+| [Service Citrix Monitor Service](#ivertix-agent-check_service-citrixmonitor) | `ivertix-agent-check_service-CitrixMonitor` |
+| [Service Citrix MultiTouch Redirection Service](#ivertix-agent-check_service-ctxmultitouchsvc) | `ivertix-agent-check_service-CtxMultiTouchSvc` |
+| [Service Citrix Orchestration Service](#ivertix-agent-check_service-citrixorchestration) | `ivertix-agent-check_service-CitrixOrchestration` |
+| [Service Citrix Peer Resolution Service](#ivertix-agent-check_service-citrixpeerresolutionservice) | `ivertix-agent-check_service-CitrixPeerResolutionService` |
+| [Service Citrix Print Manager Service](#ivertix-agent-check_service-cpsvc) | `ivertix-agent-check_service-cpsvc` |
+| [Service Citrix Profile Management](#ivertix-agent-check_service-ctxprofile) | `ivertix-agent-check_service-ctxProfile` |
+| [Service Citrix Pvs for VMs agent](#ivertix-agent-check_service-pvsvmagent) | `ivertix-agent-check_service-PvsVmAgent` |
+| [Service Citrix Service Monitor](#ivertix-agent-check_service-citrixservicemonitor) | `ivertix-agent-check_service-CitrixServiceMonitor` |
+| [Service Citrix Services Manager](#ivertix-agent-check_service-servicesmanager) | `ivertix-agent-check_service-ServicesManager` |
+| [Service Citrix Smart Card Service](#ivertix-agent-check_service-ctxsmartcardsvc) | `ivertix-agent-check_service-CtxSmartCardSvc` |
+| [Service Citrix Smart Tools Agent Service](#ivertix-agent-check_service-citrixconnector) | `ivertix-agent-check_service-CitrixConnector` |
+| [Service Citrix Stack Control Service](#ivertix-agent-check_service-stackcontrolservice) | `ivertix-agent-check_service-StackControlService` |
+| [Service Citrix Storefront Privileged Administration Service](#ivertix-agent-check_service-citrixprivilegedservice) | `ivertix-agent-check_service-CitrixPrivilegedService` |
+| [Service Citrix Storefront Service](#ivertix-agent-check_service-citrixstorefront) | `ivertix-agent-check_service-CitrixStorefront` |
+| [Service Citrix Subscriptions Store](#ivertix-agent-check_service-citrixsubscriptionsstore) | `ivertix-agent-check_service-CitrixSubscriptionsStore` |
+| [Service Citrix Trust Service](#ivertix-agent-check_service-citrixtrust) | `ivertix-agent-check_service-CitrixTrust` |
+| [Service Citrix UWA Cache Service](#ivertix-agent-check_service-citrixuwacacheservice) | `ivertix-agent-check_service-CitrixUWACacheService` |
+| [Service Citrix Web Services for Licensing](#ivertix-agent-check_service-citrixwebservicesforlicensing) | `ivertix-agent-check_service-CitrixWebServicesforLicensing` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Citrix-XenDesktop-Storefront
+
+*Citrix XenDesktop Storefront - NSclient Restapi* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Service Citrix Cluster Join Service](#ivertix-agent-check_service-citrixclusterservice) | `ivertix-agent-check_service-CitrixClusterService` |
+| [Service Citrix Configuration Replication](#ivertix-agent-check_service-citrixconfigurationreplication) | `ivertix-agent-check_service-CitrixConfigurationReplication` |
+| [Service Citrix Credential Wallet](#ivertix-agent-check_service-citrixcredentialwallet) | `ivertix-agent-check_service-CitrixCredentialWallet` |
+| [Service Citrix Default Domain Service](#ivertix-agent-check_service-citrixdefaultdomainservice) | `ivertix-agent-check_service-CitrixDefaultDomainService` |
+| [Service Citrix Peer Resolution Service](#ivertix-agent-check_service-citrixpeerresolutionservice) | `ivertix-agent-check_service-CitrixPeerResolutionService` |
+| [Service Citrix Service Monitor](#ivertix-agent-check_service-citrixservicemonitor) | `ivertix-agent-check_service-CitrixServiceMonitor` |
+| [Service Citrix Subscriptions Store](#ivertix-agent-check_service-citrixsubscriptionsstore) | `ivertix-agent-check_service-CitrixSubscriptionsStore` |
+| [Service Citrix Telemetry Service](#ivertix-agent-check_service-citrixtelemetryservice) | `ivertix-agent-check_service-CitrixTelemetryService` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Citrix AD Identity: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected` |
+| [Citrix AD Identity: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors` |
+| [Citrix Broker: Brokered Sessions](#ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions` |
+| [Citrix Broker: Database Avg. Transaction Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time` |
+| [Citrix Broker: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected` |
+| [Citrix Broker: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors` |
+| [Citrix Broker: Database Transactions/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions` |
+| [Citrix Broker: Event 1039 - The Citrix Broker Service failed to contact virtual machine](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039` |
+| [Citrix Broker: Event 1194 - Registration request was rejected](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194` |
+| [Citrix Broker: Event 1201 - The connection between the Citrix Broker Service and the database has been lost](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201` |
+| [Citrix Broker: Event 505 - An import to the local DB failed](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-505) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-505` |
+| [Citrix Broker: Expired Launches/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches` |
+| [Citrix Broker: Expired Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations` |
+| [Citrix Broker: Hard Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations` |
+| [Citrix Broker: Registration Avg. Request Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time` |
+| [Citrix Broker: Registration Rejects/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects` |
+| [Citrix Broker: Registration Requests/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests` |
+| [Citrix Broker: Soft Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests` |
+| [Citrix Configuration Logging: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected` |
+| [Citrix Configuration Logging: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors` |
+| [Citrix Configuration Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected` |
+| [Citrix Configuration Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors` |
+| [Citrix Delegated Admin: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected` |
+| [Citrix Delegated Admin: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors` |
+| [Citrix Environment Test: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected` |
+| [Citrix Environment Test: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors` |
+| [Citrix Host Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected` |
+| [Citrix Host Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors` |
+| [Citrix License Server: Event 1151 - The Citrix Broker Service cannot contact the license server](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151` |
+| [Citrix License Server: Event 1152 - This XenDesktop site does not have the required product licenses](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152` |
+| [Citrix License Server: Event 1154 - This controller has entered an emergency licensing grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154` |
+| [Citrix License Server: Event 1169 - This controller has entered the out-of-box grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169` |
+| [Citrix License Server: Event 1171 - No license server has been specified](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171` |
+| [Citrix Machine Creation Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected` |
+| [Citrix Machine Creation Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors` |
+| [Citrix Monitor: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected` |
+| [Citrix Monitor: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors` |
+| [Citrix Storefront: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected` |
+| [Citrix Storefront: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors` |
+| [License Server - TCP 27000](#apps-protocols-tcp-response-time-citrix-license-server-27000) | `apps-protocols-tcp-response-time-citrix-license-server-27000` |
+| [License Server - TCP 7279](#apps-protocols-tcp-response-time-citrix-license-server-7279) | `apps-protocols-tcp-response-time-citrix-license-server-7279` |
+| [License Server - TCP 8083](#apps-protocols-tcp-response-time-citrix-license-server-8083) | `apps-protocols-tcp-response-time-citrix-license-server-8083` |
+| [Service Citrix AD Identity Service](#ivertix-agent-check_service-citrixadidentityservice) | `ivertix-agent-check_service-CitrixADIdentityService` |
+| [Service Citrix Analytics](#ivertix-agent-check_service-citrixanalytics) | `ivertix-agent-check_service-CitrixAnalytics` |
+| [Service Citrix App Library](#ivertix-agent-check_service-citrixapplibrary) | `ivertix-agent-check_service-CitrixAppLibrary` |
+| [Service Citrix Audio Redirection Service](#ivertix-agent-check_service-ctxaudiosvc) | `ivertix-agent-check_service-CtxAudioSvc` |
+| [Service Citrix Broker Service](#ivertix-agent-check_service-citrixbrokerservice) | `ivertix-agent-check_service-CitrixBrokerService` |
+| [Service Citrix CEIP Service for Vda](#ivertix-agent-check_service-citrixvdaceipservice) | `ivertix-agent-check_service-CitrixVDACeipService` |
+| [Service Citrix Config Synchronizer Service](#ivertix-agent-check_service-citrixconfigsyncservice) | `ivertix-agent-check_service-CitrixConfigSyncService` |
+| [Service Citrix Configuration Logging Service](#ivertix-agent-check_service-citrixconfigurationlogging) | `ivertix-agent-check_service-CitrixConfigurationLogging` |
+| [Service Citrix Configuration Service](#ivertix-agent-check_service-citrixconfigurationservice) | `ivertix-agent-check_service-CitrixConfigurationService` |
+| [Service Citrix Delegated Administration Service](#ivertix-agent-check_service-citrixdelegatedadmin) | `ivertix-agent-check_service-CitrixDelegatedAdmin` |
+| [Service Citrix Desktop Service](#ivertix-agent-check_service-brokeragent) | `ivertix-agent-check_service-BrokerAgent` |
+| [Service Citrix Device Redirector Service](#ivertix-agent-check_service-citrixredirector) | `ivertix-agent-check_service-CitrixRedirector` |
+| [Service Citrix Diagnostic Facility COM Server](#ivertix-agent-check_service-cdfsvc) | `ivertix-agent-check_service-CdfSvc` |
+| [Service Citrix Encryption Service](#ivertix-agent-check_service-citrixencryptionservice) | `ivertix-agent-check_service-CitrixEncryptionService` |
+| [Service Citrix End User Experiencing Monitoring](#ivertix-agent-check_service-citrixeuem) | `ivertix-agent-check_service-CitrixEUEM` |
+| [Service Citrix Environment Test Service](#ivertix-agent-check_service-citrixenvtest) | `ivertix-agent-check_service-CitrixEnvTest` |
+| [Service Citrix Group Policy Engine](#ivertix-agent-check_service-citrixcseengine) | `ivertix-agent-check_service-CitrixCseEngine` |
+| [Service Citrix HDX HTML5 Video Redirection Service](#ivertix-agent-check_service-ctxhdxwebsocketservice) | `ivertix-agent-check_service-CtxHdxWebSocketService` |
+| [Service Citrix HDX MediaStream for Flash Service](#ivertix-agent-check_service-ctxflashsvc) | `ivertix-agent-check_service-CtxFlashSvc` |
+| [Service Citrix High Availability Service](#ivertix-agent-check_service-citrixhighavailabilityservice) | `ivertix-agent-check_service-CitrixHighAvailabilityService` |
+| [Service Citrix Host Service](#ivertix-agent-check_service-citrixhostservice) | `ivertix-agent-check_service-CitrixHostService` |
+| [Service Citrix Licensing](#ivertix-agent-check_service-citrixlicensing) | `ivertix-agent-check_service-CitrixLicensing` |
+| [Service Citrix Licensing WMI](#ivertix-agent-check_service-citrix_gtlicensingprov) | `ivertix-agent-check_service-Citrix_GTLicensingProv` |
+| [Service Citrix Location and Sensor Virtual Channel Service](#ivertix-agent-check_service-ctxsensvcsvc) | `ivertix-agent-check_service-CtxSensVcSvc` |
+| [Service Citrix Machine Creation Service](#ivertix-agent-check_service-citrixmachinecreationservice) | `ivertix-agent-check_service-CitrixMachineCreationService` |
+| [Service Citrix Mobile Receiver Virtual Channel Service](#ivertix-agent-check_service-mrvcsvc) | `ivertix-agent-check_service-MRVCSvc` |
+| [Service Citrix Monitor Service](#ivertix-agent-check_service-citrixmonitor) | `ivertix-agent-check_service-CitrixMonitor` |
+| [Service Citrix MultiTouch Redirection Service](#ivertix-agent-check_service-ctxmultitouchsvc) | `ivertix-agent-check_service-CtxMultiTouchSvc` |
+| [Service Citrix Orchestration Service](#ivertix-agent-check_service-citrixorchestration) | `ivertix-agent-check_service-CitrixOrchestration` |
+| [Service Citrix Print Manager Service](#ivertix-agent-check_service-cpsvc) | `ivertix-agent-check_service-cpsvc` |
+| [Service Citrix Profile Management](#ivertix-agent-check_service-ctxprofile) | `ivertix-agent-check_service-ctxProfile` |
+| [Service Citrix PVS BOOTP Service](#ivertix-agent-check_service-bnbootp) | `ivertix-agent-check_service-BNBOOTP` |
+| [Service Citrix Pvs for VMs agent](#ivertix-agent-check_service-pvsvmagent) | `ivertix-agent-check_service-PvsVmAgent` |
+| [Service Citrix PVS PXE Service](#ivertix-agent-check_service-bnpxe) | `ivertix-agent-check_service-BNPXE` |
+| [Service Citrix PVS Soap Server](#ivertix-agent-check_service-soapserver) | `ivertix-agent-check_service-soapserver` |
+| [Service Citrix PVS Stream Service](#ivertix-agent-check_service-streamservice) | `ivertix-agent-check_service-StreamService` |
+| [Service Citrix PVS TFTP Service](#ivertix-agent-check_service-bntftp) | `ivertix-agent-check_service-BNTFTP` |
+| [Service Citrix PVS Two-Stage Boot Service](#ivertix-agent-check_service-pvstsb) | `ivertix-agent-check_service-PVSTSB` |
+| [Service Citrix Services Manager](#ivertix-agent-check_service-servicesmanager) | `ivertix-agent-check_service-ServicesManager` |
+| [Service Citrix Smart Card Service](#ivertix-agent-check_service-ctxsmartcardsvc) | `ivertix-agent-check_service-CtxSmartCardSvc` |
+| [Service Citrix Smart Tools Agent Service](#ivertix-agent-check_service-citrixconnector) | `ivertix-agent-check_service-CitrixConnector` |
+| [Service Citrix Stack Control Service](#ivertix-agent-check_service-stackcontrolservice) | `ivertix-agent-check_service-StackControlService` |
+| [Service Citrix Storefront Privileged Administration Service](#ivertix-agent-check_service-citrixprivilegedservice) | `ivertix-agent-check_service-CitrixPrivilegedService` |
+| [Service Citrix Storefront Service](#ivertix-agent-check_service-citrixstorefront) | `ivertix-agent-check_service-CitrixStorefront` |
+| [Service Citrix Trust Service](#ivertix-agent-check_service-citrixtrust) | `ivertix-agent-check_service-CitrixTrust` |
+| [Service Citrix UWA Cache Service](#ivertix-agent-check_service-citrixuwacacheservice) | `ivertix-agent-check_service-CitrixUWACacheService` |
+| [Service Citrix Web Services for Licensing](#ivertix-agent-check_service-citrixwebservicesforlicensing) | `ivertix-agent-check_service-CitrixWebServicesforLicensing` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Citrix-XenDesktop-VDA
+
+*Citrix XenDesktop VDA - NSclient Restapi* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Service Citrix Desktop Service](#ivertix-agent-check_service-brokeragent) | `ivertix-agent-check_service-BrokerAgent` |
+| [Service Citrix Diagnostic Facility COM Server](#ivertix-agent-check_service-cdfsvc) | `ivertix-agent-check_service-CdfSvc` |
+| [Service Citrix Group Policy Engine](#ivertix-agent-check_service-citrixcseengine) | `ivertix-agent-check_service-CitrixCseEngine` |
+| [Service Citrix Encryption Service](#ivertix-agent-check_service-citrixencryptionservice) | `ivertix-agent-check_service-CitrixEncryptionService` |
+| [Service Citrix End User Experiencing Monitoring](#ivertix-agent-check_service-citrixeuem) | `ivertix-agent-check_service-CitrixEUEM` |
+| [Service Citrix Device Redirector Service](#ivertix-agent-check_service-citrixredirector) | `ivertix-agent-check_service-CitrixRedirector` |
+| [Service Citrix Telemetry Service](#ivertix-agent-check_service-citrixtelemetryservice) | `ivertix-agent-check_service-CitrixTelemetryService` |
+| [Service Citrix UWA Cache Service](#ivertix-agent-check_service-citrixuwacacheservice) | `ivertix-agent-check_service-CitrixUWACacheService` |
+| [Service Citrix CEIP Service for Vda](#ivertix-agent-check_service-citrixvdaceipservice) | `ivertix-agent-check_service-CitrixVDACeipService` |
+| [Service Citrix Print Manager Service](#ivertix-agent-check_service-cpsvc) | `ivertix-agent-check_service-cpsvc` |
+| [Service Citrix Audio Redirection Service](#ivertix-agent-check_service-ctxaudiosvc) | `ivertix-agent-check_service-CtxAudioSvc` |
+| [Service Citrix HDX MediaStream for Flash Service](#ivertix-agent-check_service-ctxflashsvc) | `ivertix-agent-check_service-CtxFlashSvc` |
+| [Service Citrix HDX HTML5 Video Redirection Service](#ivertix-agent-check_service-ctxhdxwebsocketservice) | `ivertix-agent-check_service-CtxHdxWebSocketService` |
+| [Service Citrix MultiTouch Redirection Service](#ivertix-agent-check_service-ctxmultitouchsvc) | `ivertix-agent-check_service-CtxMultiTouchSvc` |
+| [Service Citrix Profile Management](#ivertix-agent-check_service-ctxprofile) | `ivertix-agent-check_service-ctxProfile` |
+| [Service Citrix Location and Sensor Virtual Channel Service](#ivertix-agent-check_service-ctxsensvcsvc) | `ivertix-agent-check_service-CtxSensVcSvc` |
+| [Service Citrix Smart Card Service](#ivertix-agent-check_service-ctxsmartcardsvc) | `ivertix-agent-check_service-CtxSmartCardSvc` |
+| [Service Citrix Mobile Receiver Virtual Channel Service](#ivertix-agent-check_service-mrvcsvc) | `ivertix-agent-check_service-MRVCSvc` |
+| [Service Citrix Pvs for VMs agent](#ivertix-agent-check_service-pvsvmagent) | `ivertix-agent-check_service-PvsVmAgent` |
+| [Service Citrix Services Manager](#ivertix-agent-check_service-servicesmanager) | `ivertix-agent-check_service-ServicesManager` |
+| [Service Citrix Stack Control Service](#ivertix-agent-check_service-stackcontrolservice) | `ivertix-agent-check_service-StackControlService` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Citrix AD Identity: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected` |
+| [Citrix AD Identity: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors` |
+| [Citrix Broker: Brokered Sessions](#ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions` |
+| [Citrix Broker: Database Avg. Transaction Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time` |
+| [Citrix Broker: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected` |
+| [Citrix Broker: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors` |
+| [Citrix Broker: Database Transactions/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions` |
+| [Citrix Broker: Event 1039 - The Citrix Broker Service failed to contact virtual machine](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039` |
+| [Citrix Broker: Event 1194 - Registration request was rejected](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194` |
+| [Citrix Broker: Event 1201 - The connection between the Citrix Broker Service and the database has been lost](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201` |
+| [Citrix Broker: Event 505 - An import to the local DB failed](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-505) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-505` |
+| [Citrix Broker: Expired Launches/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches` |
+| [Citrix Broker: Expired Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations` |
+| [Citrix Broker: Hard Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations` |
+| [Citrix Broker: Registration Avg. Request Time](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time` |
+| [Citrix Broker: Registration Rejects/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects` |
+| [Citrix Broker: Registration Requests/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests` |
+| [Citrix Broker: Soft Registrations/sec](#ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests) | `ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests` |
+| [Citrix Configuration Logging: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected` |
+| [Citrix Configuration Logging: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors` |
+| [Citrix Configuration Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected` |
+| [Citrix Configuration Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors` |
+| [Citrix Delegated Admin: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected` |
+| [Citrix Delegated Admin: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors` |
+| [Citrix Environment Test: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected` |
+| [Citrix Environment Test: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors` |
+| [Citrix Host Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected` |
+| [Citrix Host Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors` |
+| [Citrix License Server: Event 1151 - The Citrix Broker Service cannot contact the license server](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151` |
+| [Citrix License Server: Event 1152 - This XenDesktop site does not have the required product licenses](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152` |
+| [Citrix License Server: Event 1154 - This controller has entered an emergency licensing grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154` |
+| [Citrix License Server: Event 1169 - This controller has entered the out-of-box grace period](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169` |
+| [Citrix License Server: Event 1171 - No license server has been specified](#ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171) | `ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171` |
+| [Citrix Machine Creation Service: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected` |
+| [Citrix Machine Creation Service: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors` |
+| [Citrix Monitor: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected` |
+| [Citrix Monitor: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors` |
+| [Citrix Storefront: Database Connected](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected` |
+| [Citrix Storefront: Database Transaction Errors/sec](#ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors) | `ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors` |
+| [License Server - TCP 27000](#apps-protocols-tcp-response-time-citrix-license-server-27000) | `apps-protocols-tcp-response-time-citrix-license-server-27000` |
+| [License Server - TCP 7279](#apps-protocols-tcp-response-time-citrix-license-server-7279) | `apps-protocols-tcp-response-time-citrix-license-server-7279` |
+| [License Server - TCP 8083](#apps-protocols-tcp-response-time-citrix-license-server-8083) | `apps-protocols-tcp-response-time-citrix-license-server-8083` |
+| [Service Citrix AD Identity Service](#ivertix-agent-check_service-citrixadidentityservice) | `ivertix-agent-check_service-CitrixADIdentityService` |
+| [Service Citrix Analytics](#ivertix-agent-check_service-citrixanalytics) | `ivertix-agent-check_service-CitrixAnalytics` |
+| [Service Citrix App Library](#ivertix-agent-check_service-citrixapplibrary) | `ivertix-agent-check_service-CitrixAppLibrary` |
+| [Service Citrix Broker Service](#ivertix-agent-check_service-citrixbrokerservice) | `ivertix-agent-check_service-CitrixBrokerService` |
+| [Service Citrix Cluster Join Service](#ivertix-agent-check_service-citrixclusterservice) | `ivertix-agent-check_service-CitrixClusterService` |
+| [Service Citrix Config Synchronizer Service](#ivertix-agent-check_service-citrixconfigsyncservice) | `ivertix-agent-check_service-CitrixConfigSyncService` |
+| [Service Citrix Configuration Logging Service](#ivertix-agent-check_service-citrixconfigurationlogging) | `ivertix-agent-check_service-CitrixConfigurationLogging` |
+| [Service Citrix Configuration Replication](#ivertix-agent-check_service-citrixconfigurationreplication) | `ivertix-agent-check_service-CitrixConfigurationReplication` |
+| [Service Citrix Configuration Service](#ivertix-agent-check_service-citrixconfigurationservice) | `ivertix-agent-check_service-CitrixConfigurationService` |
+| [Service Citrix Credential Wallet](#ivertix-agent-check_service-citrixcredentialwallet) | `ivertix-agent-check_service-CitrixCredentialWallet` |
+| [Service Citrix Default Domain Service](#ivertix-agent-check_service-citrixdefaultdomainservice) | `ivertix-agent-check_service-CitrixDefaultDomainService` |
+| [Service Citrix Delegated Administration Service](#ivertix-agent-check_service-citrixdelegatedadmin) | `ivertix-agent-check_service-CitrixDelegatedAdmin` |
+| [Service Citrix Environment Test Service](#ivertix-agent-check_service-citrixenvtest) | `ivertix-agent-check_service-CitrixEnvTest` |
+| [Service Citrix High Availability Service](#ivertix-agent-check_service-citrixhighavailabilityservice) | `ivertix-agent-check_service-CitrixHighAvailabilityService` |
+| [Service Citrix Host Service](#ivertix-agent-check_service-citrixhostservice) | `ivertix-agent-check_service-CitrixHostService` |
+| [Service Citrix Licensing](#ivertix-agent-check_service-citrixlicensing) | `ivertix-agent-check_service-CitrixLicensing` |
+| [Service Citrix Licensing WMI](#ivertix-agent-check_service-citrix_gtlicensingprov) | `ivertix-agent-check_service-Citrix_GTLicensingProv` |
+| [Service Citrix Machine Creation Service](#ivertix-agent-check_service-citrixmachinecreationservice) | `ivertix-agent-check_service-CitrixMachineCreationService` |
+| [Service Citrix Monitor Service](#ivertix-agent-check_service-citrixmonitor) | `ivertix-agent-check_service-CitrixMonitor` |
+| [Service Citrix Orchestration Service](#ivertix-agent-check_service-citrixorchestration) | `ivertix-agent-check_service-CitrixOrchestration` |
+| [Service Citrix Peer Resolution Service](#ivertix-agent-check_service-citrixpeerresolutionservice) | `ivertix-agent-check_service-CitrixPeerResolutionService` |
+| [Service Citrix PVS BOOTP Service](#ivertix-agent-check_service-bnbootp) | `ivertix-agent-check_service-BNBOOTP` |
+| [Service Citrix PVS PXE Service](#ivertix-agent-check_service-bnpxe) | `ivertix-agent-check_service-BNPXE` |
+| [Service Citrix PVS Soap Server](#ivertix-agent-check_service-soapserver) | `ivertix-agent-check_service-soapserver` |
+| [Service Citrix PVS Stream Service](#ivertix-agent-check_service-streamservice) | `ivertix-agent-check_service-StreamService` |
+| [Service Citrix PVS TFTP Service](#ivertix-agent-check_service-bntftp) | `ivertix-agent-check_service-BNTFTP` |
+| [Service Citrix PVS Two-Stage Boot Service](#ivertix-agent-check_service-pvstsb) | `ivertix-agent-check_service-PVSTSB` |
+| [Service Citrix Service Monitor](#ivertix-agent-check_service-citrixservicemonitor) | `ivertix-agent-check_service-CitrixServiceMonitor` |
+| [Service Citrix Smart Tools Agent Service](#ivertix-agent-check_service-citrixconnector) | `ivertix-agent-check_service-CitrixConnector` |
+| [Service Citrix Storefront Privileged Administration Service](#ivertix-agent-check_service-citrixprivilegedservice) | `ivertix-agent-check_service-CitrixPrivilegedService` |
+| [Service Citrix Storefront Service](#ivertix-agent-check_service-citrixstorefront) | `ivertix-agent-check_service-CitrixStorefront` |
+| [Service Citrix Subscriptions Store](#ivertix-agent-check_service-citrixsubscriptionsstore) | `ivertix-agent-check_service-CitrixSubscriptionsStore` |
+| [Service Citrix Trust Service](#ivertix-agent-check_service-citrixtrust) | `ivertix-agent-check_service-CitrixTrust` |
+| [Service Citrix Web Services for Licensing](#ivertix-agent-check_service-citrixwebservicesforlicensing) | `ivertix-agent-check_service-CitrixWebServicesforLicensing` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix AD Identity Service {/* #ivertix-agent-check_service-citrixadidentityservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixADIdentityService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Analytics {/* #ivertix-agent-check_service-citrixanalytics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixAnalytics` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix App Library {/* #ivertix-agent-check_service-citrixapplibrary */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixAppLibrary` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Broker Service {/* #ivertix-agent-check_service-citrixbrokerservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixBrokerService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Config Synchronizer Service {/* #ivertix-agent-check_service-citrixconfigsyncservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixConfigSyncService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Configuration Logging Service {/* #ivertix-agent-check_service-citrixconfigurationlogging */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixConfigurationLogging` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Configuration Service {/* #ivertix-agent-check_service-citrixconfigurationservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixConfigurationService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Smart Tools Agent Service {/* #ivertix-agent-check_service-citrixconnector */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixConnector` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Delegated Administration Service {/* #ivertix-agent-check_service-citrixdelegatedadmin */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixDelegatedAdmin` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Environment Test Service {/* #ivertix-agent-check_service-citrixenvtest */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixEnvTest` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix High Availability Service {/* #ivertix-agent-check_service-citrixhighavailabilityservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixHighAvailabilityService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Host Service {/* #ivertix-agent-check_service-citrixhostservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixHostService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Machine Creation Service {/* #ivertix-agent-check_service-citrixmachinecreationservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixMachineCreationService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Monitor Service {/* #ivertix-agent-check_service-citrixmonitor */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixMonitor` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Orchestration Service {/* #ivertix-agent-check_service-citrixorchestration */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixOrchestration` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Storefront Privileged Administration Service {/* #ivertix-agent-check_service-citrixprivilegedservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixPrivilegedService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Storefront Service {/* #ivertix-agent-check_service-citrixstorefront */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixStorefront` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Telemetry Service {/* #ivertix-agent-check_service-citrixtelemetryservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixTelemetryService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Trust Service {/* #ivertix-agent-check_service-citrixtrust */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixTrust` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Event 1039 - The Citrix Broker Service failed to contact virtual machine {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1039 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1039 and provider = 'Citrix Broker Service'` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 20` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `The Citrix Broker Service failed to contact virtual machine - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Event 1194 - Registration request was rejected {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1194 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1194 and provider = 'Citrix Broker Service'` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 20` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `Registration request for worker was rejected because the Broker service was unable to contact the worker during the registration process - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Event 1201 - The connection between the Citrix Broker Service and the database has been lost {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1201 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1201` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 20` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `The connection between the Citrix Broker Service and the database has been lost - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Event 505 - An import to the local DB failed {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-505 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 505 and provider = 'Citrix High Availability Service'` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `An import to the local DB failed; see below for more information - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix AD Identity: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixADIdentityService\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix AD Identity: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-ad-identity-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixADIdentityService\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Brokered Sessions {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-brokered-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Brokered Sessions` |  |
+| `PERF_SYNTAX` | `Brokered Sessions` |  |
+| `WARNING` | `50` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `100` | Set arguments (multiple option. Example: --arg='arg1'). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Database Avg. Transaction Time {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-database-avg-transaction-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Database Avg. Transaction Time` |  |
+| `PERF_SYNTAX` | `Database Avg. Transaction Time` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Database Transactions/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-database-transactions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Database Transactions/sec` |  |
+| `PERF_SYNTAX` | `Database Transactions/sec` |  |
+| `WARNING` | `warning=value > 500` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 1000` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Expired Launches/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-launches */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Expired Launches/sec` |  |
+| `PERF_SYNTAX` | `Expired Launches/sec` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 15` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Expired Registrations/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-expired-registrations */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Expired Registrations/sec` |  |
+| `PERF_SYNTAX` | `Expired Registrations/sec` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 15` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Hard Registrations/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-hard-registrations */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Hard Registrations/sec` |  |
+| `PERF_SYNTAX` | `Hard Registrations/sec` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 15` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Registration Avg. Request Time {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-avg-request-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Registration Avg. Request Time` |  |
+| `PERF_SYNTAX` | `Registration Avg. Request Time` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Registration Rejects/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-rejects */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Registration Rejects/sec` |  |
+| `PERF_SYNTAX` | `Registration Rejects/sec` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 15` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Registration Requests/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-registration-requests */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Registration Requests/sec` |  |
+| `PERF_SYNTAX` | `Registration Requests/sec` |  |
+| `WARNING` | `warning=value > 250` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 500` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Broker: Soft Registrations/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-broker-soft-registration-requests */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Citrix Broker Service\\Soft Registrations/sec` |  |
+| `PERF_SYNTAX` | `Soft Registrations/sec` |  |
+| `WARNING` | `warning=value > 250` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 500` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Configuration Logging: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixConfigurationLogging\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Configuration Logging: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-conf-logging-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixConfigurationLogging\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Configuration Service: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixConfigurationService\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Configuration Service: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-conf-service-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixConfigurationService\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Delegated Admin: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixDelegatedAdmin\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Delegated Admin: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-delegated-admin-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixDelegatedAdmin\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Environment Test: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixEnvTest\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Environment Test: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-env-test-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixEnvTest\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Host Service: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixHostService\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Host Service: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-host-service-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixHostService\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Machine Creation Service: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixMachineCreationService\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Machine Creation Service: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-machine-creation-service-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixMachineCreationService\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Monitor: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixMonitor\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Monitor: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-monitor-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixMonitor\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Storefront: Database Connected {/* #ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixStorefront\\Database Connected` |  |
+| `PERF_SYNTAX` | `Database Connected` |  |
+| `WARNING` | `warning=value = 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value = 0` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix Storefront: Database Transaction Errors/sec {/* #ivertix-nsclient-restapi-check_pdh-citrix-storefront-database-trans-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\CitrixStorefront\\Database Transaction Errors/sec` |  |
+| `PERF_SYNTAX` | `Database Transaction Errors/sec` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### License Server - TCP 27000 {/* #apps-protocols-tcp-response-time-citrix-license-server-27000 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `27000` | Port used |
+| `WARNING-RTA` |  | Response time threshold warning in milliseconds |
+| `CRITICAL-RTA` |  | Response time threshold critical in milliseconds |
+| `CRITICAL-PL` |  | Packets lost threshold critical in % |
+| `PACKETS` |  | Number of packets to send (Default: 5) |
+| `TIMEOUT` |  | Set timeout in seconds (Default: 5) |
+| `WARNING-PL` |  | Packets lost threshold warning in % |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.roundtrip.time.average.milliseconds` | `ms` | rta ms | `WARNING-RTA`, `CRITICAL-RTA` |
+| `tcp.roundtrip.time.maximum.milliseconds` | `ms` |  |  |
+| `tcp.roundtrip.time.minimum.milliseconds` | `ms` |  |  |
+| `tcp.packets.loss.percentage` | `%` | lost %% | `WARNING-PL`, `CRITICAL-PL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### License Server - TCP 7279 {/* #apps-protocols-tcp-response-time-citrix-license-server-7279 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `7279` | Port used |
+| `WARNING-RTA` |  | Response time threshold warning in milliseconds |
+| `CRITICAL-RTA` |  | Response time threshold critical in milliseconds |
+| `CRITICAL-PL` |  | Packets lost threshold critical in % |
+| `PACKETS` |  | Number of packets to send (Default: 5) |
+| `TIMEOUT` |  | Set timeout in seconds (Default: 5) |
+| `WARNING-PL` |  | Packets lost threshold warning in % |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.roundtrip.time.average.milliseconds` | `ms` | rta ms | `WARNING-RTA`, `CRITICAL-RTA` |
+| `tcp.roundtrip.time.maximum.milliseconds` | `ms` |  |  |
+| `tcp.roundtrip.time.minimum.milliseconds` | `ms` |  |  |
+| `tcp.packets.loss.percentage` | `%` | lost %% | `WARNING-PL`, `CRITICAL-PL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### License Server - TCP 8083 {/* #apps-protocols-tcp-response-time-citrix-license-server-8083 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `8083` | Port used |
+| `WARNING-RTA` |  | Response time threshold warning in milliseconds |
+| `CRITICAL-RTA` |  | Response time threshold critical in milliseconds |
+| `CRITICAL-PL` |  | Packets lost threshold critical in % |
+| `PACKETS` |  | Number of packets to send (Default: 5) |
+| `TIMEOUT` |  | Set timeout in seconds (Default: 5) |
+| `WARNING-PL` |  | Packets lost threshold warning in % |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.roundtrip.time.average.milliseconds` | `ms` | rta ms | `WARNING-RTA`, `CRITICAL-RTA` |
+| `tcp.roundtrip.time.maximum.milliseconds` | `ms` |  |  |
+| `tcp.roundtrip.time.minimum.milliseconds` | `ms` |  |  |
+| `tcp.packets.loss.percentage` | `%` | lost %% | `WARNING-PL`, `CRITICAL-PL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Licensing {/* #ivertix-agent-check_service-citrixlicensing */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Citrix Licensing` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Web Services for Licensing {/* #ivertix-agent-check_service-citrixwebservicesforlicensing */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixWebServicesforLicensing` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Licensing WMI {/* #ivertix-agent-check_service-citrix_gtlicensingprov */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Citrix_GTLicensingProv` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix License Server: Event 1151 - The Citrix Broker Service cannot contact the license server {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1151 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1151 and provider = 'Citrix High Availability Service'` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `The Citrix Broker Service cannot contact the license server - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix License Server: Event 1152 - This XenDesktop site does not have the required product licenses {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1152 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1152 and provider = 'Citrix Broker Service'` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `This XenDesktop site does not have the required product licenses present on the license server - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix License Server: Event 1154 - This controller has entered an emergency licensing grace period {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1154 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1154 and (provider = 'Citrix ConfigSync Service' or provider = 'Citrix High Availability Service')` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 20` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `This controller has entered an emergency licensing grace period because it could not contact the license server - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix License Server: Event 1169 - This controller has entered the out-of-box grace period {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1169 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1169 and provider = 'Citrix Broker Service'` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 20` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `This controller has entered the out-of-box grace period as no suitable licenses were found on the license server - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Citrix License Server: Event 1171 - No license server has been specified {/* #ivertix-nsclient-restapi-check_eventlog-citrix-broker-1171 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SCAN_RANGE` | `1h` |  |
+| `EVENTLOG` | `Application` |  |
+| `FILTER` | `id = 1171 and provider = 'Citrix High Availability Service'` | Event log query: id = 4728 and provider = 'Citrix' |
+| `WARNING` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` | `count > 0` | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` | `500` |  |
+| `TOP_SYNTAX` | `No license server has been specified - ${count} events - Log message:"${list}"` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix PVS BOOTP Service {/* #ivertix-agent-check_service-bnbootp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `BNBOOTP` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix PVS PXE Service {/* #ivertix-agent-check_service-bnpxe */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `BNPXE` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix PVS TFTP Service {/* #ivertix-agent-check_service-bntftp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `BNTFTP` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Diagnostic Facility COM Server {/* #ivertix-agent-check_service-cdfsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CdfSvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix PVS Two-Stage Boot Service {/* #ivertix-agent-check_service-pvstsb */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `PVSTSB` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix PVS Soap Server {/* #ivertix-agent-check_service-soapserver */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `soapserver` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix PVS Stream Service {/* #ivertix-agent-check_service-streamservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `StreamService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Cluster Join Service {/* #ivertix-agent-check_service-citrixclusterservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixClusterService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Configuration Replication {/* #ivertix-agent-check_service-citrixconfigurationreplication */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixConfigurationReplication` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Credential Wallet {/* #ivertix-agent-check_service-citrixcredentialwallet */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixCredentialWallet` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Default Domain Service {/* #ivertix-agent-check_service-citrixdefaultdomainservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixDefaultDomainService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Peer Resolution Service {/* #ivertix-agent-check_service-citrixpeerresolutionservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Citrix Peer Resolution Service` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Service Monitor {/* #ivertix-agent-check_service-citrixservicemonitor */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixServiceMonitor` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Subscriptions Store {/* #ivertix-agent-check_service-citrixsubscriptionsstore */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixSubscriptionsStore` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Desktop Service {/* #ivertix-agent-check_service-brokeragent */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `BrokerAgent` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Group Policy Engine {/* #ivertix-agent-check_service-citrixcseengine */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixCseEngine` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Encryption Service {/* #ivertix-agent-check_service-citrixencryptionservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Citrix Encryption Service` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix End User Experiencing Monitoring {/* #ivertix-agent-check_service-citrixeuem */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Citrix EUEM` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Device Redirector Service {/* #ivertix-agent-check_service-citrixredirector */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixRedirector` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix UWA Cache Service {/* #ivertix-agent-check_service-citrixuwacacheservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixUWACacheService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix CEIP Service for Vda {/* #ivertix-agent-check_service-citrixvdaceipservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CitrixVDACeipService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Print Manager Service {/* #ivertix-agent-check_service-cpsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `cpsvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Audio Redirection Service {/* #ivertix-agent-check_service-ctxaudiosvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CtxAudioSvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix HDX MediaStream for Flash Service {/* #ivertix-agent-check_service-ctxflashsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CtxFlashSvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix HDX HTML5 Video Redirection Service {/* #ivertix-agent-check_service-ctxhdxwebsocketservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CtxHdxWebSocketService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix MultiTouch Redirection Service {/* #ivertix-agent-check_service-ctxmultitouchsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CtxMultiTouchSvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Profile Management {/* #ivertix-agent-check_service-ctxprofile */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `ctxProfile` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Location and Sensor Virtual Channel Service {/* #ivertix-agent-check_service-ctxsensvcsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CtxSensVcSvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Smart Card Service {/* #ivertix-agent-check_service-ctxsmartcardsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `CtxSmartCardSvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Mobile Receiver Virtual Channel Service {/* #ivertix-agent-check_service-mrvcsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `MRVCSvc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Pvs for VMs agent {/* #ivertix-agent-check_service-pvsvmagent */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `PvsVmAgent` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Services Manager {/* #ivertix-agent-check_service-servicesmanager */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `ServicesManager` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Citrix Stack Control Service {/* #ivertix-agent-check_service-stackcontrolservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `StackControlService` |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260420</summary>
+
+- Host template `Citrix-XenDesktop-Broker`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Host template `Citrix-XenDesktop-License-Server`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Host template `Citrix-XenDesktop-Provisioning-Server`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Host template `Citrix-XenDesktop-Storefront`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Host template `Citrix-XenDesktop-VDA`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260401</summary>
+
+- Command `ivertix-agent-check_eventlog`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_pdh`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_pdh_diff`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_service`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>

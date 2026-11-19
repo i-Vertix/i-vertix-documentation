@@ -1,0 +1,654 @@
+---
+title: "Synology NAS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Synology.png";
+
+<PluginPackHeader name="Synology NAS" image={image} category="Storage" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Synology NAS devices through SNMP: CPU, memory, swap and load, storage, temperature, hardware status, UPS, high availability, interfaces, NTP, upgrade status and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#storage-synology-snmp-cpu)
+* [HA](#storage-synology-snmp-ha)
+* [Hardware status](#storage-synology-snmp-components)
+* [Interfaces](#storage-synology-snmp-interfaces)
+* [Memory](#storage-synology-snmp-memory)
+* [NTP](#storage-synology-snmp-time)
+* [Storage](#storage-synology-snmp-storage)
+* [Swap](#storage-synology-snmp-swap)
+* [System Load](#storage-synology-snmp-load)
+* [Temperature](#storage-synology-snmp-temperature)
+* [Upgrade status](#storage-synology-snmp-upgrade)
+* [UPS](#storage-synology-snmp-ups)
+* [Uptime](#storage-synology-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#storage-synology-snmp-interfaces) | `Interface - <name>` |
+| [Storage](#storage-synology-snmp-storage) | `Storage <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Synology-NAS-HA-SNMP
+
+*Synology NAS HA* · Parent template: `Synology-NAS-SNMP`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA](#storage-synology-snmp-ha) | `storage-synology-snmp-ha` |
+| [Hardware status](#storage-synology-snmp-components) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-components` |
+| [CPU](#storage-synology-snmp-cpu) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-cpu` |
+| [System Load](#storage-synology-snmp-load) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-load` |
+| [Memory](#storage-synology-snmp-memory) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-memory` |
+| [Swap](#storage-synology-snmp-swap) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-swap` |
+| [Temperature](#storage-synology-snmp-temperature) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-temperature` |
+| [NTP](#storage-synology-snmp-time) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-time` |
+| [Upgrade status](#storage-synology-snmp-upgrade) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-upgrade` |
+| [Uptime](#storage-synology-snmp-uptime) (inherited from `Synology-NAS-SNMP`) | `storage-synology-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#storage-synology-snmp-interfaces) | `storage-synology-snmp-interfaces` |
+| [Storage](#storage-synology-snmp-storage) | `storage-synology-snmp-storage` |
+| [UPS](#storage-synology-snmp-ups) | `storage-synology-snmp-ups` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Synology-NAS-SNMP
+
+*Synology NAS SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hardware status](#storage-synology-snmp-components) | `storage-synology-snmp-components` |
+| [CPU](#storage-synology-snmp-cpu) | `storage-synology-snmp-cpu` |
+| [System Load](#storage-synology-snmp-load) | `storage-synology-snmp-load` |
+| [Memory](#storage-synology-snmp-memory) | `storage-synology-snmp-memory` |
+| [Swap](#storage-synology-snmp-swap) | `storage-synology-snmp-swap` |
+| [Temperature](#storage-synology-snmp-temperature) | `storage-synology-snmp-temperature` |
+| [NTP](#storage-synology-snmp-time) | `storage-synology-snmp-time` |
+| [Upgrade status](#storage-synology-snmp-upgrade) | `storage-synology-snmp-upgrade` |
+| [Uptime](#storage-synology-snmp-uptime) | `storage-synology-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA](#storage-synology-snmp-ha) | `storage-synology-snmp-ha` |
+| [Interfaces](#storage-synology-snmp-interfaces) | `storage-synology-snmp-interfaces` |
+| [Storage](#storage-synology-snmp-storage) | `storage-synology-snmp-storage` |
+| [UPS](#storage-synology-snmp-ups) | `storage-synology-snmp-ups` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA {/* #storage-synology-snmp-ha */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-HEARTBEAT-LATENCY` |  | Warning threshold heartbeat latency |
+| `CRITICAL-HEARTBEAT-LATENCY` |  | Critical threshold heartbeat latency |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ha.heartbeat.latency.microseconds` | `us` | heartbeat latency:  us | `WARNING-HEARTBEAT-LATENCY`, `CRITICAL-HEARTBEAT-LATENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #storage-synology-snmp-components */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: 'all'). Can be: 'psu', 'fan_cpu', 'fan_psu', 'disk', 'raid', 'system' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=psu) Can also exclude specific instance: --filter=psu,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(on)$)' |
+| `CRITICAL` |  | Set critical threshold for 'disk.badsectors' (syntax: type,regexp,threshold) Example: --critical='disk.badsectors,.*,50' |
+| `WARNING` |  | Set warning threshold for 'disk.badsectors' (syntax: type,regexp,threshold) Example: --warning='disk.badsectors,.*,30' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #storage-synology-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `85` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `95` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning threshold Core utilization |
+| `CRITICAL-CORE` |  | Critical threshold Core utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Load {/* #storage-synology-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #storage-synology-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  |  |
+| `memory.usage.percentage` | `%` |  |  |
+| `memory.buffer.bytes` | `B` | Buffer |  |
+| `memory.cached.bytes` | `B` | Cached |  |
+| `memory.shared.bytes` | `B` | Shared |  |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #storage-synology-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `25` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Temperature {/* #storage-synology-snmp-temperature */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TEMPERATURE` | `10:45` | Threshold warning in celsius degrees |
+| `CRITICAL-TEMPERATURE` | `5:55` | Threshold critical in celsius degrees |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hardware.temperature.celsius` | `C` | system temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #storage-synology-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Time offset warning threshold (in seconds) |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Upgrade status {/* #storage-synology-snmp-upgrade */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{upgrade} ne "unavailable"'` | Set warning threshold for status (Default : '%\{upgrade\} ne "unavailable"'). Can used special variables like: %\{model\}, %\{version\}, %\{upgrade\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{model\}, %\{version\}, %\{upgrade\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #storage-synology-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #storage-synology-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #storage-synology-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `85` | Threshold warning usage |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical access. Check if storage is readOnly: --critical-access=readOnly |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+| `STORAGE` |  | Set the storage (number expected) ex: 1, 2,... (empty means  'check all storage') - can be a regexp |
+| `WARNING-ACCESS` |  | Threshold warning access |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### UPS {/* #storage-synology-snmp-ups */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CHARGE-REMAINING` | `40:` | Warning threshold charge remaining |
+| `WARNING-LIFETIME-REMAINING` | `20:` | Warning threshold lifetime remaining |
+| `CRITICAL-CHARGE-REMAINING` | `20:` | Critical threshold charge remaining |
+| `CRITICAL-LIFETIME-REMAINING` | `10:` | Critical threshold lifetime remaining |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ups.load.percent` | `%` | ups load: %% |  |
+| `battery.charge.remaining.percent` | `%` | battery charge remaining: %% | `WARNING-CHARGE-REMAINING`, `CRITICAL-CHARGE-REMAINING` |
+| `battery.lifetime.remaining.seconds` | `s` | battery estimated lifetime:  seconds | `WARNING-LIFETIME-REMAINING`, `CRITICAL-LIFETIME-REMAINING` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

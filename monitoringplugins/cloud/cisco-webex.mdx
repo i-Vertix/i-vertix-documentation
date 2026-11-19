@@ -1,0 +1,365 @@
+---
+title: "Cisco Webex"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Webex.png";
+
+<PluginPackHeader name="Cisco Webex" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+Monitors Cisco Webex through the Webex API: the status of devices, the health of workspaces and the cache generation.
+
+The plugin pack provides these checks:
+
+* [Cache generation](#cloud-cisco-webex-restapi-cache)
+* [Device status](#cloud-cisco-webex-restapi-personal-device-status) (`cloud-cisco-webex-restapi-personal-device-status`)
+* [Device status](#cloud-cisco-webex-restapi-workspace-device-status) (`cloud-cisco-webex-restapi-workspace-device-status`)
+* [Workspace health](#cloud-cisco-webex-restapi-workspace-health)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Cisco Webex](/monitoring/monitoring-resources/discovery/common-discovery#cisco-webex)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Device status](#cloud-cisco-webex-restapi-workspace-device-status) | `<display_name> - <product> - <serial> - device status` |
+| [Device status](#cloud-cisco-webex-restapi-workspace-device-status) | `<display_name> - <product> - <serial> - device status` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Webex-API-cache
+
+*Webex API cache* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Define the TCP port to use to reach the API (default: 443). |
+| `PROTO` | `https` | Define the protocol to reach the API (default: 'https'). |
+| `CLIENT-ID` |  | Define the client-id for authentication. |
+| `CLIENT-SECRET` | *(password)* | Define the secret associated with the username. |
+| `REFRESH-TOKEN` | *(password)* | Define the refresh token associated with the username. Used to renew the access token |
+| `WEBEXAPI` | `webexapis.com` | Address of the server that hosts the API. |
+| `TCP-PORT` |  | Port used |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cache generation](#cloud-cisco-webex-restapi-cache) | `cloud-cisco-webex-restapi-cache` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device status](#cloud-cisco-webex-restapi-personal-device-status) | `cloud-cisco-webex-restapi-personal-device-status` |
+| [Device status](#cloud-cisco-webex-restapi-workspace-device-status) | `cloud-cisco-webex-restapi-workspace-device-status` |
+| [Workspace health](#cloud-cisco-webex-restapi-workspace-health) | `cloud-cisco-webex-restapi-workspace-health` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Webex-Personal
+
+*Webex-Personal* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERSON-ID` |  | *(not used by the check command)* |
+| `PROTO` | `https` | Define the protocol to reach the API (default: 'https'). *(not used by the check command)* |
+| `CLIENT-ID` |  | Define the client-id for authentication. *(not used by the check command)* |
+| `CLIENT-SECRET` | *(password)* | Define the secret associated with the username. *(not used by the check command)* |
+| `REFRESH-TOKEN` | *(password)* | Define the refresh token associated with the username. Used to renew the access token *(not used by the check command)* |
+| `WEBEXAPI` | `webexapis.com` | Address of the server that hosts the API. *(not used by the check command)* |
+| `PORT` | `443` | Define the TCP port to use to reach the API (default: 443). *(not used by the check command)* |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cache generation](#cloud-cisco-webex-restapi-cache) | `cloud-cisco-webex-restapi-cache` |
+| [Device status](#cloud-cisco-webex-restapi-personal-device-status) | `cloud-cisco-webex-restapi-personal-device-status` |
+| [Device status](#cloud-cisco-webex-restapi-workspace-device-status) | `cloud-cisco-webex-restapi-workspace-device-status` |
+| [Workspace health](#cloud-cisco-webex-restapi-workspace-health) | `cloud-cisco-webex-restapi-workspace-health` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Webex-Workspace
+
+*Webex Wokspace* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WORKSPACE-ID` |  | Filter workspaces by workspace-id. |
+| `PORT` | `443` | Define the TCP port to use to reach the API (default: 443). |
+| `PROTO` | `https` | Define the protocol to reach the API (default: 'https'). |
+| `CLIENT-ID` |  | Define the client-id for authentication. |
+| `CLIENT-SECRET` | *(password)* | Define the secret associated with the username. |
+| `REFRESH-TOKEN` | *(password)* | Define the refresh token associated with the username. Used to renew the access token |
+| `WEBEXAPI` | `webexapis.com` | Address of the server that hosts the API. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Workspace health](#cloud-cisco-webex-restapi-workspace-health) | `cloud-cisco-webex-restapi-workspace-health` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cache generation](#cloud-cisco-webex-restapi-cache) | `cloud-cisco-webex-restapi-cache` |
+| [Device status](#cloud-cisco-webex-restapi-personal-device-status) | `cloud-cisco-webex-restapi-personal-device-status` |
+| [Device status](#cloud-cisco-webex-restapi-workspace-device-status) | `cloud-cisco-webex-restapi-workspace-device-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cache generation {/* #cloud-cisco-webex-restapi-cache */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Workspace health {/* #cloud-cisco-webex-restapi-workspace-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--zeroed --cache-use  --add-metrics` | Additional options appended to the plugin command line (host level). |
+| `AGGREGATION` | `none` | Define how the data must be aggregated. Available aggregations: C&lt;none>, C&lt;hourly>, C&lt;daily>. Default: C&lt;none>. |
+| `TIME-FRAME` | `900` | Set timeframe in seconds (i.e. 3600 to check last hour, i.e 900 to check last 15 minutes). Default: 900. |
+| `UNKNOWN-HTTP-STATUS` | `%{http_code} < 200 or (%{http_code} >= 300 && %{http_code} != 404)` | Threshold unknown for http response code (default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-TEMPERATURE` |  | Threshold warning temperature (°C) |
+| `CRITICAL-TEMPERATURE` |  | Threshold critical temperature (°C) |
+| `WARNING-HUMIDITY` |  | Threshold warning humidity (%) |
+| `CRITICAL-HUMIDITY` |  | Threshold critical humidity (%) |
+| `WARNING-AMBIENT-NOISE` |  | Threshold warning ambient noise (dB) |
+| `CRITICAL-AMBIENT-NOISE` |  | Threshold critical ambient noise (dB) |
+| `WARNING-TVOC` |  | Threshold warning Total Volatile Organic Compounds |
+| `CRITICAL-TVOC` |  | Threshold critical Total Volatile Organic Compounds |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. (Default: ''). You can use the following variables: C&lt;%\{planned_maintenance\}>, C&lt;%\{health\}>. C&lt;%(health)> can have one of these values: C&lt;info>, C&lt;ok>, C&lt;warning>, C&lt;error> |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). You can use the following variables: C&lt;%\{planned_maintenance\}>, C&lt;%\{health\}>. C&lt;%(health)> can have one of these values: C&lt;info>, C&lt;ok>, C&lt;warning>, C&lt;error> |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). You can use the following variables: C&lt;%\{planned_maintenance\}>, C&lt;%\{health\}>.  C&lt;%(health)> can have one of these values: C&lt;info>, C&lt;ok>, C&lt;warning>, C&lt;error> |
+| `WARNING-HTTP-STATUS` |  | Warning threshold for http response code |
+| `CRITICAL-HTTP-STATUS` |  | Critical threshold for http response code |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `temperature.celsius` | `C` | Temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `humidity.percentage` | `%` | Humidity: %% | `WARNING-HUMIDITY`, `CRITICAL-HUMIDITY` |
+| `ambient.noise.dB` | `dB` | Ambient noise:  dB | `WARNING-AMBIENT-NOISE`, `CRITICAL-AMBIENT-NOISE` |
+| `tvoc` |  | TVOC | `WARNING-TVOC`, `CRITICAL-TVOC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device status {/* #cloud-cisco-webex-restapi-personal-device-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `%{lifecycle} =~ /UPCOMING_END_OF_SUPPORT/i \|\| %{connection_status} =~ /disconnected/i \|\| %{error_codes} =~ /upcomingendofsupport\|networkquality\|currentnetworkquality\|wifiradioquality/i` | Set warning threshold for status (Default: '%\{lifecycle\} =~ /UPCOMING_END_OF_SUPPORT/i \|\| %\{connection_status\} =~ /disconnected/i \|\| %\{error_codes\} =~ /upcomingendofsupport\|networkquality\|currentnetworkquality\|wifiradioquality/i'). Can used special variables like: %\{error_codes\}, %\{connection_status\}, %\{planned_maintenance\}, %\{lifecycle\} |
+| `CRITICAL-STATUS` | `%{error_codes} =~ /accountmissing\|softwareupgradekeepsfailing/i` | Set critical threshold for status (Default: '%\{error_codes\} =~ /softwareupgradekeepsfailing/i'). Can used special variables like: %\{error_codes\}, %\{connection_status\}, %\{planned_maintenance\}, %\{lifecycle\} |
+| `UNKNOWN-HTTP-STATUS` | `%{http_code} < 200 or (%{http_code} >= 300 && %{http_code} != 404)` | Threshold unknown for http response code (default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `DEVICE-ID` |  | Filter device by device-id. |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. (Default: ''). Can used special variables like: %\{error_codes\}, %\{connection_status\}, %\{planned_maintenance\}, %\{lifecycle\} |
+| `WARNING-HTTP-STATUS` |  | Warning threshold for http response code |
+| `CRITICAL-HTTP-STATUS` |  | Critical threshold for http response code |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device status {/* #cloud-cisco-webex-restapi-workspace-device-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--cache-use` | Additional options appended to the plugin command line (host level). |
+| `WARNING-STATUS` | `%{lifecycle} =~ /UPCOMING_END_OF_SUPPORT/i \|\| %{connection_status} =~ /disconnected/i \|\| %{error_codes} =~ /upcomingendofsupport\|networkquality\|currentnetworkquality\|wifiradioquality/i` | Set warning threshold for status (Default: '%\{lifecycle\} =~ /UPCOMING_END_OF_SUPPORT/i \|\| %\{connection_status\} =~ /disconnected/i \|\| %\{error_codes\} =~ /upcomingendofsupport\|networkquality\|currentnetworkquality\|wifiradioquality/i'). Can used special variables like: %\{error_codes\}, %\{connection_status\}, %\{planned_maintenance\}, %\{lifecycle\} |
+| `CRITICAL-STATUS` | `%{error_codes} =~ /accountmissing\|softwareupgradekeepsfailing/i` | Set critical threshold for status (Default: '%\{error_codes\} =~ /softwareupgradekeepsfailing/i'). Can used special variables like: %\{error_codes\}, %\{connection_status\}, %\{planned_maintenance\}, %\{lifecycle\} |
+| `UNKNOWN-HTTP-STATUS` | `%{http_code} < 200 or (%{http_code} >= 300 && %{http_code} != 404)` | Threshold unknown for http response code (default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `DEVICE-ID` |  | Filter device by device-id. |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. (Default: ''). Can used special variables like: %\{error_codes\}, %\{connection_status\}, %\{planned_maintenance\}, %\{lifecycle\} |
+| `WARNING-HTTP-STATUS` |  | Warning threshold for http response code |
+| `CRITICAL-HTTP-STATUS` |  | Critical threshold for http response code |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260331</summary>
+
+- Plugin pack `Cisco Webex`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260300 - 20260331`.

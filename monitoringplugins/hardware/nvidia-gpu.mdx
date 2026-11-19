@@ -1,0 +1,184 @@
+---
+title: "NVIDIA GPU"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/NVIDIA.png";
+
+<PluginPackHeader name="NVIDIA GPU" image={image} category="Hardware" metadata={["SSH"]} />
+
+## Description
+
+Monitors NVIDIA GPUs over SSH: GPU, memory, encoder and decoder utilization, BAR1 and framebuffer memory usage and temperature.
+
+The plugin pack provides these checks:
+
+* [NVIDIA GPU statistics](#hardware-devices-nvidia-gpu-smi-stats)
+
+
+## Host Templates
+
+### NVIDIA-GPU
+
+*NVIDIA GPU* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-PASSWORD` | *(password)* | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSHCLI-OPTION` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [NVIDIA GPU statistics](#hardware-devices-nvidia-gpu-smi-stats) | `hardware-devices-nvidia-gpu-smi-stats` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### NVIDIA GPU statistics {/* #hardware-devices-nvidia-gpu-smi-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BAR1-MEMORY-USAGE-PRCT` | `90` | Warning threshold BAR1 memory usage (%) |
+| `WARNING-FB-MEMORY-USAGE-PRCT` | `90` | Warning threshold FB memory usage (%) |
+| `WARNING-GPU-UTILIZATION` | `90` | Warning threshold GPU utilization (%) |
+| `WARNING-GPU-MEMORY-UTILIZATION` | `90` | Warning threshold GPU memory utilization (%) |
+| `WARNING-GPU-ENCODER-UTILIZATION` | `90` | Warning threshold GPU encoder utilization (%) |
+| `WARNING-GPU-DECODER-UTILIZATION` | `90` | Warning threshold GPU decoder utilization (%) |
+| `CRITICAL-BAR1-MEMORY-USAGE-PRCT` | `95` | Critical threshold BAR1 memory usage (%) |
+| `CRITICAL-FB-MEMORY-USAGE-PRCT` | `95` | Critical threshold FB memory usage (%) |
+| `CRITICAL-GPU-UTILIZATION` | `95` | Critical threshold GPU utilization (%) |
+| `CRITICAL-GPU-MEMORY-UTILIZATION` | `95` | Critical threshold GPU memory utilization (%) |
+| `CRITICAL-GPU-ENCODER-UTILIZATION` | `95` | Critical threshold GPU encoder utilization (%) |
+| `CRITICAL-GPU-DECODER-UTILIZATION` | `95` | Critical threshold GPU decoder utilization (%) |
+| `CRITICAL-TEMPERATURE` | `90` | Critical threshold temperature |
+| `WARNING-TEMPERATURE` | `80` | Warning threshold temperature |
+| `FILTER-NAME` |  | Filter gpu devices by name (can be a regexp). |
+| `WARNING-DEVICES-GPU-TOTAL` |  | Warning threshold total GPU devices |
+| `WARNING-BAR1-MEMORY-USAGE` |  | Warning threshold BAR1 memory usage (B) |
+| `WARNING-BAR1-MEMORY-USAGE-FREE` |  | Warning threshold BAR1 memory free (B) |
+| `WARNING-FB-MEMORY-USAGE` |  | Warning threshold FB memory usage (B) |
+| `WARNING-FB-MEMORY-USAGE-FREE` |  | Warning threshold FB memory free (B) |
+| `WARNING-FAN-SPEED` |  | Warning threshold fan speed |
+| `WARNING-POWER` |  | Warning threshold power |
+| `CRITICAL-DEVICES-GPU-TOTAL` |  | Critical threshold total GPU devices |
+| `CRITICAL-BAR1-MEMORY-USAGE` |  | Critical threshold BAR1 memory usage (B) |
+| `CRITICAL-BAR1-MEMORY-USAGE-FREE` |  | Critical threshold BAR1 memory free (B) |
+| `CRITICAL-FB-MEMORY-USAGE` |  | Critical threshold FB memory usage (B) |
+| `CRITICAL-FB-MEMORY-USAGE-FREE` |  | Critical threshold FB memory free (B) |
+| `CRITICAL-FAN-SPEED` |  | Critical threshold fan speed |
+| `CRITICAL-POWER` |  | Critical threshold power |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `devices.gpu.total.count` |  | total gpu devices | `WARNING-DEVICES-GPU-TOTAL`, `CRITICAL-DEVICES-GPU-TOTAL` |
+| `device.gpu.utilization.percentage` | `%` | gpu:  %% | `WARNING-GPU-UTILIZATION`, `CRITICAL-GPU-UTILIZATION` |
+| `device.gpu.memory.utilization.percentage` | `%` | memory:  %% | `WARNING-GPU-MEMORY-UTILIZATION`, `CRITICAL-GPU-MEMORY-UTILIZATION` |
+| `device.gpu.encoder.utilization.percentage` | `%` | encoder:  %% | `WARNING-GPU-ENCODER-UTILIZATION`, `CRITICAL-GPU-ENCODER-UTILIZATION` |
+| `device.gpu.decoder.utilization.percentage` | `%` | decoder:  %% | `WARNING-GPU-DECODER-UTILIZATION`, `CRITICAL-GPU-DECODER-UTILIZATION` |
+| `device.gpu.frame_buffer.memory.usage.bytes` | `B` |  | `WARNING-FB-MEMORY-USAGE`, `CRITICAL-FB-MEMORY-USAGE` |
+| `device.gpu.frame_buffer.memory.free.bytes` | `B` |  | `WARNING-FB-MEMORY-USAGE-FREE`, `CRITICAL-FB-MEMORY-USAGE-FREE` |
+| `device.gpu.frame_buffer.memory.usage.percentage` | `%` |  | `WARNING-FB-MEMORY-USAGE-PRCT`, `CRITICAL-FB-MEMORY-USAGE-PRCT` |
+| `device.gpu.bar1.memory.usage.bytes` | `B` |  | `WARNING-BAR1-MEMORY-USAGE`, `CRITICAL-BAR1-MEMORY-USAGE` |
+| `device.gpu.bar1.memory.free.bytes` | `B` |  | `WARNING-BAR1-MEMORY-USAGE-FREE`, `CRITICAL-BAR1-MEMORY-USAGE-FREE` |
+| `device.gpu.bar1.memory.usage.percentage` | `%` |  | `WARNING-BAR1-MEMORY-USAGE-PRCT`, `CRITICAL-BAR1-MEMORY-USAGE-PRCT` |
+| `device.gpu.fan.speed.percentage` | `%` | fan speed:  %% | `WARNING-FAN-SPEED`, `CRITICAL-FAN-SPEED` |
+| `device.gpu.temperature.celsius` | `C` | gpu temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `device.gpu.power.consumption.watt` | `W` | power consumption:  W | `WARNING-POWER`, `CRITICAL-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `hardware-devices-nvidia-gpu-smi-stats`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `NVIDIA GPU`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231215 - 20240130`.

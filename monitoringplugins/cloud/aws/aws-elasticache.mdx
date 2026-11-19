@@ -12,20 +12,22 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-ElastiCache.png";
 
 ## Description
 
-### AWS ElastiCache monitoring
-Protocols used: Rest API
+Monitors Amazon ElastiCache clusters running Redis or Memcached: CPU, memory usage, connections, commands, requests, evictions, items, network traffic and replication.
 
-- Connections
-- CPU usage
-- Evictions
-- Items
-- Memcached commands
-- Memcached requests
-- Memcached usage
-- Network
-- Redis commands
-- Redis requests
-- Redis usage
+The plugin pack provides these checks:
+
+* [Connections](#cloud-aws-elasticache-connections)
+* [CPU](#cloud-aws-elasticache-cpu)
+* [Evictions](#cloud-aws-elasticache-evictions)
+* [Items](#cloud-aws-elasticache-items)
+* [Memcached commands](#cloud-aws-elasticache-commands-memcached)
+* [Memcached requests](#cloud-aws-elasticache-requests-memcached)
+* [Memcached usage](#cloud-aws-elasticache-usage-memcached)
+* [Network](#cloud-aws-elasticache-network)
+* [Redis commands](#cloud-aws-elasticache-commands-redis)
+* [Redis requests](#cloud-aws-elasticache-requests-redis)
+* [Redis usage](#cloud-aws-elasticache-usage-redis)
+* [Replication](#cloud-aws-elasticache-replication)
 
 ## Prerequisites
 
@@ -33,6 +35,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-ElastiCache](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

@@ -1,0 +1,160 @@
+---
+title: "Axis Video Camera"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Axis.png";
+
+<PluginPackHeader name="Axis Video Camera" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Axis video cameras through SNMP: the environment sensors (such as temperature and fans) and the uptime of the camera.
+
+The plugin pack provides these checks:
+
+* [Axis Environment](#hardware-devices-video-axis-snmp-environment)
+* [Axis Uptime](#hardware-devices-video-axis-snmp-uptime)
+
+
+## Host Templates
+
+### Axis-Video
+
+*Axis Video* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Axis Environment](#hardware-devices-video-axis-snmp-environment) | `hardware-devices-video-axis-snmp-environment` |
+| [Axis Uptime](#hardware-devices-video-axis-snmp-uptime) | `hardware-devices-video-axis-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Axis Environment {/* #hardware-devices-video-axis-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'video', 'psu', 'fan', 'temperature', 'audio', 'storage', 'casing' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=video) Can also exclude specific instance: --filter=video,fan.1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='video,CRITICAL,^(?!(good)$)' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+| `CRITICAL` |  | Define the critical threshold for temperatures (syntax: type,instance,threshold) Example: --critical='temperature,.*,40' |
+| `WARNING` |  | Define the warning threshold for temperatures (syntax: type,instance,threshold) Example: --warning='temperature,.*,30' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Axis Uptime {/* #hardware-devices-video-axis-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `hardware-devices-video-axis-snmp-environment`
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Macro `NO-COMPONENT` added
+    - Macro `CRITICAL` added
+    - Macro `WARNING` added
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>

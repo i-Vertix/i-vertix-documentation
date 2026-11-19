@@ -12,11 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-Kinesis.png";
 
 ## Description
 
-### AWS Kinesis monitoring
-protocols used: Rest API
+Monitors Amazon Kinesis data streams through Amazon CloudWatch: incoming and outgoing records and bytes, get/put latency, success rates and the iterator age.
 
-- Record statistics
-- Streams
+The plugin pack provides these checks:
+
+* [Kinesis - Record statistics](#cloud-aws-kinesis-records-stats)
+* [Kinesis - Streams](#cloud-aws-kinesis-streams)
 
 ## Prerequisites
 
@@ -24,6 +25,7 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
 
 ## Host Templates
 

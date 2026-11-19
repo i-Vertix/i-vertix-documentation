@@ -1,0 +1,197 @@
+---
+title: "FTP Server (active)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/FTP.png";
+
+<PluginPackHeader name="FTP Server (active)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors FTP servers with active checks: login, custom FTP commands, and the number and modification time of files.
+
+The plugin pack provides these checks:
+
+* [FTP command](#apps-protocols-ftp-command)
+* [FTP File modified time](#apps-protocols-ftp-date)
+* [FTP Files count](#apps-protocols-ftp-filescount)
+* [FTP login](#apps-protocols-ftp-login)
+
+
+## Host Templates
+
+### FTP-login
+
+*FTP login* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FTP-USERNAME` |  | Specify username for authentification |
+| `FTP-PASSWORD` |  | Specify password for authentification |
+| `FTP-PORT` |  | Port used |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [FTP login](#apps-protocols-ftp-login) | `apps-protocols-ftp-login` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [FTP command](#apps-protocols-ftp-command) | `apps-protocols-ftp-command` |
+| [FTP File modified time](#apps-protocols-ftp-date) | `apps-protocols-ftp-date` |
+| [FTP Files count](#apps-protocols-ftp-filescount) | `apps-protocols-ftp-filescount` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### FTP login {/* #apps-protocols-ftp-login */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `2` | Threshold warning in seconds |
+| `CRITICAL` | `5` | Threshold critical in seconds |
+| `CUSTOM-OPTION` |  | --ssl   Use SSL connection |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### FTP command {/* #apps-protocols-ftp-command */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1` | Threshold warning in seconds |
+| `CRITICAL` | `5` | Threshold critical in seconds |
+| `CUSTOM-OPTION` |  | --ssl   Use SSL connection |
+| `FTP-COMMAND` |  | Set command to test (can be multiple). It will be executed in the order and stop on first command problem |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### FTP File modified time {/* #apps-protocols-ftp-date */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DIRECTORY` |  | Check files in the directory (no recursive) |
+| `FILE` |  | Check file |
+| `WARNING` |  | Threshold warning in seconds for each files (diff time) |
+| `CRITICAL` |  | Threshold critical in seconds for each files (diff time) |
+| `CUSTOM-OPTION` |  | --ssl   Use SSL connection |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### FTP Files count {/* #apps-protocols-ftp-filescount */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DIRECTORY` |  | Check files in the directory |
+| `MAX-DEPTH` |  | Don't check fewer levels (Default: '0'. Means current dir only) |
+| `FILTER-FILE` |  | Filter files (can be a regexp. Directory is in the name) |
+| `WARNING` |  | Threshold warning (number of files) |
+| `CRITICAL` |  | Threshold critical (number of files) |
+| `CUSTOM-OPTION` |  | --ssl   Use SSL connection |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

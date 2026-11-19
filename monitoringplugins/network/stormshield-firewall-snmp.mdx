@@ -1,0 +1,1113 @@
+---
+title: "Stormshield Firewall (SNMP)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Stormshield.png";
+
+<PluginPackHeader name="Stormshield Firewall (SNMP)" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Stormshield firewalls through SNMP: CPU, memory, load, swap and storage, hardware and health, HA nodes and cluster, interfaces, connections, QoS, licenses, auto update, VPN status and SD-WAN/VPN routes.
+
+The plugin pack provides these checks:
+
+* [Auto update](#network-stormshield-snmp-auto-update)
+* [Connections](#network-stormshield-snmp-connections)
+* [CPU](#network-stormshield-snmp-cpu)
+* [CPU detailed](#network-stormshield-snmp-cpu-detailed)
+* [HA cluster](#network-stormshield-snmp-ha-cluster)
+* [HA nodes](#network-stormshield-snmp-ha-nodes)
+* [Hardware](#network-stormshield-snmp-hardware)
+* [Health](#network-stormshield-snmp-health)
+* [Interfaces](#network-stormshield-snmp-interfaces)
+* [Interfaces detailed](#network-stormshield-snmp-interfaces-disco)
+* [Licenses](#network-stormshield-snmp-licenses)
+* [Load](#network-stormshield-snmp-load)
+* [Memory](#network-stormshield-snmp-memory)
+* [Memory detailed](#network-stormshield-snmp-memory-detailed)
+* [QoS](#network-stormshield-snmp-qos)
+* [SD-WAN/VPN routes](#network-stormshield-snmp-router-disco)
+* [Storage](#network-stormshield-snmp-storage)
+* [Swap](#network-stormshield-snmp-swap)
+* [Uptime](#network-stormshield-snmp-uptime)
+* [VPN Status](#network-stormshield-snmp-vpn-status)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-stormshield-snmp-interfaces) | `Interface - <name>` |
+| [Interfaces detailed](#network-stormshield-snmp-interfaces-disco) | `Interface detailed - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Stormshield-FW
+
+*Stormshield Firewall* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Auto update](#network-stormshield-snmp-auto-update) | `network-stormshield-snmp-auto-update` |
+| [Connections](#network-stormshield-snmp-connections) | `network-stormshield-snmp-connections` |
+| [CPU](#network-stormshield-snmp-cpu) | `network-stormshield-snmp-cpu` |
+| [CPU detailed](#network-stormshield-snmp-cpu-detailed) | `network-stormshield-snmp-cpu-detailed` |
+| [Hardware](#network-stormshield-snmp-hardware) | `network-stormshield-snmp-hardware` |
+| [Health](#network-stormshield-snmp-health) | `network-stormshield-snmp-health` |
+| [Licenses](#network-stormshield-snmp-licenses) | `network-stormshield-snmp-licenses` |
+| [Load](#network-stormshield-snmp-load) | `network-stormshield-snmp-load` |
+| [Memory](#network-stormshield-snmp-memory) | `network-stormshield-snmp-memory` |
+| [Memory detailed](#network-stormshield-snmp-memory-detailed) | `network-stormshield-snmp-memory-detailed` |
+| [QoS](#network-stormshield-snmp-qos) | `network-stormshield-snmp-qos` |
+| [Storage](#network-stormshield-snmp-storage) | `network-stormshield-snmp-storage` |
+| [Swap](#network-stormshield-snmp-swap) | `network-stormshield-snmp-swap` |
+| [Uptime](#network-stormshield-snmp-uptime) | `network-stormshield-snmp-uptime` |
+| [VPN Status](#network-stormshield-snmp-vpn-status) | `network-stormshield-snmp-vpn-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA cluster](#network-stormshield-snmp-ha-cluster) | `network-stormshield-snmp-ha-cluster` |
+| [HA nodes](#network-stormshield-snmp-ha-nodes) | `network-stormshield-snmp-ha-nodes` |
+| [Interfaces](#network-stormshield-snmp-interfaces) | `network-stormshield-snmp-interfaces` |
+| [Interfaces detailed](#network-stormshield-snmp-interfaces-disco) | `network-stormshield-snmp-interfaces-disco` |
+| [SD-WAN/VPN routes](#network-stormshield-snmp-router-disco) | `network-stormshield-snmp-router-disco` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Stormshield-FW-HA
+
+*Stormshield Firewall Cluster* · Parent template: `Stormshield-FW`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA cluster](#network-stormshield-snmp-ha-cluster) | `network-stormshield-snmp-ha-cluster` |
+| [HA nodes](#network-stormshield-snmp-ha-nodes) | `network-stormshield-snmp-ha-nodes` |
+| [Auto update](#network-stormshield-snmp-auto-update) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-auto-update` |
+| [Connections](#network-stormshield-snmp-connections) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-connections` |
+| [CPU](#network-stormshield-snmp-cpu) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-cpu` |
+| [CPU detailed](#network-stormshield-snmp-cpu-detailed) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-cpu-detailed` |
+| [Hardware](#network-stormshield-snmp-hardware) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-hardware` |
+| [Health](#network-stormshield-snmp-health) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-health` |
+| [Licenses](#network-stormshield-snmp-licenses) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-licenses` |
+| [Load](#network-stormshield-snmp-load) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-load` |
+| [Memory](#network-stormshield-snmp-memory) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-memory` |
+| [Memory detailed](#network-stormshield-snmp-memory-detailed) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-memory-detailed` |
+| [QoS](#network-stormshield-snmp-qos) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-qos` |
+| [Storage](#network-stormshield-snmp-storage) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-storage` |
+| [Swap](#network-stormshield-snmp-swap) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-swap` |
+| [Uptime](#network-stormshield-snmp-uptime) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-uptime` |
+| [VPN Status](#network-stormshield-snmp-vpn-status) (inherited from `Stormshield-FW`) | `network-stormshield-snmp-vpn-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-stormshield-snmp-interfaces) | `network-stormshield-snmp-interfaces` |
+| [Interfaces detailed](#network-stormshield-snmp-interfaces-disco) | `network-stormshield-snmp-interfaces-disco` |
+| [SD-WAN/VPN routes](#network-stormshield-snmp-router-disco) | `network-stormshield-snmp-router-disco` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Auto update {/* #network-stormshield-snmp-auto-update */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{state} =~ /Partially Failed/i'` | Define the conditions to match for the status to be WARNING (default: "%\{state\} =~ /Partially Failed/i"). You can use the following variables: %\{display\}, %\{state\}, %\{last_date\} |
+| `CRITICAL-STATUS` | `'%{state} =~ /^(Failed\|Broken)$/i'` | Define the conditions to match for the status to be CRITICAL (default: "%\{state\} =~ /^(Failed\|Broken)$/i"). You can use the following variables: %\{display\}, %\{state\}, %\{last_date\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{display\}, %\{state\}, %\{last_date\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {/* #network-stormshield-snmp-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-MAJOR` | `0` | Critical threshold for Major Alarms |
+| `WARNING-MINOR` | `0` | Warning threshold for Minor Alarms |
+| `WARNING-TCP` |  | Threshold warning connection setup TCP |
+| `WARNING-UDP` |  | Threshold warning connection setup UDP |
+| `CRITICAL-TCP` |  | Threshold critical connection setup TCP |
+| `CRITICAL-UDP` |  | Threshold critical connection setup UDP |
+| `CRITICAL-MINOR` |  | Critical threshold for Minor Alarms |
+| `WARNING-MAJOR` |  | Warning threshold for Major Alarms |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.udp.count` |  | UDP :  connections | `WARNING-UDP`, `CRITICAL-UDP` |
+| `connections.tcp.count` |  | TCP :  connections | `WARNING-TCP`, `CRITICAL-TCP` |
+| `alarms.major.count` |  | Major Alarms | `WARNING-MAJOR`, `CRITICAL-MAJOR` |
+| `alarms.minor.count` |  | Minor Alarms | `WARNING-MINOR`, `CRITICAL-MINOR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-stormshield-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Threshold warning average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Threshold critical average CPU utilization |
+| `WARNING-CORE` |  | Threshold warning for each CPU core |
+| `CRITICAL-CORE` |  | Threshold critical for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #network-stormshield-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-stormshield-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `COMPONENT` |  | Which component to check (default: '.*'). Can be: 'disk', 'fan', 'psu', 'temperature' |
+| `FILTER` |  | Exclude the items given as a comma-separated list (example: --filter=fan). You can also exclude items from specific instances: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='disk,WARNING,missing' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not present (default: skip). Can be set globally or per instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {/* #network-stormshield-snmp-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SERVICE-STATUS` | `'%{health} =~ /minor/i'` | Set warning threshold for status (Default: '%\{health\} =~ /minor/i'). Can used special variables like: %\{health\}, %\{service\} |
+| `CRITICAL-SERVICE-STATUS` | `'%{health} =~ /major/i'` | Set critical threshold for status (Default: '%\{health\} =~ /major/i'). Can used special variables like: %\{health\}, %\{service\} |
+| `EXTRA-OPTS` | `--verbose` | Additional options appended to the plugin command line (host level). |
+| `FILTER-SERIAL` |  | Filter by firewall serial (can be a regexp) |
+| `UNKNOWN-SERVICE-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{health\}, %\{service\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Licenses {/* #network-stormshield-snmp-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-EXPIRES-DAYS` | `30` | Threshold in days (default: 60) |
+| `CRITICAL-EXPIRES-DAYS` | `10` | Threshold in days (default: 0) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `license.expiration.days` | `d` | Licence: %\{name\} (Expires in %\{days_left\} days: %\{exp_date\}) | `WARNING-EXPIRES-DAYS`, `CRITICAL-EXPIRES-DAYS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-stormshield-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-stormshield-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning (%) |
+| `CRITICAL` | `90` | Threshold critical (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.cached.bytes` | `B` |  |  |
+| `memory.usage.bytes` | `B` |  |  |
+| `swap.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory detailed {/* #network-stormshield-snmp-memory-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-TOTAL` |  | Warning threshold total |
+| `WARNING-HOST` |  | Warning threshold host |
+| `WARNING-FRAG` |  | Warning threshold fragmented |
+| `WARNING-CONN` |  | Warning threshold connection |
+| `WARNING-ICMP` |  | Warning threshold ICMP |
+| `WARNING-DTRACK` |  | Warning threshold DTrack |
+| `WARNING-DYN` |  | Warning threshold Dyn |
+| `WARNING-ETHERSTATE` |  | Warning threshold Etherstate |
+| `CRITICAL-TOTAL` |  | Critical threshold total |
+| `CRITICAL-HOST` |  | Critical threshold host |
+| `CRITICAL-FRAG` |  | Critical threshold fragmented |
+| `CRITICAL-CONN` |  | Critical threshold connection |
+| `CRITICAL-ICMP` |  | Critical threshold ICMP |
+| `CRITICAL-DTRACK` |  | Critical threshold DTrack |
+| `CRITICAL-DYN` |  | Critical threshold Dyn |
+| `CRITICAL-ETHERSTATE` |  | Critical threshold Etherstate |
+| `CRITICAL-SOCKET` |  | Critical threshold socket |
+| `CRITICAL-USER` |  | Critical threshold user |
+| `WARNING-SOCKET` |  | Warning threshold socket |
+| `WARNING-USER` |  | Warning threshold user |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.protected_host.percentage` | `%` | protected host:  %% | `WARNING-HOST`, `CRITICAL-HOST` |
+| `memory.fragmented.percentage` | `%` | fragmented:  %% | `WARNING-FRAG`, `CRITICAL-FRAG` |
+| `memory.connections.percentage` | `%` | ASQ connections: %% | `WARNING-CONN`, `CRITICAL-CONN` |
+| `memory.icmp.percentage` | `%` | icmp:  %% | `WARNING-ICMP`, `CRITICAL-ICMP` |
+| `memory.data_tracking.percentage` | `%` | Data Tracking: %% | `WARNING-DTRACK`, `CRITICAL-DTRACK` |
+| `memory.dynamic.percentage` | `%` | dynamic:  %% | `WARNING-DYN`, `CRITICAL-DYN` |
+| `memory.ether_state.percentage` | `%` | EtherState: %% | `WARNING-ETHERSTATE`, `CRITICAL-ETHERSTATE` |
+| `memory.socket.percentage` | `%` | Socket: %% | `WARNING-SOCKET`, `CRITICAL-SOCKET` |
+| `memory.user.percentage` | `%` | User: %% | `WARNING-USER`, `CRITICAL-USER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### QoS {/* #network-stormshield-snmp-qos */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TRAFFIC-IN-PRCT` | `80` | Threshold warning traffic in (%) |
+| `WARNING-TRAFFIC-OUT-PRCT` | `80` | Threshold warning traffic out (%) |
+| `CRITICAL-TRAFFIC-IN-PRCT` | `90` | Threshold warning traffic out (%) |
+| `CRITICAL-TRAFFIC-OUT-PRCT` | `90` | Threshold critical traffic out (%) |
+| `FILTER-NAME` |  | Filter by QoS name (can be a regexp) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-IN-PEAK` |  | Threshold warning traffic in peak |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic out |
+| `CRITICAL-TRAFFIC-IN-PEAK` |  | Threshold critical traffic in peak |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-TRAFFIC-OUT-PEAK` |  | Threshold warning traffic out peak |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-TRAFFIC-OUT-PEAK` |  | Threshold critical traffic out peak |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `qos.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `qos.traffic.in.percentage` | `%` |  | `WARNING-TRAFFIC-IN-PRCT`, `CRITICAL-TRAFFIC-IN-PRCT` |
+| `qos.traffic.in.peak.bitspersecond` | `b/s` | traffic in peak:  /s | `WARNING-TRAFFIC-IN-PEAK`, `CRITICAL-TRAFFIC-IN-PEAK` |
+| `qos.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `qos.traffic.out.percentage` | `%` |  | `WARNING-TRAFFIC-OUT-PRCT`, `CRITICAL-TRAFFIC-OUT-PRCT` |
+| `qos.traffic.out.peak.bitspersecond` | `b/s` | traffic out peak:  /s | `WARNING-TRAFFIC-OUT-PEAK`, `CRITICAL-TRAFFIC-OUT-PEAK` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-stormshield-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+| `CRITICAL-ACCESS` | `@2:2` | Threshold critical access. Check if storage is readOnly: --critical-access=@2:2 |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `STORAGE` | `^((?!^\/dev\|\/data\/(Main\|Backup)\/Data\/GUI).)*$` | Storage name (can be a regexp) |
+| `WARNING-ACCESS` |  | Threshold warning access |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #network-stormshield-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `25` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-stormshield-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-UPTIME` | `900:` | Threshold (in seconds) |
+| `WARNING-UPTIME` | `1800:` | Threshold (in seconds) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.uptime.seconds` | `s` |  | `WARNING-UPTIME`, `CRITICAL-UPTIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VPN Status {/* #network-stormshield-snmp-vpn-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-ID` |  | Filter by id (regexp can be used) |
+| `FILTER-SRC-IP` |  | Filter by src ip (regexp can be used) |
+| `FILTER-DST-IP` |  | Filter by dst ip (regexp can be used) |
+| `WARNING-TRAFFIC` |  | Threshold warning traffic |
+| `CRITICAL-TRAFFIC` |  | Threshold critical traffic |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. You can use the following variables: %\{state\}, %\{srcIp\}, %\{dstIp\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '%\{state\} eq "dead"'). You can use the following variables: %\{state\}, %\{srcIp\}, %\{dstIp\} |
+| `CRITICAL-STATUS` |  | Define the conditions to match for the status to be CRITICAL. You can use the following variables: %\{state\}, %\{ipSrc\}, %\{ipDst\} |
+| `WARNING-VPN-DETECTED` |  | Threshold on the number of detected VPN. |
+| `WARNING-TRAFFIC-IN` |  | Threshold in b/s. |
+| `WARNING-TRAFFIC-OUT` |  | Threshold in b/s. |
+| `CRITICAL-VPN-DETECTED` |  | Threshold on the number of detected VPN. |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold in b/s. |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold in b/s. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vpn.detected.count` |  | detected | `WARNING-VPN-DETECTED`, `CRITICAL-VPN-DETECTED` |
+| `vpn.traffic.bitspersecond` | `b/s` | traffic:  /s | `WARNING-TRAFFIC`, `CRITICAL-TRAFFIC` |
+| `vpn.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `vpn.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA cluster {/* #network-stormshield-snmp-ha-cluster */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DEAD-NODES` | `50` | Threshold in percentage of the total number of nodes. Default: 50 |
+| `WARNING-FAULTY-LINKS` | `50` | Threshold in percentage of the total number of links. Default: 50 |
+| `WARNING-SYNC-STATUS` | `'%{sync_status} eq "False"'` | Define the conditions to match for the status to be WARNING (default: "%\{sync_status\} eq "False""). You can use the following variables: %\{sync_status\} |
+| `CRITICAL-ACTIVE-FIREWALL` | `1:1` | Threshold. Default: "1:1" since there must be only one active firewall per cluster |
+| `CRITICAL-DEAD-NODES` | `100` | Threshold in percentage of the total number of nodes. Default: 100 |
+| `CRITICAL-FAULTY-LINKS` | `100` | Threshold in percentage of the total number of links. Default: 100 |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-ACTIVE-FIREWALL` |  | Threshold |
+| `CRITICAL-SYNC-STATUS` |  | Define the conditions to match for the status to be CRITICAL. You can use the following variables: %\{sync_status\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ha.dead_nodes.count` |  | Dead Nodes: %\{dead_nodes\}/%\{nb_nodes\} (%\{dead_pct\}%%) | `WARNING-DEAD-NODES`, `CRITICAL-DEAD-NODES` |
+| `ha.faulty_links.count` |  | Faulty Links: %\{faulty_links\}/%\{nb_links\} (%\{faulty_pct\}%%) | `WARNING-FAULTY-LINKS`, `CRITICAL-FAULTY-LINKS` |
+| `ha.active_firewalls.count` |  | Active Firewalls: %\{nb_active\}/2 | `WARNING-ACTIVE-FIREWALL`, `CRITICAL-ACTIVE-FIREWALL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA nodes {/* #network-stormshield-snmp-ha-nodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-HEALTH` | `90:` | Threshold warning on health level. (e.g --warning-health=90:) |
+| `CRITICAL-STATE` | `'%{state} =~ /offline/i'` | Set critical threshold for state. (Default: '%\{state\} =~ /offline/i'). Can used special variables like: %\{state\}, %\{role\} |
+| `CRITICAL-HEALTH` | `80:` | Threshold critical on health level. (e.g --critical-health=90:) |
+| `FILTER-NODE` |  | Filter name with regexp (based on serial) |
+| `WARNING-STATE` |  | Set warning threshold for state. Can used special variables like: %\{state\}, %\{role\} |
+| `WARNING-DEAD-NODES` |  | Threshold warning dead nodes in percent |
+| `CRITICAL-DEAD-NODES` |  | Threshold critical dead nodes in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ha.dead_nodes.count` |  |  | `WARNING-DEAD-NODES`, `CRITICAL-DEAD-NODES` |
+| `ha.node.health.percentage` | `%` | health: %% | `WARNING-HEALTH`, `CRITICAL-HEALTH` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-stormshield-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces detailed {/* #network-stormshield-snmp-interfaces-disco */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-NAME` |  | Filter by name to only display this interface |
+| `WARNING-THROUGHPUT-IN` |  | Set the warning threshold for throughput in (bytes per second) |
+| `CRITICAL-THROUGHPUT-IN` |  | Set the critical threshold for throughput in (bytes per second) |
+| `WARNING-THROUGHPUT-OUT` |  | Set the warning threshold for throughput out (bytes per second) |
+| `CRITICAL-THROUGHPUT-OUT` |  | Set the critical threshold for throughput out (bytes per second) |
+| `WARNING-CURRENT-TCP` |  | Set the warning threshold for current TCP connections |
+| `CRITICAL-CURRENT-TCP` |  | Set the critical threshold for current TCP connections |
+| `WARNING-CURRENT-UDP` |  | Set the warning threshold for current UDP connections |
+| `CRITICAL-CURRENT-UDP` |  | Set the critical threshold for current UDP connections |
+| `WARNING-TCP-IN` |  | Set the warning threshold for TCP in traffic (bytes) |
+| `CRITICAL-TCP-IN` |  | Set the critical threshold for TCP in traffic (bytes) |
+| `WARNING-TCP-OUT` |  | Set the warning threshold for TCP out traffic (bytes) |
+| `CRITICAL-TCP-OUT` |  | Set the critical threshold for TCP out traffic (bytes) |
+| `WARNING-UDP-IN` |  | Set the warning threshold for UDP in traffic (bytes) |
+| `CRITICAL-UDP-IN` |  | Set the critical threshold for UDP in traffic (bytes) |
+| `WARNING-UDP-OUT` |  | Set the warning threshold for UDP out traffic (bytes) |
+| `CRITICAL-UDP-OUT` |  | Set the critical threshold for UDP out traffic (bytes) |
+| `WARNING-PACKETS-ACCEPTED` |  | Set the warning threshold for packets accepted |
+| `CRITICAL-PACKETS-ACCEPTED` |  | Set the critical threshold for packets accepted |
+| `WARNING-PACKETS-BLOCKED` |  | Set the warning threshold for packets blocked |
+| `CRITICAL-PACKETS-BLOCKED` |  | Set the critical threshold for packets blocked |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SD-WAN/VPN routes {/* #network-stormshield-snmp-router-disco */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LATENCY` | `30` | Warning threshold on latency (in milliseconds), applied to "snsRouteLatency" for each gateway of the router. Gateways with a latency of 0 (unreachable) are excluded from this check, since they are already covered by the down logic above |
+| `CRITICAL-LATENCY` | `60` | Critical threshold on latency (in milliseconds), applied to "snsRouteLatency" for each gateway of the router. Gateways with a latency of 0 (unreachable) are excluded from this check, since they are already covered by the down logic above |
+| `WARNING-JITTER` | `15` | Warning threshold on jitter (in milliseconds), applied to "snsRouteJitter" for each gateway of the router. |
+| `CRITICAL-JITTER` | `30` | Critical threshold on jitter (in milliseconds), applied to "snsRouteJitter" for each gateway of the router |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-NAME` |  | Filter routers on the exact router name |
+| `WARNING-PRINCIPAL-COUNT` |  | Warning threshold on the number of Principal gateways currently DOWN for the router |
+| `CRITICAL-PRINCIPAL-COUNT` |  | Critical threshold on the number of Principal gateways currently DOWN for the router |
+| `WARNING-BACKUP-COUNT` |  | Warning threshold on the number of Backup gateways currently DOWN for the router |
+| `CRITICAL-BACKUP-COUNT` |  | Critical threshold on the number of Backup gateways currently DOWN for the router |
+| `WARNING-PACKET-LOSS` |  | Warning threshold on packet loss (in percent), applied to "snsRoutePacketLossPrctRaw" / "snsRoutePacketLossPrctOld" for each gateway of the router |
+| `CRITICAL-PACKET-LOSS` |  | Critical threshold on packet loss (in percent), applied to "snsRoutePacketLossPrctRaw" / "snsRoutePacketLossPrctOld" for each gateway of the router |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800 - 20260827</summary>
+
+- Plugin pack `Stormshield Firewall (SNMP)`
+    - Description updated
+- Host template `Stormshield-FW`
+    - Service template `network-stormshield-snmp-auto-update` linked
+    - Service template `network-stormshield-snmp-licenses` linked
+    - Service template `network-stormshield-snmp-uptime` linked
+    - Service template `os-linux-snmp-uptime` unlinked
+- Host template `Stormshield-FW-HA`
+    - Service template `network-stormshield-snmp-ha-cluster` linked
+- Service template [`network-stormshield-snmp-auto-update`](#network-stormshield-snmp-auto-update)
+    - Service template added
+- Service template [`network-stormshield-snmp-connections`](#network-stormshield-snmp-connections)
+    - Macro `CRITICAL-MAJOR` added (default `0`)
+    - Macro `WARNING-MINOR` added (default `0`)
+- Service template [`network-stormshield-snmp-ha-cluster`](#network-stormshield-snmp-ha-cluster)
+    - Service template added
+- Service template [`network-stormshield-snmp-ha-nodes`](#network-stormshield-snmp-ha-nodes)
+    - Alias changed from `HA Nodes` to `HA nodes`
+- Service template [`network-stormshield-snmp-interfaces-disco`](#network-stormshield-snmp-interfaces-disco)
+    - Service template added
+- Service template [`network-stormshield-snmp-licenses`](#network-stormshield-snmp-licenses)
+    - Service template added
+- Service template [`network-stormshield-snmp-qos`](#network-stormshield-snmp-qos)
+    - Alias changed from `Quality of Service` to `QoS`
+- Service template [`network-stormshield-snmp-router-disco`](#network-stormshield-snmp-router-disco)
+    - Service template added
+- Service template [`network-stormshield-snmp-uptime`](#network-stormshield-snmp-uptime)
+    - Service template added
+- Service template `os-linux-snmp-uptime`
+    - Service template removed
+- Command `network-stormshield-snmp-auto-update`
+    - Command added
+- Command `network-stormshield-snmp-connections`
+    - Option `--warning-major=$_SERVICEWARNING-MAJOR$` added
+    - Option `--warning-minor=$_SERVICEWARNING-MINOR$` added
+    - Option `--critical-major=$_SERVICECRITICAL-MAJOR$` added
+    - Option `--critical-minor=$_SERVICECRITICAL-MINOR$` added
+    - Macro `CRITICAL-MAJOR` added
+    - Macro `CRITICAL-MINOR` added
+    - Macro `WARNING-MAJOR` added
+    - Macro `WARNING-MINOR` added
+    - Macro `SNMPTIMEOUT` removed
+- Command `network-stormshield-snmp-ha-cluster`
+    - Command added
+- Command `network-stormshield-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Macro `ABSENT-PROBLEM` added
+- Command `network-stormshield-snmp-interfaces-disco`
+    - Command added
+- Command `network-stormshield-snmp-licenses`
+    - Command added
+- Command `network-stormshield-snmp-memory-detailed`
+    - Option `--warning-socket=$_SERVICEWARNING-SOCKET$` added
+    - Option `--warning-user=$_SERVICEWARNING-USER$` added
+    - Option `--critical-socket=$_SERVICECRITICAL-SOCKET$` added
+    - Option `--critical-user=$_SERVICECRITICAL-USER$` added
+    - Macro `CRITICAL-SOCKET` added
+    - Macro `CRITICAL-USER` added
+    - Macro `WARNING-SOCKET` added
+    - Macro `WARNING-USER` added
+- Command `network-stormshield-snmp-router-disco`
+    - Command added
+- Command `network-stormshield-snmp-uptime`
+    - Command added
+- Command `os-linux-snmp-uptime`
+    - Command removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260120</summary>
+
+- Command `network-stormshield-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Host template `Stormshield-FW`
+    - Service template `network-stormshield-snmp-hardware` linked
+- Service template [`network-stormshield-snmp-hardware`](#network-stormshield-snmp-hardware)
+    - Service template added
+- Command `network-stormshield-snmp-hardware`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`network-stormshield-snmp-health`](#network-stormshield-snmp-health)
+    - Macro `EXTRA-OPTS` added (default `--verbose`)
+- Service template [`network-stormshield-snmp-storage`](#network-stormshield-snmp-storage)
+    - Macro `STORAGE` added (default `^((?!^\/dev|\/data\/(Main|Backup)\/Data\/GUI).)*$`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Plugin pack `Stormshield Firewall (SNMP)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230608-hotfix20230630-2 - 20230717`.

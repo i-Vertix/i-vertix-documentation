@@ -12,11 +12,11 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-Container-Regis
 
 ## Description
 
-### Azure-Container-Registry monitoring
+Monitors Azure Container Registry instances: the storage used by the registry.
 
-protocols used: HTTPS (Rest API)
+The plugin pack provides these checks:
 
-* Storage usage
+* [Storage usage](#cloud-azure-storage-acr-storage-usage)
 
 ## Prerequisites
 
@@ -24,6 +24,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Container Registry](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

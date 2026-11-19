@@ -1,0 +1,368 @@
+---
+title: "Java JVM Actuator"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Java.png";
+
+<PluginPackHeader name="Java JVM Actuator" image={image} category="Application" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Java applications that expose Spring Boot Actuator over HTTP: JVM memory, threads, loaded classes, CPU load, system load and file descriptor usage.
+
+The plugin pack provides these checks:
+
+* [JVM class count](#apps-java-jvm-actuator-class-count)
+* [JVM cpu load](#apps-java-jvm-actuator-cpu-load)
+* [JVM fd usage](#apps-java-jvm-actuator-fd-usage)
+* [JVM load average](#apps-java-jvm-actuator-load-average)
+* [JVM memory](#apps-java-jvm-actuator-memory)
+* [JVM memory detailed](#apps-java-jvm-actuator-memory-detailed)
+* [JVM threads](#apps-java-jvm-actuator-threads)
+
+
+## Host Templates
+
+### JVM-Actuator
+
+*JVM Actuator* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/actuator` | API url path (default: '/actuator') |
+| `PORT` | `8080` | Port used (default: 8080) |
+| `PROTO` | `http` | Specify https if needed (default: 'http') |
+| `API-PASSWORD` | *(password)* | Specify the password for authentication (basic auth) |
+| `API-USERNAME` |  | Specify the username for authentication (basic auth) |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [JVM class count](#apps-java-jvm-actuator-class-count) | `apps-java-jvm-actuator-class-count` |
+| [JVM cpu load](#apps-java-jvm-actuator-cpu-load) | `apps-java-jvm-actuator-cpu-load` |
+| [JVM fd usage](#apps-java-jvm-actuator-fd-usage) | `apps-java-jvm-actuator-fd-usage` |
+| [JVM load average](#apps-java-jvm-actuator-load-average) | `apps-java-jvm-actuator-load-average` |
+| [JVM memory](#apps-java-jvm-actuator-memory) | `apps-java-jvm-actuator-memory` |
+| [JVM memory detailed](#apps-java-jvm-actuator-memory-detailed) | `apps-java-jvm-actuator-memory-detailed` |
+| [JVM threads](#apps-java-jvm-actuator-threads) | `apps-java-jvm-actuator-threads` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### JVM class count {/* #apps-java-jvm-actuator-class-count */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UNLOADED` |  | Warning threshold unloaded classes |
+| `WARNING-CURRENT` |  | Warning threshold current classes |
+| `CRITICAL-UNLOADED` |  | Critical threshold unloaded classes |
+| `CRITICAL-CURRENT` |  | Critical threshold current classes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `class.loaded.current.count` |  | current | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `class.unloaded.count` |  | unloaded | `WARNING-UNLOADED`, `CRITICAL-UNLOADED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JVM cpu load {/* #apps-java-jvm-actuator-cpu-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SYSTEM` | `80` | Warning threshold of system CPU load |
+| `WARNING-PROCESS` | `75` | Warning threshold of process CPU load |
+| `CRITICAL-SYSTEM` | `90` | Critical threshold of system CPU load |
+| `CRITICAL-PROCESS` | `85` | Critical threshold of process CPU load |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.cpu.load.percentage` | `%` | system cpu load: %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `process.cpu.load.percentage` | `%` | process cpu load: %% | `WARNING-PROCESS`, `CRITICAL-PROCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JVM fd usage {/* #apps-java-jvm-actuator-fd-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-FREE` | `75` | Warning threshold fs usage free |
+| `CRITICAL-USAGE-PRCT` | `90` | Critical threshold fs usage % |
+| `WARNING-USAGE` |  | Warning threshold fs usage (B) |
+| `WARNING-USAGE-PRCT` |  | Warning threshold fs usage % |
+| `CRITICAL-USAGE` |  | Critical threshold fs usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold fs usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `fd.opened.usage.count` |  |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `fd.opened.free.count` |  |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `fd.opened.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JVM load average {/* #apps-java-jvm-actuator-load-average */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LOAD1` |  | Warning threshold for loadaverage |
+| `CRITICAL-LOAD1` |  | Critical threshold for loadaverage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.load.1m.count` |  | System load average:  (1m) | `WARNING-LOAD1`, `CRITICAL-LOAD1` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JVM memory {/* #apps-java-jvm-actuator-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (default: '%') ('%', 'B') |
+| `WARNING-HEAP` | `75` | Warning threshold of Heap memory usage |
+| `WARNING-NONHEAP` | `65` | Warning threshold of NonHeap memory usage |
+| `CRITICAL-HEAP` | `90` | Critical threshold of Heap memory usage |
+| `CRITICAL-NONHEAP` | `80` | Critical threshold of NonHeap memory usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.heap.usage.bytes` | `B` |  | `WARNING-HEAP`, `CRITICAL-HEAP` |
+| `memory.nonheap.usage.bytes` | `B` |  | `WARNING-NONHEAP`, `CRITICAL-NONHEAP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JVM memory detailed {/* #apps-java-jvm-actuator-memory-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (default: '%') ('%', 'B') |
+| `WARNING-EDEN` | `90` | Warning threshold of Heap 'Eden Space' memory usage |
+| `WARNING-TENURED` | `75` | Warning threshold of Heap 'Tenured Generation' memory usage |
+| `WARNING-SURVIVOR` | `85` | Warning threshold of Heap 'Survivor Space' memory usage |
+| `WARNING-PERMANENT` | `65` | Warning threshold of NonHeap 'Permanent Generation' memory usage |
+| `WARNING-CODE` | `70` | Warning threshold of NonHeap 'Code Cache' memory usage |
+| `CRITICAL-EDEN` | `98` | Critical threshold of Heap 'Survivor Space' memory usage |
+| `CRITICAL-TENURED` | `90` | Critical threshold of Heap 'Tenured Generation' memory usage |
+| `CRITICAL-SURVIVOR` | `95` | Critical threshold of Heap 'Survivor Space' memory usage |
+| `CRITICAL-PERMANENT` | `80` | Critical threshold of NonHeap 'Permanent Generation' memory usage |
+| `CRITICAL-CODE` | `85` | Critical threshold of NonHeap 'Code Cache' memory usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.eden.usage.bytes` | `B` |  | `WARNING-EDEN`, `CRITICAL-EDEN` |
+| `memory.tenured.usage.bytes` | `B` |  | `WARNING-TENURED`, `CRITICAL-TENURED` |
+| `memory.survivor.usage.bytes` | `B` |  | `WARNING-SURVIVOR`, `CRITICAL-SURVIVOR` |
+| `memory.permanent.usage.bytes` | `B` |  | `WARNING-PERMANENT`, `CRITICAL-PERMANENT` |
+| `memory.code.usage.bytes` | `B` |  | `WARNING-CODE`, `CRITICAL-CODE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JVM threads {/* #apps-java-jvm-actuator-threads */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ACTIVE` |  | Warning threshold active threads |
+| `WARNING-DAEMON` |  | Warning threshold daemon threads |
+| `CRITICAL-ACTIVE` |  | Critical threshold active threads |
+| `CRITICAL-DAEMON` |  | Critical threshold daemon threads |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `threads.active.count` |  | active | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `threads.daemon.count` |  | daemon | `WARNING-DAEMON`, `CRITICAL-DAEMON` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260500 - 20260529</summary>
+
+- Plugin pack `Java JVM Actuator`
+    - Renamed from `JVM Actuator`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260420</summary>
+
+- Plugin pack `JVM Actuator`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260300 - 20260420`.

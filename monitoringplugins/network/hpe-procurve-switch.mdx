@@ -1,0 +1,655 @@
+---
+title: "HPE Procurve switch"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HPE.png";
+
+<PluginPackHeader name="HPE Procurve switch" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors HPE ProCurve switches through SNMP: CPU and memory usage, environment sensors, interfaces including PoE and optical values, ARP, spanning tree, stack, virtual chassis and uptime.
+
+The plugin pack provides these checks:
+
+* [ARP](#os-linux-snmp-arp)
+* [CPU](#network-hp-procurve-snmp-cpu)
+* [Environment](#network-hp-procurve-snmp-environment)
+* [Interfaces](#network-hp-procurve-snmp-interfaces)
+* [Memory](#network-hp-procurve-snmp-memory)
+* [Spanning tree](#network-hp-procurve-snmp-spanning-tree)
+* [Stack](#network-hp-procurve-snmp-stack)
+* [Uptime](#os-linux-snmp-uptime)
+* [Virtual Chassis](#network-hp-procurve-snmp-virtual-chassis)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-hp-procurve-snmp-interfaces) | `Interface - <name>` |
+| [Spanning tree](#network-hp-procurve-snmp-spanning-tree) | `Spanning tree - <port>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### HPE-Procurve-SNMP
+
+*HPE Procurve Switch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-hp-procurve-snmp-cpu) | `network-hp-procurve-snmp-cpu` |
+| [Environment](#network-hp-procurve-snmp-environment) | `network-hp-procurve-snmp-environment` |
+| [Memory](#network-hp-procurve-snmp-memory) | `network-hp-procurve-snmp-memory` |
+| [ARP](#os-linux-snmp-arp) | `os-linux-snmp-arp` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-hp-procurve-snmp-interfaces) | `network-hp-procurve-snmp-interfaces` |
+| [Spanning tree](#network-hp-procurve-snmp-spanning-tree) | `network-hp-procurve-snmp-spanning-tree` |
+| [Stack](#network-hp-procurve-snmp-stack) | `network-hp-procurve-snmp-stack` |
+| [Virtual Chassis](#network-hp-procurve-snmp-virtual-chassis) | `network-hp-procurve-snmp-virtual-chassis` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### HPE-Procurve-Stack
+
+*HPE Procurve Stack* · Parent template: `HPE-Procurve-SNMP`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Stack](#network-hp-procurve-snmp-stack) | `network-hp-procurve-snmp-stack` |
+| [CPU](#network-hp-procurve-snmp-cpu) (inherited from `HPE-Procurve-SNMP`) | `network-hp-procurve-snmp-cpu` |
+| [Environment](#network-hp-procurve-snmp-environment) (inherited from `HPE-Procurve-SNMP`) | `network-hp-procurve-snmp-environment` |
+| [Memory](#network-hp-procurve-snmp-memory) (inherited from `HPE-Procurve-SNMP`) | `network-hp-procurve-snmp-memory` |
+| [ARP](#os-linux-snmp-arp) (inherited from `HPE-Procurve-SNMP`) | `os-linux-snmp-arp` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `HPE-Procurve-SNMP`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-hp-procurve-snmp-interfaces) | `network-hp-procurve-snmp-interfaces` |
+| [Spanning tree](#network-hp-procurve-snmp-spanning-tree) | `network-hp-procurve-snmp-spanning-tree` |
+| [Virtual Chassis](#network-hp-procurve-snmp-virtual-chassis) | `network-hp-procurve-snmp-virtual-chassis` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### HPE-Procurve-VC-SNMP
+
+*HPE Procurve Virtual Chassis Switch* · Parent template: `HPE-Procurve-SNMP`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Virtual Chassis](#network-hp-procurve-snmp-virtual-chassis) | `network-hp-procurve-snmp-virtual-chassis` |
+| [CPU](#network-hp-procurve-snmp-cpu) (inherited from `HPE-Procurve-SNMP`) | `network-hp-procurve-snmp-cpu` |
+| [Environment](#network-hp-procurve-snmp-environment) (inherited from `HPE-Procurve-SNMP`) | `network-hp-procurve-snmp-environment` |
+| [Memory](#network-hp-procurve-snmp-memory) (inherited from `HPE-Procurve-SNMP`) | `network-hp-procurve-snmp-memory` |
+| [ARP](#os-linux-snmp-arp) (inherited from `HPE-Procurve-SNMP`) | `os-linux-snmp-arp` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `HPE-Procurve-SNMP`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-hp-procurve-snmp-interfaces) | `network-hp-procurve-snmp-interfaces` |
+| [Spanning tree](#network-hp-procurve-snmp-spanning-tree) | `network-hp-procurve-snmp-spanning-tree` |
+| [Stack](#network-hp-procurve-snmp-stack) | `network-hp-procurve-snmp-stack` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-hp-procurve-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #network-hp-procurve-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `ENVIRONMENT` | `.*` | Which component to check (Default: '.*'). Can be: 'sensor', 'psu', 'fan' |
+| `EXTRA-OPTS` |  | --verbose |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=sensor) Can also exclude specific instance: --filter=sensor,fan.1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='sensor,CRITICAL,^(?!(good)$)' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `CRITICAL` |  | Set critical threshold for 'temperature' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+| `WARNING` |  | Set warning threshold for 'temperature' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-hp-procurve-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ARP {/* #os-linux-snmp-arp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DUPLICATE-IPADDR` | `0` | Warning threshold duplicate IP addresses |
+| `CRITICAL-DUPLICATE-IPADDR` | `10` | Critical threshold duplicate IP addresses |
+| `WARNING-TOTAL-ENTRIES` |  | Warning threshold total entries |
+| `WARNING-DUPLICATE-MACADDR` |  | Warning threshold duplicate MAC addresses |
+| `CRITICAL-TOTAL-ENTRIES` |  | Critical threshold total entries |
+| `CRITICAL-DUPLICATE-MACADDR` |  | Critical threshold duplicate MAC addresses |
+| `FILTER-IPADDR` |  | Filter ip addresses (can be a regexp) |
+| `FILTER-MACADDR` |  | Filter mac addresses (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `arp.total.entries.count` |  | total entries | `WARNING-TOTAL-ENTRIES`, `CRITICAL-TOTAL-ENTRIES` |
+| `arp.duplicate.macaddr.count` |  | duplicate mac address | `WARNING-DUPLICATE-MACADDR`, `CRITICAL-DUPLICATE-MACADDR` |
+| `arp.duplicate.ipaddr.count` |  | duplicate ip address | `WARNING-DUPLICATE-IPADDR`, `CRITICAL-DUPLICATE-IPADDR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Stack {/* #network-hp-procurve-snmp-stack */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-MEMBER-STATUS` | `'%{role} ne %{roleLast}'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{role\} ne %\{roleLast\}'). You can use the following variables: %\{role\}, %\{roleLast\}, %\{state\}, %\{stateLast\} |
+| `CRITICAL-PORT-STATUS` | `'%{admin_status} eq "up" and %{oper_status} ne "up"'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{admin_status\} eq "up" and %\{oper_status\} ne "up"'). You can use the following variables: %\{admin_status\}, %\{oper_status\}, %\{display\} |
+| `EXTRA-OPTS` | `--verbose` | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-MEMBER-STATUS` |  | Define the conditions to match for the status to be UNKNOWN (Default: ''). You can use the following variables: %\{role\}, %\{roleLast\}, %\{state\}, %\{stateLast\} |
+| `WARNING-MEMBER-STATUS` |  | Define the conditions to match for the status to be WARNING (Default: ''). You can use the following variables: %\{role\}, %\{roleLast\}, %\{state\}, %\{stateLast\} |
+| `UNKNOWN-PORT-STATUS` |  | Define the conditions to match for the status to be UNKNOWN (Default: ''). You can use the following variables: %\{admin_status\}, %\{oper_status\}, %\{display\} |
+| `WARNING-PORT-STATUS` |  | Define the conditions to match for the status to be WARNING (Default: ''). You can use the following variables: %\{admin_status\}, %\{oper_status\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virtual Chassis {/* #network-hp-procurve-snmp-virtual-chassis */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY-USAGE-PRCT` | `85` | Warning threshold Memory usage (%) |
+| `WARNING-CPU-UTILIZZATION` | `85` | Warning threshold CPU usage |
+| `CRITICAL-CPU-UTILIZZATION` | `90` | Critical threshold CPU usage |
+| `CRITICAL-LINK-STATUS` | `'%{link_status} eq "down"'` | Set critical threshold for status (Default: '%\{link_status\} eq "down"'). Can used special variables like: %\{link_status\}, %\{display\} |
+| `CRITICAL-MEMBER-STATUS` | `'%{state} ne %{stateLast} \|\| %{state} =~ /communicationFailure\|incompatibleOS/i'` | Set critical threshold for status (Default: '%\{state\} ne %\{stateLast\} \|\| %\{state\} =~ /communicationFailure\|incompatibleOS/i'). Can used special variables like: %\{state\}, %\{stateLast\} |
+| `CRITICAL-STATUS` | `'%{status} !~ /active/i'` | Set critical threshold for status (Default: '%\{status\} !~ /active/i'). Can used special variables like: %\{status\} |
+| `CRITICAL-MEMORY-USAGE-PRCT` | `90` | Critical threshold Memory usage (%) |
+| `WARNING-MEMBERS-TOTAL` |  | Warning threshold total members |
+| `WARNING-MEMORY-USAGE` |  | Warning threshold Memory usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Warning threshold Memory usage free (B) |
+| `CRITICAL-MEMBERS-TOTAL` |  | Critical threshold total members |
+| `CRITICAL-MEMORY-USAGE` |  | Critical threshold Memory usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Critical threshold Memory usage free (B) |
+| `FILTER-MEMBER-SERIAL` |  | Filter members by serial (can be a regexp) |
+| `UNKNOWN-LINK-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{link_status\}, %\{display\} |
+| `UNKNOWN-MEMBER-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\}, %\{stateLast\} |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\} |
+| `WARNING-LINK-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{link_status\}, %\{display\} |
+| `WARNING-MEMBER-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\}, %\{stateLast\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `stack.members.total.count` |  | total members | `WARNING-MEMBERS-TOTAL`, `CRITICAL-MEMBERS-TOTAL` |
+| `member.cpu.utilization.percentage` | `%` | cpu usage: %% | `WARNING-CPU-UTILIZZATION`, `CRITICAL-CPU-UTILIZZATION` |
+| `member.memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `member.memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `member.memory.usage.percentage` | `%` | memory used :  %% | `WARNING-MEMORY-USAGE-PRCT`, `CRITICAL-MEMORY-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-hp-procurve-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `CRITICAL-POE-POWER-ACTUAL` |  | Threshold critical acutal PoE power |
+| `CRITICAL-POE-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{poestatus\}, %\{display\} |
+| `WARNING-POE-POWER-ACTUAL` |  | Threshold warning acutal PoE power |
+| `WARNING-POE-STATUS` |  | Set warning threshold for poe status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{poestatus\}, %\{display\} |
+| `CRITICAL-BIAS-CURRENT` |  | Critical threshold current BIAS |
+| `CRITICAL-INPUT-POWER` |  | Critical threshold input power |
+| `CRITICAL-MODULE-TEMPERATURE` |  | Critical threshold module temperature |
+| `CRITICAL-OUTPUT-POWER` |  | Critical threshold output power |
+| `CRITICAL-VOLTAGE` |  | Critical threshold voltage |
+| `WARNING-BIAS-CURRENT` |  | Warning threshold current BIAS |
+| `WARNING-INPUT-POWER` |  | Warning threshold input power |
+| `WARNING-MODULE-TEMPERATURE` |  | Warning threshold module temperature |
+| `WARNING-OUTPUT-POWER` |  | Warning threshold output power |
+| `WARNING-VOLTAGE` |  | Warning threshold voltage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.poe.power.actual.milliwatt` | `mW` | poe actual power:  mW | `WARNING-POE-POWER-ACTUAL`, `CRITICAL-POE-POWER-ACTUAL` |
+| `interface.input.power.dbm` | `dBm` | Input Power :  dBm | `WARNING-INPUT-POWER`, `CRITICAL-INPUT-POWER` |
+| `interface.bias.current.milliampere` | `mA` | Bias Current :  mA | `WARNING-BIAS-CURRENT`, `CRITICAL-BIAS-CURRENT` |
+| `interface.output.power.dbm` | `dBm` | Output Power :  dBm | `WARNING-OUTPUT-POWER`, `CRITICAL-OUTPUT-POWER` |
+| `interface.voltage.volt` | `V` | Voltage :  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `interface.module.temperature.celsius` | `C` | Module Temperature :  C | `WARNING-MODULE-TEMPERATURE`, `CRITICAL-MODULE-TEMPERATURE` |
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spanning tree {/* #network-hp-procurve-snmp-spanning-tree */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{op_status} =~ /up/ && %{state} =~ /blocking\|broken/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{op_status\} =~ /up/ && %\{state\} =~ /blocking\|broken/'). You can use the following variables: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-PORT` |  | Filter on port description (can be a regexp). |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800 - 20260911</summary>
+
+- Host template `HPE-Procurve-SNMP`
+    - Service template `network-hp-procurve-snmp-spanning-tree` unlinked
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Service template [`network-hp-procurve-snmp-environment`](#network-hp-procurve-snmp-environment)
+    - Macro `EXTRA-OPTS` added (default *(empty)*)
+- Command `network-hp-procurve-snmp-environment`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Option `--verbose` removed
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `CRITICAL` added
+    - Macro `NO-COMPONENT` added
+    - Macro `WARNING` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241011 - 20241111</summary>
+
+- Command `network-hp-procurve-snmp-spanning-tree`
+    - Option `--warning-status` changed from `--warning-status='$_SERVICEWARNING-STATUS$'` to `--warning-status=$_SERVICEWARNING-STATUS$`
+    - Option `--critical-status` changed from `--critical-status='$_SERVICECRITICAL-STATUS$'` to `--critical-status=$_SERVICECRITICAL-STATUS$`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240909 - 20240925</summary>
+
+- Plugin pack `HPE Procurve switch`
+    - Description updated
+- Host template `HPE-Procurve-SNMP`
+    - Service template `network-hp-procurve-snmp-spanning-tree` linked
+- Service template [`network-hp-procurve-snmp-spanning-tree`](#network-hp-procurve-snmp-spanning-tree)
+    - Service template added
+- Command `network-hp-procurve-snmp-spanning-tree`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `HPE Procurve switch`
+    - Description updated
+- Host template `HPE-Procurve-Stack`
+    - Host template added
+- Service template [`network-hp-procurve-snmp-stack`](#network-hp-procurve-snmp-stack)
+    - Service template added
+- Command `network-hp-procurve-snmp-stack`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`network-hp-procurve-snmp-interfaces`](#network-hp-procurve-snmp-interfaces)
+    - Macro `UNITS-TRAFFIC`: default changed from `%` to `percent_delta`
+    - Macro `UNITS-ERROR`: default changed from `%` to `percent_delta`
+
+</details>

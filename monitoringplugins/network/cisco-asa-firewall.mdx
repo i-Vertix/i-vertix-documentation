@@ -1,0 +1,482 @@
+---
+title: "Cisco ASA Firewall"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco ASA Firewall" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco ASA firewalls through SNMP: CPU and memory usage, interfaces, sensors, failover status, sessions, IPsec tunnels and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-cisco-asa-snmp-cpu)
+* [Failover](#network-cisco-asa-snmp-failover)
+* [Interfaces](#network-cisco-asa-snmp-interfaces)
+* [IPsec Tunnel](#network-cisco-asa-snmp-ipsec-tunnel)
+* [Memory](#network-cisco-asa-snmp-memory)
+* [Sensors](#network-cisco-asa-snmp-sensors)
+* [Sessions](#network-cisco-asa-snmp-sessions)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-cisco-asa-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Cisco-ASA
+
+*Cisco ASA Firewall* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-cisco-asa-snmp-cpu) | `network-cisco-asa-snmp-cpu` |
+| [Failover](#network-cisco-asa-snmp-failover) | `network-cisco-asa-snmp-failover` |
+| [IPsec Tunnel](#network-cisco-asa-snmp-ipsec-tunnel) | `network-cisco-asa-snmp-ipsec-tunnel` |
+| [Memory](#network-cisco-asa-snmp-memory) | `network-cisco-asa-snmp-memory` |
+| [Sensors](#network-cisco-asa-snmp-sensors) | `network-cisco-asa-snmp-sensors` |
+| [Sessions](#network-cisco-asa-snmp-sessions) | `network-cisco-asa-snmp-sessions` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-cisco-asa-snmp-interfaces) | `network-cisco-asa-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-cisco-asa-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVG-5S` | `85` | Threshold warning average 5 sec |
+| `WARNING-AVG-1M` | `80` | Threshold warning average 1 min |
+| `WARNING-AVG-5M` | `75` | Threshold warning average 5 min |
+| `CRITICAL-AVG-5S` | `95` | Threshold critical average 5 sec |
+| `CRITICAL-AVG-1M` | `90` | Threshold critical average 1 min |
+| `CRITICAL-AVG-5M` | `85` | Threshold critical average 5 min |
+| `CHECK-ORDER` | `process,old_sys,system_ext` | Check cpu in standard cisco mib. If you have some issue (wrong cpu information in a specific mib), you can change the order (Default: 'process,old-sys,system-ext') |
+| `WARNING-CORE-5S` |  | Threshold warning core 5 sec |
+| `WARNING-CORE-1M` |  | Threshold warning core 1 min |
+| `WARNING-CORE-5M` |  | Threshold warning core 5 min |
+| `CRITICAL-CORE-5S` |  | Threshold critical core 5 sec |
+| `CRITICAL-CORE-1M` |  | Threshold critical core 1 min |
+| `CRITICAL-CORE-5M` |  | Threshold critical core 5 min |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-AVG-5S`, `CRITICAL-AVG-5S` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-AVG-1M`, `CRITICAL-AVG-1M` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-AVG-5M`, `CRITICAL-AVG-5M` |
+| `core.cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-CORE-5S`, `CRITICAL-CORE-5S` |
+| `core.cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-CORE-1M`, `CRITICAL-CORE-1M` |
+| `core.cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-CORE-5M`, `CRITICAL-CORE-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Failover {/* #network-cisco-asa-snmp-failover */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-ACTIVE-UNITS` | `2:` | Threshold critical active units |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^status$' |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{primaryStateLast\}, %\{secondaryStateLast\}, %\{primaryState\}, %\{secondaryState\} |
+| `WARNING-ACTIVE-UNITS` |  | Threshold warning active units |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{primaryStateLast\}, %\{secondaryStateLast\}, %\{primaryState\}, %\{secondaryState\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `active_units` |  | Active units | `WARNING-ACTIVE-UNITS`, `CRITICAL-ACTIVE-UNITS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IPsec Tunnel {/* #network-cisco-asa-snmp-ipsec-tunnel */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DROP-IN` | `0` | Threshold warning drop in |
+| `WARNING-DROP-OUT` | `0` | Threshold warning drop out |
+| `FILTER-NAME` |  | Filter name (can be a regexp) |
+| `FILTER-SA` |  | Filter IPSec Security Associations (can be a regexp) |
+| `FILTER-COUNTERS` |  | Filter counters (regexp can be used) |
+| `WARNING-TUNNELS-TOTAL` |  | Threshold warning total tunnels |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-SA-TOTAL` |  | Threshold warning SA total |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-DROP-IN` |  | Threshold critical drop in |
+| `CRITICAL-DROP-OUT` |  | Threshold critical drop out |
+| `CRITICAL-SA-TOTAL` |  | Threshold critical SA total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_tunnels` |  | Total tunnels | `WARNING-TUNNELS-TOTAL` |
+| `total_sa` |  | total sa | `WARNING-SA-TOTAL`, `CRITICAL-SA-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-asa-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage in percent |
+| `FILTER-POOL` | `.*` | Filter pool to check (can be a regexp) |
+| `CHECK-ORDER` | `enhanced_pool,pool,process,system_ext` | Change check order of memory (Default: 'enhanced_pool,pool,process,system_ext') |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sensors {/* #network-cisco-asa-snmp-sensors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'sensor' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=sensor,celsius.* |
+| `WARNING` |  | Set warning threshold (syntax: type,regexp,threshold) Example: --warning='sensor.celsius,.*,30' |
+| `CRITICAL` |  | Set critical threshold (syntax: type,regexp,threshold) Example: --critical='sensor.celsius,.*,40' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sessions {/* #network-cisco-asa-snmp-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CONNECTIONS-CURRENT` |  | Threshold warning Current Connections |
+| `WARNING-CONNECTIONS-1M` |  | Threshold warning Connections 1 min |
+| `WARNING-CONNECTIONS-5M` |  | Threshold warning Connections 5 min |
+| `WARNING-SESSIONS-TOTAL` |  | Threshold warning Sessions Total |
+| `WARNING-SESSIONS-EMAIL-CURRENT` |  | Threshold warning Sessions Current Email |
+| `WARNING-SESSIONS-EMAIL-PSEC` |  | Threshold warning Sessions PSEC Email |
+| `WARNING-SESSIONS-IPSEC-CURRENT` |  | Threshold warning Sessions Current IPSEC |
+| `WARNING-SESSIONS-IPSEC-PSEC` |  | Threshold warning Sessions PSEC IPSEC |
+| `WARNING-SESSIONS-L2L-CURRENT` |  | Threshold warning Sessions Current L2L |
+| `WARNING-SESSIONS-LB-PSEC` |  | Threshold warning Sessions PSEC LB |
+| `WARNING-SESSIONS-LB-CURRENT` |  | Threshold warning Sessions Current LB |
+| `WARNING-SESSIONS-SVC-CURRENT` |  | Threshold warning Sessions Current SVC |
+| `WARNING-SESSIONS-SVC-PSEC` |  | Threshold warning Sessions PSEC SVC |
+| `WARNING-SESSIONS-WEBVPN-CURRENT` |  | Threshold warning Sessions Current Web VPN |
+| `WARNING-SESSIONS-WEBVPN-PSEC` |  | Threshold warning Sessions PSEC Web VPN |
+| `CRITICAL-CONNECTIONS-CURRENT` |  | Threshold critical Current Connections |
+| `CRITICAL-CONNECTIONS-1M` |  | Threshold critical Connections 1 min |
+| `CRITICAL-CONNECTIONS-5M` |  | Threshold critical Connections 5 min |
+| `CRITICAL-SESSIONS-TOTAL` |  | Threshold critical Sessions Total |
+| `CRITICAL-SESSIONS-EMAIL-CURRENT` |  | Threshold critical Sessions Current Email |
+| `CRITICAL-SESSIONS-EMAIL-PSEC` |  | Threshold critical Sessions PSEC Email |
+| `CRITICAL-SESSIONS-IPSEC-CURRENT` |  | Threshold critical Sessions Current IPSEC |
+| `CRITICAL-SESSIONS-IPSEC-PSEC` |  | Threshold critical Sessions PSEC IPSEC |
+| `CRITICAL-SESSIONS-L2L-CURRENT` |  | Threshold critical Sessions Current L2L |
+| `CRITICAL-SESSIONS-LB-PSEC` |  | Threshold critical Sessions PSEC LB |
+| `CRITICAL-SESSIONS-LB-CURRENT` |  | Threshold critical Sessions Current LB |
+| `CRITICAL-SESSIONS-SVC-CURRENT` |  | Threshold critical Sessions Current SVC |
+| `CRITICAL-SESSIONS-SVC-PSEC` |  | Threshold critical Sessions PSEC SVC |
+| `CRITICAL-SESSIONS-WEBVPN-CURRENT` |  | Threshold critical Sessions Current Web VPN |
+| `CRITICAL-SESSIONS-WEBVPN-PSEC` |  | Threshold critical Sessions PSEC Web VPN |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections_current` |  | current | `WARNING-CONNECTIONS-CURRENT`, `CRITICAL-CONNECTIONS-CURRENT` |
+| `connections_1m` |  | average last 1min | `WARNING-CONNECTIONS-1M`, `CRITICAL-CONNECTIONS-1M` |
+| `connections_5m` |  | average last 5min | `WARNING-CONNECTIONS-5M`, `CRITICAL-CONNECTIONS-5M` |
+| `sessions_total` |  | total | `WARNING-SESSIONS-TOTAL`, `CRITICAL-SESSIONS-TOTAL` |
+| `sessions_email_current` |  | current email proxy | `WARNING-SESSIONS-EMAIL-CURRENT`, `CRITICAL-SESSIONS-EMAIL-CURRENT` |
+| `sessions_email_psec` |  | email proxy : /s | `WARNING-SESSIONS-EMAIL-PSEC`, `CRITICAL-SESSIONS-EMAIL-PSEC` |
+| `sessions_ipsec_current` |  | current ipsec | `WARNING-SESSIONS-IPSEC-CURRENT`, `CRITICAL-SESSIONS-IPSEC-CURRENT` |
+| `sessions_ipsec_psec` |  | ipsec : /s | `WARNING-SESSIONS-IPSEC-PSEC`, `CRITICAL-SESSIONS-IPSEC-PSEC` |
+| `sessions_l2l_current` |  | current LAN to LAN | `WARNING-SESSIONS-L2L-CURRENT`, `CRITICAL-SESSIONS-L2L-CURRENT` |
+| `sessions_l2l_psec` |  | LAN to LAN : /s |  |
+| `sessions_lb_current` |  | current load balancing | `WARNING-SESSIONS-LB-CURRENT`, `CRITICAL-SESSIONS-LB-CURRENT` |
+| `sessions_lb_psec` |  | load balancing : /s | `WARNING-SESSIONS-LB-PSEC`, `CRITICAL-SESSIONS-LB-PSEC` |
+| `sessions_svc_current` |  | current SVC | `WARNING-SESSIONS-SVC-CURRENT`, `CRITICAL-SESSIONS-SVC-CURRENT` |
+| `sessions_svc_psec` |  | SVC : /s | `WARNING-SESSIONS-SVC-PSEC`, `CRITICAL-SESSIONS-SVC-PSEC` |
+| `sessions_webvpn_current` |  | current webvpn | `WARNING-SESSIONS-WEBVPN-CURRENT`, `CRITICAL-SESSIONS-WEBVPN-CURRENT` |
+| `sessions_webvpn_psec` |  | webvpn : /s | `WARNING-SESSIONS-WEBVPN-PSEC`, `CRITICAL-SESSIONS-WEBVPN-PSEC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-cisco-asa-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250300 - 20250414</summary>
+
+- Service template [`network-cisco-asa-snmp-failover`](#network-cisco-asa-snmp-failover)
+    - Macro `CRITICAL-ACTIVE-UNITS`: default changed from `1:` to `2:`
+
+</details>

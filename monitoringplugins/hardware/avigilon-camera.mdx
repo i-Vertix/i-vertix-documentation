@@ -1,0 +1,303 @@
+---
+title: "Avigilon camera"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Avigilon.png";
+
+<PluginPackHeader name="Avigilon camera" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Avigilon cameras through SNMP: network interfaces, memory, storage, temperature and uptime.
+
+The plugin pack provides these checks:
+
+* [Interfaces](#hardware-devices-camera-avigilon-snmp-interfaces)
+* [Memory](#hardware-devices-camera-avigilon-snmp-memory)
+* [Storage](#hardware-devices-camera-avigilon-snmp-storage)
+* [Temperature](#hardware-devices-camera-avigilon-snmp-temperature)
+* [Uptime](#hardware-devices-camera-avigilon-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [`hardware-telephony-avaya-aes-snmp-interfaces`](/monitoringplugins/hardware/avaya-aes#hardware-telephony-avaya-aes-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Avigilon-Camera
+
+*Avigilon camera* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#hardware-devices-camera-avigilon-snmp-interfaces) | `hardware-devices-camera-avigilon-snmp-interfaces` |
+| [Memory](#hardware-devices-camera-avigilon-snmp-memory) | `hardware-devices-camera-avigilon-snmp-memory` |
+| [Storage](#hardware-devices-camera-avigilon-snmp-storage) | `hardware-devices-camera-avigilon-snmp-storage` |
+| [Temperature](#hardware-devices-camera-avigilon-snmp-temperature) | `hardware-devices-camera-avigilon-snmp-temperature` |
+| [Uptime](#hardware-devices-camera-avigilon-snmp-uptime) | `hardware-devices-camera-avigilon-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #hardware-devices-camera-avigilon-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'deltaps', 'counter') |
+| `OID-DISPLAY` | `ifName` | Define the OID to be used to filter interfaces (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `5` | Warning threshold discards in |
+| `WARNING-DISCARD-OUT` | `5` | Warning threshold discards out |
+| `WARNING-ERROR-IN` | `0` | Warning threshold errors in |
+| `WARNING-ERROR-OUT` | `0` | Warning threshold errors out |
+| `WARNING-TRAFFIC-IN` | `80` | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Warning threshold traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Critical threshold discards in |
+| `CRITICAL-DISCARD-OUT` | `10` | Critical threshold discards out |
+| `CRITICAL-ERROR-IN` | `10` | Critical threshold errors in |
+| `CRITICAL-ERROR-OUT` | `10` | Critical threshold errors out |
+| `CRITICAL-TRAFFIC-IN` | `90` | Critical threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Critical threshold traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #hardware-devices-camera-avigilon-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVAILABLE` | `100MB:` | Warning threshold for available (B) |
+| `CRITICAL-AVAILABLE` | `50MB:` | Critical threshold for available (B) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.available` | `B` |  | `WARNING-AVAILABLE`, `CRITICAL-AVAILABLE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #hardware-devices-camera-avigilon-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{storage_state} =~ /Unknown/i'` | Define the conditions to match to return a unknown status (default: "%\{storage_state\} =~ /Unknown/i"). The condition can be written using the following macros: %\{storage_state\} |
+| `WARNING-STATUS` | `'%{storage_state} =~ /insufficientMediaCapacity/i \|\| %{storage_state} =~ /insufficientMediaSpeed/i'` | Define the conditions to match to return a warning status (default: "%\{storage_state\} =~ /insufficientMediaCapacity/i \|\|             %\{storage_state\} =~ /insufficientMediaSpeed/i"). The condition can be written using the following macros: %\{storage_state\} |
+| `CRITICAL-STATUS` | `'%{storage_state} =~ /mediaNotPresent/i \|\| %{storage_state} =~ /error/i'` | Define the conditions to match to return a critical status (default: "%\{storage_state\} =~ /mediaNotPresent/i \|\| %\{storage_state\} =~ /error/i"). The condition can be written using the following macros: %\{storage_state\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Temperature {/* #hardware-devices-camera-avigilon-snmp-temperature */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} ne "ok"'` | Define the conditions to match to return a critical status (default: '%\{status\} ne "ok"'). The condition can be written using the following macros: %\{status\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-STATUS` |  | Define the conditions to match to return a warning status. The condition can be written using the following macros: %\{status\} |
+| `WARNING-TEMPERATURE` |  | Warning threshold for temperature (Celsius) |
+| `CRITICAL-TEMPERATURE` |  | Critical threshold for temperature (Celsius) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sensor.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #hardware-devices-camera-avigilon-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Warning threshold |
+| `CRITICAL-UPTIME` | `900:` | Critical threshold |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240516 - 20240621</summary>
+
+- Plugin pack `Avigilon camera`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240516 - 20240621`.

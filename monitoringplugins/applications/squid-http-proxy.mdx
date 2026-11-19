@@ -1,0 +1,196 @@
+---
+title: "Squid HTTP Proxy"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Squid.png";
+
+<PluginPackHeader name="Squid HTTP Proxy" image={image} category="Application" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Squid HTTP proxies through SNMP: cache CPU, memory, file descriptors and objects, HTTP hits and errors, traffic of clients, servers and ICP.
+
+The plugin pack provides these checks:
+
+* [Squid Cache usage](#apps-squid-snmp-cache-usage)
+* [Squid Protocol statistics](#apps-squid-snmp-protocol-stats)
+
+
+## Host Templates
+
+### Squid-Proxy
+
+*Squid HTTP Proxy* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Squid Cache usage](#apps-squid-snmp-cache-usage) | `apps-squid-snmp-cache-usage` |
+| [Squid Protocol statistics](#apps-squid-snmp-protocol-stats) | `apps-squid-snmp-protocol-stats` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Squid Cache usage {/* #apps-squid-snmp-cache-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU` | `80` | Threshold warning cpu |
+| `WARNING-MEMORY` | `80` | Threshold warning memory |
+| `CRITICAL-CPU` | `90` | Threshold critical cpu |
+| `CRITICAL-MEMORY` | `90` | Threshold critical memory |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^(cpu)$' |
+| `WARNING-FD` |  | Threshold warning fd |
+| `WARNING-OBJECT` |  | Threshold warning object |
+| `CRITICAL-FD` |  | Threshold critical fd |
+| `CRITICAL-OBJECT` |  | Threshold critical object |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cache.cpu.utilization.percentage` | `%` | Cpu usage:  %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `cache.memory.usage.bytes` | `B` | Memory usage | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+| `cache.filedescriptors.count` |  | Number of file descriptors | `WARNING-FD`, `CRITICAL-FD` |
+| `cache.objects.count` |  | Number of object stored | `WARNING-OBJECT`, `CRITICAL-OBJECT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Squid Protocol statistics {/* #apps-squid-snmp-protocol-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-HTTP-HITS-RATE` | `80:` | Threshold warning http hits rate |
+| `WARNING-HTTP-ERRORS` | `0` | Threshold warning http errors |
+| `CRITICAL-HTTP-HITS-RATE` | `50:` | Threshold critical http hits rate |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='http' |
+| `WARNING-HTTP-TRAFFIC-IN` |  | Threshold warning http traffic in |
+| `WARNING-HTTP-TRAFFIC-OUT` |  | Threshold warning http traffic out |
+| `WARNING-ICP-TRAFFIC-IN` |  | Threshold warning icp traffic in |
+| `WARNING-ICP-TRAFFIC-OUT` |  | Threshold warning icp traffic out |
+| `WARNING-SERVER-TRAFFIC-IN` |  | Threshold warning server traffic in |
+| `WARNING-SERVER-TRAFFIC-OUT` |  | Threshold warning server traffic out |
+| `WARNING-CLIENTS` |  | Threshold warning clients |
+| `CRITICAL-HTTP-ERRORS` |  | Threshold critical http errors |
+| `CRITICAL-HTTP-TRAFFIC-IN` |  | Threshold critical http traffic in |
+| `CRITICAL-HTTP-TRAFFIC-OUT` |  | Threshold critical http traffic out |
+| `CRITICAL-ICP-TRAFFIC-IN` |  | Threshold critical icp traffic in |
+| `CRITICAL-ICP-TRAFFIC-OUT` |  | Threshold critical icp traffic out |
+| `CRITICAL-SERVER-TRAFFIC-IN` |  | Threshold critical server traffic in |
+| `CRITICAL-SERVER-TRAFFIC-OUT` |  | Threshold critical server traffic out |
+| `CRITICAL-CLIENTS` |  | Threshold critical clients |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `http.hits.percentage` | `%` | hits rate:  %% | `WARNING-HTTP-HITS-RATE`, `CRITICAL-HTTP-HITS-RATE` |
+| `http.errors.count` |  | errors | `WARNING-HTTP-ERRORS`, `CRITICAL-HTTP-ERRORS` |
+| `http.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-HTTP-TRAFFIC-IN`, `CRITICAL-HTTP-TRAFFIC-IN` |
+| `http.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-HTTP-TRAFFIC-OUT`, `CRITICAL-HTTP-TRAFFIC-OUT` |
+| `icp.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-ICP-TRAFFIC-IN`, `CRITICAL-ICP-TRAFFIC-IN` |
+| `icp.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-ICP-TRAFFIC-OUT`, `CRITICAL-ICP-TRAFFIC-OUT` |
+| `cache.server.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-SERVER-TRAFFIC-IN`, `CRITICAL-SERVER-TRAFFIC-IN` |
+| `cache.server.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-SERVER-TRAFFIC-OUT`, `CRITICAL-SERVER-TRAFFIC-OUT` |
+| `cache.clients.count` |  | current number of clients | `WARNING-CLIENTS`, `CRITICAL-CLIENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

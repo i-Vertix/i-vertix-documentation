@@ -1,0 +1,860 @@
+---
+title: "Netapp Ontap SNMP"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Netapp.png";
+
+<PluginPackHeader name="Netapp Ontap SNMP" image={image} category="Storage" metadata={["SNMP"]} />
+
+## Description
+
+Monitors NetApp ONTAP systems through SNMP: CPU, aggregates, file systems and volumes, hardware (fans, power supplies, temperature, shelves, NVRAM), failover, SnapMirror and snapshots, quotas and CIFS/NFS activity.
+
+The plugin pack provides these checks:
+
+* [Aggregates](#storage-netapp-ontap-snmp-aggregates)
+* [Cache age](#storage-netapp-ontap-snmp-cache-age)
+* [Cluster Nodes](#storage-netapp-ontap-snmp-cluster-nodes)
+* [Consistency point statistics](#storage-netapp-ontap-snmp-cp-statistics)
+* [CPU](#storage-netapp-ontap-snmp-cpuload)
+* [Disk failed](#storage-netapp-ontap-snmp-diskfailed)
+* [Failover](#storage-netapp-ontap-snmp-failover)
+* [Fan](#storage-netapp-ontap-snmp-fan)
+* [File system](#storage-netapp-ontap-snmp-filesys)
+* [Global status](#storage-netapp-ontap-snmp-global-status)
+* [NDMP sessions](#storage-netapp-ontap-snmp-ndmpsessions)
+* [NVRAM](#storage-netapp-ontap-snmp-nvram)
+* [Partner status](#storage-netapp-ontap-snmp-partnerstatus)
+* [Plexes](#storage-netapp-ontap-snmp-plexes)
+* [Power supply](#storage-netapp-ontap-snmp-psu)
+* [Quotas](#storage-netapp-ontap-snmp-qtree-usage)
+* [Share calls](#storage-netapp-ontap-snmp-share-calls)
+* [Shelf](#storage-netapp-ontap-snmp-shelf)
+* [Single instance storage](#storage-netapp-ontap-snmp-sis)
+* [Snap mirrorlag](#storage-netapp-ontap-snmp-snapmirrorlag)
+* [Snapshot age](#storage-netapp-ontap-snmp-snapshotage)
+* [Snapvault usage](#storage-netapp-ontap-snmp-snapvault-usage)
+* [Temperature](#storage-netapp-ontap-snmp-temperature)
+* [Uptime](#os-linux-snmp-uptime)
+* [Volume options](#storage-netapp-ontap-snmp-volumeoptions)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Cluster Nodes](#storage-netapp-ontap-snmp-cluster-nodes) | `Cluster Node - <name>` |
+| [File system](#storage-netapp-ontap-snmp-filesys) | `File system - <name>` |
+| [Plexes](#storage-netapp-ontap-snmp-plexes) | `Plexes - <name>` |
+| [Snapvault usage](#storage-netapp-ontap-snmp-snapvault-usage) | `Snapvault usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Netapp-Ontap-SNMP
+
+*Netapp Ontap storage SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Aggregates](#storage-netapp-ontap-snmp-aggregates) | `storage-netapp-ontap-snmp-aggregates` |
+| [Cache age](#storage-netapp-ontap-snmp-cache-age) | `storage-netapp-ontap-snmp-cache-age` |
+| [Consistency point statistics](#storage-netapp-ontap-snmp-cp-statistics) | `storage-netapp-ontap-snmp-cp-statistics` |
+| [CPU](#storage-netapp-ontap-snmp-cpuload) | `storage-netapp-ontap-snmp-cpuload` |
+| [Disk failed](#storage-netapp-ontap-snmp-diskfailed) | `storage-netapp-ontap-snmp-diskfailed` |
+| [Failover](#storage-netapp-ontap-snmp-failover) | `storage-netapp-ontap-snmp-failover` |
+| [Fan](#storage-netapp-ontap-snmp-fan) | `storage-netapp-ontap-snmp-fan` |
+| [File system](#storage-netapp-ontap-snmp-filesys) | `storage-netapp-ontap-snmp-filesys` |
+| [Global status](#storage-netapp-ontap-snmp-global-status) | `storage-netapp-ontap-snmp-global-status` |
+| [NDMP sessions](#storage-netapp-ontap-snmp-ndmpsessions) | `storage-netapp-ontap-snmp-ndmpsessions` |
+| [NVRAM](#storage-netapp-ontap-snmp-nvram) | `storage-netapp-ontap-snmp-nvram` |
+| [Partner status](#storage-netapp-ontap-snmp-partnerstatus) | `storage-netapp-ontap-snmp-partnerstatus` |
+| [Power supply](#storage-netapp-ontap-snmp-psu) | `storage-netapp-ontap-snmp-psu` |
+| [Quotas](#storage-netapp-ontap-snmp-qtree-usage) | `storage-netapp-ontap-snmp-qtree-usage` |
+| [Share calls](#storage-netapp-ontap-snmp-share-calls) | `storage-netapp-ontap-snmp-share-calls` |
+| [Shelf](#storage-netapp-ontap-snmp-shelf) | `storage-netapp-ontap-snmp-shelf` |
+| [Single instance storage](#storage-netapp-ontap-snmp-sis) | `storage-netapp-ontap-snmp-sis` |
+| [Snap mirrorlag](#storage-netapp-ontap-snmp-snapmirrorlag) | `storage-netapp-ontap-snmp-snapmirrorlag` |
+| [Snapshot age](#storage-netapp-ontap-snmp-snapshotage) | `storage-netapp-ontap-snmp-snapshotage` |
+| [Snapvault usage](#storage-netapp-ontap-snmp-snapvault-usage) | `storage-netapp-ontap-snmp-snapvault-usage` |
+| [Temperature](#storage-netapp-ontap-snmp-temperature) | `storage-netapp-ontap-snmp-temperature` |
+| [Volume options](#storage-netapp-ontap-snmp-volumeoptions) | `storage-netapp-ontap-snmp-volumeoptions` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster Nodes](#storage-netapp-ontap-snmp-cluster-nodes) | `storage-netapp-ontap-snmp-cluster-nodes` |
+| [Plexes](#storage-netapp-ontap-snmp-plexes) | `storage-netapp-ontap-snmp-plexes` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Aggregates {/* #storage-netapp-ontap-snmp-aggregates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATE` | `'%{state} =~ /offline/i'` | Set critical threshold for state (Default: '%\{state\} =~ /offline/i'). Can used special variables like: %\{state\}, %\{name\} |
+| `CRITICAL-STATUS` | `'%{status} !~ /normal\|mirrored/i'` | Set critical threshold for status (Default: '%\{status\} !~ /normal\|mirrored/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `FILTER-NAME` |  | Filter by aggregate name |
+| `WARNING-STATE` |  | Set warning threshold for state. Can used special variables like: %\{state\}, %\{name\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cache age {/* #storage-netapp-ontap-snmp-cache-age */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `30` | Threshold warning in minutes |
+| `CRITICAL` | `60` | Threshold critical in minutes |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Consistency point statistics {/* #storage-netapp-ontap-snmp-cp-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TIMER` |  | Threshold warning timer |
+| `WARNING-SNAPSHOT` |  | Threshold warning snapshot |
+| `WARNING-LOWERWATER` |  | Threshold warning lowerwater |
+| `WARNING-HIGHWATER` |  | Threshold warning higwater |
+| `WARNING-LOGFULL` |  | Threshold warning logfull |
+| `WARNING-BACK` |  | Threshold warning back |
+| `WARNING-FLUSH` |  | Threshold warning flush |
+| `WARNING-SYNC` |  | Threshold warning sync |
+| `WARNING-LOWVBUF` |  | Threshold warning lowvbuf |
+| `WARNING-DEFERRED` |  | Threshold warning deferred |
+| `WARNING-LOWDATAVECS` |  | Threshold warning lowdatavecs |
+| `CRITICAL-TIMER` |  | Threshold critical timer |
+| `CRITICAL-SNAPSHOT` |  | Threshold critical snapshot |
+| `CRITICAL-LOWERWATER` |  | Threshold critical lowerwater |
+| `CRITICAL-HIGHWATER` |  | Threshold critical highwater |
+| `CRITICAL-LOGFULL` |  | Threshold critical logfull |
+| `CRITICAL-BACK` |  | Threshold critical back |
+| `CRITICAL-FLUSH` |  | Threshold critical flush |
+| `CRITICAL-SYNC` |  | Threshold critical sync |
+| `CRITICAL-LOWVBUF` |  | Threshold critical lowvbuf |
+| `CRITICAL-DEFERRED` |  | Threshold critical deferred |
+| `CRITICAL-LOWDATAVECS` |  | Threshold critical lowdatavecs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.cp.timer.operations.count` |  | CP timer | `WARNING-TIMER`, `CRITICAL-TIMER` |
+| `storage.cp.snapshot.operations.count` |  | CP snapshot | `WARNING-SNAPSHOT`, `CRITICAL-SNAPSHOT` |
+| `storage.cp.lowerwatermark.operations.count` |  | CP low water mark | `WARNING-LOWERWATER`, `CRITICAL-LOWERWATER` |
+| `storage.cp.highwatermark.operations.count` |  | CP high water mark | `WARNING-HIGHWATER`, `CRITICAL-HIGHWATER` |
+| `storage.cp.logfull.operations.count` |  | CP nv-log full | `WARNING-LOGFULL`, `CRITICAL-LOGFULL` |
+| `storage.cp.back2back.operations.count` |  | CP back-to-back | `WARNING-BACK`, `CRITICAL-BACK` |
+| `storage.cp.flushunlog.operations.count` |  | CP flush unlogged write data | `WARNING-FLUSH`, `CRITICAL-FLUSH` |
+| `storage.cp.syncrequests.operations.count` |  | CP sync requests | `WARNING-SYNC`, `CRITICAL-SYNC` |
+| `storage.cp.lowvirtualbuffers.operations.count` |  | CP low virtual buffers | `WARNING-LOWVBUF`, `CRITICAL-LOWVBUF` |
+| `storage.cp.deferred.operations.count` |  | CP deferred | `WARNING-DEFERRED`, `CRITICAL-DEFERRED` |
+| `storage.cp.lowdatavecs.operations.count` |  | CP low datavecs | `WARNING-LOWDATAVECS`, `CRITICAL-LOWDATAVECS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #storage-netapp-ontap-snmp-cpuload */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk failed {/* #storage-netapp-ontap-snmp-diskfailed */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Failover {/* #storage-netapp-ontap-snmp-failover */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE` |  | Filter name with regexp (based on serial) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Fan {/* #storage-netapp-ontap-snmp-fan */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### File system {/* #storage-netapp-ontap-snmp-filesys */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USAGE` | `90` | Threshold warning usage |
+| `WARNING-INODES` | `90` | Threshold warning inodes % |
+| `CRITICAL-USAGE` | `95` | Threshold critical usage |
+| `CRITICAL-INODES` | `95` | Threshold critical inodes % |
+| `FILTER-NAME` | `^((?!\.snapshot).)*$` | Filter by filesystem name (can be a regexp) |
+| `FILTER-VSERVER` |  | Filter by vserver name (can be a regexp) |
+| `FILTER-VSERVER-STATE` |  | Filter by vserver state (can be a regexp) |
+| `FILTER-TYPE` |  | Filter filesystem type (can be a regexp. Example:'flexibleVolume\|aggregate') |
+| `WARNING-COMPRESSSAVED` |  | Threshold warning compression saved % |
+| `WARNING-DEDUPSAVED` |  | Threshold warning deduplication saved % |
+| `CRITICAL-COMPRESSSAVED` |  | Threshold critical compression saved % |
+| `CRITICAL-DEDUPSAVED` |  | Threshold critical deduplication saved % |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `inodes` | `%` | Inodes Used :  %% | `WARNING-INODES`, `CRITICAL-INODES` |
+| `compresssaved` | `%` | Compress Saved :  %% | `WARNING-COMPRESSSAVED`, `CRITICAL-COMPRESSSAVED` |
+| `dedupsaved` | `%` | Dedupe Saved :  %% | `WARNING-DEDUPSAVED`, `CRITICAL-DEDUPSAVED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Global status {/* #storage-netapp-ontap-snmp-global-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-READ` |  | Threshold warning read |
+| `WARNING-WRITE` |  | Threshold warning write |
+| `CRITICAL-READ` |  | Threshold critical read |
+| `CRITICAL-WRITE` |  | Threshold critical write |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.io.read.usage.bytespersecond` | `B/s` | Read I/O :  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `storage.io.write.usage.bytespersecond` | `B/s` | Write I/O :  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NDMP sessions {/* #storage-netapp-ontap-snmp-ndmpsessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning |
+| `CRITICAL` |  | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NVRAM {/* #storage-netapp-ontap-snmp-nvram */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Partner status {/* #storage-netapp-ontap-snmp-partnerstatus */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Power supply {/* #storage-netapp-ontap-snmp-psu */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Quotas {/* #storage-netapp-ontap-snmp-qtree-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `85` | Threshold warning |
+| `CRITICAL-SPACE-USAGE-PRCT` | `90` | Threshold critical |
+| `FILTER-VSERVER` |  | Filter by vserver name (can be a regexp) |
+| `FILTER-VOLUME` |  | Filter by volume name (can be a regexp) |
+| `FILTER-QTREE` |  | Filter by qtree name (can be a regexp) |
+| `CRITICAL-SPACE-USAGE` |  | Threshold critical space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Threshold critical space usage free (B) |
+| `FILTER-INDEX` |  | Filter by index (identified entry in the /etc/quotas) (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Threshold warning space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold warning space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `quota.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `quota.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `quota.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Share calls {/* #storage-netapp-ontap-snmp-share-calls */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CIFS` |  | Threshold warning CIFS |
+| `WARNING-NFS` |  | Threshold warning NFS |
+| `CRITICAL-CIFS` |  | Threshold critical CIFS |
+| `CRITICAL-NFS` |  | Threshold critical NFS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.cifs.calls.persecond` | `/s` | CIFS :  calls/s | `WARNING-CIFS`, `CRITICAL-CIFS` |
+| `storage.nfs.calls.persecond` | `/s` | NFS :  calls/s | `WARNING-NFS`, `CRITICAL-NFS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Shelf {/* #storage-netapp-ontap-snmp-shelf */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'psu', 'fan', 'communication', 'voltage', 'temperature', 'electronics', 'raid'. |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=psu,41239F00647-A |
+| `WARNING` |  | Set warning threshold for temperature, fan, voltage (syntax: type,regexp,threshold) Example: --warning='41239F00647-vimm46,20' --warning='41239F00647-vimm5.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperature, fan, voltage (syntax: type,regexp,threshold) Example: --critical='temperature,.*,25' --warning='temperature,.*,35' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='gfc,CRITICAL,^(?!(Online)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Single instance storage {/* #storage-netapp-ontap-snmp-sis */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter name (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Snap mirrorlag {/* #storage-netapp-ontap-snmp-snapmirrorlag */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LAG` | `86400` | Threshold warning in seconds |
+| `CRITICAL-LAG` | `172800` | Threshold critical in seconds |
+| `FILTER-NAME` |  | Filter the snapmirror name (can be a regexp) |
+| `FILTER-STATUS` |  | Filter on status (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lag` | `s` | lag:  seconds | `WARNING-LAG`, `CRITICAL-LAG` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Snapshot age {/* #storage-netapp-ontap-snmp-snapshotage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `.*` | Set the snapshot name - regexp |
+| `WARNING` | `3600` | Threshold warning in seconds |
+| `CRITICAL` | `7200` | Threshold critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Snapvault usage {/* #storage-netapp-ontap-snmp-snapvault-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter snapvault name (can be a regexp) |
+| `WARNING-LAG` |  | Threshold warning lag |
+| `WARNING-TRANSFER-TRAFFIC` |  | Threshold warning transfer traffic |
+| `WARNING-TRANSFER-SUCCEDED` |  | Threshold warning transfer succeded |
+| `WARNING-TRANSFER-FAILED` |  | Threshold warning transfer failed |
+| `CRITICAL-LAG` |  | Threshold critical lag |
+| `CRITICAL-TRANSFER-TRAFFIC` |  | Threshold critical transfer traffic |
+| `CRITICAL-TRANSFER-SUCCEDED` |  | Threshold critical transfer succeded |
+| `CRITICAL-TRANSFER-FAILED` |  | Threshold critical transfer failed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lag` | `s` | lag :  seconds | `WARNING-LAG`, `CRITICAL-LAG` |
+| `transfer_traffic` | `B/s` | transfer traffic :  /s | `WARNING-TRANSFER-TRAFFIC`, `CRITICAL-TRANSFER-TRAFFIC` |
+| `transfer_succeed` |  | transfer succeed | `WARNING-TRANSFER-SUCCEDED`, `CRITICAL-TRANSFER-SUCCEDED` |
+| `transfer_failed` |  | transfer failed | `WARNING-TRANSFER-FAILED`, `CRITICAL-TRANSFER-FAILED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Temperature {/* #storage-netapp-ontap-snmp-temperature */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume options {/* #storage-netapp-ontap-snmp-volumeoptions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-VSERVER` |  | Filter volumes by vserver name (can be a regexp) |
+| `FILTER-NAME` |  | Filter on volume name (can be a regexp) |
+| `FILTER-STATUS` |  | Filter on volume status (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `failed` |  | Failed |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster Nodes {/* #storage-netapp-ontap-snmp-cluster-nodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE-NAME` | `.*` | Filter by node name (can be a regexp) |
+| `WARNING-CPU-UTILIZATION` | `80` | Warning threshold CPU utilization |
+| `WARNING-FAN-FAILED` | `0` | Warning threshold FAN failed |
+| `WARNING-PSU-FAILED` | `0` | Warning threshold PSU failed |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Critical threshold CPU utilization |
+| `CRITICAL-NODE-STATUS` | `'%{node_status} eq "clusterComLost"'` | Set critical threshold for status (Default: '%\{node_status\} eq "clusterComLost"'). Can used special variables like: %\{node_status\}, %\{node_name\} |
+| `CRITICAL-BBU-STATUS` | `'%{bbu_status} !~ /fullyCharged\|ok/i'` | Set critical threshold for status (Default: '%\{bbu_status\} !~ /fullyCharged\|ok/i'). Can used special variables like: %\{bbu_status\}, %\{node_name\} |
+| `CRITICAL-PORT-LINK-STATUS` | `'%{admstatus} eq "up" and %{opstatus} ne "up"'` | Set critical threshold for status (Default: '%\{admstatus\} eq "up" and %\{opstatus\} ne "up"'). Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{port_id\}, %\{node_name\} |
+| `WARNING-PORT-HEALTH-STATUS` | `'%{health} eq "degraded"'` | Set warning threshold for status (Default: '%\{health\} eq "degraded"'). Can used special variables like: %\{health\}, %\{port_id\}, %\{node_name\} |
+| `FILTER-PORT-ID` |  | Filter ports by id (can be a regexp) |
+| `FILTER-PORT-ROLE` |  | Filter ports by role (can be a regexp) |
+| `WARNING-TEMPERATURE-OVERRANGE` |  | Warning threshold temperature overrange |
+| `CRITICAL-TEMPERATURE-OVERRANGE` |  | Critical threshold temperature overrange |
+| `CRITICAL-FAN-FAILED` |  | Critical threshold FAN failed |
+| `CRITICAL-PSU-FAILED` |  | Critical threshold PSU failed |
+| `WARNING-NODE-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{node_status\}, %\{node_name\} |
+| `WARNING-BBU-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{bbu_status\}, %\{node_name\} |
+| `WARNING-PORT-LINK-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{port_id\}, %\{node_name\} |
+| `CRITICAL-PORT-HEALTH-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{health\}, %\{port_id\}, %\{node_name\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.cpu.utilization.percentage` | `%` | cpu utilization: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `node.hardware.fans.failed.count` |  | number of fans failed | `WARNING-FAN-FAILED`, `CRITICAL-FAN-FAILED` |
+| `node.hardware.power_supplies.failed.count` |  | number of power supplies failed | `WARNING-PSU-FAILED`, `CRITICAL-PSU-FAILED` |
+| `node.hardware.temperatures.over_range.count` |  | number of temperatures over range | `WARNING-TEMPERATURE-OVERRANGE`, `CRITICAL-TEMPERATURE-OVERRANGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Plexes {/* #storage-netapp-ontap-snmp-plexes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} eq "resyncing"'` | Set warning threshold for status (Default: '%\{status\} eq "resyncing"'). Can used special variables like: %\{status\}, %\{name\}, %\{aggregate\} |
+| `CRITICAL-STATUS` | `'%{status} eq "offline"'` | Set critical threshold for status (Default: '%\{status\} eq "offline"'). Can used special variables like: %\{status\}, %\{name\}, %\{aggregate\} |
+| `FILTER-NAME` |  | Filter plexes by name |
+| `FILTER-AGGREGATE` |  | Filter plexes by aggregate name |
+| `WARNING-TOTAL-ONLINE` |  | Warning threshold total online |
+| `WARNING-TOTAL-OFFLINE` |  | Warning threshold total offline |
+| `WARNING-TOTAL-RESYNCING` |  | Warning threshold total resyncing |
+| `WARNING-RESYNCING` |  | Warning threshold resyncing |
+| `CRITICAL-TOTAL-ONLINE` |  | Critical threshold total online |
+| `CRITICAL-TOTAL-OFFLINE` |  | Critical threshold total offline |
+| `CRITICAL-TOTAL-RESYNCING` |  | Critical threshold total resyncing |
+| `CRITICAL-RESYNCING` |  | Critical threshold resyncing |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `plexes.online.count` |  | online | `WARNING-TOTAL-ONLINE`, `CRITICAL-TOTAL-ONLINE` |
+| `plexes.offline.count` |  | offline | `WARNING-TOTAL-OFFLINE`, `CRITICAL-TOTAL-OFFLINE` |
+| `plexes.resyncing.count` |  | resyncing | `WARNING-TOTAL-RESYNCING`, `CRITICAL-TOTAL-RESYNCING` |
+| `plex.resyncing.percentage` | `%` | resyncing:  %% | `WARNING-RESYNCING`, `CRITICAL-RESYNCING` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-netapp-ontap-snmp-shelf`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--threshold-overload=$_SERVICETHRESHOLD-OVERLOAD$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+    - Macro `THRESHOLD-OVERLOAD` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230812</summary>
+
+- Service template [`storage-netapp-ontap-snmp-filesys`](#storage-netapp-ontap-snmp-filesys)
+    - Macro `FILTER-NAME` added (default `^((?!\.snapshot).)*$`)
+
+</details>

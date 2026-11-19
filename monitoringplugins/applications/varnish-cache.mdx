@@ -1,0 +1,327 @@
+---
+title: "Varnish cache"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Varnish-Cache.png";
+
+<PluginPackHeader name="Varnish cache" image={image} category="Application" metadata={["SSH"]} />
+
+## Description
+
+Monitors Varnish cache servers through SSH: the Varnish statistics collected with the varnishstat tool.
+
+The plugin pack provides these checks:
+
+* [Varnish stats](#apps-varnish-remotessh-stats)
+
+
+## Host Templates
+
+### Varnish-Cache
+
+*Varnish Cache* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-PORT` | `22` | Define the TCP port on which SSH is listening. |
+| `SSH-PASSWORD` | *(password)* | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Varnish stats](#apps-varnish-remotessh-stats) | `apps-varnish-remotessh-stats` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Varnish stats {/* #apps-varnish-remotessh-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-BACKEND-UNHEALTHY` | `0` | Threshold critical backend unhealthy |
+| `CRITICAL-BACKEND-BUSY` | `0` | Threshold critical backend busy |
+| `CRITICAL-BACKEND-FAIL` | `0` | Threshold critical backend fail |
+| `CRITICAL-SESS-DROP` | `0` | Threshold critical session drop |
+| `CRITICAL-SESS-FAIL` | `0` | Threshold critical session fail |
+| `CRITICAL-SESS-QUEUED` | `0` | Threshold critical session queued |
+| `CRITICAL-THREATS-FAILED` | `0` | Threshold critical threads failed *(not used by the check command)* |
+| `WARNING-CLIENT-CONN` |  | Threshold warning client connection |
+| `WARNING-CLIENT-REQ` |  | Threshold warning client request |
+| `WARNING-CACHE-HIT` |  | Threshold warning cache hit |
+| `WARNING-CACHE-HITPASS` |  | Threshold warning cache hit pass |
+| `WARNING-CACHE-MISS` |  | Threshold warning cache miss |
+| `WARNING-BACKEND-CONN` |  | Threshold warning backend connection |
+| `WARNING-BACKEND-UNHEALTHY` |  | Threshold warning backend unhealthy |
+| `WARNING-BACKEND-BUSY` |  | Threshold warning backend busy |
+| `WARNING-BACKEND-FAIL` |  | Threshold warning backend fail |
+| `WARNING-SESS-DROP` |  | Threshold warning session drop |
+| `WARNING-SESS-FAIL` |  | Threshold warning session fail |
+| `WARNING-SESS-QUEUED` |  | Threshold warning session queued |
+| `CRITICAL-CLIENT-REQ` |  | Threshold critical client request |
+| `CRITICAL-CACHE-HIT` |  | Threshold critical cache hit |
+| `CRITICAL-CACHE-HITPASS` |  | Threshold critical cache hit pass |
+| `CRITICAL-CACHE-MISS` |  | Threshold critical cache miss |
+| `CRITICAL-BACKEND-CONN` |  | Threshold critical backend connection |
+| `CRITICAL-CLIENT-CONN` |  | Threshold critical client connection |
+| `CRITICAL-BACKEND-RECYCLE` |  |  |
+| `CRITICAL-BACKEND-REQ` |  |  |
+| `CRITICAL-BACKEND-RETRY` |  |  |
+| `CRITICAL-BACKEND-REUSE` |  |  |
+| `CRITICAL-CLIENT-DROP` |  |  |
+| `CRITICAL-CLIENT-DROP-LATE` |  |  |
+| `CRITICAL-CLIENT-REQ-400` |  |  |
+| `CRITICAL-CLIENT-REQ-411` |  |  |
+| `CRITICAL-CLIENT-REQ-413` |  |  |
+| `CRITICAL-CLIENT-REQ-417` |  |  |
+| `CRITICAL-DIR-DNS-CACHE-FULL` |  |  |
+| `CRITICAL-DIR-DNS-FAILED` |  |  |
+| `CRITICAL-DIR-DNS-HIT` |  |  |
+| `CRITICAL-DIR-DNS-LOOKUPS` |  |  |
+| `CRITICAL-ESI-ERRORS` |  |  |
+| `CRITICAL-ESI-WARNINGS` |  |  |
+| `CRITICAL-FETCH-1XX` |  |  |
+| `CRITICAL-FETCH-204` |  |  |
+| `CRITICAL-FETCH-304` |  |  |
+| `CRITICAL-FETCH-BAD` |  |  |
+| `CRITICAL-FETCH-CHUNKED` |  |  |
+| `CRITICAL-FETCH-CLOSE` |  |  |
+| `CRITICAL-FETCH-EOF` |  |  |
+| `CRITICAL-FETCH-FAILED` |  |  |
+| `CRITICAL-FETCH-HEAD` |  |  |
+| `CRITICAL-FETCH-LENGTH` |  |  |
+| `CRITICAL-FETCH-OLDHTTP` |  |  |
+| `CRITICAL-FETCH-ZERO` |  |  |
+| `CRITICAL-HCB-INSERT` |  |  |
+| `CRITICAL-HCB-LOCK` |  |  |
+| `CRITICAL-HCB-NOLOCK` |  |  |
+| `CRITICAL-N-BACKEND` |  |  |
+| `CRITICAL-N-BAN` |  |  |
+| `CRITICAL-N-BAN-ADD` |  |  |
+| `CRITICAL-N-BAN-DUPS` |  |  |
+| `CRITICAL-N-BAN-OBJ-TEST` |  |  |
+| `CRITICAL-N-BAN-RE-TEST` |  |  |
+| `CRITICAL-N-BAN-RETIRE` |  |  |
+| `CRITICAL-N-EXPIRED` |  |  |
+| `CRITICAL-N-LRU-MOVED` |  |  |
+| `CRITICAL-N-LRU-NUKED` |  |  |
+| `CRITICAL-N-OBJECT` |  |  |
+| `CRITICAL-N-OBJECTCORE` |  |  |
+| `CRITICAL-N-OBJECTHEAD` |  |  |
+| `CRITICAL-N-OBJOVERFLOW` |  |  |
+| `CRITICAL-N-OBJSENDFILE` |  |  |
+| `CRITICAL-N-OBJWRITE` |  |  |
+| `CRITICAL-N-SESS` |  |  |
+| `CRITICAL-N-SESS-MEM` |  |  |
+| `CRITICAL-N-VAMPIREOBJECT` |  |  |
+| `CRITICAL-N-VBC` |  |  |
+| `CRITICAL-N-VCL` |  |  |
+| `CRITICAL-N-VCL-AVAIL` |  |  |
+| `CRITICAL-N-VCL-DISCARD` |  |  |
+| `CRITICAL-N-WAITINGLIST` |  |  |
+| `CRITICAL-N-WRK` |  |  |
+| `CRITICAL-N-WRK-CREATE` |  |  |
+| `CRITICAL-N-WRK-DROP` |  |  |
+| `CRITICAL-N-WRK-FAILED` |  |  |
+| `CRITICAL-N-WRK-LQUEUE` |  |  |
+| `CRITICAL-N-WRK-MAX` |  |  |
+| `CRITICAL-N-WRK-QUEUED` |  |  |
+| `CRITICAL-S-FETCH` |  |  |
+| `CRITICAL-S-REQ` |  |  |
+| `CRITICAL-S-SESS` |  |  |
+| `CRITICAL-S0-G-SPACE` |  |  |
+| `CRITICAL-SESS-CLOSED` |  |  |
+| `CRITICAL-SESS-CONN` |  |  |
+| `CRITICAL-SESS-HERD` |  |  |
+| `CRITICAL-SESS-LINGER` |  |  |
+| `CRITICAL-SESS-PIPE-OVERFLOW` |  |  |
+| `CRITICAL-SESS-PIPELINE` |  |  |
+| `CRITICAL-SESS-READAHEAD` |  |  |
+| `CRITICAL-SHM-CONT` |  |  |
+| `CRITICAL-SHM-CYCLES` |  |  |
+| `CRITICAL-SHM-FLUSHES` |  |  |
+| `CRITICAL-SHM-RECORDS` |  |  |
+| `CRITICAL-SHM-WRITES` |  |  |
+| `CRITICAL-SMS-BALLOC` |  |  |
+| `CRITICAL-SMS-BFREE` |  |  |
+| `CRITICAL-SMS-NBYTES` |  |  |
+| `CRITICAL-SMS-NOBJ` |  |  |
+| `CRITICAL-SMS-NREQ` |  |  |
+| `CRITICAL-THREADS` |  |  |
+| `CRITICAL-THREADS-CREATED` |  |  |
+| `CRITICAL-THREADS-DESTROYED` |  |  |
+| `CRITICAL-THREADS-FAILED` |  |  |
+| `CRITICAL-THREADS-LIMITED` |  |  |
+| `CRITICAL-THREADS-QUEUE-LEN` |  |  |
+| `WARNING-BACKEND-RECYCLE` |  |  |
+| `WARNING-BACKEND-REQ` |  |  |
+| `WARNING-BACKEND-RETRY` |  |  |
+| `WARNING-BACKEND-REUSE` |  |  |
+| `WARNING-CLIENT-DROP` |  |  |
+| `WARNING-CLIENT-DROP-LATE` |  |  |
+| `WARNING-CLIENT-REQ-400` |  |  |
+| `WARNING-CLIENT-REQ-411` |  |  |
+| `WARNING-CLIENT-REQ-413` |  |  |
+| `WARNING-CLIENT-REQ-417` |  |  |
+| `WARNING-DIR-DNS-CACHE-FULL` |  |  |
+| `WARNING-DIR-DNS-FAILED` |  |  |
+| `WARNING-DIR-DNS-HIT` |  |  |
+| `WARNING-DIR-DNS-LOOKUPS` |  |  |
+| `WARNING-ESI-ERRORS` |  |  |
+| `WARNING-ESI-WARNINGS` |  |  |
+| `WARNING-FETCH-1XX` |  |  |
+| `WARNING-FETCH-204` |  |  |
+| `WARNING-FETCH-304` |  |  |
+| `WARNING-FETCH-BAD` |  |  |
+| `WARNING-FETCH-CHUNKED` |  |  |
+| `WARNING-FETCH-CLOSE` |  |  |
+| `WARNING-FETCH-EOF` |  |  |
+| `WARNING-FETCH-FAILED` |  |  |
+| `WARNING-FETCH-HEAD` |  |  |
+| `WARNING-FETCH-LENGTH` |  |  |
+| `WARNING-FETCH-OLDHTTP` |  |  |
+| `WARNING-FETCH-ZERO` |  |  |
+| `WARNING-HCB-INSERT` |  |  |
+| `WARNING-HCB-LOCK` |  |  |
+| `WARNING-HCB-NOLOCK` |  |  |
+| `WARNING-N-BACKEND` |  |  |
+| `WARNING-N-BAN` |  |  |
+| `WARNING-N-BAN-ADD` |  |  |
+| `WARNING-N-BAN-DUPS` |  |  |
+| `WARNING-N-BAN-OBJ-TEST` |  |  |
+| `WARNING-N-BAN-RE-TEST` |  |  |
+| `WARNING-N-BAN-RETIRE` |  |  |
+| `WARNING-N-EXPIRED` |  |  |
+| `WARNING-N-LRU-MOVED` |  |  |
+| `WARNING-N-LRU-NUKED` |  |  |
+| `WARNING-N-OBJECT` |  |  |
+| `WARNING-N-OBJECTCORE` |  |  |
+| `WARNING-N-OBJECTHEAD` |  |  |
+| `WARNING-N-OBJOVERFLOW` |  |  |
+| `WARNING-N-OBJSENDFILE` |  |  |
+| `WARNING-N-OBJWRITE` |  |  |
+| `WARNING-N-SESS` |  |  |
+| `WARNING-N-SESS-MEM` |  |  |
+| `WARNING-N-VAMPIREOBJECT` |  |  |
+| `WARNING-N-VBC` |  |  |
+| `WARNING-N-VCL` |  |  |
+| `WARNING-N-VCL-AVAIL` |  |  |
+| `WARNING-N-VCL-DISCARD` |  |  |
+| `WARNING-N-WAITINGLIST` |  |  |
+| `WARNING-N-WRK` |  |  |
+| `WARNING-N-WRK-CREATE` |  |  |
+| `WARNING-N-WRK-DROP` |  |  |
+| `WARNING-N-WRK-FAILED` |  |  |
+| `WARNING-N-WRK-LQUEUE` |  |  |
+| `WARNING-N-WRK-MAX` |  |  |
+| `WARNING-N-WRK-QUEUED` |  |  |
+| `WARNING-S-FETCH` |  |  |
+| `WARNING-S-REQ` |  |  |
+| `WARNING-S-SESS` |  |  |
+| `WARNING-S0-G-SPACE` |  |  |
+| `WARNING-SESS-CLOSED` |  |  |
+| `WARNING-SESS-CONN` |  |  |
+| `WARNING-SESS-HERD` |  |  |
+| `WARNING-SESS-LINGER` |  |  |
+| `WARNING-SESS-PIPE-OVERFLOW` |  |  |
+| `WARNING-SESS-PIPELINE` |  |  |
+| `WARNING-SESS-READAHEAD` |  |  |
+| `WARNING-SHM-CONT` |  |  |
+| `WARNING-SHM-CYCLES` |  |  |
+| `WARNING-SHM-FLUSHES` |  |  |
+| `WARNING-SHM-RECORDS` |  |  |
+| `WARNING-SHM-WRITES` |  |  |
+| `WARNING-SMS-BALLOC` |  |  |
+| `WARNING-SMS-BFREE` |  |  |
+| `WARNING-SMS-NBYTES` |  |  |
+| `WARNING-SMS-NOBJ` |  |  |
+| `WARNING-SMS-NREQ` |  |  |
+| `WARNING-THREADS` |  |  |
+| `WARNING-THREADS-CREATED` |  |  |
+| `WARNING-THREADS-DESTROYED` |  |  |
+| `WARNING-THREADS-FAILED` |  |  |
+| `WARNING-THREADS-LIMITED` |  |  |
+| `WARNING-THREADS-QUEUE-LEN` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240613 - 20240709</summary>
+
+- Plugin pack `Varnish cache`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240613 - 20240709`.

@@ -1,0 +1,326 @@
+---
+title: "Oracle VM Manager"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Oracle.png";
+
+<PluginPackHeader name="Oracle VM Manager" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Oracle VM Manager through its API: the manager and its jobs, server pools, servers, virtual machines and file servers.
+
+The plugin pack provides these checks:
+
+* [Oracle VM File servers](#apps-oracle-ovm-api-file-servers)
+* [Oracle VM Manager](#apps-oracle-ovm-api-manager)
+* [Oracle VM Server Pools](#apps-oracle-ovm-api-server-pools)
+* [Oracle VM Servers](#apps-oracle-ovm-api-servers)
+* [Oracle VM Virtual Maschine](#apps-oracle-ovm-api-vm)
+
+
+## Host Templates
+
+### Oracle-OVM
+
+*Oracle OVM* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `7002` | Port used (default: 7002) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `API-TIMEOUT` | `30` | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Oracle VM File servers](#apps-oracle-ovm-api-file-servers) | `apps-oracle-ovm-api-file-servers` |
+| [Oracle VM Manager](#apps-oracle-ovm-api-manager) | `apps-oracle-ovm-api-manager` |
+| [Oracle VM Server Pools](#apps-oracle-ovm-api-server-pools) | `apps-oracle-ovm-api-server-pools` |
+| [Oracle VM Servers](#apps-oracle-ovm-api-servers) | `apps-oracle-ovm-api-servers` |
+| [Oracle VM Virtual Maschine](#apps-oracle-ovm-api-vm) | `apps-oracle-ovm-api-vm` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle VM File servers {/* #apps-oracle-ovm-api-file-servers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Threshold warning space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Threshold critical space usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^space-usage$' |
+| `FILTER-FILESERVER-NAME` |  | Filter file servers by name (can be a regexp) |
+| `FILTER-FILESYSTEM-NAME` |  | Filter file systems by name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Threshold warning space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold warning space usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Threshold critical space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Threshold critical space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `serverpool.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `serverpool.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `serverpool.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle VM Manager {/* #apps-oracle-ovm-api-manager */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-JOBS-FAILED` | `0` | Threshold warning failed jobs |
+| `CRITICAL-STATUS` | `'%{status} !~ /running/i'` | Set critical threshold for status (Default: '%\{status\} !~ /running/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-JOBS-SUCCEEDED` |  | Threshold warning succeeded jobs |
+| `CRITICAL-JOBS-SUCCEEDED` |  | Threshold critical succeeded jobs |
+| `CRITICAL-JOBS-FAILED` |  | Threshold critical failed jobs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `manager.jobs.succeeded.count` |  | succeeded | `WARNING-JOBS-SUCCEEDED`, `CRITICAL-JOBS-SUCCEEDED` |
+| `manager.jobs.failed.count` |  | failed | `WARNING-JOBS-FAILED`, `CRITICAL-JOBS-FAILED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle VM Server Pools {/* #apps-oracle-ovm-api-server-pools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SERVERS-STOPPED` | `0` | Threshold warning servers stopped |
+| `WARNING-MEMORY-USAGE-PRCT` | `90` | Threshold warning memory usage (%) |
+| `CRITICAL-MEMORY-USAGE-PRCT` | `95` | Threshold critical memory usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^memory-usage$' |
+| `FILTER-SERVER-POOL-NAME` |  | Filter server pools by name (can be a regexp) |
+| `WARNING-SERVERS-RUNNING` |  | Threshold warning servers running |
+| `WARNING-VM-RUNNING` |  | Threshold warning vm running |
+| `WARNING-VM-STOPPED` |  | Threshold warning vm stopped |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning memory usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Threshold warning memory usage free (B) |
+| `CRITICAL-SERVERS-RUNNING` |  | Threshold critical servers running |
+| `CRITICAL-SERVERS-STOPPED` |  | Threshold critical servers stopped |
+| `CRITICAL-VM-RUNNING` |  | Threshold critical vm running |
+| `CRITICAL-VM-STOPPED` |  | Threshold critical vm stopped |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical memory usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Threshold critical memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `serverpool.servers.running.count` |  | running | `WARNING-SERVERS-RUNNING`, `CRITICAL-SERVERS-RUNNING` |
+| `serverpool.servers.stopped.count` |  | stopped | `WARNING-SERVERS-STOPPED`, `CRITICAL-SERVERS-STOPPED` |
+| `serverpool.vm.running.count` |  | running | `WARNING-VM-RUNNING`, `CRITICAL-VM-RUNNING` |
+| `serverpool.vm.stopped.count` |  | stopped | `WARNING-VM-STOPPED`, `CRITICAL-VM-STOPPED` |
+| `serverpool.memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `serverpool.memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `serverpool.memory.usage.percentage` | `%` |  | `WARNING-MEMORY-USAGE-PRCT`, `CRITICAL-MEMORY-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle VM Servers {/* #apps-oracle-ovm-api-servers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SERVERS-STOPPED` | `0` | Threshold warning servers stopped |
+| `WARNING-MEMORY-USAGE-PRCT` | `90` | Threshold warning memory usage (%) |
+| `CRITICAL-MEMORY-USAGE-PRCT` | `95` | Threshold critical memory usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^memory-usage$' |
+| `FILTER-NAME` |  | Filter servers by name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{running_status\}, %\{is_maintenance\}, %\{up2date\}, %\{name\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{running_status\}, %\{is_maintenance\}, %\{up2date\}, %\{name\} |
+| `WARNING-SERVERS-RUNNING` |  | Threshold warning servers running |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning memory usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Threshold warning memory usage free (B) |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{running_status\}, %\{is_maintenance\}, %\{up2date\}, %\{name\} |
+| `CRITICAL-SERVERS-RUNNING` |  | Threshold critical servers running |
+| `CRITICAL-SERVERS-STOPPED` |  | Threshold critical servers stopped |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical  memory usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Threshold critical memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `servers.running.count` |  | running | `WARNING-SERVERS-RUNNING`, `CRITICAL-SERVERS-RUNNING` |
+| `servers.stopped.count` |  | stopped | `WARNING-SERVERS-STOPPED`, `CRITICAL-SERVERS-STOPPED` |
+| `server.memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `server.memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `server.memory.usage.percentage` | `%` |  | `WARNING-MEMORY-USAGE-PRCT`, `CRITICAL-MEMORY-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle VM Virtual Maschine {/* #apps-oracle-ovm-api-vm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-VM-STOPPED` | `0` | Threshold critical vm stopped |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `FILTER-NAME` |  | Filter virtual machines by name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{running_status\}, %\{name\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{running_status\}, %\{name\} |
+| `WARNING-VM-RUNNING` |  | Threshold warning vm running |
+| `WARNING-VM-STOPPED` |  | Threshold warning vm stopped |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{running_status\}, %\{name\} |
+| `CRITICAL-VM-RUNNING` |  | Threshold critical vm running |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `virtualmachines.running.count` |  | running | `WARNING-VM-RUNNING`, `CRITICAL-VM-RUNNING` |
+| `virtualmachines.stopped.count` |  | stopped | `WARNING-VM-STOPPED`, `CRITICAL-VM-STOPPED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Oracle VM Manager`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231031`.

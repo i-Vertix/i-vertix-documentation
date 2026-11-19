@@ -1,0 +1,309 @@
+---
+title: "Oracle Weblogic Application Server"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Oracle.png";
+
+<PluginPackHeader name="Oracle Weblogic Application Server" image={image} category="Application" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Oracle WebLogic application servers through JMX over HTTP: memory, threads, loaded classes and work managers.
+
+The plugin pack provides these checks:
+
+* [Weblogic Class count](#apps-java-weblogic-jmx-class-count)
+* [Weblogic Memory](#apps-java-weblogic-jmx-memory)
+* [Weblogic Memory detailed](#apps-java-weblogic-jmx-memory-detailed)
+* [Weblogic Threads](#apps-java-weblogic-jmx-threads)
+* [Weblogic Work manager](#apps-java-weblogic-jmx-work-manager)
+
+
+## Host Templates
+
+### Oracle-Weblogic
+
+*Oracle Weblogic JMX Jolokia* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `JMX-URL` | `http://localhost:8080/jolokia` | Url where the jolokia agent is deployed (required). Example: http://localhost:8080/jolokia |
+| `JMX-TIMEOUT` | `30` | Timeout in seconds for HTTP requests (default: 30 seconds) |
+| `JMX-USERNAME` |  | Credentials to use for the HTTP request |
+| `JMX-PASSWORD` |  | Credentials to use for the HTTP request |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Weblogic Class count](#apps-java-weblogic-jmx-class-count) | `apps-java-weblogic-jmx-class-count` |
+| [Weblogic Memory](#apps-java-weblogic-jmx-memory) | `apps-java-weblogic-jmx-memory` |
+| [Weblogic Memory detailed](#apps-java-weblogic-jmx-memory-detailed) | `apps-java-weblogic-jmx-memory-detailed` |
+| [Weblogic Threads](#apps-java-weblogic-jmx-threads) | `apps-java-weblogic-jmx-threads` |
+| [Weblogic Work manager](#apps-java-weblogic-jmx-work-manager) | `apps-java-weblogic-jmx-work-manager` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Weblogic Class count {/* #apps-java-weblogic-jmx-class-count */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UNLOADED` |  | Warning threshold unloaded classes |
+| `WARNING-LOADED` |  | Warning threshold loaded classes |
+| `WARNING-CURRENT` |  | Warning threshold current classes |
+| `CRITICAL-UNLOADED` |  | Critical threshold unloaded classes |
+| `CRITICAL-LOADED` |  | Critical threshold loaded classes |
+| `CRITICAL-CURRENT` |  | Critical threshold current classes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `class.loaded.current.count` |  | current | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `class.loaded.count` |  | loaded | `WARNING-LOADED`, `CRITICAL-LOADED` |
+| `class.unloaded.count` |  | unloaded | `WARNING-UNLOADED`, `CRITICAL-UNLOADED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Weblogic Memory {/* #apps-java-weblogic-jmx-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-HEAP` | `80` | Warning threshold heap memory |
+| `WARNING-NONHEAP` | `80` | Warning threshold non heap memory |
+| `CRITICAL-HEAP` | `90` | Critical threshold heap memory |
+| `CRITICAL-NONHEAP` | `90` | Critical threshold non heap memory |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.heap.usage.bytes` | `B` |  | `WARNING-HEAP`, `CRITICAL-HEAP` |
+| `memory.nonheap.usage.bytes` | `B` |  | `WARNING-NONHEAP`, `CRITICAL-NONHEAP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Weblogic Memory detailed {/* #apps-java-weblogic-jmx-memory-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `CRITICAL-EDEN` | `95` | Threshold critical of Heap 'Eden Space' memory usage |
+| `WARNING-EDEN` | `80` | Threshold warning of Heap 'Eden Space' memory usage |
+| `WARNING-SURVIVOR` | `70` | Threshold warning of Heap 'Survivor Space' memory usage |
+| `CRITICAL-SURVIVOR` | `85` | Threshold critical of Heap 'Survivor Space' memory usage |
+| `CRITICAL-TENURED` | `85` | Threshold critical of Heap 'Tenured Generation' memory usage |
+| `WARNING-TENURED` | `70` | Threshold warning of Heap 'Tenured Generation' memory usage |
+| `CRITICAL-PERMANET` | `95` | Threshold critical of NonHeap 'Permanent Generation' memory usage |
+| `WARNING-PERMANET` | `75` | Threshold warning of NonHeap 'Permanent Generation' memory usage |
+| `CRITICAL-CODE` | `90` | Threshold critical of NonHeap 'Code Cache' memory usage |
+| `WARNING-CODE` | `75` | Threshold warning of NonHeap 'Code Cache' memory usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.eden.usage.bytes` | `B` |  | `WARNING-EDEN`, `CRITICAL-EDEN` |
+| `memory.tenured.usage.bytes` | `B` |  | `WARNING-TENURED`, `CRITICAL-TENURED` |
+| `memory.survivor.usage.bytes` | `B` |  | `WARNING-SURVIVOR`, `CRITICAL-SURVIVOR` |
+| `memory.permanent.usage.bytes` | `B` |  | `WARNING-PERMANET`, `CRITICAL-PERMANET` |
+| `memory.code.usage.bytes` | `B` |  | `CRITICAL-CODE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Weblogic Threads {/* #apps-java-weblogic-jmx-threads */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ACTIVE` |  | Warning threshold active threads |
+| `WARNING-STARTED` |  | Warning threshold started threads |
+| `WARNING-DAEMON` |  | Warning threshold daemon threads |
+| `CRITICAL-ACTIVE` |  | Critical threshold active threads |
+| `CRITICAL-STARTED` |  | Critical threshold started threads |
+| `CRITICAL-DAEMON` |  | Critical threshold daemon threads |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `threads.active.count` |  | active | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `threads.started.count` |  | started | `WARNING-STARTED`, `CRITICAL-STARTED` |
+| `threads.daemon.count` |  | daemon | `WARNING-DAEMON`, `CRITICAL-DAEMON` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Weblogic Work manager {/* #apps-java-weblogic-jmx-work-manager */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by name (regexp can be used) |
+| `WARNING-REQUEST-PENDING` | `0` | Warning threshold request pending |
+| `THRESHOLD-OVERLOAD` | `'health,CRITICAL,^(?!(HEALTH_OK)$)'` | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='health,CRITICAL,^(?!(HEALTH_OK)$)' |
+| `WARNING-THREAD-STUCK` | `0` | Warning threshold thread stuck |
+| `FILTER-APPLICATION` |  | Filter by application runtime |
+| `FILTER-RUNTIME` |  | Filter by server runtime |
+| `WARNING-REQUEST-COMPLETED` |  | Warning threshold request completed |
+| `CRITICAL-THREAD-STUCK` |  | Critical threshold thread stuck |
+| `CRITICAL-REQUEST-COMPLETED` |  | Critical threshold request completed |
+| `CRITICAL-REQUEST-PENDING` |  | Critical threshold request |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `request_completed` |  | Requests completed | `WARNING-REQUEST-COMPLETED`, `CRITICAL-REQUEST-COMPLETED` |
+| `request_pending` |  | Requests pending | `WARNING-REQUEST-PENDING`, `CRITICAL-REQUEST-PENDING` |
+| `thread_stuck` |  | Threads stuck | `WARNING-THREAD-STUCK`, `CRITICAL-THREAD-STUCK` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260331</summary>
+
+- Service template [`apps-java-weblogic-jmx-memory-detailed`](#apps-java-weblogic-jmx-memory-detailed)
+    - Macro `CRITICAL-EDEN` added (default `95`)
+    - Macro `WARNING-EDEN` added (default `80`)
+    - Macro `WARNING-SURVIVOR` added (default `70`)
+    - Macro `CRITICAL-SURVIVOR` added (default `85`)
+    - Macro `CRITICAL-TENURED` added (default `85`)
+    - Macro `WARNING-TENURED` added (default `70`)
+    - Macro `CRITICAL-PERMANET` added (default `95`)
+    - Macro `WARNING-PERMANET` added (default `75`)
+    - Macro `CRITICAL-CODE` added (default `90`)
+    - Macro `WARNING-CODE` added (default `75`)
+
+</details>

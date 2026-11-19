@@ -1,0 +1,130 @@
+---
+title: "Dell MD3000"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dell.png";
+
+<PluginPackHeader name="Dell MD3000" image={image} category="Storage" metadata={[]} />
+
+## Description
+
+Monitors Dell MD3000 storage arrays and reports their health status.
+
+The plugin pack provides these checks:
+
+* [Health Status](#storage-dell-md3000-cli-health-status)
+
+
+## Host Templates
+
+### Dell-MD3000
+
+*Dell MD3000* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SMCLI-PATH` | `/opt/dell/mdstoragemanager/client` | Specify smcli path (default: for dell '/opt/dell/mdstoragemanager/client', for ibm '/opt/IBM_DS/client') |
+| `SMCLI-COMMAND` | `SMcli` | Specify navicli command (default: 'SMcli') |
+| `EXTRA-OPTION` | `'-quick -S'` | Set SMcli extras options (Default: '-quick -S') |
+| `PASSWORD` | *(password)* | Password to connect |
+| `HOSTNAME2` |  | Set controller 2 hostname |
+| `TIMEOUT` |  | Set timeout for system command (Default: '30') |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Health Status](#storage-dell-md3000-cli-health-status) | `storage-dell-md3000-cli-health-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health Status {/* #storage-dell-md3000-cli-health-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STORAGE-COMMAND` | `show storageArray healthstatus;` | By default for Dell MD: 'show storageArray healthstatus;' By default for IBM DS: 'show storageSubsystem healthstatus;' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240808 - 20240912</summary>
+
+- Service template [`storage-dell-md3000-cli-health-status`](#storage-dell-md3000-cli-health-status)
+    - Macro `STORAGE-COMMAND`: default changed from `'show storageArray healthstatus;'` to `show storageArray healthstatus;`
+- Command `storage-dell-md3000-cli-health-status`
+    - Option `--hostname` changed from `--hostname=$_HOSTHOSTNAME$` to `--hostname=$HOSTADDRESS$`
+    - Option `--password` changed from `--password=$_HOSTPASSWORD$` to `--password='$_HOSTPASSWORD$'`
+    - Option `--storage-command` changed from `--storage-command=$_SERVICESTORAGE-COMMAND$` to `--storage-command='$_SERVICESTORAGE-COMMAND$'`
+    - Option `--extra-option=$_HOSTEXTRA-OPTION$` removed
+    - Macro `HOSTNAME` removed
+
+</details>

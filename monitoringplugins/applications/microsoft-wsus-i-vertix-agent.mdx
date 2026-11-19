@@ -1,0 +1,292 @@
+---
+title: "Microsoft WSUS (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/Windows.png";
+
+<PluginPackHeader name="Microsoft WSUS (i-Vertix agent)" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Microsoft WSUS servers: connected computers, updates, synchronisation status and server statistics.
+
+The plugin pack provides these checks:
+
+* [WSUS Computers status](#ivertix-agent-apps-microsoft-wsus-local-computers-status)
+* [WSUS Server statistics](#ivertix-agent-apps-microsoft-wsus-local-server-statistics)
+* [WSUS Synchronisation status](#ivertix-agent-apps-microsoft-wsus-local-synchronisation-status)
+* [WSUS Updates status](#ivertix-agent-apps-microsoft-wsus-local-updates-status)
+
+
+## Host Templates
+
+### Microsoft-WSUS-iVertix-agent
+
+*Microsoft WSUS iVertix agent* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `WSUS-PORT` | `8530` |  |
+| `WSUS-SERVER` | `localhost` |  |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+| `NSCLIENT-TIMEOUT` |  | Define the timeout in seconds (default: 5). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [WSUS Computers status](#ivertix-agent-apps-microsoft-wsus-local-computers-status) | `ivertix-agent-apps-microsoft-wsus-local-computers-status` |
+| [WSUS Server statistics](#ivertix-agent-apps-microsoft-wsus-local-server-statistics) | `ivertix-agent-apps-microsoft-wsus-local-server-statistics` |
+| [WSUS Synchronisation status](#ivertix-agent-apps-microsoft-wsus-local-synchronisation-status) | `ivertix-agent-apps-microsoft-wsus-local-synchronisation-status` |
+| [WSUS Updates status](#ivertix-agent-apps-microsoft-wsus-local-updates-status) | `ivertix-agent-apps-microsoft-wsus-local-updates-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### WSUS Computers status {/* #ivertix-agent-apps-microsoft-wsus-local-computers-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-NEEDING-UPDATES` | `0` | Warning threshold computers needing updates |
+| `WARNING-WITH-UPDATE-ERRORS` | `0` | Warning threshold computers with update errors |
+| `WARNING-NOT-CONTACTED` | `0` | Warning threshold computers not contacted |
+| `WARNING-UNASSIGNED` | `0` | Warning threshold computers unassigned |
+| `CRITICAL-WITH-UPDATE-ERRORS` | `25` | Critical threshold computers with update errors |
+| `CRITICAL-NOT-CONTACTED` | `25` | Critical threshold computers not contacted |
+| `CRITICAL-UNASSIGNED` | `25` | Critical threshold computers unassigned |
+| `NOT-UPDATE-SINCE` |  | Time in minutes to count computers not updated since |
+| `WARNING-UP-TO-DATE` |  | Warning threshold computers up to date |
+| `CRITICAL-NEEDING-UPDATES` |  | Critical threshold computers needing updates |
+| `CRITICAL-UP-TO-DATE` |  | Critical threshold computers up to date |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### WSUS Server statistics {/* #ivertix-agent-apps-microsoft-wsus-local-server-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-NOT-APPROVED-UPDATES` | `0` | Threshold warning not approved updates |
+| `CRITICAL-NOT-APPROVED-UPDATES` | `25` | Threshold critical not approved updates |
+| `WARNING-COMPUTERS` |  | Threshold warning computers |
+| `WARNING-COMPUTER-GROUPS` |  | Threshold warning computer groups |
+| `WARNING-UPDATES` |  | Threshold warning updates |
+| `WARNING-APPROVED-UPDATES` |  | Threshold warning approved updates |
+| `WARNING-DECLINED-UPDATES` |  | Threshold warning declined updates |
+| `WARNING-STALE-UPDATES` |  | Threshold warning stale updates |
+| `WARNING-EXPIRED-UPDATES` |  | Threshold warning expired updates |
+| `CRITICAL-COMPUTERS` |  | Threshold critical computers |
+| `CRITICAL-COMPUTER-GROUPS` |  | Threshold critical computer groups |
+| `CRITICAL-UPDATES` |  | Threshold critical updates |
+| `CRITICAL-APPROVED-UPDATES` |  | Threshold critical approved updates |
+| `CRITICAL-DECLINED-UPDATES` |  | Threshold critical declined updates |
+| `CRITICAL-STALE-UPDATES` |  | Threshold critical stale updates |
+| `CRITICAL-EXPIRED-UPDATES` |  | Threshold critical expired updates |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### WSUS Synchronisation status {/* #ivertix-agent-apps-microsoft-wsus-local-synchronisation-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-LAST-SYNCHRONISATION-STATUS` | `%{status} !~ /Succeeded/` | Set critical threshold for current synchronisation status (Default: '%\{status\} !~ /Succeeded/'). Can used special variables like: %\{status\} |
+| `WARNING-SYNCHRONISATION-STATUS` |  | Set warning threshold for current synchronisation status (Default: '') Can used special variables like: %\{status\} |
+| `WARNING-LAST-SYNCHRONISATION-STATUS` |  | Set warning threshold for current synchronisation status (Default: '') Can used special variables like: %\{status\} |
+| `WARNING-LAST-SYNCHRONISATION-DURATION` |  | Threshold warning last synchronisation duration (s) |
+| `WARNING-SYNCHRONISATION-PROGRESS` |  | Threshold warning synchronisation progress (%) |
+| `CRITICAL-SYNCHRONISATION-STATUS` |  | Set critical threshold for current synchronisation status (Default: ''). Can used special variables like: %\{status\} |
+| `CRITICAL-LAST-SYNCHRONISATION-DURATION` |  | Threshold critical last synchronisation duration (s) |
+| `CRITICAL-SYNCHRONISATION-PROGRESS` |  | Threshold critical synchronisation progress (%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### WSUS Updates status {/* #ivertix-agent-apps-microsoft-wsus-local-updates-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-WITH-CLIENT-ERRORS` | `0` | Threshold warning with client errors |
+| `WARNING-WITH-SERVER-ERRORS` | `0` | Threshold warning with server errors |
+| `CRITICAL-WITH-CLIENT-ERRORS` | `25` | Threshold critical with client errors |
+| `CRITICAL-WITH-SERVER-ERRORS` | `25` | Threshold critical with server errors |
+| `WARNING-NEEDING-FILES` |  | Threshold warning needing files |
+| `WARNING-NEEDED-BY-COMPUTERS` |  | Threshold warning needed by computers |
+| `WARNING-UP-TO-DATE` |  | Threshold warning up to date |
+| `CRITICAL-NEEDING-FILES` |  | Threshold critical  needing files |
+| `CRITICAL-NEEDED-BY-COMPUTERS` |  | Threshold critical needed by computers |
+| `CRITICAL-UP-TO-DATE` |  | Threshold critical up to date |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `Microsoft-WSUS-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Command `ivertix-agent-apps-microsoft-wsus-local-computers-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-wsus-local-server-statistics`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-wsus-local-synchronisation-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-wsus-local-updates-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201-hotfix-20250305 - 20250321</summary>
+
+- Host template `Microsoft-WSUS-iVertix-agent`
+    - Macro `WSUS-PORT` added (default `8530`)
+    - Macro `WSUS-SERVER` added (default `localhost`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240909 - 20241028</summary>
+
+- Command `ivertix-agent-apps-microsoft-wsus-local-computers-status`
+    - Option `--arg` changed from `--arg='--not-updated-since=$_SERVICENOT-UPDATE-SINCE$ --warning-needing-updates=$_SERVICEWARNING-NEEDING-UPDATES$ --warning-with-update-errors=$_SERVICEWARNING-WITH-UPDATE-ERRORS$ --warning-up-to-date=$_SERVICEWARNING-UP-TO-DATE$ --warning-not-contacted=$_SERVICEWARNING-NOT-CONTACTED$ --warning-unassigned=$_SERVICEWARNING-UNASSIGNED$ --critical-needing-updates=$_SERVICECRITICAL-NEEDING-UPDATES$ --critical-with-update-errors=$_SERVICECRITICAL-WITH-UPDATE-ERRORS$ --critical-up-to-date=$_SERVICECRITICAL-UP-TO-DATE$ --critical-not-contacted=$_SERVICECRITICAL-NOT-CONTACTED$ --critical-unassigned=$_SERVICECRITICAL-UNASSIGNED$'` to `--arg=' --not-updated-since=$_SERVICENOT-UPDATE-SINCE$ --warning-needing-updates=$_SERVICEWARNING-NEEDING-UPDATES$ --warning-with-update-errors=$_SERVICEWARNING-WITH-UPDATE-ERRORS$ --warning-up-to-date=$_SERVICEWARNING-UP-TO-DATE$ --warning-not-contacted=$_SERVICEWARNING-NOT-CONTACTED$ --warning-unassigned=$_SERVICEWARNING-UNASSIGNED$ --critical-needing-updates=$_SERVICECRITICAL-NEEDING-UPDATES$ --critical-with-update-errors=$_SERVICECRITICAL-WITH-UPDATE-ERRORS$ --critical-up-to-date=$_SERVICECRITICAL-UP-TO-DATE$ --critical-not-contacted=$_SERVICECRITICAL-NOT-CONTACTED$ --critical-unassigned=$_SERVICECRITICAL-UNASSIGNED$ --wsus-server=$_HOSTWSUS-SERVER$ --wsus-port=$_HOSTWSUS-PORT$ $_HOSTWSUS-EXTRA-OPTS$ $_SERVICEWSUS-EXTRA-OPTS$'`
+    - Macro `WSUS-SERVER` added
+- Command `ivertix-agent-apps-microsoft-wsus-local-server-statistics`
+    - Option `--arg` changed from `--arg='--warning-computers=$_SERVICEWARNING-COMPUTERS$ --warning-computer-groups=$_SERVICEWARNING-COMPUTER-GROUPS$ --warning-updates=$_SERVICEWARNING-UPDATES$ --warning-approved-updates=$_SERVICEWARNING-APPROVED-UPDATES$ --warning-declined-updates=$_SERVICEWARNING-DECLINED-UPDATES$ --warning-not-approved-updates=$_SERVICEWARNING-NOT-APPROVED-UPDATES$ --warning-stale-updates=$_SERVICEWARNING-STALE-UPDATES$ --warning-expired-updates=$_SERVICEWARNING-EXPIRED-UPDATES$ --critical-computers=$_SERVICECRITICAL-COMPUTERS$ --critical-computer-groups=$_SERVICECRITICAL-COMPUTER-GROUPS$ --critical-updates=$_SERVICECRITICAL-UPDATES$ --critical-approved-updates=$_SERVICECRITICAL-APPROVED-UPDATES$ --critical-declined-updates=$_SERVICECRITICAL-DECLINED-UPDATES$ --critical-not-approved-updates=$_SERVICECRITICAL-NOT-APPROVED-UPDATES$ --critical-stale-updates=$_SERVICECRITICAL-STALE-UPDATES$ --critical-expired-updates=$_SERVICECRITICAL-EXPIRED-UPDATES$'` to `--arg=' --warning-computers=$_SERVICEWARNING-COMPUTERS$ --warning-computer-groups=$_SERVICEWARNING-COMPUTER-GROUPS$ --warning-updates=$_SERVICEWARNING-UPDATES$ --warning-approved-updates=$_SERVICEWARNING-APPROVED-UPDATES$ --warning-declined-updates=$_SERVICEWARNING-DECLINED-UPDATES$ --warning-not-approved-updates=$_SERVICEWARNING-NOT-APPROVED-UPDATES$ --warning-stale-updates=$_SERVICEWARNING-STALE-UPDATES$ --warning-expired-updates=$_SERVICEWARNING-EXPIRED-UPDATES$ --critical-computers=$_SERVICECRITICAL-COMPUTERS$ --critical-computer-groups=$_SERVICECRITICAL-COMPUTER-GROUPS$ --critical-updates=$_SERVICECRITICAL-UPDATES$ --critical-approved-updates=$_SERVICECRITICAL-APPROVED-UPDATES$ --critical-declined-updates=$_SERVICECRITICAL-DECLINED-UPDATES$ --critical-not-approved-updates=$_SERVICECRITICAL-NOT-APPROVED-UPDATES$ --critical-stale-updates=$_SERVICECRITICAL-STALE-UPDATES$ --critical-expired-updates=$_SERVICECRITICAL-EXPIRED-UPDATES$ --wsus-server=$_HOSTWSUS-SERVER$ --wsus-port=$_HOSTWSUS-PORT$ $_HOSTWSUS-EXTRA-OPTS$ $_SERVICEWSUS-EXTRA-OPTS$'`
+    - Macro `WSUS-SERVER` added
+- Command `ivertix-agent-apps-microsoft-wsus-local-synchronisation-status`
+    - Option `--arg` changed from `--arg='--warning-synchronisation-status="$_SERVICEWARNING-SYNCHRONISATION-STATUS$" --warning-last-synchronisation-status="$_SERVICEWARNING-LAST-SYNCHRONISATION-STATUS$" --warning-last-synchronisation-duration=$_SERVICEWARNING-LAST-SYNCHRONISATION-DURATION$ --warning-synchronisation-progress=$_SERVICEWARNING-SYNCHRONISATION-PROGRESS$ --critical-synchronisation-status="$_SERVICECRITICAL-SYNCHRONISATION-STATUS$" --critical-last-synchronisation-status="$_SERVICECRITICAL-LAST-SYNCHRONISATION-STATUS$" --critical-last-synchronisation-duration=$_SERVICECRITICAL-LAST-SYNCHRONISATION-DURATION$ --critical-synchronisation-progress=$_SERVICECRITICAL-SYNCHRONISATION-PROGRESS$'` to `--arg=' --warning-synchronisation-status="$_SERVICEWARNING-SYNCHRONISATION-STATUS$" --warning-last-synchronisation-status="$_SERVICEWARNING-LAST-SYNCHRONISATION-STATUS$" --warning-last-synchronisation-duration=$_SERVICEWARNING-LAST-SYNCHRONISATION-DURATION$ --warning-synchronisation-progress=$_SERVICEWARNING-SYNCHRONISATION-PROGRESS$ --critical-synchronisation-status="$_SERVICECRITICAL-SYNCHRONISATION-STATUS$" --critical-last-synchronisation-status="$_SERVICECRITICAL-LAST-SYNCHRONISATION-STATUS$" --critical-last-synchronisation-duration=$_SERVICECRITICAL-LAST-SYNCHRONISATION-DURATION$ --critical-synchronisation-progress=$_SERVICECRITICAL-SYNCHRONISATION-PROGRESS$ --wsus-server=$_HOSTWSUS-SERVER$ --wsus-port=$_HOSTWSUS-PORT$ $_HOSTWSUS-EXTRA-OPTS$ $_SERVICEWSUS-EXTRA-OPTS$'`
+    - Macro `WSUS-SERVER` added
+    - Macro `FILTER-COUNTERS` removed
+- Command `ivertix-agent-apps-microsoft-wsus-local-updates-status`
+    - Option `--arg` changed from `--arg='--warning-with-client-errors=$_SERVICEWARNING-WITH-CLIENT-ERRORS$ --warning-with-server-errors=$_SERVICEWARNING-WITH-SERVER-ERRORS$ --warning-needing-files=$_SERVICEWARNING-NEEDING-FILES$ --warning-needed-by-computers=$_SERVICEWARNING-NEEDED-BY-COMPUTERS$ --warning-up-to-date=$_SERVICEWARNING-UP-TO-DATE$ --critical-with-client-errors=$_SERVICECRITICAL-WITH-CLIENT-ERRORS$ --critical-with-server-errors=$_SERVICECRITICAL-WITH-SERVER-ERRORS$ --critical-needing-files=$_SERVICECRITICAL-NEEDING-FILES$ --critical-needed-by-computers=$_SERVICECRITICAL-NEEDED-BY-COMPUTERS$ --critical-up-to-date=$_SERVICECRITICAL-UP-TO-DATE$'` to `--arg=' --warning-with-client-errors=$_SERVICEWARNING-WITH-CLIENT-ERRORS$ --warning-with-server-errors=$_SERVICEWARNING-WITH-SERVER-ERRORS$ --warning-needing-files=$_SERVICEWARNING-NEEDING-FILES$ --warning-needed-by-computers=$_SERVICEWARNING-NEEDED-BY-COMPUTERS$ --warning-up-to-date=$_SERVICEWARNING-UP-TO-DATE$ --critical-with-client-errors=$_SERVICECRITICAL-WITH-CLIENT-ERRORS$ --critical-with-server-errors=$_SERVICECRITICAL-WITH-SERVER-ERRORS$ --critical-needing-files=$_SERVICECRITICAL-NEEDING-FILES$ --critical-needed-by-computers=$_SERVICECRITICAL-NEEDED-BY-COMPUTERS$ --critical-up-to-date=$_SERVICECRITICAL-UP-TO-DATE$ --wsus-server=$_HOSTWSUS-SERVER$ --wsus-port=$_HOSTWSUS-PORT$ $_HOSTWSUS-EXTRA-OPTS$ $_SERVICEWSUS-EXTRA-OPTS$'`
+    - Macro `WSUS-SERVER` added
+    - Macro `FILTER-COUNTERS` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`ivertix-agent-apps-microsoft-wsus-local-computers-status`](#ivertix-agent-apps-microsoft-wsus-local-computers-status)
+    - Alias changed from `Computers status` to `WSUS Computers status`
+- Service template [`ivertix-agent-apps-microsoft-wsus-local-server-statistics`](#ivertix-agent-apps-microsoft-wsus-local-server-statistics)
+    - Alias changed from `Server statistics` to `WSUS Server statistics`
+- Service template [`ivertix-agent-apps-microsoft-wsus-local-synchronisation-status`](#ivertix-agent-apps-microsoft-wsus-local-synchronisation-status)
+    - Alias changed from `Synchronisation status` to `WSUS Synchronisation status`
+- Service template [`ivertix-agent-apps-microsoft-wsus-local-updates-status`](#ivertix-agent-apps-microsoft-wsus-local-updates-status)
+    - Alias changed from `Updates status` to `WSUS Updates status`
+
+</details>

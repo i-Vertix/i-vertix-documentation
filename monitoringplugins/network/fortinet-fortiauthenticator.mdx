@@ -1,0 +1,499 @@
+---
+title: "Fortinet FortiAuthenticator"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Fortinet.png";
+
+<PluginPackHeader name="Fortinet FortiAuthenticator" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Fortinet FortiAuthenticator through SNMP: users, groups, RADIUS clients and authentication events, tokens, high availability, CPU, memory and log disk usage, and uptime.
+
+The plugin pack provides these checks:
+
+* [Authenticator](#network-fortinet-fortiauthenticator-snmp-authenticator)
+* [CPU](#network-fortinet-fortiauthenticator-snmp-cpu)
+* [Disk-log](#network-fortinet-fortiauthenticator-snmp-disk-log)
+* [High Availability](#network-fortinet-fortiauthenticator-snmp-ha)
+* [Memory](#network-fortinet-fortiauthenticator-snmp-memory)
+* [Tokens](#network-fortinet-fortiauthenticator-restapi-fortitoken)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| `network-fortinet-fortiauthenticator-snmp-interfaces` | `Interfaces - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Fortinet-Fortiauthenticator
+
+*Fortinet Fortiauthenticator* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Authenticator](#network-fortinet-fortiauthenticator-snmp-authenticator) | `network-fortinet-fortiauthenticator-snmp-authenticator` |
+| [CPU](#network-fortinet-fortiauthenticator-snmp-cpu) | `network-fortinet-fortiauthenticator-snmp-cpu` |
+| [Disk-log](#network-fortinet-fortiauthenticator-snmp-disk-log) | `network-fortinet-fortiauthenticator-snmp-disk-log` |
+| [Memory](#network-fortinet-fortiauthenticator-snmp-memory) | `network-fortinet-fortiauthenticator-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [High Availability](#network-fortinet-fortiauthenticator-snmp-ha) | `network-fortinet-fortiauthenticator-snmp-ha` |
+| [Tokens](#network-fortinet-fortiauthenticator-restapi-fortitoken) | `network-fortinet-fortiauthenticator-restapi-fortitoken` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Fortinet-Fortiauthenticator-API
+
+*Fortinet Fortiauthenticator* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-TOKEN` | *(password)* | API token. |
+| `PORT` |  | Port used (default: 443) |
+| `API-USERNAME` |  | API username. |
+| `TIMEOUT` |  | Set timeout in seconds (default: 50). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Tokens](#network-fortinet-fortiauthenticator-restapi-fortitoken) | `network-fortinet-fortiauthenticator-restapi-fortitoken` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Authenticator](#network-fortinet-fortiauthenticator-snmp-authenticator) | `network-fortinet-fortiauthenticator-snmp-authenticator` |
+| [CPU](#network-fortinet-fortiauthenticator-snmp-cpu) | `network-fortinet-fortiauthenticator-snmp-cpu` |
+| [Disk-log](#network-fortinet-fortiauthenticator-snmp-disk-log) | `network-fortinet-fortiauthenticator-snmp-disk-log` |
+| [High Availability](#network-fortinet-fortiauthenticator-snmp-ha) | `network-fortinet-fortiauthenticator-snmp-ha` |
+| [Memory](#network-fortinet-fortiauthenticator-snmp-memory) | `network-fortinet-fortiauthenticator-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Fortinet-Fortiauthenticator-HA
+
+*Fortinet Fortiauthenticator HA* · Parent template: `Fortinet-Fortiauthenticator`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [High Availability](#network-fortinet-fortiauthenticator-snmp-ha) | `network-fortinet-fortiauthenticator-snmp-ha` |
+| [Authenticator](#network-fortinet-fortiauthenticator-snmp-authenticator) (inherited from `Fortinet-Fortiauthenticator`) | `network-fortinet-fortiauthenticator-snmp-authenticator` |
+| [CPU](#network-fortinet-fortiauthenticator-snmp-cpu) (inherited from `Fortinet-Fortiauthenticator`) | `network-fortinet-fortiauthenticator-snmp-cpu` |
+| [Disk-log](#network-fortinet-fortiauthenticator-snmp-disk-log) (inherited from `Fortinet-Fortiauthenticator`) | `network-fortinet-fortiauthenticator-snmp-disk-log` |
+| [Memory](#network-fortinet-fortiauthenticator-snmp-memory) (inherited from `Fortinet-Fortiauthenticator`) | `network-fortinet-fortiauthenticator-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `Fortinet-Fortiauthenticator`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Tokens](#network-fortinet-fortiauthenticator-restapi-fortitoken) | `network-fortinet-fortiauthenticator-restapi-fortitoken` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Authenticator {/* #network-fortinet-fortiauthenticator-snmp-authenticator */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RADIUS-NAS-USAGE-PRCT` | `90` | Threshold warning radius nas usage (%) |
+| `WARNING-GROUPS-USAGE-PRCT` | `90` | Threshold warning groups usage (%) |
+| `WARNING-USERS-USAGE-PRCT` | `90` | Threshold warning users usage (%) |
+| `WARNING-AUTHENTICATION-FAILURES` | `0` | Threshold warning authentication failures |
+| `CRITICAL-RADIUS-NAS-USAGE-PRCT` | `95` | Threshold critical radius nas usage (%) |
+| `CRITICAL-GROUPS-USAGE-PRCT` | `95` | Threshold critical groups usage (%) |
+| `CRITICAL-USERS-USAGE-PRCT` | `95` | Threshold critical users usage (%) |
+| `CRITICAL-AUTHENTICATION-FAILURES` | `10` | Threshold critical authentication failures |
+| `WARNING-RADIUS-NAS-USAGE` |  | Threshold warning radius nas usage |
+| `WARNING-GROUPS-USAGE` |  | Threshold warning groups usage |
+| `WARNING-USERS-USAGE` |  | Threshold warning users usage |
+| `WARNING-AUTHENTICATION-EVENTS` |  | Threshold warning authentication events |
+| `CRITICAL-RADIUS-NAS-USAGE` |  | Threshold critical radius nas usage |
+| `CRITICAL-GROUPS-USAGE` |  | Threshold critical groups usage |
+| `CRITICAL-USERS-USAGE` |  | Threshold critical users usage |
+| `CRITICAL-AUTHENTICATION-EVENTS` |  | Threshold critical authentication events |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `authenticator.users.count` |  |  | `WARNING-USERS-USAGE`, `CRITICAL-USERS-USAGE` |
+| `authenticator.users.percentage` | `%` |  | `WARNING-USERS-USAGE-PRCT`, `CRITICAL-USERS-USAGE-PRCT` |
+| `authenticator.groups.count` |  |  | `WARNING-GROUPS-USAGE`, `CRITICAL-GROUPS-USAGE` |
+| `authenticator.groups.percentage` | `%` |  | `WARNING-GROUPS-USAGE-PRCT`, `CRITICAL-GROUPS-USAGE-PRCT` |
+| `authenticator.radius.nas.count` |  |  | `WARNING-RADIUS-NAS-USAGE`, `CRITICAL-RADIUS-NAS-USAGE` |
+| `authenticator.radius.nas.percentage` | `%` |  | `WARNING-RADIUS-NAS-USAGE-PRCT`, `CRITICAL-RADIUS-NAS-USAGE-PRCT` |
+| `authenticator.authentication.events.persecond` | `/s` | events: /s | `WARNING-AUTHENTICATION-EVENTS`, `CRITICAL-AUTHENTICATION-EVENTS` |
+| `authenticator.authentication.failures.persecond` | `/s` | failures: /s | `WARNING-AUTHENTICATION-FAILURES`, `CRITICAL-AUTHENTICATION-FAILURES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-fortinet-fortiauthenticator-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION` | `80` | Threshold warning in percent |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | Cpu usage is: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk-log {/* #network-fortinet-fortiauthenticator-snmp-disk-log */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `80` | Threshold warning in percent |
+| `CRITICAL-SPACE-USAGE-PRCT` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.log.space.usage.percentage` | `%` | Log disk space used:  %% | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-fortinet-fortiauthenticator-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.percentage` | `%` | Memory used:  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Tokens {/* #network-fortinet-fortiauthenticator-restapi-fortitoken */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ASSIGNED-PRCT` | `80` | Warning threshold Tokens assigned (%) |
+| `WARNING-AVAILABLE-PRCT` | `20:` | Warning threshold Tokens available (%) |
+| `WARNING-PENDING-PRCT` | `5` | Warning threshold Tokens pending (%) |
+| `CRITICAL-ASSIGNED-PRCT` | `90` | Critical threshold Tokens assigned (%) |
+| `CRITICAL-AVAILABLE-PRCT` | `10:` | Critical threshold Tokens available (%) |
+| `CRITICAL-PENDING-PRCT` | `10` | Critical threshold Tokens pending (%) |
+| `INCLUDE-TYPE` |  | Filter by token type (can be a regexp). Value can be "ftk" or "ftm" |
+| `EXCLUDE-TYPE` |  | Exclude by token type (can be a regexp). Value can be "ftk" or "ftm" |
+| `WARNING-ASSIGNED` |  | Warning threshold Tokens assigned |
+| `WARNING-AVAILABLE` |  | Warning threshold Tokens available |
+| `WARNING-PENDING` |  | Warning threshold Tokens pending |
+| `WARNING-TOTAL` |  | Warning threshold Tokens total |
+| `CRITICAL-ASSIGNED` |  | Critical threshold Tokens assigned |
+| `CRITICAL-AVAILABLE` |  | Critical threshold Tokens available |
+| `CRITICAL-PENDING` |  | Critical threshold Tokens pending |
+| `CRITICAL-TOTAL` |  | Critical threshold Tokens total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tokens.total.count` |  |  | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `tokens.assigned.count` |  |  | `WARNING-ASSIGNED`, `CRITICAL-ASSIGNED` |
+| `tokens.pending.count` |  |  | `WARNING-PENDING`, `CRITICAL-PENDING` |
+| `tokens.available.count` |  |  | `WARNING-AVAILABLE`, `CRITICAL-AVAILABLE` |
+| `tokens.assigned.percentage` | `%` |  | `WARNING-ASSIGNED-PRCT`, `CRITICAL-ASSIGNED-PRCT` |
+| `tokens.pending.percentage` | `%` |  | `WARNING-PENDING-PRCT`, `CRITICAL-PENDING-PRCT` |
+| `tokens.available.percentage` | `%` |  | `WARNING-AVAILABLE-PRCT`, `CRITICAL-AVAILABLE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### High Availability {/* #network-fortinet-fortiauthenticator-snmp-ha */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{ha_status\}, %\{ha_status_last\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{ha_status\} ne %\{ha_status_last\}'). Can used special variables like: %\{ha_status\}, %\{ha_status_last\} |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260400 - 20260424</summary>
+
+- Plugin pack `Fortinet FortiAuthenticator`
+    - Description updated
+- Host template `Fortinet-Fortiauthenticator-API`
+    - Host template added
+- Service template [`network-fortinet-fortiauthenticator-restapi-fortitoken`](#network-fortinet-fortiauthenticator-restapi-fortitoken)
+    - Service template added
+- Command `network-fortinet-fortiauthenticator-restapi-fortitoken`
+    - Command added
+
+</details>

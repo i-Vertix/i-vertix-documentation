@@ -1,0 +1,133 @@
+---
+title: "BGP - Border Gateway Protocol"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/BGP.png";
+
+<PluginPackHeader name="BGP - Border Gateway Protocol" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors BGP peers through SNMP: the state of the peering sessions of a router, based on the standard BGP MIB.
+
+The plugin pack provides these checks:
+
+* [BGP Peer state](#apps-protocols-bgp-4-bgppeerstate)
+
+
+## Host Templates
+
+### BGP-protocol
+
+*BGP - Border Gateway Protocol* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [BGP Peer state](#apps-protocols-bgp-4-bgppeerstate) | `apps-protocols-bgp-4-bgppeerstate` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### BGP Peer state {/* #apps-protocols-bgp-4-bgppeerstate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPDATES` | `30` | Warning threshold on last update (seconds) |
+| `CRITICAL-STATUS` | `'%{adminstate} =~ /start/ && %{peerstate} !~ /established/'` | Specify admin and peer state that trigger a critical. Can use special variables like %\{adminstate\}, %\{peerstate\}, %\{local\}, %\{remote\}, %\{as\}, %\{display\} (Default: '%\{adminstate\} =~ /start/ && %\{peerstate\} !~ /established/') |
+| `CRITICAL-UPDATES` | `60` | Critical threshold on last update (seconds) |
+| `FILTER-AS` |  | Filter based on AS number (regexp allowed) |
+| `FILTER-PEER` |  | Filter based on IP of peers (regexp allowed) |
+| `WARNING-STATUS` |  | Specify admin and peer state that trigger a warning. Can use special variables like %\{adminstate\}, %\{peerstate\}, %\{local\}, %\{remote\}, %\{as\}, %\{display\} (Default: '') |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `bgppeer.update.seconds` | `s` | Last update : s | `WARNING-UPDATES`, `CRITICAL-UPDATES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

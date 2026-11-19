@@ -1,0 +1,350 @@
+---
+title: "Docker (Rest API)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Docker.png";
+
+<PluginPackHeader name="Docker (Rest API)" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+Monitors Docker through the Docker REST API: CPU, memory, disk I/O and network usage of containers, the container states of a node and the tasks and replicas of Swarm services.
+
+The plugin pack provides these checks:
+
+* [Docker Container usage](#cloud-docker-restapi-container-usage)
+* [Docker Node status](#cloud-docker-restapi-node-status)
+* [Docker Service status](#cloud-docker-restapi-service-status)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Docker Container usage](#cloud-docker-restapi-container-usage) | `Container usage - <name>` |
+| [Docker Service status](#cloud-docker-restapi-service-status) | `Docker Service status - <path>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Docker-RestAPI
+
+*Docker Container (Rest API)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DOCKER-PORT` | `8080` | Port used (default: 8080). |
+| `DOCKER-PROTO` | `http` | Specify https if needed (default: 'http'). |
+| `DOCKER-TIMEOUT` | `10` | Threshold for HTTP timeout (default: 10). |
+| `DOCKER-HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `DOCKER-PASSWORD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `DOCKER-USERNAME` |  | Specify the username for authentication (mandatory if --credentials is specified). |
+| `DOCKER-EXTRA-OPTS` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Docker Container usage](#cloud-docker-restapi-container-usage) | `cloud-docker-restapi-container-usage` |
+| [Docker Node status](#cloud-docker-restapi-node-status) | `cloud-docker-restapi-node-status` |
+| [Docker Service status](#cloud-docker-restapi-service-status) | `cloud-docker-restapi-service-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Docker Container usage {/* #cloud-docker-restapi-container-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by container name (can be a regexp) |
+| `WARNING-CPU` | `80` | Warning threshold CPU (%) |
+| `WARNING-MEMORY` | `80` | Warning threshold memory (%) |
+| `CRITICAL-CPU` | `90` | Critical threshold CPU (%) |
+| `CRITICAL-MEMORY` | `90` | Critical threshold memory (%) |
+| `WARNING-CONTAINER-STATUS` |  | Set warning threshold for status (Default: -) Can used special variables like: %\{name\}, %\{state\} |
+| `CRITICAL-CONTAINER-STATUS` |  | Set critical threshold for status (Default: -). Can used special variables like: %\{name\}, %\{state\} |
+| `WARNING-READ-IOPS` |  | Warning threshold Read IOPS |
+| `WARNING-WRITE-IOPS` |  | Warning threshold Write IOPS |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold Traffic In |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold Traffic Out |
+| `CRITICAL-READ-IOPS` |  | Critical threshold Read IOPS |
+| `CRITICAL-WRITE-IOPS` |  | Critical threshold Write IOPS |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold Traffic In |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical  threshold Traffic Out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `container.cpu.utilization.percentage` | `%` | cpu usage:  %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `container.memory.usage.bytes` | `B` |  | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+| `container.disk.io.read.usage.iops` | `iops` | read IOPs | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `container.disk.io.write.usage.iops` | `iops` | write IOPs | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `container.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `container.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Docker Node status {/* #cloud-docker-restapi-node-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-NODE-STATUS` | `'%{status} !~ /ready/ \|\| %{manager_status} !~ /reachable\|-/'` | Set critical threshold for status (Default: '%\{status\} !~ /ready/ \|\| %\{manager_status\} !~ /reachable\|-/'). Can used special variables like: %\{display\}, %\{status\}, %\{manager_status\} |
+| `WARNING-NODE-STATUS` |  | Set warning threshold for status (Default: -) Can used special variables like: %\{display\}, %\{status\}, %\{manager_status\} |
+| `WARNING-CONTAINERS-RUNNING` |  | Warning threshold Containers running |
+| `WARNING-CONTAINERS-PAUSED` |  | Warning threshold Containers paused |
+| `WARNING-CONTAINERS-STOPPED` |  | Warning threshold Containers stopped |
+| `CRITICAL-CONTAINERS-RUNNING` |  | Critical threshold Containers running |
+| `CRITICAL-CONTAINERS-PAUSED` |  | Critical threshold Containers paused |
+| `CRITICAL-CONTAINERS-STOPPED` |  | Critical threshold Containers stopped |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.containers.running.count` |  | Containers Running | `WARNING-CONTAINERS-RUNNING`, `CRITICAL-CONTAINERS-RUNNING` |
+| `node.containers.stopped.count` |  | Containers Stopped | `WARNING-CONTAINERS-STOPPED`, `CRITICAL-CONTAINERS-STOPPED` |
+| `node.containers.paused.count` |  | Containers Paused | `WARNING-CONTAINERS-PAUSED`, `CRITICAL-CONTAINERS-PAUSED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Docker Service status {/* #cloud-docker-restapi-service-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SERVICE-NAME` |  | Filter service by service name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{desired_state} ne %{state} and %{state} !~ /complete\|preparing\|assigned/'` | Set critical threshold for status (Default: '%\{desired_state\} ne %\{state\} and %\{state\} !~ /complete\|preparing\|assigned/'). Can used special variables like: %\{service_id\}, %\{task_id\}, %\{service_name\}, %\{node_name\}, %\{node_id\}, %\{desired_state\}, %\{state_message\}, %\{container_id\} |
+| `RESTART-WINDOW` | `300` | Time window, in seconds, used to calculate the task restart rate (default: 300) |
+| `CRITICAL-SERVICE-STATUS` | `'%{running} != %{replicas}'` | Define the conditions to match for the status to be CRITICAL (default: '%\{running\} != %\{replicas\}'). You can use the following variables: %\{service_id\}, %\{service_name\}, %\{total\}, %\{replicas\}, %\{problems\}, %\{running\}, %\{shutdown\}, %\{failed\} |
+| `CRITICAL-TASKS-TOTAL` |  | Critical threshold Tasks total |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{service_id\}, %\{service_name\}, %\{task_id\}, %\{node_name\}, %\{node_id\}, %\{desired_state\}, %\{state\}, %\{state_message\}, %\{container_id\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{service_id\}, %\{service_name\}, %\{task_id\}, %\{node_name\}, %\{node_id\}, %\{desired_state\}, %\{state\}, %\{state_message\}, %\{container_id\} |
+| `WARNING-TASKS-TOTAL` |  | Warning threshold Tasks total |
+| `CRITICAL-SERVICE-REPLICAS` |  | Critical threshold for Desired replicas |
+| `CRITICAL-SERVICE-TASKS-FAILED` |  | Critical threshold for Failed |
+| `CRITICAL-SERVICE-TASKS-PROBLEMS` |  | Critical threshold for Problems |
+| `CRITICAL-SERVICE-TASKS-RESTART-COUNT` |  | Critical threshold for Restart count |
+| `CRITICAL-SERVICE-TASKS-RESTART-RATE` |  | Critical threshold for Restart rate |
+| `CRITICAL-SERVICE-TASKS-RUNNING` |  | Critical threshold for Running |
+| `CRITICAL-SERVICE-TASKS-SHUTDOWN` |  | Critical threshold for Shutdown |
+| `CRITICAL-TASKS-PROBLEMS-TOTAL` |  | Critical threshold for Total tasks problems |
+| `UNKNOWN-SERVICE-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{service_id\}, %\{service_name\}, %\{total\}, %\{replicas\}, %\{problems\}, %\{running\}, %\{shutdown\}, %\{failed\} |
+| `WARNING-SERVICE-REPLICAS` |  | Warning threshold for Desired replicas |
+| `WARNING-SERVICE-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{service_id\}, %\{service_name\}, %\{total\}, %\{replicas\}, %\{problems\}, %\{running\}, %\{shutdown\}, %\{failed\} |
+| `WARNING-SERVICE-TASKS-FAILED` |  | Warning threshold for Failed |
+| `WARNING-SERVICE-TASKS-PROBLEMS` |  | Warning threshold for Problems |
+| `WARNING-SERVICE-TASKS-RESTART-COUNT` |  | Warning threshold for Restart count |
+| `WARNING-SERVICE-TASKS-RESTART-RATE` |  | Warning threshold for Restart rate |
+| `WARNING-SERVICE-TASKS-RUNNING` |  | Warning threshold for Running |
+| `WARNING-SERVICE-TASKS-SHUTDOWN` |  | Warning threshold for Shutdown |
+| `WARNING-TASKS-PROBLEMS-TOTAL` |  | Warning threshold for Total tasks problems |
+| `CRITICAL-SERVICE-TASKS-COUNT` |  | Critical threshold for Total tasks |
+| `WARNING-SERVICE-TASKS-COUNT` |  | Warning threshold for Total tasks |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `services.tasks.total.count` |  | Total services tasks | `WARNING-TASKS-TOTAL`, `CRITICAL-TASKS-TOTAL` |
+| `services.tasks.problems.count` |  | Total tasks problems | `WARNING-TASKS-PROBLEMS-TOTAL`, `CRITICAL-TASKS-PROBLEMS-TOTAL` |
+| `service.tasks.problems.count` |  | Problems | `WARNING-SERVICE-TASKS-PROBLEMS`, `CRITICAL-SERVICE-TASKS-PROBLEMS` |
+| `service.replica.count` |  | Desired replicas | `WARNING-SERVICE-REPLICAS`, `CRITICAL-SERVICE-REPLICAS` |
+| `service.tasks.count` |  | Total tasks | `WARNING-SERVICE-TASKS-COUNT`, `CRITICAL-SERVICE-TASKS-COUNT` |
+| `service.tasks.running.count` |  | Running | `WARNING-SERVICE-TASKS-RUNNING`, `CRITICAL-SERVICE-TASKS-RUNNING` |
+| `service.tasks.shutdown.count` |  | Shutdown | `WARNING-SERVICE-TASKS-SHUTDOWN`, `CRITICAL-SERVICE-TASKS-SHUTDOWN` |
+| `service.tasks.failed.count` |  | Failed | `WARNING-SERVICE-TASKS-FAILED`, `CRITICAL-SERVICE-TASKS-FAILED` |
+| `service.tasks.restart.count` |  | Restart count | `WARNING-SERVICE-TASKS-RESTART-COUNT`, `CRITICAL-SERVICE-TASKS-RESTART-COUNT` |
+| `service.tasks.restart.rate` |  | Restart rate | `WARNING-SERVICE-TASKS-RESTART-RATE`, `CRITICAL-SERVICE-TASKS-RESTART-RATE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800 - 20260827</summary>
+
+- Plugin pack `Docker (Rest API)`
+    - Description updated
+- Service template [`cloud-docker-restapi-service-status`](#cloud-docker-restapi-service-status)
+    - Macro `FILTER-SERVICE-NAME`: default changed from `.*` to *(empty)*
+    - Macro `RESTART-WINDOW` added (default `300`)
+    - Macro `CRITICAL-SERVICE-STATUS` added (default `'%{running} != %{replicas}'`)
+- Command `cloud-docker-restapi-service-status`
+    - Option `--unknown-task-status=$_SERVICEUNKNOWN-STATUS$` added
+    - Option `--warning-task-status=$_SERVICEWARNING-STATUS$` added
+    - Option `--critical-task-status=$_SERVICECRITICAL-STATUS$` added
+    - Option `--restart-window=$_SERVICERESTART-WINDOW$` added
+    - Option `--unknown-service-status=$_SERVICEUNKNOWN-SERVICE-STATUS$` added
+    - Option `--warning-service-status=$_SERVICEWARNING-SERVICE-STATUS$` added
+    - Option `--critical-service-status=$_SERVICECRITICAL-SERVICE-STATUS$` added
+    - Option `--warning-service-replicas=$_SERVICEWARNING-SERVICE-REPLICAS$` added
+    - Option `--warning-service-tasks-failed=$_SERVICEWARNING-SERVICE-TASKS-FAILED$` added
+    - Option `--warning-service-tasks-problems=$_SERVICEWARNING-SERVICE-TASKS-PROBLEMS$` added
+    - Option `--warning-service-tasks-restart-count=$_SERVICEWARNING-SERVICE-TASKS-RESTART-COUNT$` added
+    - Option `--warning-service-tasks-restart-rate=$_SERVICEWARNING-SERVICE-TASKS-RESTART-RATE$` added
+    - Option `--warning-service-tasks-running=$_SERVICEWARNING-SERVICE-TASKS-RUNNING$` added
+    - Option `--warning-service-tasks-shutdown=$_SERVICEWARNING-SERVICE-TASKS-SHUTDOWN$` added
+    - Option `--warning-tasks-problems-total=$_SERVICEWARNING-TASKS-PROBLEMS-TOTAL$` added
+    - Option `--critical-service-replicas=$_SERVICECRITICAL-SERVICE-REPLICAS$` added
+    - Option `--critical-service-tasks-failed=$_SERVICECRITICAL-SERVICE-TASKS-FAILED$` added
+    - Option `--critical-service-tasks-problems=$_SERVICECRITICAL-SERVICE-TASKS-PROBLEMS$` added
+    - Option `--critical-service-tasks-restart-count=$_SERVICECRITICAL-SERVICE-TASKS-RESTART-COUNT$` added
+    - Option `--critical-service-tasks-restart-rate=$_SERVICECRITICAL-SERVICE-TASKS-RESTART-RATE$` added
+    - Option `--critical-service-tasks-running=$_SERVICECRITICAL-SERVICE-TASKS-RUNNING$` added
+    - Option `--critical-service-tasks-shutdown=$_SERVICECRITICAL-SERVICE-TASKS-SHUTDOWN$` added
+    - Option `--critical-tasks-problems-total=$_SERVICECRITICAL-TASKS-PROBLEMS-TOTAL$` added
+    - Option `--warning-service-tasks-count=$_SERVICEWARNING-SERVICE-TASKS-COUNT$` added
+    - Option `--critical-service-tasks-count=$_SERVICECRITICAL-SERVICE-TASKS-COUNT$` added
+    - Option `--unknown-status=$_SERVICEUNKNOWN-STATUS$` removed
+    - Option `--warning-status=$_SERVICEWARNING-STATUS$` removed
+    - Option `--critical-status=$_SERVICECRITICAL-STATUS$` removed
+    - Macro `CRITICAL-SERVICE-REPLICAS` added
+    - Macro `CRITICAL-SERVICE-STATUS` added
+    - Macro `CRITICAL-SERVICE-TASKS-FAILED` added
+    - Macro `CRITICAL-SERVICE-TASKS-PROBLEMS` added
+    - Macro `CRITICAL-SERVICE-TASKS-RESTART-COUNT` added
+    - Macro `CRITICAL-SERVICE-TASKS-RESTART-RATE` added
+    - Macro `CRITICAL-SERVICE-TASKS-RUNNING` added
+    - Macro `CRITICAL-SERVICE-TASKS-SHUTDOWN` added
+    - Macro `CRITICAL-TASKS-PROBLEMS-TOTAL` added
+    - Macro `RESTART-WINDOW` added
+    - Macro `UNKNOWN-SERVICE-STATUS` added
+    - Macro `WARNING-SERVICE-REPLICAS` added
+    - Macro `WARNING-SERVICE-STATUS` added
+    - Macro `WARNING-SERVICE-TASKS-FAILED` added
+    - Macro `WARNING-SERVICE-TASKS-PROBLEMS` added
+    - Macro `WARNING-SERVICE-TASKS-RESTART-COUNT` added
+    - Macro `WARNING-SERVICE-TASKS-RESTART-RATE` added
+    - Macro `WARNING-SERVICE-TASKS-RUNNING` added
+    - Macro `WARNING-SERVICE-TASKS-SHUTDOWN` added
+    - Macro `WARNING-TASKS-PROBLEMS-TOTAL` added
+    - Macro `CRITICAL-SERVICE-TASKS-COUNT` added
+    - Macro `WARNING-SERVICE-TASKS-COUNT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251010</summary>
+
+- Command `cloud-docker-restapi-container-usage`
+    - Option `--container-id` changed from `--container-id` to `--container-id=$_SERVICECONTAINER-ID$`
+    - Option `--add-health` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231122</summary>
+
+- Plugin pack `Docker (Rest API)`
+    - Renamed from `Docker`
+    - Description updated
+- Host template `Docker-RestAPI`
+    - Renamed from `Docker`
+    - Alias changed from `Docker Container` to `Docker Container (Rest API)`
+    - Parent templates changed from *(empty)* to `generic-host`
+
+</details>

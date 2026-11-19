@@ -1,0 +1,217 @@
+---
+title: "Slack"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Slack.png";
+
+<PluginPackHeader name="Slack" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Slack workspaces through the Slack API: number of channels and channel members, number of members and the status of the Slack services.
+
+The plugin pack provides these checks:
+
+* [Channels count](#apps-slack-restapi-count-channels)
+* [Members count](#apps-slack-restapi-count-members)
+* [Serivces](#apps-slack-restapi-services)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Serivces](#apps-slack-restapi-services) | `Service <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Slack
+
+*Slack* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-PATH` | `/api` | Slack API url path (default: '/api'). |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-TOKEN` | *(password)* | Slack API token of app. |
+| `PORT` |  | Slack API port |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Channels count](#apps-slack-restapi-count-channels) | `apps-slack-restapi-count-channels` |
+| [Members count](#apps-slack-restapi-count-members) | `apps-slack-restapi-count-members` |
+| [Serivces](#apps-slack-restapi-services) | `apps-slack-restapi-services` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Channels count {/* #apps-slack-restapi-count-channels */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-COUNT` |  | Threshold warning channels count |
+| `WARNING-MEMBERS` |  | Threshold warning members per channel |
+| `CRITICAL-COUNT` |  | Threshold critical channels count |
+| `CRITICAL-MEMBERS` |  | Threshold critical members per channel |
+| `FILTER-CHANNEL` |  | Filter channels by channel name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `channels.total.count` |  | Number of channels | `WARNING-COUNT`, `CRITICAL-COUNT` |
+| `channel.members.count` |  | members | `WARNING-MEMBERS`, `CRITICAL-MEMBERS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Members count {/* #apps-slack-restapi-count-members */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-COUNT` |  | Threshold warning members count |
+| `CRITICAL-COUNT` |  | Threshold critical members count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `members.total.count` |  | Number of members | `WARNING-COUNT`, `CRITICAL-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Serivces {/* #apps-slack-restapi-services */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} eq "active" and %{type} eq "incident"'` | Set warning threshold for the service status (default: '%\{status\} eq "active" and %\{type\} eq "incident"') |
+| `CRITICAL-STATUS` | `'%{status} eq "active" and %{type} eq "outage"'` | Set warning threshold for the service status (default: '%\{status\} eq "active" and %\{type\} eq "outage"') |
+| `FILTER-NAME` |  | Only display the status for a specific servie (example: --filter-service='connections') |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `slack.services.count` |  | Slack services |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `Slack`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231215 - 20240130`.

@@ -1,0 +1,696 @@
+---
+title: "i-Vertix Standard SNMP"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/i-Vertix-red.png";
+
+<PluginPackHeader name="i-Vertix Standard SNMP" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors any SNMP-capable device through the standard MIBs: CPU, memory, swap and load, disks, storage and inodes, interfaces, ARP, processes, TCP and UDP connections, NTP and uptime.
+
+The plugin pack provides these checks:
+
+* [ARP](#ivertix-standard-snmp-arp)
+* [CPU](#ivertix-standard-snmp-cpu)
+* [CPU detailed](#ivertix-standard-snmp-cpu-detailed)
+* [Disk IO](#ivertix-standard-snmp-diskio)
+* [Disk usage](#ivertix-standard-snmp-disk-usage)
+* [Hardware](#ivertix-standard-snmp-hardware)
+* [Inodes usage](#ivertix-standard-snmp-inodes)
+* [Interfaces](#ivertix-standard-snmp-interfaces)
+* [Memory](#ivertix-standard-snmp-memory)
+* [NTP](#ivertix-standard-snmp-time)
+* [Process count](#ivertix-standard-snmp-processcount)
+* [Storage](#ivertix-standard-snmp-storage)
+* [Swap](#ivertix-standard-snmp-swap)
+* [System Load](#ivertix-standard-snmp-load)
+* [TCP connections](#ivertix-standard-snmp-tcpcon)
+* [UDP connections](#ivertix-standard-snmp-udpcon)
+* [Uptime](#ivertix-standard-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Disk IO](#ivertix-standard-snmp-diskio) | `Disk IO - <name>` |
+| [Inodes usage](#ivertix-standard-snmp-inodes) | `Inodes <name>` |
+| [Interfaces](#ivertix-standard-snmp-interfaces) | `Interface - <name>` |
+| [Process count](#ivertix-standard-snmp-processcount) | `Process memory <name>` |
+| [Storage](#ivertix-standard-snmp-storage) | `Storage <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### i-Vertix-standard-SNMP
+
+*i-Vertix standard SNMP* · Parent template: `i-Vertix-standard-SNMP-minimal`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPUSERNAME` |  |  |
+| `SNMPTIMEOUT` |  |  |
+| `SNMPAUTH-PASSPHRASE` |  |  |
+| `SNMPAUTH-PROTOCOL` |  |  |
+| `SNMPPRIV-PASSPHRASE` |  |  |
+| `SNMPPRIV-PROTOCOL` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#ivertix-standard-snmp-cpu) | `ivertix-standard-snmp-cpu` |
+| [System Load](#ivertix-standard-snmp-load) | `ivertix-standard-snmp-load` |
+| [Memory](#ivertix-standard-snmp-memory) | `ivertix-standard-snmp-memory` |
+| [Swap](#ivertix-standard-snmp-swap) | `ivertix-standard-snmp-swap` |
+| [NTP](#ivertix-standard-snmp-time) | `ivertix-standard-snmp-time` |
+| [Uptime](#ivertix-standard-snmp-uptime) (inherited from `i-Vertix-standard-SNMP-minimal`) | `ivertix-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ARP](#ivertix-standard-snmp-arp) | `ivertix-standard-snmp-arp` |
+| [CPU detailed](#ivertix-standard-snmp-cpu-detailed) | `ivertix-standard-snmp-cpu-detailed` |
+| [Disk IO](#ivertix-standard-snmp-diskio) | `ivertix-standard-snmp-diskio` |
+| [Disk usage](#ivertix-standard-snmp-disk-usage) | `ivertix-standard-snmp-disk-usage` |
+| [Hardware](#ivertix-standard-snmp-hardware) | `ivertix-standard-snmp-hardware` |
+| [Inodes usage](#ivertix-standard-snmp-inodes) | `ivertix-standard-snmp-inodes` |
+| [Interfaces](#ivertix-standard-snmp-interfaces) | `ivertix-standard-snmp-interfaces` |
+| [Process count](#ivertix-standard-snmp-processcount) | `ivertix-standard-snmp-processcount` |
+| [Storage](#ivertix-standard-snmp-storage) | `ivertix-standard-snmp-storage` |
+| [TCP connections](#ivertix-standard-snmp-tcpcon) | `ivertix-standard-snmp-tcpcon` |
+| [UDP connections](#ivertix-standard-snmp-udpcon) | `ivertix-standard-snmp-udpcon` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### i-Vertix-standard-SNMP-network-device
+
+*i-Vertix standard SNMP network device* · Parent template: `i-Vertix-standard-SNMP`, `i-Vertix-standard-SNMP-minimal`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPUSERNAME` |  |  |
+| `SNMPTIMEOUT` |  |  |
+| `SNMPAUTH-PASSPHRASE` |  |  |
+| `SNMPAUTH-PROTOCOL` |  |  |
+| `SNMPPRIV-PASSPHRASE` |  |  |
+| `SNMPPRIV-PROTOCOL` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hardware](#ivertix-standard-snmp-hardware) | `ivertix-standard-snmp-hardware` |
+| [TCP connections](#ivertix-standard-snmp-tcpcon) | `ivertix-standard-snmp-tcpcon` |
+| [UDP connections](#ivertix-standard-snmp-udpcon) | `ivertix-standard-snmp-udpcon` |
+| [CPU](#ivertix-standard-snmp-cpu) (inherited from `i-Vertix-standard-SNMP`) | `ivertix-standard-snmp-cpu` |
+| [System Load](#ivertix-standard-snmp-load) (inherited from `i-Vertix-standard-SNMP`) | `ivertix-standard-snmp-load` |
+| [Memory](#ivertix-standard-snmp-memory) (inherited from `i-Vertix-standard-SNMP`) | `ivertix-standard-snmp-memory` |
+| [Swap](#ivertix-standard-snmp-swap) (inherited from `i-Vertix-standard-SNMP`) | `ivertix-standard-snmp-swap` |
+| [NTP](#ivertix-standard-snmp-time) (inherited from `i-Vertix-standard-SNMP`) | `ivertix-standard-snmp-time` |
+| [Uptime](#ivertix-standard-snmp-uptime) (inherited from `i-Vertix-standard-SNMP-minimal`) | `ivertix-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ARP](#ivertix-standard-snmp-arp) | `ivertix-standard-snmp-arp` |
+| [CPU detailed](#ivertix-standard-snmp-cpu-detailed) | `ivertix-standard-snmp-cpu-detailed` |
+| [Disk IO](#ivertix-standard-snmp-diskio) | `ivertix-standard-snmp-diskio` |
+| [Disk usage](#ivertix-standard-snmp-disk-usage) | `ivertix-standard-snmp-disk-usage` |
+| [Inodes usage](#ivertix-standard-snmp-inodes) | `ivertix-standard-snmp-inodes` |
+| [Interfaces](#ivertix-standard-snmp-interfaces) | `ivertix-standard-snmp-interfaces` |
+| [Process count](#ivertix-standard-snmp-processcount) | `ivertix-standard-snmp-processcount` |
+| [Storage](#ivertix-standard-snmp-storage) | `ivertix-standard-snmp-storage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #ivertix-standard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-AVERAGE` |  | Warning threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-AVERAGE` |  | Critical threshold average CPU utilization |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Load {/* #ivertix-standard-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+| `AVERAGE` | `--average` |  |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #ivertix-standard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+| `WARNING-SWAP` |  | Threshold warning swap (B) |
+| `WARNING-SWAP-FREE` |  | Threshold warning swap free (B) |
+| `WARNING-SWAP-PRCT` |  | Threshold warning swap (%) |
+| `CRITICAL-SWAP` |  | Threshold critical swap (B) |
+| `CRITICAL-SWAP-FREE` |  | Threshold critical swap free (B) |
+| `CRITICAL-SWAP-PRCT` |  | Threshold critical swap (%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #ivertix-standard-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `25` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #ivertix-standard-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #ivertix-standard-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #ivertix-standard-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  |  |
+| `FILTER` |  |  |
+| `THRESHOLD-OVERLOAD` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP connections {/* #ivertix-standard-snmp-tcpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### UDP connections {/* #ivertix-standard-snmp-udpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ARP {/* #ivertix-standard-snmp-arp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DUPLICATE-IPADDR` | `0` | Warning threshold duplicate IP addresses |
+| `CRITICAL-DUPLICATE-IPADDR` | `10` | Critical threshold duplicate IP addresses |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-TOTAL-ENTRIES` |  | Warning threshold total entries |
+| `WARNING-DUPLICATE-MACADDR` |  | Warning threshold duplicate MAC addresses |
+| `CRITICAL-TOTAL-ENTRIES` |  | Critical threshold total entries |
+| `CRITICAL-DUPLICATE-MACADDR` |  | Critical threshold duplicate MAC addresses |
+| `FILTER-MACADDR` |  | Filter mac addresses (can be a regexp) |
+| `FILTER-IPADDR` |  | Filter ip addresses (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #ivertix-standard-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk usage {/* #ivertix-standard-snmp-disk-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-DISK-PATH` |  | Filter disks according to their path |
+| `FILTER-DISK-DEVICE` |  | Filter disks according to their device name |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-INODES` |  | Threshold warning inodes |
+| `WARNING-COUNT` |  | Threshold warning count |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-INODES` |  | Threshold critical inodes |
+| `CRITICAL-COUNT` |  | Threshold critical count |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk IO {/* #ivertix-standard-snmp-diskio */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DEVICE` | `.*` | Set the device name ex: sda, sda1, sdb (empty means 'check all devices') - you can use regex |
+| `WARNING-READ` | `500MB` | Warning threshold reads (bytes per second) |
+| `WARNING-WRITE` | `500MB` | Warning threshold writes (bytes per second) |
+| `WARNING-READ-IOPS` | `2500` | Warning threshold read IOPs |
+| `WARNING-WRITE-IOPS` | `2500` | Warning threshold write IOPs |
+| `CRITICAL-READ` | `2000MB` | Critical threshold reads (bytes per second) |
+| `CRITICAL-WRITE` | `2000MB` | Critical threshold writes(bytes per second) |
+| `CRITICAL-READ-IOPS` | `10000` | Critical threshold read IOPs |
+| `CRITICAL-WRITE-IOPS` | `10000` | Critical threshold write IOPs |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Inodes usage {/* #ivertix-standard-snmp-inodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DISCPATH` | `^((?!^\/run\|^\/sys\|^\/dev\|.*overlay-containers.*\|.*docker\/containers\/.*\/shm\|xc-install).)*$` | Set the disk path name (empty means 'check all disks path') - can be a regexp |
+| `WARNING` | `80` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #ivertix-standard-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `OID-FILTER` | `ifName` | Choose OID used to filter interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `5` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `5` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `5` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `5` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `MAP-SPEED-DSL` |  | Get interface speed configuration for interface type 'adsl' and 'vdsl2' Syntax: --map-speed-dsl=interface-src-name,interface-dsl-name |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process count {/* #ivertix-standard-snmp-processcount */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `1:` | Threshold critical of matching processes count |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `PROCESS` |  | Process name - can be a regexp |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #ivertix-standard-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STORAGE` | `.*` | Set the storage (number expected) ex: 1, 2,... (empty means  'check all storage') - can be a regexp |
+| `WARNING-USAGE` | `85` | Threshold warning |
+| `CRITICAL-USAGE` | `90` | Threshold critical |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical. Check if storage is readOnly: --critical-access=@2:2 |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `SPACE-RESERVATION` | `0` | Some filesystem has space reserved (like ext4 for root). The value is in percent of total (Default: none) (results like 'df' command) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-ACCESS` |  | Threshold warning |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260600 - 20260708</summary>
+
+- Plugin pack `i-Vertix Standard SNMP`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260600 - 20260708`.

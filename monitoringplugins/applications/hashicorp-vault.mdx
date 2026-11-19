@@ -1,0 +1,185 @@
+---
+title: "Hashicorp Vault"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Hashicorp.png";
+
+<PluginPackHeader name="Hashicorp Vault" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors HashiCorp Vault through its API: the health status and the performance of the Raft storage.
+
+The plugin pack provides these checks:
+
+* [Health status](#apps-hashicorp-vault-restapi-health)
+* [Raft storage](#apps-hashicorp-vault-restapi-raft-storage)
+
+
+## Host Templates
+
+### Hashicorp-Vault
+
+*Hashicorp Vault* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-VERSION` | `v1` | Specify the Vault API version (default: 'v1') |
+| `PORT` | `8200` | Port used (default: 8200) |
+| `PROTOCOL` | `http` | Specify https if needed (default: 'http') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `AUTH-METHOD` |  | Specify the Vault authentication method (default: 'token'). Can be: 'azure', 'cert', 'github', 'ldap', 'okta', 'radius', 'userpass', 'token' If different from 'token' the "--auth-settings" options must be set. |
+| `AUTH-SETTINGS` |  | Specify the Vault authentication specific settings. Syntax: --auth-settings='&lt;setting>=&lt;value>'.Example for the 'userpass' method: --auth-method='userpass' --auth-settings='username=my_account' --auth-settings='password=my_password' |
+| `AUTH-PATH` |  | Authentication path for 'userpass'. Is an optional setting. More information here: https://developer.hashicorp.com/vault/docs/auth/userpass#configuration |
+| `VAULT-TOKEN` |  | Specify the Vault access token (only for the 'token' authentication method) |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Health status](#apps-hashicorp-vault-restapi-health) | `apps-hashicorp-vault-restapi-health` |
+| [Raft storage](#apps-hashicorp-vault-restapi-raft-storage) | `apps-hashicorp-vault-restapi-raft-storage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health status {/* #apps-hashicorp-vault-restapi-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-SEAL-STATUS` | `'%{sealed} ne "unsealed"'` | Set critical threshold for seal status (default: '%\{sealed\} ne "unsealed"' |
+| `CRITICAL-INIT-STATUS` | `'%{init} ne "initialized"'` | Set critical threshold for initialization status (default: '%\{init\} ne "initialized"') |
+| `WARNING-SEAL-STATUS` |  | Set warning threshold for seal status (default: none) |
+| `WARNING-INIT-STATUS` |  | Set warning threshold for initialization status (default: none) |
+| `CRITICAL-STANDBY-STATUS` |  | Set critical threshold for standby status (default: none) |
+| `WARNING-STANDBY-STATUS` |  | Set warning threshold for standby status (default: none) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Raft storage {/* #apps-hashicorp-vault-restapi-raft-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-COMMIT-TIME` |  | Warning threshold Time required to commit a new entry to the raft log on the leader node (ms) |
+| `WARNING-SPILL-TIME` |  | Warning threshold Total time spent spilling by the Bolt database (ms) |
+| `WARNING-REBALANCE-TIME` |  | Warning threshold Time required by the Bolt database to rebalance nodes (ms) |
+| `WARNING-WRITE-TIME` |  | Warning threshold Total cumulative time the Bolt database has spent writing to disk (ms) |
+| `CRITICAL-COMMIT-TIME` |  | Critical threshold Time required to commit a new entry to the raft log on the leader node (ms) |
+| `CRITICAL-SPILL-TIME` |  | Critical threshold Total time spent spilling by the Bolt database (ms) |
+| `CRITICAL-REBALANCE-TIME` |  | Critical threshold Time required by the Bolt database to rebalance nodes (ms) |
+| `CRITICAL-WRITE-TIME` |  | Critical threshold Total cumulative time the Bolt database has spent writing to disk (ms) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vault.raftstorage.spilltime.seconds` | `ms` | spill time: ms | `WARNING-SPILL-TIME`, `CRITICAL-SPILL-TIME` |
+| `vault.raftstorage.rebalance_time.seconds` | `ms` | rebalance time: ms | `WARNING-REBALANCE-TIME`, `CRITICAL-REBALANCE-TIME` |
+| `vault.raftstorage.write_time.seconds` | `ms` | write time: ms | `WARNING-WRITE-TIME`, `CRITICAL-WRITE-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250800 - 20250915</summary>
+
+- Command `apps-hashicorp-vault-restapi-health`
+    - Option `--warning-standby-status=$_SERVICEWARNING-STANDBY-STATUS$` added
+    - Option `--critical-standby-status=$_SERVICECRITICAL-STANDBY-STATUS$` added
+    - Macro `CRITICAL-STANDBY-STATUS` added
+    - Macro `WARNING-STANDBY-STATUS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240808 - 20240912</summary>
+
+- Plugin pack `Hashicorp Vault`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240808 - 20240912`.

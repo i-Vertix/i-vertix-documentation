@@ -1,0 +1,505 @@
+---
+title: "Stormshield Firewall (Rest API)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Stormshield.png";
+
+<PluginPackHeader name="Stormshield Firewall (Rest API)" image={image} category="Network" metadata={["API"]} />
+
+## Description
+
+Monitors Stormshield firewalls through the REST API: CPU and memory usage, hardware, HA status, interfaces, VPN tunnels and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-stormshield-api-cpu)
+* [HA status](#network-stormshield-api-ha)
+* [Hardware](#network-stormshield-api-hardware)
+* [Interfaces](#network-stormshield-api-interfaces)
+* [Memory](#network-stormshield-api-memory)
+* [Uptime](#network-stormshield-api-uptime)
+* [VPN tunnels](#network-stormshield-api-vpn-tunnels)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-stormshield-api-interfaces) | `Interface - <name>` |
+| [VPN tunnels](#network-stormshield-api-vpn-tunnels) | `VPN tunnel - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Stormshield-FW-API
+
+*Stormshield Firewall (API)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` |  | Port used (default: 443) |
+| `PROTO` |  | Specify https if needed (default: 'https') |
+| `API-USERNAME` |  | API username. |
+| `API-PASSWORD` |  | API password. |
+| `TIMEOUT` |  | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-stormshield-api-cpu) | `network-stormshield-api-cpu` |
+| [Hardware](#network-stormshield-api-hardware) | `network-stormshield-api-hardware` |
+| [Memory](#network-stormshield-api-memory) | `network-stormshield-api-memory` |
+| [Uptime](#network-stormshield-api-uptime) | `network-stormshield-api-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-stormshield-api-ha) | `network-stormshield-api-ha` |
+| [Interfaces](#network-stormshield-api-interfaces) | `network-stormshield-api-interfaces` |
+| [VPN tunnels](#network-stormshield-api-vpn-tunnels) | `network-stormshield-api-vpn-tunnels` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Stormshield-FW-HA-API
+
+*Stormshield Firewall Cluster (API)* · Parent template: `Stormshield-FW-API`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` |  | Port used (default: 443) |
+| `PROTO` |  | Specify https if needed (default: 'https') |
+| `API-USERNAME` |  | API username. |
+| `API-PASSWORD` |  | API password. |
+| `TIMEOUT` |  | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-stormshield-api-ha) | `network-stormshield-api-ha` |
+| [CPU](#network-stormshield-api-cpu) (inherited from `Stormshield-FW-API`) | `network-stormshield-api-cpu` |
+| [Hardware](#network-stormshield-api-hardware) (inherited from `Stormshield-FW-API`) | `network-stormshield-api-hardware` |
+| [Memory](#network-stormshield-api-memory) (inherited from `Stormshield-FW-API`) | `network-stormshield-api-memory` |
+| [Uptime](#network-stormshield-api-uptime) (inherited from `Stormshield-FW-API`) | `network-stormshield-api-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-stormshield-api-interfaces) | `network-stormshield-api-interfaces` |
+| [VPN tunnels](#network-stormshield-api-vpn-tunnels) | `network-stormshield-api-vpn-tunnels` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-stormshield-api-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERGARE` | `80` | Warning threshold for CPU average |
+| `CRITICAL-AVERGARE` | `90` | Critical threshold for CPU average |
+| `WARNING-CORE` |  | Warning threshold for CPU core |
+| `CRITICAL-CORE` |  | Critical threshold for CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | CPU(s) average usage is:  %% | `WARNING-AVERGARE`, `CRITICAL-AVERGARE` |
+| `core.cpu.utilization.percentage` | `%` | usage:  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-stormshield-api-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'disk', 'fan', 'psu', 'temperature' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan) Can also exclude specific instance: --filter=fan,1 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='disk,WARNING,missing' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-stormshield-api-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-HOST` | `80` | Threshold warning memory Host |
+| `CRITICAL-HOST` | `90` | Threshold warning memory Host |
+| `WARNING-FRAG` |  | Threshold warning memory Frag |
+| `WARNING-CONN` |  | Threshold warning memory Conn |
+| `WARNING-ICMP` |  | Threshold warning memory ICMP |
+| `WARNING-DTRACK` |  | Threshold warning memory DTrack |
+| `WARNING-DYN` |  | Threshold warning memory DYN |
+| `WARNING-ETHERSTATE` |  | Threshold warning memory Etherstate |
+| `CRITICAL-FRAG` |  | Threshold warning memory Frag |
+| `CRITICAL-CONN` |  | Threshold warning memory Conn |
+| `CRITICAL-ICMP` |  | Threshold warning memory ICMP |
+| `CRITICAL-DTRACK` |  | Threshold warning memory DTrack |
+| `CRITICAL-DYN` |  | Threshold warning memory DYN |
+| `CRITICAL-ETHERSTATE` |  | Threshold warning memory Etherstate |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.protected_host.percentage` | `%` | protected host:  %% | `WARNING-HOST`, `CRITICAL-HOST` |
+| `memory.fragmented.percentage` | `%` | fragmented:  %% | `WARNING-FRAG`, `CRITICAL-FRAG` |
+| `memory.connections.percentage` | `%` | connections:  %% | `WARNING-CONN`, `CRITICAL-CONN` |
+| `memory.icmp.percentage` | `%` | icmp:  %% | `WARNING-ICMP`, `CRITICAL-ICMP` |
+| `memory.data_tracking.percentage` | `%` | data tracking:  %% | `WARNING-DTRACK`, `CRITICAL-DTRACK` |
+| `memory.dynamic.percentage` | `%` | dynamic:  %% | `WARNING-DYN`, `CRITICAL-DYN` |
+| `memory.ether_state.percentage` | `%` | ether state:  %% | `WARNING-ETHERSTATE`, `CRITICAL-ETHERSTATE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-stormshield-api-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Warning threshold uptime |
+| `CRITICAL-UPTIME` | `900:` | Critical threshold uptime |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA status {/* #network-stormshield-api-ha */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-MEMBER-LINK-STATE` | `'%{linkStatus} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{linkStatus\} =~ /unknown/i'). You can use the following variables: %\{linkStatus\}, %\{name\} |
+| `CRITICAL-MEMBER-LINK-STATE` | `'%{linkStatus} =~ /failed\|failing/i'` | Set critical threshold for status (Default: '%\{linkStatus\} =~ /failed\|failing/i'). You can use the following variables: %\{linkStatus\}, %\{name\} |
+| `WARNING-MEMBER-CONFIG` | `'%{isConfigSync} eq "no"'` | Set warning threshold for status (Default: '%\{isConfigSync\} eq "no"'). You can use the following variables: %\{isConfigSync\}, %\{name\} |
+| `WARNING-MEMBERS-STARTING` | `0` | Warning threshold number of Members starting |
+| `WARNING-MEMBERS-WAITING` | `0` | Warning threshold number of Members waiting |
+| `WARNING-MEMBERS-REBOOT` | `0` | Warning threshold number of Members reboot |
+| `WARNING-MEMBERS-INITIALIZING` | `0` | Warning threshold number of Members initializing |
+| `CRITICAL-MEMBERS-DOWN` | `0` | Critical threshold number of Members down |
+| `UNKNOWN-MEMBER-STATE` |  | Set unknown threshold for status. You can use the following variables: %\{state\}, %\{name\} |
+| `WARNING-MEMBER-STATE` |  | Set warning threshold for status. You can use the following variables: %\{state\}, %\{name\} |
+| `CRITICAL-MEMBER-STATE` |  | Set critical threshold for status. You can use the following variables: %\{state\}, %\{name\} |
+| `WARNING-MEMBER-LINK-STATE` |  | Set warning threshold for status. You can use the following variables: %\{linkStatus\}, %\{name\} |
+| `UNKNOWN-MEMBER-CONFIG` |  | Set unknown threshold for status. You can use the following variables: %\{isConfigSync\}, %\{name\} |
+| `CRITICAL-MEMBER-CONFIG` |  | Set critical threshold for status. You can use the following variables: %\{isConfigSync\}, %\{name\} |
+| `WARNING-MEMBER-QUALITY` |  | Warning threshold Member quality |
+| `WARNING-MEMBERS-DETECTED` |  | Warning threshold number of Members detected |
+| `WARNING-MEMBERS-NONE` |  | Warning threshold number of Members none |
+| `WARNING-MEMBERS-RUNNING` |  | Warning threshold number of Members running |
+| `WARNING-MEMBERS-READY` |  | Warning threshold number of Members ready |
+| `WARNING-MEMBERS-DOWN` |  | Warning threshold number of Members down |
+| `CRITICAL-MEMBER-QUALITY` |  | Critical threshold Member quality |
+| `CRITICAL-MEMBERS-DETECTED` |  | Critical threshold number of Members detected |
+| `CRITICAL-MEMBERS-NONE` |  | Critical threshold number of Members none |
+| `CRITICAL-MEMBERS-STARTING` |  | Critical threshold number of Members starting |
+| `CRITICAL-MEMBERS-WAITING` |  | Critical threshold number of Members waiting |
+| `CRITICAL-MEMBERS-RUNNING` |  | Critical threshold number of Members running |
+| `CRITICAL-MEMBERS-READY` |  | Critical threshold number of Members ready |
+| `CRITICAL-MEMBERS-REBOOT` |  | Critical threshold number of Members reboot |
+| `CRITICAL-MEMBERS-INITIALIZING` |  | Critical threshold number of Members initializing |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `members.detected.count` |  | members detected | `WARNING-MEMBERS-DETECTED`, `CRITICAL-MEMBERS-DETECTED` |
+| `member.quality.percentage` | `%` | quality: %% | `WARNING-MEMBER-QUALITY`, `CRITICAL-MEMBER-QUALITY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-stormshield-api-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for the traffic (Default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `WARNING-TRAFFIC-IN` | `80` | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Warning threshold traffic out |
+| `CRITICAL-TRAFFIC-IN` | `90` | Critcal threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Critcal threshold traffic out |
+| `SPEED` |  | Set interface speed (in Mb) |
+| `FILTER-REAL-NAME` |  | Filter interfaces by real name (regexp can be used) |
+| `FILTER-USER-NAME` |  | Filter interfaces by user name (regexp can be used) |
+| `WARNING-PACKETS-ACCEPTED` |  | Warning threshold packets accepted |
+| `WARNING-PACKETS-BLOCKED` |  | Warning threshold packets blocked |
+| `CRITICAL-PACKETS-ACCEPTED` |  | Critcal threshold packets accepted |
+| `CRITICAL-PACKETS-BLOCKED` |  | Critcal threshold packets blocked |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.accepted.count` |  |  | `WARNING-PACKETS-ACCEPTED`, `CRITICAL-PACKETS-ACCEPTED` |
+| `interface.packets.blocked.count` |  |  | `WARNING-PACKETS-BLOCKED`, `CRITICAL-PACKETS-BLOCKED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VPN tunnels {/* #network-stormshield-api-vpn-tunnels */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{ikeStatus} =~ /connecting/'` | Define the conditions to match for the status to be WARNING (default: '%\{ikeStatus\} =~ /connecting/'). You can use the following variables: %\{ikeStatus\}, %\{name\} |
+| `CRITICAL-TUNNELS-TOTAL` | `1:` | Critical thresholds total tunnels |
+| `FILTER-NAME` |  | Filter name (can be a regexp) |
+| `CRITICAL-STATUS` |  | Define the conditions to match for the status to be CRITICAL. You can use the following variables: %\{ikeStatus\}, %\{name\} |
+| `WARNING-TUNNELS-TOTAL` |  | Warning thresholds total tunnels |
+| `WARNING-TUNNEL-TRAFFIC-IN` |  | Warning thresholds tunnels traffic in |
+| `WARNING-TUNNEL-TRAFFIC-OUT` |  | Warning thresholds tunnels traffic out |
+| `WARNING-TUNNEL-PACKETS-IN` |  | Warning thresholds tunnels packets in |
+| `WARNING-TUNNEL-PACKETS-OUT` |  | Warning thresholds tunnels packets out |
+| `CRITICAL-TUNNEL-TRAFFIC-IN` |  | Critical thresholds tunnels traffic in |
+| `CRITICAL-TUNNEL-TRAFFIC-OUT` |  | Critical thresholds tunnels traffic out |
+| `CRITICAL-TUNNEL-PACKETS-IN` |  | Critical thresholds tunnels packets in |
+| `CRITICAL-TUNNEL-PACKETS-OUT` |  | Critical thresholds tunnels packets out |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{ikeStatus\}, %\{name\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vpn.tunnels.total.count` |  | Total VPN tunnels | `WARNING-TUNNELS-TOTAL`, `CRITICAL-TUNNELS-TOTAL` |
+| `vpn.tunnel.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TUNNEL-TRAFFIC-IN`, `CRITICAL-TUNNEL-TRAFFIC-IN` |
+| `vpn.tunnel.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TUNNEL-TRAFFIC-OUT`, `CRITICAL-TUNNEL-TRAFFIC-OUT` |
+| `vpn.tunnel.packets.in.count` |  |  | `WARNING-TUNNEL-PACKETS-IN`, `CRITICAL-TUNNEL-PACKETS-IN` |
+| `vpn.tunnel.packets.out.count` |  |  | `WARNING-TUNNEL-PACKETS-OUT`, `CRITICAL-TUNNEL-PACKETS-OUT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Command `network-stormshield-api-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `network-stormshield-api-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250501 - 20250622</summary>
+
+- Plugin pack `Stormshield Firewall (Rest API)`
+    - Description updated
+- Service template [`network-stormshield-api-vpn-tunnels`](#network-stormshield-api-vpn-tunnels)
+    - Service template added
+- Command `network-stormshield-api-vpn-tunnels`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Plugin pack `Stormshield Firewall (Rest API)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230608-hotfix20230630-2 - 20230717`.

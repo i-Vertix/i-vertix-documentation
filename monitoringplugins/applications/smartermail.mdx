@@ -1,0 +1,482 @@
+---
+title: "Smartermail"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Smartermail.png";
+
+<PluginPackHeader name="Smartermail" image={image} category="Application" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors SmarterMail servers through the web interface: services, license expiration and the number of messages in the spool, including spam, virus, quarantine, waiting and throttled queues.
+
+The plugin pack provides these checks:
+
+* [All Spools](#apps-smartermail-restapi-spools)
+* [Licenses](#apps-smartermail-restapi-licenses)
+* [Services](#apps-smartermail-restapi-services)
+* [Spool Default](#apps-smartermail-restapi-spools-default)
+* [Spool limit](#apps-smartermail-restapi-spools-spool_limit)
+* [Spool Quarantine Limit](#apps-smartermail-restapi-spools-quarantine_limit)
+* [Spool Spam](#apps-smartermail-restapi-spools-spam)
+* [Spool Throttled Domains](#apps-smartermail-restapi-spools-throttleddomains)
+* [Spool Throttled Mailing Lists](#apps-smartermail-restapi-spools-throttledmailinglists)
+* [Spool Throttled Users](#apps-smartermail-restapi-spools-throttledusers)
+* [Spool Virus](#apps-smartermail-restapi-spools-virus)
+* [Spool Waiting](#apps-smartermail-restapi-spools-waiting)
+
+
+## Host Templates
+
+### Smartermail
+
+*Smartermail* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/api/v1` | API url path (default: '/api/v1') |
+| `PORT` | `443` | API port (default: 443) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `30` | Set HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Set API password |
+| `API-USERNAME` |  | Set API username |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Licenses](#apps-smartermail-restapi-licenses) | `apps-smartermail-restapi-licenses` |
+| [Services](#apps-smartermail-restapi-services) | `apps-smartermail-restapi-services` |
+| [All Spools](#apps-smartermail-restapi-spools) | `apps-smartermail-restapi-spools` |
+| [Spool Default](#apps-smartermail-restapi-spools-default) | `apps-smartermail-restapi-spools-default` |
+| [Spool Quarantine Limit](#apps-smartermail-restapi-spools-quarantine_limit) | `apps-smartermail-restapi-spools-quarantine_limit` |
+| [Spool Spam](#apps-smartermail-restapi-spools-spam) | `apps-smartermail-restapi-spools-spam` |
+| [Spool limit](#apps-smartermail-restapi-spools-spool_limit) | `apps-smartermail-restapi-spools-spool_limit` |
+| [Spool Throttled Domains](#apps-smartermail-restapi-spools-throttleddomains) | `apps-smartermail-restapi-spools-throttledDomains` |
+| [Spool Throttled Mailing Lists](#apps-smartermail-restapi-spools-throttledmailinglists) | `apps-smartermail-restapi-spools-throttledMailingLists` |
+| [Spool Throttled Users](#apps-smartermail-restapi-spools-throttledusers) | `apps-smartermail-restapi-spools-throttledUsers` |
+| [Spool Virus](#apps-smartermail-restapi-spools-virus) | `apps-smartermail-restapi-spools-virus` |
+| [Spool Waiting](#apps-smartermail-restapi-spools-waiting) | `apps-smartermail-restapi-spools-waiting` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Licenses {/* #apps-smartermail-restapi-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPGRADE-PROTECTION-EXPIRES-DAYS` | `30:` | Threshold warning days until upgrade protection expires |
+| `CRITICAL-UPGRADE-PROTECTION-EXPIRES-DAYS` | `15:` | Threshold critical days until upgrade protection expires |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `license.upgrade.protection.expires.days.count` |  | upgrade protection expires in  days | `WARNING-UPGRADE-PROTECTION-EXPIRES-DAYS`, `CRITICAL-UPGRADE-PROTECTION-EXPIRES-DAYS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Services {/* #apps-smartermail-restapi-services */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SERVICE` |  | Only display some counters (regexp can be used). (Example: --filter-service='spool\|smtp\|pop') |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\}, %\{display\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{state\} !~ /running/'). Can used special variables like: %\{state\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### All Spools {/* #apps-smartermail-restapi-spools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` |  | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` |  | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` |  | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Default {/* #apps-smartermail-restapi-spools-default */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `default` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` | `100` | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` | `500` | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Quarantine Limit {/* #apps-smartermail-restapi-spools-quarantine_limit */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `quarantine_limit` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` |  | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` |  | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Spam {/* #apps-smartermail-restapi-spools-spam */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `spam` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` | `50` | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` | `500` | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool limit {/* #apps-smartermail-restapi-spools-spool_limit */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `spool_limit` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` |  | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` |  | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Throttled Domains {/* #apps-smartermail-restapi-spools-throttleddomains */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `throttledDomains` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` | `0` | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` | `10` | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Throttled Mailing Lists {/* #apps-smartermail-restapi-spools-throttledmailinglists */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `throttledMailingLists` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` | `0` | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` | `25` | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Throttled Users {/* #apps-smartermail-restapi-spools-throttledusers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `throttledUsers` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` | `0` | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` | `25` | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Virus {/* #apps-smartermail-restapi-spools-virus */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `virus` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` | `0` | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` | `50` | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spool Waiting {/* #apps-smartermail-restapi-spools-waiting */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-SPOOL` | `waiting` | Filter spools by name (Can be a regexp) |
+| `WARNING-SPOOL-MESSAGES` | `50` | Threshold warning pool messages |
+| `CRITICAL-SPOOL-MESSAGES` | `250` | Threshold critical pool messages |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spool.messages.count` |  | messages | `WARNING-SPOOL-MESSAGES`, `CRITICAL-SPOOL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

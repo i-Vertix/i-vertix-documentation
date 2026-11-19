@@ -12,13 +12,16 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-classic-ELB.png";
 
 ## Description
 
-### AWS classic ELB - Availability Zone monitoring
-Protocols used: Rest API
+Monitors AWS Classic Load Balancers per availability zone through Amazon CloudWatch: HTTP response codes, latency, request counts, surge queue and spillover, and the health of the registered instances.
 
-- HTTP codes
-- Performances (requests/latency)
-- Queues (spillover count/surgequeue lenght)
-- Target health
+The plugin pack provides these checks:
+
+* [HTTP codes](#cloud-aws-elb-classic-availabilityzone-http-codes)
+* [Performances Latency](#cloud-aws-elb-classic-availabilityzone-performances-latency)
+* [Performances requests count](#cloud-aws-elb-classic-availabilityzone-performances-requests)
+* [Queues SpilloverCount](#cloud-aws-elb-classic-availabilityzone-queues-spillovercount)
+* [Queues SurgeQueueLength](#cloud-aws-elb-classic-availabilityzone-queues-surgequeuelenght)
+* [Targets Health](#cloud-aws-elb-classic-availabilityzone-targets-health)
 
 ## Prerequisites
 
@@ -26,6 +29,7 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
 
 ## Host Templates
 

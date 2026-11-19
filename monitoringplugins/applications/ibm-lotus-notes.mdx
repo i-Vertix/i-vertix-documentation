@@ -1,0 +1,208 @@
+---
+title: "IBM Lotus Notes"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/IBM_Notes_9_logo.png";
+
+<PluginPackHeader name="IBM Lotus Notes" image={image} category="Application" metadata={["SNMP"]} />
+
+## Description
+
+Monitors IBM Lotus Notes (Domino) servers through SNMP: mail server availability, mail state and delivery time, server transactions and user sessions.
+
+The plugin pack provides these checks:
+
+* [Global Mail Server availability](#apps-lotus-snmp-server-availability)
+* [Mail delivery time](#apps-lotus-snmp-mail-time)
+* [Mail state](#apps-lotus-snmp-mail-state)
+* [Server transactions](#apps-lotus-snmp-server-transactions)
+* [User sessions](#apps-lotus-snmp-user-sessions)
+
+
+## Host Templates
+
+### Lotus-Notes
+
+*IBM Lotus Notes* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Mail state](#apps-lotus-snmp-mail-state) | `apps-lotus-snmp-mail-state` |
+| [Mail delivery time](#apps-lotus-snmp-mail-time) | `apps-lotus-snmp-mail-time` |
+| [Global Mail Server availability](#apps-lotus-snmp-server-availability) | `apps-lotus-snmp-server-availability` |
+| [Server transactions](#apps-lotus-snmp-server-transactions) | `apps-lotus-snmp-server-transactions` |
+| [User sessions](#apps-lotus-snmp-user-sessions) | `apps-lotus-snmp-user-sessions` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mail state {/* #apps-lotus-snmp-mail-state */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DEAD` | `0` | Threshold warning dead mails (in percent) |
+| `WARNING-WAITING` | `0` | Threshold warning waiting mails (in percent) |
+| `CRITICAL-DEAD` | `10` | Threshold critical dead mails (in percent) |
+| `CRITICAL-WAITING` | `10` | Threshold critical waiting mails (in percent) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mail delivery time {/* #apps-lotus-snmp-mail-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `10` | Threshold warning for the mail average delivery time (in seconds) |
+| `CRITICAL` | `30` | Threshold critical for the mail average delivery time (in seconds) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Global Mail Server availability {/* #apps-lotus-snmp-server-availability */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `100:` | Threshold warning in percent |
+| `CRITICAL` | `95:` | Threshold critical in percent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Server transactions {/* #apps-lotus-snmp-server-transactions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning number of transactions per minute |
+| `CRITICAL` |  | Threshold critical number of transactions per minute |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### User sessions {/* #apps-lotus-snmp-user-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning in users |
+| `CRITICAL` |  | Threshold critical in users |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

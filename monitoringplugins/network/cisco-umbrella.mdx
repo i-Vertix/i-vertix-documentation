@@ -1,0 +1,466 @@
+---
+title: "Cisco Umbrella"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco Umbrella" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco Umbrella virtual appliances through SNMP: appliance status and connectivity, DNS queries, CPU, load, memory and storage usage and uptime.
+
+The plugin pack provides these checks:
+
+* [Appliance status](#network-cisco-umbrella-snmp-appliance)
+* [Connectivity](#network-cisco-umbrella-snmp-connectivity)
+* [CPU](#network-cisco-umbrella-snmp-cpu)
+* [DNS queries](#network-cisco-umbrella-snmp-query)
+* [Load](#network-cisco-umbrella-snmp-load)
+* [Memory](#network-cisco-umbrella-snmp-memory)
+* [Storage](#network-cisco-umbrella-snmp-storage)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Cisco-Umbrella
+
+*Cisco Umbrella* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Appliance status](#network-cisco-umbrella-snmp-appliance) | `network-cisco-umbrella-snmp-appliance` |
+| [Connectivity](#network-cisco-umbrella-snmp-connectivity) | `network-cisco-umbrella-snmp-connectivity` |
+| [CPU](#network-cisco-umbrella-snmp-cpu) | `network-cisco-umbrella-snmp-cpu` |
+| [Load](#network-cisco-umbrella-snmp-load) | `network-cisco-umbrella-snmp-load` |
+| [Memory](#network-cisco-umbrella-snmp-memory) | `network-cisco-umbrella-snmp-memory` |
+| [DNS queries](#network-cisco-umbrella-snmp-query) | `network-cisco-umbrella-snmp-query` |
+| [Storage](#network-cisco-umbrella-snmp-storage) | `network-cisco-umbrella-snmp-storage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Appliance status {/* #network-cisco-umbrella-snmp-appliance */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~ /yellow/'` | Define the conditions to match for the status to be WARNING. (default: '%\{status\} =~ /yellow/') You can use the following variables: %\{status\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /red/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /red/'). You can use the following variables: %\{status\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connectivity {/* #network-cisco-umbrella-snmp-connectivity */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DNS-STATUS` | `'%{status} =~ /yellow/'` | Define the conditions to match for the status to be WARNING. (default: '%\{status\} =~ /yellow/') |
+| `WARNING-LOCALDNS-STATUS` | `'%{status} =~ /yellow/'` | Define the conditions to match for the status to be WARNING. (default: '%\{status\} =~ /yellow/') |
+| `WARNING-CLOUD-STATUS` | `'%{status} =~ /yellow/'` | Define the conditions to match for the status to be WARNING. (default: '%\{status\} =~ /yellow/') |
+| `WARNING-AD-STATUS` | `'%{status} =~ /yellow/'` | Define the conditions to match for the status to be WARNING. (default: '%\{status\} =~ /yellow/') |
+| `CRITICAL-DNS-STATUS` | `'%{status} =~ /red/'` | Define the conditions to match for the status to be CRITICAL. (default: %\{status\} =~ /red/) |
+| `CRITICAL-LOCALDNS-STATUS` | `'%{status} =~ /red/'` | Define the conditions to match for the status to be CRITICAL. (default: %\{status\} =~ /red/) |
+| `CRITICAL-CLOUD-STATUS` | `'%{status} =~ /red/'` | Define the conditions to match for the status to be CRITICAL. (default: %\{status\} =~ /red/) |
+| `CRITICAL-AD-STATUS` | `'%{status} =~ /red/'` | Define the conditions to match for the status to be CRITICAL. (default: %\{status\} =~ /red/) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-cisco-umbrella-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-cisco-umbrella-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+| `WARNING` | `2,2,2` | Warning threshold (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Critical threshold (1min,5min,15min) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-umbrella-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `WARNING-SWAP-PRCT` | `25` | Threshold warning swap (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `CRITICAL-SWAP-PRCT` | `60` | Threshold critical swap (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-SWAP` |  | Threshold warning swap (B) |
+| `WARNING-SWAP-FREE` |  | Threshold warning swap free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-SWAP` |  | Threshold critical swap (B) |
+| `CRITICAL-SWAP-FREE` |  | Threshold critical swap free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical buffer (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  | `WARNING-SWAP`, `CRITICAL-SWAP` |
+| `swap.free.bytes` | `B` |  | `WARNING-SWAP-FREE`, `CRITICAL-SWAP-FREE` |
+| `swap.usage.percentage` | `%` | Swap Used :  %% | `WARNING-SWAP-PRCT`, `CRITICAL-SWAP-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DNS queries {/* #network-cisco-umbrella-snmp-query */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-5M` |  | Warning threshold number of DNS queries per second over the last 5 minutes |
+| `WARNING-15M` |  | Warning threshold number of DNS queries per second over the last 15 minutes |
+| `CRITICAL-5M` |  | Critical threshold number of DNS queries per second over the last 5 minutes |
+| `CRITICAL-15M` |  | Critical threshold number of DNS queries per second over the last 15 minutes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `dns.query.last.5m.persecond.count` |  | /s (5m) | `WARNING-5M`, `CRITICAL-5M` |
+| `dns.query.last.15m.persecond.count` |  | /s (15m) | `WARNING-15M`, `CRITICAL-15M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-cisco-umbrella-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-USAGE` | `90` | Critical threshold for disk usage in percent |
+| `WARNING-USAGE` | `80` | Warning threshold for disk usage in percent |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.utilization.percentage` | `%` | Storage usage:  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20241206-hotfix-20250115 - 20250203</summary>
+
+- Service template [`network-cisco-umbrella-snmp-connectivity`](#network-cisco-umbrella-snmp-connectivity)
+    - Macro `WARNING-DNS-STATUS` added (default `'%{status} =~ /yellow/'`)
+    - Macro `WARNING-LOCALDNS-STATUS` added (default `'%{status} =~ /yellow/'`)
+    - Macro `WARNING-CLOUD-STATUS` added (default `'%{status} =~ /yellow/'`)
+    - Macro `WARNING-AD-STATUS` added (default `'%{status} =~ /yellow/'`)
+    - Macro `CRITICAL-DNS-STATUS` added (default `'%{status} =~ /red/'`)
+    - Macro `CRITICAL-LOCALDNS-STATUS` added (default `'%{status} =~ /red/'`)
+    - Macro `CRITICAL-CLOUD-STATUS` added (default `'%{status} =~ /red/'`)
+    - Macro `CRITICAL-AD-STATUS` added (default `'%{status} =~ /red/'`)
+    - Macro `WARNING-DNS-CONNECTIVITY` removed
+    - Macro `WARNING-LOCALDNS-CONNECTIVITY` removed
+    - Macro `WARNING-CLOUD-CONNECTIVITY` removed
+    - Macro `WARNING-AD-CONNECTIVITY` removed
+    - Macro `CRITICAL-DNS-CONNECTIVITY` removed
+    - Macro `CRITICAL-LOCALDNS-CONNECTIVITY` removed
+    - Macro `CRITICAL-CLOUD-CONNECTIVITY` removed
+    - Macro `CRITICAL-AD-CONNECTIVITY` removed
+- Command `network-cisco-umbrella-snmp-connectivity`
+    - Option `--warning-dns-status=$_SERVICEWARNING-DNS-STATUS$` added
+    - Option `--warning-localdns-status=$_SERVICEWARNING-LOCALDNS-STATUS$` added
+    - Option `--warning-cloud-status=$_SERVICEWARNING-CLOUD-STATUS$` added
+    - Option `--warning-ad-status=$_SERVICEWARNING-AD-STATUS$` added
+    - Option `--critical-dns-status=$_SERVICECRITICAL-DNS-STATUS$` added
+    - Option `--critical-localdns-status=$_SERVICECRITICAL-LOCALDNS-STATUS$` added
+    - Option `--critical-cloud-status=$_SERVICECRITICAL-CLOUD-STATUS$` added
+    - Option `--critical-ad-status=$_SERVICECRITICAL-AD-STATUS$` added
+    - Option `--warning-dns-connectivity=$_SERVICEWARNING-DNS-CONNECTIVITY$` removed
+    - Option `--warning-localdns-connectivity=$_SERVICEWARNING-LOCALDNS-CONNECTIVITY$` removed
+    - Option `--warning-cloud-connectivity=$_SERVICEWARNING-CLOUD-CONNECTIVITY$` removed
+    - Option `--warning-ad-connectivity=$_SERVICEWARNING-AD-CONNECTIVITY$` removed
+    - Option `--critical-dns-connectivity=$_SERVICECRITICAL-DNS-CONNECTIVITY$` removed
+    - Option `--critical-localdns-connectivity=$_SERVICECRITICAL-LOCALDNS-CONNECTIVITY$` removed
+    - Option `--critical-cloud-connectivity=$_SERVICECRITICAL-CLOUD-CONNECTIVITY$` removed
+    - Option `--critical-ad-connectivity=$_SERVICECRITICAL-AD-CONNECTIVITY$` removed
+    - Macro `WARNING-DNS-STATUS` added
+    - Macro `WARNING-LOCALDNS-STATUS` added
+    - Macro `WARNING-CLOUD-STATUS` added
+    - Macro `WARNING-AD-STATUS` added
+    - Macro `CRITICAL-DNS-STATUS` added
+    - Macro `CRITICAL-LOCALDNS-STATUS` added
+    - Macro `CRITICAL-CLOUD-STATUS` added
+    - Macro `CRITICAL-AD-STATUS` added
+    - Macro `WARNING-DNS-CONNECTIVITY` removed
+    - Macro `WARNING-LOCALDNS-CONNECTIVITY` removed
+    - Macro `WARNING-CLOUD-CONNECTIVITY` removed
+    - Macro `WARNING-AD-CONNECTIVITY` removed
+    - Macro `CRITICAL-DNS-CONNECTIVITY` removed
+    - Macro `CRITICAL-LOCALDNS-CONNECTIVITY` removed
+    - Macro `CRITICAL-CLOUD-CONNECTIVITY` removed
+    - Macro `CRITICAL-AD-CONNECTIVITY` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `Cisco Umbrella`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231215 - 20240130`.

@@ -1,0 +1,334 @@
+---
+title: "SAP HANA DB"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/SAP.png";
+
+<PluginPackHeader name="SAP HANA DB" image={image} category="Database" metadata={[]} />
+
+## Description
+
+Monitors SAP HANA databases through SQL queries: connection time, connected users, blocked transactions, disk and volume usage, and host CPU and memory usage.
+
+The plugin pack provides these checks:
+
+* [SAP HANA - Blocked transactions](#database-sap-hana-blocked-transactions)
+* [SAP HANA - Connected users](#database-sap-hana-connected-users)
+* [SAP HANA - Connection time](#database-sap-hana-connection-time)
+* [SAP HANA - Disk usage](#database-sap-hana-disk-usage)
+* [SAP HANA - Host CPU usage](#database-sap-hana-host-cpu)
+* [SAP HANA - Host memory usage](#database-sap-hana-host-memory)
+* [SAP HANA - Volume usage](#database-sap-hana-volume-usage)
+
+
+## Host Templates
+
+### SAP-HANA
+
+*SAP HANA* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SAP-HANA-CONNECT-OPTIONS` | `LongReadLen=1000000,LongTruncOk=1` |  |
+| `SAP-HANA-PASSWORD` | *(password)* | Password for the defined user name. |
+| `SAP-HANA-PORT` | `30013` | Database Server Port (default: 30013) |
+| `SAP-HANA-USERNAME` |  | User name used to connect to the database. |
+| `SAP-HANA-TIMEOUT` |  | Timeout in seconds for connection. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SAP HANA - Blocked transactions](#database-sap-hana-blocked-transactions) | `database-sap-hana-blocked-transactions` |
+| [SAP HANA - Connected users](#database-sap-hana-connected-users) | `database-sap-hana-connected-users` |
+| [SAP HANA - Connection time](#database-sap-hana-connection-time) | `database-sap-hana-connection-time` |
+| [SAP HANA - Disk usage](#database-sap-hana-disk-usage) | `database-sap-hana-disk-usage` |
+| [SAP HANA - Host CPU usage](#database-sap-hana-host-cpu) | `database-sap-hana-host-cpu` |
+| [SAP HANA - Host memory usage](#database-sap-hana-host-memory) | `database-sap-hana-host-memory` |
+| [SAP HANA - Volume usage](#database-sap-hana-volume-usage) | `database-sap-hana-volume-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP HANA - Blocked transactions {/* #database-sap-hana-blocked-transactions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BLOCKED-TRANSACTIONS` | `0` | Warning threshold blocked transactions |
+| `CRITICAL-BLOCKED-TRANSACTIONS` | `50` | Critical threshold blocked transactions |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `transactions.blocked.count` |  | Current Total Blocked Transactions | `WARNING-BLOCKED-TRANSACTIONS`, `CRITICAL-BLOCKED-TRANSACTIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP HANA - Connected users {/* #database-sap-hana-connected-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USERS` |  | Warning threshold connected users |
+| `CRITICAL-USERS` |  | Critical threshold connected users |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `users.count` |  | Connected Users | `WARNING-USERS`, `CRITICAL-USERS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP HANA - Connection time {/* #database-sap-hana-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `150` | Threshold warning in milliseconds |
+| `CRITICAL` | `500` | Threshold critical in milliseconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP HANA - Disk usage {/* #database-sap-hana-disk-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Default is '%', can be 'B' |
+| `FILTER-NAME` | `.*` | Filter disk name. (Can be a regex) |
+| `WARNING-USAGE` | `90` | Warning disk usage |
+| `CRITICAL-USAGE` | `95` | Critical disk usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP HANA - Host CPU usage {/* #database-sap-hana-host-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Warning threshold CPU idle |
+| `WARNING-WAIT` | `35` | Warning threshold CPU wait |
+| `CRITICAL-IDLE` | `10:` | Critical threshold CPU idle |
+| `CRITICAL-WAIT` | `60` | Critical threshold CPU wait |
+| `WARNING-USER` |  | Warning threshold CPU user |
+| `WARNING-SYS` |  | Warning threshold CPU system |
+| `CRITICAL-USER` |  | Critical threshold CPU user |
+| `CRITICAL-SYS` |  | Critical threshold CPU system |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `host.cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `host.cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYS`, `CRITICAL-SYS` |
+| `host.cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `host.cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP HANA - Host memory usage {/* #database-sap-hana-host-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PHYSICAL-USAGE` | `85` | Warning threshold physical usage (%) |
+| `WARNING-SWAP-USAGE` | `25` | Warning threshold swap usage (%) |
+| `CRITICAL-PHYSICAL-USAGE` | `90` | Critical threshold physical usage (%) |
+| `CRITICAL-SWAP-USAGE` | `60` | Critical threshold swap usage (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `host.memory.usage.bytes` | `B` |  | `WARNING-PHYSICAL-USAGE`, `CRITICAL-PHYSICAL-USAGE` |
+| `host.swap.usage.bytes` | `B` |  | `WARNING-SWAP-USAGE`, `CRITICAL-SWAP-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP HANA - Volume usage {/* #database-sap-hana-volume-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Default is '%', can be 'B' |
+| `FILTER-NAME` | `.*` | Filter volume name. (Can be a regex) |
+| `WARNING-USAGE` | `90` | Warning threshold usage |
+| `CRITICAL-USAGE` | `95` | Critical threshold usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

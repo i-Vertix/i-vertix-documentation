@@ -1,0 +1,456 @@
+---
+title: "Ruckus Smartzone WLAN Controller"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Ruckus.png";
+
+<PluginPackHeader name="Ruckus Smartzone WLAN Controller" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Ruckus SmartZone WLAN controllers through SNMP: CPU, memory, load and storage, system status, interfaces and the managed access points.
+
+The plugin pack provides these checks:
+
+* [Access Points](#network-ruckus-smartzone-snmp-access-points)
+* [CPU](#network-ruckus-smartzone-snmp-cpu)
+* [Interfaces](#network-ruckus-smartzone-snmp-interfaces)
+* [Load](#network-ruckus-smartzone-snmp-load)
+* [Memory](#network-ruckus-smartzone-snmp-memory)
+* [Storage](#network-ruckus-smartzone-snmp-storage)
+* [System](#network-ruckus-smartzone-snmp-system)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Access Points](#network-ruckus-smartzone-snmp-access-points) | `AP - <name>` |
+| [Interfaces](#network-ruckus-smartzone-snmp-interfaces) | `Interface - <name>` |
+| [Storage](#network-ruckus-smartzone-snmp-storage) | `Storage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Ruckus-Smartzone
+
+*Ruckus Smartzone* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Access Points](#network-ruckus-smartzone-snmp-access-points) | `network-ruckus-smartzone-snmp-access-points` |
+| [CPU](#network-ruckus-smartzone-snmp-cpu) | `network-ruckus-smartzone-snmp-cpu` |
+| [Load](#network-ruckus-smartzone-snmp-load) | `network-ruckus-smartzone-snmp-load` |
+| [Memory](#network-ruckus-smartzone-snmp-memory) | `network-ruckus-smartzone-snmp-memory` |
+| [Storage](#network-ruckus-smartzone-snmp-storage) | `network-ruckus-smartzone-snmp-storage` |
+| [System](#network-ruckus-smartzone-snmp-system) | `network-ruckus-smartzone-snmp-system` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-ruckus-smartzone-snmp-interfaces) | `network-ruckus-smartzone-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Access Points {/* #network-ruckus-smartzone-snmp-access-points */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by access point name (can be a regexp) |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-CLIENT-DEVICES-AUTH` |  | Threshold warning client connections devices authorized |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-CLIENT-DEVICES-AUTH` |  | Threshold critical client connections devices authorized |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoint.connection.client.devices.authorized.count` |  | client devices authorized connections | `WARNING-CLIENT-DEVICES-AUTH`, `CRITICAL-CLIENT-DEVICES-AUTH` |
+| `accesspoint.traffic.in.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `accesspoint.traffic.out.bitspersecond` | `b/s` | traffic out: /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-ruckus-smartzone-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-ruckus-smartzone-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-ruckus-smartzone-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `WARNING-SWAP-PRCT` | `25` | Threshold warning swap (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `CRITICAL-SWAP-PRCT` | `60` | Threshold critical swap (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-SWAP` |  | Threshold warning swap (B) |
+| `WARNING-SWAP-FREE` |  | Threshold warning swap free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-SWAP` |  | Threshold critical swap (B) |
+| `CRITICAL-SWAP-FREE` |  | Threshold critical swap free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  | `WARNING-SWAP`, `CRITICAL-SWAP` |
+| `swap.free.bytes` | `B` |  | `WARNING-SWAP-FREE`, `CRITICAL-SWAP-FREE` |
+| `swap.usage.percentage` | `%` | Swap Used :  %% | `WARNING-SWAP-PRCT`, `CRITICAL-SWAP-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-ruckus-smartzone-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STORAGE` | `.*` | Set the storage (number expected) ex: 1, 2,... (empty means  'check all storage') - can be a regexp |
+| `WARNING-USAGE` | `85` | Threshold warning |
+| `CRITICAL-USAGE` | `90` | Threshold critical |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical. Check if storage is readOnly: --critical-access=readOnly |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-ACCESS` |  | Threshold warning |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #network-ruckus-smartzone-snmp-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-CONNECTION-ACCESSPOINTS` |  | Threshold warning AP connected |
+| `WARNING-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |  | Threshold warning client connections devices authorized |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-CONNECTION-ACCESSPOINTS` |  | Threshold critical AP connected |
+| `CRITICAL-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |  | Threshold critical client connections devices authorized |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.connection.accesspoints.count` |  | access points connections | `WARNING-CONNECTION-ACCESSPOINTS`, `CRITICAL-CONNECTION-ACCESSPOINTS` |
+| `system.connection.client.devices.authorized.count` |  | client devices authorized connections | `WARNING-CONNECTION-CLIENT-DEVICES-AUTHORIZED`, `CRITICAL-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |
+| `system.traffic.in.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `system.traffic.out.bitspersecond` | `b/s` | traffic out: /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-ruckus-smartzone-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

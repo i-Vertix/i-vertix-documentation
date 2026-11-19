@@ -1,0 +1,350 @@
+---
+title: "Himoinsa Generator (UPS)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Himoinsa.png";
+
+<PluginPackHeader name="Himoinsa Generator (UPS)" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Himoinsa generator sets through SNMP: device status, fuel level, mains and generator frequency, voltage and phases.
+
+The plugin pack provides these checks:
+
+* [Device status](#hardware-ups-himoinsa-snmp-status)
+* [Frequency](#hardware-ups-himoinsa-snmp-frequency)
+* [Fuel level](#hardware-ups-himoinsa-snmp-fuel-level)
+* [Phase](#hardware-ups-himoinsa-snmp-phase)
+* [Voltage](#hardware-ups-himoinsa-snmp-uptime) (`hardware-ups-himoinsa-snmp-uptime`)
+* [Voltage](#hardware-ups-himoinsa-snmp-voltage) (`hardware-ups-himoinsa-snmp-voltage`)
+
+
+## Host Templates
+
+### Himoinsa-Generator
+
+*Himoinsa Generator* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Frequency](#hardware-ups-himoinsa-snmp-frequency) | `hardware-ups-himoinsa-snmp-frequency` |
+| [Fuel level](#hardware-ups-himoinsa-snmp-fuel-level) | `hardware-ups-himoinsa-snmp-fuel-level` |
+| [Phase](#hardware-ups-himoinsa-snmp-phase) | `hardware-ups-himoinsa-snmp-phase` |
+| [Device status](#hardware-ups-himoinsa-snmp-status) | `hardware-ups-himoinsa-snmp-status` |
+| [Voltage](#hardware-ups-himoinsa-snmp-uptime) | `hardware-ups-himoinsa-snmp-uptime` |
+| [Voltage](#hardware-ups-himoinsa-snmp-voltage) | `hardware-ups-himoinsa-snmp-voltage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Frequency {/* #hardware-ups-himoinsa-snmp-frequency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MAINS-FREQUENCY` | `48:52` | Warning threshold for mains frequency (Hz) |
+| `WARNING-GENSET-FREQUENCY` | `48:52` | Warning threshold for genset frequency (Hz) |
+| `CRITICAL-MAINS-FREQUENCY` | `45:55` | Critical threshold for mains frequency (Hz) |
+| `CRITICAL-GENSET-FREQUENCY` | `45:55` | Critical threshold for genset frequency (Hz) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `mains.frequency.hertz` | `Hz` | mains:  Hz | `WARNING-MAINS-FREQUENCY`, `CRITICAL-MAINS-FREQUENCY` |
+| `genset.frequency.hertz` | `Hz` | genset:  Hz | `WARNING-GENSET-FREQUENCY`, `CRITICAL-GENSET-FREQUENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Fuel level {/* #hardware-ups-himoinsa-snmp-fuel-level */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-FUEL-LEVEL` | `50:` | Warning threshold fuel level (%) |
+| `CRITICAL-FUEL-LEVEL` | `20:` | Critical threshold fuel level (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `fuel.level.percentage` | `%` | Fuel level: %% | `WARNING-FUEL-LEVEL`, `CRITICAL-FUEL-LEVEL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Phase {/* #hardware-ups-himoinsa-snmp-phase */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-PHASE1` |  | Warning threshold Phase 1 (A) |
+| `WARNING-PHASE2` |  | Warning threshold Phase 2 (A) |
+| `WARNING-PHASE3` |  | Warning threshold Phase 3 (A) |
+| `CRITICAL-PHASE1` |  | Critical threshold Phase 1 (A) |
+| `CRITICAL-PHASE2` |  | Critical threshold Phase 2 (A) |
+| `CRITICAL-PHASE3` |  | Critical threshold Phase 3 (A) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `phase1.current.ampere` | `A` | phase 1:  A | `WARNING-PHASE1`, `CRITICAL-PHASE1` |
+| `phase2.current.ampere` | `A` | phase 2:  A | `WARNING-PHASE2`, `CRITICAL-PHASE2` |
+| `phase3.current.ampere` | `A` | phase 3:  A | `WARNING-PHASE3`, `CRITICAL-PHASE3` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device status {/* #hardware-ups-himoinsa-snmp-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ALARM-STATUS` | `'%{status} =~ /^alarm/'` | Warning threshold for alarm (default: '%\{status\} =~ /^alarm/'). Can use special variables like: %\{status\} |
+| `CRITICAL-CLOSE-COMMUTATOR` | `'%{status} =~ /mains/i'` | Critical threshold for commutator currently closed. Can use special variables like: %\{status\} For example if you want to get an alert if the closed commutator is mains: --critical-closed-commutator='%\{status\} =~ /mains/i' |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-MOTOR-STATUS` |  | Warning threshold for motor status. Can use special variables like: %\{status\} |
+| `WARNING-MODE-STATUS` |  | Warning threshold for mode status. Can use special variables like: %\{status\} |
+| `WARNING-CLOSE-COMMUTATOR` |  | Warning threshold for commutator mode status. Can use special variables like: %\{status\} |
+| `WARNING-TRANSFER-PUMP-STATUS` |  | Warning threshold for transfer pump status. Can use special variables like: %\{status\} |
+| `CRITICAL-ALARM-STATUS` |  | Critical threshold for alarm. Can use special variables like: %\{status\} |
+| `CRITICAL-MOTOR-STATUS` |  | Critical threshold for motor status. Can use special variables like: %\{status\} |
+| `CRITICAL-MODE-STATUS` |  | Critical threshold for mode status. Can use special variables like: %\{status\} |
+| `CRITICAL-TRANSFER-PUMP-STATUS` |  | Critical threshold for transfer pump status. Can use special variables like: %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Voltage {/* #hardware-ups-himoinsa-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the time unit for the performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Warning threshold |
+| `CRITICAL-UPTIME` | `900:` | Critical threshold |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Voltage {/* #hardware-ups-himoinsa-snmp-voltage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MAINS-VL12` | `380:420` | Warning threshold Mains VL12 (V) *(not used by the check command)* |
+| `WARNING-MAINS-VL23` | `380:420` | Warning threshold Mains VL23 (V) *(not used by the check command)* |
+| `WARNING-MAINS-VL13` | `380:420` | Warning threshold Mains VL113 (V) *(not used by the check command)* |
+| `WARNING-GEN-VL12` | `380:420` | Warning threshold Gen VL12 (V) *(not used by the check command)* |
+| `WARNING-GEN-VL23` | `380:420` | Warning threshold Gen VL23 (V) *(not used by the check command)* |
+| `WARNING-GEN-VL13` | `380:420` | Warning threshold Gen VL13 (V) *(not used by the check command)* |
+| `CRITICAL-MAINS-VL12` | `360:440` | Critical threshold Mains VL12 (V) *(not used by the check command)* |
+| `CRITICAL-MAINS-VL23` | `360:440` | Critical threshold Mains VL23 (V) *(not used by the check command)* |
+| `CRITICAL-MAINS-VL13` | `360:440` | Critical threshold Mains VL113 (V) *(not used by the check command)* |
+| `CRITICAL-GEN-VL12` | `360:440` | Critical threshold Gen VL12 (V) *(not used by the check command)* |
+| `CRITICAL-GEN-VL23` | `360:440` | Critical threshold Gen VL23 (V) *(not used by the check command)* |
+| `CRITICAL-GEN-VL13` | `360:440` | Critical threshold Gen VL13 (V) *(not used by the check command)* |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-MAINS-Vl12` |  | Warning threshold Mains VL12 (V) |
+| `WARNING-MAINS-Vl23` |  | Warning threshold Mains VL23 (V) |
+| `WARNING-MAINS-Vl13` |  | Warning threshold Mains VL113 (V) |
+| `WARNING-MAINS-Vl1N` |  | Warning threshold Mains VL1N (V) |
+| `WARNING-MAINS-Vl2N` |  | Warning threshold Mains VL2N (V) |
+| `WARNING-MAINS-Vl3N` |  | Warning threshold Mains VL3N (V) |
+| `WARNING-GEN-Vl12` |  | Warning threshold Gen VL12 (V) |
+| `WARNING-GEN-Vl23` |  | Warning threshold Gen VL23 (V) |
+| `WARNING-GEN-Vl13` |  | Warning threshold Gen VL13 (V) |
+| `WARNING-GEN-Vl1N` |  | Warning threshold Gen VL1N (V) |
+| `WARNING-GEN-Vl2N` |  | Warning threshold Gen VL2N (V) |
+| `WARNING-GEN-Vl3N` |  | Warning threshold Gen VL3N (V) |
+| `CRITICAL-MAINS-Vl12` |  | Critical threshold Mains VL12 (V) |
+| `CRITICAL-MAINS-Vl23` |  | Critical threshold Mains VL23 (V) |
+| `CRITICAL-MAINS-Vl13` |  | Critical threshold Mains VL113 (V) |
+| `CRITICAL-MAINS-Vl1N` |  | Critical threshold Mains VL1N (V) |
+| `CRITICAL-MAINS-Vl2N` |  | Critical threshold Mains VL2N (V) |
+| `CRITICAL-MAINS-Vl3N` |  | Critical threshold Mains VL3N (V) |
+| `CRITICAL-GEN-Vl12` |  | Critical threshold Gen VL12 (V) |
+| `CRITICAL-GEN-Vl23` |  | Critical threshold Gen VL23 (V) |
+| `CRITICAL-GEN-Vl13` |  | Critical threshold Gen VL13 (V) |
+| `CRITICAL-GEN-Vl1N` |  | Critical threshold Gen VL1N (V) |
+| `CRITICAL-GEN-Vl2N` |  | Critical threshold Gen VL2N (V) |
+| `CRITICAL-GEN-Vl3N` |  | Critical  threshold Gen VL2N (V) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `mains.vl12.voltage.volt` | `V` | mains-vl12:  V | `WARNING-MAINS-Vl12`, `CRITICAL-MAINS-Vl12` |
+| `mains.vl23.voltage.volt` | `V` | mains-vl23:  V | `WARNING-MAINS-Vl23`, `CRITICAL-MAINS-Vl23` |
+| `mains.vl13.voltage.volt` | `V` | mains-vl13:  V | `WARNING-MAINS-Vl13`, `CRITICAL-MAINS-Vl13` |
+| `mains.vl1n.voltage.volt` | `V` | mains-vl1n:  V | `WARNING-MAINS-Vl1N`, `CRITICAL-MAINS-Vl1N` |
+| `mains.vl2n.voltage.volt` | `V` | mains-vl2n:  V | `WARNING-MAINS-Vl2N`, `CRITICAL-MAINS-Vl2N` |
+| `mains.vl3n.voltage.volt` | `V` | mains-vl3n:  V | `WARNING-MAINS-Vl3N`, `CRITICAL-MAINS-Vl3N` |
+| `gen.vl12.voltage.volt` | `V` | gen-vl12:  V | `WARNING-GEN-Vl12`, `CRITICAL-GEN-Vl12` |
+| `gen.vl23.voltage.volt` | `V` | gen-vl23:  V | `WARNING-GEN-Vl23`, `CRITICAL-GEN-Vl23` |
+| `gen.vl13.voltage.volt` | `V` | gen-vl13:  V | `WARNING-GEN-Vl13`, `CRITICAL-GEN-Vl13` |
+| `gen.vl1n.voltage.volt` | `V` | gen-vl1n:  V | `WARNING-GEN-Vl1N`, `CRITICAL-GEN-Vl1N` |
+| `gen.vl2n.voltage.volt` | `V` | gen-vl2n:  V | `WARNING-GEN-Vl2N`, `CRITICAL-GEN-Vl2N` |
+| `gen.vl3n.voltage.volt` | `V` | gen-vl3n:  V | `WARNING-GEN-Vl3N`, `CRITICAL-GEN-Vl3N` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240212 - 20240317</summary>
+
+- Plugin pack `Himoinsa Generator (UPS)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240212 - 20240317`.

@@ -1,0 +1,1101 @@
+---
+title: "Windows (WinRM)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/Windows.png";
+
+<PluginPackHeader name="Windows (WinRM)" image={image} category="Operating System" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Windows systems through WinRM: CPU, memory, pagefile and disks, interfaces, services, processes, event log, files, certificates, sessions, scheduled tasks, pending updates and reboots, NTP time and uptime.
+
+The plugin pack provides these checks:
+
+* [Certificate validity](#os-windows-wsman-certificates)
+* [CPU](#os-windows-wsman-cpu)
+* [Disks](#os-windows-wsman-storages)
+* [Eventlog](#os-windows-wsman-eventlog)
+* [Files count](#os-windows-wsman-files-count)
+* [Files date](#os-windows-wsman-files-date)
+* [Files size](#os-windows-wsman-files-size)
+* [Interfaces](#os-windows-wsman-interfaces)
+* [Memory](#os-windows-wsman-memory)
+* [NTP time](#os-windows-wsman-time)
+* [Pagfile usage](#os-windows-wsman-pages)
+* [Pending reboot](#os-windows-wsman-pending-reboot)
+* [Pending updates](#os-windows-wsman-updates)
+* [Processes](#os-windows-wsman-processes)
+* [Service status - DHCP Client](#os-windows-wsman-services-dhcp-client)
+* [Service status - DNS Client](#os-windows-wsman-services-dns-client)
+* [Service status - Plug and Play](#os-windows-wsman-services-plug-and-play)
+* [Service status - Server](#os-windows-wsman-services-server)
+* [Service status - TCP/IP NetBIOS Helper](#os-windows-wsman-services-tcpip-netbios-helper)
+* [Service status - Windows Event Log](#os-windows-wsman-services-windows-eventlog)
+* [Service status - Workstation](#os-windows-wsman-services-workstation)
+* [Sessions](#os-windows-wsman-sessions)
+* [Task scheduler](#os-windows-wsman-taskscheduler)
+* [Uptime](#os-windows-wsman-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#os-windows-wsman-interfaces) | `Interface - <name>` |
+| [Processes](#os-windows-wsman-processes) | `Process - <name>` |
+| `os-windows-wsman-services` | `Service status - <name>` |
+| [Disks](#os-windows-wsman-storages) | `Disk - <name>` |
+| [Task scheduler](#os-windows-wsman-taskscheduler) | `Task scheduler - <taskname>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Windows-Server-WinRM
+
+*Windows Server (WinRM)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WSMAN-PORT` | `5986` | Define the port to connect to (default: 5985). |
+| `WSMAN-PATH` | `/wsman` | Define the path of the WSMAN URL if it has been customized (default: '/wsman'). |
+| `WSMAN-SCHEME` | `https` | Define the transport scheme (default: 'http'). |
+| `WSMAN-TIMEOUT` | `30` | Define the HTTP transport timeout in seconds (default: 30). |
+| `WSMAN-AUTH-METHOD` | `basic` | Define the authentication method. Available methods: `noauth`, `basic` (default), `pass`, `digest`, `ntlm`, `gssnegotiate`. |
+| `WSMAN-PASSWORD` | *(password)* | Define the password associated with the user name. |
+| `WSMAN-USERNAME` |  | Define the username for authentication. |
+| `WSMAN-PROXY-URL` |  | Define the URL of the HTTP proxy to use. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#os-windows-wsman-cpu) | `os-windows-wsman-cpu` |
+| [Memory](#os-windows-wsman-memory) | `os-windows-wsman-memory` |
+| [Pagfile usage](#os-windows-wsman-pages) | `os-windows-wsman-pages` |
+| [Pending reboot](#os-windows-wsman-pending-reboot) | `os-windows-wsman-pending-reboot` |
+| [Service status - DHCP Client](#os-windows-wsman-services-dhcp-client) | `os-windows-wsman-services-dhcp-client` |
+| [Service status - DNS Client](#os-windows-wsman-services-dns-client) | `os-windows-wsman-services-dns-client` |
+| [Service status - Plug and Play](#os-windows-wsman-services-plug-and-play) | `os-windows-wsman-services-plug-and-play` |
+| [Service status - Server](#os-windows-wsman-services-server) | `os-windows-wsman-services-server` |
+| [Service status - TCP/IP NetBIOS Helper](#os-windows-wsman-services-tcpip-netbios-helper) | `os-windows-wsman-services-tcpip-netbios-helper` |
+| [Service status - Windows Event Log](#os-windows-wsman-services-windows-eventlog) | `os-windows-wsman-services-windows-eventlog` |
+| [Service status - Workstation](#os-windows-wsman-services-workstation) | `os-windows-wsman-services-workstation` |
+| [Sessions](#os-windows-wsman-sessions) | `os-windows-wsman-sessions` |
+| [NTP time](#os-windows-wsman-time) | `os-windows-wsman-time` |
+| [Pending updates](#os-windows-wsman-updates) | `os-windows-wsman-updates` |
+| [Uptime](#os-windows-wsman-uptime) | `os-windows-wsman-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Certificate validity](#os-windows-wsman-certificates) | `os-windows-wsman-certificates` |
+| [Disks](#os-windows-wsman-storages) | `os-windows-wsman-storages` |
+| [Eventlog](#os-windows-wsman-eventlog) | `os-windows-wsman-eventlog` |
+| [Files count](#os-windows-wsman-files-count) | `os-windows-wsman-files-count` |
+| [Files date](#os-windows-wsman-files-date) | `os-windows-wsman-files-date` |
+| [Files size](#os-windows-wsman-files-size) | `os-windows-wsman-files-size` |
+| [Interfaces](#os-windows-wsman-interfaces) | `os-windows-wsman-interfaces` |
+| [Processes](#os-windows-wsman-processes) | `os-windows-wsman-processes` |
+| [Task scheduler](#os-windows-wsman-taskscheduler) | `os-windows-wsman-taskscheduler` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Windows-Server-WinRM-Kerberos
+
+*Windows Server Kerbeos (WinRM)* · Parent template: `Windows-Server-WinRM`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WSMAN-AUTH-METHOD` | `gssnegotiate` | Define the authentication method. Available methods: `noauth`, `basic` (default), `pass`, `digest`, `ntlm`, `gssnegotiate`. |
+| `WSMAN-PORT` |  | Define the port to connect to (default: 5985). |
+| `WSMAN-PATH` |  | Define the path of the WSMAN URL if it has been customized (default: '/wsman'). |
+| `WSMAN-SCHEME` |  | Define the transport scheme (default: 'http'). |
+| `WSMAN-USERNAME` |  | Define the username for authentication. |
+| `WSMAN-PASSWORD` |  | Define the password associated with the user name. |
+| `WSMAN-TIMEOUT` |  | Define the HTTP transport timeout in seconds (default: 30). |
+| `WSMAN-PROXY-URL` |  | Define the URL of the HTTP proxy to use. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#os-windows-wsman-cpu) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-cpu` |
+| [Memory](#os-windows-wsman-memory) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-memory` |
+| [Pagfile usage](#os-windows-wsman-pages) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-pages` |
+| [Pending reboot](#os-windows-wsman-pending-reboot) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-pending-reboot` |
+| [Service status - DHCP Client](#os-windows-wsman-services-dhcp-client) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-services-dhcp-client` |
+| [Service status - DNS Client](#os-windows-wsman-services-dns-client) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-services-dns-client` |
+| [Service status - Plug and Play](#os-windows-wsman-services-plug-and-play) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-services-plug-and-play` |
+| [Service status - Server](#os-windows-wsman-services-server) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-services-server` |
+| [Service status - TCP/IP NetBIOS Helper](#os-windows-wsman-services-tcpip-netbios-helper) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-services-tcpip-netbios-helper` |
+| [Service status - Windows Event Log](#os-windows-wsman-services-windows-eventlog) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-services-windows-eventlog` |
+| [Service status - Workstation](#os-windows-wsman-services-workstation) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-services-workstation` |
+| [Sessions](#os-windows-wsman-sessions) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-sessions` |
+| [NTP time](#os-windows-wsman-time) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-time` |
+| [Pending updates](#os-windows-wsman-updates) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-updates` |
+| [Uptime](#os-windows-wsman-uptime) (inherited from `Windows-Server-WinRM`) | `os-windows-wsman-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Certificate validity](#os-windows-wsman-certificates) | `os-windows-wsman-certificates` |
+| [Disks](#os-windows-wsman-storages) | `os-windows-wsman-storages` |
+| [Eventlog](#os-windows-wsman-eventlog) | `os-windows-wsman-eventlog` |
+| [Files count](#os-windows-wsman-files-count) | `os-windows-wsman-files-count` |
+| [Files date](#os-windows-wsman-files-date) | `os-windows-wsman-files-date` |
+| [Files size](#os-windows-wsman-files-size) | `os-windows-wsman-files-size` |
+| [Interfaces](#os-windows-wsman-interfaces) | `os-windows-wsman-interfaces` |
+| [Processes](#os-windows-wsman-processes) | `os-windows-wsman-processes` |
+| [Task scheduler](#os-windows-wsman-taskscheduler) | `os-windows-wsman-taskscheduler` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #os-windows-wsman-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | CPU(s) average usage is  %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage:  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #os-windows-wsman-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Warning threshold for memory (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Critical threshold for memory (%) |
+| `WARNING-USAGE` |  | Warning threshold for memory (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold for free memory (B) |
+| `CRITICAL-USAGE` |  | Critical threshold for memory (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold for free memory (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pagfile usage {/* #os-windows-wsman-pages */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold for pagefile usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold for pagefile usage (%) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold for pagefile usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold for pagefile free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold for pagefile usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold for pagefile free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `page.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `page.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `page.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pending reboot {/* #os-windows-wsman-pending-reboot */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL_STATUS` | `'%{WindowsUpdate} =~ /true/ \|\| %{CBServicing} =~ /true/ \|\| %{CCMClientSDK} =~ /true/ \|\| %{PendComputerRename} =~ /true/'` | Set critical threshold for status (Default: ''). Can used special variables like: %\{RebootPending\}, %\{WindowsUpdate\}, %\{CBServicing\}, %\{CCMClientSDK\}, %\{PendFileRename\}, %\{PendComputerRename\} |
+| `WARNING_STATUS` | `'%{RebootPending} =~ /true/i'` | Set warning threshold for status (Default: '%\{RebootPending\} =~ /true/i'). Can used special variables like: %\{RebootPending\}, %\{WindowsUpdate\}, %\{CBServicing\}, %\{CCMClientSDK\}, %\{PendFileRename\}, %\{PendComputerRename\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - DHCP Client {/* #os-windows-wsman-services-dhcp-client */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `Dhcp` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - DNS Client {/* #os-windows-wsman-services-dns-client */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `Dnscache` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Plug and Play {/* #os-windows-wsman-services-plug-and-play */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `PlugPlay` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Server {/* #os-windows-wsman-services-server */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `LanmanServer` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - TCP/IP NetBIOS Helper {/* #os-windows-wsman-services-tcpip-netbios-helper */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `lmhosts` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Windows Event Log {/* #os-windows-wsman-services-windows-eventlog */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `EventLog` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Workstation {/* #os-windows-wsman-services-workstation */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `LanmanWorkstation` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sessions {/* #os-windows-wsman-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LANGUAGE` | `en` | Set the language used in config file (default: 'en') |
+| `FILTER_SESSIONNAME` |  | Filter session name (can be a regexp) |
+| `WARNING_CREATED` |  | Warning threshold sessions created |
+| `WARNING_DISCONNECTED` |  | Warning threshold sessions disconnected |
+| `WARNING_RECONNECTED` |  | Warning threshold sessions reconnected |
+| `WARNING_ACTIVE` |  | Warning threshold sessions active |
+| `WARNING_DISCONN_CURRENT` |  | Warning threshold sessions disconnected current |
+| `CRITICAL_CREATED` |  | Critical threshold sessions created |
+| `CRITICAL_DISCONNECTED` |  | Critical threshold sessions disconnected |
+| `CRITICAL_RECONNECTED` |  | Critical threshold sessions reconnected |
+| `CRITICAL_ACTIVE` |  | Critical threshold sessions active |
+| `CRITICAL_DISCONN_CURRENT` |  | Critical threshold sessions disconnected current |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sessions.created.total.count` |  | created | `WARNING_CREATED`, `CRITICAL_CREATED` |
+| `sessions.disconnected.total.count` |  | disconnected | `WARNING_DISCONNECTED`, `CRITICAL_DISCONNECTED` |
+| `sessions.reconnected.total.count` |  | reconnected | `WARNING_RECONNECTED`, `CRITICAL_RECONNECTED` |
+| `sessions.active.current.count` |  | current active | `WARNING_ACTIVE`, `CRITICAL_ACTIVE` |
+| `sessions.disconnected.current.count` |  | current disconnected | `WARNING_DISCONN_CURRENT`, `CRITICAL_DISCONN_CURRENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP time {/* #os-windows-wsman-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-3:3` | Time offset warning threshold (in seconds) |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds) |
+| `NTP-HOSTNAME` |  | Set the ntp hostname (if not set, localtime is used) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pending updates {/* #os-windows-wsman-updates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PENDING-UPDATES` |  | Warning threshold pending updates |
+| `CRITICAL-PENDING-UPDATES` |  | Critical threshold pending updates |
+| `FILTER-TITLE` |  | Filter windows updates by title (can be a regexp) |
+| `EXCLUDE-TITLE` |  | Exclude windows updates by title (regexp can be used) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `windows.pending.updates.count` |  | pending Windows updates | `WARNING-PENDING-UPDATES`, `CRITICAL-PENDING-UPDATES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-windows-wsman-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `m` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `30:` |  |
+| `CRITICAL-UPTIME` | `15:` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Certificate validity {/* #os-windows-wsman-certificates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` | Select the time unit for the expiration thresholds. May be 's' for seconds,'m' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-CERTIFICATE-EXPIRES` | `30:` | Warning threshold certificate expires |
+| `CRITICAL-CERTIFICATE-EXPIRES` | `15:` | Critical threshold certificate expires |
+| `INCLUDE-THUMBRINT` |  | Filter certificate by thumbprint (can be a regexp) |
+| `EXCLUDE-THUMBRINT` |  | Exclude certificate by thumbprint (can be a regexp) |
+| `INCLUDE-SUBJECT` |  | Filter certificate by subject (can be a regexp) |
+| `EXCLUDE-SUBJECT` |  | Exclude certificate by subject (can be a regexp) |
+| `INCLUDE-PATH` |  | Filter certificate by path (can be a regexp) |
+| `EXCLUDE-PATH` |  | Exclude certificate by path (can be a regexp) |
+| `WARNING-CERTIFICATES-DETECTED` |  | Warning threshold certificates detected |
+| `CRITICAL-CERTIFICATES-DETECTED` |  | Critical threshold certificates detected |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `certificates.detected.count` |  | number of certificates | `WARNING-CERTIFICATES-DETECTED`, `CRITICAL-CERTIFICATES-DETECTED` |
+| `certificate.expires` |  |  | `WARNING-CERTIFICATE-EXPIRES`, `CRITICAL-CERTIFICATE-EXPIRES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Eventlog {/* #os-windows-wsman-eventlog */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEFRAME` | `1` | Time frame to filter events on hour (Default: 1) |
+| `EXTRA-OPTS` | `--verbose` | Additional options appended to the plugin command line (host level). |
+| `FILTER-EVENTID` |  | Filter on specific event id |
+| `FILTER-SOURCE` |  | Filter on event log source |
+| `FILTER-LOGFILE` |  | Filter on specific logfile. Ex: Application, System |
+| `FILTER-TYPE` |  | Filter on specific type. Can be: 'information', 'critical', 'warning', 'error', 'verbose' |
+| `WARNING-EVENTS` |  | Warning threshold number of events |
+| `CRITICAL-EVENTS` |  | Critical threshold number of events |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `events.total.count` |  | Number of event(s) | `WARNING-EVENTS`, `CRITICAL-EVENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Files count {/* #os-windows-wsman-files-count */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RECURSIVE` | `no` | Recursive scan mode: must be yes or no. Default: no |
+| `FOLDER` |  | Folder to scan (no WQL wildcard allowed). Example: 'C:/Data/Import/' |
+| `FILTER-FILENAME` |  | Regex on base filename (no path). Server-side acceleration for simple cases: ^name$ -> FileName = "name" ^name\.ext$ -> FileName = "name" AND Extension = "ext" ^prefix -> FileName LIKE "prefix%" \.ext$ -> Extension = "ext" literal -> FileName LIKE "%literal%" |
+| `MAX-CREATE-DATE` |  | Filter by max-creation-time age: --max-create-date=N => created within last N. Same unit rules and validation as above |
+| `MAX-MODIFY-DATE` |  | Filter by max-modify-time age: --max-modify-date=N => modified within last N. Same unit rules and validation as above |
+| `MIN-CREATE-DATE` |  | Filter by min-creation-time age: --min-create-date=N => created within last N ago. Same unit rules and validation as above |
+| `MIN-MODIFY-DATE` |  | Filter by min-modify-time age: --min-modify-date=N => modified within last N ago. Same unit rules and validation as above |
+| `TIME-UNIT` |  | Default unit for values without suffix (default: seconds). Supported: s\|min\|h\|d\|w\|mo |
+| `WARNING` |  | Warning threshold number of files |
+| `CRITICAL` |  | Critical threshold number of files |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Files date {/* #os-windows-wsman-files-date */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FOLDER` |  | Folder to check. (No WQL wildcard allowed) Ex: 'C:/Users/Administrator/' |
+| `FILTER-FILENAME` |  | Filter files by name |
+| `WARNING` |  | Threshold warning in seconds for each files (diff time) |
+| `CRITICAL` |  | Threshold critical in seconds for each files (diff time) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `file.mtime.last.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Files size {/* #os-windows-wsman-files-size */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FOLDER` |  | Folder to check. (No WQL wildcard allowed) Ex: 'C:/Users/Administrator/' |
+| `FILTER-FILENAME` |  | Filter files by name |
+| `WARNING-ONCE` |  | Threshold warning in bytes for each files/directories |
+| `WARNING-TOTAL` |  | Threshold warning in bytes for all files/directories |
+| `CRITICAL-ONCE` |  | Threshold critical in bytes for each files/directories |
+| `CRITICAL-TOTAL` |  | Threshold critical in bytes for all files/directories |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `file.size.bytes` | `B` |  |  |
+| `files.size.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #os-windows-wsman-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'counter') |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `FILTER-INTERFACE` |  | Filter interface name (regexp can be used) |
+| `EXCLUDE-INTERFACE` |  | Exclude interface name (regexp can be used) |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Processes {/* #os-windows-wsman-processes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS-STATUS` | `running` | Filter process status. Can be a regexp. (Default: 'running') |
+| `CRITICAL` | `1:` | Threshold critical of matching processes detected |
+| `PROCESS-NAME` |  | Filter process name - allows to use WQL wildcard to filter process name |
+| `WARNING` |  | Threshold warning of matching processes detected |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `processes.detected.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disks {/* #os-windows-wsman-storages */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter storages by name (can be a regexp) |
+| `FILTER-TYPE` | `localDisk` | Filter storages by type (can be a regexp) (Default: 'localDisk') |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold for storage usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold for storage usage (%) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold for storage usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold for storage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold for storage usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold for storage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storages.detected.count` |  | Storages detected |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `storage.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `storage.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Task scheduler {/* #os-windows-wsman-taskscheduler */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{State} !~ /^(Running\|Ready)$/i \|\| %{LastTaskResult} != 0'` | Set a custom WARNING status expression (default: "%\{State\} !~ /^(Running\|Ready)$/i \|\| %\{LastTaskResult\} != 0"). Variables: "%\{FullName\} %\{State\} %\{LastTaskResult\} %\{Enabled\} %\{Hidden\} %\{LastRunTime\} %\{NextRunTime\} %\{NumberOfMissedRuns\} %\{TaskName\} %\{TaskPath\} %\{RunAs\} %\{Author\}" |
+| `FILTER-NAME` |  | Only include tasks whose TaskName or FullName (TaskPath + TaskName) matches REGEX (case-insensitive) |
+| `FILTER-PATH` |  | Only include tasks whose TaskPath matches REGEX |
+| `FILTER-STATE` |  | Only include tasks whose State matches REGEX (e.g. "/^(Ready\|Running)$/i") |
+| `WARNING-LAST-RUN` |  | Alert WARNING if the last execution of a task is older than this duration. Accepts seconds (e.g. 3600), or human formats like "30m", "2h", "1d2h30m" |
+| `CRITICAL-STATUS` |  | Set a custom CRITICAL status expression. Variables: "%\{FullName\} %\{State\} %\{LastTaskResult\} %\{Enabled\} %\{Hidden\} %\{LastRunTime\} %\{NextRunTime\} %\{NumberOfMissedRuns\} %\{TaskName\} %\{TaskPath\} %\{RunAs\} %\{Author\}" |
+| `CRITICAL-LAST-RUN` |  | Alert CRITICAL if the last execution of a task is older than this duration. Accepts seconds (e.g. 3600), or human formats like "30m", "2h", "1d2h30m" |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260600 - 20260708</summary>
+
+- Plugin pack `Windows (WinRM)`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260500 - 20260529</summary>
+
+- Service template [`os-windows-wsman-files-count`](#os-windows-wsman-files-count)
+    - Macro `RECURSIVE` added (default `no`)
+- Command `os-windows-wsman-files-count`
+    - Option `--recursive=$_SERVICERECURSIVE$` added
+    - Macro `RECURSIVE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260400 - 20260520</summary>
+
+- Command `os-windows-wsman-files-count`
+    - Macro `WSMAN-AUTH-METHOD` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260331</summary>
+
+- Plugin pack `Windows (WinRM)`
+    - Description updated
+- Host template `Windows-Server-WinRM-Kerberos`
+    - Host template added
+- Service template [`os-windows-wsman-certificates`](#os-windows-wsman-certificates)
+    - Service template added
+- Command `os-windows-wsman-certificates`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260100 - 20260327</summary>
+
+- Command `os-windows-wsman-updates`
+    - Option `--display-updates` added
+    - Macro `WSMAN-AUTH-METHOD` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260301</summary>
+
+- Host template `Windows-Server-WinRM`
+    - Service template `os-windows-wsman-services-auto` unlinked
+- Service template [`os-windows-wsman-taskscheduler`](#os-windows-wsman-taskscheduler)
+    - Macro `WARNING-STATUS`: default changed from `%{State} !~ /^(Running|Ready)$/i || %{LastTaskResult} != 0` to `'%{State} !~ /^(Running|Ready)$/i || %{LastTaskResult} != 0'`
+- Service template `os-windows-wsman-services-auto`
+    - Service template removed
+- Command `os-windows-wsman-taskscheduler`
+    - Macro `MAX-CREATE-DATE` removed
+    - Macro `MAX-MODIFY-DATE` removed
+    - Macro `MIN-CREATE-DATE` removed
+    - Macro `MIN-MODIFY-DATE` removed
+    - Macro `TIME-UNIT` removed
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+- Command `os-windows-wsman-services-auto`
+    - Command removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251010</summary>
+
+- Plugin pack `Windows (WinRM)`
+    - Description updated
+- Service template [`os-windows-wsman-files-count`](#os-windows-wsman-files-count)
+    - Service template added
+- Service template [`os-windows-wsman-taskscheduler`](#os-windows-wsman-taskscheduler)
+    - Service template added
+- Command `os-windows-wsman-files-count`
+    - Command added
+- Command `os-windows-wsman-taskscheduler`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Plugin pack `Windows (WinRM)`
+    - Renamed from `Windows (WS-Management)`
+- Host template `Windows-Server-WinRM`
+    - Renamed from `Windows-Server-wsman`
+    - Alias changed from `Windows Server (wsman)` to `Windows Server (WinRM)`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241206 - 20241213</summary>
+
+- Service template [`os-windows-wsman-pending-reboot`](#os-windows-wsman-pending-reboot)
+    - Macro `WARNING_STATUS`: default changed from `%{RebootPending} =~ /true/i` to `'%{RebootPending} =~ /true/i'`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `Windows (WS-Management)`
+    - Description updated
+- Service template [`os-windows-wsman-pending-reboot`](#os-windows-wsman-pending-reboot)
+    - Macro `WARNING_STATUS` added (default `%{RebootPending} =~ /true/i`)
+
+</details>

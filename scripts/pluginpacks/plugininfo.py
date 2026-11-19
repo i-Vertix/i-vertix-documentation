@@ -128,9 +128,13 @@ def _metrics_from_counters(code):
     # set_counters and helpers such as set_counters_traffic (snmp_standard::mode::interfaces)
     body = ''.join(m.group(1) for m in re.finditer(r'sub\s+set_counters\w*\s*\{(.*?)\n\}', code, flags=re.S))
     metrics = []
-    for chunk in re.split(r'\{\s*label\s*=>', body)[1:]:
+    # split at counter entries only; legacy perfdata entries "{ label => 'x', value => ... }" stay in their counter
+    for chunk in re.split(r"\{\s*label\s*=>(?=\s*['\"][^'\"]+['\"]\s*,\s*(?!\s|value\b|template\b))", body)[1:]:
         label = re.match(r"\s*['\"]([^'\"]+)['\"]", chunk)
         nlabel = re.search(r"nlabel\s*=>\s*['\"]([^'\"]+)['\"](?!\s*\.)", chunk)
+        if not nlabel:
+            # older plugins: no nlabel, the perfdata keeps its legacy name ("perfdatas => [ { label => 'cpu_1s', ... } ]")
+            nlabel = re.search(r"perfdatas\s*=>\s*\[\s*\{\s*label\s*=>\s*['\"]([^'\"$]+)['\"](?!\s*\.)", chunk)
         if not nlabel:
             continue
         unit = re.search(r"perfdatas\s*=>.*?unit\s*=>\s*['\"]([^'\"]*)['\"]", chunk, flags=re.S)

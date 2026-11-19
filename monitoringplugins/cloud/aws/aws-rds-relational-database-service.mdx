@@ -12,26 +12,19 @@ import image from "../../assets/pluginpacks/Brands/AWS.png";
 
 ## Description
 
-### AWS RDS (Relational Database Service) monitoring
-protocols used: awscli (Rest API)
-You can get an overview of all gathered metrics from AWS/RDS in the [official documentation](https://docs.aws.amazon.com/rds/index.html).
+Monitors Amazon RDS database instances and Aurora clusters through Amazon CloudWatch: instance status, CPU, connections, queries and transactions, network, disk I/O and storage. The metrics are described in the [Amazon RDS documentation](https://docs.aws.amazon.com/rds/index.html).
 
-**Monitored objects**
+The plugin pack provides these checks:
 
-- Instances (MySQL, MariaDB, Oracle, SQL Server ...)
-- Clusters (Aurora, ...)
-
-**Monitored metrics**
-
-- Connections
-- CPU usage
-- Disk IO
-- Instance status
-- Network
-- Query statistics (Only available on Aurora MySQL)
-- Storage usage
-- Transactions (Only available on Aurora MySQL and partially Postgres)
-- Volume usage (Only available on Aurora MySQL and Postgres)
+* [Connections](#cloud-aws-rds-connections)
+* [CPU usage](#cloud-aws-rds-cpu)
+* [Disk IO](#cloud-aws-rds-diskio)
+* [Instance status](#cloud-aws-rds-instance-status)
+* [Network usage](#cloud-aws-rds-network)
+* [Query statistics](#cloud-aws-rds-queries)
+* [Storage](#cloud-aws-rds-storage)
+* [Transactions](#cloud-aws-rds-transactions)
+* [Volume usage](#cloud-aws-rds-volume)
 
 ## Prerequisites
 
@@ -39,6 +32,16 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-RDS-Instance](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+* [AWS-RDS-Cluster](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 
@@ -249,6 +252,21 @@ These service templates are part of the plugin pack, but not linked to the host 
 | `WARNING-TOTAL-STORAGE-FULL` |  | Warning threshold total storage full |
 | `CRITICAL-TOTAL-BACKING-UP` |  | Critical threshold total backing up |
 | `CRITICAL-TOTAL-MAINTENANCE` |  | Critical threshold total maintenance |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_available` |  | available | `WARNING-TOTAL-AVAILABLE`, `CRITICAL-TOTAL-AVAILABLE` |
+| `total_failed` |  | failed | `WARNING-TOTAL-FAILED`, `CRITICAL-TOTAL-FAILED` |
+| `total_backing_up` |  | backing-up | `WARNING-TOTAL-BACKING-UP`, `CRITICAL-TOTAL-BACKING-UP` |
+| `total_maintenance` |  | maintenance | `WARNING-TOTAL-MAINTENANCE`, `CRITICAL-TOTAL-MAINTENANCE` |
+| `total_stopped` |  | stopped | `WARNING-TOTAL-STOPPED`, `CRITICAL-TOTAL-STOPPED` |
+| `total_storage_full` |  | storage-full | `WARNING-TOTAL-STORAGE-FULL`, `CRITICAL-TOTAL-STORAGE-FULL` |
 
 </div>
 

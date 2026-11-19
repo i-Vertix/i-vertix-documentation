@@ -12,10 +12,11 @@ import image from "../../assets/pluginpacks/Other/AzureAutomation.png";
 
 ## Description
 
-### Azure Automation monitoring
-Protocols used: Rest API (https)
+Monitors Azure Automation accounts: the number of jobs, runbook runs and machine runs.
 
-- Jobs
+The plugin pack provides these checks:
+
+* [Automation Jobs](#cloud-azure-management-automation-jobs)
 
 ## Prerequisites
 
@@ -23,6 +24,7 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
 
 ## Host Templates
 

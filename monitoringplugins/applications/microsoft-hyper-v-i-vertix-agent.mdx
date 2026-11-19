@@ -1,0 +1,583 @@
+---
+title: "Microsoft Hyper-V (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/Windows.png";
+
+<PluginPackHeader name="Microsoft Hyper-V (i-Vertix agent)" image={image} category="Application" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Microsoft Hyper-V hosts through the i-Vertix agent: integration services, replication, snapshots, VM status, and CPU, memory, disk and network performance counters.
+
+The plugin pack provides these checks:
+
+* [Hyper-V Node Integration Service status](#ivertix-agent-apps-microsoft-hyperv-local-node-integration-service)
+* [Hyper-V Node Replication](#ivertix-agent-apps-microsoft-hyperv-local-node-replication)
+* [Hyper-V Node Snapshot](#ivertix-agent-apps-microsoft-hyperv-local-node-snapshot)
+* [Hyper-V Node VM status](#ivertix-agent-apps-microsoft-hyperv-local-node-vm-status)
+* [Hyper-V: Dynamic Memory Balancer - Average Pressure](#ivertix-nsclient-restapi-check_pdh-hyperv-memory-balancer-average-pressure)
+* [Hyper-V: Dynamic Memory VM - Average Pressure](#ivertix-nsclient-restapi-check_pdh-hyperv-dynamic-memory-vm-average-pressure)
+* [Hyper-V: Hypervisor Root CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-hypervisor-cpu-total-run-time)
+* [Hyper-V: Logical CPU - Context Switches/Sec](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-context-switches)
+* [Hyper-V: Logical CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-total-run-time)
+* [Hyper-V: Logical Disk - avg Read latency](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-reads)
+* [Hyper-V: Logical Disk - avg Write latency](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-write)
+* [Hyper-V: Physical Disk - avg Read latency](#ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-reads)
+* [Hyper-V: Physical Disk - avg Write latency](#ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-write)
+* [Hyper-V: Virtual CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-virtual-cpu-total-run-time)
+* [Network Interface - Output Queue Length](#ivertix-nsclient-restapi-check_pdh-network-interface-output-queue-length)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Hyper-V Node Replication](#ivertix-agent-apps-microsoft-hyperv-local-node-replication) | `Hyper-V Node Replication - <name>` |
+| [Hyper-V Node VM status](#ivertix-agent-apps-microsoft-hyperv-local-node-vm-status) | `Node VM Status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Microsoft-HyperV-agent
+
+*Microsoft Hyper-V (i-Vertix agent)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hyper-V Node Integration Service status](#ivertix-agent-apps-microsoft-hyperv-local-node-integration-service) | `ivertix-agent-apps-microsoft-hyperv-local-node-integration-service` |
+| [Hyper-V Node Replication](#ivertix-agent-apps-microsoft-hyperv-local-node-replication) | `ivertix-agent-apps-microsoft-hyperv-local-node-replication` |
+| [Hyper-V Node Snapshot](#ivertix-agent-apps-microsoft-hyperv-local-node-snapshot) | `ivertix-agent-apps-microsoft-hyperv-local-node-snapshot` |
+| [Hyper-V Node VM status](#ivertix-agent-apps-microsoft-hyperv-local-node-vm-status) | `ivertix-agent-apps-microsoft-hyperv-local-node-vm-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hyper-V: Dynamic Memory Balancer - Average Pressure](#ivertix-nsclient-restapi-check_pdh-hyperv-memory-balancer-average-pressure) | `ivertix-nsclient-restapi-check_pdh-hyperv-memory-balancer-average-pressure` |
+| [Hyper-V: Dynamic Memory VM - Average Pressure](#ivertix-nsclient-restapi-check_pdh-hyperv-dynamic-memory-vm-average-pressure) | `ivertix-nsclient-restapi-check_pdh-hyperv-dynamic-memory-vm-average-pressure` |
+| [Hyper-V: Hypervisor Root CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-hypervisor-cpu-total-run-time) | `ivertix-nsclient-restapi-check_pdh-hyperv-hypervisor-cpu-total-run-time` |
+| [Hyper-V: Logical CPU - Context Switches/Sec](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-context-switches) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-context-switches` |
+| [Hyper-V: Logical CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-total-run-time) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-total-run-time` |
+| [Hyper-V: Logical Disk - avg Read latency](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-reads) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-reads` |
+| [Hyper-V: Logical Disk - avg Write latency](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-write) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-write` |
+| [Hyper-V: Physical Disk - avg Read latency](#ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-reads) | `ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-reads` |
+| [Hyper-V: Physical Disk - avg Write latency](#ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-write) | `ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-write` |
+| [Hyper-V: Virtual CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-virtual-cpu-total-run-time) | `ivertix-nsclient-restapi-check_pdh-hyperv-virtual-cpu-total-run-time` |
+| [Network Interface - Output Queue Length](#ivertix-nsclient-restapi-check_pdh-network-interface-output-queue-length) | `ivertix-nsclient-restapi-check_pdh-network-interface-output-queue-length` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Microsoft-HyperV-Performances
+
+*Microsoft Hyper-V Performance Counters (i-Vertix agent)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hyper-V: Dynamic Memory VM - Average Pressure](#ivertix-nsclient-restapi-check_pdh-hyperv-dynamic-memory-vm-average-pressure) | `ivertix-nsclient-restapi-check_pdh-hyperv-dynamic-memory-vm-average-pressure` |
+| [Hyper-V: Hypervisor Root CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-hypervisor-cpu-total-run-time) | `ivertix-nsclient-restapi-check_pdh-hyperv-hypervisor-cpu-total-run-time` |
+| [Hyper-V: Logical CPU - Context Switches/Sec](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-context-switches) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-context-switches` |
+| [Hyper-V: Logical CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-total-run-time) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-total-run-time` |
+| [Hyper-V: Logical Disk - avg Read latency](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-reads) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-reads` |
+| [Hyper-V: Logical Disk - avg Write latency](#ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-write) | `ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-write` |
+| [Hyper-V: Dynamic Memory Balancer - Average Pressure](#ivertix-nsclient-restapi-check_pdh-hyperv-memory-balancer-average-pressure) | `ivertix-nsclient-restapi-check_pdh-hyperv-memory-balancer-average-pressure` |
+| [Hyper-V: Physical Disk - avg Read latency](#ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-reads) | `ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-reads` |
+| [Hyper-V: Physical Disk - avg Write latency](#ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-write) | `ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-write` |
+| [Hyper-V: Virtual CPU - Total Run Time](#ivertix-nsclient-restapi-check_pdh-hyperv-virtual-cpu-total-run-time) | `ivertix-nsclient-restapi-check_pdh-hyperv-virtual-cpu-total-run-time` |
+| [Network Interface - Output Queue Length](#ivertix-nsclient-restapi-check_pdh-network-interface-output-queue-length) | `ivertix-nsclient-restapi-check_pdh-network-interface-output-queue-length` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hyper-V Node Integration Service status](#ivertix-agent-apps-microsoft-hyperv-local-node-integration-service) | `ivertix-agent-apps-microsoft-hyperv-local-node-integration-service` |
+| [Hyper-V Node Replication](#ivertix-agent-apps-microsoft-hyperv-local-node-replication) | `ivertix-agent-apps-microsoft-hyperv-local-node-replication` |
+| [Hyper-V Node Snapshot](#ivertix-agent-apps-microsoft-hyperv-local-node-snapshot) | `ivertix-agent-apps-microsoft-hyperv-local-node-snapshot` |
+| [Hyper-V Node VM status](#ivertix-agent-apps-microsoft-hyperv-local-node-vm-status) | `ivertix-agent-apps-microsoft-hyperv-local-node-vm-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V Node Integration Service status {/* #ivertix-agent-apps-microsoft-hyperv-local-node-integration-service */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-STATUS` | `running` | Filter virtual machine status (can be a regexp) (Default: 'running') |
+| `WARNING-GLOBAL-STATUS` | `%{integration_service_state} =~ /Update required/i` | Set warning threshold for status (Default: '%\{integration_service_state\} =~ /Update required/i'). Can used special variables like: %\{vm\}, %\{integration_service_state\}, %\{integration_service_version\}, %\{state\} |
+| `CRITICAL-SERVICE-STATUS` | `%{primary_status} !~ /Ok/i` | Set critical threshold for status (Default: '%\{primary_status\} !~ /Ok/i'). Can used special variables like: %\{vm\}, %\{service\}, %\{primary_status\}, %\{secondary_status\}, %\{enabled\} |
+| `FILTER-VM` |  | Filter virtual machines (can be a regexp) |
+| `WARNING-SERVICE-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{vm\}, %\{service\}, %\{primary_status\}, %\{secondary_status\}, %\{enabled\} |
+| `CRITICAL-GLOBAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{vm\}, %\{integration_service_state\}, %\{integration_service_version\}, %\{state\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V Node Replication {/* #ivertix-agent-apps-microsoft-hyperv-local-node-replication */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `%{health} =~ /Warning/i` | Set warning threshold for status (Default: '%\{health\} =~ /Warning/i'). Can used special variables like: %\{vm\}, %\{state\}, %\{health\} |
+| `CRITICAL-STATUS` | `%{health} =~ /Critical/i` | Set critical threshold for status (Default: '%\{health\} =~ /Critical/i'). Can used special variables like: %\{vm\}, %\{state\}, %\{health\} |
+| `FILTER-VM` |  | Filter virtual machines (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V Node Snapshot {/* #ivertix-agent-apps-microsoft-hyperv-local-node-snapshot */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SNAPSHOT` | `604800` | Threshold warning Snapshot (sec) |
+| `CRITICAL-SNAPSHOT` | `2419200` | Threshold critical Snapshot (sec) |
+| `FILTER-VM` |  | Filter virtual machines (can be a regexp) |
+| `WARNING-BACKING` |  | Threshold warning Backing (sec) |
+| `CRITICAL-BACKING` |  | Threshold critical Backing (sec) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V Node VM status {/* #ivertix-agent-apps-microsoft-hyperv-local-node-vm-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{status} !~ /(Operating normally\|Funzionamento normale\|Normaler Betrieb)/i` | Set critical threshold for status (Default: '%\{status\} !~ /Operating normally/i'). Can used special variables like: %\{vm\}, %\{state\}, %\{status\}, %\{is_clustered\} |
+| `FILTER-VM` |  | Filter virtual machines (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{vm\}, %\{state\}, %\{status\}, %\{is_clustered\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Dynamic Memory VM - Average Pressure {/* #ivertix-nsclient-restapi-check_pdh-hyperv-dynamic-memory-vm-average-pressure */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Hyper-V Dynamic Memory VM(*)\\Average Pressure` |  |
+| `PERF_SYNTAX` | `Average Pressure` |  |
+| `WARNING` | `warning=value >= 83` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 90` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Hypervisor Root CPU - Total Run Time {/* #ivertix-nsclient-restapi-check_pdh-hyperv-hypervisor-cpu-total-run-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Hyper-V Hypervisor Root Virtual Processor(*)\\% Total Run Time` |  |
+| `PERF_SYNTAX` | `%` |  |
+| `WARNING` | `warning=value >= 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value >= 15` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Logical CPU - Context Switches/Sec {/* #ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-context-switches */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Hyper-V Hypervisor Logical Processor(*)\\Context Switches/sec` |  |
+| `PERF_SYNTAX` | `switches/sec` |  |
+| `WARNING` | `warning=value > 20000` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50000` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Logical CPU - Total Run Time {/* #ivertix-nsclient-restapi-check_pdh-hyperv-logical-cpu-total-run-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Hyper-V Hypervisor Logical Processor(*)\\% Total Run Time` |  |
+| `PERF_SYNTAX` | `%` |  |
+| `WARNING` | `warning=value > 75` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 85` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Logical Disk - avg Read latency {/* #ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-reads */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\LogicalDisk(*)\\Avg. Disk sec/Read` |  |
+| `PERF_SYNTAX` | `ms` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 25` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Logical Disk - avg Write latency {/* #ivertix-nsclient-restapi-check_pdh-hyperv-logical-disk-write */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\LogicalDisk(*)\\Avg. Disk sec/Write` |  |
+| `PERF_SYNTAX` | `ms` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 25` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Dynamic Memory Balancer - Average Pressure {/* #ivertix-nsclient-restapi-check_pdh-hyperv-memory-balancer-average-pressure */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Hyper-V Dynamic Memory Balancer(*)\\Average Pressure` |  |
+| `PERF_SYNTAX` | `Average pressure` |  |
+| `WARNING` | `warning=value >= 83` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Physical Disk - avg Read latency {/* #ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-reads */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\PhysicalDisk(*)\\Avg. Disk sec/Read` |  |
+| `PERF_SYNTAX` | `ms` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 25` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Physical Disk - avg Write latency {/* #ivertix-nsclient-restapi-check_pdh-hyperv-physical-disk-write */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\PhysicalDisk(*)\\Avg. Disk sec/Write` |  |
+| `PERF_SYNTAX` | `ms` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 25` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hyper-V: Virtual CPU - Total Run Time {/* #ivertix-nsclient-restapi-check_pdh-hyperv-virtual-cpu-total-run-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Hyper-V Hypervisor Virtual Processor(*)\\% Total Run Time` |  |
+| `PERF_SYNTAX` | `Total Run Time` |  |
+| `WARNING` | `warning=value > 75` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 85` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Network Interface - Output Queue Length {/* #ivertix-nsclient-restapi-check_pdh-network-interface-output-queue-length */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Network Interface(*)\\Output Queue Length` |  |
+| `PERF_SYNTAX` | `Queue Length` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 2` | critical=value > 5 |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `Microsoft-HyperV-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Host template `Microsoft-HyperV-Performances`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Command `ivertix-agent-apps-microsoft-hyperv-local-node-integration-service`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-hyperv-local-node-replication`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-hyperv-local-node-snapshot`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-hyperv-local-node-vm-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_pdh`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240317</summary>
+
+- Service template [`ivertix-agent-apps-microsoft-hyperv-local-node-vm-status`](#ivertix-agent-apps-microsoft-hyperv-local-node-vm-status)
+    - Macro `CRITICAL-STATUS`: default changed from `%{status} !~ /(Operating normally|Funzionamento normale)/i` to `%{status} !~ /(Operating normally|Funzionamento normale|Normaler Betrieb)/i`
+
+</details>

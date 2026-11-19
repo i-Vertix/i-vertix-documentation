@@ -1,0 +1,739 @@
+---
+title: "MongoDB"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Databases/MongoDB.png";
+
+<PluginPackHeader name="MongoDB" image={image} category="Database" metadata={[]} />
+
+## Description
+
+Monitors MongoDB: connection time and connections, database and collection statistics, queries and the replication status.
+
+The plugin pack provides these checks:
+
+* [MongoDB Collection statistics](#database-mongodb-collection-statistics)
+* [MongoDB Connection time](#database-mongodb-connection-times)
+* [MongoDB Connections](#database-mongodb-connections)
+* [MongoDB Database statistics](#database-mongodb-database-statistics)
+* [MongoDB Queries](#database-mongodb-queries)
+* [MongoDB Replication Status](#database-mongodb-replications-status)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [MongoDB Collection statistics](#database-mongodb-collection-statistics) | `MongoDB Collection statistics - <name>` |
+| [MongoDB Database statistics](#database-mongodb-database-statistics) | `MongoDB Database statistics - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### MongoDB
+
+*MongoDB* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MONGODB-PORT` | `27017` | Port used by MongoDB. |
+| `MONGODB-PROTOCOL` | `mongodb` | Protocol used (default: mongodb) DNS Seedlist Connection Format can be specified, i.e. 'mongodb+srv' |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `MONGODB-PASSWORD` | *(password)* | MongoDB password. |
+| `MONGODB-EXTRA-OPTS` | `--no-ssl` |  |
+| `MONGODB-USERNAME` |  | MongoDB username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [MongoDB Collection statistics](#database-mongodb-collection-statistics) | `database-mongodb-collection-statistics` |
+| [MongoDB Connection time](#database-mongodb-connection-times) | `database-mongodb-connection-times` |
+| [MongoDB Connections](#database-mongodb-connections) | `database-mongodb-connections` |
+| [MongoDB Database statistics](#database-mongodb-database-statistics) | `database-mongodb-database-statistics` |
+| [MongoDB Queries](#database-mongodb-queries) | `database-mongodb-queries` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [MongoDB Replication Status](#database-mongodb-replications-status) | `database-mongodb-replications-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### MongoDB-Replication
+
+*MongoDB Replication* · Parent template: `MongoDB`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MONGODB-EXTRA-OPTS` |  |  |
+| `MONGODB-PASSWORD` |  | MongoDB password. |
+| `MONGODB-PORT` |  | Port used by MongoDB. |
+| `MONGODB-PROTOCOL` |  | Protocol used (default: mongodb) DNS Seedlist Connection Format can be specified, i.e. 'mongodb+srv' |
+| `MONGODB-USERNAME` |  | MongoDB username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [MongoDB Replication Status](#database-mongodb-replications-status) | `database-mongodb-replications-status` |
+| [MongoDB Collection statistics](#database-mongodb-collection-statistics) (inherited from `MongoDB`) | `database-mongodb-collection-statistics` |
+| [MongoDB Connection time](#database-mongodb-connection-times) (inherited from `MongoDB`) | `database-mongodb-connection-times` |
+| [MongoDB Connections](#database-mongodb-connections) (inherited from `MongoDB`) | `database-mongodb-connections` |
+| [MongoDB Database statistics](#database-mongodb-database-statistics) (inherited from `MongoDB`) | `database-mongodb-database-statistics` |
+| [MongoDB Queries](#database-mongodb-queries) (inherited from `MongoDB`) | `database-mongodb-queries` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### MongoDB Collection statistics {/* #database-mongodb-collection-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DATABASE` | `.*` | Filter database name (Can use regexp) |
+| `WARNING-STORAGE-SIZE` |  | Threshold warning storage size bytes |
+| `WARNING-INDEX-SIZE` |  | Threshold warning index size bytes |
+| `WARNING-DOCUMENTS` |  | Threshold warning documents count |
+| `WARNING-INDEXES` |  | Threshold warning indexes count |
+| `CRITICAL-STORAGE-SIZE` |  | Threshold critical storage size bytes |
+| `CRITICAL-INDEX-SIZE` |  | Threshold critical index size bytes |
+| `CRITICAL-DOCUMENTS` |  | Threshold critical documents count |
+| `CRITICAL-INDEXES` |  | Threshold critical indexes count |
+| `CRITICAL-SHARD-DOCUMENTS` |  | Threshold critical shared documents count |
+| `CRITICAL-SHARD-INDEX-SIZE` |  | Threshold critical shared index size (B) |
+| `CRITICAL-SHARD-INDEXES` |  | Threshold critical shared indexes count |
+| `CRITICAL-SHARD-STORAGE-SIZE` |  | Threshold critical shared storage size (B) |
+| `WARNING-SHARD-DOCUMENTS` |  | Threshold critical shared documents count |
+| `WARNING-SHARD-INDEX-SIZE` |  | Threshold critical shared index size (B) |
+| `WARNING-SHARD-INDEXES` |  | Threshold critical shared indexes count |
+| `WARNING-SHARD-STORAGE-SIZE` |  | Threshold critical shared storage size (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `collection.size.storage.bytes` | `B` | storage size | `WARNING-STORAGE-SIZE`, `CRITICAL-STORAGE-SIZE` |
+| `collection.size.index.bytes` | `B` | index size | `WARNING-INDEX-SIZE`, `CRITICAL-INDEX-SIZE` |
+| `collection.documents.count` |  | documents | `WARNING-DOCUMENTS`, `CRITICAL-DOCUMENTS` |
+| `collection.indexes.count` |  | indexes | `WARNING-INDEXES`, `CRITICAL-INDEXES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MongoDB Connection time {/* #database-mongodb-connection-times */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CONNECTION-TIME` | `250` | Threshold warning connection time (ms) |
+| `CRITICAL-CONNECTION-TIME` | `500` | Threshold critical connection time (ms) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` | Connection established in  ms | `WARNING-CONNECTION-TIME`, `CRITICAL-CONNECTION-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MongoDB Connections {/* #database-mongodb-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-USAGE` | `95` | Threshold critical connections usage (%) |
+| `WARNING-USAGE` | `90` | Threshold warning connections usage (%) |
+| `WARNING-ACTIVE` |  | Threshold warning active connections |
+| `WARNING-CURRENT` |  | Threshold warning current connections |
+| `WARNING-TOTAL-CREATED` |  | Threshold warning total connections created |
+| `CRITICAL-ACTIVE` |  | Threshold critical active connections |
+| `CRITICAL-CURRENT` |  | Threshold critical current connections |
+| `CRITICAL-TOTAL-CREATED` |  | Threshold critical total connections created |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.active.count` |  | active | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `connections.current.count` |  | current | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `connections.usage.percentage` | `%` | usage:  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `connections.created.persecond` | `/s` | created: /s | `WARNING-TOTAL-CREATED`, `CRITICAL-TOTAL-CREATED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MongoDB Database statistics {/* #database-mongodb-database-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DATABASE` | `.*` | Filter database name (Can use regexp) |
+| `WARNING-STORAGE-SIZE` |  | Threshold warning storage size (B) |
+| `WARNING-DATA-SIZE` |  | Threshold warning data size (B) |
+| `WARNING-INDEX-SIZE` |  | Threshold warning index size (B) |
+| `WARNING-COLLECTIONS` |  | Threshold warning collections count |
+| `WARNING-VIEWS` |  | Threshold warning views count |
+| `WARNING-DOCUMENTS` |  | Threshold warning documents count |
+| `WARNING-INDEXES` |  | Threshold warning indexes count |
+| `CRITICAL-STORAGE-SIZE` |  | Threshold critical storage size (B) |
+| `CRITICAL-DATA-SIZE` |  | Threshold critical data size (B) |
+| `CRITICAL-INDEX-SIZE` |  | Threshold critical index size (B) |
+| `CRITICAL-COLLECTIONS` |  | Threshold critical collections count |
+| `CRITICAL-VIEWS` |  | Threshold critical views count |
+| `CRITICAL-DOCUMENTS` |  | Threshold critical documents count |
+| `CRITICAL-INDEXES` |  | Threshold critical indexes count |
+| `CRITICAL-SHARD-COLLECTIONS` |  | Threshold critical shard collections count |
+| `CRITICAL-SHARD-DATA-STORAGE-SIZE` |  | Threshold critical shard data storage size (B) |
+| `CRITICAL-SHARD-DOCUMENTS` |  | Threshold critical shard documents count |
+| `CRITICAL-SHARD-INDEX-SIZE` |  | Threshold critical shard index size (B) |
+| `CRITICAL-SHARD-INDEXES` |  | Threshold critical shard indexes count |
+| `CRITICAL-SHARD-STORAGE-SIZE` |  | Threshold critical shard storage size (B) |
+| `CRITICAL-SHARD-VIEWS` |  | Threshold critical shard views count |
+| `WARNING-SHARD-COLLECTIONS` |  | Threshold warning shard collections count |
+| `WARNING-SHARD-DATA-STORAGE-SIZE` |  | Threshold warning shard data storage size (B) |
+| `WARNING-SHARD-DOCUMENTS` |  | Threshold warning shard documents count |
+| `WARNING-SHARD-INDEX-SIZE` |  | Threshold warning shard index size (B) |
+| `WARNING-SHARD-INDEXES` |  | Threshold warning shard indexes count |
+| `WARNING-SHARD-STORAGE-SIZE` |  | Threshold warning shard storage size (B) |
+| `WARNING-SHARD-VIEWS` |  | Threshold warning shard views count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.size.storage.bytes` | `B` | storage size | `WARNING-STORAGE-SIZE`, `CRITICAL-STORAGE-SIZE` |
+| `database.size.data.bytes` | `B` | data size | `WARNING-DATA-SIZE`, `CRITICAL-DATA-SIZE` |
+| `database.size.index.bytes` | `B` | index size | `WARNING-INDEX-SIZE`, `CRITICAL-INDEX-SIZE` |
+| `database.collections.count` |  | collections | `WARNING-COLLECTIONS`, `CRITICAL-COLLECTIONS` |
+| `database.views.count` |  | views | `WARNING-VIEWS`, `CRITICAL-VIEWS` |
+| `database.documents.count` |  | documents | `WARNING-DOCUMENTS`, `CRITICAL-DOCUMENTS` |
+| `database.indexes.count` |  | indexes | `WARNING-INDEXES`, `CRITICAL-INDEXES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MongoDB Queries {/* #database-mongodb-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-INSERT` |  | Threshold warning queries insert per second |
+| `WARNING-QUERY` |  | Threshold warning queries query per second |
+| `WARNING-UPDATE` |  | Threshold warning queries update per second |
+| `WARNING-DELETE` |  | Threshold warning queries delete per second |
+| `WARNING-GETMORE` |  | Threshold warning queries getmore per second |
+| `WARNING-COMMAND` |  | Threshold warning queries command per second |
+| `WARNING-INSERT-COUNT` |  | Threshold warning queries insert count |
+| `WARNING-QUERY-COUNT` |  | Threshold warning queries query count |
+| `WARNING-UPDATE-COUNT` |  | Threshold warning queries update count |
+| `WARNING-DELETE-COUNT` |  | Threshold warning queries delete count |
+| `WARNING-GETMORE-COUNT` |  | Threshold warning queries getmore count |
+| `WARNING-COMMAND-COUNT` |  | Threshold warning queries command count |
+| `CRITICAL-INSERT` |  | Threshold warning queries insert per second |
+| `CRITICAL-QUERY` |  | Threshold warning queries query per second |
+| `CRITICAL-UPDATE` |  | Threshold warning queries update per second |
+| `CRITICAL-DELETE` |  | Threshold warning queries delete per second |
+| `CRITICAL-GETMORE` |  | Threshold warning queries getmore per second |
+| `CRITICAL-COMMAND` |  | Threshold warning queries command per second |
+| `CRITICAL-INSERT-COUNT` |  | Threshold warning queries insert count |
+| `CRITICAL-QUERY-COUNT` |  | Threshold warning queries query count |
+| `CRITICAL-UPDATE-COUNT` |  | Threshold warning queries update count |
+| `CRITICAL-DELETE-COUNT` |  | Threshold warning queries delete count |
+| `CRITICAL-GETMORE-COUNT` |  | Threshold warning queries getmore count |
+| `CRITICAL-COMMAND-COUNT` |  | Threshold warning queries command count |
+| `CRITICAL-TOTAL` |  | Threshold critical total queries per second |
+| `WARNING-TOTAL` |  | Threshold warning total queries per second |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queries.total.persecond` | `/s` | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MongoDB Replication Status {/* #database-mongodb-replications-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMBER-STATUS` | `'%{state} !~ /ARBITER\|PRIMARY\|SECONDARY/'` | Set warning threshold for members status (Default: '%\{state\} !~ /PRIMARY\|SECONDARY/'). Can used special variables like: %\{name\}, %\{state\}, %\{health\}, %\{slave_delay\}, %\{priority\} |
+| `WARNING-INSTANCE-LAG` | `-30:30` | Threshold warning for replication lag between primary and secondary members. Must not be over 0 (between minus slaveDelay and 0) |
+| `CRITICAL-MEMBER-STATUS` | `'%{health} !~ /up/'` | Set critical threshold for members status (Default: '%\{health\} !~ /up/'). Can used special variables like: %\{name\}, %\{state\}, %\{health\}, %\{slave_delay\}, %\{priority\} |
+| `CRITICAL-INSTANCE-LAG` | `-120:120` | Threshold critical for replication lag between primary and secondary members. Must not be over 0 (between minus slaveDelay and 0) |
+| `WARNING-STATUS` |  | Set warning threshold for checked instance status (Default: ''). Can used special variables like: %\{state\}, %\{sync_host\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for checked instance status (Default: ''). Can used special variables like: %\{state\}, %\{sync_host\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `members.primary.count` |  | primary |  |
+| `members.secondary.count` |  | secondary |  |
+| `members.arbiter.count` |  | arbiter |  |
+| `replication.lag.seconds` | `s` | replication lag:  s |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231114 - 20231207</summary>
+
+- Command `database-mongodb-collection-statistics`
+    - Option `--critical-storage-size=$_SERVICECRITICAL-STORAGE-SIZE$` added
+    - Option `--critical-storage-sizes=$_SERVICECRITICAL-STORAGE-SIZE$` removed
+- Command `database-mongodb-connections`
+    - Option `--critical-usage=$_SERVICECRITICAL-USAGE$` added
+    - Option `--critica-usage=$_SERVICECRITICAL-USAGE$` removed
+- Command `database-mongodb-queries`
+    - Option `--critical-update=$_SERVICECRITICAL-UPDATE$` added
+    - Option `--criticalupdate=$_SERVICECRITICAL-UPDATE$` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231031</summary>
+
+- Service template [`database-mongodb-connections`](#database-mongodb-connections)
+    - Macro `CRITICAL-USAGE` added (default `95`)
+    - Macro `WARNING-USAGE` added (default `90`)
+    - Macro `CRITICAL-CONNECTIONS-USAGE` removed
+    - Macro `WARNING-CONNECTIONS-USAGE` removed
+- Service template [`database-mongodb-replications-status`](#database-mongodb-replications-status)
+    - Macro `CRITICAL-INSTANCE-LAG`: default changed from `-30:120` to `-120:120`
+- Command `database-mongodb-collection-statistics`
+    - Option `--warning-storage-size=$_SERVICEWARNING-STORAGE-SIZE$` added
+    - Option `--warning-index-size=$_SERVICEWARNING-INDEX-SIZE$` added
+    - Option `--warning-documents=$_SERVICEWARNING-DOCUMENTS$` added
+    - Option `--warning-indexes=$_SERVICEWARNING-INDEXES$` added
+    - Option `--critical-storage-sizes=$_SERVICECRITICAL-STORAGE-SIZE$` added
+    - Option `--critical-index-size=$_SERVICECRITICAL-INDEX-SIZE$` added
+    - Option `--critical-documents=$_SERVICECRITICAL-DOCUMENTS$` added
+    - Option `--critical-indexes=$_SERVICECRITICAL-INDEXES$` added
+    - Option `--warning-shard-storage-size=$_SERVICEWARNING-SHARD-STORAGE-SIZE$` added
+    - Option `--warning-shard-index-size=$_SERVICEWARNING-SHARD-INDEX-SIZE$` added
+    - Option `--warning-shard-documents=$_SERVICEWARNING-SHARD-DOCUMENTS$` added
+    - Option `--warning-shard-indexes=$_SERVICEWARNING-SHARD-INDEXES$` added
+    - Option `--critical-shard-storage-size=$_SERVICECRITICAL-SHARD-STORAGE-SIZE$` added
+    - Option `--critical-shard-index-size=$_SERVICECRITICAL-SHARD-INDEX-SIZE$` added
+    - Option `--critical-shard-documents=$_SERVICECRITICAL-SHARD-DOCUMENTS$` added
+    - Option `--critical-shard-indexes=$_SERVICECRITICAL-SHARD-INDEXES$` added
+    - Option `--warning-subinstance-collection-size-storage-bytes=$_SERVICEWARNING-STORAGE-SIZE-BYTES$` removed
+    - Option `--warning-subinstance-collection-size-index-bytes=$_SERVICEWARNING-INDEX-SIZE-BYTES$` removed
+    - Option `--warning-subinstance-collection-documents-count=$_SERVICEWARNING-DOCUMENTS-COUNT$` removed
+    - Option `--warning-subinstance-collection-indexes-count=$_SERVICEWARNING-INDEXES-COUNT$` removed
+    - Option `--critical-subinstance-collection-size-storage-bytes=$_SERVICECRITICAL-STORAGE-SIZE-BYTES$` removed
+    - Option `--critical-subinstance-collection-size-index-bytes=$_SERVICECRITICAL-INDEX-SIZE-BYTES$` removed
+    - Option `--critical-subinstance-collection-documents-count=$_SERVICECRITICAL-DOCUMENTS-COUNT$` removed
+    - Option `--critical-subinstance-collection-indexes-count=$_SERVICECRITICAL-INDEXES-COUNT$` removed
+    - Macro `WARNING-STORAGE-SIZE` added
+    - Macro `WARNING-INDEX-SIZE` added
+    - Macro `WARNING-DOCUMENTS` added
+    - Macro `WARNING-INDEXES` added
+    - Macro `CRITICAL-STORAGE-SIZE` added
+    - Macro `CRITICAL-INDEX-SIZE` added
+    - Macro `CRITICAL-DOCUMENTS` added
+    - Macro `CRITICAL-INDEXES` added
+    - Macro `CRITICAL-SHARD-DOCUMENTS` added
+    - Macro `CRITICAL-SHARD-INDEX-SIZE` added
+    - Macro `CRITICAL-SHARD-INDEXES` added
+    - Macro `CRITICAL-SHARD-STORAGE-SIZE` added
+    - Macro `WARNING-SHARD-DOCUMENTS` added
+    - Macro `WARNING-SHARD-INDEX-SIZE` added
+    - Macro `WARNING-SHARD-INDEXES` added
+    - Macro `WARNING-SHARD-STORAGE-SIZE` added
+    - Macro `WARNING-STORAGE-SIZE-BYTES` removed
+    - Macro `WARNING-INDEX-SIZE-BYTES` removed
+    - Macro `WARNING-DOCUMENTS-COUNT` removed
+    - Macro `WARNING-INDEXES-COUNT` removed
+    - Macro `CRITICAL-STORAGE-SIZE-BYTES` removed
+    - Macro `CRITICAL-INDEX-SIZE-BYTES` removed
+    - Macro `CRITICAL-DOCUMENTS-COUNT` removed
+    - Macro `CRITICAL-INDEXES-COUNT` removed
+- Command `database-mongodb-connections`
+    - Option `--warning-active=$_SERVICEWARNING-ACTIVE$` added
+    - Option `--warning-current=$_SERVICEWARNING-CURRENT$` added
+    - Option `--warning-usage=$_SERVICEWARNING-USAGE$` added
+    - Option `--warning-total-created=$_SERVICEWARNING-TOTAL-CREATED$` added
+    - Option `--critical-active=$_SERVICECRITICAL-ACTIVE$` added
+    - Option `--critical-current=$_SERVICECRITICAL-CURRENT$` added
+    - Option `--critica-usage=$_SERVICECRITICAL-USAGE$` added
+    - Option `--critical-total-created=$_SERVICECRITICAL-TOTAL-CREATED$` added
+    - Option `--warning-connections-active-count=$_SERVICEWARNING-ACTIVE-CONNECTIONS$` removed
+    - Option `--warning-connections-current-count=$_SERVICEWARNING-CURRENT-CONNECTIONS$` removed
+    - Option `--warning-connections-usage-percentage=$_SERVICEWARNING-CONNECTIONS-USAGE$` removed
+    - Option `--warning-connections-created-persecond=$_SERVICEWARNING-CONNECTIONS-PERSEC$` removed
+    - Option `--critical-connections-active-count=$_SERVICECRITICAL-ACTIVE-CONNECTIONS$` removed
+    - Option `--critical-connections-current-count=$_SERVICECRITICAL-CURRENT-CONNECTIONS$` removed
+    - Option `--critical-connections-usage-percentage=$_SERVICECRITICAL-CONNECTIONS-USAGE$` removed
+    - Option `--critical-connections-created-persecond=$_SERVICECRITICAL-CONNECTIONS-PERSEC$` removed
+    - Macro `WARNING-ACTIVE` added
+    - Macro `WARNING-CURRENT` added
+    - Macro `WARNING-USAGE` added
+    - Macro `WARNING-TOTAL-CREATED` added
+    - Macro `CRITICAL-ACTIVE` added
+    - Macro `CRITICAL-CURRENT` added
+    - Macro `CRITICAL-USAGE` added
+    - Macro `CRITICAL-TOTAL-CREATED` added
+    - Macro `WARNING-ACTIVE-CONNECTIONS` removed
+    - Macro `WARNING-CURRENT-CONNECTIONS` removed
+    - Macro `WARNING-CONNECTIONS-USAGE` removed
+    - Macro `WARNING-CONNECTIONS-PERSEC` removed
+    - Macro `CRITICAL-ACTIVE-CONNECTIONS` removed
+    - Macro `CRITICAL-CURRENT-CONNECTIONS` removed
+    - Macro `CRITICAL-CONNECTIONS-USAGE` removed
+    - Macro `CRITICAL-CONNECTIONS-PERSEC` removed
+- Command `database-mongodb-database-statistics`
+    - Option `--warning-storage-size=$_SERVICEWARNING-STORAGE-SIZE$` added
+    - Option `--warning-data-size=$_SERVICEWARNING-DATA-SIZE$` added
+    - Option `--warning-index-size=$_SERVICEWARNING-INDEX-SIZE$` added
+    - Option `--warning-collections=$_SERVICEWARNING-COLLECTIONS$` added
+    - Option `--warning-views=$_SERVICEWARNING-VIEWS$` added
+    - Option `--warning-documents=$_SERVICEWARNING-DOCUMENTS$` added
+    - Option `--warning-indexes=$_SERVICEWARNING-INDEXES$` added
+    - Option `--critical-storage-size=$_SERVICECRITICAL-STORAGE-SIZE$` added
+    - Option `--critical-data-size=$_SERVICECRITICAL-DATA-SIZE$` added
+    - Option `--critical-index-size=$_SERVICECRITICAL-INDEX-SIZE$` added
+    - Option `--critical-collections=$_SERVICECRITICAL-COLLECTIONS$` added
+    - Option `--critical-views=$_SERVICECRITICAL-VIEWS$` added
+    - Option `--critical-documents=$_SERVICECRITICAL-DOCUMENTS$` added
+    - Option `--critical-indexes=$_SERVICECRITICAL-INDEXES$` added
+    - Option `--warning-shard-storage-size=$_SERVICEWARNING-SHARD-STORAGE-SIZE$` added
+    - Option `--warning-shard-data-size=$_SERVICEWARNING-SHARD-DATA-STORAGE-SIZE$` added
+    - Option `--warning-shard-index-size=$_SERVICEWARNING-SHARD-INDEX-SIZE$` added
+    - Option `--warning-shard-collections=$_SERVICEWARNING-SHARD-COLLECTIONS$` added
+    - Option `--warning-shard-views=$_SERVICEWARNING-SHARD-VIEWS$` added
+    - Option `--warning-shard-documents=$_SERVICEWARNING-SHARD-DOCUMENTS$` added
+    - Option `--warning-shard-indexes=$_SERVICEWARNING-SHARD-INDEXES$` added
+    - Option `--critical-shard-storage-size=$_SERVICECRITICAL-SHARD-STORAGE-SIZE$` added
+    - Option `--critical-shard-data-size=$_SERVICECRITICAL-SHARD-DATA-STORAGE-SIZE$` added
+    - Option `--critical-shard-index-size=$_SERVICECRITICAL-SHARD-INDEX-SIZE$` added
+    - Option `--critical-shard-collections=$_SERVICECRITICAL-SHARD-COLLECTIONS$` added
+    - Option `--critical-shard-views=$_SERVICECRITICAL-SHARD-VIEWS$` added
+    - Option `--critical-shard-documents=$_SERVICECRITICAL-SHARD-DOCUMENTS$` added
+    - Option `--critical-shard-indexes=$_SERVICECRITICAL-SHARD-INDEXES$` added
+    - Option `--warning-instance-database-size-storage-bytes=$_SERVICEWARNING-STORAGE-BYTES$` removed
+    - Option `--warning-instance-database-size-data-bytes=$_SERVICEWARNING-DATA-BYTES$` removed
+    - Option `--warning-instance-database-size-index-bytes=$_SERVICEWARNING-INDEX-BYTES$` removed
+    - Option `--warning-instance-database-collections-count=$_SERVICEWARNING-COLLECTIONS-COUNT$` removed
+    - Option `--warning-instance-database-views-count=$_SERVICEWARNING-VIEWS-COUNT$` removed
+    - Option `--warning-instance-database-documents-count=$_SERVICEWARNING-DOCUMENTS-COUNT$` removed
+    - Option `--warning-instance-database-indexes-count=$_SERVICEWARNING-INDEXES-COUNT$` removed
+    - Option `--critical-instance-database-size-storage-bytes=$_SERVICECRITICAL-STORAGE-BYTES$` removed
+    - Option `--critical-instance-database-size-data-bytes=$_SERVICECRITICAL-DATA-BYTES$` removed
+    - Option `--critical-instance-database-size-index-bytes=$_SERVICECRITICAL-INDEX-BYTES$` removed
+    - Option `--critical-instance-database-collections-count=$_SERVICECRITICAL-COLLECTIONS-COUNT$` removed
+    - Option `--critical-instance-database-views-count=$_SERVICECRITICAL-VIEWS-COUNT$` removed
+    - Option `--critical-instance-database-documents-count=$_SERVICECRITICAL-DOCUMENTS-COUNT$` removed
+    - Option `--critical-instance-database-indexes-count=$_SERVICECRITICAL-INDEXES-COUNT$` removed
+    - Macro `WARNING-STORAGE-SIZE` added
+    - Macro `WARNING-DATA-SIZE` added
+    - Macro `WARNING-INDEX-SIZE` added
+    - Macro `WARNING-COLLECTIONS` added
+    - Macro `WARNING-VIEWS` added
+    - Macro `WARNING-DOCUMENTS` added
+    - Macro `WARNING-INDEXES` added
+    - Macro `CRITICAL-STORAGE-SIZE` added
+    - Macro `CRITICAL-DATA-SIZE` added
+    - Macro `CRITICAL-INDEX-SIZE` added
+    - Macro `CRITICAL-COLLECTIONS` added
+    - Macro `CRITICAL-VIEWS` added
+    - Macro `CRITICAL-DOCUMENTS` added
+    - Macro `CRITICAL-INDEXES` added
+    - Macro `CRITICAL-SHARD-COLLECTIONS` added
+    - Macro `CRITICAL-SHARD-DATA-STORAGE-SIZE` added
+    - Macro `CRITICAL-SHARD-DOCUMENTS` added
+    - Macro `CRITICAL-SHARD-INDEX-SIZE` added
+    - Macro `CRITICAL-SHARD-INDEXES` added
+    - Macro `CRITICAL-SHARD-STORAGE-SIZE` added
+    - Macro `CRITICAL-SHARD-VIEWS` added
+    - Macro `WARNING-SHARD-COLLECTIONS` added
+    - Macro `WARNING-SHARD-DATA-STORAGE-SIZE` added
+    - Macro `WARNING-SHARD-DOCUMENTS` added
+    - Macro `WARNING-SHARD-INDEX-SIZE` added
+    - Macro `WARNING-SHARD-INDEXES` added
+    - Macro `WARNING-SHARD-STORAGE-SIZE` added
+    - Macro `WARNING-SHARD-VIEWS` added
+    - Macro `WARNING-STORAGE-BYTES` removed
+    - Macro `WARNING-DATA-BYTES` removed
+    - Macro `WARNING-INDEX-BYTES` removed
+    - Macro `WARNING-COLLECTIONS-COUNT` removed
+    - Macro `WARNING-VIEWS-COUNT` removed
+    - Macro `WARNING-DOCUMENTS-COUNT` removed
+    - Macro `WARNING-INDEXES-COUNT` removed
+    - Macro `CRITICAL-STORAGE-BYTES` removed
+    - Macro `CRITICAL-DATA-BYTES` removed
+    - Macro `CRITICAL-INDEX-BYTES` removed
+    - Macro `CRITICAL-COLLECTIONS-COUNT` removed
+    - Macro `CRITICAL-VIEWS-COUNT` removed
+    - Macro `CRITICAL-DOCUMENTS-COUNT` removed
+    - Macro `CRITICAL-INDEXES-COUNT` removed
+- Command `database-mongodb-queries`
+    - Option `--warning-insert=$_SERVICEWARNING-INSERT$` added
+    - Option `--warning-query=$_SERVICEWARNING-QUERY$` added
+    - Option `--warning-update=$_SERVICEWARNING-UPDATE$` added
+    - Option `--warning-delete=$_SERVICEWARNING-DELETE$` added
+    - Option `--warning-getmore=$_SERVICEWARNING-GETMORE$` added
+    - Option `--warning-command=$_SERVICEWARNING-COMMAND$` added
+    - Option `--warning-insert-count=$_SERVICEWARNING-INSERT-COUNT$` added
+    - Option `--warning-query-count=$_SERVICEWARNING-QUERY-COUNT$` added
+    - Option `--warning-update-count=$_SERVICEWARNING-UPDATE-COUNT$` added
+    - Option `--warning-delete-count=$_SERVICEWARNING-DELETE-COUNT$` added
+    - Option `--warning-getmore-count=$_SERVICEWARNING-GETMORE-COUNT$` added
+    - Option `--warning-command-count=$_SERVICEWARNING-COMMAND-COUNT$` added
+    - Option `--critical-insert=$_SERVICECRITICAL-INSERT$` added
+    - Option `--critical-query=$_SERVICECRITICAL-QUERY$` added
+    - Option `--criticalupdate=$_SERVICECRITICAL-UPDATE$` added
+    - Option `--critical-delete=$_SERVICECRITICAL-DELETE$` added
+    - Option `--critical-getmore=$_SERVICECRITICAL-GETMORE$` added
+    - Option `--critical-command=$_SERVICECRITICAL-COMMAND$` added
+    - Option `--critical-insert-count=$_SERVICECRITICAL-INSERT-COUNT$` added
+    - Option `--critical-query-count=$_SERVICECRITICAL-QUERY-COUNT$` added
+    - Option `--critical-update-count=$_SERVICECRITICAL-UPDATE-COUNT$` added
+    - Option `--critical-delete-count=$_SERVICECRITICAL-DELETE-COUNT$` added
+    - Option `--critical-getmore-count=$_SERVICECRITICAL-GETMORE-COUNT$` added
+    - Option `--critical-command-count=$_SERVICECRITICAL-COMMAND-COUNT$` added
+    - Option `--warning-total=$_SERVICEWARNING-TOTAL$` added
+    - Option `--critical-total=$_SERVICECRITICAL-TOTAL$` added
+    - Option `--warning-queries-insert-persecond=$_SERVICEWARNING-INSERT-PERSEC$` removed
+    - Option `--warning-queries-query-persecond=$_SERVICEWARNING-QUERY-PERSEC$` removed
+    - Option `--warning-queries-update-persecond=$_SERVICEWARNING-UPDATE-PERSEC$` removed
+    - Option `--warning-queries-delete-persecond=$_SERVICEWARNING-DELETE-PERSEC$` removed
+    - Option `--warning-queries-getmore-persecond=$_SERVICEWARNING-GETMORE-PERSEC$` removed
+    - Option `--warning-queries-command-persecond=$_SERVICEWARNING-COMMAND-PERSEC$` removed
+    - Option `--warning-queries-insert-count=$_SERVICEWARNING-INSERT-COUNT$` removed
+    - Option `--warning-queries-query-count=$_SERVICEWARNING-QUERY-COUNT$` removed
+    - Option `--warning-queries-update-count=$_SERVICEWARNING-UPDATE-COUNT$` removed
+    - Option `--warning-queries-delete-count=$_SERVICEWARNING-DELETE-COUNT$` removed
+    - Option `--warning-queries-getmore-count=$_SERVICEWARNING-GETMORE-COUNT$` removed
+    - Option `--warning-queries-command-count=$_SERVICEWARNING-COMMAND-COUNT$` removed
+    - Option `--critical-queries-insert-persecond=$_SERVICECRITICAL-INSERT-PERSEC$` removed
+    - Option `--critical-queries-query-persecond=$_SERVICECRITICAL-QUERY-PERSEC$` removed
+    - Option `--critical-queries-update-persecond=$_SERVICECRITICAL-UPDATE-PERSEC$` removed
+    - Option `--critical-queries-delete-persecond=$_SERVICECRITICAL-DELETE-PERSEC$` removed
+    - Option `--critical-queries-getmore-persecond=$_SERVICECRITICAL-GETMORE-PERSEC$` removed
+    - Option `--critical-queries-command-persecond=$_SERVICECRITICAL-COMMAND-PERSEC$` removed
+    - Option `--critical-queries-insert-count=$_SERVICECRITICAL-INSERT-COUNT$` removed
+    - Option `--critical-queries-query-count=$_SERVICECRITICAL-QUERY-COUNT$` removed
+    - Option `--critical-queries-update-count=$_SERVICECRITICAL-UPDATE-COUNT$` removed
+    - Option `--critical-queries-delete-count=$_SERVICECRITICAL-DELETE-COUNT$` removed
+    - Option `--critical-queries-getmore-count=$_SERVICECRITICAL-GETMORE-COUNT$` removed
+    - Option `--critical-queries-command-count=$_SERVICECRITICAL-COMMAND-COUNT$` removed
+    - Macro `WARNING-INSERT` added
+    - Macro `WARNING-QUERY` added
+    - Macro `WARNING-UPDATE` added
+    - Macro `WARNING-DELETE` added
+    - Macro `WARNING-GETMORE` added
+    - Macro `WARNING-COMMAND` added
+    - Macro `CRITICAL-INSERT` added
+    - Macro `CRITICAL-QUERY` added
+    - Macro `CRITICAL-UPDATE` added
+    - Macro `CRITICAL-DELETE` added
+    - Macro `CRITICAL-GETMORE` added
+    - Macro `CRITICAL-COMMAND` added
+    - Macro `CRITICAL-TOTAL` added
+    - Macro `WARNING-TOTAL` added
+    - Macro `WARNING-INSERT-PERSEC` removed
+    - Macro `WARNING-QUERY-PERSEC` removed
+    - Macro `WARNING-UPDATE-PERSEC` removed
+    - Macro `WARNING-DELETE-PERSEC` removed
+    - Macro `WARNING-GETMORE-PERSEC` removed
+    - Macro `WARNING-COMMAND-PERSEC` removed
+    - Macro `CRITICAL-INSERT-PERSEC` removed
+    - Macro `CRITICAL-QUERY-PERSEC` removed
+    - Macro `CRITICAL-UPDATE-PERSEC` removed
+    - Macro `CRITICAL-DELETE-PERSEC` removed
+    - Macro `CRITICAL-GETMORE-PERSEC` removed
+    - Macro `CRITICAL-COMMAND-PERSEC` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231011</summary>
+
+- Service template [`database-mongodb-connection-times`](#database-mongodb-connection-times)
+    - Macro `WARNING-CONNECTION-TIME`: default changed from `200` to `250`
+- Service template [`database-mongodb-replications-status`](#database-mongodb-replications-status)
+    - Macro `WARNING-MEMBER-STATUS`: default changed from `'%{state} !~ /PRIMARY|SECONDARY/'` to `'%{state} !~ /ARBITER|PRIMARY|SECONDARY/'`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `MongoDB`
+    - Description updated
+
+</details>

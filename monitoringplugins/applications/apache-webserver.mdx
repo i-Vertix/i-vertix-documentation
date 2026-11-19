@@ -1,0 +1,277 @@
+---
+title: "Apache Webserver"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Apache.png";
+
+<PluginPackHeader name="Apache Webserver" image={image} category="Application" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Apache web servers through the HTTP status page: CPU usage, requests, response time, worker slot states and the number of workers.
+
+The plugin pack provides these checks:
+
+* [Apache CPU](#apps-apache-serverstatus-cpu)
+* [Apache requests](#apps-apache-serverstatus-requests)
+* [Apache response time](#apps-apache-serverstatus_responsetime)
+* [Apache slot states](#apps-apache-serverstatus-slotstates)
+* [Apache workers](#apps-apache-serverstatus-workers)
+
+
+## Host Templates
+
+### Apache-Serverstatus
+
+*Apache Server status* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `APACHE-PORT` | `443` | Port used by Apache |
+| `APACHE-SSL-OPT` | `SSL_verify_mode => SSL_VERIFY_NONE` | Set SSL Options (--ssl-opt="SSL_version => TLSv1" --ssl-opt="SSL_verify_mode => SSL_VERIFY_NONE"). |
+| `APACHE-URL-PATH` | `/server-status/?auto` | Set path to get server-status page in auto mode (default: '/server-status/?auto') |
+| `APACHE-PROTO` | `https` | Specify https if needed |
+| `APACHE-SSL` |  | Set SSL version (--ssl=TLSv1). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Apache CPU](#apps-apache-serverstatus-cpu) | `apps-apache-serverstatus-cpu` |
+| [Apache requests](#apps-apache-serverstatus-requests) | `apps-apache-serverstatus-requests` |
+| [Apache slot states](#apps-apache-serverstatus-slotstates) | `apps-apache-serverstatus-slotstates` |
+| [Apache workers](#apps-apache-serverstatus-workers) | `apps-apache-serverstatus-workers` |
+| [Apache response time](#apps-apache-serverstatus_responsetime) | `apps-apache-serverstatus_responsetime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache CPU {/* #apps-apache-serverstatus-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Warning Threshold for CpuLoad |
+| `CRITICAL` | `90` | Critical Threshold for CpuLoad |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache requests {/* #apps-apache-serverstatus-requests */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1000` | Warning Threshold for Request per seconds |
+| `CRITICAL` | `5000` | Critical Threshold for Request per seconds |
+| `WARNING-BYTES` |  | Warning Threshold for Bytes per seconds |
+| `WARNING-ACCESS` |  | Warning Threshold for Access per seconds |
+| `CRITICAL-BYTES` |  | Critical Threshold for Bytes per seconds |
+| `CRITICAL-ACCESS` |  | Critical Threshold for Access per seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `apache.bytes.persecond` | `B` | BytesPerSec |  |
+| `apache.access.persecond` | `/s` | AccessPerSec |  |
+| `apache.request.average.persecond` | `/s` | RequestPerSec |  |
+| `apache.bytes.average.perrequest` | `B` | BytesPerRequest |  |
+| `apache.bytes.average.persecond` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache slot states {/* #apps-apache-serverstatus-slotstates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Threshold unit (Default: '%'. Can be: '%' or 'absolute') |
+| `WARNING-BUSY` | `85` | Warning threshold Busy |
+| `CRITICAL-BUSY` | `90` | Critical threshold Busy |
+| `WARNING-FREE` |  | Warning threshold Free |
+| `WARNING-WAITING` |  | Warning threshold Waiting |
+| `WARNING-STARTING` |  | Warning threshold Starting |
+| `WARNING-READING` |  | Warning threshold Reading |
+| `WARNING-SENDING` |  | Warning threshold Sending |
+| `WARNING-KEEPALIVE` |  | Warning threshold Keepalive |
+| `WARNING-DNS-LOOKUP` |  | Warning threshold DNS Lookup |
+| `WARNING-CLOSING` |  | Warning threshold Closing |
+| `WARNING-LOGGING` |  | Warning threshold Logging |
+| `WARNING-GRACEFULY-FINISHED` |  | Warning threshold Gracefuly finished |
+| `WARNING-IDLE-CLEANUP-WORKER` |  | Warning threshold Idle cleanup worker |
+| `CRITICAL-FREE` |  | Critical threshold Free |
+| `CRITICAL-WAITING` |  | Critical threshold Waiting |
+| `CRITICAL-STARTING` |  | Critical threshold Starting |
+| `CRITICAL-READING` |  | Critical threshold Reading |
+| `CRITICAL-SENDING` |  | Critical threshold Sending |
+| `CRITICAL-KEEPALIVE` |  | Critical threshold Keepalive |
+| `CRITICAL-DNS-LOOKUP` |  | Critical threshold DNS Lookup |
+| `CRITICAL-CLOSING` |  | Critical threshold Closing |
+| `CRITICAL-LOGGING` |  | Critical threshold Logging |
+| `CRITICAL-GRACEFULY-FINISHED` |  | Critical threshold Gracefuly finished |
+| `CRITICAL-IDLE-CLEANUP-WORKER` |  | Critical threshold Idle cleanup worker |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `apache.slot.busy.count` |  |  | `WARNING-BUSY`, `CRITICAL-BUSY` |
+| `apache.slot.free.count` |  |  | `WARNING-FREE`, `CRITICAL-FREE` |
+| `apache.slot.waiting.count` |  |  | `WARNING-WAITING`, `CRITICAL-WAITING` |
+| `apache.slot.starting.count` |  |  | `WARNING-STARTING`, `CRITICAL-STARTING` |
+| `apache.slot.reading.count` |  |  | `WARNING-READING`, `CRITICAL-READING` |
+| `apache.slot.sending.count` |  |  | `WARNING-SENDING`, `CRITICAL-SENDING` |
+| `apache.slot.keepalive.count` |  |  | `WARNING-KEEPALIVE`, `CRITICAL-KEEPALIVE` |
+| `apache.slot.dnslookup.count` |  |  | `WARNING-DNS-LOOKUP`, `CRITICAL-DNS-LOOKUP` |
+| `apache.slot.closing.count` |  |  | `WARNING-CLOSING`, `CRITICAL-CLOSING` |
+| `apache.slot.logging.count` |  |  | `WARNING-LOGGING`, `CRITICAL-LOGGING` |
+| `apache.slot.gracefullyfinishing.count` |  |  |  |
+| `apache.slot.idlecleanupworker.count` |  |  | `WARNING-IDLE-CLEANUP-WORKER`, `CRITICAL-IDLE-CLEANUP-WORKER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache workers {/* #apps-apache-serverstatus-workers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Warning Threshold (%) of busy workers |
+| `CRITICAL` | `90` | Critical Threshold (%) of busy workers |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache response time {/* #apps-apache-serverstatus_responsetime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `2` | Threshold warning in seconds (server-status page response time) |
+| `CRITICAL` | `5` | Threshold critical in seconds (server-status page response time) |
+| `CRITICAL-STATUS` | `%{http_code} < 200 or %{http_code} >= 300` | Threshold critical for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `Apache Webserver`
+    - Description updated
+
+</details>

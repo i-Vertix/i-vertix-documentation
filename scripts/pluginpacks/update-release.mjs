@@ -146,6 +146,8 @@ try {
             "--plugins-src", pluginsSrc,
         ], { encoding: "utf8" });
         if (py.status !== 0) throw new Error(`genpage.py failed for ${pack.name}:\n${py.stderr}`);
+        for (const w of String(py.stderr ?? "").split(/\r?\n/).filter((l) => l.startsWith("warning: ")))
+            report.warnings.push(`${pack.name}: ${w.slice("warning: ".length)}`);
         // a generated .mdx replaces the "coming soon" placeholder .md
         const placeholder = pageFile.replace(/\.mdx$/, ".md");
         if (placeholder !== pageFile && fs.existsSync(placeholder)) fs.rmSync(placeholder);

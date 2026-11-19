@@ -1,0 +1,159 @@
+---
+title: "LDAP / Active Directory (active)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/LDAP.png";
+
+<PluginPackHeader name="LDAP / Active Directory (active)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors LDAP and Active Directory servers with active checks: login and search requests.
+
+The plugin pack provides these checks:
+
+* [LDAP login](#apps-protocols-ldap-login)
+* [LDAP search](#apps-protocols-ldap-search)
+
+
+## Host Templates
+
+### LDAP-login
+
+*LDAP login* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LDAP-SCHEMA` | `ldaps` | ldap or ldaps |
+| `LDAP-VERSION` | `2` | Set LDAP version |
+| `LDAP-USERNAME` |  | Specify username for authentification (can be a DN) |
+| `LDAP-PASSWORD` |  | Specify password for authentification |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [LDAP login](#apps-protocols-ldap-login) | `apps-protocols-ldap-login` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [LDAP search](#apps-protocols-ldap-search) | `apps-protocols-ldap-search` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP login {/* #apps-protocols-ldap-login */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1` | Threshold warning in seconds |
+| `CRITICAL` | `2` | Threshold critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP search {/* #apps-protocols-ldap-search */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SEARCH-BASE` |  | Set the DN that is the base object entry relative to which the search is to be performed (required) |
+| `SEARCH-FILTER` |  | Set filter that defines the conditions an entry in the directory must meet in order for it to be returned by the search (required) |
+| `WARNING-ENTRIES` |  | Threshold warning (number of results) |
+| `WARNING-TIME` |  | Threshold warning in seconds |
+| `CRITICAL-ENTRIES` |  | Threshold critical (number of results) |
+| `CRITICAL-TIME` |  | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ldap.request.entries.count` |  | Number of results returned | `WARNING-ENTRIES`, `CRITICAL-ENTRIES` |
+| `ldap.request.time.second` | `s` | Response time : s | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

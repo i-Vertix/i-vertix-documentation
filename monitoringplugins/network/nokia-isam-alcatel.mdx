@@ -1,0 +1,407 @@
+---
+title: "Nokia ISAM (Alcatel)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Nokia.png";
+
+<PluginPackHeader name="Nokia ISAM (Alcatel)" image={image} category="Network" metadata={[]} />
+
+## Description
+
+Monitors Nokia (Alcatel) ISAM access nodes through SNMP: CPU and memory usage, hardware, interfaces and hub SAP usage.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-nokia-isam-snmp-cpu)
+* [Hardware](#network-nokia-isam-snmp-hardware)
+* [Hub SAP usage](#network-nokia-isam-snmp-hub-sap-usage)
+* [Interfaces](#network-alcatel-isam-snmp-interfaces)
+* [Memory](#network-nokia-isam-snmp-memory)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Hub SAP usage](#network-nokia-isam-snmp-hub-sap-usage) | `Hub SAP usage - <name>` |
+| [Interfaces](#network-alcatel-isam-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Nokia-ISAM
+
+*Nokia ISAM SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-nokia-isam-snmp-cpu) | `network-nokia-isam-snmp-cpu` |
+| [Hardware](#network-nokia-isam-snmp-hardware) | `network-nokia-isam-snmp-hardware` |
+| [Hub SAP usage](#network-nokia-isam-snmp-hub-sap-usage) | `network-nokia-isam-snmp-hub-sap-usage` |
+| [Memory](#network-nokia-isam-snmp-memory) | `network-nokia-isam-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-alcatel-isam-snmp-interfaces) | `network-alcatel-isam-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-nokia-isam-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | Usage :  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-nokia-isam-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'cardtemperature', 'sfp' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=cardtemperature) Can also exclude specific instance: --filter=cardtemperature,1080.1 |
+| `WARNING` |  | Set warning threshold for 'sfp.temperature', 'cardtemperature' (syntax: type,regexp,threshold) Example: --warning='sfp.temperature,1.1,30' |
+| `CRITICAL` |  | Set critical threshold for 'sfp.temperature', 'cardtemperature' (syntax: type,regexp,threshold) Example: --warning='sfp.temperature,1.1,40' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='sfp,OK,^los$' |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hub SAP usage {/* #network-nokia-isam-snmp-hub-sap-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `CRITICAL-STATUS` | `'%{admin} =~ /up/i and %{status} !~ /up/i'` | Set critical threshold for ib status (Default: '%\{admin\} =~ /up/i and %\{status\} !~ /up/i'). Can used special variables like: %\{admin\}, %\{status\}, %\{display\} |
+| `DISPLAY-NAME` | `'%{SvcDescription}.%{IfName}.%{SapEncapName}'` | Define the name to display (default: '%\{SvcDescription\}.%\{IfName\}.%\{SapEncapName\}'). Other available macros: %\{SapDescription\}, %\{SapPortId\} |
+| `FILTER-NAME` |  | Filter by SAP name (can be a regexp) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `SPEED-TOTAL-IN` |  | Set interface speed for total incoming traffic (in Mb) |
+| `SPEED-TOTAL-OUT` |  | Set interface speed for total outgoing traffic (in Mb) |
+| `WARNING-STATUS` |  | Set warning threshold for ib status. Can used special variables like: %\{admin\}, %\{status\}, %\{display\} |
+| `WARNING-IN-TRAFFIC` |  | Threshold warning traffic in |
+| `WARNING-OUT-TRAFFIC` |  | Threshold warning traffic out |
+| `WARNING-TOTAL-IN-TRAFFIC` |  | Threshold warning total traffic in |
+| `WARNING-TOTAL-OUT-TRAFFIC` |  | Threshold warning total traffic out |
+| `CRITICAL-IN-TRAFFIC` |  | Threshold critical traffic in |
+| `CRITICAL-OUT-TRAFFIC` |  | Threshold critical traffic out |
+| `CRITICAL-TOTAL-IN-TRAFFIC` |  | Threshold critical total traffic in |
+| `CRITICAL-TOTAL-OUT-TRAFFIC` |  | Threshold critical total traffic out |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sap.traffic.in.bitspersecond` | `b/s` |  | `WARNING-IN-TRAFFIC`, `CRITICAL-IN-TRAFFIC` |
+| `sap.traffic.out.bitspersecond` | `b/s` |  | `WARNING-OUT-TRAFFIC`, `CRITICAL-OUT-TRAFFIC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-nokia-isam-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `FILTER-NAME` |  | Filter memory name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-alcatel-isam-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display. |
+| `WARNING-DISCARD-IN` | `5` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `5` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240808 - 20240826</summary>
+
+- Plugin pack `Nokia ISAM (Alcatel)`
+    - Renamed from `Alcatel ISAM`
+    - Description updated
+- Host template `Nokia-ISAM`
+    - Renamed from `Alcatel-ISAM`
+    - Alias changed from `Alcatel ISAM SNMP` to `Nokia ISAM SNMP`
+- Service template [`network-alcatel-isam-snmp-interfaces`](#network-alcatel-isam-snmp-interfaces)
+    - Check command changed from `network-alcatel-isam-snmp-interfaces` to `network-nokia-isam-snmp-interfaces`
+- Service template [`network-nokia-isam-snmp-cpu`](#network-nokia-isam-snmp-cpu)
+    - Renamed from `network-alcatel-isam-snmp-cpu`
+    - Check command changed from `network-alcatel-isam-snmp-cpu` to `network-nokia-isam-snmp-cpu`
+- Service template [`network-nokia-isam-snmp-hardware`](#network-nokia-isam-snmp-hardware)
+    - Renamed from `network-alcatel-isam-snmp-hardware`
+    - Check command changed from `network-alcatel-isam-snmp-hardware` to `network-nokia-isam-snmp-hardware`
+- Service template [`network-nokia-isam-snmp-hub-sap-usage`](#network-nokia-isam-snmp-hub-sap-usage)
+    - Renamed from `network-alcatel-isam-snmp-hub-sap-usage`
+    - Check command changed from `network-alcatel-isam-snmp-hub-sap-usage` to `network-nokia-isam-snmp-hub-sap-usage`
+    - Macro `DISPLAY-NAME` added (default `'%{SvcDescription}.%{IfName}.%{SapEncapName}'`)
+- Service template [`network-nokia-isam-snmp-memory`](#network-nokia-isam-snmp-memory)
+    - Renamed from `network-alcatel-isam-snmp-memory`
+    - Check command changed from `network-alcatel-isam-snmp-memory` to `network-nokia-isam-snmp-memory`
+- Command `network-nokia-isam-snmp-cpu`
+    - Renamed from `network-alcatel-isam-snmp-cpu`
+    - Option `--plugin` changed from `--plugin=network::alcatel::isam::snmp::plugin` to `--plugin=network::nokia::isam::snmp::plugin`
+- Command `network-nokia-isam-snmp-hardware`
+    - Renamed from `network-alcatel-isam-snmp-hardware`
+    - Option `--plugin` changed from `--plugin=network::alcatel::isam::snmp::plugin` to `--plugin=network::nokia::isam::snmp::plugin`
+- Command `network-nokia-isam-snmp-hub-sap-usage`
+    - Renamed from `network-alcatel-isam-snmp-hub-sap-usage`
+    - Option `--plugin` changed from `--plugin=network::alcatel::isam::snmp::plugin` to `--plugin=network::nokia::isam::snmp::plugin`
+    - Option `--display-name=$_SERVICEDISPLAY-NAME$` added
+    - Macro `DISPLAY-NAME` added
+- Command `network-nokia-isam-snmp-interfaces`
+    - Renamed from `network-alcatel-isam-snmp-interfaces`
+    - Option `--plugin` changed from `--plugin=network::alcatel::isam::snmp::plugin` to `--plugin=network::nokia::isam::snmp::plugin`
+    - Macro `OID-EXTRA-DISPLAY` added
+- Command `network-nokia-isam-snmp-memory`
+    - Renamed from `network-alcatel-isam-snmp-memory`
+    - Option `--plugin` changed from `--plugin=network::alcatel::isam::snmp::plugin` to `--plugin=network::nokia::isam::snmp::plugin`
+    - Option `--filter-project=$_SERVICEFILTER-PROJECT$` removed
+    - Macro `FILTER-PROJECT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Alcatel ISAM`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231031`.

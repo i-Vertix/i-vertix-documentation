@@ -1,0 +1,321 @@
+---
+title: "InfluxDB"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Databases/Influx.png";
+
+<PluginPackHeader name="InfluxDB" image={image} category="Database" metadata={["API"]} />
+
+## Description
+
+Monitors InfluxDB through its HTTP API: connection time, database statistics, HTTP server and write statistics, and the results of queries.
+
+The plugin pack provides these checks:
+
+* [InfluxDB Connection time](#database-influxdb-connection-time)
+* [InfluxDB Database statistics](#database-influxdb-database-statistics)
+* [InfluxDB HTTP Server statistics](#database-influxdb-http-server-statistics)
+* [InfluxDB Query](#database-influxdb-query)
+* [InfluxDB Write statistics](#database-influxdb-write-statistics)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [InfluxDB Database statistics](#database-influxdb-database-statistics) | `Database statistics - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### InfluxDB
+
+*InfluxDB* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `8086` | Port used (default: 8086) |
+| `PROTOCOL` | `http` | Specify https if needed (default: 'http') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PASSWORD` |  | Specify the password for authentication. |
+| `USERNAME` |  | Specify the username for authentication. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [InfluxDB Connection time](#database-influxdb-connection-time) | `database-influxdb-connection-time` |
+| [InfluxDB Database statistics](#database-influxdb-database-statistics) | `database-influxdb-database-statistics` |
+| [InfluxDB HTTP Server statistics](#database-influxdb-http-server-statistics) | `database-influxdb-http-server-statistics` |
+| [InfluxDB Write statistics](#database-influxdb-write-statistics) | `database-influxdb-write-statistics` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [InfluxDB Query](#database-influxdb-query) | `database-influxdb-query` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### InfluxDB Connection time {/* #database-influxdb-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CONNECTION-TIME` | `250` | Threshold warning connection time (ms) |
+| `CRITICAL-CONNECTION-TIME` | `500` | Threshold critical connection time (ms) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` | Connection established in  ms | `WARNING-CONNECTION-TIME`, `CRITICAL-CONNECTION-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### InfluxDB Database statistics {/* #database-influxdb-database-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DATABASE` |  | Filter database name (Can use regexp) |
+| `WARNING-MEASUREMENTS` |  | Threshold warning measurements |
+| `WARNING-SERIES` |  | Threshold warning series |
+| `CRITICAL-MEASUREMENTS` |  | Threshold critical measurements |
+| `CRITICAL-SERIES` |  | Threshold critical series |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.measurements.count` |  | Measurements | `WARNING-MEASUREMENTS`, `CRITICAL-MEASUREMENTS` |
+| `database.series.count` |  | Series | `WARNING-SERIES`, `CRITICAL-SERIES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### InfluxDB HTTP Server statistics {/* #database-influxdb-http-server-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ERRORS-SERVER` | `0` | Threshold warning errors server |
+| `WARNING-ERRORS-CLIENT` | `0` | Threshold warning errors client |
+| `WARNING-REQUESTS-QUERY-COUNT` |  | Threshold warning requests query count |
+| `WARNING-REQUESTS-WRITE-COUNT` |  | Threshold warning requests write count |
+| `WARNING-REQUESTS-PING-COUNT` |  | Threshold warning requests ping count |
+| `WARNING-REQUESTS-STATUS-COUNT` |  | Threshold warning requests status count |
+| `WARNING-REQUESTS-ACTIVE` |  | Threshold warning requests active |
+| `WARNING-REQUESTS-WRITE-ACTIVE` |  | Threshold warning requests write active |
+| `WARNING-REQUESTS-RESPONSE-DATA` |  | Threshold warning requests response data |
+| `WARNING-REQUESTS-WRITE-DATA` |  | Threshold warning requests write data |
+| `CRITICAL-REQUESTS-QUERY-COUNT` |  | Threshold critical requests query count |
+| `CRITICAL-REQUESTS-WRITE-COUNT` |  | Threshold critical requests write count |
+| `CRITICAL-REQUESTS-PING-COUNT` |  | Threshold critical requests ping count |
+| `CRITICAL-REQUESTS-STATUS-COUNT` |  | Threshold critical requests status count |
+| `CRITICAL-REQUESTS-ACTIVE` |  | Threshold critical requests active |
+| `CRITICAL-REQUESTS-WRITE-ACTIVE` |  | Threshold critical  requests write active |
+| `CRITICAL-REQUESTS-RESPONSE-DATA` |  | Threshold critical  requests response data |
+| `CRITICAL-REQUESTS-WRITE-DATA` |  | Threshold critical requests write data |
+| `CRITICAL-ERRORS-SERVER` |  | Threshold critical errors server |
+| `CRITICAL-ERRORS-CLIENT` |  | Threshold critical errors client |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `requests.query.count.persecond` | `/s` | Query Requests: /s | `WARNING-REQUESTS-QUERY-COUNT`, `CRITICAL-REQUESTS-QUERY-COUNT` |
+| `requests.write.count.persecond` | `/s` | Write Requests: /s | `WARNING-REQUESTS-WRITE-COUNT`, `CRITICAL-REQUESTS-WRITE-COUNT` |
+| `requests.ping.count.persecond` | `/s` | Ping Requests: /s | `WARNING-REQUESTS-PING-COUNT`, `CRITICAL-REQUESTS-PING-COUNT` |
+| `requests.status.count.persecond` | `/s` | Status Requests: /s | `WARNING-REQUESTS-STATUS-COUNT`, `CRITICAL-REQUESTS-STATUS-COUNT` |
+| `requests.active.count` |  | Active Requests | `WARNING-REQUESTS-ACTIVE`, `CRITICAL-REQUESTS-ACTIVE` |
+| `requests.write.active.count` |  | Active Write Requests | `WARNING-REQUESTS-WRITE-ACTIVE`, `CRITICAL-REQUESTS-WRITE-ACTIVE` |
+| `requests.response.data.bytes` | `B/s` | Response Data: /s | `WARNING-REQUESTS-RESPONSE-DATA`, `CRITICAL-REQUESTS-RESPONSE-DATA` |
+| `requests.write.data.bytes` | `B/s` | Write Data: /s | `WARNING-REQUESTS-WRITE-DATA`, `CRITICAL-REQUESTS-WRITE-DATA` |
+| `errors.server.persecond` | `/s` | Server Errors: /s | `WARNING-ERRORS-SERVER`, `CRITICAL-ERRORS-SERVER` |
+| `errors.client.persecond` | `/s` | Client Errors: /s | `WARNING-ERRORS-CLIENT`, `CRITICAL-ERRORS-CLIENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### InfluxDB Write statistics {/* #database-influxdb-write-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-WRITES-ERROR` | `0` | Threshold warning writes error |
+| `WARNING-WRITES-DROP` | `0` | Threshold warning writes drop |
+| `WARNING-WRITES-TIMEOUT` | `0` | Threshold warning writes timeout |
+| `WARNING-POINTS-WRITTEN` |  | Threshold warning points written |
+| `WARNING-WRITES-OK` |  | Threshold warning writes ok |
+| `CRITICAL-POINTS-WRITTEN` |  | Threshold critical points written |
+| `CRITICAL-WRITES-OK` |  | Threshold critical writes ok |
+| `CRITICAL-WRITES-ERROR` |  | Threshold critical writes error |
+| `CRITICAL-WRITES-DROP` |  | Threshold critical writes drop |
+| `CRITICAL-WRITES-TIMEOUT` |  | Threshold critical writes timeout |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `points.written.persecond` | `/s` | Points Written: /s | `WARNING-POINTS-WRITTEN`, `CRITICAL-POINTS-WRITTEN` |
+| `writes.ok.persecond` | `/s` | Writes Ok: /s | `WARNING-WRITES-OK`, `CRITICAL-WRITES-OK` |
+| `writes.error.persecond` | `/s` | Writes Error: /s | `WARNING-WRITES-ERROR`, `CRITICAL-WRITES-ERROR` |
+| `writes.drop.persecond` | `/s` | Writes Drop: /s | `WARNING-WRITES-DROP`, `CRITICAL-WRITES-DROP` |
+| `writes.timeout.persecond` | `/s` | Writes Timeout: /s | `WARNING-WRITES-TIMEOUT`, `CRITICAL-WRITES-TIMEOUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### InfluxDB Query {/* #database-influxdb-query */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `QUERY` |  | Set a InfluxQL query. Query option must be like --query='label,query'. Query must contain an "AS" keyword to rename the column of the selected data, and must match the label. (Example: --query='mymetric,SELECT the_data AS "mymetric" FROM "database"."retention"."measurement" GROUP BY "instance"') |
+| `INSTANCE` |  | Set the instance label on which the results should be calculate for (Example: --instance='name'). The instance label must be the same label as the "GROUP BY" keyword. |
+| `OUTPUT` |  | Set the output for each instances (Example: --output='Object %\{instance\} value is \{label\}') |
+| `MULTIPLE-OUTPUT` |  | Set the global output in case everything is fine for multiple instances (Example: --multiple-output='All instance values are ok') |
+| `AGGREGATION` |  | Set the aggregation on metric values (Can be: 'average', 'min', 'max', 'sum') (Default: 'average') |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can use special variables like %\{instance\} and any other labels you set through --query |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can use special variables like %\{instance\} and any other labels you set through --query |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `InfluxDB`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231031`.

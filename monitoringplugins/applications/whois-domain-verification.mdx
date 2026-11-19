@@ -1,0 +1,78 @@
+---
+title: "Whois Domain verification"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/Internet2.png";
+
+<PluginPackHeader name="Whois Domain verification" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors the expiration of domain names through WHOIS queries and reports the response time of the WHOIS server.
+
+The plugin pack provides these checks:
+
+* [WHOIS Domain expiration](#apps-protocols-whois-domain)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### WHOIS Domain expiration {/* #apps-protocols-whois-domain */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` | Select the unit for expires threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-RESPONSE-TIME` | `250` | Warning threshold response time (ms) |
+| `WARNING-EXPIRES` | `30:` | Warning threshold expiration |
+| `CRITICAL-RESPONSE-TIME` | `500` | Critical threshold response time (ms) |
+| `CRITICAL-EXPIRES` | `10:` | Critical threshold expiration |
+| `DOMAIN` |  | Domain to check |
+| `WHOIS-SERVER` |  | Query this specific whois server host (optional) |
+| `EXPIREATION-DATE` |  | Set your domain expiration date manually (Format: YYYY-MM-DD) |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be CRITICAL (Default: '%\{status\} =~ /checkError/i'). You can use the following variables: %\{status\}, %\{domain\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{status\}, %\{domain\} |
+| `CRITICAL-STATUS` |  | Define the conditions to match for the status to be CRITICAL. You can use the following variables: %\{status\}, %\{domain\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `whois.response.time.milliseconds` | `ms` | whois response time:  ms | `WARNING-RESPONSE-TIME`, `CRITICAL-RESPONSE-TIME` |
+| `domain.expires` |  | expires in | `WARNING-EXPIRES`, `CRITICAL-EXPIRES` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Whois Domain verification`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231031`.

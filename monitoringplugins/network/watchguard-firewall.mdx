@@ -1,0 +1,813 @@
+---
+title: "Watchguard Firewall"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Watchguard.png";
+
+<PluginPackHeader name="Watchguard Firewall" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors WatchGuard firewalls through SNMP: CPU, memory, swap, load and storage, hardware, cluster status, IPsec, policy usage, interfaces, NTP and system status.
+
+The plugin pack provides these checks:
+
+* [Cluster status](#network-watchguard-snmp-cluster)
+* [CPU](#network-watchguard-snmp-cpu)
+* [Hardware status](#network-watchguard-snmp-hardware)
+* [Interfaces](#network-watchguard-snmp-interfaces)
+* [IPSEC](#network-watchguard-snmp-ipsec-tunnel)
+* [Memory](#network-watchguard-snmp-memory)
+* [NTP](#network-watchguard-snmp-time)
+* [Policy usage](#network-watchguard-snmp-policy-usage)
+* [Storage](#network-watchguard-snmp-storage)
+* [Swap](#network-watchguard-snmp-swap)
+* [System](#network-watchguard-snmp-system)
+* [System Load](#network-watchguard-snmp-load)
+* [Uptime](#network-watchguard-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-watchguard-snmp-interfaces) | `Interface - <name>` |
+| [Storage](#network-watchguard-snmp-storage) | `Storage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Watchguard-FireboxV
+
+*Watchguard FireboxV* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-watchguard-snmp-cpu) | `network-watchguard-snmp-cpu` |
+| [IPSEC](#network-watchguard-snmp-ipsec-tunnel) | `network-watchguard-snmp-ipsec-tunnel` |
+| [System Load](#network-watchguard-snmp-load) | `network-watchguard-snmp-load` |
+| [Memory](#network-watchguard-snmp-memory) | `network-watchguard-snmp-memory` |
+| [Policy usage](#network-watchguard-snmp-policy-usage) | `network-watchguard-snmp-policy-usage` |
+| [Storage](#network-watchguard-snmp-storage) | `network-watchguard-snmp-storage` |
+| [Swap](#network-watchguard-snmp-swap) | `network-watchguard-snmp-swap` |
+| [System](#network-watchguard-snmp-system) | `network-watchguard-snmp-system` |
+| [NTP](#network-watchguard-snmp-time) | `network-watchguard-snmp-time` |
+| [Uptime](#network-watchguard-snmp-uptime) | `network-watchguard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-watchguard-snmp-cluster) | `network-watchguard-snmp-cluster` |
+| [Hardware status](#network-watchguard-snmp-hardware) | `network-watchguard-snmp-hardware` |
+| [Interfaces](#network-watchguard-snmp-interfaces) | `network-watchguard-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Watchguard-Firewall
+
+*Watchguard Firewall* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-watchguard-snmp-cpu) | `network-watchguard-snmp-cpu` |
+| [Hardware status](#network-watchguard-snmp-hardware) | `network-watchguard-snmp-hardware` |
+| [IPSEC](#network-watchguard-snmp-ipsec-tunnel) | `network-watchguard-snmp-ipsec-tunnel` |
+| [System Load](#network-watchguard-snmp-load) | `network-watchguard-snmp-load` |
+| [Memory](#network-watchguard-snmp-memory) | `network-watchguard-snmp-memory` |
+| [Policy usage](#network-watchguard-snmp-policy-usage) | `network-watchguard-snmp-policy-usage` |
+| [Storage](#network-watchguard-snmp-storage) | `network-watchguard-snmp-storage` |
+| [Swap](#network-watchguard-snmp-swap) | `network-watchguard-snmp-swap` |
+| [System](#network-watchguard-snmp-system) | `network-watchguard-snmp-system` |
+| [NTP](#network-watchguard-snmp-time) | `network-watchguard-snmp-time` |
+| [Uptime](#network-watchguard-snmp-uptime) | `network-watchguard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-watchguard-snmp-cluster) | `network-watchguard-snmp-cluster` |
+| [Interfaces](#network-watchguard-snmp-interfaces) | `network-watchguard-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Watchguard-Firewall-Cluster
+
+*Watchguard Firewall Cluster* · Parent template: `Watchguard-Firewall`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-watchguard-snmp-cluster) | `network-watchguard-snmp-cluster` |
+| [CPU](#network-watchguard-snmp-cpu) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-cpu` |
+| [Hardware status](#network-watchguard-snmp-hardware) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-hardware` |
+| [IPSEC](#network-watchguard-snmp-ipsec-tunnel) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-ipsec-tunnel` |
+| [System Load](#network-watchguard-snmp-load) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-load` |
+| [Memory](#network-watchguard-snmp-memory) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-memory` |
+| [Policy usage](#network-watchguard-snmp-policy-usage) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-policy-usage` |
+| [Storage](#network-watchguard-snmp-storage) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-storage` |
+| [Swap](#network-watchguard-snmp-swap) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-swap` |
+| [System](#network-watchguard-snmp-system) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-system` |
+| [NTP](#network-watchguard-snmp-time) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-time` |
+| [Uptime](#network-watchguard-snmp-uptime) (inherited from `Watchguard-Firewall`) | `network-watchguard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-watchguard-snmp-interfaces) | `network-watchguard-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-watchguard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-1MIN` | `80` | Warning threshold 1 min |
+| `WARNING-5MIN` | `75` | Warning threshold 5 min |
+| `WARNING-15MIN` | `70` | Warning threshold 15 min |
+| `CRITICAL-1MIN` | `90` | Critical threshold 1 min |
+| `CRITICAL-5MIN` | `85` | Critical threshold 5 min |
+| `CRITICAL-15MIN` | `80` | Critical threshold 15 min |
+| `FILTER-COUNTERS` |  | Filter counters (regexp can be used) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.1m.percentage` | `%` | 1 minute:  %% | `WARNING-1MIN`, `CRITICAL-1MIN` |
+| `cpu.utilization.5m.percentage` | `%` | 5 minutes:  %% | `WARNING-5MIN`, `CRITICAL-5MIN` |
+| `cpu.utilization.15m.percentage` | `%` | 15 minutes:  %% | `WARNING-15MIN`, `CRITICAL-15MIN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IPSEC {/* #network-watchguard-snmp-ipsec-tunnel */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be regexp) |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='tunnels-total' |
+| `WARNING-TUNNELS-TOTAL` |  | Threshold warning tunnels total |
+| `WARNING-TUNNEL-TRAFFIC-IN` |  | Threshold warning tunnel traffic in |
+| `WARNING-TUNNEL-TRAFFIC-OUT` |  | Threshold warning tunnel traffic out |
+| `CRITICAL-TUNNELS-TOTAL` |  | Threshold critical tunnels total |
+| `CRITICAL-TUNNEL-TRAFFIC-IN` |  | Threshold critical warning tunnel traffic in |
+| `CRITICAL-TUNNEL-TRAFFIC-OUT` |  | Threshold critical warning tunnel traffic out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ipsec.tunnels.total.count` |  | tunnels | `WARNING-TUNNELS-TOTAL`, `CRITICAL-TUNNELS-TOTAL` |
+| `ipsec.tunnel.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TUNNEL-TRAFFIC-IN`, `CRITICAL-TUNNEL-TRAFFIC-IN` |
+| `ipsec.tunnel.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TUNNEL-TRAFFIC-OUT`, `CRITICAL-TUNNEL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Load {/* #network-watchguard-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning(1min, 5min, 15min) |
+| `CRITICAL` | `5,4,4` | Threshold warning(1min, 5min, 15min) |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-watchguard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Policy usage {/* #network-watchguard-snmp-policy-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter policy name (can be regexp) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^total-connections$' |
+| `WARNING-TOTAL-CONNECTIONS` |  | Threshold warning total connections |
+| `WARNING-CURRENT-CONNECTIONS` |  | Threshold warning current connections |
+| `WARNING-L3-TRAFFIC` |  | Threshold warning l3 traffic |
+| `WARNING-L2-TRAFFIC` |  | Threshold warning l2 traffic |
+| `CRITICAL-TOTAL-CONNECTIONS` |  | Threshold critical total connections |
+| `CRITICALCURRENT-CONNECTIONS` |  | Threshold critical current connections |
+| `CRITICAL-L3-TRAFFIC` |  | Threshold critical l3 traffic |
+| `CRITICAL-L2-TRAFFIC` |  | Threshold critical l2 traffic |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `policy.connections.current.count` |  | current connections | `WARNING-CURRENT-CONNECTIONS`, `CRITICALCURRENT-CONNECTIONS` |
+| `policy.connections.total.count` |  | total connections | `WARNING-TOTAL-CONNECTIONS`, `CRITICAL-TOTAL-CONNECTIONS` |
+| `policy.traffic.l3.bitspersecond` | `b/s` | L3 traffic:  /s | `WARNING-L3-TRAFFIC`, `CRITICAL-L3-TRAFFIC` |
+| `policy.traffic.l2.bitspersecond` | `b/s` | L2 traffic:  /s | `WARNING-L2-TRAFFIC`, `CRITICAL-L2-TRAFFIC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-watchguard-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STORAGE` | `^(?!(\/\|\/boot\|\/var\/run\/proxy\/lib\|\/var\/run\/scand\/lib\|\/dev\/shm)$).*$` | Storage name (can be a regexp) |
+| `WARNING-USAGE` | `80` | Threshold warning storage usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical storage usage |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical. Check if storage is readOnly: --critical-access=readOnly |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-ACCESS` |  | Threshold warning |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #network-watchguard-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `25` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `EXTRA-OPTS` | `--no-swap=ok` | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #network-watchguard-snmp-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used) |
+| `WARNING-IN-TRAFFIC` |  | Threshold warning traffic in |
+| `WARNING-OUT-TRAFFIC` |  | Threshold warning traffic out |
+| `WARNING-CONNECTIONS` |  | Threshold warning connections |
+| `CRITICAL-IN-TRAFFIC` |  | Threshold critical traffic in |
+| `CRITICAL-OUT-TRAFFIC` |  | Threshold critical traffic out |
+| `CRITICAL-CONNECTIONS` |  | Threshold critical connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.connections.current.count` |  | Current connections | `WARNING-CONNECTIONS`, `CRITICAL-CONNECTIONS` |
+| `system.traffic.in.bitspersecond` | `b/s` | Traffic in:  /s | `WARNING-IN-TRAFFIC`, `CRITICAL-IN-TRAFFIC` |
+| `system.traffic.out.bitspersecond` | `b/s` | Traffic out:  /s | `WARNING-OUT-TRAFFIC`, `CRITICAL-OUT-TRAFFIC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #network-watchguard-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-watchguard-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-watchguard-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'device' |
+| `THRESHOLD-OVERLOAD` | `'device.network,OK,down'` | Set to overload default threashold values |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=device,network.* |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster status {/* #network-watchguard-snmp-cluster */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-MEMBER-STATUS` | `'%{role} !~ /master\|backup/i'` | Set critical threshold for status. Can used special variables like: %\{role\}, %\{serial\} |
+| `CRITICAL-HEALTH-HARDWARE` |  | Critical health hardware |
+| `WARNING-HEALTH-HARDWARE` |  | Warning health hardware |
+| `WARNING-HEALTH-SYSTEM` | `100:` | Warning health system |
+| `CRITICAL-HEALTH-SYSTEM` | `50:` | Critical health system |
+| `UNKNOWN-CLUSTER-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\} |
+| `WARNING-CLUSTER-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\} |
+| `CRITICAL-CLUSTER-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{state\} |
+| `UNKNOWN-MEMBER-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{role\}, %\{serial\} |
+| `WARNING-MEMBER-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{role\}, %\{serial\} |
+| `WARNING-MEMBER-DETECTED` |  | Warning members detected |
+| `CRITICAL-MEMBER-DETECTED` |  | Critical  members detected |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `members.detected.count` |  | detected members | `WARNING-MEMBER-DETECTED`, `CRITICAL-MEMBER-DETECTED` |
+| `member.health.hardware.percentage` | `%` | hardware health:  %% | `WARNING-HEALTH-HARDWARE`, `CRITICAL-HEALTH-HARDWARE` |
+| `member.health.system.percentage` | `%` | system health:  %% | `WARNING-HEALTH-SYSTEM`, `CRITICAL-HEALTH-SYSTEM` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-watchguard-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250901 - 20251118</summary>
+
+- Host template `Watchguard-FireboxV`
+    - Host template added
+- Service template [`network-watchguard-snmp-cluster`](#network-watchguard-snmp-cluster)
+    - Macro `CRITICAL-HEALTH-HARDWARE`: default changed from `50:` to *(empty)*
+    - Macro `WARNING-HEALTH-HARDWARE`: default changed from `100:` to *(empty)*
+- Service template [`network-watchguard-snmp-swap`](#network-watchguard-snmp-swap)
+    - Macro `EXTRA-OPTS` added (default `--no-swap=ok`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251029</summary>
+
+- Service template [`network-watchguard-snmp-cluster`](#network-watchguard-snmp-cluster)
+    - Macro `CRITICAL-MEMBER-STATUS` added (default `'%{role} !~ /master|backup/i'`)
+    - Macro `CRITICAL-HEALTH-HARDWARE` added (default `50:`)
+    - Macro `WARNING-HEALTH-HARDWARE` added (default `100:`)
+    - Macro `WARNING-HEALTH-SYSTEM` added (default `100:`)
+    - Macro `CRITICAL-HEALTH-SYSTEM` added (default `50:`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250210</summary>
+
+- Service template [`network-watchguard-snmp-ipsec-tunnel`](#network-watchguard-snmp-ipsec-tunnel)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+
+</details>

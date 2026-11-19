@@ -1,0 +1,448 @@
+---
+title: "HPE Alletra"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HPE.png";
+
+<PluginPackHeader name="HPE Alletra" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors HPE Alletra storage through its API: capacity and provisioning, disk status and usage, volume status and usage, and license status.
+
+The plugin pack provides these checks:
+
+* [Capacity](#storage-hp-alletra-restapi-capacity)
+* [Disk status](#storage-hp-alletra-restapi-disk-status)
+* [Disk usage](#storage-hp-alletra-restapi-disk-usage)
+* [License status](#storage-hp-alletra-restapi-licenses)
+* [Volume status](#storage-hp-alletra-restapi-volume-status)
+* [Volume usage](#storage-hp-alletra-restapi-volume-usage)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Disk status](#storage-hp-alletra-restapi-disk-status) | `Disk status - <serial>` |
+| [Disk usage](#storage-hp-alletra-restapi-disk-usage) | `Disk usage - <serial>` |
+| [Volume status](#storage-hp-alletra-restapi-volume-status) | `Volume status - <name>` |
+| [Volume usage](#storage-hp-alletra-restapi-volume-usage) | `Volume usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### HPE-Alletra
+
+*HPE Alletra* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Define the TCP port to use to reach the API (default: 443). |
+| `PROTOCOL` | `https` | Define the protocol to reach the API (default: 'https'). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Define the password associated with the username. |
+| `API-USERNAME` |  | Define the username for authentication. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Capacity](#storage-hp-alletra-restapi-capacity) | `storage-hp-alletra-restapi-capacity` |
+| [Disk status](#storage-hp-alletra-restapi-disk-status) | `storage-hp-alletra-restapi-disk-status` |
+| [Disk usage](#storage-hp-alletra-restapi-disk-usage) | `storage-hp-alletra-restapi-disk-usage` |
+| [License status](#storage-hp-alletra-restapi-licenses) | `storage-hp-alletra-restapi-licenses` |
+| [Volume status](#storage-hp-alletra-restapi-volume-status) | `storage-hp-alletra-restapi-volume-status` |
+| [Volume usage](#storage-hp-alletra-restapi-volume-usage) | `storage-hp-alletra-restapi-volume-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Capacity {/* #storage-hp-alletra-restapi-capacity */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning thresholds space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical thresholds space usage (%) |
+| `FILTER-TYPE` |  | Filter storage by type (regular expression). The known types are: allCapacity, FCCapacity, SSDCapacity and NLCapacity |
+| `WARNING-SPACE-USAGE` |  | Warning thresholds space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning thresholds space free (B) |
+| `WARNING-SPACE-UNAVAILABLE` |  | Warning thresholds space unavailable (B) |
+| `WARNING-SPACE-FAILED` |  | Warning thresholds space failed (B) |
+| `WARNING-COMPACTION` |  | Warning thresholds compaction ratio |
+| `WARNING-DEDUPLICATION` |  | Warning thresholds deduplication ratio |
+| `WARNING-COMPRESSION` |  | Warning thresholds compression ratio |
+| `WARNING-DATA-REDUCTION` |  | Warning thresholds data reduction ratio |
+| `WARNING-OVERPROVISIONING` |  | Warning thresholds overprovisioning ratio |
+| `CRITICAL-SPACE-USAGE` |  | Critical thresholds space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical thresholds space free (B) |
+| `CRITICAL-SPACE-UNAVAILABLE` |  | Critical thresholds space unavailable (B) |
+| `CRITICAL-SPACE-FAILED` |  | Critical thresholds space failed (B) |
+| `CRITICAL-COMPACTION` |  | Critical thresholds compaction ratio |
+| `CRITICAL-DEDUPLICATION` |  | Critical thresholds deduplication ratio |
+| `CRITICAL-COMPRESSION` |  | Critical thresholds compression ratio |
+| `CRITICAL-DATA-REDUCTION` |  | Critical thresholds data reduction ratio |
+| `CRITICAL-OVERPROVISIONING` |  | Critical thresholds overprovisioning ratio |
+| `CRITICAL-PROVISIONING-ALLOCATED` |  | Threshold in bytes. |
+| `CRITICAL-PROVISIONING-FREE` |  | Threshold in bytes. |
+| `CRITICAL-PROVISIONING-USED` |  | Threshold in bytes. |
+| `CRITICAL-PROVISIONING-VIRTUAL-SIZE` |  | Threshold in bytes. |
+| `WARNING-PROVISIONING-ALLOCATED` |  | Threshold in bytes. |
+| `WARNING-PROVISIONING-FREE` |  | Threshold in bytes. |
+| `WARNING-PROVISIONING-USED` |  | Threshold in bytes. |
+| `WARNING-PROVISIONING-VIRTUAL-SIZE` |  | Threshold in bytes. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `storage.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `storage.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `storage.space.unavailable.bytes` | `B` | unavailable | `WARNING-SPACE-UNAVAILABLE`, `CRITICAL-SPACE-UNAVAILABLE` |
+| `storage.space.failed.bytes` | `B` | failed | `WARNING-SPACE-FAILED`, `CRITICAL-SPACE-FAILED` |
+| `storage.provisioning.virtualsize.bytes` | `B` | provisioning virtual size | `WARNING-PROVISIONING-VIRTUAL-SIZE`, `CRITICAL-PROVISIONING-VIRTUAL-SIZE` |
+| `storage.provisioning.used.bytes` | `B` | provisioning used | `WARNING-PROVISIONING-USED`, `CRITICAL-PROVISIONING-USED` |
+| `storage.provisioning.allocated.bytes` | `B` | provisioning allocated | `WARNING-PROVISIONING-ALLOCATED`, `CRITICAL-PROVISIONING-ALLOCATED` |
+| `storage.provisioning.free.bytes` | `B` | provisioning free | `WARNING-PROVISIONING-FREE`, `CRITICAL-PROVISIONING-FREE` |
+| `storage.space.compaction.ratio.count` |  | compaction | `WARNING-COMPACTION`, `CRITICAL-COMPACTION` |
+| `storage.space.deduplication.ratio.count` |  | deduplication | `WARNING-DEDUPLICATION`, `CRITICAL-DEDUPLICATION` |
+| `storage.space.compression.ratio.count` |  | compression | `WARNING-COMPRESSION`, `CRITICAL-COMPRESSION` |
+| `storage.space.data_reduction.ratio.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+| `storage.space.overprovisioning.ratio.count` |  | overprovisioning | `WARNING-OVERPROVISIONING`, `CRITICAL-OVERPROVISIONING` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk status {/* #storage-hp-alletra-restapi-disk-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /NOT_DOCUMENTED$/'` | Define the condition to match for the returned status to be UNKNOWN. Default: '%\{status\} =~ /NOT_DOCUMENTED$/' |
+| `WARNING-STATUS` | `'%{status} =~ /^(new\|degraded\|unknown)$/'` | Define the condition to match for the returned status to be WARNING. Default: '%\{status\} =~ /^(new\|degraded\|unknown)$/' |
+| `CRITICAL-STATUS` | `'%{status} =~ /failed/'` | Define the condition to match for the returned status to be CRITICAL. Default: '%\{status\} =~ /failed/' |
+| `FILTER-ID` |  | Define which disks should be monitored based on their IDs. This option will be treated as a regular expression |
+| `FILTER-MANUFACTURER` |  | Define which volumes should be monitored based on the disk manufacturer. This option will be treated as a regular expression |
+| `FILTER-MODEL` |  | Define which volumes should be monitored based on the disk model. This option will be treated as a regular expression |
+| `FILTER-SERIAL` |  | Define which volumes should be monitored based on the disk serial number. This option will be treated as a regular expression |
+| `FILTER-POSITION` |  | Define which volumes should be monitored based on the disk position. The position is composed of 3 integers, separated by colons: - Cage number where the physical disk is in. - Magazine number where the physical disk is in. - For DC4 cages, disk position within the magazine. For non-DC4 cages, 0. Example: 7:5:0 This option will be treated as a regular expression |
+| `WARNING-DISKS-TOTAL` |  | Warning threshold disks total |
+| `WARNING-DISKS-NORMAL` |  | Warning threshold disks normal |
+| `WARNING-DISKS-DEGRADED` |  | Warning threshold disks degraded |
+| `WARNING-DISKS-NEW` |  | Warning threshold disks new |
+| `WARNING-DISKS-FAILED` |  | Warning threshold disks failed |
+| `WARNING-DISKS-UNKNOWN` |  | Warning threshold disks unknown |
+| `CRITICAL-DISKS-TOTAL` |  | Critical threshold disks total |
+| `CRITICAL-DISKS-NORMAL` |  | Critical threshold disks normal |
+| `CRITICAL-DISKS-DEGRADED` |  | Critical threshold disks degraded |
+| `CRITICAL-DISKS-NEW` |  | Critical threshold disks new |
+| `CRITICAL-DISKS-FAILED` |  | Critical threshold disks failed |
+| `CRITICAL-DISKS-UNKNOWN` |  | Critical threshold disks unknown |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disks.total.count` |  | total | `WARNING-DISKS-TOTAL`, `CRITICAL-DISKS-TOTAL` |
+| `disks.normal.count` |  | normal | `WARNING-DISKS-NORMAL`, `CRITICAL-DISKS-NORMAL` |
+| `disks.degraded.count` |  | degraded | `WARNING-DISKS-DEGRADED`, `CRITICAL-DISKS-DEGRADED` |
+| `disks.new.count` |  | new | `WARNING-DISKS-NEW`, `CRITICAL-DISKS-NEW` |
+| `disks.failed.count` |  | failed | `WARNING-DISKS-FAILED`, `CRITICAL-DISKS-FAILED` |
+| `disks.unknown.count` |  | unknown | `WARNING-DISKS-UNKNOWN`, `CRITICAL-DISKS-UNKNOWN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk usage {/* #storage-hp-alletra-restapi-disk-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Warning threshold disks usage (%) |
+| `WARNING-TOTAL-PRCT` | `90` | Warning threshold total disks usage (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Critical threshold disk usage (%) |
+| `CRITICAL-TOTAL-PRCT` | `95` | Critical threshold total disk usage (%) |
+| `FILTER-ID` |  | Define which disks should be monitored based on their IDs. This option will be treated as a regular expression |
+| `FILTER-MANUFACTURER` |  | Define which volumes should be monitored based on the disk manufacturer. This option will be treated as a regular expression |
+| `FILTER-MODEL` |  | Define which volumes should be monitored based on the disk model. This option will be treated as a regular expression |
+| `FILTER-SERIAL` |  | Define which volumes should be monitored based on the disk serial number. This option will be treated as a regular expression |
+| `FILTER-POSITION` |  | Define which volumes should be monitored based on the disk position. The position is composed of 3 integers, separated by colons: - Cage number where the physical disk is in. - Magazine number where the physical disk is in. - For DC4 cages, disk position within the magazine. For non-DC4 cages, 0. Example: 7:5:0 This option will be treated as a regular expression |
+| `WARNING-USAGE` |  | Warning threshold disks usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold disks usage free (B) |
+| `WARNING-TOTAL-USAGE` |  | Warning threshold total disks usage (B) |
+| `WARNING-TOTAL-FREE` |  | Warning threshold total disks usage free (B) |
+| `CRITICAL-USAGE` |  | Critical threshold disk usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold disk usage free (B) |
+| `CRITICAL-TOTAL-USAGE` |  | Critical threshold total disk usage (B) |
+| `CRITICAL-TOTAL-FREE` |  | Critical threshold total disk usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disks.total.space.usage.bytes` | `B` |  | `WARNING-TOTAL-USAGE`, `CRITICAL-TOTAL-USAGE` |
+| `disks.total.space.usage.percent` |  | Total percentage used:  %% | `WARNING-TOTAL-PRCT`, `CRITICAL-TOTAL-PRCT` |
+| `disks.total.space.free.bytes` | `B` |  | `WARNING-TOTAL-FREE`, `CRITICAL-TOTAL-FREE` |
+| `disk.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `disk.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `disk.space.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### License status {/* #storage-hp-alletra-restapi-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LICENSE-EXPIRATION` | `2592000:` | Warning threshold for the remaining time in seconds until the licenses will expire |
+| `CRITICAL-EXPIRED` | `0` | Critical threshold for the number of expired licenses |
+| `CRITICAL-LICENSE-EXPIRATION` | `1209600:` | Critical threshold for the remaining time in seconds until the licenses will expire |
+| `FILTER-NAME` |  | Filter licenses by name (regular expression) |
+| `WARNING-TOTAL` |  | Warning threshold for the total number of licenses |
+| `WARNING-EXPIRED` |  | Warning threshold for the number of expired licenses |
+| `CRITICAL-TOTAL` |  | Critical threshold for the total number of licenses |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `licenses.total.count` |  | Number of licenses | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `licenses.expired.count` |  | Number of expired licenses | `WARNING-EXPIRED`, `CRITICAL-EXPIRED` |
+| `license.expiration.seconds` | `s` |  | `WARNING-LICENSE-EXPIRATION`, `CRITICAL-LICENSE-EXPIRATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume status {/* #storage-hp-alletra-restapi-volume-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /NOT_DOCUMENTED$/'` | Define the condition to match for the returned status to be UNKNOWN. Default: '%\{status\} =~ /NOT_DOCUMENTED$/' |
+| `WARNING-STATUS` | `'%{status} =~ /^(degraded\|unknown)$/'` | Define the condition to match for the returned status to be WARNING. Default: '%\{status\} =~ /^(degraded\|unknown)$/' |
+| `CRITICAL-STATUS` | `'%{status} =~ /failed/'` | Define the condition to match for the returned status to be CRITICAL. Default: '%\{status\} =~ /failed/' |
+| `WARNING-VOLUMES-DEGRADED` | `0` | Warning threshold degraded volumes |
+| `WARNING-VOLUMES-UNKNOWN` | `0` | Warning threshold unknown volumes |
+| `CRITICAL-VOLUMES-FAILED` | `0` | Critical threshold failed volumes |
+| `FILTER-ID` |  | Define which volumes should be monitored based on their IDs. This option will be treated as a regular expression |
+| `FILTER-NAME` |  | Define which volumes should be monitored based on the volume name. This option will be treated as a regular expression |
+| `WARNING-VOLUMES-TOTAL` |  | Warning threshold total volumes |
+| `WARNING-VOLUMES-NORMAL` |  | Warning threshold normal volumes |
+| `WARNING-VOLUMES-FAILED` |  | Warning threshold failed volumes |
+| `CRITICAL-VOLUMES-TOTAL` |  | Critical threshold total volumes |
+| `CRITICAL-VOLUMES-NORMAL` |  | Critical threshold normal volumes |
+| `CRITICAL-VOLUMES-DEGRADED` |  | Critical threshold degraded volumes |
+| `CRITICAL-VOLUMES-UNKNOWN` |  | Critical threshold unknown volumes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volumes.total.count` |  | total | `WARNING-VOLUMES-TOTAL`, `CRITICAL-VOLUMES-TOTAL` |
+| `volumes.normal.count` |  | normal | `WARNING-VOLUMES-NORMAL`, `CRITICAL-VOLUMES-NORMAL` |
+| `volumes.degraded.count` |  | degraded | `WARNING-VOLUMES-DEGRADED`, `CRITICAL-VOLUMES-DEGRADED` |
+| `volumes.failed.count` |  | failed | `WARNING-VOLUMES-FAILED`, `CRITICAL-VOLUMES-FAILED` |
+| `volumes.unknown.count` |  | unknown | `WARNING-VOLUMES-UNKNOWN`, `CRITICAL-VOLUMES-UNKNOWN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume usage {/* #storage-hp-alletra-restapi-volume-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Warning threshold volume usage (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Critical threshold volume usage (%) |
+| `FILTER-ID` |  | Define which volumes should be monitored based on their IDs. This option will be treated as a regular expression |
+| `FILTER-NAME` |  | Define which volumes should be monitored based on the volume names. This option will be treated as a regular expression |
+| `WARNING-USAGE` |  | Warning threshold volume usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold volume usage free (B) |
+| `CRITICAL-USAGE` |  | Critical threshold volume usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold volume usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `volume.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `volume.space.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250600 - 20250721</summary>
+
+- Command `storage-hp-alletra-restapi-capacity`
+    - Option `--warning-provisioning-virtual-size=$_SERVICEWARNING-PROVISIONING-VIRTUAL-SIZE$` added
+    - Option `--warning-provisioning-allocated=$_SERVICEWARNING-PROVISIONING-ALLOCATED$` added
+    - Option `--warning-provisioning-used=$_SERVICEWARNING-PROVISIONING-USED$` added
+    - Option `--warning-provisioning-free=$_SERVICEWARNING-PROVISIONING-FREE$` added
+    - Option `--critical-provisioning-virtual-size=$_SERVICECRITICAL-PROVISIONING-VIRTUAL-SIZE$` added
+    - Option `--critical-provisioning-allocated=$_SERVICECRITICAL-PROVISIONING-ALLOCATED$` added
+    - Option `--critical-provisioning-used=$_SERVICECRITICAL-PROVISIONING-USED$` added
+    - Option `--critical-provisioning-free=$_SERVICECRITICAL-PROVISIONING-FREE$` added
+    - Macro `CRITICAL-PROVISIONING-ALLOCATED` added
+    - Macro `CRITICAL-PROVISIONING-FREE` added
+    - Macro `CRITICAL-PROVISIONING-USED` added
+    - Macro `CRITICAL-PROVISIONING-VIRTUAL-SIZE` added
+    - Macro `WARNING-PROVISIONING-ALLOCATED` added
+    - Macro `WARNING-PROVISIONING-FREE` added
+    - Macro `WARNING-PROVISIONING-USED` added
+    - Macro `WARNING-PROVISIONING-VIRTUAL-SIZE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240909 - 20240925</summary>
+
+- Plugin pack `HPE Alletra`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240909 - 20240925`.

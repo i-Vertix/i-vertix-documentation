@@ -1,0 +1,242 @@
+---
+title: "SAP Sybase ASE database"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/SAP.png";
+
+<PluginPackHeader name="SAP Sybase ASE database" image={image} category="Database" metadata={[]} />
+
+## Description
+
+Monitors SAP Sybase ASE databases: connection time, connected users, blocked processes, database sizes and custom SQL queries.
+
+The plugin pack provides these checks:
+
+* [ASE Blocked processes](#database-sybase-blocked-processes)
+* [ASE Connected users](#database-sybase-connected-users)
+* [ASE Connection time](#database-sybase-connection-time)
+* [Sybase Databases Size](#database-sybase-databases-size)
+* [Sybase SQL](#database-sybase-sql)
+
+
+## Host Templates
+
+### SAP-Sybase-ASE-database
+
+*SAP Sybase ASE Database* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `ASE-PORT` | `5000` |  |
+| `ASE-ENCRYPTPASSWORD` | `1` |  |
+| `ASE-TIMEOUT` | `10` | Timeout in seconds for connection. |
+| `ASE-PASSWORD` | *(password)* | Password for the defined user name. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ASE Blocked processes](#database-sybase-blocked-processes) | `database-sybase-blocked-processes` |
+| [ASE Connected users](#database-sybase-connected-users) | `database-sybase-connected-users` |
+| [ASE Connection time](#database-sybase-connection-time) | `database-sybase-connection-time` |
+| [Sybase Databases Size](#database-sybase-databases-size) | `database-sybase-databases-size` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Sybase SQL](#database-sybase-sql) | `database-sybase-sql` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### ASE Blocked processes {/* #database-sybase-blocked-processes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `0` | Threshold warning blocked processes |
+| `CRITICAL` | `50` | Threshold critical blocked processes |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ASE Connected users {/* #database-sybase-connected-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning connected users |
+| `CRITICAL` |  | Threshold critical connected users |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ASE Connection time {/* #database-sybase-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `0.5` | Threshold warning connection time |
+| `CRITICAL` | `2` | Threshold critical connection time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sybase Databases Size {/* #database-sybase-databases-size */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `FILTER-DATABASE` | `.*` | Filter database by name. Can be a regex |
+| `WARNING-DATA` | `90` | Threshold warning data |
+| `WARNING-LOG` | `90` | Threshold warning log |
+| `CRITICAL-DATA` | `95` | Threshold critical data |
+| `CRITICAL-LOG` | `95` | Threshold critical log |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sybase SQL {/* #database-sybase-sql */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FORMAT` | `SQL statement result : %i.` | Output format (Default: 'SQL statement result : %i.') |
+| `PERFDATA-NAME` | `value` | Perfdata name in perfdata output (Default: 'value') |
+| `SQL-STATEMENT` |  | SQL statement that returns a number |
+| `PERFDATA-UNIT` |  | Perfdata unit in perfdata output (Default: '') |
+| `PERFDATA-MIN` |  | Minimum value to add in perfdata output (Default: '') |
+| `PERFDATA-MAX` |  | Maximum value to add in perfdata output (Default: '') |
+| `WARNING-VALUE` |  | Threshold warning value |
+| `WARNING-EXECUTION-TIME` |  | Threshold warning execution time |
+| `CRITICAL-VALUE` |  | Threshold critical value |
+| `CRITICAL-EXECUTION-TIME` |  | Threshold critical execution time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqlrequest.execution.time.seconds` | `s` | execution time:  second(s) | `WARNING-EXECUTION-TIME`, `CRITICAL-EXECUTION-TIME` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

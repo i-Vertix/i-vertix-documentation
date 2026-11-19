@@ -1,0 +1,210 @@
+---
+title: "Internet Information Server - IIS (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/Windows.png";
+
+<PluginPackHeader name="Internet Information Server - IIS (i-Vertix agent)" image={image} category="Application" metadata={["HTTP", "i-Vertix agent"]} />
+
+## Description
+
+Monitors Microsoft IIS through the i-Vertix agent: application pool state, web service statistics and the World Wide Web Publishing Service.
+
+The plugin pack provides these checks:
+
+* [IIS Application Pool state](#ivertix-agent-apps-microsoft-iis-local-applicationpool-state)
+* [IIS Webservice statistics](#ivertix-agent-apps-microsoft-iis-local-webservice-statistics)
+* [Service World Wide Web Publishing Service](#ivertix-agent-check_service-w3svc)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [IIS Application Pool state](#ivertix-agent-apps-microsoft-iis-local-applicationpool-state) | `IIS Application Pool status - <name>` |
+| [IIS Webservice statistics](#ivertix-agent-apps-microsoft-iis-local-webservice-statistics) | `IIS Webservice statistic - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### IIS-iVertix-agent
+
+*Microsoft IIS Server* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [IIS Application Pool state](#ivertix-agent-apps-microsoft-iis-local-applicationpool-state) | `ivertix-agent-apps-microsoft-iis-local-applicationpool-state` |
+| [IIS Webservice statistics](#ivertix-agent-apps-microsoft-iis-local-webservice-statistics) | `ivertix-agent-apps-microsoft-iis-local-webservice-statistics` |
+| [Service World Wide Web Publishing Service](#ivertix-agent-check_service-w3svc) | `ivertix-agent-check_service-w3svc` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### IIS Application Pool state {/* #ivertix-agent-apps-microsoft-iis-local-applicationpool-state */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter application pool name (can be a regexp) |
+| `SELF_HEALING` | `FALSE` | *(not used by the check command)* |
+| `SELF_HEALINGMODE` | `API` | *(not used by the check command)* |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IIS Webservice statistics {/* #ivertix-agent-apps-microsoft-iis-local-webservice-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter site name (can be a regexp) |
+| `WARNING-CONNECTIONS-ATTEMPT` |  | Warning threshold connections attempt |
+| `WARNING-USERS-ANONYMOUS` |  | Warning threshold users anonymous |
+| `WARNING-REQUESTS-POST` |  | Warning threshold requests post |
+| `WARNING-REQUESTS-GET` |  | Warning threshold requests get |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold traffic out |
+| `WARNING-FILES-RECEIVED` |  | Warning threshold files received |
+| `WARNING-FILES-SENT` |  | Warning threshold files sent |
+| `CRITICAL-CONNECTIONS-ATTEMPT` |  | Critical threshold connections attempt |
+| `CRITICAL-USERS-ANONYMOUS` |  | Critical threshold users anonymous |
+| `CRITICAL-REQUESTS-POST` |  | Critical threshold requests post |
+| `CRITICAL-REQUESTS-GET` |  | Critical threshold requests get |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold traffic out |
+| `CRITICAL-FILES-RECEIVED` |  | Critical threshold files received |
+| `CRITICAL-FILES-SENT` |  | Critical threshold files sent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service World Wide Web Publishing Service {/* #ivertix-agent-check_service-w3svc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `W3SVC` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `IIS-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Command `ivertix-agent-apps-microsoft-iis-local-applicationpool-state`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-iis-local-webservice-statistics`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_service`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>

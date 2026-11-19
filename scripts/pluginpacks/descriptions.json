@@ -1,0 +1,1810 @@
+{
+    "1": {
+        "name": "Linux SNMP",
+        "intro": "Monitors Linux servers through SNMP: CPU, memory and swap, load, disk I/O, storage and inode usage, interfaces, TCP and UDP connections, processes, ARP, NTP and uptime."
+    },
+    "2": {
+        "name": "Linux SSH",
+        "intro": "Monitors Linux servers over SSH: CPU, memory and swap, load, disk I/O, mountpoints and LVM, network traffic, systemd services and journal, files, quotas, pending updates and uptime."
+    },
+    "3": {
+        "name": "Apache Webserver",
+        "intro": "Monitors Apache web servers through the HTTP status page: CPU usage, requests, response time, worker slot states and the number of workers."
+    },
+    "4": {
+        "name": "Elasticsearch",
+        "intro": "Monitors Elasticsearch through its REST API: cluster, node and index statistics, shard states, the license and the results of custom queries."
+    },
+    "5": {
+        "name": "MariaDB/MySQL",
+        "intro": "Monitors MariaDB and MySQL servers through SQL queries: connection time, database sizes, buffer and cache hit rates, queries, threads, open files and tables, replication, backups and uptime."
+    },
+    "6": {
+        "name": "PHP-FPM",
+        "intro": "Monitors PHP-FPM pools: active and idle processes, the listen queue and the requests per second."
+    },
+    "7": {
+        "name": "SSL certificates - x509",
+        "intro": "Monitors the validity of x509 SSL/TLS certificates: HTTPS, SMTP, IMAP, POP3 and FTP services as well as certificate files, with the days left until expiration."
+    },
+    "8": {
+        "name": "Dell iDRAC",
+        "intro": "Monitors Dell iDRAC controllers through SNMP: the global status and the status of the server hardware components."
+    },
+    "9": {
+        "name": "Netapp Ontap SNMP",
+        "intro": "Monitors NetApp ONTAP systems through SNMP: CPU, aggregates, file systems and volumes, hardware (fans, power supplies, temperature, shelves, NVRAM), failover, SnapMirror and snapshots, quotas and CIFS/NFS activity."
+    },
+    "10": {
+        "name": "i-Vertix3 Monitoring Central (legacy)",
+        "intro": "Monitors a legacy i-Vertix3 monitoring central server: Gorgone, broker, poller delay and database partitioning, together with Apache, MariaDB, PHP-FPM, system resources and the platform processes."
+    },
+    "11": {
+        "name": "i-Vertix3 Poller (legacy)",
+        "intro": "Monitors a legacy i-Vertix3 poller: broker statistics, the platform processes (centengine, gorgone, snmptrapd and others), SMTP login and system resources such as CPU, memory, swap and load."
+    },
+    "12": {
+        "name": "Windows SNMP",
+        "intro": "Monitors Windows systems through SNMP: CPU, memory and swap usage, interfaces, selected Windows services, process count, NTP time offset and uptime."
+    },
+    "13": {
+        "name": "Cisco standard network devices",
+        "intro": "Monitors Cisco routers and switches through SNMP: CPU, memory and load, environment sensors, interfaces, spanning tree, stacking, VSS and vPC, BGP and HSRP, IP SLA, QoS, voice calls and configuration status."
+    },
+    "14": {
+        "name": "Windows DHCP Server",
+        "intro": "Monitors Windows DHCP servers through SNMP: the address usage and pending offers of subnets, and the state of the DHCP server service."
+    },
+    "15": {
+        "name": "Windows (i-Vertix agent)",
+        "intro": "Monitors Windows systems through the i-Vertix agent: CPU, memory, pagefile and disks, services, processes, event logs, certificates, files, sessions, scheduled tasks, pending updates and reboots, and uptime."
+    },
+    "16": {
+        "name": "Veeam VBR (i-Vertix agent)",
+        "intro": "Monitors Veeam Backup & Replication servers through the i-Vertix agent: job status, licenses, repositories, tape jobs and SureBackup jobs."
+    },
+    "17": {
+        "name": "Fujitsu iRMC",
+        "intro": "Monitors Fujitsu servers through the iRMC management controller via SNMP: the status of the hardware components and the uptime."
+    },
+    "18": {
+        "name": "Lenovo XCC",
+        "intro": "Monitors Lenovo servers through the XCC management controller via SNMP: the status of the hardware components and the uptime."
+    },
+    "19": {
+        "name": "HP iLO 5 API",
+        "intro": "Monitors HP ProLiant and HPE servers with iLO 5 through the iLO REST API: the status of the hardware components."
+    },
+    "20": {
+        "name": "HP iLO 2/3/4 API",
+        "intro": "Monitors HP ProLiant servers with iLO 2, 3 or 4 through the iLO XML API: the status of the hardware components."
+    },
+    "21": {
+        "name": "HP iLO 3 API",
+        "intro": "Monitors HP ProLiant servers with iLO 3 through the iLO XML API: the status of the hardware components."
+    },
+    "22": {
+        "name": "Juniper EX switch",
+        "intro": "Monitors Juniper EX switches through SNMP: CPU, memory and storage usage, hardware status, virtual chassis stack status, interfaces and the ARP table."
+    },
+    "23": {
+        "name": "PaloAlto Firewall",
+        "intro": "Monitors Palo Alto firewalls through SNMP and SSH: CPU, memory and sessions, hardware and environment, interfaces, HA and cluster status, IPsec and GlobalProtect tunnels, licenses and signature updates."
+    },
+    "24": {
+        "name": "Extreme network devices",
+        "intro": "Monitors Extreme network devices through SNMP: CPU and memory usage, hardware status, interfaces, stack status and uptime."
+    },
+    "25": {
+        "name": "QNAP NAS",
+        "intro": "Monitors QNAP NAS devices through SNMP: CPU, memory, pool, volume and storage usage, hardware status, interfaces, processes, NTP, upgrade status and uptime."
+    },
+    "26": {
+        "name": "Synology NAS",
+        "intro": "Monitors Synology NAS devices through SNMP: CPU, memory, swap and load, storage, temperature, hardware status, UPS, high availability, interfaces, NTP, upgrade status and uptime."
+    },
+    "27": {
+        "name": "Dell S-Series (Force10)",
+        "intro": "Monitors Dell S-Series (Force10) switches through SNMP: CPU and memory usage, hardware status, interfaces and uptime."
+    },
+    "28": {
+        "name": "VMware vCenter",
+        "intro": "Monitors VMware vCenter and ESX infrastructures through the VMware connector: clusters, datacenters, ESX hosts (CPU, memory, network, health, services, alarms), datastores, virtual machines, snapshots and licenses."
+    },
+    "29": {
+        "name": "VMware vSphere vCSA (legacy)",
+        "intro": "Monitors the health status of VMware vCenter Server Appliances (vCSA) through the legacy HTTPS API."
+    },
+    "30": {
+        "name": "VMware vSAN",
+        "intro": "Monitors VMware vSAN clusters through the VMware connector: cluster usage with backend IOPS, throughput and latency, datacenter alarms, licenses, snapshots, VM tools and vMotion operations."
+    },
+    "31": {
+        "name": "Fortinet Fortigate FW",
+        "intro": "Monitors Fortinet FortiGate firewalls through SNMP and the HTTPS API: CPU, memory and disk usage, cluster and HA status, hardware, interfaces, sessions, VPN, SD-WAN, IPS and virus statistics, licenses, certificates, VDOMs, managed access points and switches."
+    },
+    "32": {
+        "name": "Dell N-Series switch",
+        "intro": "Monitors Dell N-Series switches through SNMP: CPU and memory usage, environment sensors, global status, interfaces and uptime."
+    },
+    "33": {
+        "name": "PostgreSQL",
+        "intro": "Monitors PostgreSQL databases: connections, database size, hit ratio, locks, bloat, vacuum, query time, tablespaces, statistics, time synchronization and custom SQL queries."
+    },
+    "34": {
+        "name": "Tomcat basic",
+        "intro": "Monitors Apache Tomcat application servers through the manager status page: active sessions, connector threads, traffic and requests, and memory usage."
+    },
+    "35": {
+        "name": "Dell OS10 (Force10)",
+        "intro": "Monitors Dell OS10 (Force10) switches through SNMP: CPU, load, memory and swap, disk and inode usage, hardware status, interfaces, NTP time and uptime."
+    },
+    "36": {
+        "name": "Active Directory (i-Vertix agent)",
+        "intro": "Monitors Active Directory domain controllers through the i-Vertix agent: DCDIAG and Netdom checks, LDAP and directory service performance counters, replication, the status of the core services and security events such as locked out or deleted accounts."
+    },
+    "37": {
+        "name": "Internet Information Server - IIS (i-Vertix agent)",
+        "intro": "Monitors Microsoft IIS through the i-Vertix agent: application pool state, web service statistics and the World Wide Web Publishing Service."
+    },
+    "38": {
+        "name": "HPE Procurve switch",
+        "intro": "Monitors HPE ProCurve switches through SNMP: CPU and memory usage, environment sensors, interfaces including PoE and optical values, ARP, spanning tree, stack, virtual chassis and uptime."
+    },
+    "39": {
+        "name": "Checkpoint Firewall",
+        "intro": "Monitors Check Point firewalls through SNMP: CPU, memory, disk and system load, connections, interfaces, hardware health, HA, VRRP, VSX and VPN status, remote access users and NTP."
+    },
+    "40": {
+        "name": "Supermicro BMC",
+        "intro": "Monitors Supermicro servers through the BMC via SNMP: the BMC sensor status and the uptime."
+    },
+    "41": {
+        "name": "Dell CMC",
+        "intro": "Monitors Dell Chassis Management Controllers (CMC) through SNMP: the status of the chassis hardware components and the uptime."
+    },
+    "42": {
+        "name": "APC UPS",
+        "intro": "Monitors APC UPS devices through SNMP: battery charge, runtime and temperature, input and output lines, sensors, time synchronization and uptime."
+    },
+    "43": {
+        "name": "UPS standard (RFC1628)",
+        "intro": "Monitors UPS devices that support the standard UPS MIB (RFC 1628) through SNMP: alarms, battery status, input and output lines, output source and the uptime."
+    },
+    "44": {
+        "name": "Socomec Netvision UPS",
+        "intro": "Monitors Socomec Netvision UPS devices through SNMP: alarms, battery status (charge, temperature) and the input and output lines."
+    },
+    "45": {
+        "name": "NGINX Webserver",
+        "intro": "Monitors NGINX web servers through the status page: accepted and handled connections, dropped connections and requests per second."
+    },
+    "46": {
+        "name": "Brocade switch",
+        "intro": "Monitors Brocade switches through SNMP: CPU and memory usage, hardware health, interfaces including packet errors and optical power values of SFP ports, and uptime."
+    },
+    "47": {
+        "name": "Dell EMC XtremIO",
+        "intro": "Monitors Dell EMC XtremIO arrays through the REST API: cluster health, data protection groups, SSD endurance and IOPS, storage controllers, and the status and CPU of the XEnvs."
+    },
+    "48": {
+        "name": "Dell EMC Isilon",
+        "intro": "Monitors Dell EMC Isilon clusters through SNMP: cluster usage, hardware status and uptime."
+    },
+    "49": {
+        "name": "Dell EMC Data Domain",
+        "intro": "Monitors Dell EMC Data Domain systems through SNMP: alerts, hardware status, file system usage and cleaning, MTrees, replication, processes, interfaces and uptime."
+    },
+    "50": {
+        "name": "Buffalo Terastation",
+        "intro": "Monitors Buffalo TeraStation NAS devices through SNMP: array usage, hardware health, CPU, memory, load, interfaces and uptime."
+    },
+    "51": {
+        "name": "Dell Compellent",
+        "intro": "Monitors Dell Compellent storage arrays through SNMP: global and hardware status, interfaces, NTP time offset and uptime."
+    },
+    "52": {
+        "name": "Netapp SANtricity",
+        "intro": "Monitors NetApp SANtricity storage through its API: hardware status, storage controllers, systems, pools and volumes, including space usage, IOPS and throughput."
+    },
+    "53": {
+        "name": "Kaspersky Security Center",
+        "intro": "Monitors Kaspersky Security Center through SNMP: antivirus deployment, protection status, updates, scans, events, licenses and the logical network."
+    },
+    "54": {
+        "name": "Office 365",
+        "intro": "Monitors Microsoft Office 365 through the Microsoft Graph API: Exchange mail activity and mailbox usage, OneDrive, SharePoint and Teams usage and activity, Azure AD directory size and management service status."
+    },
+    "55": {
+        "name": "IBM Storwize storage",
+        "intro": "Monitors IBM Storwize storage over SSH: component status, event log problems, storage pool usage, replication and virtual disk status."
+    },
+    "56": {
+        "name": "IBM HMC (Hardware Managemement Console)",
+        "intro": "Monitors IBM Hardware Management Consoles over SSH: hardware errors and the LED status of the managed systems."
+    },
+    "57": {
+        "name": "Sonicwall Firewall",
+        "intro": "Monitors SonicWall firewalls through SNMP: CPU and memory usage, connections, VPN, interfaces and uptime."
+    },
+    "58": {
+        "name": "F5 Load Balancer",
+        "intro": "Monitors F5 BIG-IP load balancers through SNMP: CPU and TMM usage, connections, virtual servers, pools and nodes, failover status, certificates, trunks, Access Policy Manager sessions and hardware status."
+    },
+    "59": {
+        "name": "Alcatel Omniswitch",
+        "intro": "Monitors Alcatel-Lucent OmniSwitch switches through SNMP: CPU, memory and flash usage, hardware status, virtual chassis, spanning tree and the interfaces."
+    },
+    "60": {
+        "name": "HP standard switch",
+        "intro": "Monitors HP switches through SNMP: CPU and memory usage, hardware status, interfaces, IRF stack and VRRP status and uptime."
+    },
+    "61": {
+        "name": "Cisco Meraki Cloud Controller (API)",
+        "intro": "Monitors Cisco Meraki cloud-managed networks through the Meraki Dashboard API: networks, device status and usage, VPN tunnels and the state of the API cache."
+    },
+    "62": {
+        "name": "Ruckus Access Points",
+        "intro": "Monitors Ruckus access points through SNMP: CPU and memory usage, interfaces, connected users and uptime."
+    },
+    "63": {
+        "name": "Ruckus Smartzone WLAN Controller",
+        "intro": "Monitors Ruckus SmartZone WLAN controllers through SNMP: CPU, memory, load and storage, system status, interfaces and the managed access points."
+    },
+    "64": {
+        "name": "H3C switch",
+        "intro": "Monitors H3C switches through SNMP: CPU and memory usage, hardware status, interfaces including optical module values, and uptime."
+    },
+    "65": {
+        "name": "Citrix Netscaler",
+        "intro": "Monitors Citrix NetScaler appliances through SNMP: CPU, memory and storage usage, connections, HA and health state, interfaces, certificate expiry and the status and traffic of the virtual servers."
+    },
+    "66": {
+        "name": "HPE 3PAR storage",
+        "intro": "Monitors HPE 3PAR storage over SSH: capacity, disk and volume usage, nodes, cages, power supplies, adaptive flash cache, hardware status, NTP time and uptime."
+    },
+    "67": {
+        "name": "DNS requests (active)",
+        "intro": "Monitors DNS servers with active DNS requests, checking that names are resolved."
+    },
+    "68": {
+        "name": "DHCP requests (active)",
+        "intro": "Monitors DHCP servers with an active DHCP request, checking that the server answers."
+    },
+    "69": {
+        "name": "FTP Server (active)",
+        "intro": "Monitors FTP servers with active checks: login, custom FTP commands, and the number and modification time of files."
+    },
+    "70": {
+        "name": "HTTP(S) or website",
+        "intro": "Monitors websites and web services over HTTP(S): response and extended timing metrics, expected content, and JSON and SOAP content checks."
+    },
+    "71": {
+        "name": "IMAP Server (active)",
+        "intro": "Monitors IMAP servers with active checks: login and the search for messages in a mailbox."
+    },
+    "72": {
+        "name": "LDAP / Active Directory (active)",
+        "intro": "Monitors LDAP and Active Directory servers with active checks: login and search requests."
+    },
+    "73": {
+        "name": "NTP Server (active)",
+        "intro": "Monitors NTP servers with active checks: the time offset and the response time."
+    },
+    "74": {
+        "name": "SMTP Server (active)",
+        "intro": "Monitors SMTP servers with active checks: login to the server and the sending of a test message."
+    },
+    "75": {
+        "name": "TCP ports (active)",
+        "intro": "Monitors TCP ports with active checks: connection status, response time, round-trip time and packet loss."
+    },
+    "76": {
+        "name": "Aerohive Access Points",
+        "intro": "Monitors Aerohive access points through SNMP: the number of connected users, in total and per SSID, and the network interfaces."
+    },
+    "77": {
+        "name": "Aruba network devices",
+        "intro": "Monitors Aruba wireless controllers and access points through SNMP: controller and AP status, connections and users, SSID statistics, CPU, memory and storage usage, hardware status, interfaces and licenses."
+    },
+    "78": {
+        "name": "Oracle RDBMS",
+        "intro": "Monitors Oracle databases: connection time, sessions, tablespaces and data files, caches, redo logs, RMAN backups, Data Guard, ASM disk groups, fast recovery area and TNS ping."
+    },
+    "79": {
+        "name": "Oracle Weblogic Application Server",
+        "intro": "Monitors Oracle WebLogic application servers through JMX over HTTP: memory, threads, loaded classes and work managers."
+    },
+    "80": {
+        "name": "Watchguard Firewall",
+        "intro": "Monitors WatchGuard firewalls through SNMP: CPU, memory, swap, load and storage, hardware, cluster status, IPsec, policy usage, interfaces, NTP and system status."
+    },
+    "81": {
+        "name": "Forcepoint Firewall (Stonesoft)",
+        "intro": "Monitors Forcepoint (Stonesoft) firewalls through SNMP: cluster status and load, connections, CPU, memory and swap, storage, interfaces, dropped and rejected packets and uptime."
+    },
+    "82": {
+        "name": "Ubiquiti Airfiber",
+        "intro": "Monitors Ubiquiti airFiber radio links through SNMP: radios, load, memory, interfaces and uptime."
+    },
+    "83": {
+        "name": "Ubiquiti Edge switch",
+        "intro": "Monitors Ubiquiti EdgeSwitch switches through SNMP: CPU and memory usage, hardware health, interfaces and uptime."
+    },
+    "84": {
+        "name": "Ubiquiti Unifi WLAN Controller",
+        "intro": "Monitors Ubiquiti UniFi WLAN controllers through SNMP: CPU, memory, swap, load and disks, interfaces, virtual access points and uptime."
+    },
+    "85": {
+        "name": "Fortinet FortiAuthenticator",
+        "intro": "Monitors Fortinet FortiAuthenticator through SNMP: users, groups, RADIUS clients and authentication events, tokens, high availability, CPU, memory and log disk usage, and uptime."
+    },
+    "86": {
+        "name": "Fortinet FortiManager",
+        "intro": "Monitors Fortinet FortiManager through SNMP: CPU, memory and disk usage, the status of the managed devices and uptime."
+    },
+    "87": {
+        "name": "Fortinet FortiWLC (Meru Controller)",
+        "intro": "Monitors Fortinet FortiWLC (Meru) wireless controllers through SNMP: alarms, online access points and wireless stations, CPU and memory usage, interfaces and uptime."
+    },
+    "88": {
+        "name": "Arista switch",
+        "intro": "Monitors Arista switches through SNMP: CPU, memory and storage usage, entity status, interfaces, BGP peers and TCP connections."
+    },
+    "89": {
+        "name": "SAP HANA DB",
+        "intro": "Monitors SAP HANA databases through SQL queries: connection time, connected users, blocked transactions, disk and volume usage, and host CPU and memory usage."
+    },
+    "90": {
+        "name": "Mikrotik network devices",
+        "intro": "Monitors MikroTik RouterOS devices through SNMP: CPU, memory and disk usage, environment, firmware, interfaces, NTP time, and LTE interfaces, status and signal quality."
+    },
+    "91": {
+        "name": "Cisco ASA Firewall",
+        "intro": "Monitors Cisco ASA firewalls through SNMP: CPU and memory usage, interfaces, sensors, failover status, sessions, IPsec tunnels and uptime."
+    },
+    "92": {
+        "name": "AKCP environment sensor",
+        "intro": "Monitors AKCP environment sensor units through SNMP: temperature, humidity, water detection, security ports, buzzer and uptime."
+    },
+    "93": {
+        "name": "Cisco Firepower FXOS",
+        "intro": "Monitors Cisco Firepower appliances running FXOS through SNMP: CPU and memory usage, faults, hardware health, interfaces, IPsec tunnels and uptime."
+    },
+    "94": {
+        "name": "Cisco Firepower FMC (management)",
+        "intro": "Monitors Cisco Firepower Management Center through its HTTP(S) API: the status of the managed devices."
+    },
+    "95": {
+        "name": "Cisco WLC (Wireless Lan Controller)",
+        "intro": "Monitors Cisco Wireless LAN Controllers through SNMP: access point status, users, channel noise and interference, CPU, memory and load, environment and hardware status, interfaces, RADIUS servers and uptime."
+    },
+    "96": {
+        "name": "Fujitsu Eternus DX storage",
+        "intro": "Monitors Fujitsu Eternus DX storage over SSH: CPU, physical disks, power supplies, RAID groups, and port and volume statistics such as IOPS, throughput, response time and cache hits."
+    },
+    "97": {
+        "name": "HPE MSA storage",
+        "intro": "Monitors HPE MSA storage arrays through SNMP: hardware status, interfaces and uptime."
+    },
+    "98": {
+        "name": "HPE MSL Tape library",
+        "intro": "Monitors HPE MSL tape libraries through SNMP: hardware status and uptime."
+    },
+    "99": {
+        "name": "HPE Lefthand",
+        "intro": "Monitors HPE LeftHand storage through SNMP: hardware status, volume usage and uptime."
+    },
+    "100": {
+        "name": "HPE Storeonce (ssh)",
+        "intro": "Monitors HPE StoreOnce appliances over SSH: the status of the hardware components."
+    },
+    "101": {
+        "name": "Barracuda Cloudgen Firewall",
+        "intro": "Monitors Barracuda CloudGen Firewalls through SNMP: CPU, load, memory and storage usage, hardware health, interfaces, BGP and VPN status and the state of the box and server services."
+    },
+    "102": {
+        "name": "Microsoft SQL Server",
+        "intro": "Monitors Microsoft SQL Server: connection time and connected users, database and log sizes, backups, blocked processes, deadlocks, locks, cache, page life expectancy, jobs, transactions and custom SQL queries."
+    },
+    "103": {
+        "name": "IBM AIX SNMP",
+        "intro": "Monitors IBM AIX systems through SNMP: CPU, swap and storage usage, interfaces, processes, NTP and uptime."
+    },
+    "104": {
+        "name": "IBM AIX SSH",
+        "intro": "Monitors IBM AIX servers over SSH: disk space and inode usage, logical volume synchronization, processes, the error report (errpt) and the result of custom commands."
+    },
+    "105": {
+        "name": "Oracle Solaris SNMP",
+        "intro": "Monitors Oracle Solaris systems through SNMP: detailed CPU usage, system load, storage, interfaces, TCP connections, process count and uptime."
+    },
+    "106": {
+        "name": "Oracle Solaris SSH",
+        "intro": "Monitors Oracle Solaris systems over SSH: CPU, hardware status and faults (prtdiag, RAID controllers), disk analysis, Fibre Channel connections and Veritas and virtual machine disk status."
+    },
+    "107": {
+        "name": "HP UX SNMP",
+        "intro": "Monitors HP-UX systems through SNMP: CPU, load, memory and swap, storage, processes, TCP connections and uptime."
+    },
+    "108": {
+        "name": "HP UX SSH",
+        "intro": "Monitors HP-UX systems through SSH: storage and inodes usage."
+    },
+    "109": {
+        "name": "VeloCloud",
+        "intro": "Monitors VMware VeloCloud SD-WAN through the VeloCloud API: edge and link status, link usage, edge quality of experience, and traffic per application and category."
+    },
+    "110": {
+        "name": "APC PDU",
+        "intro": "Monitors APC power distribution units (PDU) through SNMP: hardware status, load per bank, phase and device, outlets, time synchronization and uptime."
+    },
+    "111": {
+        "name": "Selenium synthetic monitoring",
+        "intro": "Monitors web applications with synthetic test scenarios run on a Selenium server and reports the result of each scenario."
+    },
+    "112": {
+        "name": "Selenium Katalon synthetic monitoring",
+        "intro": "Monitors web applications with Katalon Studio test scenarios run through Selenium and reports the result of each scenario."
+    },
+    "113": {
+        "name": "Sahi Pro synthetic monitoring",
+        "intro": "Monitors Sahi Pro synthetic web scenarios: execution time, number of steps, failures and errors of a scenario and the duration of its steps."
+    },
+    "114": {
+        "name": "Nutanix Prism Enterprise Cloud",
+        "intro": "Monitors Nutanix Prism clusters through SNMP: usage and I/O latency of clusters, storage containers, storage pools, disks and hypervisors, VM counts and uptime."
+    },
+    "115": {
+        "name": "Mobotix camera",
+        "intro": "Monitors Mobotix cameras through SNMP: network interfaces, system status and the uptime."
+    },
+    "116": {
+        "name": "Hikvision camera",
+        "intro": "Monitors Hikvision cameras through SNMP: CPU, disk and memory usage, the device time and the uptime."
+    },
+    "117": {
+        "name": "Hanwha camera",
+        "intro": "Monitors Hanwha cameras through SNMP: the status of the hardware and the uptime."
+    },
+    "118": {
+        "name": "Rubrik Enterprise backup",
+        "intro": "Monitors Rubrik backup clusters through the Rubrik REST API: cluster I/O, disk and node status, storage usage, backup compliance, job executions and task results."
+    },
+    "119": {
+        "name": "Smartermail",
+        "intro": "Monitors SmarterMail servers through the web interface: services, license expiration and the number of messages in the spool, including spam, virus, quarantine, waiting and throttled queues."
+    },
+    "120": {
+        "name": "AWS EC2 instance",
+        "intro": "Monitors Amazon EC2 instances through Amazon CloudWatch: CPU utilization and credits, disk and EBS I/O, network traffic and the instance status checks."
+    },
+    "121": {
+        "name": "AWS EC2 ASG",
+        "intro": "Monitors Amazon EC2 Auto Scaling groups: the status of the group and the number of instances it runs."
+    },
+    "122": {
+        "name": "AWS EBS volume",
+        "intro": "Monitors Amazon EBS volumes through Amazon CloudWatch: read/write throughput, IOPS and the time spent on I/O operations."
+    },
+    "123": {
+        "name": "AWS RDS (Relational Database Service)",
+        "intro": "Monitors Amazon RDS database instances and Aurora clusters through Amazon CloudWatch: instance status, CPU, connections, queries and transactions, network, disk I/O and storage. The metrics are described in the [Amazon RDS documentation](https://docs.aws.amazon.com/rds/index.html)."
+    },
+    "124": {
+        "name": "Commvault Commserve backup",
+        "intro": "Monitors Commvault CommServe backup environments through the REST API: alerts, jobs, media agents and the space usage of storage pools."
+    },
+    "125": {
+        "name": "Generic SNMP trap",
+        "intro": "Provides host templates for receiving generic SNMP traps; the passive service comes from the linked service template."
+    },
+    "126": {
+        "name": "Libraesva eMail Security Gateway",
+        "intro": "Monitors Libraesva eMail Security Gateways through SNMP: system status, load, memory, swap, storage and network interfaces."
+    },
+    "127": {
+        "name": "Dell TL2000 Tape library",
+        "intro": "Monitors Dell TL2000 tape libraries through SNMP: the global status and uptime."
+    },
+    "128": {
+        "name": "Dell ML6000 Tape library",
+        "intro": "Monitors Dell ML6000 tape libraries through SNMP: hardware status and uptime."
+    },
+    "129": {
+        "name": "Huawei iBMC",
+        "intro": "Monitors Huawei servers through the iBMC management controller via SNMP: the status of the hardware components and the uptime."
+    },
+    "130": {
+        "name": "IBM IMM",
+        "intro": "Monitors IBM servers through the IMM management module via SNMP: the environment, the event log, NTP time offset and the uptime."
+    },
+    "131": {
+        "name": "SSH login (active)",
+        "intro": "Monitors SSH servers with an active login check and reports the response time of the connection."
+    },
+    "132": {
+        "name": "Printer RFC3805",
+        "intro": "Monitors printers that support the RFC 3805 Printer MIB through SNMP: cover status, printer errors, marker supply and impressions, paper tray usage and the uptime."
+    },
+    "133": {
+        "name": "Cisco Voice Gateway",
+        "intro": "Monitors Cisco voice gateways through SNMP: interfaces, ISDN usage, voice calls and uptime."
+    },
+    "134": {
+        "name": "Digi AnywhereUSB",
+        "intro": "Monitors Digi AnywhereUSB hubs through SNMP: CPU and memory usage, interfaces and uptime."
+    },
+    "135": {
+        "name": "Huawei network devices",
+        "intro": "Monitors Huawei network devices through SNMP: CPU and memory usage, hardware health, interfaces, spanning tree and the health, traffic and Ethernet ports of connected ONTs."
+    },
+    "136": {
+        "name": "DLink Switch (standard)",
+        "intro": "Monitors D-Link switches through SNMP: CPU and memory usage, hardware health, stack members, interfaces and uptime."
+    },
+    "137": {
+        "name": "Aruba Instant",
+        "intro": "Monitors Aruba Instant wireless networks through SNMP: access point and client counts, SSID status, CPU and memory usage and uptime."
+    },
+    "138": {
+        "name": "Pfsense Firewall",
+        "intro": "Monitors pfSense firewalls through SNMP and the API: CPU, memory, swap and load, gateways, interfaces, firewall rules, state table, packet statistics, backup files and runtime."
+    },
+    "139": {
+        "name": "HAProxy (SNMP)",
+        "intro": "Monitors HAProxy through SNMP: sessions, queue and traffic of the frontends and backends."
+    },
+    "140": {
+        "name": "Alcatel OXE PBX",
+        "intro": "Monitors Alcatel-Lucent OXE PBX systems through SNMP: CPU, memory, swap and storage usage, PBX role and state, domains and trunks."
+    },
+    "141": {
+        "name": "Allied Telesis network devices",
+        "intro": "Monitors Allied Telesis network devices through SNMP: CPU and memory usage, hardware health, interfaces and uptime."
+    },
+    "142": {
+        "name": "Cisco SmallBusiness network devices",
+        "intro": "Monitors Cisco Small Business switches through SNMP: CPU usage, environment sensors, interfaces, spanning tree, stack status and uptime."
+    },
+    "143": {
+        "name": "HPE Nimble storage (SNMP)",
+        "intro": "Monitors HPE Nimble storage through SNMP: global read/write throughput, IOPS and response times, volume usage and uptime."
+    },
+    "144": {
+        "name": "HPE Nimble storage (API)",
+        "intro": "Monitors HPE Nimble storage through its REST API: array space usage and snapshot compression, hardware status, and volume usage with read/write throughput, IOPS and latency."
+    },
+    "145": {
+        "name": "Exchange OnPremise (i-Vertix agent)",
+        "intro": "Monitors Microsoft Exchange on-premises servers through the i-Vertix agent: database status, mailboxes, queues, replication health, services and mailbox connections via ActiveSync, IMAP, MAPI and OWA."
+    },
+    "146": {
+        "name": "Exchange OnPremise Extended (i-Vertix agent)",
+        "intro": "Monitors Microsoft Exchange on-premises servers in depth through the i-Vertix agent: .NET and ASP.NET performance, CPU, database and log I/O latency, RPC and LDAP response times and other Exchange performance counters."
+    },
+    "147": {
+        "name": "Azure Virtual Machine",
+        "intro": "Monitors Azure virtual machines and groups of virtual machines through Azure Monitor: health and power state, CPU, memory, disk I/O, network traffic and the VM size."
+    },
+    "148": {
+        "name": "Hirschman switch",
+        "intro": "Monitors Hirschmann switches through SNMP: CPU and memory usage, running processes, hardware health, configuration status, interfaces and uptime."
+    },
+    "149": {
+        "name": "HP UPS",
+        "intro": "Monitors HP UPS devices through SNMP: battery status, environment, input and output lines, NTP synchronization and the uptime."
+    },
+    "150": {
+        "name": "Dell X-Series switch",
+        "intro": "Monitors Dell X-Series switches through SNMP: CPU usage, hardware health, interfaces and uptime."
+    },
+    "151": {
+        "name": "Cyberpower UPS",
+        "intro": "Monitors Cyberpower UPS devices through SNMP: battery status (charge, voltage, temperature, runtime) and the voltage, frequency and load of the input and output lines."
+    },
+    "152": {
+        "name": "Cyberpower PDU",
+        "intro": "Monitors Cyberpower PDUs through SNMP: the load of banks and phases (current, power, voltage) and the current and status of the outlets."
+    },
+    "153": {
+        "name": "Redis in-memory",
+        "intro": "Monitors Redis servers through SSH: clients, commands, connections, CPU, memory, persistence and replication."
+    },
+    "154": {
+        "name": "Redislabs Enterprise Cluster",
+        "intro": "Monitors Redis Enterprise clusters through the REST API: statistics of the cluster, nodes, databases and shards."
+    },
+    "155": {
+        "name": "MongoDB",
+        "intro": "Monitors MongoDB: connection time and connections, database and collection statistics, queries and the replication status."
+    },
+    "156": {
+        "name": "APC Netbotz",
+        "intro": "Monitors APC NetBotz environment monitoring devices through SNMP: temperature, humidity, dew point, other sensors and uptime."
+    },
+    "157": {
+        "name": "Eaton Powerware UPS",
+        "intro": "Monitors Eaton Powerware UPS devices through SNMP: alarms, battery status, environment, input and output lines and the output source."
+    },
+    "158": {
+        "name": "Tomcat JMX",
+        "intro": "Monitors Apache Tomcat application servers through JMX: class loading, CPU load, file descriptors, garbage collection, load average, heap and non-heap memory, threads, connectors, datasources and web application sessions."
+    },
+    "159": {
+        "name": "Generic SNMP request",
+        "intro": "Monitors any SNMP-capable device with generic requests: numeric and string OID values and the SNMP response time."
+    },
+    "160": {
+        "name": "SAP Sybase ASE database",
+        "intro": "Monitors SAP Sybase ASE databases: connection time, connected users, blocked processes, database sizes and custom SQL queries."
+    },
+    "161": {
+        "name": "SAP R3 or S/4HANA",
+        "intro": "Monitors SAP R/3 and S/4HANA systems through the message server: CCMS monitors, connection time, uptime, processes, background jobs, IDocs, short dumps, failed updates and workload."
+    },
+    "162": {
+        "name": "Cisco Call Manager (SNMP)",
+        "intro": "Monitors Cisco Unified Communications Manager through SNMP: CPU and storage usage, phone, gateway, media device, CTI and voicemail usage, and the response of the H.323, SCCP, SIP and TFTP services."
+    },
+    "163": {
+        "name": "Cisco Call Manager (SXML/API)",
+        "intro": "Monitors Cisco Unified Communications Manager through its SXML API: active alerts and the status of the services."
+    },
+    "164": {
+        "name": "Cisco ISE (Indentity Service Engine)",
+        "intro": "Monitors Cisco Identity Services Engine (ISE) through its API and SNMP: active sessions, CPU, memory, disk I/O, system load, NTP, the ISE application and Oracle database processes, TCP services and uptime."
+    },
+    "165": {
+        "name": "Salesforce",
+        "intro": "Monitors Salesforce instances through the Salesforce API: the status of the instance and the number of current incidents."
+    },
+    "166": {
+        "name": "Radware Alteon Load Balancer",
+        "intro": "Monitors Radware Alteon load balancers through SNMP: CPU and memory usage, hardware, virtual server status and uptime."
+    },
+    "167": {
+        "name": "Microsoft WSUS (i-Vertix agent)",
+        "intro": "Monitors Microsoft WSUS servers: connected computers, updates, synchronisation status and server statistics."
+    },
+    "168": {
+        "name": "Netgear ReadyNAS",
+        "intro": "Monitors Netgear ReadyNAS devices through SNMP: CPU, load, memory, storage, hardware status, interfaces and uptime."
+    },
+    "169": {
+        "name": "Fortinet Fortiweb",
+        "intro": "Monitors Fortinet FortiWeb web application firewalls through SNMP: system resources such as CPU, memory and log disk, proxy connections and services, interfaces and uptime."
+    },
+    "170": {
+        "name": "MSCS Microsoft Cluster Server (i-Vertix agent)",
+        "intro": "Monitors Microsoft Cluster Server (MSCS) through the i-Vertix agent: the status of nodes, networks, resources and resource groups."
+    },
+    "171": {
+        "name": "Microsoft Hyper-V (i-Vertix agent)",
+        "intro": "Monitors Microsoft Hyper-V hosts through the i-Vertix agent: integration services, replication, snapshots, VM status, and CPU, memory, disk and network performance counters."
+    },
+    "172": {
+        "name": "Microsoft Hyper-V SCVMM (i-Vertix agent)",
+        "intro": "Monitors Microsoft Hyper-V environments managed by System Center VMM through the i-Vertix agent: VM status, snapshots and integration services."
+    },
+    "173": {
+        "name": "Cisco UCS Server",
+        "intro": "Monitors Cisco UCS servers through SNMP: equipment status, faults, audit logs, management entities and service profiles."
+    },
+    "174": {
+        "name": "Jacarta Environment",
+        "intro": "Monitors Jacarta environment sensors through SNMP: temperature and humidity sensors and the uptime."
+    },
+    "175": {
+        "name": "Pacemaker",
+        "intro": "Monitors Pacemaker clusters through SSH: node states, failed actions and migrations of resources, constraints and the cluster resource manager."
+    },
+    "176": {
+        "name": "Aruba CX Series",
+        "intro": "Monitors Aruba CX switches through SNMP and the HTTPS API: CPU and memory usage, hardware health, interfaces, spanning tree, stack and virtual chassis status and Virtual Switching Extension."
+    },
+    "177": {
+        "name": "Citrix SDX",
+        "intro": "Monitors Citrix SDX appliances through SNMP: hardware health, disk usage, storage repositories, Xen usage and uptime."
+    },
+    "178": {
+        "name": "OSPF - Open Shortest Path First",
+        "intro": "Monitors the OSPF routing protocol through SNMP: the state of the OSPF neighbors of a router."
+    },
+    "179": {
+        "name": "BGP - Border Gateway Protocol",
+        "intro": "Monitors BGP peers through SNMP: the state of the peering sessions of a router, based on the standard BGP MIB."
+    },
+    "180": {
+        "name": "Raisecom network devices",
+        "intro": "Monitors Raisecom network devices through SNMP: CPU and memory usage, hardware health, interfaces and uptime."
+    },
+    "181": {
+        "name": "Apache Kafka",
+        "intro": "Monitors Apache Kafka through its HTTP API: global statistics of the Kafka cluster."
+    },
+    "182": {
+        "name": "Keepalived (Redhat)",
+        "intro": "Monitors Keepalived on Red Hat systems through SNMP: the status of the VRRP instances."
+    },
+    "183": {
+        "name": "Squid HTTP Proxy",
+        "intro": "Monitors Squid HTTP proxies through SNMP: cache CPU, memory, file descriptors and objects, HTTP hits and errors, traffic of clients, servers and ICP."
+    },
+    "184": {
+        "name": "Cisco VCS (Video Communication Server)",
+        "intro": "Monitors Cisco VCS (Video Communication Server) through its HTTP(S) API: alerts, calls, registered endpoints, zones and HTTP proxy statistics."
+    },
+    "185": {
+        "name": "Pure Storage Flasharray (legacy)",
+        "intro": "Monitors Pure Storage FlashArray (legacy) through its API: alarms, array and volume usage and data reduction, hardware status and protection group replication."
+    },
+    "186": {
+        "name": "Pure Storage (SNMP)",
+        "intro": "Monitors Pure Storage arrays through SNMP: performance statistics and uptime."
+    },
+    "187": {
+        "name": "Lenovo Flexsystem switches",
+        "intro": "Monitors Lenovo Flex System switches through SNMP: CPU, memory and disk usage, environmental sensors, interfaces, NTP and uptime."
+    },
+    "188": {
+        "name": "Apache Solr",
+        "intro": "Monitors Apache Solr through its HTTP API: cache usage and the usage of the request handlers."
+    },
+    "189": {
+        "name": "Apache Zookeeper",
+        "intro": "Monitors Apache Zookeeper through its HTTP API: server statistics."
+    },
+    "190": {
+        "name": "Docker (Rest API)",
+        "intro": "Monitors Docker through the Docker REST API: CPU, memory, disk I/O and network usage of containers, the container states of a node and the tasks and replicas of Swarm services."
+    },
+    "191": {
+        "name": "Cisco IronPort Systems",
+        "intro": "Monitors Cisco IronPort (Email and Web Security) appliances through SNMP: CPU and memory usage, hardware health, interfaces, mail and proxy usage and uptime."
+    },
+    "192": {
+        "name": "Cisco Email Security Gateway",
+        "intro": "Monitors Cisco Email Security Gateways through their API: system status and resource usage such as CPU, memory, swap, disk I/O and logging disk, message queues and connections."
+    },
+    "193": {
+        "name": "Cisco Prime",
+        "intro": "Monitors Cisco Prime through its API: the access points it manages."
+    },
+    "194": {
+        "name": "Radius Server (active)",
+        "intro": "Monitors Radius servers with an active login check and its response time."
+    },
+    "195": {
+        "name": "Netgear M-Series switches",
+        "intro": "Monitors Netgear M-Series switches through SNMP: CPU and memory usage, hardware health, interfaces and uptime."
+    },
+    "196": {
+        "name": "HPE Storeonce 3 (API)",
+        "intro": "Monitors HPE StoreOnce 3 appliances through its API: cluster usage and deduplication ratio, federated catalyst store usage, NAS usage and service set usage."
+    },
+    "197": {
+        "name": "Dell ME4",
+        "intro": "Monitors Dell ME4 storage through its API: hardware status, interfaces, and controller and volume statistics such as throughput, IOPS, cache and CPU usage."
+    },
+    "198": {
+        "name": "Lenovo Iomega NAS (ix2)",
+        "intro": "Monitors Lenovo Iomega ix2 NAS devices through SNMP: CPU, memory, storage, hardware status, interfaces and uptime."
+    },
+    "199": {
+        "name": "Huawei OceanStor",
+        "intro": "Monitors Huawei OceanStor storage through SNMP: controller CPU and memory, hardware status, LUN and storage pool usage, and uptime."
+    },
+    "200": {
+        "name": "Dell EquaLogic",
+        "intro": "Monitors Dell EqualLogic storage through SNMP: array, pool and disk usage, hardware status, interfaces, NTP time and uptime."
+    },
+    "201": {
+        "name": "Ruckus Zonedirector",
+        "intro": "Monitors Ruckus ZoneDirector controllers through SNMP: system status, the managed access points and uptime."
+    },
+    "202": {
+        "name": "FiberStore (FS)",
+        "intro": "Monitors FiberStore (FS) switches through SNMP: CPU and memory usage, hardware health, interfaces, ARP and uptime."
+    },
+    "203": {
+        "name": "Teltonika Networks",
+        "intro": "Monitors Teltonika Networks devices through SNMP: interfaces, the cellular modem and uptime."
+    },
+    "204": {
+        "name": "TP-Link network devices",
+        "intro": "Monitors TP-Link network devices through SNMP: CPU and memory usage, interfaces and uptime."
+    },
+    "205": {
+        "name": "IBM DB2",
+        "intro": "Monitors IBM DB2 databases: connection time and connected users, database and tablespace usage, transaction logs and high availability disaster recovery (HADR) status."
+    },
+    "206": {
+        "name": "Dell Powerstore",
+        "intro": "Monitors Dell PowerStore through its REST API: alerts, clusters, hardware status and storage usage."
+    },
+    "207": {
+        "name": "Citrix XenDesktop 7.x (i-Vertix agent)",
+        "intro": "Monitors Citrix XenDesktop 7.x sites through the i-Vertix agent: Broker sessions, registrations and database connectivity and transactions, AD Identity database health and related Broker events."
+    },
+    "208": {
+        "name": "Fortinet FortiSwitch",
+        "intro": "Monitors Fortinet FortiSwitch through SNMP: CPU, memory and disk usage, interfaces, ARP and uptime."
+    },
+    "209": {
+        "name": "HPE Simplivity",
+        "intro": "Monitors HPE SimpliVity through its API: the status of hosts and virtual machines and the capacity, deduplication and compression of OmniStack clusters."
+    },
+    "210": {
+        "name": "Netapp SnapCenter Backup",
+        "intro": "Monitors NetApp SnapCenter through its API: the backup jobs."
+    },
+    "211": {
+        "name": "HWg STE Sensor",
+        "intro": "Monitors HWg-STE sensor devices through SNMP: temperature and humidity sensors and the uptime."
+    },
+    "212": {
+        "name": "Zyxel network devices",
+        "intro": "Monitors Zyxel network devices through SNMP: CPU and memory usage, sessions, VPN status, interfaces and uptime."
+    },
+    "213": {
+        "name": "IBM Bladecenter (Server)",
+        "intro": "Monitors IBM BladeCenter servers through SNMP: the status of the hardware components and the uptime."
+    },
+    "214": {
+        "name": "Axis Video Camera",
+        "intro": "Monitors Axis video cameras through SNMP: the environment sensors (such as temperature and fans) and the uptime of the camera."
+    },
+    "215": {
+        "name": "IBM AS400 (iSeries)",
+        "intro": "Monitors IBM AS400 (iSeries) systems: disks, subsystems, job queues and individual system jobs, message queues such as QSYSOPR, page faults and overall system utilization."
+    },
+    "216": {
+        "name": "Dell EMC Unisphere",
+        "intro": "Monitors Dell EMC Unisphere storage systems through the REST API: hardware health, pool status and usage, storage resource usage and replication status."
+    },
+    "217": {
+        "name": "Dell EMC Recoverypoint",
+        "intro": "Monitors Dell EMC RecoverPoint over SSH: the monitored parameters and the overall system status."
+    },
+    "218": {
+        "name": "IBM Bladecenter (Network)",
+        "intro": "Monitors IBM BladeCenter network modules through SNMP: CPU, memory and disk usage, environmental sensors, interfaces, NTP and uptime."
+    },
+    "219": {
+        "name": "HP iLO 2 API",
+        "intro": "Monitors HP ProLiant servers with iLO 2 through the iLO XML API: the status of the hardware components."
+    },
+    "220": {
+        "name": "Cambium ePMP",
+        "intro": "Monitors Cambium ePMP radios through SNMP: CPU usage, antenna gain, interfaces, license status and uptime."
+    },
+    "221": {
+        "name": "Google Workspace",
+        "intro": "Monitors Google Workspace through its API: the status of the Google Workspace services."
+    },
+    "222": {
+        "name": "Proxmox VE (Virtual Environment)",
+        "intro": "Monitors Proxmox VE through its API: node CPU, memory, swap and filesystem usage, storage usage, virtual machine usage (CPU, memory, I/O and network) and the installed version."
+    },
+    "223": {
+        "name": "Dell MD3000",
+        "intro": "Monitors Dell MD3000 storage arrays and reports their health status."
+    },
+    "224": {
+        "name": "Redis Sentinel",
+        "intro": "Monitors Redis Sentinel clusters through SSH: the Redis instances and the Sentinels, including replicas, down states and ping latency."
+    },
+    "225": {
+        "name": "Windows (WinRM)",
+        "intro": "Monitors Windows systems through WinRM: CPU, memory, pagefile and disks, interfaces, services, processes, event log, files, certificates, sessions, scheduled tasks, pending updates and reboots, NTP time and uptime."
+    },
+    "226": {
+        "name": "Active Directory (WinRM)",
+        "intro": "Monitors Active Directory domain controllers through WinRM: the dcdiag results and the status of the core services such as AD DS, DNS, DFS, Netlogon, Kerberos and Windows Time."
+    },
+    "227": {
+        "name": "Cisco Wireless access point (WAP)",
+        "intro": "Monitors Cisco wireless access points through SNMP: connected clients, virtual access points, CPU and memory usage, interfaces and uptime."
+    },
+    "228": {
+        "name": "Ceph",
+        "intro": "Monitors Ceph storage clusters through the Ceph API: overall health, object storage daemons (OSD), pools and raw storage capacity."
+    },
+    "229": {
+        "name": "Raritan PDU",
+        "intro": "Monitors Raritan PDUs through SNMP: inlet, outlet, overcurrent protector and external sensors, plus the uptime."
+    },
+    "230": {
+        "name": "Viptela (Cisco) networks",
+        "intro": "Monitors Cisco Viptela SD-WAN devices through SNMP: CPU, memory and disk usage, hardware, control connections and GRE tunnels."
+    },
+    "231": {
+        "name": "Eaton ATS",
+        "intro": "Monitors Eaton automatic transfer switches through SNMP: voltage, frequency and current of the input and output lines, plus system status, temperature and humidity."
+    },
+    "232": {
+        "name": "Eaton PDU",
+        "intro": "Monitors Eaton PDUs through SNMP: environmental sensors (temperature, humidity), the voltage, current and power of groups and the status of the outlets."
+    },
+    "233": {
+        "name": "HPE Storeonce 4 (API)",
+        "intro": "Monitors HPE StoreOnce 4 appliances through its API: appliances and their disk usage and deduplication ratio, hardware storage and stores."
+    },
+    "234": {
+        "name": "Internet Information Server - IIS (Rest API)",
+        "intro": "Monitors Microsoft IIS through a REST API: application pools and websites, including requests, traffic and connections."
+    },
+    "235": {
+        "name": "Sophos XG / Cyberoam",
+        "intro": "Monitors Sophos XG and Cyberoam firewalls through SNMP: CPU, memory, swap and storage usage, services, requests, interfaces and uptime."
+    },
+    "236": {
+        "name": "Kubernetes (API)",
+        "intro": "Monitors Kubernetes clusters through the Kubernetes API: nodes, pods, deployments, daemonsets, statefulsets, replicasets, cronjobs, persistent volumes, resource quotas and cluster events."
+    },
+    "237": {
+        "name": "Fortinet ADC (Application Delivery Controller)",
+        "intro": "Monitors Fortinet application delivery controllers through SNMP: CPU and memory usage, hardware health, security, virtual servers, interfaces and uptime."
+    },
+    "238": {
+        "name": "Speedtest",
+        "intro": "Monitors internet connection quality with Speedtest: ping latency and jitter, download bandwidth and upload bandwidth."
+    },
+    "239": {
+        "name": "Netapp Ontap OnCommand",
+        "intro": "Monitors NetApp ONTAP through the OnCommand API: cluster status, usage and I/O, aggregates, volumes, LUNs, qtrees, SnapMirror, disks, FC ports and node hardware and failover."
+    },
+    "240": {
+        "name": "Apache CouchDB",
+        "intro": "Monitors Apache CouchDB servers through the HTTP API: database size and the number of current and deleted documents."
+    },
+    "241": {
+        "name": "Nokia TimOS (7750SR, 7210SAS)",
+        "intro": "Monitors Nokia TimOS routers (7750 SR, 7210 SAS) through SNMP: CPU and memory, hardware, interfaces, SAS alarms, service access points and the usage of BGP, IS-IS, LDP and L2TP."
+    },
+    "242": {
+        "name": "JBoss Java (Red Hat)",
+        "intro": "Monitors JBoss (Red Hat) application servers through JMX over HTTP: memory, threads, loaded classes and datasource connection usage."
+    },
+    "243": {
+        "name": "RabbitMQ",
+        "intro": "Monitors RabbitMQ through its management API: node, virtual host, queue and system usage, including message counts and disk I/O."
+    },
+    "244": {
+        "name": "Microsoft SCCM (i-Vertix agent)",
+        "intro": "Monitors Microsoft SCCM through the i-Vertix agent: the site status and the database replication status."
+    },
+    "245": {
+        "name": "Azure Express Route",
+        "intro": "Monitors Azure ExpressRoute circuits: the provisioning state of the circuits, the resource health and the traffic over the private connection."
+    },
+    "246": {
+        "name": "Hitachi HCP",
+        "intro": "Monitors Hitachi Content Platform (HCP): space usage of nodes, tenants and volumes, and the temperature, fan and voltage sensors of the nodes."
+    },
+    "247": {
+        "name": "Oracle Acme Packet (SBC)",
+        "intro": "Monitors Oracle Acme Packet session border controllers through SNMP: system usage, hardware, interfaces, SIP usage, realms, codecs, policy servers and security."
+    },
+    "248": {
+        "name": "ABB CMS 700",
+        "intro": "Monitors ABB CMS-700 power monitoring devices through SNMP: mains measurements (power, voltage, current, energy, power factor and harmonic distortion) and sensor measurements."
+    },
+    "249": {
+        "name": "Modbus",
+        "intro": "Monitors devices over Modbus by reading numeric register values."
+    },
+    "250": {
+        "name": "Dell PowerConnect 6200",
+        "intro": "Monitors Dell PowerConnect 6200 switches through SNMP: CPU and memory usage, environment sensors, global status, interfaces and uptime."
+    },
+    "251": {
+        "name": "IBM Lotus Notes",
+        "intro": "Monitors IBM Lotus Notes (Domino) servers through SNMP: mail server availability, mail state and delivery time, server transactions and user sessions."
+    },
+    "252": {
+        "name": "3CX Voip PBX",
+        "intro": "Monitors a 3CX VoIP PBX through its API: registered and used extensions, active calls, call and extension capacity, and the license."
+    },
+    "253": {
+        "name": "Moxa networks",
+        "intro": "Monitors Moxa network devices through SNMP: CPU and memory usage, interfaces and uptime."
+    },
+    "254": {
+        "name": "Azure SQL database",
+        "intro": "Monitors Azure SQL databases (provisioned and serverless) and their logical servers: health, CPU, memory, storage, connections, sessions, workers, deadlocks and the application resources of serverless databases."
+    },
+    "255": {
+        "name": "HP Proliant ILO (snmp)",
+        "intro": "Monitors HP ProLiant servers through the iLO management controller via SNMP: the global status, the hardware components and the uptime."
+    },
+    "256": {
+        "name": "Ruckus ICX switch",
+        "intro": "Monitors Ruckus ICX switches through SNMP: CPU and memory usage, hardware health, interfaces and uptime."
+    },
+    "257": {
+        "name": "CIFS/SMB",
+        "intro": "Monitors CIFS/SMB file shares: connection time and file checks (count, age and size), plus scenario-based tests of share access."
+    },
+    "258": {
+        "name": "Azure MySQL",
+        "intro": "Monitors Azure Database for MySQL servers: CPU, memory, storage and I/O consumption, connections, queries, network traffic and the replication lag."
+    },
+    "259": {
+        "name": "Azure Storage Account",
+        "intro": "Monitors Azure storage accounts and their blob, file, queue and table services: used capacity, object counts, health and the availability, latency and throughput of the transactions."
+    },
+    "260": {
+        "name": "Kemp Load Balancer",
+        "intro": "Monitors Kemp load balancers through SNMP: CPU, memory and load, HA status, interfaces, and the status of virtual and real servers."
+    },
+    "261": {
+        "name": "Azure Automation",
+        "intro": "Monitors Azure Automation accounts: the number of jobs, runbook runs and machine runs."
+    },
+    "262": {
+        "name": "Bluecoat Web Security",
+        "intro": "Monitors Bluecoat web security appliances through SNMP: client connections, requests and traffic, server connections, CPU, memory and disk usage, hardware health and uptime."
+    },
+    "263": {
+        "name": "HMS Ewon Gateway (Siemens S7)",
+        "intro": "Monitors HMS Ewon gateways connected to Siemens S7 controllers through SNMP: the values of the configured Ewon tags checked against thresholds."
+    },
+    "264": {
+        "name": "Pure Storage Flasharray",
+        "intro": "Monitors Pure Storage FlashArray through its REST API: alerts, hardware status, array and volume space usage, data reduction and array read/write throughput and latency."
+    },
+    "265": {
+        "name": "Pure Storage Flashblade",
+        "intro": "Monitors Pure Storage FlashBlade through its REST API: alerts, hardware status, and the space usage, data reduction and read/write throughput of the array and its file systems."
+    },
+    "266": {
+        "name": "Riello UPS",
+        "intro": "Monitors Riello UPS devices through SNMP: alarms, battery status (charge, temperature) and the input and output lines."
+    },
+    "267": {
+        "name": "Xfusion iBMC",
+        "intro": "Monitors Xfusion servers through the iBMC management controller via SNMP: the status of the hardware components and the uptime."
+    },
+    "268": {
+        "name": "WD Nas (Western Digital)",
+        "intro": "Monitors Western Digital NAS devices through SNMP: hardware status and temperature, volume usage and uptime."
+    },
+    "269": {
+        "name": "APC ATS",
+        "intro": "Monitors APC automatic transfer switches (ATS) through SNMP: device status, input lines, output lines and banks, and uptime."
+    },
+    "270": {
+        "name": "Patton SmartNode VoIP Gateway",
+        "intro": "Monitors Patton SmartNode VoIP gateways through SNMP: system status, calls, interfaces and uptime."
+    },
+    "271": {
+        "name": "AWS Transit Gateway",
+        "intro": "Monitors the traffic of AWS Transit Gateways and their attachments: bytes and packets in and out, dropped packets."
+    },
+    "272": {
+        "name": "Selenese synthetic monitoring",
+        "intro": "Monitors web applications with Selenese scenarios run through a headless browser (Chrome or Firefox) and reports the result of each scenario."
+    },
+    "273": {
+        "name": "Asterisk VoIP",
+        "intro": "Monitors Asterisk VoIP servers through the Asterisk API and SNMP: channel and call usage, DAHDI status, SIP peers and uptime."
+    },
+    "274": {
+        "name": "AWS S3",
+        "intro": "Monitors Amazon S3 buckets through Amazon CloudWatch: bucket size, number of objects and the requests made to the bucket."
+    },
+    "275": {
+        "name": "Netgear S-Series switches",
+        "intro": "Monitors Netgear S-Series switches through SNMP: CPU and memory usage, hardware status, interfaces and uptime."
+    },
+    "276": {
+        "name": "Nitram UPS",
+        "intro": "Monitors Nitram UPS devices through SNMP: battery status (charge, voltage, temperature) and the input and output lines."
+    },
+    "277": {
+        "name": "Huawei HMM",
+        "intro": "Monitors Huawei HMM blade chassis management modules through SNMP: the hardware status of the chassis and of the blades, plus the uptime."
+    },
+    "278": {
+        "name": "Hikvision NVR",
+        "intro": "Monitors Hikvision network video recorders through SNMP: the status and space usage of the disks, memory and the uptime."
+    },
+    "279": {
+        "name": "Cisco CTS",
+        "intro": "Monitors Cisco TelePresence (CTS) endpoints through SNMP: calls and call streams (jitter, packet loss, traffic, terminated calls) and the connected peripherals."
+    },
+    "280": {
+        "name": "Barracuda Message Archiver",
+        "intro": "Monitors Barracuda Message Archiver appliances through SNMP: system load, mail processing, storage usage and uptime."
+    },
+    "281": {
+        "name": "UDP ports (active)",
+        "intro": "Monitors UDP ports with an active check of the port status."
+    },
+    "282": {
+        "name": "Audiocodes SBC",
+        "intro": "Monitors Audiocodes session border controllers: CPU and memory usage, hardware health, uptime and call statistics such as active, established and failed inbound and outbound calls."
+    },
+    "283": {
+        "name": "Lenovo RackSwitch",
+        "intro": "Monitors Lenovo RackSwitch switches through SNMP: CPU and memory usage, hardware health, interfaces and uptime."
+    },
+    "284": {
+        "name": "HPE Blade",
+        "intro": "Monitors HPE BladeSystem enclosures through SNMP: the status of the hardware components and the uptime."
+    },
+    "285": {
+        "name": "Veeam Backup EM (Enterprise Manager)",
+        "intro": "Monitors Veeam Backup Enterprise Manager through its REST API: job status and execution results, and the space usage of the backup repositories."
+    },
+    "286": {
+        "name": "AWS Direct Connect",
+        "intro": "Monitors AWS Direct Connect connections and virtual interfaces: connection state, bit rates, packet rates and light levels."
+    },
+    "287": {
+        "name": "HP OfficeConnect",
+        "intro": "Monitors HP OfficeConnect switches through SNMP: interfaces, including PoE power and optical module values, and uptime."
+    },
+    "288": {
+        "name": "Vertiv UPS (EES)",
+        "intro": "Monitors Vertiv (EES) UPS devices through SNMP: battery, input lines, rectifier, system status, temperature and the uptime."
+    },
+    "289": {
+        "name": "Enterasys network devices",
+        "intro": "Monitors Enterasys network devices through SNMP: CPU, memory and storage usage, interfaces and uptime."
+    },
+    "290": {
+        "name": "Rittal CMC III",
+        "intro": "Monitors Rittal CMC III monitoring units through SNMP: device and unit status, the system load and the uptime."
+    },
+    "291": {
+        "name": "Fortinet FortiMail",
+        "intro": "Monitors Fortinet FortiMail through SNMP: CPU, memory, disk and system load, mail queue, hardware health, HA status, interfaces and uptime."
+    },
+    "292": {
+        "name": "APC Netbotz 250",
+        "intro": "Monitors APC NetBotz 250 environment monitoring devices through SNMP: the connected sensors and the uptime."
+    },
+    "293": {
+        "name": "Stormshield Firewall (SNMP)",
+        "intro": "Monitors Stormshield firewalls through SNMP: CPU, memory, load, swap and storage, hardware and health, HA nodes and cluster, interfaces, connections, QoS, licenses, auto update, VPN status and SD-WAN/VPN routes."
+    },
+    "294": {
+        "name": "Stormshield Firewall (Rest API)",
+        "intro": "Monitors Stormshield firewalls through the REST API: CPU and memory usage, hardware, HA status, interfaces, VPN tunnels and uptime."
+    },
+    "295": {
+        "name": "XPPC Phoenixtec UPS",
+        "intro": "Monitors XPPC Phoenixtec UPS devices through SNMP: battery status (charge, temperature) and the input and output lines."
+    },
+    "296": {
+        "name": "Splunk",
+        "intro": "Monitors Splunk through its REST API: the health of splunkd, the last update of indexes, event counts, and the results of search queries as numeric or string values."
+    },
+    "297": {
+        "name": "Netapp Ontap Rest API",
+        "intro": "Monitors NetApp ONTAP through its REST API: cluster and hardware status, aggregates, volumes, LUNs, quotas and SnapMirror relationships, including space usage, I/O and latency."
+    },
+    "298": {
+        "name": "Sophos XGS Firewall",
+        "intro": "Monitors Sophos XGS firewalls through SNMP: CPU, memory, swap and storage usage, HA and license status, services, requests, VPN, interfaces and the ARP table."
+    },
+    "299": {
+        "name": "AWS API Gateway",
+        "intro": "Monitors Amazon API Gateway REST APIs through Amazon CloudWatch: request counts, 4xx/5xx errors and the latency of the API and its backend integration."
+    },
+    "300": {
+        "name": "AWS ElastiCache",
+        "intro": "Monitors Amazon ElastiCache clusters running Redis or Memcached: CPU, memory usage, connections, commands, requests, evictions, items, network traffic and replication."
+    },
+    "301": {
+        "name": "AVM Fritzbox",
+        "intro": "Monitors AVM Fritzbox routers through their API: system status and uptime as well as the traffic on the WAN interface."
+    },
+    "302": {
+        "name": "AWS EFS (Elastic File System)",
+        "intro": "Monitors Amazon EFS file systems through Amazon CloudWatch: client connections, data read and written, metadata and total I/O, and the burst credit balance."
+    },
+    "303": {
+        "name": "AWS Kinesis",
+        "intro": "Monitors Amazon Kinesis data streams through Amazon CloudWatch: incoming and outgoing records and bytes, get/put latency, success rates and the iterator age."
+    },
+    "304": {
+        "name": "AWS Lambda",
+        "intro": "Monitors AWS Lambda functions through Amazon CloudWatch: invocations, errors, throttles, dead-letter errors, duration and the iterator age."
+    },
+    "305": {
+        "name": "AWS SQS (Simple Queue Service)",
+        "intro": "Monitors Amazon SQS queues through Amazon CloudWatch: messages sent, received, deleted, delayed, visible and not visible, empty receives and the age of the oldest message."
+    },
+    "306": {
+        "name": "Sun SFXXK",
+        "intro": "Monitors Sun SPARC Enterprise (SFXXK) servers over SSH: boards, environment and failover status."
+    },
+    "307": {
+        "name": "Google Compute Engine",
+        "intro": "Monitors Google Compute Engine instances through the Google API: CPU, disk I/O and network usage."
+    },
+    "308": {
+        "name": "Firebird Database",
+        "intro": "Monitors Firebird databases through SQL queries: connection time, long queries, memory usage, page and query statistics, SQL requests and connected users."
+    },
+    "309": {
+        "name": "AWS Cloudwatch",
+        "intro": "Monitors Amazon CloudWatch alarms and any CloudWatch metric of the AWS services, such as EC2, EBS, ELB, RDS, S3 or Lambda, with freely selectable namespaces, dimensions and thresholds."
+    },
+    "310": {
+        "name": "Fujitsu Eternus DX storage (official Fujitsu Nagios plugin)",
+        "intro": "Monitors Fujitsu Eternus DX storage over SSH using the official Fujitsu Nagios plugin: system, controller and disk enclosure status, temperatures, power, disks, RAID groups, thin provisioning pools, volumes, ports and remote copy sessions."
+    },
+    "311": {
+        "name": "OpenVPN",
+        "intro": "Monitors OpenVPN servers: connected clients and incoming and outgoing traffic of the server."
+    },
+    "312": {
+        "name": "Oracle VM Manager",
+        "intro": "Monitors Oracle VM Manager through its API: the manager and its jobs, server pools, servers, virtual machines and file servers."
+    },
+    "313": {
+        "name": "Nokia ISAM (Alcatel)",
+        "intro": "Monitors Nokia (Alcatel) ISAM access nodes through SNMP: CPU and memory usage, hardware, interfaces and hub SAP usage."
+    },
+    "314": {
+        "name": "InfluxDB",
+        "intro": "Monitors InfluxDB through its HTTP API: connection time, database statistics, HTTP server and write statistics, and the results of queries."
+    },
+    "315": {
+        "name": "Vertiv Geist sensor",
+        "intro": "Monitors Vertiv Geist environmental sensors through SNMP: temperature, humidity, dew point, light, airflow and sound readings and the uptime."
+    },
+    "316": {
+        "name": "Whois Domain verification",
+        "intro": "Monitors the expiration of domain names through WHOIS queries and reports the response time of the WHOIS server."
+    },
+    "317": {
+        "name": "Kadiska",
+        "intro": "Monitors Kadiska through its API: alerts, network tracer statistics and watcher statistics."
+    },
+    "318": {
+        "name": "Wallix Bastion",
+        "intro": "Monitors Wallix Bastion appliances through SNMP: license status and expiration, active sessions and pending requests."
+    },
+    "319": {
+        "name": "Docker (SSH)",
+        "intro": "Monitors Docker containers through SSH: container status, CPU and memory usage, disk throughput and network traffic."
+    },
+    "320": {
+        "name": "Lenovo Thinksystem",
+        "intro": "Monitors Lenovo ThinkSystem storage through its API: hardware status, storage controllers, systems, pools and volumes, including space usage, IOPS and throughput."
+    },
+    "321": {
+        "name": "Ribbon (Sonus) SBC",
+        "intro": "Monitors Ribbon (Sonus) session border controllers through SNMP: CPU, memory, load, swap and storage, interfaces, call statistics, channels and DSP statistics."
+    },
+    "322": {
+        "name": "AWS Application ELB",
+        "intro": "Monitors AWS Application Load Balancers through Amazon CloudWatch: active, new and rejected connections, HTTP response codes and the health of the targets."
+    },
+    "323": {
+        "name": "HPE OneView",
+        "intro": "Monitors HPE OneView through its REST API: the status of the managed hardware and the space usage of the storage pools."
+    },
+    "324": {
+        "name": "Oracle ZS (SNMP)",
+        "intro": "Monitors Oracle ZFS Storage Appliances through SNMP: hardware status, share usage, interfaces and uptime."
+    },
+    "325": {
+        "name": "Oracle ZS (Rest API)",
+        "intro": "Monitors Oracle ZFS Storage Appliances through the REST API: hardware status and storage pool usage."
+    },
+    "326": {
+        "name": "SMSEagle notification",
+        "intro": "Provides notification commands that send host and service alerts through an SMSEagle SMS gateway using its API."
+    },
+    "327": {
+        "name": "Cambium cnPilot",
+        "intro": "Monitors Cambium cnPilot access points through SNMP: CPU and memory usage, interfaces, radios, the connection status of the access point and uptime."
+    },
+    "328": {
+        "name": "NVIDIA GPU",
+        "intro": "Monitors NVIDIA GPUs over SSH: GPU, memory, encoder and decoder utilization, BAR1 and framebuffer memory usage and temperature."
+    },
+    "329": {
+        "name": "OpenManage Enterprise (OME)",
+        "intro": "Monitors Dell OpenManage Enterprise (OME) consoles: the status of the managed hardware components and the uptime."
+    },
+    "330": {
+        "name": "Dell VxRail Manager",
+        "intro": "Monitors Dell VxRail clusters through the VxRail Manager REST API: the status of the chassis, power supplies, hosts, NICs and disks."
+    },
+    "331": {
+        "name": "Cisco Application Policy Infrastructure Controller (APIC)",
+        "intro": "Monitors Cisco APIC (Application Policy Infrastructure Controller) through its REST API: the health of the fabric, nodes and tenants."
+    },
+    "332": {
+        "name": "SFTP (active)",
+        "intro": "Monitors SFTP servers through SSH: connection time, number and age of files in a directory, and the execution of SFTP scenarios with step timings."
+    },
+    "333": {
+        "name": "Slack",
+        "intro": "Monitors Slack workspaces through the Slack API: number of channels and channel members, number of members and the status of the Slack services."
+    },
+    "334": {
+        "name": "RRDcached",
+        "intro": "Monitors RRDcached daemons over TCP and UNIX sockets: availability and statistics such as the queue length and waiting updates."
+    },
+    "335": {
+        "name": "AWS Backup",
+        "intro": "Monitors the jobs of AWS Backup and their state, e.g. completed, failed, aborted or expired backup jobs."
+    },
+    "336": {
+        "name": "Azure Web Application Firewall",
+        "intro": "Monitors Azure Firewall and Web Application Firewall instances: resource health, application and network rule hits, data processed and throughput."
+    },
+    "337": {
+        "name": "Azure Loadbalancer",
+        "intro": "Monitors Azure Load Balancers: data path availability, health probe status, SNAT connections and the throughput of the frontends."
+    },
+    "338": {
+        "name": "Riverbed Steelhead",
+        "intro": "Monitors Riverbed SteelHead appliances through SNMP: CPU, memory, load, disk and storage, temperature, interfaces, connections and bandwidth optimization and passthrough."
+    },
+    "339": {
+        "name": "Infoblox DNS, DHCP, IPAM",
+        "intro": "Monitors Infoblox appliances through SNMP: DHCP and DNS usage, system and service status, and interfaces."
+    },
+    "340": {
+        "name": "ADVA FSP 150",
+        "intro": "Monitors ADVA FSP 150 network elements through SNMP: alarms, hardware, system CPU and memory usage and the interfaces."
+    },
+    "341": {
+        "name": "ADVA FSP 3000",
+        "intro": "Monitors ADVA FSP 3000 optical transport systems through SNMP: alarms, memory and swap usage and the interfaces."
+    },
+    "342": {
+        "name": "Cisco Umbrella",
+        "intro": "Monitors Cisco Umbrella virtual appliances through SNMP: appliance status and connectivity, DNS queries, CPU, load, memory and storage usage and uptime."
+    },
+    "343": {
+        "name": "HTML e-mail notification",
+        "intro": "Provides notification commands that send host and service alerts as HTML e-mails."
+    },
+    "344": {
+        "name": "Barco Clickshare",
+        "intro": "Monitors Barco ClickShare devices through the device API: overall device status, process status, CPU, PCIe and SIO temperatures and the CPU fan speed."
+    },
+    "345": {
+        "name": "Teldat",
+        "intro": "Monitors Teldat routers through SNMP: CPU and memory usage, interfaces, radio cells and uptime."
+    },
+    "346": {
+        "name": "Juniper SRX Firewall",
+        "intro": "Monitors Juniper SRX firewalls through SNMP: CPU and memory usage, forwarding plane usage, hardware, storage, interfaces, IPsec tunnels and session usage of the central point and packet forwarding engine."
+    },
+    "347": {
+        "name": "Azure Monitor",
+        "intro": "Monitors any Azure resource through Azure Monitor: fired alerts, the resource health and freely selectable metrics with their own thresholds."
+    },
+    "348": {
+        "name": "Himoinsa Generator (UPS)",
+        "intro": "Monitors Himoinsa generator sets through SNMP: device status, fuel level, mains and generator frequency, voltage and phases."
+    },
+    "349": {
+        "name": "Quantum Scalar Tape Library",
+        "intro": "Monitors Quantum Scalar tape libraries through SNMP: hardware status and uptime."
+    },
+    "350": {
+        "name": "DataCore",
+        "intro": "Monitors DataCore storage through its API: alerts by severity, storage pool usage and over-subscription, and the overall status of the monitored components."
+    },
+    "351": {
+        "name": "ActiveMQ",
+        "intro": "Monitors ActiveMQ brokers through JMX (Jolokia): store, temporary and memory usage of each broker."
+    },
+    "352": {
+        "name": "VerneMQ",
+        "intro": "Monitors VerneMQ MQTT brokers through the HTTP API: cluster nodes, listeners, plugins and sessions."
+    },
+    "353": {
+        "name": "Avaya AES",
+        "intro": "Monitors Avaya Application Enablement Services servers through SNMP: CPU, load, memory and swap usage, storage, services and network interfaces."
+    },
+    "354": {
+        "name": "Avaya Media Gateway",
+        "intro": "Monitors Avaya Media Gateways through SNMP: controller status, CPU and memory usage and the hardware state of the gateway."
+    },
+    "355": {
+        "name": "Slack notification",
+        "intro": "Provides notification commands that send host and service alerts to Slack through its API."
+    },
+    "356": {
+        "name": "Teams notification (deprecated)",
+        "intro": "Provides notification commands that send host and service alerts to Microsoft Teams through the legacy webhook; deprecated."
+    },
+    "357": {
+        "name": "Telegram notification",
+        "intro": "Provides notification commands that send host and service alerts to Telegram."
+    },
+    "358": {
+        "name": "i-Vertix4 Monitoring Central",
+        "intro": "Monitors an i-Vertix4 monitoring central server: Gorgone, broker statistics, poller delay and database partitioning, together with Apache, MariaDB, PHP-FPM, system resources and the platform processes."
+    },
+    "359": {
+        "name": "Emerson PDU",
+        "intro": "Monitors Emerson PDUs through SNMP: the global status, power source usage (power, energy, current) and the status of the receptacles."
+    },
+    "360": {
+        "name": "Alpha UPS",
+        "intro": "Monitors Alpha UPS devices through SNMP: alarms, battery status and uptime."
+    },
+    "361": {
+        "name": "Oracle Sun Server",
+        "intro": "Monitors Oracle Sun servers through SNMP: the status of the hardware components and the uptime."
+    },
+    "362": {
+        "name": "Grafana",
+        "intro": "Monitors Grafana through its API: the health status of the instance."
+    },
+    "363": {
+        "name": "Graylog",
+        "intro": "Monitors Graylog through its REST API: system notifications and the results of search queries."
+    },
+    "364": {
+        "name": "Dynatrace",
+        "intro": "Monitors Dynatrace through its API: application Apdex, synthetic monitor availability, events and open problems."
+    },
+    "365": {
+        "name": "i-Vertix4 Poller",
+        "intro": "Monitors an i-Vertix4 poller: broker statistics, the platform processes (centengine, gorgone, snmptrapd and others), SMTP login and system resources such as CPU, memory, swap and load."
+    },
+    "366": {
+        "name": "HPE Virtual Connect",
+        "intro": "Monitors HPE Virtual Connect modules through SNMP: hardware health, interfaces and uptime."
+    },
+    "367": {
+        "name": "Aruba Clearpass",
+        "intro": "Monitors Aruba ClearPass policy managers through SNMP: CPU, memory, disk and swap usage, interfaces, RADIUS and TACACS request statistics and the response times of authentication repositories."
+    },
+    "368": {
+        "name": "Avigilon camera",
+        "intro": "Monitors Avigilon cameras through SNMP: network interfaces, memory, storage, temperature and uptime."
+    },
+    "369": {
+        "name": "Aruba Orchestrator",
+        "intro": "Monitors the Aruba Orchestrator SD-WAN controller through its REST API: active alarms and the status of the managed appliances."
+    },
+    "370": {
+        "name": "Cisco Catalyst Center (DNA)",
+        "intro": "Monitors Cisco Catalyst Center (DNA Center) through its REST API: the health of managed network devices, sites and connected clients."
+    },
+    "371": {
+        "name": "Varnish cache",
+        "intro": "Monitors Varnish cache servers through SSH: the Varnish statistics collected with the varnishstat tool."
+    },
+    "372": {
+        "name": "Teams notification (workflow api)",
+        "intro": "Provides notification commands that send host and service alerts to Microsoft Teams through a Workflow webhook."
+    },
+    "373": {
+        "name": "HPE Primera",
+        "intro": "Monitors HPE Primera storage through its API: capacity, space reduction ratios, disk status and usage, nodes, volume usage and license status."
+    },
+    "374": {
+        "name": "HMS Netbiter Argos",
+        "intro": "Monitors HMS Netbiter Argos systems through the Argos REST API: the sensors and the alerts of the connected devices."
+    },
+    "375": {
+        "name": "Hashicorp Vault",
+        "intro": "Monitors HashiCorp Vault through its API: the health status and the performance of the Raft storage."
+    },
+    "376": {
+        "name": "Proxmox Mail Gateway",
+        "intro": "Monitors Proxmox Mail Gateway through its API: incoming and outgoing mail, spam and virus counts, mail traffic and the installed version."
+    },
+    "377": {
+        "name": "HPE Alletra",
+        "intro": "Monitors HPE Alletra storage through its API: capacity and provisioning, disk status and usage, volume status and usage, and license status."
+    },
+    "378": {
+        "name": "Azure Application Gateway",
+        "intro": "Monitors Azure Application Gateways (v1 and v2): health, backend health and response status, connections, requests, client traffic, throughput, gateway and backend times and the capacity units."
+    },
+    "379": {
+        "name": "Azure VPN Gateway",
+        "intro": "Monitors Azure VPN Gateways: resource health, gateway status and the traffic of the site-to-site connections and tunnels."
+    },
+    "380": {
+        "name": "AWS Classic ELB - Loadbalancer",
+        "intro": "Monitors AWS Classic Load Balancers through Amazon CloudWatch: HTTP response codes, latency, request counts, surge queue and spillover, and the health of the registered instances."
+    },
+    "381": {
+        "name": "AWS Classic ELB - Availability Zone",
+        "intro": "Monitors AWS Classic Load Balancers per availability zone through Amazon CloudWatch: HTTP response codes, latency, request counts, surge queue and spillover, and the health of the registered instances."
+    },
+    "382": {
+        "name": "AWS Network Loadbalancer",
+        "intro": "Monitors AWS Network Load Balancers through Amazon CloudWatch: the number of healthy and unhealthy targets per target group."
+    },
+    "383": {
+        "name": "i-Vertix Business Intelligence Server",
+        "intro": "Monitors the i-Vertix Business Intelligence server through its API and SNMP: BI status, ETL runs and data consistency, MariaDB performance, and system resources such as CPU, memory, swap, load and disk I/O."
+    },
+    "384": {
+        "name": "IBM TS3500",
+        "intro": "Monitors IBM TS3500 tape libraries through SNMP: hardware status and uptime."
+    },
+    "385": {
+        "name": "IBM TS3200",
+        "intro": "Monitors IBM TS3200 tape libraries through SNMP: the global status and uptime."
+    },
+    "386": {
+        "name": "IBM TS3100",
+        "intro": "Monitors IBM TS3100 tape libraries through SNMP: the global status and uptime."
+    },
+    "387": {
+        "name": "IBM TS2900",
+        "intro": "Monitors IBM TS2900 tape libraries through SNMP: hardware status and uptime."
+    },
+    "388": {
+        "name": "Peplink Loadbalancer",
+        "intro": "Monitors Peplink load balancers through SNMP: CPU and memory usage, interfaces and uptime."
+    },
+    "389": {
+        "name": "AppearTV",
+        "intro": "Monitors Appear TV broadcast equipment through SNMP: device alarms and uptime."
+    },
+    "390": {
+        "name": "Eclipse Mosquitto MQTT",
+        "intro": "Monitors Eclipse Mosquitto MQTT brokers through the broker statistics: connected clients, messages, uptime and the values of selected topics."
+    },
+    "391": {
+        "name": "SMSEagle",
+        "intro": "Monitors SMSEagle SMS gateways through the REST API: the status of the modems."
+    },
+    "392": {
+        "name": "Huawei WLC",
+        "intro": "Monitors Huawei wireless LAN controllers through SNMP: CPU and memory usage, hardware health, interfaces, and the status and radios of the managed access points."
+    },
+    "393": {
+        "name": "SMSEagle notification v2",
+        "intro": "Provides notification commands that send host and service alerts through the SMSEagle REST API v2 as SMS, voice or ring alerts."
+    },
+    "394": {
+        "name": "IBM Informix database",
+        "intro": "Monitors IBM Informix databases: connection time, sessions, dbspace and chunk states, checkpoints, logfile usage, locks, long transactions, cache, level-0 backups and SQL requests."
+    },
+    "395": {
+        "name": "HAProxy (Web API)",
+        "intro": "Monitors HAProxy through its web API: sessions, queues, traffic, denied requests and errors of the frontends, backends and servers."
+    },
+    "396": {
+        "name": "Nortel network devices",
+        "intro": "Monitors Nortel network devices through SNMP: CPU and memory usage, hardware health, stack status, interfaces and uptime."
+    },
+    "397": {
+        "name": "StorageTek SL",
+        "intro": "Monitors Oracle StorageTek SL tape libraries through SNMP: hardware status and uptime."
+    },
+    "398": {
+        "name": "Scale Computing",
+        "intro": "Monitors Scale Computing clusters through the REST API: cluster status, nodes, drives, virtual domains and virtual disk usage."
+    },
+    "399": {
+        "name": "Forcepoint SD-WAN Firewall",
+        "intro": "Monitors Forcepoint SD-WAN firewalls through SNMP: cluster status and load, connections, CPU, load, memory, swap and disk usage, interfaces, dropped and rejected packets and uptime."
+    },
+    "400": {
+        "name": "Internet Information Server - IIS (WinRM)",
+        "intro": "Monitors Microsoft IIS through WinRM: the state of the application pools and the W3SVC service."
+    },
+    "401": {
+        "name": "Veeam VBR (WinRM)",
+        "intro": "Monitors Veeam Backup & Replication servers through WinRM: job status, licenses, repository space usage, tape jobs and SureBackup jobs."
+    },
+    "402": {
+        "name": "Extreme CloudIQ",
+        "intro": "Monitors Extreme CloudIQ through its API: the health of devices, clients, WiFi, services and the network, plus device status, CPU, memory, WiFi interfaces and uptime."
+    },
+    "403": {
+        "name": "Exagrid Backup storage",
+        "intro": "Monitors ExaGrid backup storage systems: server usage and uptime."
+    },
+    "404": {
+        "name": "PaloAlto ION",
+        "intro": "Monitors Palo Alto ION SD-WAN devices through SNMP: CPU, memory swap and storage usage, hardware, interfaces and uptime."
+    },
+    "405": {
+        "name": "PaloAlto Prisma SASE",
+        "intro": "Monitors Palo Alto Prisma SASE through its HTTPS API: licenses, remote networks, service connections, tunnel status and the status of edge locations."
+    },
+    "406": {
+        "name": "Westermo standard network devices",
+        "intro": "Monitors Westermo network devices through SNMP: CPU, memory and load, sensors, interfaces, the spanning tree, TCP and UDP connections and uptime."
+    },
+    "407": {
+        "name": "Axentia e-paper",
+        "intro": "Monitors Axentia e-paper displays through the Axentia REST API: server status, the health of the displays and their operational status."
+    },
+    "408": {
+        "name": "Mellanox network devices",
+        "intro": "Monitors Mellanox network devices through SNMP: CPU usage, sensor status, interfaces and the spanning tree."
+    },
+    "409": {
+        "name": "Avocent ACS 6000 KVM",
+        "intro": "Monitors Avocent ACS 6000 console servers through SNMP: detailed CPU usage, system load, memory and the hardware status."
+    },
+    "410": {
+        "name": "Avocent ACS 8000 KVM",
+        "intro": "Monitors Avocent ACS 8000 console servers through SNMP: detailed CPU usage, system load, memory, hardware status and the serial ports."
+    },
+    "411": {
+        "name": "Podman container",
+        "intro": "Monitors Podman through its API: container usage, pod status and the state of the system."
+    },
+    "412": {
+        "name": "Waystream network devices",
+        "intro": "Monitors Waystream network devices through SNMP: CPU and memory usage, hardware, SFP port status, interfaces, TCP and UDP connections, NTP and uptime."
+    },
+    "413": {
+        "name": "Prometheus query",
+        "intro": "Monitors Prometheus servers through the Prometheus API: scrape target status and the results of custom PromQL queries."
+    },
+    "414": {
+        "name": "Prometheus nginx ingress controller",
+        "intro": "Monitors NGINX ingress controllers through Prometheus: connections and request rates, including response codes per namespace."
+    },
+    "415": {
+        "name": "VMware vSphere8 vCSA",
+        "intro": "Monitors VMware vSphere 8 vCenter Server Appliances through the REST API: health status, interfaces, services, available updates and uptime."
+    },
+    "416": {
+        "name": "Zebra RFS",
+        "intro": "Monitors Zebra RFS wireless controllers through SNMP: system status, interfaces and uptime."
+    },
+    "417": {
+        "name": "MessPC Ethernetbox",
+        "intro": "Monitors MessPC Ethernetbox devices through SNMP: the connected sensors (temperature, humidity, smoke, contact, brightness, voltage) and the uptime."
+    },
+    "418": {
+        "name": "Brocade Foundry switch",
+        "intro": "Monitors Brocade Foundry switches through SNMP: CPU and memory usage, hardware health, interfaces, SFP port status and uptime."
+    },
+    "419": {
+        "name": "Extreme MLX switches",
+        "intro": "Monitors Extreme MLX switches through SNMP: CPU and memory usage, hardware status, interfaces, SFP ports, TCP and UDP connections and uptime."
+    },
+    "420": {
+        "name": "Ubiquiti Unifi UAP",
+        "intro": "Monitors Ubiquiti UniFi access points through SNMP: CPU, memory and load, interfaces, radio health, virtual access point health and uptime."
+    },
+    "421": {
+        "name": "Cisco Webex",
+        "intro": "Monitors Cisco Webex through the Webex API: the status of devices, the health of workspaces and the cache generation."
+    },
+    "422": {
+        "name": "Java JVM Actuator",
+        "intro": "Monitors Java applications that expose Spring Boot Actuator over HTTP: JVM memory, threads, loaded classes, CPU load, system load and file descriptor usage."
+    },
+    "423": {
+        "name": "PaloAlto Firewall - Rest API",
+        "intro": "Monitors Palo Alto firewalls through the REST API: system status, environment, HA status, licenses, IPsec tunnels and SD-WAN."
+    },
+    "424": {
+        "name": "Hitachi HNAS",
+        "intro": "Monitors Hitachi HNAS storage: cluster status, hardware, interfaces, volume usage, virtual volume quotas and uptime."
+    },
+    "425": {
+        "name": "Siemens Ruggedcom",
+        "intro": "Monitors Siemens RUGGEDCOM network devices through SNMP: memory, temperature, hardware, interfaces, errors and uptime."
+    },
+    "426": {
+        "name": "StorMagic Virtual SAN",
+        "intro": "Monitors StorMagic SvSAN virtual SANs through SNMP: system status, mirrors, pools and uptime."
+    },
+    "427": {
+        "name": "Cambium cnMatrix",
+        "intro": "Monitors Cambium cnMatrix switches through SNMP: hardware health, interfaces, SFP ports, ARP, TCP and UDP connections and uptime."
+    },
+    "428": {
+        "name": "Azure NetApp Pools",
+        "intro": "Monitors Azure NetApp Files capacity pools and their volumes: allocated, used and snapshot size and throughput of the pools, and size, inodes, IOPS, latency and throughput of each volume."
+    },
+    "429": {
+        "name": "Azure Virtual Hub",
+        "intro": "Monitors Azure Virtual WAN hubs: resource health, hub status, data processed, routes exchanged with the peers, infrastructure units and the utilization of the spoke VMs."
+    },
+    "430": {
+        "name": "Azure Virtual Network",
+        "intro": "Monitors Azure virtual networks: the status of the virtual network peerings and the latency and packet loss between the networks."
+    },
+    "431": {
+        "name": "Azure Public IP",
+        "intro": "Monitors Azure public IP addresses: the status of the address, its traffic and SYN packets, and the traffic during DDoS attacks (inbound, forwarded and dropped)."
+    },
+    "432": {
+        "name": "Dell OpenManage",
+        "intro": "Monitors Dell servers through the OpenManage agent via SNMP: the status of the hardware components and the uptime."
+    },
+    "433": {
+        "name": "Sentry PDU",
+        "intro": "Monitors Sentry PDUs through SNMP: infeeds, tower status, system power, connected sensors and the uptime."
+    },
+    "434": {
+        "name": "Easy PDU",
+        "intro": "Monitors Easy PDUs through SNMP: the load, the phases (voltage, current, power, energy, frequency) and the outlets."
+    },
+    "435": {
+        "name": "i-Vertix Standard SNMP",
+        "intro": "Monitors any SNMP-capable device through the standard MIBs: CPU, memory, swap and load, disks, storage and inodes, interfaces, ARP, processes, TCP and UDP connections, NTP and uptime."
+    },
+    "436": {
+        "name": "Quantum DXI series",
+        "intro": "Monitors Quantum DXI appliances over SSH: system and health status, storage array, HBA and network status, disk usage, memory, deduplication and compaction, reclamation and throughput."
+    },
+    "437": {
+        "name": "Masterclock NTP100 GPS",
+        "intro": "Monitors Masterclock NTP100 GPS time servers through SNMP: GPS status, NTP performance (stratum, precision, poll interval) and the uptime."
+    },
+    "438": {
+        "name": "Atto Fibrebridge",
+        "intro": "Monitors Atto FibreBridge devices through SNMP: Fibre Channel port traffic and errors (invalid CRC, signal loss), hardware health and uptime."
+    },
+    "440": {
+        "name": "F5OS",
+        "intro": "Monitors F5 F5OS appliances through SNMP: CPU and memory usage, hardware and uptime."
+    },
+    "441": {
+        "name": "Juniper MX series",
+        "intro": "Monitors Juniper MX routers through SNMP: CPU, memory and storage, hardware, interfaces and class of service, plus BGP peers, LDP sessions, LSPs and RSVP sessions."
+    },
+    "442": {
+        "name": "AWS SNS (Simple Notification Service)",
+        "intro": "Monitors Amazon SNS topics through Amazon CloudWatch: notifications published, delivered, failed and filtered out."
+    },
+    "443": {
+        "name": "AWS SES (Simple Email Service)",
+        "intro": "Monitors Amazon SES through Amazon CloudWatch: e-mails sent and delivered, the reject rate and the spam complaint rate."
+    },
+    "444": {
+        "name": "Securepoint UTM Firewall",
+        "intro": "Monitors Securepoint UTM firewalls through SNMP: CPU, memory, load and storage, interfaces, cluster status, IPsec, OpenVPN and WireGuard tunnels, alerts, applications, processes and sensors."
+    },
+    "445": {
+        "name": "Signl4 notification",
+        "intro": "Provides notification commands that send host and service alerts to Signl4 through its API."
+    },
+    "446": {
+        "name": "Openshift",
+        "intro": "Monitors OpenShift clusters through the OpenShift API: cluster operators, cluster version, projects and routes."
+    },
+    "447": {
+        "name": "Network path - MTR",
+        "intro": "Monitors the network path to a target with MTR: the path itself, path changes and the hops along the way."
+    },
+    "448": {
+        "name": "Veeam VBR (Rest API)",
+        "intro": "Monitors Veeam Backup & Replication servers through the REST API: jobs, license usage and expiration, managed servers and the space usage of repositories."
+    },
+    "449": {
+        "name": "Azure PostgreSQL",
+        "intro": "Monitors Azure Database for PostgreSQL servers: CPU, memory, storage and I/O consumption, connections, network traffic and the replication lag."
+    },
+    "450": {
+        "name": "Azure Container Registry",
+        "intro": "Monitors Azure Container Registry instances: the storage used by the registry."
+    },
+    "451": {
+        "name": "Azure API Management",
+        "intro": "Monitors Azure API Management services: the capacity of the gateway, the total and failed requests and the duration of the requests and backend calls."
+    },
+    "452": {
+        "name": "Azure Key Vault",
+        "intro": "Monitors Azure Key Vaults: availability and saturation of the vault, and the number and latency of the service API requests."
+    },
+    "453": {
+        "name": "Azure Kubernetes Service",
+        "intro": "Monitors Azure Kubernetes Service clusters through Azure Monitor: cluster health, allocatable resources, CPU, memory and disk usage of the nodes, network traffic and unschedulable pods."
+    }
+}

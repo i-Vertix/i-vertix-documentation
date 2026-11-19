@@ -1,0 +1,592 @@
+---
+title: "Huawei network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Huawei.png";
+
+<PluginPackHeader name="Huawei network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Huawei network devices through SNMP: CPU and memory usage, hardware health, interfaces, spanning tree and the health, traffic and Ethernet ports of connected ONTs.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-huawei-standard-snmp-cpu)
+* [Hardware](#network-huawei-standard-snmp-hardware)
+* [Interfaces](#network-huawei-standard-snmp-interfaces)
+* [Memory](#network-huawei-standard-snmp-memory)
+* [ONT ethernet port](#network-huawei-standard-snmp-gpon-ont-ethernet-port)
+* [ONT health](#network-huawei-standard-snmp-gpon-ont-health)
+* [ONT traffic](#network-huawei-standard-snmp-gpon-ont-traffic)
+* [Spanning tree](#network-huawei-standard-snmp-spanning-tree)
+* [Uptime](#network-huawei-standard-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [ONT ethernet port](#network-huawei-standard-snmp-gpon-ont-ethernet-port) | `Ont <name> - <serial> ethernet ports` |
+| [ONT health](#network-huawei-standard-snmp-gpon-ont-health) | `Ont health <name> - <serial>` |
+| [ONT traffic](#network-huawei-standard-snmp-gpon-ont-traffic) | `Ont traffic <name> - <serial>` |
+| [Interfaces](#network-huawei-standard-snmp-interfaces) | `Interface - <name>` |
+| [Spanning tree](#network-huawei-standard-snmp-spanning-tree) | `Spanning tree - <port>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Huawei-Network
+
+*Huawei Network* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-huawei-standard-snmp-cpu) | `network-huawei-standard-snmp-cpu` |
+| [Hardware](#network-huawei-standard-snmp-hardware) | `network-huawei-standard-snmp-hardware` |
+| [Memory](#network-huawei-standard-snmp-memory) | `network-huawei-standard-snmp-memory` |
+| [Uptime](#network-huawei-standard-snmp-uptime) | `network-huawei-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-huawei-standard-snmp-interfaces) | `network-huawei-standard-snmp-interfaces` |
+| [ONT ethernet port](#network-huawei-standard-snmp-gpon-ont-ethernet-port) | `network-huawei-standard-snmp-gpon-ont-ethernet-port` |
+| [ONT health](#network-huawei-standard-snmp-gpon-ont-health) | `network-huawei-standard-snmp-gpon-ont-health` |
+| [ONT traffic](#network-huawei-standard-snmp-gpon-ont-traffic) | `network-huawei-standard-snmp-gpon-ont-traffic` |
+| [Spanning tree](#network-huawei-standard-snmp-spanning-tree) | `network-huawei-standard-snmp-spanning-tree` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-huawei-standard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu` | `%` | Usage :  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-huawei-standard-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'fan' |
+| `WARNING` |  | Set warning threshold for 'fan', 'temperature' (syntax: type,regexp,threshold) Example: --warning='fan,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'fan', 'temperature' (syntax: type,regexp,threshold) Example: --critical='fan,.*,45' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1.0 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,WARNING,abnormal' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-huawei-standard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Warning threshold (in percent) |
+| `CRITICAL-USAGE` | `90` | Critical threshold (in percent) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-huawei-standard-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds |
+| `UNIT` | `s` | Select the time unit for thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ONT ethernet port {/* #network-huawei-standard-snmp-gpon-ont-ethernet-port */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{online_state} ne "linkup" \|\| %{speed} eq "invalid"` | Define the conditions to match for the status to be CRITICAL. You can use the following variables: C&lt;%\{online_state\}>, C&lt;%\{display\}>, C&lt;%(speed)>. C&lt;%(online_state)> can have one of these values: C&lt;linkup>, C&lt;linkdown>, C&lt;invalid>. C&lt;%(speed)> can have one of these values: C&lt;speed10M>, C&lt;speed100M>, C&lt;speed1000M>, C&lt;autoneg>, C&lt;autospeed10M>, C&lt;autospeed100M>, C&lt;autospeed1000M>, C&lt;speed10G>, C&lt;autospeed10G>, C&lt;speed2500M>, C&lt;autospeed2500M>, C&lt;speed5000M>, C&lt;autospeed5000M>, C&lt;speed25000M>, C&lt;autospeed25000M>, C&lt;speed40000M>, C&lt;autospeed40000M>, C&lt;invalid> |
+| `EXTRA-OPTS` | `--verbose` | Additional options appended to the plugin command line (host level). |
+| `FILTER-SERIAL` |  | Filter ONT by serial (can be a regexp). |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: C&lt;%\{online_state\}>, C&lt;%\{display\}>, C&lt;%(speed)>. C&lt;%(online_state)> can have one of these values: C&lt;linkup>, C&lt;linkdown>, C&lt;invalid>. C&lt;%(speed)> can have one of these values: C&lt;speed10M>, C&lt;speed100M>, C&lt;speed1000M>, C&lt;autoneg>, C&lt;autospeed10M>, C&lt;autospeed100M>, C&lt;autospeed1000M>, C&lt;speed10G>, C&lt;autospeed10G>, C&lt;speed2500M>, C&lt;autospeed2500M>, C&lt;speed5000M>, C&lt;autospeed5000M>, C&lt;speed25000M>, C&lt;autospeed25000M>, C&lt;speed40000M>, C&lt;autospeed40000M>, C&lt;invalid> |
+| `EXCLUDE-SERIAL` |  | Exclude ONT by serial (can be a regexp). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ONT health {/* #network-huawei-standard-snmp-gpon-ont-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{status} ne "active"` | Define the conditions to match for the status to be CRITICAL. (default: C&lt;'%\{status\} ne "active"'>). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{display\}>. C&lt;%(status)> can have one of these values: C&lt;active>, C&lt;notInService>, C&lt;notReady>, C&lt;createAndGo>, C&lt;createAndWait>, C&lt;destroy>. |
+| `CRITICAL-TEMPERATURE` | `-61:95` | Critical threshold in celsius degrees |
+| `CRITICAL-VOLTAGE` | `3:4` | Critical threshold for the power feed voltage of the optical module (V). |
+| `CRITICAL-TX-POWER` | `0:5` | Critical threshold for the transmitting power of the optical module (dBm). |
+| `WARNING-RX-POWER` |  | Warning threshold for the receiving power of the optical module (dBm). |
+| `WARNING-BIAS-CURRENT` |  | Warning threshold for the bias current of the optical module (mA). |
+| `CRITICAL-RX-POWER` | `-29:-7` | Critical threshold for the receiving power of the optical module (dBm). |
+| `CRITICAL-BIAS-CURRENT` | `2:100` | Critical threshold for the bias current of the optical module (mA). |
+| `FILTER-SERIAL` |  | Filter ONT by serial (can be a regexp). |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: C&lt;%\{status\}>, C&lt;%\{display\}>. C&lt;%(status)> can have one of these values: C&lt;active>, C&lt;notInService>, C&lt;notReady>, C&lt;createAndGo>, C&lt;createAndWait>, C&lt;destroy>. |
+| `WARNING-TEMPERATURE` |  | Warning threshold in celsius degrees. |
+| `WARNING-VOLTAGE` |  | Warning threshold for the power feed voltage of the optical module (V). |
+| `WARNING-TX-POWER` |  | Warning threshold for the transmitting power of the optical module (dBm). |
+| `WARNING-OLT-RX-ONT-POWER` |  | Warning threshold for the ONT optical power received on the OLT (dBm). |
+| `CRITICAL-OLT-RX-ONT-POWER` |  | Critical threshold for the ONT optical power received on the OLT (dBm). |
+| `EXCLUDE-SERIAL` |  | Exclude ONT by serial (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `module.temperature.celsius` | `C` | module temperature: C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `module.voltage.volt` | `V` | module voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `module.tx.power.dbm` | `dBm` | Tx Power:  dBm | `WARNING-TX-POWER`, `CRITICAL-TX-POWER` |
+| `module.rx.power.dbm` | `dBm` | Rx power:  dBm | `WARNING-RX-POWER`, `CRITICAL-RX-POWER` |
+| `module.bias.current.milliampere` | `mA` | Bias current:  mA | `WARNING-BIAS-CURRENT`, `CRITICAL-BIAS-CURRENT` |
+| `olt.rx.ont.power.dbm` | `dBm` | OLT Rx ONT power:  dBm | `WARNING-OLT-RX-ONT-POWER`, `CRITICAL-OLT-RX-ONT-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ONT traffic {/* #network-huawei-standard-snmp-gpon-ont-traffic */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UP-DROP-PACKETS` | `0` | Warning threshold for the upstream discarded frames. (packets/s) |
+| `CRITICAL-UP-DROP-PACKETS` | `100` | Critical threshold for the upstream discarded frames. (packets/s) |
+| `FILTER-SERIAL` |  | Filter ONT by serial (can be a regexp). |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold for the downstream bytes (b/s). |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold for the upstream bytes (b/s). |
+| `WARNING-DOWN-PACKETS` |  | Warning threshold for the downstream frames. (packets/s) |
+| `WARNING-UP-PACKETS` |  | Warning threshold for the upstream frames. (packets/s) |
+| `WARNING-DOWN-DROP-PACKETS` |  | Warning threshold for the downstream discarded frames. (packets/s) |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold for the downstream bytes (b/s). |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold for the upstream bytes (b/s). |
+| `CRITICAL-DOWN-PACKETS` |  | Critical threshold for the downstream frames. (packets/s) |
+| `CRITICAL-UP-PACKETS` |  | Critical threshold for the upstream frames. (packets/s) |
+| `CRITICAL-DOWN-DROP-PACKETS` |  | Critical threshold for the downstream discarded frames. (packets/s) |
+| `EXCLUDE-SERIAL` |  | Exclude ONT by serial (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ont.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `ont.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `ont.packets.up.persecond` | `packets/s` | Up packets (per sec) | `WARNING-UP-PACKETS`, `CRITICAL-UP-PACKETS` |
+| `ont.packets.down.persecond` | `packets/s` | Down packets (per sec) | `WARNING-DOWN-PACKETS`, `CRITICAL-DOWN-PACKETS` |
+| `ont.packets.up.drop.persecond` | `packets/s` | Up dropped packets (per sec) | `WARNING-UP-DROP-PACKETS`, `CRITICAL-UP-DROP-PACKETS` |
+| `ont.packets.down.drop.persecond` | `packets/s` | Down drop packets (per sec) | `WARNING-DOWN-DROP-PACKETS`, `CRITICAL-DOWN-DROP-PACKETS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-huawei-standard-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERFACE` | `.*` | Interface name - you can use regex |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display. |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `CRITICAL-BIAS-CURRENT` |  | Threshold critical current Bias (mA) |
+| `CRITICAL-INPUT-POWER` |  | Threshold critical input Power (dBm) |
+| `CRITICAL-MODULE-TEMPERATURE` |  | Threshold critical module temperature (C) |
+| `CRITICAL-OUTPUT-POWER` |  | Threshold critical output Power (dBm) |
+| `WARNING-BIAS-CURRENT` |  | Threshold warning current Bias (mA) |
+| `WARNING-INPUT-POWER` |  | Threshold warning input Power (dBm) |
+| `WARNING-MODULE-TEMPERATURE` |  | Threshold warning module temperature (C) |
+| `WARNING-OUTPUT-POWER` |  | Threshold warning output Power (dBm) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.input.power.dbm` | `dBm` | Input Power:  dBm | `WARNING-INPUT-POWER`, `CRITICAL-INPUT-POWER` |
+| `interface.bias.current.milliampere` | `mA` | Bias Current:  mA | `WARNING-BIAS-CURRENT`, `CRITICAL-BIAS-CURRENT` |
+| `interface.output.power.dbm` | `dBm` | Output Power:  dBm | `WARNING-OUTPUT-POWER`, `CRITICAL-OUTPUT-POWER` |
+| `interface.module.temperature.celsius` | `C` | Module Temperature:  C | `WARNING-MODULE-TEMPERATURE`, `CRITICAL-MODULE-TEMPERATURE` |
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spanning tree {/* #network-huawei-standard-snmp-spanning-tree */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{op_status} =~ /up/ && %{state} =~ /blocking\|broken/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{op_status\} =~ /up/ && %\{state\} =~             /blocking\|broken/'). You can use the following variables: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-PORT` |  | Filter on port description (can be a regexp) |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260400 - 20260424</summary>
+
+- Service template [`network-huawei-standard-snmp-gpon-ont-ethernet-port`](#network-huawei-standard-snmp-gpon-ont-ethernet-port)
+    - Renamed from `network-huawei-standard-gpon-ont-ethernet-port`
+- Service template [`network-huawei-standard-snmp-gpon-ont-health`](#network-huawei-standard-snmp-gpon-ont-health)
+    - Renamed from `network-huawei-standard-gpon-ont-health`
+    - Check command changed from `network-huawei-standard-gpon-ont-health` to `network-huawei-standard-snmp-gpon-ont-health`
+- Service template [`network-huawei-standard-snmp-gpon-ont-traffic`](#network-huawei-standard-snmp-gpon-ont-traffic)
+    - Renamed from `network-huawei-standard-gpon-ont-traffic`
+    - Check command changed from `network-huawei-standard-gpon-ont-traffic` to `network-huawei-standard-snmp-gpon-ont-traffic`
+- Command `network-huawei-standard-gpon-ont-ethernet-port`
+    - Option `--include-serial='$_SERVICEFILTER-SERIAL$'` added
+    - Option `--exclude-serial='$_SERVICEEXCLUDE-SERIAL$'` added
+    - Option `--filter-serial='$_SERVICEFILTER-SERIAL$'` removed
+    - Macro `EXCLUDE-SERIAL` added
+- Command `network-huawei-standard-snmp-gpon-ont-health`
+    - Renamed from `network-huawei-standard-gpon-ont-health`
+    - Option `--include-serial='$_SERVICEFILTER-SERIAL$'` added
+    - Option `--exclude-serial='$_SERVICEEXCLUDE-SERIAL$'` added
+    - Option `--filter-serial='$_SERVICEFILTER-SERIAL$'` removed
+    - Macro `EXCLUDE-SERIAL` added
+- Command `network-huawei-standard-snmp-gpon-ont-traffic`
+    - Renamed from `network-huawei-standard-gpon-ont-traffic`
+    - Option `--include-serial='$_SERVICEFILTER-SERIAL$'` added
+    - Option `--exclude-serial='$_SERVICEEXCLUDE-SERIAL$'` added
+    - Option `--filter-serial='$_SERVICEFILTER-SERIAL$'` removed
+    - Macro `EXCLUDE-SERIAL` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250600 - 20250721</summary>
+
+- Plugin pack `Huawei network devices`
+    - Description updated
+- Service template `network-huawei-standard-gpon-ont-ethernet-port`
+    - Service template added
+- Service template `network-huawei-standard-gpon-ont-health`
+    - Service template added
+- Service template `network-huawei-standard-gpon-ont-traffic`
+    - Service template added
+- Command `network-huawei-standard-gpon-ont-ethernet-port`
+    - Command added
+- Command `network-huawei-standard-gpon-ont-health`
+    - Command added
+- Command `network-huawei-standard-gpon-ont-traffic`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250414</summary>
+
+- Command `network-huawei-standard-snmp-spanning-tree`
+    - Option `--filter-port` changed from `--filter-port` to `--filter-port=$_SERVICEFILTER-PORT$`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Plugin pack `Huawei network devices`
+    - Description updated
+- Service template [`network-huawei-standard-snmp-spanning-tree`](#network-huawei-standard-snmp-spanning-tree)
+    - Service template added
+- Command `network-huawei-standard-snmp-spanning-tree`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250210</summary>
+
+- Service template [`network-huawei-standard-snmp-cpu`](#network-huawei-standard-snmp-cpu)
+    - Renamed from `network-huawei-snmp-cpu`
+    - Check command changed from `network-huawei-snmp-cpu` to `network-huawei-standard-snmp-cpu`
+- Service template [`network-huawei-standard-snmp-hardware`](#network-huawei-standard-snmp-hardware)
+    - Renamed from `network-huawei-snmp-hardware`
+    - Check command changed from `network-huawei-snmp-hardware` to `network-huawei-standard-snmp-hardware`
+- Service template [`network-huawei-standard-snmp-interfaces`](#network-huawei-standard-snmp-interfaces)
+    - Renamed from `network-huawei-snmp-interfaces`
+    - Check command changed from `network-huawei-snmp-interfaces` to `network-huawei-standard-snmp-interfaces`
+- Service template [`network-huawei-standard-snmp-memory`](#network-huawei-standard-snmp-memory)
+    - Renamed from `network-huawei-snmp-memory`
+    - Check command changed from `network-huawei-snmp-memory` to `network-huawei-standard-snmp-memory`
+- Service template [`network-huawei-standard-snmp-uptime`](#network-huawei-standard-snmp-uptime)
+    - Renamed from `network-huawei-snmp-uptime`
+    - Check command changed from `network-huawei-snmp-uptime` to `network-huawei-standard-snmp-uptime`
+    - Macro `UNIT` added (default `s`)
+- Command `network-huawei-standard-snmp-cpu`
+    - Renamed from `network-huawei-snmp-cpu`
+    - Option `--plugin` changed from `--plugin=network::huawei::snmp::plugin` to `--plugin=network::huawei::standard::snmp::plugin`
+- Command `network-huawei-standard-snmp-hardware`
+    - Renamed from `network-huawei-snmp-hardware`
+    - Option `--plugin` changed from `--plugin=network::huawei::snmp::plugin` to `--plugin=network::huawei::standard::snmp::plugin`
+    - Option `--warning` changed from `--warning='$_SERVICEWARNING$'` to `--warning=$_SERVICEWARNING$`
+    - Option `--critical` changed from `--critical='$_SERVICECRITICAL$'` to `--critical=$_SERVICECRITICAL$`
+- Command `network-huawei-standard-snmp-interfaces`
+    - Renamed from `network-huawei-snmp-interfaces`
+    - Option `--plugin` changed from `--plugin=network::huawei::snmp::plugin` to `--plugin=network::huawei::standard::snmp::plugin`
+- Command `network-huawei-standard-snmp-memory`
+    - Renamed from `network-huawei-snmp-memory`
+    - Option `--plugin` changed from `--plugin=network::huawei::snmp::plugin` to `--plugin=network::huawei::standard::snmp::plugin`
+    - Macro `SNMPAUTH-PASSPHRASE` added
+    - Macro `SNMPAUTH-PROTOCOL` added
+    - Macro `SNMPPRIV-PASSPHRASE` added
+    - Macro `SNMPPRIV-PROTOCOL` added
+    - Macro `SNMPTIMEOUT` added
+    - Macro `SNMPUSERNAME` added
+    - Macro `CRITICAL-USAGE` added
+    - Macro `WARNING-USAGE` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+- Command `network-huawei-standard-snmp-uptime`
+    - Renamed from `network-huawei-snmp-uptime`
+    - Option `--plugin` changed from `--plugin=network::huawei::snmp::plugin` to `--plugin=network::huawei::standard::snmp::plugin`
+    - Option `--unit=$_SERVICEUNIT$` added
+    - Macro `UNIT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240613 - 20240809</summary>
+
+- Service template `network-huawei-snmp-interfaces`
+    - Macro `OID-EXTRA-DISPLAY` added (default `ifAlias`)
+- Command `network-huawei-snmp-interfaces`
+    - Option `--oid-extra-display=$_SERVICEOID-EXTRA-DISPLAY$` added
+    - Macro `OID-EXTRA-DISPLAY` added
+
+</details>

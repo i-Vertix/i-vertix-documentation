@@ -1,0 +1,330 @@
+---
+title: "IBM AIX SSH"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/AIX.png";
+
+<PluginPackHeader name="IBM AIX SSH" image={image} category="Operating System" metadata={["SSH"]} />
+
+## Description
+
+Monitors IBM AIX servers over SSH: disk space and inode usage, logical volume synchronization, processes, the error report (errpt) and the result of custom commands.
+
+The plugin pack provides these checks:
+
+* [Command Return](#os-aix-local-cmd-return)
+* [Errpt](#os-aix-local-errpt)
+* [Inodes](#os-aix-local-inodes)
+* [Logical Volume Sync](#os-aix-local-lvsync)
+* [Process](#os-aix-local-process)
+* [Storage](#os-aix-local-storage)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Inodes](#os-aix-local-inodes) | `Inodes - <name>` |
+| [Storage](#os-aix-local-storage) | `Storage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### IBM-AIX-ssh
+
+*IBM AIX operating system* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSHCLI-OPTION` | `-o=StrictHostKeyChecking=no` | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+| `SSH-PASSWORD` | *(password)* | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSHCLI-OPTION2` | `-o=LogLevel=ERROR` | hides the SSH banner |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Errpt](#os-aix-local-errpt) | `os-aix-local-errpt` |
+| [Inodes](#os-aix-local-inodes) | `os-aix-local-inodes` |
+| [Logical Volume Sync](#os-aix-local-lvsync) | `os-aix-local-lvsync` |
+| [Storage](#os-aix-local-storage) | `os-aix-local-storage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Command Return](#os-aix-local-cmd-return) | `os-aix-local-cmd-return` |
+| [Process](#os-aix-local-process) | `os-aix-local-process` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Errpt {/* #os-aix-local-errpt */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-RESOURCE` | `.*` | Filter resource (can use a regexp) |
+| `FILTER-ID` | `.*` | Filter error code (can use a regexp) |
+| `RETENTION` | `86400` | Retention time of errors in seconds |
+| `EXCLUDE-ID` |  | Filter on specific error code (can be a comma separated list) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Inodes {/* #os-aix-local-inodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-FS` | `.*` | Filter filesystem (regexp can be used) |
+| `FILTER-MOUNT` | `.*` | Filter mountpoint (regexp can be used) |
+| `WARNING-USAGE` | `85` | Threshold warning in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.inodes.usage.percentage` | `%` | used:  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Logical Volume Sync {/* #os-aix-local-lvsync */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-TYPE` | `.*` | Filter filesystem type (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{state} =~ /stale/i'` | Set critical threshold for status (Default: '%\{state\} =~ /stale/i'). Can used special variables like: %\{state\}, %\{lv\}, %\{mount\}, %\{type\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\}, %\{lv\}, %\{mount\}, %\{type\} |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\}, %\{lv\}, %\{mount\}, %\{type\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #os-aix-local-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-FS` | `.*` | Filter filesystem (regexp can be used) |
+| `FILTER-MOUNT` | `.*` | Filter mountpoint (regexp can be used) |
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `storageresource.space.usage.percentage` | `%` | used:  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Command Return {/* #os-aix-local-cmd-return */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MANAGE-RETURNS` |  | Set action according command exit code. Example: %(code) == 0,OK,File xxx exist#%(code) == 1,CRITICAL,File xxx not exist#,UNKNOWN,Command problem |
+| `SEPARATOR` |  | Set the separator used in --manage-returns (default : #) |
+| `EXEC-COMMAND` |  | Command to test (Default: none). You can use 'sh' to use '&&' or '\|\|' |
+| `EXEC-COMMAND-PATH` |  | Command path (Default: none) |
+| `EXEC-COMMAND-OPTIONS` |  | Command options (Default: none) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `command.exit.code.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process {/* #os-aix-local-process */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-TOTAL` | `1:` | Threshold critical total |
+| `FILTER-COMMAND` |  | Filter process commands (regexp can be used) |
+| `FILTER-ARG` |  | Filter process arguments (regexp can be used) |
+| `FILTER-PPID` |  | Filter process ppid (regexp can be used) |
+| `FILTER-STATE` |  | Filter process states (regexp can be used). You can use: 'Canceled', 'Nonexistent', 'Active', 'Swapped', 'Idle', 'Stopped', 'Running', 'Sleeping' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '') Can used special variables like: %\{ppid\}, %\{state\}, %\{elapsed\}, %\{cmd\}, %\{args\} |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{ppid\}, %\{state\}, %\{elapsed\}, %\{cmd\}, %\{args\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `processes.total.count` |  | Number of current processes | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Host template `IBM-AIX-ssh`
+    - Macro `SSHCLI-OPTION2` added (default `-o=LogLevel=ERROR`)
+- Command `os-aix-local-cmd-return`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-aix-local-errpt`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-aix-local-inodes`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-aix-local-lvsync`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-aix-local-process`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-aix-local-storage`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+
+</details>

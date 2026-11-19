@@ -1,0 +1,743 @@
+---
+title: "Aruba network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Aruba.png";
+
+<PluginPackHeader name="Aruba network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Aruba wireless controllers and access points through SNMP: controller and AP status, connections and users, SSID statistics, CPU, memory and storage usage, hardware status, interfaces and licenses.
+
+The plugin pack provides these checks:
+
+* [AP Connections](#network-aruba-standard-snmp-ap-connections)
+* [AP status](#network-aruba-standard-snmp-ap-status)
+* [AP Users](#network-aruba-standard-snmp-ap-users)
+* [Controller status](#network-aruba-standard-snmp-controller-status)
+* [CPU](#network-aruba-standard-snmp-cpu)
+* [Hardware status](#network-aruba-standard-snmp-hardware)
+* [Interfaces](#network-aruba-standard-snmp-interfaces)
+* [License](#network-aruba-standard-snmp-license)
+* [Memory](#network-aruba-standard-snmp-memory)
+* [SSID Statistics](#network-aruba-standard-snmp-ap-ssid-statistics)
+* [Storage](#network-aruba-standard-snmp-storage)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-aruba-standard-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Aruba-Switch
+
+*Aruba Switch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-aruba-standard-snmp-cpu) | `network-aruba-standard-snmp-cpu` |
+| [Hardware status](#network-aruba-standard-snmp-hardware) | `network-aruba-standard-snmp-hardware` |
+| [Memory](#network-aruba-standard-snmp-memory) | `network-aruba-standard-snmp-memory` |
+| [Storage](#network-aruba-standard-snmp-storage) | `network-aruba-standard-snmp-storage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP Connections](#network-aruba-standard-snmp-ap-connections) | `network-aruba-standard-snmp-ap-connections` |
+| [AP status](#network-aruba-standard-snmp-ap-status) | `network-aruba-standard-snmp-ap-status` |
+| [AP Users](#network-aruba-standard-snmp-ap-users) | `network-aruba-standard-snmp-ap-users` |
+| [Controller status](#network-aruba-standard-snmp-controller-status) | `network-aruba-standard-snmp-controller-status` |
+| [Interfaces](#network-aruba-standard-snmp-interfaces) | `network-aruba-standard-snmp-interfaces` |
+| [License](#network-aruba-standard-snmp-license) | `network-aruba-standard-snmp-license` |
+| [SSID Statistics](#network-aruba-standard-snmp-ap-ssid-statistics) | `network-aruba-standard-snmp-ap-ssid-statistics` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Aruba-WLC
+
+*Aruba Wireless LAN Controller* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP Connections](#network-aruba-standard-snmp-ap-connections) | `network-aruba-standard-snmp-ap-connections` |
+| [SSID Statistics](#network-aruba-standard-snmp-ap-ssid-statistics) | `network-aruba-standard-snmp-ap-ssid-statistics` |
+| [AP status](#network-aruba-standard-snmp-ap-status) | `network-aruba-standard-snmp-ap-status` |
+| [AP Users](#network-aruba-standard-snmp-ap-users) | `network-aruba-standard-snmp-ap-users` |
+| [Controller status](#network-aruba-standard-snmp-controller-status) | `network-aruba-standard-snmp-controller-status` |
+| [CPU](#network-aruba-standard-snmp-cpu) | `network-aruba-standard-snmp-cpu` |
+| [Hardware status](#network-aruba-standard-snmp-hardware) | `network-aruba-standard-snmp-hardware` |
+| [License](#network-aruba-standard-snmp-license) | `network-aruba-standard-snmp-license` |
+| [Memory](#network-aruba-standard-snmp-memory) | `network-aruba-standard-snmp-memory` |
+| [Storage](#network-aruba-standard-snmp-storage) | `network-aruba-standard-snmp-storage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-aruba-standard-snmp-interfaces) | `network-aruba-standard-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-aruba-standard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UTILIZATION` | `85` | Threshold warning in percent |
+| `CRITICAL-UTILIZATION` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | Utilization %% | `WARNING-UTILIZATION`, `CRITICAL-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-aruba-standard-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'module' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,OK,inactive' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-aruba-standard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-aruba-standard-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage (%) |
+| `FILTER-NAME` |  | Filter storage device name (regexp can be used) |
+| `FILTER-TYPE` |  | Filter storage device type (regexp can be used). Can use: 'ram', 'flashMemory' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP Connections {/* #network-aruba-standard-snmp-ap-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--output-ignore-perfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-ESSID` |  | Filter by ESSID (regexp can be used) |
+| `FILTER-BSSID` |  | Filter by physical address (regexp can be used) |
+| `FILTER-TYPE` |  | Filter by ip address (regexp can be used) |
+| `WARNING-TOTAL` |  | Warning threshold Total conncetions |
+| `CRITICAL-TOTAL` |  | Critical threshold for Total access points connected |
+| `CRITICAL-SNR` |  | Critical threshold for Signal to noise ratio (dBm) |
+| `CRITICAL-TOTAL-TIME` |  | Critical threshold for Current total connection time :  s (s) |
+| `CRITICAL-INACTIVE-TIME` |  | Critical threshold for Current inactive time :  s (s) |
+| `CRITICAL-CHANNEL-NOISE` |  | Critical threshold for Channel noise |
+| `WARNING-SNR` |  | Warning threshold for Signal to noise ratio (dBm) |
+| `WARNING-TOTAL-TIME` |  | Warning threshold for Current total connection time :  s (s) |
+| `WARNING-INACTIVE-TIME` |  | Warning threshold for Current inactive time :  s (s) |
+| `WARNING-CHANNEL-NOISE` |  | Warning threshold for Channel noise |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoints.connected.current.count` |  | Total access points connected | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `accesspoint.time.connection.current.seconds` | `s` | Current total connection time :  s | `WARNING-TOTAL-TIME`, `CRITICAL-TOTAL-TIME` |
+| `accesspoint.time.inactive.current.seconds` | `s` | Current inactive time :  s | `WARNING-INACTIVE-TIME`, `CRITICAL-INACTIVE-TIME` |
+| `accesspoint.channel.noise.count` |  | Channel noise | `WARNING-CHANNEL-NOISE`, `CRITICAL-CHANNEL-NOISE` |
+| `accesspoint.signal.noise.ratio.dbm` | `dBm` | Signal to noise ratio | `WARNING-SNR`, `CRITICAL-SNR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSID Statistics {/* #network-aruba-standard-snmp-ap-ssid-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SIGNAL-NOISE-RATIO` | `20:` | Warning threshold SNR |
+| `CRITICAL-SIGNAL-NOISE-RATIO` | `10:` | Critical threshold SNR |
+| `FILTER-AP` |  | Filter by AP (regexp can be used) |
+| `FILTER-ESSID` |  | Filter by ESSID (regexp can be used) |
+| `FILTER-BSSID` |  | Filter by BSSID (regexp can be used) |
+| `FILTER-PROTOCOL` |  | Filter by Protocol (regexp can be used) |
+| `WARNING-STATIONS-ASSOCIATED` |  | Warning threshold stations associated |
+| `WARNING-CHANNEL-NOISE` |  | Warning threshold Channel noise |
+| `CRITICAL-STATIONS-ASSOCIATED` |  | Critical threshold stations associated |
+| `CRITICAL-CHANNEL-NOISE` |  | Critical threshold Channel noise |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `stations.associated.count` |  | Stations Associated | `WARNING-STATIONS-ASSOCIATED`, `CRITICAL-STATIONS-ASSOCIATED` |
+| `essid.stations.associated.count` |  | Associated Stations |  |
+| `bssid.stations.associated.count` |  | Associated Stations |  |
+| `bssid.channel.noise.count` |  | Channel Noise | `WARNING-CHANNEL-NOISE`, `CRITICAL-CHANNEL-NOISE` |
+| `bssid.signal.noise.ratio.count` |  | Signal To Noise Ratio | `WARNING-SIGNAL-NOISE-RATIO`, `CRITICAL-SIGNAL-NOISE-RATIO` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP status {/* #network-aruba-standard-snmp-ap-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning uptime |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical uptime |
+| `FILTER-IP` |  | Filter IP (regexp can be used) |
+| `FILTER-NAME` |  | Filter Name (regexp can be used) |
+| `FILTER-GROUP` |  | Filter Group  (regexp can be used) |
+| `WARNING-CONNECTED-CURRENT` |  | Threshold warning connected current (global) |
+| `WARNING-CONTROLLER-BOOTSTRAP` |  | Threshold warning controller bootstrap |
+| `WARNING-REBOOT` |  | Threshold warning reboot |
+| `WARNING-STATUS` |  | Threshold warning status (per AP) |
+| `CRITICAL-CONNECTED-CURRENT` |  | Threshold critical connected current (global) |
+| `CRITICAL-CONTROLLER-BOOTSTRAP` |  | Threshold critical controller bootstrap |
+| `CRITICAL-REBOOT` |  | Threshold critical reboot |
+| `CRITICAL-STATUS` |  | Threshold critical status (per AP) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoints.connected.current.count` |  | Total connected AP | `WARNING-CONNECTED-CURRENT`, `CRITICAL-CONNECTED-CURRENT` |
+| `accesspoint.uptime.seconds` | `s` | Uptime: s | `WARNING-UPTIME`, `CRITICAL-UPTIME` |
+| `accesspoint.controller.bootstrap.count` |  | Controller Bootstrap Count | `WARNING-CONTROLLER-BOOTSTRAP`, `CRITICAL-CONTROLLER-BOOTSTRAP` |
+| `accesspoint.reboot.count` |  | Reboot Count | `WARNING-REBOOT`, `CRITICAL-REBOOT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP Users {/* #network-aruba-standard-snmp-ap-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-ESSID` |  | Filter by ESSID (regexp can be used) |
+| `FILTER-BSSID` |  | Filter by BSSID (regexp can be used) |
+| `FILTER-IP-ADDRESS` |  | Filter by ip address (regexp can be used) |
+| `WARNING-TOTAL` |  | Warning threshold Total users |
+| `WARNING-TOTAL-NONE` |  | Warning threshold Total none users |
+| `WARNING-TOTAL-OTHER` |  | Warning threshold Total other users |
+| `WARNING-TOTAL-WEB` |  | Warning threshold Total web user |
+| `WARNING-TOTAL-DOT1X` |  | Warning threshold Total dot1x users |
+| `WARNING-TOTAL-VPN` |  | Warning threshold Total VPN users |
+| `WARNING-TOTAL-MAC` |  | Warning threshold Total MAC |
+| `WARNING-AVG-CONNECTION-TIME` |  | Warning threshold average connection time |
+| `WARNING-TOTAL-AP` |  | Warning threshold Total AP |
+| `WARNING-TOTAL-ESSID` |  | Warning threshold Total ESSID |
+| `CRITICAL-STATUS-TOTAL` |  | Critical threshold Total users |
+| `CRITICAL-STATUS-TOTAL-NONE` |  | Critical threshold Total none users |
+| `CRITICAL-STATUS-TOTAL-OTHER` |  | Critical threshold Total other users |
+| `CRITICAL-STATUS-TOTAL-WEB` |  | Critical threshold Total web user |
+| `CRITICAL-STATUS-TOTAL-DOT1X` |  | Critical threshold Total dot1x users |
+| `CRITICAL-STATUS-TOTAL-VPN` |  | Critical threshold Total VPN users |
+| `CRITICAL-STATUS-TOTAL-MAC` |  | Critical threshold Total MAC |
+| `CRITICAL-STATUS-AVG-CONNECTION-TIME` |  | Critical threshold average connection time |
+| `CRITICAL-STATUS-TOTAL-AP` |  | Critical threshold Total AP |
+| `CRITICAL-STATUS-TOTAL-ESSID` |  | Critical threshold Total ESSID |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total` | `users` | Total Users | `WARNING-TOTAL`, `CRITICAL-STATUS-TOTAL` |
+| `total_none` | `users` | Total Auth None | `WARNING-TOTAL-NONE`, `CRITICAL-STATUS-TOTAL-NONE` |
+| `total_other` | `users` | Total Auth Other | `WARNING-TOTAL-OTHER`, `CRITICAL-STATUS-TOTAL-OTHER` |
+| `total_web` | `users` | Total Auth Web | `WARNING-TOTAL-WEB`, `CRITICAL-STATUS-TOTAL-WEB` |
+| `total_dot1x` | `users` | Total Auth Dot1x | `WARNING-TOTAL-DOT1X`, `CRITICAL-STATUS-TOTAL-DOT1X` |
+| `total_vpn` | `users` | Total Auth Vpn | `WARNING-TOTAL-VPN`, `CRITICAL-STATUS-TOTAL-VPN` |
+| `total_mac` | `users` | Total Auth Mac | `WARNING-TOTAL-MAC`, `CRITICAL-STATUS-TOTAL-MAC` |
+| `avg_connection_time` | `s` | Users average connection time:  seconds | `WARNING-AVG-CONNECTION-TIME`, `CRITICAL-STATUS-AVG-CONNECTION-TIME` |
+| `essid` | `users` | users | `WARNING-TOTAL-ESSID`, `CRITICAL-STATUS-TOTAL-ESSID` |
+| `ap` | `users` | users | `WARNING-TOTAL-AP`, `CRITICAL-STATUS-TOTAL-AP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Controller status {/* #network-aruba-standard-snmp-controller-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{status} !~ /active/i` | Threshold warning status (per controller).  'status' can use special variables like: %\{name\}, %\{status\}, %\{ip\}, %\{role\}, %\{location\} (Default: '%\{status\} !~ /active/i') |
+| `FILTER-IP` |  | Filter IP (regexp can be used) |
+| `FILTER-NAME` |  | Filter Name (regexp can be used) |
+| `FILTER-LOCATION` |  | Filter Location (regexp can be used) |
+| `WARNING-CONNECTED-CURRENT` |  | Threshold warning connected current |
+| `WARNING-STATUS` |  | Threshold warning status (per controller). 'status' can use special variables like: %\{name\}, %\{status\}, %\{ip\}, %\{role\}, %\{location\} (Default: '%\{status\} !~ /active/i') |
+| `CRITICAL-CONNECTED-CURRENT` |  | Threshold warning connected current |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `controllers.connected.current.count` |  | Total controllers | `WARNING-CONNECTED-CURRENT`, `CRITICAL-CONNECTED-CURRENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### License {/* #network-aruba-standard-snmp-license */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{flag} !~ /enabled/i \|\| (%{expires} ne "Never" && %{expires} < 86400)` | Threshold critical. Can use special variables like: %\{key\}, %\{service\}, %\{flag\}, %\{expires\} (Default: '%\{flag\} !~ /enabled/i \|\| (%\{expires\} ne "Never" && %\{expires\} &lt; 86400)') |
+| `WARNING-STATUS` |  | Threshold warning. Can use special variables like:%\{key\}, %\{service\}, %\{flag\}, %\{expires\} (Default: '') |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-aruba-standard-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260400 - 20260520</summary>
+
+- Service template [`network-aruba-standard-snmp-ap-connections`](#network-aruba-standard-snmp-ap-connections)
+    - Macro `EXTRA-OPTS` added (default `--output-ignore-perfdata`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `Aruba network devices`
+    - Description updated
+- Service template [`network-aruba-standard-snmp-ap-connections`](#network-aruba-standard-snmp-ap-connections)
+    - Macro `WARNING-SNR` removed
+    - Macro `CRITICAL-SNR` removed
+- Service template [`network-aruba-standard-snmp-ap-ssid-statistics`](#network-aruba-standard-snmp-ap-ssid-statistics)
+    - Macro `WARNING-SIGNAL-NOISE-RATIO`: default changed from `15:` to `20:`
+- Service template [`network-aruba-standard-snmp-license`](#network-aruba-standard-snmp-license)
+    - Macro `WARNING-STATUS` removed
+- Command `network-aruba-standard-snmp-ap-connections`
+    - Option `--mode` changed from `--mode=ap-users` to `--mode=ap-connections`
+    - Option `--filter-type=$_SERVICEFILTER-TYPE$` added
+    - Option `--warning-total-time=$_SERVICEWARNING-TOTAL-TIME$` added
+    - Option `--warning-inactive-time=$_SERVICEWARNING-INACTIVE-TIME$` added
+    - Option `--warning-channel-noise=$_SERVICEWARNING-CHANNEL-NOISE$` added
+    - Option `--warning-snr=$_SERVICEWARNING-SNR$` added
+    - Option `--critical-total` changed from `--critical-total=$_SERVICECRITICAL-STATUS-TOTAL$` to `--critical-total=$_SERVICECRITICAL-TOTAL$`
+    - Option `--critical-total-time=$_SERVICECRITICAL-TOTAL-TIME$` added
+    - Option `--critical-inactive-time=$_SERVICECRITICAL-INACTIVE-TIME$` added
+    - Option `--critical-channel-noise=$_SERVICECRITICAL-CHANNEL-NOISE$` added
+    - Option `--critical-snr=$_SERVICECRITICAL-SNR$` added
+    - Option `--warning-total-none=$_SERVICEWARNING-TOTAL-NONE$` removed
+    - Option `--warning-total-other=$_SERVICEWARNING-TOTAL-OTHER$` removed
+    - Option `--warning-total-web=$_SERVICEWARNING-TOTAL-WEB$` removed
+    - Option `--warning-total-dot1x=$_SERVICEWARNING-TOTAL-DOT1X$` removed
+    - Option `--warning-total-vpn=$_SERVICEWARNING-TOTAL-VPN$` removed
+    - Option `--warning-total-mac=$_SERVICEWARNING-TOTAL-MAC$` removed
+    - Option `--warning-avg-connection-time=$_SERVICEWARNING-AVG-CONNECTION-TIME$` removed
+    - Option `--warning-total-ap=$_SERVICEWARNING-TOTAL-AP$` removed
+    - Option `--warning-total-essid=$_SERVICEWARNING-TOTAL-ESSID$` removed
+    - Option `--critical-total-none=$_SERVICECRITICAL-STATUS-TOTAL-NONE$` removed
+    - Option `--critical-total-other=$_SERVICECRITICAL-STATUS-TOTAL-OTHER$` removed
+    - Option `--critical-total-web=$_SERVICECRITICAL-STATUS-TOTAL-WEB$` removed
+    - Option `--critical-total-dot1x=$_SERVICECRITICAL-STATUS-TOTAL-DOT1X$` removed
+    - Option `--critical-total-vpn=$_SERVICECRITICAL-STATUS-TOTAL-VPN$` removed
+    - Option `--critical-total-mac=$_SERVICECRITICAL-STATUS-TOTAL-MAC$` removed
+    - Option `--critical-avg-connection-time=$_SERVICECRITICAL-STATUS-AVG-CONNECTION-TIME$` removed
+    - Option `--critical-total-ap=$_SERVICECRITICAL-STATUS-TOTAL-AP$` removed
+    - Option `--critical-total-essid=$_SERVICECRITICAL-STATUS-TOTAL-ESSID$` removed
+    - Macro `FILTER-TYPE` added
+    - Macro `CRITICAL-TOTAL` added
+    - Macro `CRITICAL-SNR` added
+    - Macro `CRITICAL-TOTAL-TIME` added
+    - Macro `CRITICAL-INACTIVE-TIME` added
+    - Macro `CRITICAL-CHANNEL-NOISE` added
+    - Macro `WARNING-SNR` added
+    - Macro `WARNING-TOTAL-TIME` added
+    - Macro `WARNING-INACTIVE-TIME` added
+    - Macro `WARNING-CHANNEL-NOISE` added
+    - Macro `FILTER-IP-ADDRESS` removed
+    - Macro `CRITICAL-STATUS-AVG-CONNECTION-TIME` removed
+    - Macro `CRITICAL-STATUS-TOTAL` removed
+    - Macro `CRITICAL-STATUS-TOTAL-AP` removed
+    - Macro `CRITICAL-STATUS-TOTAL-DOT1X` removed
+    - Macro `CRITICAL-STATUS-TOTAL-ESSID` removed
+    - Macro `CRITICAL-STATUS-TOTAL-MAC` removed
+    - Macro `CRITICAL-STATUS-TOTAL-NONE` removed
+    - Macro `CRITICAL-STATUS-TOTAL-OTHER` removed
+    - Macro `CRITICAL-STATUS-TOTAL-VPN` removed
+    - Macro `CRITICAL-STATUS-TOTAL-WEB` removed
+    - Macro `WARNING-AVG-CONNECTION-TIME` removed
+    - Macro `WARNING-TOTAL-AP` removed
+    - Macro `WARNING-TOTAL-DOT1X` removed
+    - Macro `WARNING-TOTAL-ESSID` removed
+    - Macro `WARNING-TOTAL-MAC` removed
+    - Macro `WARNING-TOTAL-NONE` removed
+    - Macro `WARNING-TOTAL-OTHER` removed
+    - Macro `WARNING-TOTAL-VPN` removed
+    - Macro `WARNING-TOTAL-WEB` removed
+
+</details>

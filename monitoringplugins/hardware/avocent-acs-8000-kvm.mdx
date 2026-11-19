@@ -1,0 +1,367 @@
+---
+title: "Avocent ACS 8000 KVM"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Avocent.png";
+
+<PluginPackHeader name="Avocent ACS 8000 KVM" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Avocent ACS 8000 console servers through SNMP: detailed CPU usage, system load, memory, hardware status and the serial ports.
+
+The plugin pack provides these checks:
+
+* [CPU detailed](#hardware-kvm-avocent-acs-8000-snmp-cpu-detailed)
+* [Hardware status](#hardware-kvm-avocent-acs-8000-snmp-hardware)
+* [Load](#hardware-kvm-avocent-acs-8000-snmp-load)
+* [Memory](#hardware-kvm-avocent-acs-8000-snmp-memory)
+* [Serial ports](#hardware-kvm-avocent-acs-8000-snmp-serial-ports)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+
+## Host Templates
+
+### Avocent-ACS8000
+
+*Avocent ACS8000* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU detailed](#hardware-kvm-avocent-acs-8000-snmp-cpu-detailed) | `hardware-kvm-avocent-acs-8000-snmp-cpu-detailed` |
+| [Hardware status](#hardware-kvm-avocent-acs-8000-snmp-hardware) | `hardware-kvm-avocent-acs-8000-snmp-hardware` |
+| [Load](#hardware-kvm-avocent-acs-8000-snmp-load) | `hardware-kvm-avocent-acs-8000-snmp-load` |
+| [Memory](#hardware-kvm-avocent-acs-8000-snmp-memory) | `hardware-kvm-avocent-acs-8000-snmp-memory` |
+| [Serial ports](#hardware-kvm-avocent-acs-8000-snmp-serial-ports) | `hardware-kvm-avocent-acs-8000-snmp-serial-ports` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #hardware-kvm-avocent-acs-8000-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #hardware-kvm-avocent-acs-8000-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'psu' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=psu) Can also exclude specific instance: --filter=psu,1 |
+| `ABSENT-PROBLEM` |  | Return an error if an entity is not 'present' (default is skipping) (comma seperated list) Can be specific or global: --absent-problem=psu |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(statePowerOn)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #hardware-kvm-avocent-acs-8000-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AVERAGE` | `2,2,2` | Load average for the number of CPUs *(not used by the check command)* |
+| `WARNING` |  | Threshold warning (1min,5min,15min) |
+| `CRITICAL` |  | Threshold critical (1min,5min,15min) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #hardware-kvm-avocent-acs-8000-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `WARNING-SWAP-PRCT` | `25` | Threshold warning swap (%) |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage (B) |
+| `CRITICAL-SWAP-PRCT` | `60` | Threshold critical swap (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-SWAP` |  | Threshold warning swap (B) |
+| `WARNING-SWAP-FREE` |  | Threshold warning swap free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-USAGE-PRCT` |  | Threshold critical usage (%) |
+| `CRITICAL-SWAP` |  | Threshold critical swap (B) |
+| `CRITICAL-SWAP-FREE` |  | Threshold critical swap free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  | `WARNING-SWAP`, `CRITICAL-SWAP` |
+| `swap.free.bytes` | `B` |  | `WARNING-SWAP-FREE`, `CRITICAL-SWAP-FREE` |
+| `swap.usage.percentage` | `%` | Swap Used :  %% | `WARNING-SWAP-PRCT`, `CRITICAL-SWAP-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Serial ports {/* #hardware-kvm-avocent-acs-8000-snmp-serial-ports */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter by serial device name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `serialport.traffic.in.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `serialport.traffic.out.bitspersecond` | `b/s` | traffic out: /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250901 - 20251118</summary>
+
+- Command `hardware-kvm-avocent-acs-8000-snmp-load`
+    - Option `--average=$_SERVICEAVERAGE$` removed
+    - Macro `AVERAGE` removed
+    - Macro `SNMPTIMEOUT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251014</summary>
+
+- Plugin pack `Avocent ACS 8000 KVM`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250901 - 20251014`.

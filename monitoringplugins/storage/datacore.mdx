@@ -1,0 +1,233 @@
+---
+title: "DataCore"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Datacore.png";
+
+<PluginPackHeader name="DataCore" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors DataCore storage through its API: alerts by severity, storage pool usage and over-subscription, and the overall status of the monitored components.
+
+The plugin pack provides these checks:
+
+* [Alerts](#storage-datacore-restapi-alerts)
+* [Pool usage](#storage-datacore-restapi-pool-usage)
+* [Status monitor](#storage-datacore-restapi-status-monitor)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Pool usage](#storage-datacore-restapi-pool-usage) | `Pool usage - <Id>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### DataCore
+
+*DataCore* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port of the resource to connect to (default: 443). |
+| `PROTO` | `https` | HTTP protocol, either http or https (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PASSWORD` | *(password)* | Password to access the endpoint. |
+| `USERNAME` |  | Username to access the endpoint. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#storage-datacore-restapi-alerts) | `storage-datacore-restapi-alerts` |
+| [Status monitor](#storage-datacore-restapi-status-monitor) | `storage-datacore-restapi-status-monitor` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Pool usage](#storage-datacore-restapi-pool-usage) | `storage-datacore-restapi-pool-usage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #storage-datacore-restapi-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-WARNING` | `0` | Warning threshold for warning alerts |
+| `CRITICAL-ERROR` | `0` | Critical threshold for error alerts |
+| `MAX-ALERT-AGE` |  | Filter alerts to check those newer than this parameter (s) |
+| `FILTER-SERVER` |  | Define which devices should be monitored based on the MachineName. This option will be treated as a regular expression. By default all machine will be checked |
+| `WARNING-TRACE` |  | Warning threshold for trace alerts |
+| `WARNING-INFO` |  | Warning threshold for info alerts |
+| `WARNING-ERROR` |  | Warning threshold for error alerts |
+| `CRITICAL-TRACE` |  | Critical threshold for trace alerts |
+| `CRITICAL-INFO` |  | Critical threshold for info alerts |
+| `CRITICAL-WARNING` |  | Critical threshold for warning alerts |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `datacore.event.error.count` |  | number of error alerts | `WARNING-ERROR`, `CRITICAL-ERROR` |
+| `datacore.alerts.warning.count` |  | number of warning alerts | `WARNING-WARNING`, `CRITICAL-WARNING` |
+| `datacore.alerts.info.count` |  | number of info alerts | `WARNING-INFO`, `CRITICAL-INFO` |
+| `datacore.alerts.trace.count` |  | number of trace alerts | `WARNING-TRACE`, `CRITICAL-TRACE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Status monitor {/* #storage-datacore-restapi-status-monitor */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATE` | `'%{state} =~ /Warning/i'` | Define which output from the api should be considered warning: warning_default = '%\{state\} =~ /Warning/i'. possible value for state : Undefined, Healthy, Attention, Warning, Critical |
+| `CRITICAL-STATE` | `'%{state} =~ /Critical/i'` | Define which output from the api should be considered critical: warning_default = '%\{state\} =~ /Critical/i'. possible value for state : Undefined, Healthy, Attention, Warning, Critical |
+| `FILTER-CAPTION` |  | Define which element should be monitored based on the extended caption. This option will be treated as a regular expression. By default all elements will be checked |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pool usage {/* #storage-datacore-restapi-pool-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BYTES-ALLOCATED-PERC` | `90` | Warning threshold on the percentage of bytes allocated in the pool (%) |
+| `CRITICAL-BYTES-ALLOCATED-PERC` | `95` | Critical threshold on the percentage of bytes allocated in the pool (%) |
+| `POOL-ID` |  | Id of the pool to check. See list-pool autodiscovery mode to list pools id (required) |
+| `WARNING-OVER-SUBSCRIBED` |  | Warning threshold on the number of Bytes suscribed over the real space of the pool |
+| `CRITICAL-OVER-SUBSCRIBED` |  | Critical threshold on the number of Bytes suscribed over the real space of the pool |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `datacore.pool.bytesallocated.percentage` | `%` | Bytes Allocated :  %% | `WARNING-BYTES-ALLOCATED-PERC`, `CRITICAL-BYTES-ALLOCATED-PERC` |
+| `datacore.pool.oversubscribed.bytes` | `bytes` | Over subscribed bytes | `WARNING-OVER-SUBSCRIBED`, `CRITICAL-OVER-SUBSCRIBED` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240613 - 20240809</summary>
+
+- Command `storage-datacore-restapi-pool-usage`
+    - Option `--pool-id` changed from `--pool-id=$_SERVICEPOOL-ID$` to `--pool-id='$_SERVICEPOOL-ID$'`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240327</summary>
+
+- Plugin pack `DataCore`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240311 - 20240327`.

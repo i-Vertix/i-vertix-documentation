@@ -1,0 +1,1121 @@
+---
+title: "Office 365"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Office365.png";
+
+<PluginPackHeader name="Office 365" image={image} category="Cloud" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Microsoft Office 365 through the Microsoft Graph API: Exchange mail activity and mailbox usage, OneDrive, SharePoint and Teams usage and activity, Azure AD directory size and management service status.
+
+The plugin pack provides these checks:
+
+* [Azure AD - Directory size usage](#cloud-microsoft-office365-azuread-directory-size-usage)
+* [O365 Exchange eMail activity](#cloud-microsoft-office365-exchange-email-activity)
+* [O365 Exchange Mailbox usage](#cloud-microsoft-office365-exchange-mailbox-usage)
+* [O365 Management Application credentials](#cloud-microsoft-office365-management-app-credentials)
+* [O365 Management Service status](#cloud-microsoft-office365-management-service-status)
+* [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions)
+* [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage)
+* [O365 Onedrive Users activity](#cloud-microsoft-office365-onedrive-users-activity)
+* [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage)
+* [O365 Sharepoint User activity](#cloud-microsoft-office365-sharepoint-user-activity)
+* [O365 Teams Device usage](#cloud-microsoft-office365-teams-device-usage)
+* [O365 Teams User activities](#cloud-microsoft-office365-teams-user-activities)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [O365 Management Service status](#cloud-microsoft-office365-management-service-status) | `O365 Service status - <service_name>` |
+| [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions) | `O365 Management subscription - <skuPartNumber>` |
+| [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage) | `O365 Onedrive Site usage - <owner>` |
+| [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage) | `O365 Sharepoint Site usage - <url>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Azure-AD
+
+*Azure AD* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `O365-TENANT-ID` |  | Set Office 365 tenant ID. |
+| `O365-CLIENT-ID` |  | Set Office 365 client ID. |
+| `O365-CLIENT-SECRET` |  | Set Office 365 client secret. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Azure AD - Directory size usage](#cloud-microsoft-office365-azuread-directory-size-usage) | `cloud-microsoft-office365-azuread-directory-size-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [O365 Exchange eMail activity](#cloud-microsoft-office365-exchange-email-activity) | `cloud-microsoft-office365-exchange-email-activity` |
+| [O365 Exchange Mailbox usage](#cloud-microsoft-office365-exchange-mailbox-usage) | `cloud-microsoft-office365-exchange-mailbox-usage` |
+| [O365 Management Application credentials](#cloud-microsoft-office365-management-app-credentials) | `cloud-microsoft-office365-management-app-credentials` |
+| [O365 Management Service status](#cloud-microsoft-office365-management-service-status) | `cloud-microsoft-office365-management-service-status` |
+| [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions) | `cloud-microsoft-office365-management-subscriptions` |
+| [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage) | `cloud-microsoft-office365-onedrive-site-usage` |
+| [O365 Onedrive Users activity](#cloud-microsoft-office365-onedrive-users-activity) | `cloud-microsoft-office365-onedrive-users-activity` |
+| [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage) | `cloud-microsoft-office365-sharepoint-site-usage` |
+| [O365 Sharepoint User activity](#cloud-microsoft-office365-sharepoint-user-activity) | `cloud-microsoft-office365-sharepoint-user-activity` |
+| [O365 Teams Device usage](#cloud-microsoft-office365-teams-device-usage) | `cloud-microsoft-office365-teams-device-usage` |
+| [O365 Teams User activities](#cloud-microsoft-office365-teams-user-activities) | `cloud-microsoft-office365-teams-user-activities` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### O365-Exchange-Online
+
+*Office365 Exchange Online* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (2)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `O365-TENANT-ID` |  | Set Office 365 tenant ID. |
+| `O365-CLIENT-ID` |  | Set Office 365 client ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [O365 Exchange eMail activity](#cloud-microsoft-office365-exchange-email-activity) | `cloud-microsoft-office365-exchange-email-activity` |
+| [O365 Exchange Mailbox usage](#cloud-microsoft-office365-exchange-mailbox-usage) | `cloud-microsoft-office365-exchange-mailbox-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Azure AD - Directory size usage](#cloud-microsoft-office365-azuread-directory-size-usage) | `cloud-microsoft-office365-azuread-directory-size-usage` |
+| [O365 Management Application credentials](#cloud-microsoft-office365-management-app-credentials) | `cloud-microsoft-office365-management-app-credentials` |
+| [O365 Management Service status](#cloud-microsoft-office365-management-service-status) | `cloud-microsoft-office365-management-service-status` |
+| [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions) | `cloud-microsoft-office365-management-subscriptions` |
+| [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage) | `cloud-microsoft-office365-onedrive-site-usage` |
+| [O365 Onedrive Users activity](#cloud-microsoft-office365-onedrive-users-activity) | `cloud-microsoft-office365-onedrive-users-activity` |
+| [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage) | `cloud-microsoft-office365-sharepoint-site-usage` |
+| [O365 Sharepoint User activity](#cloud-microsoft-office365-sharepoint-user-activity) | `cloud-microsoft-office365-sharepoint-user-activity` |
+| [O365 Teams Device usage](#cloud-microsoft-office365-teams-device-usage) | `cloud-microsoft-office365-teams-device-usage` |
+| [O365 Teams User activities](#cloud-microsoft-office365-teams-user-activities) | `cloud-microsoft-office365-teams-user-activities` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### O365-Onedrive
+
+*Onedrive* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (2)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `O365-TENANT-ID` |  | Set Office 365 tenant ID. |
+| `O365-CLIENT-ID` |  | Set Office 365 client ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage) | `cloud-microsoft-office365-onedrive-site-usage` |
+| [O365 Onedrive Users activity](#cloud-microsoft-office365-onedrive-users-activity) | `cloud-microsoft-office365-onedrive-users-activity` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Azure AD - Directory size usage](#cloud-microsoft-office365-azuread-directory-size-usage) | `cloud-microsoft-office365-azuread-directory-size-usage` |
+| [O365 Exchange eMail activity](#cloud-microsoft-office365-exchange-email-activity) | `cloud-microsoft-office365-exchange-email-activity` |
+| [O365 Exchange Mailbox usage](#cloud-microsoft-office365-exchange-mailbox-usage) | `cloud-microsoft-office365-exchange-mailbox-usage` |
+| [O365 Management Application credentials](#cloud-microsoft-office365-management-app-credentials) | `cloud-microsoft-office365-management-app-credentials` |
+| [O365 Management Service status](#cloud-microsoft-office365-management-service-status) | `cloud-microsoft-office365-management-service-status` |
+| [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions) | `cloud-microsoft-office365-management-subscriptions` |
+| [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage) | `cloud-microsoft-office365-sharepoint-site-usage` |
+| [O365 Sharepoint User activity](#cloud-microsoft-office365-sharepoint-user-activity) | `cloud-microsoft-office365-sharepoint-user-activity` |
+| [O365 Teams Device usage](#cloud-microsoft-office365-teams-device-usage) | `cloud-microsoft-office365-teams-device-usage` |
+| [O365 Teams User activities](#cloud-microsoft-office365-teams-user-activities) | `cloud-microsoft-office365-teams-user-activities` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### O365-Services
+
+*Office365 Services* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `O365-TENANT-ID` |  | Set Office 365 tenant ID. |
+| `O365-CLIENT-ID` |  | Set Office 365 client ID. |
+| `O365-CLIENT-SECRET` |  | Set Office 365 client secret. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [O365 Management Service status](#cloud-microsoft-office365-management-service-status) | `cloud-microsoft-office365-management-service-status` |
+| [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions) | `cloud-microsoft-office365-management-subscriptions` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Azure AD - Directory size usage](#cloud-microsoft-office365-azuread-directory-size-usage) | `cloud-microsoft-office365-azuread-directory-size-usage` |
+| [O365 Exchange eMail activity](#cloud-microsoft-office365-exchange-email-activity) | `cloud-microsoft-office365-exchange-email-activity` |
+| [O365 Exchange Mailbox usage](#cloud-microsoft-office365-exchange-mailbox-usage) | `cloud-microsoft-office365-exchange-mailbox-usage` |
+| [O365 Management Application credentials](#cloud-microsoft-office365-management-app-credentials) | `cloud-microsoft-office365-management-app-credentials` |
+| [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage) | `cloud-microsoft-office365-onedrive-site-usage` |
+| [O365 Onedrive Users activity](#cloud-microsoft-office365-onedrive-users-activity) | `cloud-microsoft-office365-onedrive-users-activity` |
+| [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage) | `cloud-microsoft-office365-sharepoint-site-usage` |
+| [O365 Sharepoint User activity](#cloud-microsoft-office365-sharepoint-user-activity) | `cloud-microsoft-office365-sharepoint-user-activity` |
+| [O365 Teams Device usage](#cloud-microsoft-office365-teams-device-usage) | `cloud-microsoft-office365-teams-device-usage` |
+| [O365 Teams User activities](#cloud-microsoft-office365-teams-user-activities) | `cloud-microsoft-office365-teams-user-activities` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### O365-Sharepoint
+
+*Office365 Sharepoint* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (2)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `O365-TENANT-ID` |  | Set Office 365 tenant ID. |
+| `O365-CLIENT-ID` |  | Set Office 365 client ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage) | `cloud-microsoft-office365-sharepoint-site-usage` |
+| [O365 Sharepoint User activity](#cloud-microsoft-office365-sharepoint-user-activity) | `cloud-microsoft-office365-sharepoint-user-activity` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Azure AD - Directory size usage](#cloud-microsoft-office365-azuread-directory-size-usage) | `cloud-microsoft-office365-azuread-directory-size-usage` |
+| [O365 Exchange eMail activity](#cloud-microsoft-office365-exchange-email-activity) | `cloud-microsoft-office365-exchange-email-activity` |
+| [O365 Exchange Mailbox usage](#cloud-microsoft-office365-exchange-mailbox-usage) | `cloud-microsoft-office365-exchange-mailbox-usage` |
+| [O365 Management Application credentials](#cloud-microsoft-office365-management-app-credentials) | `cloud-microsoft-office365-management-app-credentials` |
+| [O365 Management Service status](#cloud-microsoft-office365-management-service-status) | `cloud-microsoft-office365-management-service-status` |
+| [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions) | `cloud-microsoft-office365-management-subscriptions` |
+| [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage) | `cloud-microsoft-office365-onedrive-site-usage` |
+| [O365 Onedrive Users activity](#cloud-microsoft-office365-onedrive-users-activity) | `cloud-microsoft-office365-onedrive-users-activity` |
+| [O365 Teams Device usage](#cloud-microsoft-office365-teams-device-usage) | `cloud-microsoft-office365-teams-device-usage` |
+| [O365 Teams User activities](#cloud-microsoft-office365-teams-user-activities) | `cloud-microsoft-office365-teams-user-activities` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### O365-Teams
+
+*Teams* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (2)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `O365-TENANT-ID` |  | Set Office 365 tenant ID. |
+| `O365-CLIENT-ID` |  | Set Office 365 client ID. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [O365 Teams Device usage](#cloud-microsoft-office365-teams-device-usage) | `cloud-microsoft-office365-teams-device-usage` |
+| [O365 Teams User activities](#cloud-microsoft-office365-teams-user-activities) | `cloud-microsoft-office365-teams-user-activities` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Azure AD - Directory size usage](#cloud-microsoft-office365-azuread-directory-size-usage) | `cloud-microsoft-office365-azuread-directory-size-usage` |
+| [O365 Exchange eMail activity](#cloud-microsoft-office365-exchange-email-activity) | `cloud-microsoft-office365-exchange-email-activity` |
+| [O365 Exchange Mailbox usage](#cloud-microsoft-office365-exchange-mailbox-usage) | `cloud-microsoft-office365-exchange-mailbox-usage` |
+| [O365 Management Application credentials](#cloud-microsoft-office365-management-app-credentials) | `cloud-microsoft-office365-management-app-credentials` |
+| [O365 Management Service status](#cloud-microsoft-office365-management-service-status) | `cloud-microsoft-office365-management-service-status` |
+| [O365 Management subscriptions](#cloud-microsoft-office365-management-subscriptions) | `cloud-microsoft-office365-management-subscriptions` |
+| [O365 Onedrive Site usage](#cloud-microsoft-office365-onedrive-site-usage) | `cloud-microsoft-office365-onedrive-site-usage` |
+| [O365 Onedrive Users activity](#cloud-microsoft-office365-onedrive-users-activity) | `cloud-microsoft-office365-onedrive-users-activity` |
+| [O365 Sharepoint Site usage](#cloud-microsoft-office365-sharepoint-site-usage) | `cloud-microsoft-office365-sharepoint-site-usage` |
+| [O365 Sharepoint User activity](#cloud-microsoft-office365-sharepoint-user-activity) | `cloud-microsoft-office365-sharepoint-user-activity` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Azure AD - Directory size usage {/* #cloud-microsoft-office365-azuread-directory-size-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `WARNING-USAGE` | `90` | Threshold warning |
+| `CRITICAL-USAGE` | `95` | Threshold critical |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `azure.ad.directory.usage.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Exchange eMail activity {/* #cloud-microsoft-office365-exchange-email-activity */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-USER` |  | Filter users |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example to hide per user counters: --filter-counters='active\|total' (Default: 'active\|total') |
+| `WARNING-ACTIVE-USERS` |  | Threshold warning active users |
+| `WARNING-TOTAL-SEND-COUNT` |  | Threshold warning Total Send Count (count) |
+| `WARNING-TOTAL-RECEIVE-COUNT` |  | Threshold warning Total Receive Count (count) |
+| `WARNING-TOTAL-READ-COUNT` |  | Threshold warning Total Read Count (count) |
+| `WARNING-SEND-COUNT` |  | Threshold warning Send Count (count) |
+| `WARNING-RECEIVE-COUNT` |  | Threshold warning Receive Count (count) |
+| `WARNING-READ-COUNT` |  | Threshold warning Read Count (count) |
+| `CRITICAL-ACTIVE-USERS` |  | Threshold critical active users |
+| `CRITICAL-TOTAL-SEND-COUNT` |  | Threshold critical Total Send Count (count) |
+| `CRITICAL-TOTAL-RECEIVE-COUNT` |  | Threshold critical Total Receive Count (count) |
+| `CRITICAL-TOTAL-READ-COUNT` |  | Threshold critical Total Read Count (count) |
+| `CRITICAL-SEND-COUNT` |  | Threshold critical Send Count (count) |
+| `CRITICAL-RECEIVE-COUNT` |  | Threshold critical Receive Count (count) |
+| `CRITICAL-READ-COUNT` |  | Threshold critical Read Count (count) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `exchange.users.emails.sent.total.count` |  | Send Count | `WARNING-TOTAL-SEND-COUNT`, `CRITICAL-TOTAL-SEND-COUNT` |
+| `exchange.users.emails.received.total.count` |  | Receive Count | `WARNING-TOTAL-RECEIVE-COUNT`, `CRITICAL-TOTAL-RECEIVE-COUNT` |
+| `exchange.users.emails.read.total.count` |  | Read Count | `WARNING-TOTAL-READ-COUNT`, `CRITICAL-TOTAL-READ-COUNT` |
+| `exchange.users.emails.sent.count` |  | Send Count | `WARNING-SEND-COUNT`, `CRITICAL-SEND-COUNT` |
+| `exchange.users.emails.received.count` |  | Receive Count | `WARNING-RECEIVE-COUNT`, `CRITICAL-RECEIVE-COUNT` |
+| `exchange.users.emails.read.count` |  | Read Count | `WARNING-READ-COUNT`, `CRITICAL-READ-COUNT` |
+| `exchange.users.active.count` | `users` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Exchange Mailbox usage {/* #cloud-microsoft-office365-exchange-mailbox-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `CRITICAL-STATUS` | `'%{used} > %{prohibit_send_quota}'` | Set critical threshold for status (Default: '%\{used\} > %\{prohibit_send_quota\}'). Can used special variables like:%\{used\}, %\{issue_warning_quota\}, %\{prohibit_send_quota\}, %\{prohibit_send_receive_quota\} |
+| `WARNING-STATUS` | `'%{used} > %{issue_warning_quota}'` | Set warning threshold for status (Default: '%\{used\} > %\{issue_warning_quota\}'). Can used special variables like: %\{used\}, %\{issue_warning_quota\}, %\{prohibit_send_quota\}, %\{prohibit_send_receive_quota\} |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-MAILBOX` |  | Filter mailboxes |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example to hide per user counters: --filter-counters='active\|total' (Default: 'active\|total') |
+| `WARNING-ACTIVE-MAILBOXES` |  | Threshold warning Active Mailboxes |
+| `WARNING-TOTAL-USAGE-ACTIVE` |  | Threshold warning Total Usage Active (count) |
+| `WARNING-TOTAL-USAGE-INACTIVE` |  | Threshold warning Total Usage Inactive (count) |
+| `CRITICAL-ACTIVE-MAILBOXES` |  | Threshold critical Active Mailboxes |
+| `CRITICAL-TOTAL-USAGE-ACTIVE` |  | Threshold critical Total Usage Active (count) |
+| `CRITICAL-TOTAL-USAGE-INACTIVE` |  | Threshold critical Total Usage Inactive (count) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `exchange.mailboxes.active.usage.total.bytes` | `B` | Usage (active mailboxes) | `WARNING-TOTAL-USAGE-ACTIVE`, `CRITICAL-TOTAL-USAGE-ACTIVE` |
+| `exchange.mailboxes.inactive.usage.total.bytes` | `B` | Usage (inactive mailboxes) | `WARNING-TOTAL-USAGE-INACTIVE`, `CRITICAL-TOTAL-USAGE-INACTIVE` |
+| `exchange.mailboxes.items.count` |  | Items |  |
+| `exchange.mailboxes.active.count` | `mailboxes` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Onedrive Site usage {/* #cloud-microsoft-office365-onedrive-site-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `WARNING-ACTIVE-SITES` | `90` | Threshold warning Active Sites |
+| `CRITICAL-ACTIVE-SITES` | `95` | Threshold critical Active Sites |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-URL` |  | Filter sites by URL (can be a regexp) |
+| `FILTER-OWNER` |  | Filter sites by Owner (can be a regexp) |
+| `WARNING-TOTAL-USAGE-ACTIVE` |  | Threshold warning Total Usage Active (count) |
+| `WARNING-TOTAL-USAGE-INACTIVE` |  | Threshold warning Total Usage Inactive (count) |
+| `WARNING-TOTAL-FILE-COUNT-ACTIVE` |  | Threshold warning Total File Count Active (count) |
+| `WARNING-TOTAL-FILE-COUNT-INACTIVE` |  | Threshold warning Total File Count Inactive (count) |
+| `WARNING-TOTAL-ACTIVE-FILE-COUNT` |  | Threshold warning Total Active File Count (count) |
+| `WARNING-USAGE` |  | Threshold warning Usage (count) |
+| `WARNING-FILE-COUNT` |  | Threshold warning File Count (count) |
+| `WARNING-ACTIVE-FILE-COUNT` |  | Threshold warning Active File Count (count) |
+| `CRITICAL-TOTAL-USAGE-ACTIVE` |  | Threshold critical Total Usage Active (count) |
+| `CRITICAL-TOTAL-USAGE-INACTIVE` |  | Threshold critical Total Usage Inactive (count) |
+| `CRITICAL-TOTAL-FILE-COUNT-ACTIVE` |  | Threshold critical Total File Count Active (count) |
+| `CRITICAL-TOTAL-FILE-COUNT-INACTIVE` |  | Threshold critical Total File Count Inactive (count) |
+| `CRITICAL-TOTAL-ACTIVE-FILE-COUNT` |  | Threshold critical Total Active File Count (count) |
+| `CRITICAL-USAGE` |  | Threshold critical Usage (count) |
+| `CRITICAL-FILE-COUNT` |  | Threshold critical File Count (count) |
+| `CRITICAL-ACTIVE-FILE-COUNT` |  | Threshold critical Active File Count (count) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example to hide per user counters: --filter-counters='active-sites\|total' (default: 'active-sites\|total') |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `onedrive.sites.active.usage.total.bytes` | `B` | Usage (active sites) | `WARNING-TOTAL-USAGE-ACTIVE`, `CRITICAL-TOTAL-USAGE-ACTIVE` |
+| `onedrive.sites.inactive.usage.total.bytes` | `B` | Usage (inactive sites) | `WARNING-TOTAL-USAGE-INACTIVE`, `CRITICAL-TOTAL-USAGE-INACTIVE` |
+| `onedrive.sites.active.files.total.count` |  | File Count (active sites) | `WARNING-TOTAL-FILE-COUNT-ACTIVE`, `CRITICAL-TOTAL-FILE-COUNT-ACTIVE` |
+| `onedrive.sites.inactive.files.total.count` |  | File Count (inactive sites) | `WARNING-TOTAL-FILE-COUNT-INACTIVE`, `CRITICAL-TOTAL-FILE-COUNT-INACTIVE` |
+| `onedrive.sites.files.active.total.count` |  | Active File Count (active sites) | `WARNING-TOTAL-ACTIVE-FILE-COUNT`, `CRITICAL-TOTAL-ACTIVE-FILE-COUNT` |
+| `onedrive.sites.files.count` |  | File Count | `WARNING-FILE-COUNT`, `CRITICAL-FILE-COUNT` |
+| `onedrive.sites.files.active.count` |  | Active File Count | `WARNING-ACTIVE-FILE-COUNT`, `CRITICAL-ACTIVE-FILE-COUNT` |
+| `onedrive.sites.active.count` | `sites` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Onedrive Users activity {/* #cloud-microsoft-office365-onedrive-users-activity */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-USER` |  | Filter users |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example to hide per user counters: --filter-counters='active\|total' (Default: 'active\|total') |
+| `WARNING-ACTIVE-USERS` |  | Warning threshold Active users |
+| `WARNING-TOTAL-VIEWED-EDITED-FILE` |  | Warning threshold Total viewed edited file (count) |
+| `WARNING-TOTAL-SYNCED-FILE` |  | Warning threshold Total synched file (count) |
+| `WARNING-TOTAL-SHARED-INT-FILE` |  | Warning threshold Total shared internal file (count) |
+| `WARNING-TOTAL-SHARED-EXT-FILE` |  | Warning threshold Total shared external file (count) |
+| `WARNING-VIEWED-EDITED-FILE` |  | Warning threshold viewed edited file (count) |
+| `WARNING-SYNCED-FILE` |  | Warning threshold synched file (count) |
+| `WARNING-SHARED-INT-FILE` |  | Warning threshold shared internal file (count) |
+| `WARNING-SHARED-EXT-FILE` |  | Warning threshold shared external file (count) |
+| `CRITICAL-ACTIVE-USERS` |  | Critical threshold Active users |
+| `CRITICAL-TOTAL-VIEWED-EDITED-FILE` |  | Critical threshold Total viewed edited file (count) |
+| `CRITICAL-TOTAL-SYNCED-FILE` |  | Critical threshold Total synched file (count) |
+| `CRITICAL-TOTAL-SHARED-INT-FILE` |  | Critical threshold Total shared internal file (count) |
+| `CRITICAL-TOTAL-SHARED-EXT-FILE` |  | Critical threshold Total shared external file (count) |
+| `CRITICAL-VIEWED-EDITED-FILE` |  | Critical threshold viewed edited file (count) |
+| `CRITICAL-SYNCED-FILE` |  | Critical threshold synched file (count) |
+| `CRITICAL-SHARED-INT-FILE` |  | Critical threshold shared internal file (count) |
+| `CRITICAL-SHARED-EXT-FILE` |  | Critical threshold shared external file (count) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `onedrive.users.files.viewed.total.count` |  | Viewed or Edited File Count | `WARNING-TOTAL-VIEWED-EDITED-FILE`, `CRITICAL-TOTAL-VIEWED-EDITED-FILE` |
+| `onedrive.users.files.synced.total.count` |  | Synced File Count | `WARNING-TOTAL-SYNCED-FILE`, `CRITICAL-TOTAL-SYNCED-FILE` |
+| `onedrive.users.files.shared.internally.total.count` |  | Shared Internally File Count | `WARNING-TOTAL-SHARED-INT-FILE`, `CRITICAL-TOTAL-SHARED-INT-FILE` |
+| `onedrive.users.files.shared.externally.total.count` |  | Shared Externally File Count | `WARNING-TOTAL-SHARED-EXT-FILE`, `CRITICAL-TOTAL-SHARED-EXT-FILE` |
+| `onedrive.users.files.viewed.count` |  | Viewed or Edited File Count | `WARNING-VIEWED-EDITED-FILE`, `CRITICAL-VIEWED-EDITED-FILE` |
+| `onedrive.users.files.synced.count` |  | Synced File Count | `WARNING-SYNCED-FILE`, `CRITICAL-SYNCED-FILE` |
+| `onedrive.users.files.shared.internally.count` |  | Shared Internally File Count | `WARNING-SHARED-INT-FILE`, `CRITICAL-SHARED-INT-FILE` |
+| `onedrive.users.files.shared.externally.count` |  | Shared Externally File Count | `WARNING-SHARED-EXT-FILE`, `CRITICAL-SHARED-EXT-FILE` |
+| `onedrive.users.active.count` | `users` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Management Service status {/* #cloud-microsoft-office365-management-service-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /serviceOperational\|serviceRestored/i'` | Set critical threshold for status (Default: '%\{status\} !~ /Normal\|Service Restored/i'). Can used special variables like: %\{service_name\}, %\{feature_name\}, %\{status\} |
+| `EXCLUDE-RESOLVED` | `1` | Exclude resolved issues from report (default: 1). Set to 0 to include resolved issues |
+| `INCLUDE-SERVICE-NAME` |  | Filter by service name (can be a regexp) |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{service_name\}, %\{status\}, %\{classification\}, %\{issue_title\}, %\{issue_startDateTime\}, %\{issue_id\}, %\{issue_status\}, %\{issue_resolved\} |
+| `EXCLUDE-CLASSIFICATION` |  | Exclude by classification (can be a regexp) |
+| `EXCLUDE-SERVICE-NAME` |  | Exclude by service name (can be a regexp) |
+| `INCLUDE-CLASSIFICATION` |  | Filter by classification (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Management subscriptions {/* #cloud-microsoft-office365-management-subscriptions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~ /warning/i'` | Set warning threshold for status (Default: '%\{status\} =~ /warning/i'). Can used special variables like: %\{capabilityStatus\}, %\{skuPartNumber\} |
+| `FILTER-SKU-PART-NUMBER` |  | Filter subscriptions by SKU part number (can be a regexp) |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{capabilityStatus\}, %\{skuPartNumber\} |
+| `WARNING-SUBSCRIPTION-USAGE` |  | Warning threshold subscription usage |
+| `WARNING-SUBSCRIPTION-USAGE-FREE` |  | Warning threshold subscription usage free |
+| `WARNING-SUBSCRIPTION-USAGE-PRCT` |  | Warning threshold subscription usage (%) |
+| `CRITICAL-SUBSCRIPTION-USAGE` |  | Critical threshold subscription usage |
+| `CRITICAL-SUBSCRIPTION-USAGE-FREE` |  | Critical threshold subscription usage free |
+| `CRITICAL-SUBSCRIPTION-USAGE-PRCT` |  | Critical threshold subscription usage (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `subscription.usage.count` |  |  | `WARNING-SUBSCRIPTION-USAGE`, `CRITICAL-SUBSCRIPTION-USAGE` |
+| `subscription.free.count` |  |  | `WARNING-SUBSCRIPTION-USAGE-FREE`, `CRITICAL-SUBSCRIPTION-USAGE-FREE` |
+| `subscription.usage.percentage` | `%` |  | `WARNING-SUBSCRIPTION-USAGE-PRCT`, `CRITICAL-SUBSCRIPTION-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Sharepoint Site usage {/* #cloud-microsoft-office365-sharepoint-site-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `WARNING-ACTIVE-SITES` | `90` | Threshold warning Active Sites |
+| `CRITICAL-ACTIVE-SITES` | `95` | Threshold critical Active Sites |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-URL` |  | Filter sites by URL (can be a regexp) |
+| `FILTER-ID` |  | Filter sites by ID (can be a regexp) |
+| `WARNING-TOTAL-USAGE-ACTIVE` |  | Threshold warning Total Usage Active (count) |
+| `WARNING-TOTAL-USAGE-INACTIVE` |  | Threshold warning Total Usage Inactive (count) |
+| `WARNING-TOTAL-FILE-COUNT-ACTIVE` |  | Threshold warning Total File Count Active (count) |
+| `WARNING-TOTAL-FILE-COUNT-INACTIVE` |  | Threshold warning Total File Count Inactive (count) |
+| `WARNING-TOTAL-ACTIVE-FILE-COUNT` |  | Threshold warning Total Active File Count (count) |
+| `WARNING-USAGE` |  | Threshold warning Usage (count) |
+| `WARNING-FILE-COUNT` |  | Threshold warning File Count (count) |
+| `WARNING-ACTIVE-FILE-COUNT` |  | Threshold warning Active File Count (count) |
+| `WARNING-VISITED-PAGE-COUNT` |  | Threshold warning Visited Page Count (count) |
+| `WARNING-PAGE-VIEW-COUNT` |  | Threshold warning Page View Count (count) |
+| `CRITICAL-TOTAL-USAGE-ACTIVE` |  | Threshold critical Total Usage Active (count) |
+| `CRITICAL-TOTAL-USAGE-INACTIVE` |  | Threshold critical Total Usage Inactive (count) |
+| `CRITICAL-TOTAL-FILE-COUNT-ACTIVE` |  | Threshold critical Total File Count Active (count) |
+| `CRITICAL-TOTAL-FILE-COUNT-INACTIVE` |  | Threshold critical Total File Count Inactive (count) |
+| `CRITICAL-TOTAL-ACTIVE-FILE-COUNT` |  | Threshold critical Total Active File Count (count) |
+| `CRITICAL-USAGE` |  | Threshold critical Usage (count) |
+| `CRITICAL-FILE-COUNT` |  | Threshold critical File Count (count) |
+| `CRITICAL-ACTIVE-FILE-COUNT` |  | Threshold critical Active File Count (count) |
+| `CRITICAL-VISITED-PAGE-COUNT` |  | Threshold critical Visited Page Count (count) |
+| `CRITICAL-PAGE-VIEW-COUNT` |  | Threshold critical Page View Count (count) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sharepoint.sites.active.usage.total.bytes` | `B` | Usage (active sites) | `WARNING-TOTAL-USAGE-ACTIVE`, `CRITICAL-TOTAL-USAGE-ACTIVE` |
+| `sharepoint.sites.inactive.usage.total.bytes` | `B` | Usage (inactive sites) | `WARNING-TOTAL-USAGE-INACTIVE`, `CRITICAL-TOTAL-USAGE-INACTIVE` |
+| `sharepoint.sites.active.files.total.count` |  | File Count (active sites) | `WARNING-TOTAL-FILE-COUNT-ACTIVE`, `CRITICAL-TOTAL-FILE-COUNT-ACTIVE` |
+| `sharepoint.sites.inactive.files.total.count` |  | File Count (inactive sites) | `WARNING-TOTAL-FILE-COUNT-INACTIVE`, `CRITICAL-TOTAL-FILE-COUNT-INACTIVE` |
+| `sharepoint.sites.files.active.total.count` |  | Active File Count (active sites) | `WARNING-TOTAL-ACTIVE-FILE-COUNT`, `CRITICAL-TOTAL-ACTIVE-FILE-COUNT` |
+| `sharepoint.sites.pages.visited.total.count` |  | Visited Page Count (active sites) |  |
+| `sharepoint.sites.pages.viewed.total.count` |  | Page View Count (active sites) |  |
+| `sharepoint.sites.files.count` |  | File Count | `WARNING-FILE-COUNT`, `CRITICAL-FILE-COUNT` |
+| `sharepoint.sites.files.active.count` |  | Active File Count | `WARNING-ACTIVE-FILE-COUNT`, `CRITICAL-ACTIVE-FILE-COUNT` |
+| `sharepoint.sites.pages.visited.count` |  | Visited Page Count | `WARNING-VISITED-PAGE-COUNT`, `CRITICAL-VISITED-PAGE-COUNT` |
+| `sharepoint.sites.pages.viewed.count` |  | Page View Count | `WARNING-PAGE-VIEW-COUNT`, `CRITICAL-PAGE-VIEW-COUNT` |
+| `sharepoint.sites.active.count` | `sites` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Sharepoint User activity {/* #cloud-microsoft-office365-sharepoint-user-activity */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-USER` |  | Filter users |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example to hide per user counters: --filter-counters='active\|total' (Default: 'active\|total') |
+| `WARNING-ACTIVE-USERS` |  | Warning threshold Active users |
+| `WARNING-TOTAL-VIEWED-EDITED-FILE` |  | Warning threshold Total viewed edited file (count) |
+| `WARNING-TOTAL-SYNCED-FILE` |  | Warning threshold Total synched file (count) |
+| `WARNING-TOTAL-SHARED-INT-FILE` |  | Warning threshold Total shared internal file (count) |
+| `WARNING-TOTAL-SHARED-EXT-FILE` |  | Warning threshold Total shared external file (count) |
+| `WARNING-TOTAL-VISITED-PAGE-FILE` |  | Warning threshold Total visited page file (count) |
+| `WARNING-VIEWED-EDITED-FILE` |  | Warning threshold viewed edited file (count) |
+| `WARNING-SYNCED-FILE` |  | Warning threshold synched file (count) |
+| `WARNING-SHARED-INT-FILE` |  | Warning threshold shared internal file (count) |
+| `WARNING-SHARED-EXT-FILE` |  | Warning threshold shared external file (count) |
+| `WARNING-VISITED-PAGE-FILE` |  | Warning threshold visited page file (count) |
+| `CRITICAL-ACTIVE-USERS` |  | Critical threshold Active users |
+| `CRITICAL-TOTAL-VIEWED-EDITED-FILE` |  | Critical threshold Total viewed edited file (count) |
+| `CRITICAL-TOTAL-SYNCED-FILE` |  | Critical threshold Total synched file (count) |
+| `CRITICAL-TOTAL-SHARED-INT-FILE` |  | Critical threshold Total shared internal file (count) |
+| `CRITICAL-TOTAL-SHARED-EXT-FILE` |  | Critical threshold Total shared external file (count) |
+| `CRITICAL-TOTAL-VISITED-PAGE-FILE` |  | Critical threshold Total visited page file (count) |
+| `CRITICAL-VIEWED-EDITED-FILE` |  | Critical threshold viewed edited file (count) |
+| `CRITICAL-SYNCED-FILE` |  | Critical threshold synched file (count) |
+| `CRITICAL-SHARED-INT-FILE` |  | Critical threshold shared internal file (count) |
+| `CRITICAL-SHARED-EXT-FILE` |  | Critical threshold shared external file (count) |
+| `CRITICAL-VISITED-PAGE-FILE` |  | Critical threshold visited page file (count) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sharepoint.users.files.viewed.total.count` |  | Viewed or Edited File Count | `WARNING-TOTAL-VIEWED-EDITED-FILE`, `CRITICAL-TOTAL-VIEWED-EDITED-FILE` |
+| `sharepoint.users.files.synced.total.count` |  | Synced File Count | `WARNING-TOTAL-SYNCED-FILE`, `CRITICAL-TOTAL-SYNCED-FILE` |
+| `sharepoint.users.files.shared.internally.total.count` |  | Shared Internally File Count | `WARNING-TOTAL-SHARED-INT-FILE`, `CRITICAL-TOTAL-SHARED-INT-FILE` |
+| `sharepoint.users.files.shared.externally.total.count` |  | Shared Externally File Count | `WARNING-TOTAL-SHARED-EXT-FILE`, `CRITICAL-TOTAL-SHARED-EXT-FILE` |
+| `sharepoint.users.pages.visited.total.count` |  | Visited Page Count (active sites) | `WARNING-TOTAL-VISITED-PAGE-FILE`, `CRITICAL-TOTAL-VISITED-PAGE-FILE` |
+| `sharepoint.users.files.viewed.count` |  | Viewed or Edited File Count | `WARNING-VIEWED-EDITED-FILE`, `CRITICAL-VIEWED-EDITED-FILE` |
+| `sharepoint.users.files.synced.count` |  | Synced File Count | `WARNING-SYNCED-FILE`, `CRITICAL-SYNCED-FILE` |
+| `sharepoint.users.files.shared.internally.count` |  | Shared Internally File Count | `WARNING-SHARED-INT-FILE`, `CRITICAL-SHARED-INT-FILE` |
+| `sharepoint.users.files.shared.externally.count` |  | Shared Externally File Count | `WARNING-SHARED-EXT-FILE`, `CRITICAL-SHARED-EXT-FILE` |
+| `sharepoint.users.pages.visited.count` |  | Visited Page Count | `WARNING-VISITED-PAGE-FILE`, `CRITICAL-VISITED-PAGE-FILE` |
+| `sharepoint.users.active.count` | `users` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Teams Device usage {/* #cloud-microsoft-office365-teams-device-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-USER` |  | Filter users |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example to hide per user counters: --filter-counters='windows' |
+| `WARNING-ACTIVE-DEVICES` |  | Warning threshold Active devices |
+| `WARNING-WINDOWS` |  | Warning threshold Windows devices |
+| `WARNING-MAC` |  | Warning threshold Mac devices |
+| `WARNING-WEB` |  | Warning threshold Web devices |
+| `WARNING-IOS` |  | Warning threshold IOS devices |
+| `WARNING-ANDROID-PHONE` |  | Warning threshold Android phones |
+| `WARNING-WINDOWS-PHONE` |  | Warning threshold Windows phones |
+| `CRITICAL-ACTIVE-DEVICES` |  | Critical threshold Active devices |
+| `CRITICAL-WINDOWS` |  | Critical threshold Windows devices |
+| `CRITICAL-MAC` |  | Critical threshold Mac devices |
+| `CRITICAL-WEB` |  | Critical threshold Web devices |
+| `CRITICAL-IOS` |  | Critical threshold IOS devices |
+| `CRITICAL-ANDROID-PHONE` |  | Critical threshold Android phones |
+| `CRITICAL-WINDOWS-PHONE` |  | Critical threshold Windows phones |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `teams.devices.windows.count` |  | Windows | `WARNING-WINDOWS`, `CRITICAL-WINDOWS` |
+| `teams.devices.mac.count` |  | Mac | `WARNING-MAC`, `CRITICAL-MAC` |
+| `teams.devices.web.count` |  | Web | `WARNING-WEB`, `CRITICAL-WEB` |
+| `teams.devices.ios.count` |  | iOS | `WARNING-IOS`, `CRITICAL-IOS` |
+| `teams.devices.android.count` |  | Android Phone | `WARNING-ANDROID-PHONE`, `CRITICAL-ANDROID-PHONE` |
+| `teams.devices.windowsphone.count` |  | Windows Phone | `WARNING-WINDOWS-PHONE`, `CRITICAL-WINDOWS-PHONE` |
+| `teams.devices.active.count` | `devices` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Teams User activities {/* #cloud-microsoft-office365-teams-user-activities */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Unit of thresholds (Default: '%') ('%', 'count') |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-USER` |  | Filter users |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example to hide per user counters: --filter-counters='total' (Default: 'active\|total') |
+| `WARNING-ACTIVE-USERS` |  | Threshold warning Active Users |
+| `WARNING-TOTAL-TEAM-CHAT` |  | Threshold warning Total Team Chat |
+| `WARNING-TOTAL-PRIVATE-CHAT` |  | Threshold warning Total Private Chat |
+| `WARNING-TOTAL-CALL` |  | Threshold warning Total Call |
+| `WARNING-TOTAL-MEETING` |  | Threshold warning Total Meeting |
+| `WARNING-TEAM-CHAT` |  | Threshold warning Team Chat |
+| `WARNING-PRIVATE-CHAT` |  | Threshold warning Private Chat |
+| `WARNING-CALL` |  | Threshold warning Call |
+| `WARNING-MEETING` |  | Threshold warning Meeting |
+| `CRITICAL-ACTIVE-USERS` |  | Threshold warning Active Users |
+| `CRITICAL-TOTAL-TEAM-CHAT` |  | Threshold warning Total Team Chat |
+| `CRITICAL-TOTAL-PRIVATE-CHAT` |  | Threshold warning Total Private Chat |
+| `CRITICAL-TOTAL-CALL` |  | Threshold warning Total Call |
+| `CRITICAL-TOTAL-MEETING` |  | Threshold warning Total Meeting |
+| `CRITICAL-TEAM-CHAT` |  | Threshold warning Team Chat |
+| `CRITICAL-PRIVATE-CHAT` |  | Threshold warning Private Chat |
+| `CRITICAL-CALL` |  | Threshold warning Call |
+| `CRITICAL-MEETING` |  | Threshold warning Meeting |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `teams.users.messages.team.total.count` |  | Team Chat Message Count | `WARNING-TOTAL-TEAM-CHAT`, `CRITICAL-TOTAL-TEAM-CHAT` |
+| `teams.users.messages.private.total.count` |  | Private Chat Message Count | `WARNING-TOTAL-PRIVATE-CHAT`, `CRITICAL-TOTAL-PRIVATE-CHAT` |
+| `teams.users.call.total.count` |  | Call Count | `WARNING-TOTAL-CALL`, `CRITICAL-TOTAL-CALL` |
+| `teams.users.meeting.total.count` |  | Meeting Count | `WARNING-TOTAL-MEETING`, `CRITICAL-TOTAL-MEETING` |
+| `teams.users.messages.team.count` |  | Team Chat Message Count | `WARNING-TEAM-CHAT`, `CRITICAL-TEAM-CHAT` |
+| `teams.users.messages.private.count` |  | Private Chat Message Count | `WARNING-PRIVATE-CHAT`, `CRITICAL-PRIVATE-CHAT` |
+| `teams.users.call.count` |  | Call Count | `WARNING-CALL`, `CRITICAL-CALL` |
+| `teams.users.meeting.count` |  | Meeting Count | `WARNING-MEETING`, `CRITICAL-MEETING` |
+| `teams.users.active.count` | `users` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### O365 Management Application credentials {/* #cloud-microsoft-office365-management-app-credentials */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-APP-NAME` | `.*` | Filter applications (can be a regexp) |
+| `CRITICAL-KEY-STATUS` | `'%{status} =~ /expired/i'` | Set critical threshold for status (Default: '%\{status\} =~ /expired/i'). Can used special variables like: %\{status\}, %\{id\}, %\{app_name\} |
+| `CRITICAL-PASSWORD-STATUS` | `'%{status} =~ /expired/i'` | Set critical threshold for status (Default: '%\{status\} =~ /expired/i'). Can used special variables like: %\{status\}, %\{id\}, %\{app_name\} |
+| `UNIT` | `d` | Select the unit for expires threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-PASSWORD-EXPIRES` | `20:` | Warning threshold password expires |
+| `CRITICAL-PASSWORD-EXPIRES` | `10:` | Critical threshold password expires |
+| `WARNING-KEY-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{id\}, %\{app_name\} |
+| `WARNING-PASSWORD-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{id\}, %\{app_name\} |
+| `WARNING-KEY-EXPIRES` |  | Warning threshold key expires |
+| `CRITICAL-KEY-EXPIRES` |  | Critical threshold key expires |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `application.password.expires` |  | expires in | `WARNING-PASSWORD-EXPIRES`, `CRITICAL-PASSWORD-EXPIRES` |
+| `application.key.expires` |  | expires in | `WARNING-KEY-EXPIRES`, `CRITICAL-KEY-EXPIRES` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Service template [`cloud-microsoft-office365-management-service-status`](#cloud-microsoft-office365-management-service-status)
+    - Macro `EXCLUDE-RESOLVED` added (default `1`)
+- Command `cloud-microsoft-office365-management-service-status`
+    - Option `--include-service-name='$_SERVICEINCLUDE-SERVICE-NAME$'` added
+    - Option `--exclude-service-name='$_SERVICEEXCLUDE-SERVICE-NAME$'` added
+    - Option `--include-classification=$_SERVICEINCLUDE-CLASSIFICATION$` added
+    - Option `--exclude-classification=$_SERVICEEXCLUDE-CLASSIFICATION$` added
+    - Option `--exclude-resolved=$_SERVICEEXCLUDE-RESOLVED$` added
+    - Option `--filter-service-name='$_SERVICEFILTER-SERVICE-NAME$'` removed
+    - Macro `INCLUDE-SERVICE-NAME` added
+    - Macro `EXCLUDE-CLASSIFICATION` added
+    - Macro `EXCLUDE-RESOLVED` added
+    - Macro `EXCLUDE-SERVICE-NAME` added
+    - Macro `INCLUDE-CLASSIFICATION` added
+    - Macro `FILTER-SERVICE-NAME` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250210</summary>
+
+- Service template [`cloud-microsoft-office365-exchange-email-activity`](#cloud-microsoft-office365-exchange-email-activity)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Service template [`cloud-microsoft-office365-exchange-mailbox-usage`](#cloud-microsoft-office365-exchange-mailbox-usage)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Service template [`cloud-microsoft-office365-onedrive-site-usage`](#cloud-microsoft-office365-onedrive-site-usage)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Service template [`cloud-microsoft-office365-onedrive-users-activity`](#cloud-microsoft-office365-onedrive-users-activity)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Service template [`cloud-microsoft-office365-sharepoint-site-usage`](#cloud-microsoft-office365-sharepoint-site-usage)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Service template [`cloud-microsoft-office365-sharepoint-user-activity`](#cloud-microsoft-office365-sharepoint-user-activity)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Service template [`cloud-microsoft-office365-teams-device-usage`](#cloud-microsoft-office365-teams-device-usage)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Service template [`cloud-microsoft-office365-teams-user-activities`](#cloud-microsoft-office365-teams-user-activities)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Command `cloud-microsoft-office365-exchange-email-activity`
+    - Macro `O365-CLIENT-SECRET` removed
+- Command `cloud-microsoft-office365-exchange-mailbox-usage`
+    - Macro `O365-CLIENT-SECRET` removed
+- Command `cloud-microsoft-office365-onedrive-site-usage`
+    - Macro `FILTER-COUNTERS` added
+    - Macro `O365-CLIENT-SECRET` removed
+- Command `cloud-microsoft-office365-onedrive-users-activity`
+    - Macro `O365-CLIENT-SECRET` removed
+- Command `cloud-microsoft-office365-sharepoint-site-usage`
+    - Macro `O365-CLIENT-SECRET` removed
+- Command `cloud-microsoft-office365-sharepoint-users-activity`
+    - Macro `O365-CLIENT-SECRET` removed
+- Command `cloud-microsoft-office365-teams-devices-usage`
+    - Macro `O365-CLIENT-SECRET` removed
+- Command `cloud-microsoft-office365-teams-users-activity`
+    - Macro `O365-CLIENT-SECRET` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240424</summary>
+
+- Command `cloud-microsoft-office365-management-app-credentials`
+    - Option `--warning-password-expires` changed from `--warning-password-expires=$_SERVICECRITICAL-KEY-EXPIRES$` to `--warning-password-expires=$_SERVICEWARNING-PASSWORD-EXPIRES$`
+    - Option `--critical-key-expires` changed from `--critical-key-expires=$_SERVICEWARNING-PASSWORD-EXPIRES$` to `--critical-key-expires=$_SERVICECRITICAL-KEY-EXPIRES$`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231011</summary>
+
+- Service template [`cloud-microsoft-office365-exchange-mailbox-usage`](#cloud-microsoft-office365-exchange-mailbox-usage)
+    - Macro `CRITICAL-STATUS` added (default `'%{used} > %{prohibit_send_quota}'`)
+    - Macro `WARNING-STATUS` added (default `'%{used} > %{issue_warning_quota}'`)
+- Service template [`cloud-microsoft-office365-management-app-credentials`](#cloud-microsoft-office365-management-app-credentials)
+    - Macro `WARNING-PASSWORD-EXPIRES` added (default `20:`)
+    - Macro `CRITICAL-PASSWORD-EXPIRES` added (default `10:`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `Office 365`
+    - Description updated
+
+</details>

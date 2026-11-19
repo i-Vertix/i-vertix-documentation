@@ -1,0 +1,187 @@
+---
+title: "Vertiv Geist sensor"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/vertiv.png";
+
+<PluginPackHeader name="Vertiv Geist sensor" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Vertiv Geist environmental sensors through SNMP: temperature, humidity, dew point, light, airflow and sound readings and the uptime.
+
+The plugin pack provides these checks:
+
+* [Sensor](#hardware-sensors-geist-snmp-sensors)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Vertiv-Geist-sensor
+
+*Vertiv Geist sensor* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Sensor](#hardware-sensors-geist-snmp-sensors) | `hardware-sensors-geist-snmp-sensors` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sensor {/* #hardware-sensors-geist-snmp-sensors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CLIMATE-TEMPERATURE` | `15:25` | Threshold warning climate temperature |
+| `WARNING-INTERNAL-TEMPERATURE` | `18:27` | Threshold warning internal temperature |
+| `WARNING-INTERNAL-HUMIDITY` | `45:55` | Threshold warning internal humidity |
+| `WARNING-INTERNAL-DEWPOINT` | `-12:17` | Threshold warning internal dewpoint |
+| `CRITICAL-CLIMATE-TEMPERATURE` | `12:30` | Threshold critical climate temperature |
+| `CRITICAL-INTERNAL-TEMPERATURE` | `15:35` | Threshold critical internal temperature |
+| `CRITICAL-INTERNAL-HUMIDITY` | `40:60` | Threshold critical internal humidity |
+| `CRITICAL-INTERNAL-DEWPOINT` | `-12:24` | Threshold critical internal dewpoint |
+| `WARNING-CLIMATE-HUMIDITY` |  | Threshold warning climate humidity |
+| `WARNING-CLIMATE-LIGHT` |  | Threshold warning climate light |
+| `WARNING-CLIMATE-AIRFLOW` |  | Threshold warning climate airflow |
+| `WARNING-CLIMATE-SOUND` |  | Threshold warning climate sound |
+| `WARNING-CLIMATE-DEWPOINT` |  | Threshold warning climate dewpoint |
+| `CRITICAL-CLIMATE-HUMIDITY` |  | Threshold critical climate humidity |
+| `CRITICAL-CLIMATE-LIGHT` |  | Threshold critical climate light |
+| `CRITICAL-CLIMATE-AIRFLOW` |  | Threshold critical climate airflow |
+| `CRITICAL-CLIMATE-SOUND` |  | Threshold critical climate sound |
+| `CRITICAL-CLIMATE-DEWPOINT` |  | Threshold critical climate dewpoint |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sensor.climate.temperature.celsius` | `C` | temperature  C | `WARNING-CLIMATE-TEMPERATURE`, `CRITICAL-CLIMATE-TEMPERATURE` |
+| `sensor.climate.humidity.percentage` | `%` | humidity  %% | `WARNING-CLIMATE-HUMIDITY`, `CRITICAL-CLIMATE-HUMIDITY` |
+| `sensor.climate.ambientlight.percentage` | `%` | ambient light  %% | `WARNING-CLIMATE-LIGHT`, `CRITICAL-CLIMATE-LIGHT` |
+| `sensor.climate.airflow.percentage` | `%` | airflow  %% | `WARNING-CLIMATE-AIRFLOW`, `CRITICAL-CLIMATE-AIRFLOW` |
+| `sensor.climate.sound.percentage` | `%` | sound  %% | `WARNING-CLIMATE-SOUND`, `CRITICAL-CLIMATE-SOUND` |
+| `sensor.climate.dewpoint.celsius` | `C` | dew point  C | `WARNING-CLIMATE-DEWPOINT`, `CRITICAL-CLIMATE-DEWPOINT` |
+| `sensor.internal.temperature.celsius` | `C` | temperature  C | `WARNING-INTERNAL-TEMPERATURE`, `CRITICAL-INTERNAL-TEMPERATURE` |
+| `sensor.internal.humidity.percentage` | `%` | humidity  %% | `WARNING-INTERNAL-HUMIDITY`, `CRITICAL-INTERNAL-HUMIDITY` |
+| `sensor.internal.dewpoint.celsius` | `C` | dew point  C | `WARNING-INTERNAL-DEWPOINT`, `CRITICAL-INTERNAL-DEWPOINT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Vertiv Geist sensor`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231031`.

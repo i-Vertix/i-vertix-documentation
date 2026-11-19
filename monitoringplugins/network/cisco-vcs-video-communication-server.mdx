@@ -1,0 +1,333 @@
+---
+title: "Cisco VCS (Video Communication Server)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco VCS (Video Communication Server)" image={image} category="Network" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Cisco VCS (Video Communication Server) through its HTTP(S) API: alerts, calls, registered endpoints, zones and HTTP proxy statistics.
+
+The plugin pack provides these checks:
+
+* [Alerts](#network-cisco-vcs-restapi-alerts)
+* [Calls](#network-cisco-vcs-restapi-calls)
+* [Endpoints](#network-cisco-vcs-restapi-endpoints)
+* [HTTP Proxy statistics](#network-cisco-vcs-restapi-http-proxy-stats)
+* [Zones](#network-cisco-vcs-restapi-zones)
+
+
+## Host Templates
+
+### Cisco-VCS
+
+*Cisco TelePresence Video Communication Server* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | API port (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Set API password |
+| `API-USERNAME` |  | Set API username |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#network-cisco-vcs-restapi-alerts) | `network-cisco-vcs-restapi-alerts` |
+| [Calls](#network-cisco-vcs-restapi-calls) | `network-cisco-vcs-restapi-calls` |
+| [Endpoints](#network-cisco-vcs-restapi-endpoints) | `network-cisco-vcs-restapi-endpoints` |
+| [HTTP Proxy statistics](#network-cisco-vcs-restapi-http-proxy-stats) | `network-cisco-vcs-restapi-http-proxy-stats` |
+| [Zones](#network-cisco-vcs-restapi-zones) | `network-cisco-vcs-restapi-zones` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #network-cisco-vcs-restapi-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UNACKNOWLEDGED` | `0` | Threshold warning unacknowledged |
+| `FILTER-REASON` |  | Filter alerts by reason (Can use regexp) |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `WARNING-ACKNOWLEDGED` |  | Threshold warning acknowledged |
+| `CRITICAL-TOTAL` |  | Threshold critical total |
+| `CRITICAL-ACKNOWLEDGED` |  | Threshold critical acknowledged |
+| `CRITICAL-UNACKNOWLEDGED` |  | Threshold critical unacknowledged |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `alerts.total.count` |  | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `alerts.acknowledged.current.count` |  | acknowledged | `WARNING-ACKNOWLEDGED`, `CRITICAL-ACKNOWLEDGED` |
+| `alerts.unacknowledged.current.count` |  | unacknowledged | `WARNING-UNACKNOWLEDGED`, `CRITICAL-UNACKNOWLEDGED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Calls {/* #network-cisco-vcs-restapi-calls */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CONNECTIONFAILED-TOTAL` | `0` | Threshold warning connection failed total |
+| `WARNING-TRAVERSAL-CURRENT` |  | Threshold warning traversal current |
+| `WARNING-TRAVERSAL-TOTAL` |  | Threshold warning traversal total |
+| `WARNING-NONTRAVERSAL-CURRENT` |  | Threshold warning non traversal current |
+| `WARNING-NONTRAVERSAL-TOTAL` |  | Threshold warning non traversal total |
+| `WARNING-CLOUD-CURRENT` |  | Threshold warning cloud current |
+| `WARNING-CLOUD-TOTAL` |  | Threshold warning cloud total |
+| `WARNING-COLLABORATIONEDGE-CURRENT` |  | Threshold warning collaboration edge current |
+| `WARNING-COLLABORATIONEDGE-TOTAL` |  | Threshold warning collaboration edge total |
+| `WARNING-MICROSOFTCONTENT-CURRENT` |  | Threshold warning microsoft content current |
+| `WARNING-MICROSOFTCONTENT-TOTAL` |  | Threshold warning microsoft content total |
+| `WARNING-MICROSOFTIMP-CURRENT` |  | Threshold warning microsoft imp current |
+| `WARNING-MICROSOFTIMP-TOTAL` |  | Threshold warning microsoft imp total |
+| `WARNING-DISCONNECTED-TOTAL` |  | Threshold warning disconnected total |
+| `CRITICAL-TRAVERSAL-CURRENT` |  | Threshold critical traversal current |
+| `CRITICAL-TRAVERSAL-TOTAL` |  | Threshold critical traversal total |
+| `CRITICAL-NONTRAVERSAL-CURRENT` |  | Threshold critical non traversal current |
+| `CRITICAL-NONTRAVERSAL-TOTAL` |  | Threshold critical non traversal total |
+| `CRITICAL-CLOUD-CURRENT` |  | Threshold critical cloud current |
+| `CRITICAL-CLOUD-TOTAL` |  | Threshold critical cloud total |
+| `CRITICAL-COLLABORATIONEDGE-CURRENT` |  | Threshold critical collaboration edge current |
+| `CRITICAL-COLLABORATIONEDGE-TOTAL` |  | Threshold critical collaboration edge total |
+| `CRITICAL-MICROSOFTCONTENT-CURRENT` |  | Threshold critical microsoft content current |
+| `CRITICAL-MICROSOFTCONTENT-TOTAL` |  | Threshold critical microsoft content total |
+| `CRITICAL-MICROSOFTIMP-CURRENT` |  | Threshold critical microsoft imp current |
+| `CRITICAL-MICROSOFTIMP-TOTAL` |  | Threshold critical microsoft imp total |
+| `CRITICAL-CONNECTIONFAILED-TOTAL` |  | Threshold critical connection failed total |
+| `CRITICAL-DISCONNECTED-TOTAL` |  | Threshold critical disconnected total |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Endpoints {/* #network-cisco-vcs-restapi-endpoints */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Warning threshold Endpoints usage (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Critical threshold Endpoints usage (%) |
+| `FILTER-NAME` |  | Filter endpoints by name (can be a regexp) |
+| `WARNING-USAGE` |  | Warning threshold Endpoints usage |
+| `WARNING-USAGE-FREE` |  | Warning threshold Endpoints usage free |
+| `CRITICAL-USAGE` |  | Critical threshold Endpoints usage |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold Endpoints usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `endpoint.usage.count` |  |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `endpoint.free.count` |  |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `endpoint.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP Proxy statistics {/* #network-cisco-vcs-restapi-http-proxy-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RESPONSES-1XX` | `0` | Threshold warning responses 1xx |
+| `WARNING-RESPONSES-3XX` | `0` | Threshold warning responses 3xx |
+| `WARNING-RESPONSES-4XX` | `0` | Threshold warning responses 4xx |
+| `WARNING-RESPONSES-5XX` | `0` | Threshold warning responses 5xx |
+| `CRITICAL-STATUS` | `'%{status} ne "Active"'` | Set critical threshold for status (Default: '%\{status\} ne "Active"'). Can use special variables like: %\{status\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). (Example: --filter-counters='responses') |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can use special variables like: %\{status\} |
+| `WARNING-CONNECTIONS-CLIENT` |  | Threshold warning connections client |
+| `WARNING-CONNECTIONS-SERVER` |  | Threshold warning connections server |
+| `WARNING-REQUESTS-COMPLETED` |  | Threshold warning requests completed |
+| `WARNING-REQUESTS-GET` |  | Threshold warning requests get |
+| `WARNING-REQUESTS-POST` |  | Threshold warning requests post |
+| `WARNING-RESPONSES-2XX` |  | Threshold warning responses 2xx |
+| `CRITICAL-CONNECTIONS-CLIENT` |  | Threshold critical connections client |
+| `CRITICAL-CONNECTIONS-SERVER` |  | Threshold critical connections server |
+| `CRITICAL-REQUESTS-COMPLETED` |  | Threshold critical requests completed |
+| `CRITICAL-REQUESTS-GET` |  | Threshold critical requests get |
+| `CRITICAL-REQUESTS-POST` |  | Threshold critical requests post |
+| `CRITICAL-RESPONSES-1XX` |  | Threshold critical responses 1xx |
+| `CRITICAL-RESPONSES-2XX` |  | Threshold critical responses 2xx |
+| `CRITICAL-RESPONSES-3XX` |  | Threshold critical responses 3xx |
+| `CRITICAL-RESPONSES-4XX` |  | Threshold critical responses 4xx |
+| `CRITICAL-RESPONSES-5XX` |  | Threshold critical responses 5xx |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `httproxy.connections.client.persecond` | `/s` | client: /s | `WARNING-CONNECTIONS-CLIENT`, `CRITICAL-CONNECTIONS-CLIENT` |
+| `httproxy.connections.server.persecond` | `/s` | server: /s | `WARNING-CONNECTIONS-SERVER`, `CRITICAL-CONNECTIONS-SERVER` |
+| `httproxy.requests.completed.persecond` | `/s` | completed: /s | `WARNING-REQUESTS-COMPLETED`, `CRITICAL-REQUESTS-COMPLETED` |
+| `httproxy.requests.get.persecond` | `/s` | get: /s | `WARNING-REQUESTS-GET`, `CRITICAL-REQUESTS-GET` |
+| `httproxy.requests.post.persecond` | `/s` | post: /s | `WARNING-REQUESTS-POST`, `CRITICAL-REQUESTS-POST` |
+| `httproxy.responses.1xx.persecond` | `/s` | 1xx: /s | `WARNING-RESPONSES-1XX`, `CRITICAL-RESPONSES-1XX` |
+| `httproxy.responses.2xx.persecond` | `/s` | 2xx: /s | `WARNING-RESPONSES-2XX`, `CRITICAL-RESPONSES-2XX` |
+| `httproxy.responses.3xx.persecond` | `/s` | 3xx: /s | `WARNING-RESPONSES-3XX`, `CRITICAL-RESPONSES-3XX` |
+| `httproxy.responses.4xx.persecond` | `/s` | 4xx: /s | `WARNING-RESPONSES-4XX`, `CRITICAL-RESPONSES-4XX` |
+| `httproxy.responses.5xx.persecond` | `/s` | 5xx: /s | `WARNING-RESPONSES-5XX`, `CRITICAL-RESPONSES-5XX` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Zones {/* #network-cisco-vcs-restapi-zones */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} ne "Active"'` | Set critical threshold for status. (Default: '%\{status\} ne "Active"'). Can use special variables like: %\{status\}, %\{type\}, %\{name\} |
+| `FILTER-ZONE-NAME` |  | Filter zones by name (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. (Default: ''). Can use special variables like: %\{status\}, %\{type\}, %\{name\} |
+| `WARNING-ZONES-COUNT` |  | Threshold warning zones count |
+| `WARNING-SEARCHES-TOTAL` |  | Threshold warning searches total |
+| `WARNING-SEARCHES-DROPPED` |  | Threshold warning searches dropped |
+| `WARNING-SEARCHES-MAXSUB-EXCEEDED` |  | Threshold warning searches max sub exceeded |
+| `WARNING-SEARCHES-MAXTARGETS-EXCEEDED` |  | Threshold warning searches max targets exceeded |
+| `CRITICAL-ZONES-COUNT` |  | Threshold critical zones count |
+| `CRITICAL-SEARCHES-TOTAL` |  | Threshold critical searches total |
+| `CRITICAL-SEARCHES-DROPPED` |  | Threshold critical searches dropped |
+| `CRITICAL-SEARCHES-MAXSUB-EXCEEDED` |  | Threshold critical searches max sub exceeded |
+| `CRITICAL-SEARCHES-MAXTARGETS-EXCEEDED` |  | Threshold critical searches max targets exceeded |
+| `WARNING-ZONE-CALLS-CURRENT` |  | Threshold warning zone calls current |
+| `CRITICAL-ZONE-CALLS-CURRENT` |  | Threshold critical zone calls current |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `zones.total.count` |  | Number of zones | `WARNING-ZONES-COUNT`, `CRITICAL-ZONES-COUNT` |
+| `zones.searches.total.persecond` | `/s` | total: /s | `WARNING-SEARCHES-TOTAL`, `CRITICAL-SEARCHES-TOTAL` |
+| `zones.searches.dropped.persecond` | `/s` | dropped: /s | `WARNING-SEARCHES-DROPPED`, `CRITICAL-SEARCHES-DROPPED` |
+| `zones.searches.maxsub.exceeded.count` |  | max sub exceeded | `WARNING-SEARCHES-MAXSUB-EXCEEDED`, `CRITICAL-SEARCHES-MAXSUB-EXCEEDED` |
+| `zones.searches.maxtargets.exceeded.count` |  | max targets exceeded | `WARNING-SEARCHES-MAXTARGETS-EXCEEDED`, `CRITICAL-SEARCHES-MAXTARGETS-EXCEEDED` |
+| `zone.calls.current.count` |  | current calls | `WARNING-ZONE-CALLS-CURRENT`, `CRITICAL-ZONE-CALLS-CURRENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

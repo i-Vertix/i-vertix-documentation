@@ -12,12 +12,13 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-S3.png";
 
 ## Description
 
-### AWS S3 monitoring
-protocols used: Rest API (HTTPS)
+Monitors Amazon S3 buckets through Amazon CloudWatch: bucket size, number of objects and the requests made to the bucket.
 
-- Bucket size
-- Objects
-- Requests
+The plugin pack provides these checks:
+
+* [Bucket size](#cloud-aws-s3-bucket-size)
+* [Objects](#cloud-aws-s3-objects)
+* [Requests](#cloud-aws-s3-requests)
 
 ## Prerequisites
 
@@ -25,6 +26,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-S3](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

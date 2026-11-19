@@ -12,11 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-Virtual-Network
 
 ## Description
 
-### Azure Virtual Network monitoring
-protocols used: HTTPS (Rest API)
+Monitors Azure virtual networks: the status of the virtual network peerings and the latency and packet loss between the networks.
 
-- Peering status
-- Latency
+The plugin pack provides these checks:
+
+* [Latency](#cloud-azure-network-virtual-network-latency)
+* [Peerings Status](#cloud-azure-network-virtualnetwork-peerings-status)
 
 ## Prerequisites
 
@@ -24,6 +25,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Virtual Network](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

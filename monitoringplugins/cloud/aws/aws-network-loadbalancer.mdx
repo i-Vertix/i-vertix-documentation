@@ -12,14 +12,11 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-application-ELB.p
 
 ## Description
 
-### AWS Network Loadbalancer
-Protocols used: Rest API
+Monitors AWS Network Load Balancers through Amazon CloudWatch: the number of healthy and unhealthy targets per target group.
 
-- Target health
+The plugin pack provides these checks:
 
-### Discovery modes
-
-- Health target groups
+* [Targets health](#cloud-aws-elb-network-targets-health)
 
 ## Prerequisites
 
@@ -27,6 +24,24 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-Network-ELB](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Targets health](#cloud-aws-elb-network-targets-health) | `Target health - <target_group_display_name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

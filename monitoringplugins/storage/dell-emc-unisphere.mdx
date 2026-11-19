@@ -1,0 +1,302 @@
+---
+title: "Dell EMC Unisphere"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dell.png";
+
+<PluginPackHeader name="Dell EMC Unisphere" image={image} category="Storage" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors Dell EMC Unisphere storage systems through the REST API: hardware health, pool status and usage, storage resource usage and replication status.
+
+The plugin pack provides these checks:
+
+* [Hardware health](#storage-emc-unisphere-restapi-hardware)
+* [Pools status/usage](#storage-emc-unisphere-restapi-pools)
+* [Replication status](#storage-emc-unisphere-restapi-replications)
+* [Storage resources](#storage-emc-unisphere-restapi-storage-resources)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Pools status/usage](#storage-emc-unisphere-restapi-pools) | `Pool usage - <name>` |
+| [Replication status](#storage-emc-unisphere-restapi-replications) | `Replication status - <name>` |
+| [Storage resources](#storage-emc-unisphere-restapi-storage-resources) | `Storage resource - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Dell-EMC-Unisphere
+
+*Dell EMC Unisphere* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | EMC Unisphere API password. |
+| `API-USERNAME` |  | EMC Unisphere API username. |
+| `TIMEOUT` |  | Set timeout in seconds (default: 10). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hardware health](#storage-emc-unisphere-restapi-hardware) | `storage-emc-unisphere-restapi-hardware` |
+| [Pools status/usage](#storage-emc-unisphere-restapi-pools) | `storage-emc-unisphere-restapi-pools` |
+| [Replication status](#storage-emc-unisphere-restapi-replications) | `storage-emc-unisphere-restapi-replications` |
+| [Storage resources](#storage-emc-unisphere-restapi-storage-resources) | `storage-emc-unisphere-restapi-storage-resources` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware health {/* #storage-emc-unisphere-restapi-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'disk', 'fan', 'iomodule', 'memmodule', 'psu', 'dpe', 'battery', 'ssd', 'sp'. |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter='disk,dpe_disk_6' |
+| `WARNING` |  | Set warning threshold for 'temperature', 'power' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'power' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='disk,OK,ok_but' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pools status/usage {/* #storage-emc-unisphere-restapi-pools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set warning threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-STATUS` | `'%{status} =~ /ok_but\|degraded\|minor/i'` | Set warning threshold for status (Default: '%\{status\} =~ /ok_but\|degraded\|minor/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /major\|critical\|non_recoverable/i'` | Set critical threshold for status (Default: '%\{status\} =~ /major\|critical\|non_recoverable/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-USAGE-PRCT` | `90` | Threshold warning usage (%) |
+| `WARNING-SUBSCRIBED-PRCT` | `90` | Threshold warning subscribed (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Threshold critical usage (%) |
+| `CRITICAL-SUBSCRIBED-PRCT` | `95` | Threshold critical subscribed (%) |
+| `FILTER-NAME` |  | Filter pool name (can be a regexp) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-SUBSCRIBED` |  | Threshold warning subscribed |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-SUBSCRIBED` |  | Threshold critical subscribed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pool.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `pool.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `pool.space.usage.percentage` | `%` | used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `pool.subscribed.usage.bytes` | `B` |  | `WARNING-SUBSCRIBED`, `CRITICAL-SUBSCRIBED` |
+| `pool.subscribed.usage.percentage` | `%` | subcribed used :  %% | `WARNING-SUBSCRIBED-PRCT`, `CRITICAL-SUBSCRIBED-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Replication status {/* #storage-emc-unisphere-restapi-replications */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-HEALTH-STATUS` | `'%{health_status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{health_status\} =~ /unknown/i'). Can used special variables like: %\{health_status\}, %\{display\} |
+| `UNKNOWN-REPLICATION-STATUS` | `'%{repl_status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{repl_status\} =~ /unknown/i'). Can used special variables like: %\{repl_status\}, %\{display\} |
+| `WARNING-HEALTH-STATUS` | `'%{health_status} =~ /ok_but\|degraded\|minor/i'` | Set warning threshold for status (Default: '%\{health_status\} =~ /ok_but\|degraded\|minor/i'). Can used special variables like: %\{health_status\}, %\{display\} |
+| `WARNING-REPLICATION-STATUS` | `'%{repl_status} =~ /syncing/i'` | Set warning threshold for status (Default: '%\{repl_status\} =~ /syncing/i'). Can used special variables like: %\{repl_status\}, %\{display\} |
+| `CRITICAL-HEALTH-STATUS` | `'%{health_status} =~ /major\|critical\|non_recoverable/i'` | Set critical threshold for status (Default: '%\{health_status\} =~ /major\|critical\|non_recoverable/i'). Can used special variables like: %\{health_status\}, %\{display\} |
+| `CRITICAL-REPLICATION-STATUS` | `'%{repl_status} =~ /inconsistent/i'` | Set critical threshold for status (Default: '%\{repl_status\} =~ /inconsistent/i'). Can used special variables like: %\{repl_status\}, %\{display\} |
+| `FILTER-NAME` |  | Filter replication name (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage resources {/* #storage-emc-unisphere-restapi-storage-resources */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set warning threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-STATUS` | `'%{status} =~ /ok_but\|degraded\|minor/i'` | Set warning threshold for status (Default: '%\{status\} =~ /ok_but\|degraded\|minor/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /major\|critical\|non_recoverable/i'` | Set critical threshold for status (Default: '%\{status\} =~ /major\|critical\|non_recoverable/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-USAGE-PRCT` | `90` | Threshold warning usage (%) |
+| `WARNING-ALLOCATED-PRCT` | `90` | Threshold warning allocated (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Threshold critical usage (%) |
+| `CRITICAL-ALLOCATED-PRCT` | `95` | Threshold critical allocated (%) |
+| `FILTER-NAME` |  | Filter name (can be a regexp) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-ALLOCATED` |  | Threshold warning allocated |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-ALLOCATED` |  | Threshold critical allocated |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storageresource.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storageresource.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `storageresource.space.usage.percentage` | `%` | used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `storageresource.allocated.usage.bytes` | `B` |  | `WARNING-ALLOCATED`, `CRITICAL-ALLOCATED` |
+| `storageresource.allocated.usage.percentage` | `%` | allocated used :  %% | `WARNING-ALLOCATED-PRCT`, `CRITICAL-ALLOCATED-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20241011 - 20241124</summary>
+
+- Command `storage-emc-unisphere-restapi-hardware`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+- Command `storage-emc-unisphere-restapi-pools`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+    - Macro `HTTP-BACKEND` added
+    - Macro `FILTER-COUNTERS` removed
+- Command `storage-emc-unisphere-restapi-replications`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+- Command `storage-emc-unisphere-restapi-storage-resources`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+    - Macro `HTTP-BACKEND` added
+    - Macro `FILTER-COUNTERS` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231114 - 20231230</summary>
+
+- Service template [`storage-emc-unisphere-restapi-replications`](#storage-emc-unisphere-restapi-replications)
+    - Macro `UNKNOWN-REPLICATION-STATUS` added (default `'%{repl_status} =~ /unknown/i'`)
+    - Macro `WARNING-REPLICATION-STATUS` added (default `'%{repl_status} =~ /syncing/i'`)
+    - Macro `CRITICAL-REPLICATION-STATUS` added (default `'%{repl_status} =~ /inconsistent/i'`)
+    - Macro `UNKNOWN-REPL-STATUS` removed
+    - Macro `WARNING-REPL-STATUS` removed
+    - Macro `CRITICAL-REPL-STATUS` removed
+- Command `storage-emc-unisphere-restapi-replications`
+    - Option `--unknown-replication-status=$_SERVICEUNKNOWN-REPLICATION-STATUS$` added
+    - Option `--warning-replication-status=$_SERVICEWARNING-REPLICATION-STATUS$` added
+    - Option `--critical-replication-status=$_SERVICECRITICAL-REPLICATION-STATUS$` added
+    - Option `--unknown-repl-status=$_SERVICEUNKNOWN-REPL-STATUS$` removed
+    - Option `--warning-repl-status=$_SERVICEWARNING-REPL-STATUS$` removed
+    - Option `--critical-repl-status=$_SERVICECRITICAL-REPL-STATUS$` removed
+    - Macro `UNKNOWN-REPLICATION-STATUS` added
+    - Macro `WARNING-REPLICATION-STATUS` added
+    - Macro `CRITICAL-REPLICATION-STATUS` added
+    - Macro `HTTP-BACKEND` added
+    - Macro `FILTER-COUNTERS` removed
+    - Macro `UNKNOWN-REPL-STATUS` removed
+    - Macro `WARNING-REPL-STATUS` removed
+    - Macro `CRITICAL-REPL-STATUS` removed
+
+</details>

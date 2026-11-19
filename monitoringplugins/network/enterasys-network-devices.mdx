@@ -1,0 +1,352 @@
+---
+title: "Enterasys network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Enterasys.png";
+
+<PluginPackHeader name="Enterasys network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Enterasys network devices through SNMP: CPU, memory and storage usage, interfaces and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-enterasys-snmp-cpu)
+* [Interfaces](#network-enterasys-snmp-interfaces)
+* [Memory](#network-enterasys-snmp-memory)
+* [Storage](#network-enterasys-snmp-storages)
+* [Uptime](#network-enterasys-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-enterasys-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Enterasys-Switch-SNMP
+
+*Enterasys Networks Switch SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-enterasys-snmp-cpu) | `network-enterasys-snmp-cpu` |
+| [Memory](#network-enterasys-snmp-memory) | `network-enterasys-snmp-memory` |
+| [Storage](#network-enterasys-snmp-storages) | `network-enterasys-snmp-storages` |
+| [Uptime](#network-enterasys-snmp-uptime) | `network-enterasys-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-enterasys-snmp-interfaces) | `network-enterasys-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-enterasys-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CORE-1M` | `85` | Warning threshold for core CPU 1M |
+| `WARNING-CORE-5M` | `80` | Warning threshold for core CPU 5M |
+| `WARNING-AVERAGE-1M` | `95` | Warning threshold for average CPU 1M |
+| `WARNING-AVERAGE-5M` | `90` | Warning threshold for average CPU 5M |
+| `WARNING-CORE-5S` |  | Warning threshold for core CPU 5S |
+| `CRITICAL-CORE-5S` |  | Critical  threshold for core CPU 5S |
+| `CRITICAL-CORE-1M` |  | Critical threshold for core CPU 1M |
+| `CRITICAL-CORE-5M` |  | Critical threshold for core CPU 5M |
+| `WARNING-AVERAGE-5S` |  | Warning threshold for average CPU 5S |
+| `CRITICAL-AVERAGE-5S` |  | Critical threshold for average CPU 5S |
+| `CRITICAL-AVERAGE-1M` |  | Critical threshold for average CPU 1M |
+| `CRITICAL-AVERAGE-5M` |  | Critical threshold for average CPU 5M |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-ENTITY-NAME` |  | Filter entity name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-AVERAGE-5S`, `CRITICAL-AVERAGE-5S` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-AVERAGE-1M`, `CRITICAL-AVERAGE-1M` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-AVERAGE-5M`, `CRITICAL-AVERAGE-5M` |
+| `core.cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-CORE-5S`, `CRITICAL-CORE-5S` |
+| `core.cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-CORE-1M`, `CRITICAL-CORE-1M` |
+| `core.cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-CORE-5M`, `CRITICAL-CORE-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-enterasys-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PERCENT` | `80` | Warning threshold memory usage (%) |
+| `CRITICAL-USAGE-PERCENT` | `90` | Critical threshold memory usage (%) |
+| `WARNING-USAGE` |  | Warning threshold memory usage (B) |
+| `CRITICAL-USAGE` |  | Critical threshold memory usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold memory usage free (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold memory usage free (B) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-ENTITY-NAME` |  | Filter entity name (can be a regexp) |
+| `FILTER-MEMORY-NAME` |  | Filter memory name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PERCENT`, `CRITICAL-USAGE-PERCENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-enterasys-snmp-storages */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PERCENT` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PERCENT` | `90` | Threshold critical usage (%) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-ENTITY-NAME` |  | Filter entity name (can be a regexp) |
+| `FILTER-STORAGE-NAME` |  | Filter storage name (can be a regexp) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `storage.space.usage.percentage` | `%` |  | `WARNING-USAGE-PERCENT`, `CRITICAL-USAGE-PERCENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-enterasys-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` |  |
+| `CRITICAL-UPTIME` | `900:` |  |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (default: 5000) You increase the chance of not missing a reboot if you decrease that value. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-enterasys-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'counter') |
+| `OID-DISPLAY` | `ifDesc` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `90` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `WARNING-SPEED` |  | Threshold warning speed |
+| `CRITICAL-SPEED` |  | Threshold critical speed |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `OID-EXTRA-DISPLAY` |  | Add an OID to display |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s | `WARNING-SPEED`, `CRITICAL-SPEED` |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Command `network-enterasys-snmp-storage`
+    - Option `--filter-storage-name=$_SERVICEFILTER-STORAGE-NAME$` added
+    - Option `--filter-memory-name=$_SERVICEFILTER-MEMORY-NAME$` removed
+    - Macro `FILTER-STORAGE-NAME` added
+    - Macro `FILTER-MEMORY-NAME` removed
+
+</details>

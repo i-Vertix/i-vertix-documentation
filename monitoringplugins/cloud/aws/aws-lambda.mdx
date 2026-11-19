@@ -12,10 +12,11 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-Lambda.png";
 
 ## Description
 
-### AWS Lambda monitoring
-protocols used: Rest API
+Monitors AWS Lambda functions through Amazon CloudWatch: invocations, errors, throttles, dead-letter errors, duration and the iterator age.
 
-- Invocations
+The plugin pack provides these checks:
+
+* [Lambda - Invocations](#cloud-aws-lambda-invocations)
 
 ## Prerequisites
 
@@ -23,6 +24,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-Lambda](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

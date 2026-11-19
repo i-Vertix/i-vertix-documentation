@@ -15,6 +15,8 @@ sidebar:
     items:
       - id: 3cx-voip-pbx
         label: 3CX Voip PBX
+      - id: active-directory-i-vertix-agent
+        label: Active Directory (i-Vertix agent)
       - id: active-directory-winrm
         label: Active Directory (WinRM)
       - id: activemq
@@ -23,6 +25,8 @@ sidebar:
         label: Apache Kafka
       - id: apache-solr
         label: Apache Solr
+      - id: apache-webserver
+        label: Apache Webserver
       - id: apache-zookeeper
         label: Apache Zookeeper
       - id: asterisk-voip
@@ -71,6 +75,10 @@ sidebar:
         label: HTTP(S) or website
       - id: i-vertix-business-intelligence-server
         label: i-Vertix Business Intelligence Server
+      - id: i-vertix3-monitoring-central-legacy
+        label: i-Vertix3 Monitoring Central (legacy)
+      - id: i-vertix3-poller-legacy
+        label: i-Vertix3 Poller (legacy)
       - id: i-vertix4-monitoring-central
         label: i-Vertix4 Monitoring Central
       - id: i-vertix4-poller
@@ -127,6 +135,8 @@ sidebar:
         label: Oracle Weblogic Application Server
       - id: pacemaker
         label: Pacemaker
+      - id: php-fpm
+        label: PHP-FPM
       - id: podman-container
         label: Podman container
       - id: proxmox-mail-gateway
@@ -173,8 +183,12 @@ sidebar:
         label: Squid HTTP Proxy
       - id: ssh-login-active
         label: SSH login (active)
+      - id: ssl-certificates-x509
+        label: SSL certificates - x509
       - id: tcp-ports-active
         label: TCP ports (active)
+      - id: tomcat-basic
+        label: Tomcat basic
       - id: tomcat-jmx
         label: Tomcat JMX
       - id: udp-ports-active
@@ -183,18 +197,26 @@ sidebar:
         label: Varnish cache
       - id: veeam-backup-em-enterprise-manager
         label: Veeam Backup EM (Enterprise Manager)
+      - id: veeam-vbr-i-vertix-agent
+        label: Veeam VBR (i-Vertix agent)
       - id: veeam-vbr-rest-api
         label: Veeam VBR (Rest API)
       - id: veeam-vbr-winrm
         label: Veeam VBR (WinRM)
       - id: vernemq
         label: VerneMQ
+      - id: vmware-vcenter
+        label: VMware vCenter
+      - id: vmware-vsphere-vcsa-legacy
+        label: VMware vSphere vCSA (legacy)
       - id: vmware-vsphere8-vcsa
         label: VMware vSphere8 vCSA
       - id: wallix-bastion
         label: Wallix Bastion
       - id: whois-domain-verification
         label: Whois Domain verification
+      - id: windows-dhcp-server
+        label: Windows DHCP Server
   - id: cloud
     label: Cloud
     items:

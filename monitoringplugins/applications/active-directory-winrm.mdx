@@ -1,0 +1,413 @@
+---
+title: "Active Directory (WinRM)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/Windows.png";
+
+<PluginPackHeader name="Active Directory (WinRM)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors Active Directory domain controllers through WinRM: the dcdiag results and the status of the core services such as AD DS, DNS, DFS, Netlogon, Kerberos and Windows Time.
+
+The plugin pack provides these checks:
+
+* [Active Directory - dcdiag](#apps-microsoft-activedirectory-wsman-dcdiag)
+* [Service status - Active Directory Domain Services](#os-windows-wsman-services-ntds)
+* [Service status - Active Directory Web Services](#os-windows-wsman-services-adws)
+* [Service status - DFS Namespace](#os-windows-wsman-services-dfs)
+* [Service status - DFS Replication](#os-windows-wsman-services-dfsr)
+* [Service status - DNS Server](#os-windows-wsman-services-dns)
+* [Service status - Intersite Messaging](#os-windows-wsman-services-ismserv)
+* [Service status - Kerberos Key Distribution Center](#os-windows-wsman-services-kdc)
+* [Service status - Netlogon](#os-windows-wsman-services-netlogon)
+* [Service status - Remote Procedure Call](#os-windows-wsman-services-rpcss)
+* [Service status - Security Accounts Manager](#os-windows-wsman-services-samss)
+* [Service status - Windows Time](#os-windows-wsman-services-w32time)
+
+
+## Host Templates
+
+### Active-Directory-WinRM
+
+*Active Directory (WinRM)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WSMAN-PORT` | `5986` | Define the port to connect to (default: 5985). |
+| `WSMAN-PATH` | `/wsman` | Define the path of the WSMAN URL if it has been customized (default: '/wsman'). |
+| `WSMAN-SCHEME` | `https` | Define the transport scheme (default: 'http'). |
+| `WSMAN-TIMEOUT` | `30` | Define the HTTP transport timeout in seconds (default: 30). |
+| `WSMAN-AUTH-METHOD` |  | Define the authentication method. Available methods: `noauth`, `basic` (default), `pass`, `digest`, `ntlm`, `gssnegotiate`. |
+| `WSMAN-PASSWORD` | *(password)* | Define the password associated with the user name. |
+| `WSMAN-USERNAME` |  | Define the username for authentication. |
+| `WSMAN-PROXY-URL` |  | Define the URL of the HTTP proxy to use. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Active Directory - dcdiag](#apps-microsoft-activedirectory-wsman-dcdiag) | `apps-microsoft-activedirectory-wsman-dcdiag` |
+| [Service status - Active Directory Web Services](#os-windows-wsman-services-adws) | `os-windows-wsman-services-adws` |
+| [Service status - DFS Namespace](#os-windows-wsman-services-dfs) | `os-windows-wsman-services-dfs` |
+| [Service status - DFS Replication](#os-windows-wsman-services-dfsr) | `os-windows-wsman-services-dfsr` |
+| [Service status - DNS Server](#os-windows-wsman-services-dns) | `os-windows-wsman-services-dns` |
+| [Service status - Intersite Messaging](#os-windows-wsman-services-ismserv) | `os-windows-wsman-services-IsmServ` |
+| [Service status - Kerberos Key Distribution Center](#os-windows-wsman-services-kdc) | `os-windows-wsman-services-kdc` |
+| [Service status - Netlogon](#os-windows-wsman-services-netlogon) | `os-windows-wsman-services-netlogon` |
+| [Service status - Active Directory Domain Services](#os-windows-wsman-services-ntds) | `os-windows-wsman-services-ntds` |
+| [Service status - Remote Procedure Call](#os-windows-wsman-services-rpcss) | `os-windows-wsman-services-rpcss` |
+| [Service status - Security Accounts Manager](#os-windows-wsman-services-samss) | `os-windows-wsman-services-samss` |
+| [Service status - Windows Time](#os-windows-wsman-services-w32time) | `os-windows-wsman-services-w32time` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Active Directory - dcdiag {/* #apps-microsoft-activedirectory-wsman-dcdiag */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LANGUAGE` | `en` | Set the language used in config file (default: 'en') |
+| `EXTRA-OPTS` | `--dfsr --noeventlog` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Active Directory Web Services {/* #os-windows-wsman-services-adws */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `ADWS` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - DFS Namespace {/* #os-windows-wsman-services-dfs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `Dfs` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - DFS Replication {/* #os-windows-wsman-services-dfsr */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `DFSR` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - DNS Server {/* #os-windows-wsman-services-dns */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `DNS` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Intersite Messaging {/* #os-windows-wsman-services-ismserv */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `IsmServ` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Kerberos Key Distribution Center {/* #os-windows-wsman-services-kdc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `Kdc` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Netlogon {/* #os-windows-wsman-services-netlogon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `Netlogon` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Active Directory Domain Services {/* #os-windows-wsman-services-ntds */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `NTDS` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Remote Procedure Call {/* #os-windows-wsman-services-rpcss */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `RpcSs` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Security Accounts Manager {/* #os-windows-wsman-services-samss */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `SamSs` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service status - Windows Time {/* #os-windows-wsman-services-w32time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICE-NAME` | `W32Time` | Service to monitor |
+| `SERVICE-STATE` |  | Available states are: - Stopped - Start Pending - Stop Pending - Running - Continue Pending - Pause Pending - Paused - Unknown |
+| `EXCLUDE` |  | Exclude some services for --auto option (Can be a regexp) |
+| `WARNING` |  | Return warning |
+| `CRITICAL` |  | Return critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260331</summary>
+
+- Host template `Active-Directory-WinRM`
+    - Macro `WSMAN-AUTH-METHOD`: default changed from `basic` to *(empty)*
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Plugin pack `Active Directory (WinRM)`
+    - Renamed from `Active Directory (WS-Management)`
+- Host template `Active-Directory-WinRM`
+    - Renamed from `Active-Directory-wsman`
+    - Alias changed from `Active Directory wsman` to `Active Directory (WinRM)`
+
+</details>

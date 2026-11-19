@@ -1,0 +1,162 @@
+---
+title: "NGINX Webserver"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Nginx.png";
+
+<PluginPackHeader name="NGINX Webserver" image={image} category="Application" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors NGINX web servers through the status page: accepted and handled connections, dropped connections and requests per second.
+
+The plugin pack provides these checks:
+
+* [NGINX Connections](#apps-nginx-serverstatus-connections)
+* [NGINX Requests](#apps-nginx-serverstatus-requests)
+
+
+## Host Templates
+
+### Nginx-Server
+
+*Nginx Webserver* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NGINX-ENDPOINT` | `/nginx_status` | Set path to get server-status page (default: '/nginx_status') |
+| `NGINX-PASSWORD` |  | Specify password for basic authentication |
+| `NGINX-PORT` |  | Port used by the web server (default: 80) |
+| `NGINX-PROTO` |  | Specify https if needed |
+| `NGINX-SSL-OPT` |  | Set SSL Options (--ssl-opt="SSL_version => TLSv1" --ssl-opt="SSL_verify_mode => SSL_VERIFY_NONE"). |
+| `NGINX-USERNAME` |  | Specify username for basic authentication. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [NGINX Connections](#apps-nginx-serverstatus-connections) | `apps-nginx-serverstatus-connections` |
+| [NGINX Requests](#apps-nginx-serverstatus-requests) | `apps-nginx-serverstatus-requests` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### NGINX Connections {/* #apps-nginx-serverstatus-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CONNECTIONS-WAITING` | `250` | Warning threshold waiting connections |
+| `CRITICAL-CONNECTIONS-WAITING` | `500` | Critical threshold waiting connections |
+| `CRITICAL-CONNECTIONS-ACTIVE` |  | Critical threshold active connections |
+| `CRITICAL-CONNECTIONS-READING` |  | Critical threshold reading connections |
+| `CRITICAL-CONNECTIONS-WRITING` |  | Critical threshold writing connections |
+| `WARNING-CONNECTIONS-ACTIVE` |  | Warning threshold active connections |
+| `WARNING-CONNECTIONS-READING` |  | Warning threshold reading connections |
+| `WARNING-CONNECTIONS-WRITING` |  | Warning threshold writing connections |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NGINX Requests {/* #apps-nginx-serverstatus-requests */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-CONNECTIONS-ACCEPTED` |  | Critical threshold accepts |
+| `CRITICAL-CONNECTIONS-HANDLED` |  | Critical threshold handled |
+| `CRITICAL-REQUESTS` |  | Critical threshold requests |
+| `WARNING-CONNECTIONS-ACCEPTED` |  | Warning threshold accepts |
+| `WARNING-CONNECTIONS-HANDLED` |  | Warning threshold handled |
+| `WARNING-REQUESTS` |  | Warning threshold requests |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `server.connections.accepted.persecond` | `/s` |  | `WARNING-CONNECTIONS-ACCEPTED`, `CRITICAL-CONNECTIONS-ACCEPTED` |
+| `server.connections.handled.persecond` | `/s` |  | `WARNING-CONNECTIONS-HANDLED`, `CRITICAL-CONNECTIONS-HANDLED` |
+| `server.connections.dropped.count` |  | connections dropped |  |
+| `server.requests.persecond` | `/s` |  | `WARNING-REQUESTS`, `CRITICAL-REQUESTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

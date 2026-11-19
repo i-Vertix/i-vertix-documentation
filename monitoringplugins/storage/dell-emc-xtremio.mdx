@@ -1,0 +1,278 @@
+---
+title: "Dell EMC XtremIO"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dell.png";
+
+<PluginPackHeader name="Dell EMC XtremIO" image={image} category="Storage" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Dell EMC XtremIO arrays through the REST API: cluster health, data protection groups, SSD endurance and IOPS, storage controllers, and the status and CPU of the XEnvs.
+
+The plugin pack provides these checks:
+
+* [Cluster health](#storage-emc-xtremio-restapi-cluster-health)
+* [DPG - Data protection group](#storage-emc-xtremio-restapi-dgp)
+* [SSDS endurance](#storage-emc-xtremio-restapi-ssds-endurance)
+* [SSDS IOPS](#storage-emc-xtremio-restapi-ssds-iops)
+* [Storage controllers](#storage-emc-xtremio-restapi-storage-controllers)
+* [XENVS CPU](#storage-emc-xtremio-restapi-xenvs-cpu)
+* [XENVS status](#storage-emc-xtremio-restapi-xenvs-state)
+
+
+## Host Templates
+
+### Dell-EMC-XtremIO
+
+*Dell EMC XtremIO* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-PROTO` | `https` | *(not used by the check command)* |
+| `XTREMIO-USERNAME` |  | Xtremio username. |
+| `XTREMIO-PASSWORD` |  | Xtremio password. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster health](#storage-emc-xtremio-restapi-cluster-health) | `storage-emc-xtremio-restapi-cluster-health` |
+| [DPG - Data protection group](#storage-emc-xtremio-restapi-dgp) | `storage-emc-xtremio-restapi-dgp` |
+| [SSDS endurance](#storage-emc-xtremio-restapi-ssds-endurance) | `storage-emc-xtremio-restapi-ssds-endurance` |
+| [SSDS IOPS](#storage-emc-xtremio-restapi-ssds-iops) | `storage-emc-xtremio-restapi-ssds-iops` |
+| [Storage controllers](#storage-emc-xtremio-restapi-storage-controllers) | `storage-emc-xtremio-restapi-storage-controllers` |
+| [XENVS CPU](#storage-emc-xtremio-restapi-xenvs-cpu) | `storage-emc-xtremio-restapi-xenvs-cpu` |
+| [XENVS status](#storage-emc-xtremio-restapi-xenvs-state) | `storage-emc-xtremio-restapi-xenvs-state` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster health {/* #storage-emc-xtremio-restapi-cluster-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` |  | Filter some parts (comma seperated list) Can also exclude specific instance: --filter=cluster,CLUSTER-NAME |
+| `THRESHOLD-OVERLOAD` |  | Overload a specific threshold, e.g --threshold-overload="consistency-state,Xtremio,CRITICAL,healthy" |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DPG - Data protection group {/* #storage-emc-xtremio-restapi-dgp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter data protection groups by name (can be a regexp) |
+| `CRITICAL-HEALTH-INDICATOR` | `'%{health} !~ /done\|normal\|null/i'` | Set critical threshold for status (Default: '%\{health\} !~ /done\|normal\|null/i'). Can used special variables like: %\{health\}, %\{indicator\} |
+| `UNKNOWN-HEALTH-INDICATOR` |  | Set unknown threshold for status. Can used special variables like: %\{health\}, %\{indicator\} |
+| `WARNING-HEALTH-INDICATOR` |  | Set warning threshold for status. Can used special variables like: %\{health\}, %\{indicator\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSDS endurance {/* #storage-emc-xtremio-restapi-ssds-endurance */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `20:` | Warning trigger for SSD endurance |
+| `CRITICAL` | `10:` | Critical trigger for SSD endurance |
+| `FILTER` |  | Filter some parts (comma seperated list) Can also exclude specific instance: --filter=ssds,SSD-NAME-NUMBER |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSDS IOPS {/* #storage-emc-xtremio-restapi-ssds-iops */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter SSD name (can be a regexp). (e.g --filter-name '.*' for all SSDs) |
+| `WARNING-TOTAL` |  | Warning threshold Total IOPS |
+| `WARNING-TOTAL-READ` |  | Warning threshold Total read IOPS |
+| `WARNING-TOTAL-WRITE` |  | Warning threshold Total write IOPS |
+| `WARNING-GLOBAL` |  | Warning threshold Global IOPS |
+| `WARNING-READ` |  | Warning threshold read IOPS |
+| `WARNING-WRITE` |  | Warning threshold write IOPS |
+| `CRITICAL-TOTAL` |  | Critical threshold Total IOPS |
+| `CRITICAL-TOTAL-READ` |  | Critical threshold Total read IOPS |
+| `CRITICAL-TOTAL-WRITE` |  | Critical threshold Total write IOPS |
+| `CRITICAL-GLOBAL` |  | Critical threshold Global IOPS |
+| `CRITICAL-READ` |  | Critical threshold read IOPS |
+| `CRITICAL-WRITE` |  | Critical threshold write IOPS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total` | `iops` | Total :  iops | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `total_read` | `iops` | Total read :  iops | `WARNING-TOTAL-READ`, `CRITICAL-TOTAL-READ` |
+| `total_write` | `iops` | Total write :  iops | `WARNING-TOTAL-WRITE`, `CRITICAL-TOTAL-WRITE` |
+| `global` | `iops` | Global :  iops | `WARNING-GLOBAL`, `CRITICAL-GLOBAL` |
+| `read` | `iops` | Read :  iops | `WARNING-READ`, `CRITICAL-READ` |
+| `write` | `iops` | Write :  iopss | `WARNING-WRITE`, `CRITICAL-WRITE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage controllers {/* #storage-emc-xtremio-restapi-storage-controllers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter storage controllers by name (can be a regexp) |
+| `CRITICAL-HEALTH-INDICATOR` | `'%{health} !~ /done\|normal\|null/i'` | Set critical threshold for status (Default: '%\{health\} !~ /done\|normal\|null/i'). Can used special variables like: %\{health\}, %\{indicator\} |
+| `UNKNOWN-HEALTH-INDICATOR` |  | Set unknown threshold for status. Can used special variables like: %\{health\}, %\{indicator\} |
+| `WARNING-HEALTH-INDICATOR` |  | Set warning threshold for status. Can used special variables like: %\{health\}, %\{indicator\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### XENVS CPU {/* #storage-emc-xtremio-restapi-xenvs-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Value to trigger a warning alarm on CPU usage |
+| `CRITICAL` | `90` | Value to trigger a critical alarm on CPU usage |
+| `FILTER` |  | Filter some parts (comma seperated list) Can also exclude specific instance: --filter=cpu,XENVS-NAME-NUMBER |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### XENVS status {/* #storage-emc-xtremio-restapi-xenvs-state */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` |  | Filter some parts (comma seperated list) Can also exclude specific instance: --filter=device,cluster-1_xxxx |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='xenvs_state,CRITICAL,^(?!(ok)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

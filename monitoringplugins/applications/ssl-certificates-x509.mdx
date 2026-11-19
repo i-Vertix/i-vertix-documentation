@@ -1,0 +1,275 @@
+---
+title: "SSL certificates - x509"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Other/Security3.png";
+
+<PluginPackHeader name="SSL certificates - x509" image={image} category="Application" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors the validity of x509 SSL/TLS certificates: HTTPS, SMTP, IMAP, POP3 and FTP services as well as certificate files, with the days left until expiration.
+
+The plugin pack provides these checks:
+
+* [Certificate File validity](#apps-protocols-x509-certificate-file)
+* [Certificate validity](#apps-protocols-x509-certificate-opensslcli)
+* [FTP certificate validity](#apps-protocols-x509-certificate-tcp-ftp)
+* [IMAP certificate validity](#apps-protocols-x509-certificate-tcp-imap)
+* [POP3 certificate validity](#apps-protocols-x509-certificate-tcp-pop3)
+* [SMTP certificate validity](#apps-protocols-x509-certificate-tcp-smtp)
+* [SSL certificate validity](#apps-protocols-x509-certificate-https) (`apps-protocols-x509-certificate-https`)
+* [SSL certificate validity](#apps-protocols-x509-certificate-https-internal) (`apps-protocols-x509-certificate-https-internal`)
+* [SSL certificate validity](#apps-protocols-x509-certificate-https-letsencrypt) (`apps-protocols-x509-certificate-https-letsencrypt`)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Certificate File validity {/* #apps-protocols-x509-certificate-file */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `%{expiration} < 30` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 10` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 10'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CERTIFICATE` |  | Certificate file (PEM or DER) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSL certificate validity {/* #apps-protocols-x509-certificate-https */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used by host |
+| `SSL-OPT1` | `SSL_verify_mode => SSL_VERIFY_PEER` | Verify certificate: --ssl-opt="SSL_verify_mode => SSL_VERIFY_PEER" |
+| `SSL-OPT2` | `SSL_version => TLSv1` | SSL_version => TLSv1 |
+| `WARNING-STATUS` | `%{expiration} < 30` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 10` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 10'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `HOSTNAME` |  | IP Addr/FQDN of the webserver host |
+| `HTTP-PEER-ADDR` |  | Set the address you want to connect (Useful if hostname is only a vhost. no ip resolve) |
+| `HTTP-BACKEND` |  | Set the backend used (Default: 'lwp') For curl: --http-backend=curl |
+| `URLPATH` |  | Set path to get webpage (Default: '/') |
+| `EXTRAOPTIONS` |  | Display extended status information (long output). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSL certificate validity {/* #apps-protocols-x509-certificate-https-internal */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSL-OPT1` | `SSL_verify_mode => SSL_VERIFY_NONE` | Verify certificate: --ssl-opt="SSL_verify_mode => SSL_VERIFY_PEER" |
+| `SSL-OPT2` |  | SSL_version => TLSv1 |
+| `PORT` |  | Port used by host |
+| `HOSTNAME` |  | IP Addr/FQDN of the webserver host |
+| `HTTP-PEER-ADDR` |  | Set the address you want to connect (Useful if hostname is only a vhost. no ip resolve) |
+| `HTTP-BACKEND` |  | Set the backend used (Default: 'lwp') For curl: --http-backend=curl |
+| `WARNING-STATUS` |  | Set warning threshold for status. (Default: '%\{expiration\} &lt; 60'). Can use special variables like: %\{expiration\} (in days), %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\} (in days), %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `URLPATH` |  | Set path to get webpage (Default: '/') |
+| `EXTRAOPTIONS` |  | Display extended status information (long output). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSL certificate validity {/* #apps-protocols-x509-certificate-https-letsencrypt */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `%{expiration} < 15` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 60'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 5 \|\| %{issuer} !~ /O=Let.s Encrypt/` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `PORT` |  | Port used by host |
+| `HOSTNAME` |  | IP Addr/FQDN of the webserver host |
+| `HTTP-PEER-ADDR` |  | Set the address you want to connect (Useful if hostname is only a vhost. no ip resolve) |
+| `HTTP-BACKEND` |  | Set the backend used (Default: 'lwp') For curl: --http-backend=curl |
+| `URLPATH` |  | Set path to get webpage (Default: '/') |
+| `SSL-OPT1` |  | Verify certificate: --ssl-opt="SSL_verify_mode => SSL_VERIFY_PEER" |
+| `SSL-OPT2` |  | SSL_version => TLSv1 |
+| `EXTRAOPTIONS` |  | Display extended status information (long output). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Certificate validity {/* #apps-protocols-x509-certificate-opensslcli */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used by host |
+| `WARNING-STATUS` | `%{expiration} < 60` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 60'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 30` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `HOSTNAME` |  | IP Addr/FQDN of the host |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### FTP certificate validity {/* #apps-protocols-x509-certificate-tcp-ftp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `21` | Port used by host |
+| `SSL-OPT1` | `SSL_verify_mode => SSL_VERIFY_PEER` | Verify certificate: --ssl-opt="SSL_verify_mode => SSL_VERIFY_PEER" |
+| `STARTTLS` | `ftp` | Init plaintext connection and start_SSL after. Can be: 'smtp', 'ftp' |
+| `WARNING-STATUS` | `%{expiration} < 30` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 10` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 10'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `SSL-OPT2` | `SSL_version => 'TLSv1'` | SSL_version => 'TLSv1' |
+| `HOSTNAME` |  | IP Addr/FQDN of the host |
+| `SERVERNAME` |  | ervername of the host for SNI support (only with IO:\:Socket:\:SSL >= 1.56) (eg: foo.bar.com) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IMAP certificate validity {/* #apps-protocols-x509-certificate-tcp-imap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `993` | Port used by host |
+| `SSL-OPT1` | `SSL_verify_mode => SSL_VERIFY_PEER` | Verify certificate: --ssl-opt="SSL_verify_mode => SSL_VERIFY_PEER" |
+| `STARTTLS` | `imap` | Init plaintext connection and start_SSL after. Can be: 'smtp', 'ftp' |
+| `WARNING-STATUS` | `%{expiration} < 30` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 10` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 10'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `SSL-OPT2` | `SSL_version => 'TLSv1'` | SSL_version => 'TLSv1' |
+| `HOSTNAME` |  | IP Addr/FQDN of the host |
+| `SERVERNAME` |  | ervername of the host for SNI support (only with IO:\:Socket:\:SSL >= 1.56) (eg: foo.bar.com) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### POP3 certificate validity {/* #apps-protocols-x509-certificate-tcp-pop3 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `995` | Port used by host |
+| `SSL-OPT1` | `SSL_verify_mode => SSL_VERIFY_PEER` | Verify certificate: --ssl-opt="SSL_verify_mode => SSL_VERIFY_PEER" |
+| `STARTTLS` | `pop3` | Init plaintext connection and start_SSL after. Can be: 'smtp', 'ftp' |
+| `WARNING-STATUS` | `%{expiration} < 30` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 10` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 10'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `SSL-OPT2` | `SSL_version => 'TLSv1'` | SSL_version => 'TLSv1' |
+| `HOSTNAME` |  | IP Addr/FQDN of the host |
+| `SERVERNAME` |  | ervername of the host for SNI support (only with IO:\:Socket:\:SSL >= 1.56) (eg: foo.bar.com) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SMTP certificate validity {/* #apps-protocols-x509-certificate-tcp-smtp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `587` | Port used by host |
+| `SSL-OPT1` | `SSL_verify_mode => SSL_VERIFY_PEER` | Verify certificate: --ssl-opt="SSL_verify_mode => SSL_VERIFY_PEER" |
+| `STARTTLS` | `smtp` | Init plaintext connection and start_SSL after. Can be: 'smtp', 'ftp' |
+| `WARNING-STATUS` | `%{expiration} < 30` | Set warning threshold for status. (Default: '%\{expiration\} &lt; 30'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `CRITICAL-STATUS` | `%{expiration} < 10` | Set critical threshold for status. (Default: '%\{expiration\} &lt; 10'). Can use special variables like: %\{expiration\}, %\{subject\}, %\{issuer\}, %\{alt_subjects\} |
+| `SSL-OPT2` | `SSL_version => 'TLSv1'` | SSL_version => 'TLSv1' |
+| `HOSTNAME` |  | IP Addr/FQDN of the host |
+| `SERVERNAME` |  | ervername of the host for SNI support (only with IO:\:Socket:\:SSL >= 1.56) (eg: foo.bar.com) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Service template [`apps-protocols-x509-certificate-https-internal`](#apps-protocols-x509-certificate-https-internal)
+    - Service template added
+
+</details>

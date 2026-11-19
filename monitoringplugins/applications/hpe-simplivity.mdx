@@ -1,0 +1,260 @@
+---
+title: "HPE Simplivity"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Simplivity.png";
+
+<PluginPackHeader name="HPE Simplivity" image={image} category="Application" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors HPE SimpliVity through its API: the status of hosts and virtual machines and the capacity, deduplication and compression of OmniStack clusters.
+
+The plugin pack provides these checks:
+
+* [Hosts status](#apps-virtualization-hpe-simplivity-restapi-hosts)
+* [Omnistack Clusters](#apps-virtualization-hpe-simplivity-restapi-omnistack-clusters)
+* [Virtual Machines status](#apps-virtualization-hpe-simplivity-restapi-virtual-machines)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Hosts status](#apps-virtualization-hpe-simplivity-restapi-hosts) | `Host status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### HPE-Simplivity
+
+*HPE Simplivity* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | OmniStack API port (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | OmniStack API password |
+| `API-USERNAME` |  | OmniStack API username |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hosts status](#apps-virtualization-hpe-simplivity-restapi-hosts) | `apps-virtualization-hpe-simplivity-restapi-hosts` |
+| [Omnistack Clusters](#apps-virtualization-hpe-simplivity-restapi-omnistack-clusters) | `apps-virtualization-hpe-simplivity-restapi-omnistack-clusters` |
+| [Virtual Machines status](#apps-virtualization-hpe-simplivity-restapi-virtual-machines) | `apps-virtualization-hpe-simplivity-restapi-virtual-machines` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hosts status {/* #apps-virtualization-hpe-simplivity-restapi-hosts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-HOST-STATUS` | `'%{status} =~ /unknown/'` | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-HOST-STATUS` | `'%{status} =~ /suspected/'` | Set warning threshold for status (Default: '%\{status\} =~ /suspected/'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-HOST-STATUS` | `'%{status} =~ /faulty/'` | Set critical threshold for status (Default: '%\{status\} =~ /faulty/'). Can used special variables like: %\{status\}, %\{name\} |
+| `UNKNOWN-RAID-STATUS` | `'%{status} =~ /unknown/'` | Set unknown threshold for component status (Default: '%\{status\} =~ /unknown/'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-RAID-STATUS` | `'%{status} =~ /yellow/'` | Set warning threshold for component status (Default: '%\{status\} =~ /yellow/'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-RAID-STATUS` | `'%{status} =~ /red/'` | Set critical threshold for component status (Default: '%\{status\} =~ /red/'). Can used special variables like: %\{status\}, %\{name\} |
+| `UNKNOWN-LOGICAL-DRIVE-STATUS` | `'%{status} =~ /unknown/'` | Set unknown threshold for component status (Default: '%\{status\} =~ /unknown/'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-LOGICAL-DRIVE-STATUS` | `'%{status} =~ /yellow/'` | Set warning threshold for component status (Default: '%\{status\} =~ /yellow/'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-LOGICAL-DRIVE-STATUS` | `'%{status} =~ /red/'` | Set critical threshold for component status (Default: '%\{status\} =~ /red/'). Can used special variables like: %\{status\}, %\{name\} |
+| `UNKNOWN-PHYSICAL-DRIVE-STATUS` | `'%{status} =~ /unknown/'` | Set unknown threshold for component status (Default: '%\{status\} =~ /unknown/'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-PHYSICAL-DRIVE-STATUS` | `'%{status} =~ /yellow/'` | Set warning threshold for component status (Default: '%\{status\} =~ /yellow/'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-PHYSICAL-DRIVE-STATUS` | `'%{status} =~ /red/'` | Set critical threshold for component status (Default: '%\{status\} =~ /red/'). Can used special variables like: %\{status\}, %\{name\} |
+| `FILTER-NAME` |  | Filter hosts by name |
+| `WARNING-HOSTS-ALIVE` |  | Warning threshold Hosts alive |
+| `WARNING-HOSTS-FAULTY` |  | Warning threshold Hosts faulty |
+| `WARNING-HOSTS-MANAGED` |  | Warning threshold Hosts managed |
+| `WARNING-HOSTS-REMOVED` |  | Warning threshold Hosts removed |
+| `WARNING-HOSTS-SUSPECTED` |  | Warning threshold Hosts suspected |
+| `WARNING-HOSTS-UNKNOWN` |  | Warning threshold Hosts unknown |
+| `WARNING-HOST-COMPONENTS-GREEN` |  | Warning threshold Host components green |
+| `WARNING-HOST-COMPONENTS-YELLOW` |  | Warning threshold Host components yellow |
+| `WARNING-HOST-COMPONENTS-RED` |  | Warning threshold Host components red |
+| `WARNING-HOST-COMPONENTS-UNKNOWN` |  | Warning threshold Host components unknown |
+| `CRITICAL-HOSTS-ALIVE` |  | Critical threshold Hosts alive |
+| `CRITICAL-HOSTS-FAULTY` |  | Critical threshold Hosts faulty |
+| `CRITICAL-HOSTS-MANAGED` |  | Critical threshold Hosts managed |
+| `CRITICAL-HOSTS-REMOVED` |  | Critical threshold Hosts removed |
+| `CRITICAL-HOSTS-SUSPECTED` |  | Critical threshold Hosts suspected |
+| `CRITICAL-HOSTS-UNKNOWN` |  | Critical threshold Hosts unknown |
+| `CRITICAL-HOST-COMPONENTS-GREEN` |  | Critical threshold Host components green |
+| `CRITICAL-HOST-COMPONENTS-YELLOW` |  | Critical threshold Host components yellow |
+| `CRITICAL-HOST-COMPONENTS-RED` |  | Critical threshold Host components red |
+| `CRITICAL-HOST-COMPONENTS-UNKNOWN` |  | Critical threshold Host components unknown |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Omnistack Clusters {/* #apps-virtualization-hpe-simplivity-restapi-omnistack-clusters */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `FILTER-NAME` |  | Filter clusters by name |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `WARNING-RATIO-COMPRESSION` |  | Warning threshold ratio compression |
+| `WARNING-RATIO-DEDUPLICATION` |  | Warning threshold ratio deduplication |
+| `WARNING-RATIO-EFFICIENCY` |  | Warning threshold ratio efficiency |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+| `CRITICAL-RATIO-COMPRESSION` |  | Critical threshold ratio compression |
+| `CRITICAL-RATIO-DEDUPLICATION` |  | Critical threshold ratio deduplication |
+| `CRITICAL-RATIO-EFFICIENCY` |  | Critical threshold ratio efficiency |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `omnistack_cluster.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `omnistack_cluster.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `omnistack_cluster.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `omnistack_cluster.ratio.deduplication.count` |  | deduplication | `WARNING-RATIO-DEDUPLICATION`, `CRITICAL-RATIO-DEDUPLICATION` |
+| `omnistack_cluster.ratio.compression.count` |  | compression | `WARNING-RATIO-COMPRESSION`, `CRITICAL-RATIO-COMPRESSION` |
+| `omnistack_cluster.ratio.efficiency.count` |  | efficiency | `WARNING-RATIO-EFFICIENCY`, `CRITICAL-RATIO-EFFICIENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virtual Machines status {/* #apps-virtualization-hpe-simplivity-restapi-virtual-machines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-HA-STATUS` | `'%{ha_status} =~ /unknown/'` | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/'). Can used special variables like: %\{ha_status\}, %\{vm_name\} |
+| `WARNING-HA-STATUS` | `'%{ha_status} =~ /degraded/'` | Set warning threshold for status (Default: '%\{status\} =~ /degraded/'). Can used special variables like: %\{ha_status\}, %\{vm_name\} |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `FILTER-VM-NAME` |  | Filter virtual machines by virtual machine name |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+| `CRITICAL-HA-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{ha_status\}, %\{vm_name\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `virtual_machine.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `virtual_machine.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `virtual_machine.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Host template `HPE-Simplivity`
+    - Parent templates changed from *(empty)* to `generic-host`
+- Command `apps-virtualization-hpe-simplivity-restapi-hosts`
+    - Option `--warning-hosts-unknown` changed from `--warning-hosts-unknown=$_SERVICEWARNING-HOSTS-UNKNOWN$$` to `--warning-hosts-unknown=$_SERVICEWARNING-HOSTS-UNKNOWN$`
+    - Option `--critical-hosts-unknown` changed from `--critical-hosts-unknown=$_SERVICECRITICAL-HOSTS-UNKNOWN$$` to `--critical-hosts-unknown=$_SERVICECRITICAL-HOSTS-UNKNOWN$`
+
+</details>

@@ -12,16 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-Direct-Connect.pn
 
 ## Description
 
-### AWS Direct Connect monitoring
-Protocols used: Rest API
+Monitors AWS Direct Connect connections and virtual interfaces: connection state, bit rates, packet rates and light levels.
 
-- Connections
-- Virtual interfaces
+The plugin pack provides these checks:
 
-### Discovery modes
-
-- Connections
-- Virtual interfaces
+* [Connections](#cloud-aws-directconnect-connections)
+* [Virtual interaces](#cloud-aws-directconnect-virtual-interfaces)
 
 ## Prerequisites
 
@@ -29,6 +25,19 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Connections](#cloud-aws-directconnect-connections) | `Connection - <id>` |
+| [Virtual interaces](#cloud-aws-directconnect-virtual-interfaces) | `Virtual interace - <virtualInterfaceId>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

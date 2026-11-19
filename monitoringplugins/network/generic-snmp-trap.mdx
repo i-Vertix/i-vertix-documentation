@@ -1,0 +1,48 @@
+---
+title: "Generic SNMP trap"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/Monitoring.png";
+
+<PluginPackHeader name="Generic SNMP trap" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Provides host templates for receiving generic SNMP traps; the passive service comes from the linked service template.
+
+The plugin pack provides these checks:
+
+* [generic-service-passive](#generic-service-passive)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### generic-service-passive {/* #generic-service-passive */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DUMMYSTATUS` | `OK` | Status to be returned (Should be numeric value between 0 and 3, or string in ok, warning, critical, unknown). |
+| `DUMMYOUTPUT` | `No trap received` | Output to be returned. |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

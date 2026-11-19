@@ -1,0 +1,297 @@
+---
+title: "Lenovo Thinksystem"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Lenovo.png";
+
+<PluginPackHeader name="Lenovo Thinksystem" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors Lenovo ThinkSystem storage through its API: hardware status, storage controllers, systems, pools and volumes, including space usage, IOPS and throughput.
+
+The plugin pack provides these checks:
+
+* [Hardware status](#storage-netapp-santricity-restapi-hardware)
+* [Storage controller status](#storage-netapp-santricity-restapi-storage-controllers)
+* [Storage pools](#storage-netapp-santricity-restapi-storage-pools)
+* [Storage systems](#storage-netapp-santricity-restapi-storage-systems)
+* [Storage volumes](#storage-netapp-santricity-restapi-storage-volumes)
+
+
+## Host Templates
+
+### Lenovo-Thinksystem
+
+*Lenovo Thinksystem Rest API* · Parent template: `Netapp-SANtricity`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-PORT` | `443` | Port used (default: 8080) |
+| `API-PROTO` | `https` | : |
+| `API-PASSWORD` | *(password)* | Santricity API password. |
+| `API-USERNAME` |  | Santricity API username. |
+| `API-PATH` |  | Specify api path (default: '/devmgr/v2') |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hardware status](#storage-netapp-santricity-restapi-hardware) (inherited from `Netapp-SANtricity`) | `storage-netapp-santricity-restapi-hardware` |
+| [Storage controller status](#storage-netapp-santricity-restapi-storage-controllers) (inherited from `Netapp-SANtricity`) | `storage-netapp-santricity-restapi-storage-controllers` |
+| [Storage pools](#storage-netapp-santricity-restapi-storage-pools) (inherited from `Netapp-SANtricity`) | `storage-netapp-santricity-restapi-storage-pools` |
+| [Storage systems](#storage-netapp-santricity-restapi-storage-systems) (inherited from `Netapp-SANtricity`) | `storage-netapp-santricity-restapi-storage-systems` |
+| [Storage volumes](#storage-netapp-santricity-restapi-storage-volumes) (inherited from `Netapp-SANtricity`) | `storage-netapp-santricity-restapi-storage-volumes` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #storage-netapp-santricity-restapi-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'storage', 'ctrl', 'battery', 'board', 'cbd', 'cmd', 'drive', 'psu', 'fan', 'thsensor' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter='drive,010000005000C500C244251B0000000000000000' |
+| `WARNING` |  | Set warning threshold for 'temperature' (syntax: type,regexp,threshold) Example: --warning='drive.temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'drive.temperature' (syntax: type,regexp,threshold) Example: --critical='drive.temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='drive,OK,preFailCopy' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage controller status {/* #storage-netapp-santricity-restapi-storage-controllers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION` | `85` | Warning threshold CPU utilization |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Critical threshold CPU utilization |
+| `FILTER-STORAGE-NAME` |  | Filter storage name (can be a regexp) |
+| `FILTER-CONTROLLER-NAME` |  | Filter controller name (can be a regexp) |
+| `WARNING-READ` |  | Warning threshold read (B/s) |
+| `WARNING-WRITE` |  | Warning threshold write (B/s) |
+| `WARNING-READ-IOPS` |  | Warning threshold read IOPS |
+| `WARNING-WRITE-IOPS` |  | Warning threshold write IOPS |
+| `CRITICAL-READ` |  | Critical threshold read (B/s) |
+| `CRITICAL-WRITE` |  | Critical threshold write (B/s) |
+| `CRITICAL-READ-IOPS` |  | Critical threshold read IOPS |
+| `CRITICAL-WRITE-IOPS` |  | Critical threshold write IOPS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.cpu.utilization.percentage` | `%` | cpu usage:  %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `volume.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `volume.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `system.io.read.usage.iops` | `iops` | read:  iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `system.io.write.usage.iops` | `iops` | write:  iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage pools {/* #storage-netapp-santricity-restapi-storage-pools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage % |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage % |
+| `FILTER-STORAGE-NAME` |  | Filter storage name (can be a regexp) |
+| `FILTER-POOL-NAME` |  | Filter pool name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pool.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `pool.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `pool.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage systems {/* #storage-netapp-santricity-restapi-storage-systems */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Warning threshold usage % |
+| `CRITICAL-USAGE-PRCT` | `95` | Critical threshold usage % |
+| `FILTER-STORAGE-NAME` |  | Filter storage name (can be a regexp) |
+| `WARNING-USAGE` |  | Warning threshold usage |
+| `WARNING-USAGE-FREE` |  | Warning threshold usage free |
+| `CRITICAL-USAGE` |  | Critical threshold usage |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pool.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `pool.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `pool.space.usage.percentage` | `%` | used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage volumes {/* #storage-netapp-santricity-restapi-storage-volumes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-STORAGE-NAME` |  | Filter storage name (can be a regexp) |
+| `FILTER-VOLUME-NAME` |  | Filter volume name (can be a regexp) |
+| `WARNING-READ` |  | Warning threshold read (B/s) |
+| `WARNING-WRITE` |  | Warning threshold write (B/s) |
+| `WARNING-READ-IOPS` |  | Warning threshold read IOPS |
+| `WARNING-WRITE-IOPS` |  | Warning threshold write IOPS |
+| `CRITICAL-READ` |  | Critical threshold read (B/s) |
+| `CRITICAL-WRITE` |  | Critical threshold write (B/s) |
+| `CRITICAL-READ-IOPS` |  | Critical threshold read IOPS |
+| `CRITICAL-WRITE-IOPS` |  | Critical threshold write IOPS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `volume.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `volume.io.read.usage.iops` | `iops` | read:  iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `volume.io.write.usage.iops` | `iops` | write:  iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231017 - 20231122</summary>
+
+- Plugin pack `Lenovo Thinksystem`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231122`.

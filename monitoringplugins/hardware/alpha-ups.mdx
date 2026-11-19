@@ -1,0 +1,236 @@
+---
+title: "Alpha UPS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Alpha.png";
+
+<PluginPackHeader name="Alpha UPS" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Alpha UPS devices through SNMP: alarms, battery status and uptime.
+
+The plugin pack provides these checks:
+
+* [Alarms](#hardware-ups-alpha-snmp-alarms)
+* [Battery status](#hardware-ups-alpha-snmp-battery-status)
+* [Uptime](#os-hpux-snmp-uptime)
+
+
+## Host Templates
+
+### UPS-Alpha
+
+*UPS Alpha* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alarms](#hardware-ups-alpha-snmp-alarms) | `hardware-ups-alpha-snmp-alarms` |
+| [Battery status](#hardware-ups-alpha-snmp-battery-status) | `hardware-ups-alpha-snmp-battery-status` |
+| [Uptime](#os-hpux-snmp-uptime) | `os-hpux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alarms {/* #hardware-ups-alpha-snmp-alarms */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter="alarm,FAN Alarm" |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax\:section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='alarm,FAN Alarm,OK,on' |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Battery status {/* #hardware-ups-alpha-snmp-battery-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set warning threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\} |
+| `WARNING-STATUS` | `'%{status} =~ /batteryLow/i'` | Set warning threshold for status (Default: '%\{status\} =~ /batteryLow/i'). Can used special variables like: %\{status\} |
+| `WARNING-TEMPERATURE` | `15:30` | Threshold warning temperature |
+| `CRITICAL-STATUS` | `'%{status} =~ /batteryDepleted/i'` | Set critical threshold for status (Default: '%\{status\} =~ /batteryDepleted/i'). Can used special variables like: %\{status\} |
+| `CRITICAL-TEMPERATURE` | `10:40` | Threshold critical temperature |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^status\|load$' |
+| `WARNING-LOAD` |  | Threshold warning load |
+| `WARNING-VOLTAGE` |  | Threshold warning voltage |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `CRITICAL-LOAD` |  | Threshold critical load |
+| `CRITICAL-VOLTAGE` |  | Threshold critical voltage |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load` | `%` | Remaining capacity :  %% | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `current` | `A` | Current :  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `voltage` | `V` | Voltage :  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `temperature` | `C` | Temperature :  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-hpux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260100 - 20260311</summary>
+
+- Command `hardware-ups-alpha-snmp-alarms`
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `CRITICAL` removed
+    - Macro `WARNING` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260120</summary>
+
+- Command `hardware-ups-alpha-snmp-alarms`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `hardware-ups-alpha-snmp-alarms`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `CRITICAL` added
+    - Macro `NO-COMPONENT` added
+    - Macro `WARNING` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240411</summary>
+
+- Plugin pack `Alpha UPS`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240311 - 20240411`.

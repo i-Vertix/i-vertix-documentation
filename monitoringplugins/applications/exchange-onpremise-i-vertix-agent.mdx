@@ -1,0 +1,384 @@
+---
+title: "Exchange OnPremise (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Exchange.png";
+
+<PluginPackHeader name="Exchange OnPremise (i-Vertix agent)" image={image} category="Application" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Microsoft Exchange on-premises servers through the i-Vertix agent: database status, mailboxes, queues, replication health, services and mailbox connections via ActiveSync, IMAP, MAPI and OWA.
+
+The plugin pack provides these checks:
+
+* [Activesync connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-activesync-mailbox)
+* [Exchange Database status](#ivertix-agent-apps-microsoft-exchange-local-databases)
+* [Exchange Mailboxes status](#ivertix-agent-apps-microsoft-exchange-local-mailboxes)
+* [Exchange Queues](#ivertix-agent-apps-microsoft-exchange-local-queues)
+* [Exchange Replication Health](#ivertix-agent-apps-microsoft-exchange-local-replication-health)
+* [Exchange Services](#ivertix-agent-apps-microsoft-exchange-local-services)
+* [IMAP connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-imap-mailbox)
+* [MAPI connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-mapi-mailbox)
+* [OWA connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-owa-mailbox)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Exchange Database status](#ivertix-agent-apps-microsoft-exchange-local-databases) | `Exchange Database status - <name>` |
+| [Exchange Mailboxes status](#ivertix-agent-apps-microsoft-exchange-local-mailboxes) | `Exchange Mailboxes status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Microsoft-Exchange-iVertix-agent
+
+*Microsoft Exchange OnPremise iVertix agent* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MAILBOX` |  | Set the mailbox to check (Required) |
+| `MAILBOX-PASSWORD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `OWA-URL` |  |  |
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Activesync connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-activesync-mailbox) | `ivertix-agent-apps-microsoft-exchange-local-activesync-mailbox` |
+| [Exchange Database status](#ivertix-agent-apps-microsoft-exchange-local-databases) | `ivertix-agent-apps-microsoft-exchange-local-databases` |
+| [IMAP connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-imap-mailbox) | `ivertix-agent-apps-microsoft-exchange-local-imap-mailbox` |
+| [Exchange Mailboxes status](#ivertix-agent-apps-microsoft-exchange-local-mailboxes) | `ivertix-agent-apps-microsoft-exchange-local-mailboxes` |
+| [MAPI connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-mapi-mailbox) | `ivertix-agent-apps-microsoft-exchange-local-mapi-mailbox` |
+| [OWA connection to a mailbox](#ivertix-agent-apps-microsoft-exchange-local-owa-mailbox) | `ivertix-agent-apps-microsoft-exchange-local-owa-mailbox` |
+| [Exchange Queues](#ivertix-agent-apps-microsoft-exchange-local-queues) | `ivertix-agent-apps-microsoft-exchange-local-queues` |
+| [Exchange Replication Health](#ivertix-agent-apps-microsoft-exchange-local-replication-health) | `ivertix-agent-apps-microsoft-exchange-local-replication-health` |
+| [Exchange Services](#ivertix-agent-apps-microsoft-exchange-local-services) | `ivertix-agent-apps-microsoft-exchange-local-services` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Activesync connection to a mailbox {/* #ivertix-agent-apps-microsoft-exchange-local-activesync-mailbox */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `%{result} !~ /Success/i` | Set critical threshold (Default: '%\{result\} !~ /Success/i'). Can used special variables like: %\{result\}, %\{scenario\} |
+| `WARNING` |  | Set warning threshold. Can used special variables like: %\{result\}, %\{scenario\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange Database status {/* #ivertix-agent-apps-microsoft-exchange-local-databases */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PS-DATABASE-FILTER` | `*` | Filter database (only wilcard '*' can be used. In Powershell) |
+| `CRITICAL-STATUS` | `%{mounted} == 0` | Set critical threshold (Default: '%\{mounted\} == 0'). Can used special variables like: %\{mounted\}, %\{database\}, %\{server\} |
+| `CRITICAL-MAPI` | `%{mapi_result} !~ /Success/i` | Set critical threshold (Default: '%\{mapi_result\} !~ /Success/i'). Can used special variables like: %\{mapi_result\}, %\{database\}, %\{server\} |
+| `CRITICAL-MAILFLOW` | `%{mailflow_result} !~ /Success/i` | Set critical threshold (Default: '%\{mailflow_result\} !~ /Success/i'). Can used special variables like: %\{mailflow_result\}, %\{database\}, %\{server\} |
+| `CRITICAL-COPYSTATUS` | `%{copystatus_indexstate} !~ /Healthy/i` | Set critical threshold (Default: '%\{contentindexstate\} !~ /Healthy/i'). Can used special variables like: %\{copystatus_indexstate\}, %\{database\}, %\{server\} |
+| `WARNING-STATUS` |  | Set warning threshold. Can used special variables like: %\{mounted\}, %\{database\}, %\{server\} |
+| `WARNING-MAPI` |  | Set warning threshold. Can used special variables like: %\{mapi_result\}, %\{database\}, %\{server\} |
+| `WARNING-MAILFLOW` |  | Set warning threshold. Can used special variables like: %\{mailflow_result\}, %\{database\}, %\{server\} |
+| `WARNING-COPYSTATUS` |  | Set warning threshold. Can used special variables like: %\{mailflow_result\}, %\{database\}, %\{server\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IMAP connection to a mailbox {/* #ivertix-agent-apps-microsoft-exchange-local-imap-mailbox */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `%{result} !~ /Success/i` | Set critical threshold (Default: '%\{result\} !~ /Success/i'). Can used special variables like: %\{result\}, %\{scenario\} |
+| `WARNING` |  | Set warning threshold. Can used special variables like: %\{result\}, %\{scenario\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange Mailboxes status {/* #ivertix-agent-apps-microsoft-exchange-local-mailboxes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PS-MATCH-DATABASE` |  | Filter mailboxes by database name (regexp can be used. In Powershell) |
+| `WARNING-USERS-SOFT-LIMIT` |  | Warning threshold users soft limit |
+| `WARNING-USERS-HARD-LIMIT` |  | Warning threshold users hard limit |
+| `WARNING-USERS-QUOTA-UNLIMITED` |  | Warning threshold users quota unlimited |
+| `WARNING-USERS-TOTAL` |  | Warning threshold users total |
+| `WARNING-PUBLICFOLDERS-SOFT-LIMIT` |  | Warning threshold public folders soft limit |
+| `WARNING-PUBLICFOLDERS-HARD-LIMIT` |  | Warning threshold public folders hard limit |
+| `WARNING-PUBLICFOLDERS-QUOTA-UNLIMITED` |  | Warning threshold public folders quota unlimited |
+| `WARNING-PUBLICFOLDERS-TOTAL` |  | Warning threshold public folders total |
+| `WARNING-DATABASE-MAILBOXES-TOTAL` |  | Warning threshold database mailboxes total |
+| `CRITICAL-USERS-SOFT-LIMIT` |  | Critical threshold users soft limit |
+| `CRITICAL-USERS-HARD-LIMIT` |  | Critical threshold users hard limit |
+| `CRITICAL-USERS-QUOTA-UNLIMITED` |  | Critical threshold users quota unlimited |
+| `CRITICAL-USERS-TOTAL` |  | Critical threshold users total |
+| `CRITICAL-PUBLICFOLDERS-SOFT-LIMIT` |  | Critical threshold public folders soft limit |
+| `CRITICAL-PUBLICFOLDERS-HARD-LIMIT` |  | Critical threshold public folders hard limit |
+| `CRITICAL-PUBLICFOLDERS-QUOTA-UNLIMITED` |  | Critical threshold public folders quota unlimited |
+| `CRITICAL-PUBLICFOLDERS-TOTAL` |  | Critical threshold public folders total |
+| `CRITICAL-DATABASE-MAILBOXES-TOTAL` |  | Critical threshold database mailboxes total |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MAPI connection to a mailbox {/* #ivertix-agent-apps-microsoft-exchange-local-mapi-mailbox */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `%{result} !~ /Success/i` | Set critical threshold (Default: '%\{result\} !~ /Success/i'). Can used special variables like: %\{result\}, %\{scenario\} |
+| `WARNING` |  | Set warning threshold. Can used special variables like: %\{result\}, %\{scenario\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### OWA connection to a mailbox {/* #ivertix-agent-apps-microsoft-exchange-local-owa-mailbox */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `%{result} !~ /Success/i` | Set critical threshold (Default: '%\{result\} !~ /Success/i'). Can used special variables like: %\{result\}, %\{scenario\} |
+| `WARNING` |  | Set warning threshold. Can used special variables like: %\{result\}, %\{scenario\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange Queues {/* #ivertix-agent-apps-microsoft-exchange-local-queues */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{status} !~ /Ready\|Active/i` | Set critical threshold (Default: '%\{status\} !~ /Ready\|Active/i'). Can used special variables like: %\{status\}, %\{identity\}, %\{is_valid\}, %\{delivery_type\}, %\{message_count\} |
+| `WARNING-STATUS` |  | Set warning threshold. Can used special variables like: %\{status\}, %\{identity\}, %\{is_valid\}, %\{delivery_type\}, %\{message_count\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange Replication Health {/* #ivertix-agent-apps-microsoft-exchange-local-replication-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `%{result} !~ /Passed/i` | Set critical threshold (Default: '%\{result\} !~ /Passed/i'). Can used special variables like: %\{result\}, %\{server\}, %\{isvalid\}, %\{check\} |
+| `WARNING` |  | Set warning threshold. Can used special variables like: %\{result\}, %\{server\}, %\{isvalid\}, %\{check\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange Services {/* #ivertix-agent-apps-microsoft-exchange-local-services */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `%{requiredservicesrunning} =~ /True/i and %{servicesnotrunning} ne \"\"` | Set critical threshold (Default: '%\{requiredservicesrunning\} =~ /True/i and %\{servicesnotrunning\} ne ""'). Can used special variables like: %\{servicesrunning\}, %\{servicesnotrunning\}, %\{role\}, %\{requiredservicesrunning\} |
+| `WARNING` |  | Set warning threshold. Can used special variables like: %\{servicesrunning\}, %\{servicesnotrunning\}, %\{role\}, %\{requiredservicesrunning\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `Microsoft-Exchange-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Command `ivertix-agent-apps-microsoft-exchange-local-activesync-mailbox`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-databases`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-imap-mailbox`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-mailboxes`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-mapi-mailbox`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-owa-mailbox`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-queues`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-replication-health`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-exchange-local-services`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>

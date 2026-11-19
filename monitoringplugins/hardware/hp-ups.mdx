@@ -1,0 +1,322 @@
+---
+title: "HP UPS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HP.png";
+
+<PluginPackHeader name="HP UPS" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors HP UPS devices through SNMP: battery status, environment, input and output lines, NTP synchronization and the uptime.
+
+The plugin pack provides these checks:
+
+* [Battery status](#hardware-ups-hp-snmp-battery-status)
+* [Environment](#hardware-ups-hp-snmp-environment)
+* [Input lines](#hardware-ups-hp-snmp-input-lines)
+* [NTP](#hardware-ups-hp-snmp-time)
+* [Output lines](#hardware-ups-hp-snmp-output-lines)
+* [Uptime](#hardware-ups-hp-snmp-uptime)
+
+
+## Host Templates
+
+### HP-UPS
+
+*HP-UPS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `LOCATION` |  | Set the timezone of distant server. For Windows, you need to set it. Can use format: 'Europe/London' or '+0100'. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Battery status](#hardware-ups-hp-snmp-battery-status) | `hardware-ups-hp-snmp-battery-status` |
+| [Environment](#hardware-ups-hp-snmp-environment) | `hardware-ups-hp-snmp-environment` |
+| [Input lines](#hardware-ups-hp-snmp-input-lines) | `hardware-ups-hp-snmp-input-lines` |
+| [Output lines](#hardware-ups-hp-snmp-output-lines) | `hardware-ups-hp-snmp-output-lines` |
+| [NTP](#hardware-ups-hp-snmp-time) | `hardware-ups-hp-snmp-time` |
+| [Uptime](#hardware-ups-hp-snmp-uptime) | `hardware-ups-hp-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Battery status {/* #hardware-ups-hp-snmp-battery-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CHARGE-REMAINING` | `40:` | Threshold warning charge remaining (%) |
+| `WARNING-CHARGE-REMAINING-MINUTES` | `30:` | Threshold warning charge remaining (min) |
+| `WARNING-VOLTAGE` | `210:245` | Threshold warning voltage (V) |
+| `CRITICAL-CHARGE-REMAINING` | `20:` | Threshold critical charge remaining (%) |
+| `CRITICAL-CHARGE-REMAINING-MINUTES` | `20:` | Threshold critical charge remaining (min) |
+| `CRITICAL-VOLTAGE` | `200:250` | Threshold critical voltage (V) |
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status\|current' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `WARNING-CURRENT` |  | Threshold warning current (A) |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `CRITICAL-CURRENT` |  | Threshold critical current (A) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `battery.charge.remaining.percent` | `%` | remaining capacity:  %% | `WARNING-CHARGE-REMAINING`, `CRITICAL-CHARGE-REMAINING` |
+| `battery.charge.remaining.minutes` | `m` | remaining time:  minutes | `WARNING-CHARGE-REMAINING-MINUTES`, `CRITICAL-CHARGE-REMAINING-MINUTES` |
+| `battery.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `battery.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #hardware-ups-hp-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-INTERNAL-TEMPERATURE` | `15:30` | Threshold warning internal temperature |
+| `WARNING-INTERNAL-HUMIDITY` | `90` | Threshold warning internal humidity |
+| `CRITICAL-INTERNAL-TEMPERATURE` | `10:40` | Threshold critical internal temperature |
+| `CRITICAL-INTERNAL-HUMIDITY` | `95` | Threshold critical  internal humidity |
+| `WARNING-REMOTE-TEMPERATURE` |  | Threshold warning remote temperature |
+| `WARNING-REMOTE-HUMIDITY` |  | Threshold warning remote humidity |
+| `CRITICAL-REMOTE-TEMPERATURE` |  | Threshold critical remote temperature |
+| `CRITICAL-REMOTE-HUMIDITY` |  | Threshold critical remote humidity |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `environment.internal.temperature.celsius` | `C` | internal temperature:  C | `WARNING-INTERNAL-TEMPERATURE`, `CRITICAL-INTERNAL-TEMPERATURE` |
+| `environment.internal.humidity.percentage` | `%` | internal humidity:  %% | `WARNING-INTERNAL-HUMIDITY`, `CRITICAL-INTERNAL-HUMIDITY` |
+| `environment.remote.temperature.celsius` | `C` | remote temperature:  C | `WARNING-REMOTE-TEMPERATURE`, `CRITICAL-REMOTE-TEMPERATURE` |
+| `environment.remote.humidity.percentage` | `%` | remote humidity:  %% | `WARNING-REMOTE-HUMIDITY`, `CRITICAL-REMOTE-HUMIDITY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Input lines {/* #hardware-ups-hp-snmp-input-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-FREQUENCE` | `45:55` | Threshold warning frequence |
+| `WARNING-VOLTAGE` | `210:245` | Threshold warning voltage |
+| `CRITICAL-FREQUENCE` | `40:60` | Threshold critical frequence |
+| `CRITICAL-VOLTAGE` | `200:250` | Threshold critical voltage |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `WARNING-POWER` |  | Threshold warning power |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `CRITICAL-POWER` |  | Threshold critical power |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lines.input.frequence.hertz` | `Hz` | frequence:  Hz | `WARNING-FREQUENCE`, `CRITICAL-FREQUENCE` |
+| `line.input.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `line.input.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `line.input.power.watt` | `W` | power:  W | `WARNING-POWER`, `CRITICAL-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Output lines {/* #hardware-ups-hp-snmp-output-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LOAD` | `80` | Threshold warning load |
+| `WARNING-VOLTAGE` | `210:245` | Threshold warning voltage |
+| `CRITICAL-LOAD` | `90` | Threshold critical load |
+| `CRITICAL-VOLTAGE` | `200:250` | Threshold critical voltage |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `WARNING-POWER` |  | Threshold warning power |
+| `CRITICAL-CURRENT` |  | Threshold critical  current |
+| `CRITICAL-POWER` |  | Threshold critical power |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lines.output.load.percentage` | `%` | load:  %% | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `lines.output.frequence.hertz` | `Hz` | frequence:  Hz |  |
+| `line.output.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `line.output.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `line.output.power.watt` | `W` | power:  W | `WARNING-POWER`, `CRITICAL-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #hardware-ups-hp-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #hardware-ups-hp-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

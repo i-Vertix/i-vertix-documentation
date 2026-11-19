@@ -1,0 +1,123 @@
+---
+title: "Selenese synthetic monitoring"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Selenium.png";
+
+<PluginPackHeader name="Selenese synthetic monitoring" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors web applications with Selenese scenarios run through a headless browser (Chrome or Firefox) and reports the result of each scenario.
+
+The plugin pack provides these checks:
+
+* [Scenario](#apps-selenese-scenario) (`apps-selenese-scenario`)
+* [Scenario](#legacy-apps-selenese-scenario-chrome) (`legacy-apps-selenese-scenario-chrome`)
+* [Scenario](#legacy-apps-selenese-scenario-firefox) (`legacy-apps-selenese-scenario-firefox`)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Scenario {/* #apps-selenese-scenario */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEOUT` | `50` | Set global execution timeout (Default: 60) |
+| `STEP-TIMEOUT` | `30` | Set step timeout (Default: 30) |
+| `WARNING` | `10` | Threshold warning in seconds (Scenario execution time) |
+| `CRITICAL` | `30` | Threshold critical in seconds (Scenario execution response time) |
+| `LOG-PATH` | `/var/log/selenese/selenese.log` | ath for the selenese output. Enabled only when --debug is set.             (Default: /tmp/selenese.log) |
+| `BROWSER` |  | Browser used by selenese runner. Could be chrome or firefox (Default : 'chrome') |
+| `BROWSER-DRIVER` |  | Browser driver used by selenese runner (Default : '/usr/local/selenese/chromedriver') |
+| `SCENARIO` |  | Scenario used by Selenium server (with extension: .side or .html) |
+| `EXTRA-OPT` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Scenario {/* #legacy-apps-selenese-scenario-chrome */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `BROWSER` | `chrome` | Browser used by selenese runner. Could be chrome or firefox (Default : 'chrome') |
+| `BROWSER-DRIVER` | `/usr/local/selenese/chromedriver` | Browser driver used by selenese runner (Default : '/usr/local/selenese/chromedriver') |
+| `TIMEOUT` | `50` | Set global execution timeout (Default: 60) |
+| `STEP-TIMEOUT` | `30` | Set step timeout (Default: 30) |
+| `WARNING` | `10` | Threshold warning in seconds (Scenario execution time) |
+| `CRITICAL` | `30` | Threshold critical in seconds (Scenario execution response time) |
+| `LOG-PATH` | `/var/log/selenese/selenese.log` | ath for the selenese output. Enabled only when --debug is set.             (Default: /tmp/selenese.log) |
+| `SCENARIO` |  | Scenario used by Selenium server (with extension: .side or .html) |
+| `EXTRA-OPT` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Scenario {/* #legacy-apps-selenese-scenario-firefox */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `BROWSER` | `firefox` | Browser used by selenese runner. Could be chrome or firefox (Default : 'chrome') |
+| `BROWSER-DRIVER` | `/usr/local/selenese/geckodriver` | Browser driver used by selenese runner (Default : '/usr/local/selenese/chromedriver') |
+| `TIMEOUT` | `50` | Set global execution timeout (Default: 60) |
+| `STEP-TIMEOUT` | `30` | Set step timeout (Default: 30) |
+| `WARNING` | `10` | Threshold warning in seconds (Scenario execution time) |
+| `CRITICAL` | `30` | Threshold critical in seconds (Scenario execution response time) |
+| `LOG-PATH` | `/var/log/selenese/selenese.log` | ath for the selenese output. Enabled only when --debug is set.             (Default: /tmp/selenese.log) |
+| `SCENARIO` |  | Scenario used by Selenium server (with extension: .side or .html) |
+| `EXTRA-OPT` |  |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20230920</summary>
+
+- Service template [`apps-selenese-scenario`](#apps-selenese-scenario)
+    - Service template added
+- Service template [`legacy-apps-selenese-scenario-chrome`](#legacy-apps-selenese-scenario-chrome)
+    - Renamed from `apps-selenese-scenario-chrome`
+- Service template [`legacy-apps-selenese-scenario-firefox`](#legacy-apps-selenese-scenario-firefox)
+    - Renamed from `apps-selenese-scenario-firefox`
+
+</details>

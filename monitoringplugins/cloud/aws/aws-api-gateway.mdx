@@ -12,11 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-ApiGateway.png";
 
 ## Description
 
-### AWS APIGateway monitoring
-protocols used: Rest API
+Monitors Amazon API Gateway REST APIs through Amazon CloudWatch: request counts, 4xx/5xx errors and the latency of the API and its backend integration.
 
-- Latency
-- Requests
+The plugin pack provides these checks:
+
+* [Latency](#cloud-aws-apigateway-latency)
+* [Requests](#cloud-aws-apigateway-requests)
 
 ## Prerequisites
 
@@ -24,6 +25,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-API-Gateway](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

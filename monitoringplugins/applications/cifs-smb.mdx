@@ -1,0 +1,371 @@
+---
+title: "CIFS/SMB"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/CIFS.png";
+
+<PluginPackHeader name="CIFS/SMB" image={image} category="Application" metadata={["CIFS"]} />
+
+## Description
+
+Monitors CIFS/SMB file shares: connection time and file checks (count, age and size), plus scenario-based tests of share access.
+
+The plugin pack provides these checks:
+
+* [CIFS Connection](#apps-protocols-cifs-connection)
+* [CIFS Files](#apps-protocols-cifs-files)
+* [CIFS Files count](#apps-protocols-cifs-files-count)
+* [CIFS Files date](#apps-protocols-cifs-files-date)
+* [CIFS Files size](#apps-protocols-cifs-files-size)
+* [CIFS Scenario](#apps-protocols-cifs-scenario)
+
+
+## Host Templates
+
+### CIFS-SMB
+
+*CIFS/SMB* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CIFS-TIMEOUT` | `10` | Timeout in seconds for connection (defaults: 30) |
+| `CIFS-PASSWORD` | *(password)* | Set password. |
+| `CIFS-PORT` |  | Set port. |
+| `CIFS-WORKGROUP` |  | Set workgroup. |
+| `CIFS-USERNAME` |  | Set username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CIFS Connection](#apps-protocols-cifs-connection) | `apps-protocols-cifs-connection` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CIFS Files](#apps-protocols-cifs-files) | `apps-protocols-cifs-files` |
+| [CIFS Files count](#apps-protocols-cifs-files-count) | `apps-protocols-cifs-files-count` |
+| [CIFS Files date](#apps-protocols-cifs-files-date) | `apps-protocols-cifs-files-date` |
+| [CIFS Files size](#apps-protocols-cifs-files-size) | `apps-protocols-cifs-files-size` |
+| [CIFS Scenario](#apps-protocols-cifs-scenario) | `apps-protocols-cifs-scenario` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CIFS Connection {/* #apps-protocols-cifs-connection */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{message} !~ /authentication succeeded/i'` | Set critical threshold for status (Default: '%\{message\} !~ /authentication succeeded/i' Can used special variables like: %\{status\}, %\{message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds |
+| `DIRECTORY` |  | Set the share directory |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{message\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.seconds` | `s` | connection time: s | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CIFS Files {/* #apps-protocols-cifs-files */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `m` | Select the unit for modified time threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `DIRECTORY` |  | Check directory (Multiple option) |
+| `MAX-DEPTH` |  | Don't check fewer levels (Default: '0'. Means current dir only). Used for directory counting files and size |
+| `WARNING-TOTAL-FILES-DETECTED` |  | Warning threshold total files detected |
+| `WARNING-MTIME-LAST` |  | Warning threshold last modify time |
+| `WARNING-SIZE` |  | Warning threshold file site |
+| `WARNING-FILES-DETECTED` |  | Warning threshold files detected |
+| `CRITICAL-TOTAL-FILES-DETECTED` |  | Critical threshold total files detected |
+| `CRITICAL-MTIME-LAST` |  | Critical threshold last modify time |
+| `CRITICAL-SIZE` |  | Critical threshold file site |
+| `CRITICAL-FILES-DETECTED` |  | Critical threshold files detected |
+| `FILE` |  | Check file (Multiple option) |
+| `FILTER-FILE` |  | Filter files (can be a regexp. Directory in the name) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `files.detected.count` |  | number of files | `WARNING-TOTAL-FILES-DETECTED`, `CRITICAL-TOTAL-FILES-DETECTED` |
+| `file.mtime.last` |  | last modified | `WARNING-MTIME-LAST`, `CRITICAL-MTIME-LAST` |
+| `file.size.bytes` | `B` | size | `WARNING-SIZE`, `CRITICAL-SIZE` |
+| `file.detected.count` |  | number of files | `WARNING-FILES-DETECTED`, `CRITICAL-FILES-DETECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CIFS Files count {/* #apps-protocols-cifs-files-count */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DIRECTORY` |  | Check files in the directory (Multiple option) |
+| `MAX-DEPTH` |  | Don't check fewer levels (Default: '0'. Means current dir only) |
+| `FILTER-FILE` |  | Filter files (can be a regexp. Directory in the name) |
+| `WARNING-FILES-DETECTED` |  | Warning threshold number detected files |
+| `CRITICAL-FILES-DETECTED` |  | Critical threshold number detected files |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `files.detected.count` |  | number of files | `WARNING-FILES-DETECTED`, `CRITICAL-FILES-DETECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CIFS Files date {/* #apps-protocols-cifs-files-date */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `m` | Select the unit for modified time threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DIRECTORY` |  | Check files in the directory (no recursive) (Multiple option) |
+| `WARNING-MTIME-LAST` |  | Warning threshold modifiy time |
+| `CRITICAL-MTIME-LAST` |  | Critical threshold modifiy time |
+| `FILE` |  | Check file (Multiple option) |
+| `FILTER-FILE` |  | Filter files (can be a regexp. Directory in the name) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `file.mtime.last` |  | last modified | `WARNING-MTIME-LAST`, `CRITICAL-MTIME-LAST` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CIFS Files size {/* #apps-protocols-cifs-files-size */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DIRECTORY` |  | Check directory size (Multiple option) |
+| `FILE` |  | Check file (Multiple option) |
+| `MAX-DEPTH` |  | Don't check fewer levels (Default: '0'. Means current dir only) |
+| `WARNING-SIZE` |  | Warning threshold size file |
+| `CRITICAL-SIZE` |  | Critical threshold size file |
+| `FILTER-FILE` |  | Filter files (can be a regexp. Directory in the name) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `file.size.bytes` | `B` | size | `WARNING-SIZE`, `CRITICAL-SIZE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CIFS Scenario {/* #apps-protocols-cifs-scenario */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} ne "success"'` | Set critical threshold for status (Default: '%\{status\} ne "success"') Can used special variables like: %\{status\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SCENARIO` |  | Scenario used (Required). Can be a file or json content |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\} |
+| `WARNING-STEP-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{message\} |
+| `CRITICAL-STEP-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{status\}, %\{message\} |
+| `WARNING-TOTAL-TIME` |  | Warning threshold total time |
+| `WARNING-TOTAL-STEPS` |  | Warning threshold total steps |
+| `WARNING-ERRORS` |  | Warning threshold error |
+| `WARNING-STEP-TIME` |  | Warning threshold step time |
+| `CRITICAL-TOTAL-TIME` |  | Warning threshold total time |
+| `CRITICAL-TOTAL-STEPS` |  | Warning threshold total steps |
+| `CRITICAL-ERRORS` |  | Warning threshold error |
+| `CRITICAL-STEP-TIME` |  | Warning threshold step time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `scenario.execution.time.milliseconds` | `ms` | execution time:  ms | `WARNING-TOTAL-TIME`, `CRITICAL-TOTAL-TIME` |
+| `scenario.steps.count` |  | total steps | `WARNING-TOTAL-STEPS`, `CRITICAL-TOTAL-STEPS` |
+| `scenario.errors.count` |  | errors | `WARNING-ERRORS`, `CRITICAL-ERRORS` |
+| `step.execution.time.milliseconds` | `ms` | execution time:  ms | `WARNING-STEP-TIME`, `CRITICAL-STEP-TIME` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240311 - 20240606</summary>
+
+- Command `apps-protocols-cifs-connection`
+    - Option `--hostname` changed from `--hostname=$HOSTADDRESS$$` to `--hostname=$HOSTADDRESS$`
+- Command `apps-protocols-cifs-files`
+    - Option `--hostname` changed from `--hostname=$HOSTADDRESS$$` to `--hostname=$HOSTADDRESS$`
+- Command `apps-protocols-cifs-files-count`
+    - Option `--hostname` changed from `--hostname=$HOSTADDRESS$$` to `--hostname=$HOSTADDRESS$`
+- Command `apps-protocols-cifs-files-date`
+    - Option `--hostname` changed from `--hostname=$HOSTADDRESS$$` to `--hostname=$HOSTADDRESS$`
+- Command `apps-protocols-cifs-files-size`
+    - Option `--hostname` changed from `--hostname=$HOSTADDRESS$$` to `--hostname=$HOSTADDRESS$`
+- Command `apps-protocols-cifs-scenario`
+    - Option `--hostname` changed from `--hostname=$HOSTADDRESS$$` to `--hostname=$HOSTADDRESS$`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240130</summary>
+
+- Command `apps-protocols-cifs-files-count`
+    - Option `--warning-files-detected=$_SERVICEWARNING-FILES-DETECTED$` added
+    - Option `--critical-files-detected=$_SERVICECRITICAL-FILES-DETECTED$` added
+    - Option `--warning-mtime-last=$_SERVICEWARNING-MTIME-LAST$` removed
+    - Option `--critical-mtime-last=$_SERVICECRITICAL-MTIME-LAST$` removed
+    - Macro `WARNING-FILES-DETECTED` added
+    - Macro `CRITICAL-FILES-DETECTED` added
+    - Macro `WARNING-MTIME-LAST` removed
+    - Macro `CRITICAL-MTIME-LAST` removed
+
+</details>

@@ -1,0 +1,250 @@
+---
+title: "Pure Storage Flashblade"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Purestorage.png";
+
+<PluginPackHeader name="Pure Storage Flashblade" image={image} category="Storage" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors Pure Storage FlashBlade through its REST API: alerts, hardware status, and the space usage, data reduction and read/write throughput of the array and its file systems.
+
+The plugin pack provides these checks:
+
+* [Alerts](#storage-purestorage-flashblade-v2-alerts)
+* [Arrays](#storage-purestorage-flashblade-v2-arrays)
+* [Filesystems](#storage-purestorage-flashblade-v2-filesystems)
+* [Hardware](#storage-purestorage-flashblade-v2-hardware)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Arrays](#storage-purestorage-flashblade-v2-arrays) | `Array - <name>` |
+| [Filesystems](#storage-purestorage-flashblade-v2-filesystems) | `Filesystem - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### PureStorage-Flashblade
+
+*PureStorage Flashblade* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PORT` | `443` | Port used (default: 443) |
+| `API-TOKEN` | *(password)* | API token. |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `API-VERSION` |  | API version (default: 2.4). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#storage-purestorage-flashblade-v2-alerts) | `storage-purestorage-flashblade-v2-alerts` |
+| [Arrays](#storage-purestorage-flashblade-v2-arrays) | `storage-purestorage-flashblade-v2-arrays` |
+| [Filesystems](#storage-purestorage-flashblade-v2-filesystems) | `storage-purestorage-flashblade-v2-filesystems` |
+| [Hardware](#storage-purestorage-flashblade-v2-hardware) | `storage-purestorage-flashblade-v2-hardware` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #storage-purestorage-flashblade-v2-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--memory` | --memory: Only check new alarms |
+| `WARNING-STATUS` | `'%{state} ne "closed" and %{severity} =~ /warning/i'` | Set warning threshold for status (Default: '%\{state\} ne "closed" and %\{severity\} =~ /warning/i') Can used special variables like: %\{code\}, %\{severity\}, %\{opened\}, %\{state\}, %\{component_name\} |
+| `CRITICAL-STATUS` | `'%{state} ne "closed" and %{severity} =~ /critical/i'` | Set critical threshold for status (Default: '%\{state\} ne "closed" and %\{severity\} =~ /critical/i'). Can used special variables like: %\{code\}, %\{severity\}, %\{opened\}, %\{state\}, %\{component_name\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Arrays {/* #storage-purestorage-flashblade-v2-arrays */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RESOLUTION` | `5m` | Time resolution for array performance. Can be: 1s, 30s, 5m, 30m, 2h, 8h, 24h (default: 5m) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-ID` |  | Filter arrays by id (can be a regexp) |
+| `FILTER-NAME` |  | Filter arrays by name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `WARNING-DATA-REDUCTION` |  | Warning threshold data reduction |
+| `WARNING-READ` |  | Warning threshold read |
+| `WARNING-WRITE` |  | Warning threshold write |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+| `CRITICAL-DATA-REDUCTION` |  | Critical threshold data reduction |
+| `CRITICAL-READ` |  | Critical threshold read |
+| `CRITICAL-WRITE` |  | Critical threshold write |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `array.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `array.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `array.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `array.data.reduction.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+| `array.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `array.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Filesystems {/* #storage-purestorage-flashblade-v2-filesystems */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-ID` |  | Filter filesystems by id (can be a regexp) |
+| `FILTER-NAME` |  | Filter filesystems by name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `WARNING-DATA-REDUCTION` |  | Warning threshold data reduction |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+| `CRITICAL-DATA-REDUCTION` |  | Critical threshold data reduction |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `filesystem.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `filesystem.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `filesystem.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `filesystem.data.reduction.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #storage-purestorage-flashblade-v2-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'chassis', 'ethport', 'fan', 'fb', 'fm', 'mgmtport', 'psu' |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fb,WARNING,unused' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

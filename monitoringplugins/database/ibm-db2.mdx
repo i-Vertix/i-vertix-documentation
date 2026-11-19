@@ -1,0 +1,494 @@
+---
+title: "IBM DB2"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Databases/DB2.png";
+
+<PluginPackHeader name="IBM DB2" image={image} category="Database" metadata={[]} />
+
+## Description
+
+Monitors IBM DB2 databases: connection time and connected users, database and tablespace usage, transaction logs and high availability disaster recovery (HADR) status.
+
+The plugin pack provides these checks:
+
+* [Connected users](#database-db2-connected-users)
+* [Connection time](#database-db2-connections-time)
+* [Database Logs](#database-db2-database-logs)
+* [Database space usage](#database-db2-database-usage)
+* [Database Tablespace usage](#database-db2-tablespaces)
+* [HA - DR](#database-db2-hadr)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Database Tablespace usage](#database-db2-tablespaces) | `Database Tablespace usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### DB2
+
+*DB2 database server* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DB2-PORT` | `5000` | TCP/IP server port number that is assigned to the Db2 database system |
+| `DB2-TIMEOUT` | `10` | Timeout in seconds for connection. |
+| `DB2-PASSWORD` | *(password)* | Password for the defined user name. |
+| `DB2-CONNECT-OPTIONS` |  | Add connection options for the DBI connect method. Format: name=value,name2=value2,... |
+| `DB2-DATABASE` |  | Name for the Db2 database system. If --server is not set, it's a cataloged connection (database alias). |
+| `DB2-USERNAME` |  | User name used to connect to the database. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connected users](#database-db2-connected-users) | `database-db2-connected-users` |
+| [Connection time](#database-db2-connections-time) | `database-db2-connections-time` |
+| [Database Logs](#database-db2-database-logs) | `database-db2-database-logs` |
+| [Database space usage](#database-db2-database-usage) | `database-db2-database-usage` |
+| [Database Tablespace usage](#database-db2-tablespaces) | `database-db2-tablespaces` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA - DR](#database-db2-hadr) | `database-db2-hadr` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### DB2-HADR
+
+*DB2 High availability* · Parent template: `DB2`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DB2-CONNECT-OPTIONS` |  | Add connection options for the DBI connect method. Format: name=value,name2=value2,... |
+| `DB2-DATABASE` |  | Name for the Db2 database system. If --server is not set, it's a cataloged connection (database alias). |
+| `DB2-PASSWORD` |  | Password for the defined user name. |
+| `DB2-PORT` |  | TCP/IP server port number that is assigned to the Db2 database system |
+| `DB2-TIMEOUT` |  | Timeout in seconds for connection. |
+| `DB2-USERNAME` |  | User name used to connect to the database. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA - DR](#database-db2-hadr) | `database-db2-hadr` |
+| [Connected users](#database-db2-connected-users) (inherited from `DB2`) | `database-db2-connected-users` |
+| [Connection time](#database-db2-connections-time) (inherited from `DB2`) | `database-db2-connections-time` |
+| [Database Logs](#database-db2-database-logs) (inherited from `DB2`) | `database-db2-database-logs` |
+| [Database space usage](#database-db2-database-usage) (inherited from `DB2`) | `database-db2-database-usage` |
+| [Database Tablespace usage](#database-db2-tablespaces) (inherited from `DB2`) | `database-db2-tablespaces` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connected users {/* #database-db2-connected-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-APPL-NAME` |  | Filter users by application name (Can be a regex) |
+| `EXCLUDE-APPL-NAME` |  | Exclude users by application name (Can be a regex) |
+| `WARNING-CONNECTED` |  | Warning threshold Users connected |
+| `CRITICAL-CONNECTED` |  | Critical threshold Users connected |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `users.connected.count` |  | connected users | `WARNING-CONNECTED`, `CRITICAL-CONNECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connection time {/* #database-db2-connections-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `250` | Threshold warning in milliseconds |
+| `CRITICAL` | `1000` | Threshold critical in milliseconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Database Logs {/* #database-db2-database-logs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LOG-USAGE-PRCT` | `90` | Warning threshold usage (%) |
+| `CRITICAL-LOG-USAGE-PRCT` | `95` | Critical threshold usage (%) |
+| `WARNING-LOG-USAGE` |  | Warning threshold usage (B) |
+| `WARNING-LOG-USAGE-FREE` |  | Warning threshold usage free (B) |
+| `CRITICAL-LOG-USAGE` |  | Critical threshold usage (B) |
+| `CRITICAL-LOG-USAGE-FREE` |  | Critical threshold usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.log.usage.bytes` | `B` |  | `WARNING-LOG-USAGE`, `CRITICAL-LOG-USAGE` |
+| `database.log.free.bytes` | `B` |  | `WARNING-LOG-USAGE-FREE`, `CRITICAL-LOG-USAGE-FREE` |
+| `database.log.usage.percentage` | `%` |  | `WARNING-LOG-USAGE-PRCT`, `CRITICAL-LOG-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Database space usage {/* #database-db2-database-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold Database space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold Database space usage (%) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold Database space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold Database space usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold Database space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold Database space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `database.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `database.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Database Tablespace usage {/* #database-db2-tablespaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-TYPE` | `.*` | Filter tablespaces by type (can be a regexp) |
+| `FILTER-NAME` | `.*` | Filter tablespaces by name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{state} !~ /normal/i'` | Set critical threshold for status (Default: '%\{state\} !~ /normal/i'). Can used special variables like: %\{tbsname\}, %\{type\}, %\{state\} |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold Tablespace usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold Tablespace usage (%) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{tbsname\}, %\{type\}, %\{state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{tbsname\}, %\{type\}, %\{state\} |
+| `WARNING-SPACE-USAGE` |  | Warning threshold Tablespace usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold Tablespace usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold Tablespace usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold Tablespace usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tablespace.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `tablespace.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `tablespace.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA - DR {/* #database-db2-hadr */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CONNECTIONS-STATUS` | `'%{status} eq "congested"'` | Set warning threshold for connection status (Default: '%\{status\} eq "congested"'). Can used special variables like: %\{status\}, %\{primaryMember\}, %\{standbyMember\}, %\{standbyId\} |
+| `CRITICAL-CONNECTIONS-STATUS` | `'%{status} eq "disconnected"'` | Set critical threshold for connection status (Default: '%\{status\} eq "disconnected"'). Can used special variables like: %\{status\}, %\{primaryMember\}, %\{standbyMember\}, %\{standbyId\} |
+| `CRITICAL-STATE` | `'%{state} ne "peer"'` | Set critical threshold for state (Default: '%\{state\} ne "peer"'). Can used special variables like: %\{state\}, %\{primaryMember\}, %\{standbyMember\}, %\{standbyId\} |
+| `UNKNOWN-CONNECTIONS-STATUS` |  | Set unknown threshold for connection status. Can used special variables like: %\{status\}, %\{primaryMember\}, %\{standbyMember\}, %\{standbyId\} |
+| `UNKNOWN-STATE` |  | Set unknown threshold for state. Can used special variables like: %\{state\}, %\{primaryMember\}, %\{standbyMember\}, %\{standbyId\} |
+| `WARNING-STATE` |  | Set warning threshold for state. Can used special variables like: %\{state\}, %\{primaryMember\}, %\{standbyMember\}, %\{standbyId\} |
+| `UNKNOWN-ROLE` |  | Set unknown threshold for role status. Can used special variables like: %\{role\}, %\{roleLast\}, %\{primaryMember\}, %\{primaryMemberLast\}, %\{standbyMember\}, %\{standbyMemberLast\}, %\{standbyId\} |
+| `WARNING-ROLE` |  | Set warning threshold for role status. Can used special variables like: %\{role\}, %\{roleLast\}, %\{primaryMember\}, %\{primaryMemberLast\}, %\{standbyMember\}, %\{standbyMemberLast\}, %\{standbyId\} |
+| `CRITICAL-ROLE` |  | Set critical threshold for role status. Can used special variables like: %\{role\}, %\{roleLast\}, %\{primaryMember\}, %\{primaryMemberLast\}, %\{standbyMember\}, %\{standbyMemberLast\}, %\{standbyId\} |
+| `WARNING-STANDBY-RUNNING` |  | Warning threshold Standby running |
+| `WARNING-LOG-GAP` |  | Warning threshold Log GAP |
+| `CRITICAL-STANDBY-RUNNING` |  | Critical threshold Standby running |
+| `CRITICAL-LOG-GAP` |  | Critical threshold Log GAP |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hadr.instances.standby.count` |  | number of standby instances running | `WARNING-STANDBY-RUNNING`, `CRITICAL-STANDBY-RUNNING` |
+| `hadr.instance.log.gap.bytes` | `B` | log gap | `WARNING-LOG-GAP`, `CRITICAL-LOG-GAP` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260100 - 20260311</summary>
+
+- Command `database-db2-database-logs`
+    - Option `--critical-log-usage-prct=$_SERVICECRITICAL-LOG-USAGE-PRCT$` added
+    - Option `--critica-log-usage-prct=$_SERVICECRITICAL-LOG-USAGE-PRCT$` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `database-db2-database-logs`
+    - Option `--critica-log-usage-prct=$_SERVICECRITICAL-LOG-USAGE-PRCT$` added
+    - Option `--critica-logl-usage-prct=$_SERVICECRITICAL-LOG-USAGE-PRCT$` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240613 - 20240809</summary>
+
+- Service template [`database-db2-database-logs`](#database-db2-database-logs)
+    - Macro `WARNING-LOG-USAGE-PRCT` added (default `90`)
+    - Macro `CRITICAL-LOG-USAGE-PRCT` added (default `95`)
+    - Macro `WARNING-USAGE-PRCT` removed
+    - Macro `CRITICAL-USAGE-PRCT` removed
+- Command `database-db2-connected-users`
+    - Option `--datasource=$_HOSTDB2-DATASOURCE$` removed
+    - Macro `DB2-DATASOURCE` removed
+- Command `database-db2-connections-time`
+    - Option `--datasource=$_HOSTDB2-DATASOURCE$` removed
+    - Macro `DB2-CONNECT-OPTIONS` added
+    - Macro `DB2-DATABASE` added
+    - Macro `DB2-PASSWORD` added
+    - Macro `DB2-PORT` added
+    - Macro `DB2-TIMEOUT` added
+    - Macro `DB2-USERNAME` added
+    - Macro `PORT` removed
+    - Macro `DATABASE` removed
+    - Macro `DATASOURCE` removed
+    - Macro `USERNAME` removed
+    - Macro `PASSWORD` removed
+    - Macro `CONNECT-OPTIONS` removed
+    - Macro `TIMEOUT` removed
+- Command `database-db2-database-logs`
+    - Option `--warning-log-usage=$_SERVICEWARNING-LOG-USAGE$` added
+    - Option `--warning-log-usage-free=$_SERVICEWARNING-LOG-USAGE-FREE$` added
+    - Option `--warning-log-usage-prct=$_SERVICEWARNING-LOG-USAGE-PRCT$` added
+    - Option `--critical-log-usage=$_SERVICECRITICAL-LOG-USAGE$` added
+    - Option `--critical-log-usage-free=$_SERVICECRITICAL-LOG-USAGE-FREE$` added
+    - Option `--critica-logl-usage-prct=$_SERVICECRITICAL-LOG-USAGE-PRCT$` added
+    - Option `--datasource=$_HOSTDB2-DATASOURCE$` removed
+    - Option `--warning-usage=$_SERVICEWARNING-USAGE$` removed
+    - Option `--warning-usage-free=$_SERVICEWARNING-USAGE-FREE$` removed
+    - Option `--warning-usage-prct=$_SERVICEWARNING-USAGE-PRCT$` removed
+    - Option `--critical-usage=$_SERVICECRITICAL-USAGE$` removed
+    - Option `--critical-usage-free=$_SERVICECRITICAL-USAGE-FREE$` removed
+    - Option `--critical-usage-prct=$_SERVICECRITICAL-USAGE-PRCT$` removed
+    - Macro `WARNING-LOG-USAGE` added
+    - Macro `WARNING-LOG-USAGE-FREE` added
+    - Macro `WARNING-LOG-USAGE-PRCT` added
+    - Macro `CRITICAL-LOG-USAGE` added
+    - Macro `CRITICAL-LOG-USAGE-FREE` added
+    - Macro `CRITICAL-LOG-USAGE-PRCT` added
+    - Macro `WARNING-USAGE` removed
+    - Macro `WARNING-USAGE-FREE` removed
+    - Macro `WARNING-USAGE-PRCT` removed
+    - Macro `CRITICAL-USAGE` removed
+    - Macro `CRITICAL-USAGE-FREE` removed
+    - Macro `CRITICAL-USAGE-PRCT` removed
+    - Macro `DB2-DATASOURCE` removed
+- Command `database-db2-database-usage`
+    - Option `--datasource=$_HOSTDB2-DATASOURCE$` removed
+    - Macro `DB2-DATASOURCE` removed
+- Command `database-db2-hadr`
+    - Option `--datasource=$_HOSTDB2-DATASOURCE$` removed
+    - Macro `DB2-DATASOURCE` removed
+- Command `database-db2-tablespaces`
+    - Option `--datasource=$_HOSTDB2-DATASOURCE$` removed
+    - Macro `DB2-DATASOURCE` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240317</summary>
+
+- Plugin pack `IBM DB2`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `IBM DB2`
+    - Description updated
+
+</details>

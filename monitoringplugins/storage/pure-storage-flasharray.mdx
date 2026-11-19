@@ -1,0 +1,486 @@
+---
+title: "Pure Storage Flasharray"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Purestorage.png";
+
+<PluginPackHeader name="Pure Storage Flasharray" image={image} category="Storage" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors Pure Storage FlashArray through its REST API: alerts, hardware status, array and volume space usage, data reduction and array read/write throughput and latency.
+
+The plugin pack provides these checks:
+
+* [Alerts](#storage-purestorage-flasharray-v2-alerts)
+* [Arrays](#storage-purestorage-flasharray-v2-arrays)
+* [Hardware](#storage-purestorage-flasharray-v2-hardware)
+* [Volumes](#storage-purestorage-flasharray-v2-volumes)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Arrays](#storage-purestorage-flasharray-v2-arrays) | `Array - <name>` |
+| [Volumes](#storage-purestorage-flasharray-v2-volumes) | `Volume - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### PureStorage-Flasharray
+
+*PureStorage Flasharray* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PORT` | `443` | Port used (default: 443) |
+| `API-TOKEN` | *(password)* | API token. |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `API-VERSION` | `2.4` | API version (default: 2.4). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#storage-purestorage-flasharray-v2-alerts) | `storage-purestorage-flasharray-v2-alerts` |
+| [Arrays](#storage-purestorage-flasharray-v2-arrays) | `storage-purestorage-flasharray-v2-arrays` |
+| [Hardware](#storage-purestorage-flasharray-v2-hardware) | `storage-purestorage-flasharray-v2-hardware` |
+| [Volumes](#storage-purestorage-flasharray-v2-volumes) | `storage-purestorage-flasharray-v2-volumes` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #storage-purestorage-flasharray-v2-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{state} ne "closed" and %{severity} =~ /warning/i'` | Set warning threshold for status (Default: '%\{state\} ne "closed" and %\{severity\} =~ /warning/i') Can used special variables like: %\{category\}, %\{code\}, %\{severity\}, %\{opened\}, %\{state\}, %\{issue\}, %\{component_name\} |
+| `CRITICAL-STATUS` | `'%{state} ne "closed" and %{severity} =~ /critical/i'` | Set critical threshold for status (Default: '%\{state\} ne "closed" and %\{severity\} =~ /critical/i'). Can used special variables like: %\{category\}, %\{code\}, %\{severity\}, %\{opened\}, %\{state\}, %\{issue\}, %\{component_name\} |
+| `FILTER-CATEGORY` |  | Filter by category name (can be a regexp) |
+| `EXTRA-OPTS` |  | --memory: Only check new alarms |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Arrays {/* #storage-purestorage-flasharray-v2-arrays */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERF-RESOLUTION` | `5m` | Time resolution for array performance. Can be: 1s, 30s, 5m, 30m, 2h, 8h, 24h (default: 5m) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Warning threshold space space usage (%) |
+| `CRITICAL-DATA-REDUCTION` |  | Warning threshold data reduction |
+| `CRITICAL-READ-BYTES` |  | Critical threshold read (b/s) |
+| `CRITICAL-SPACE-USAGE` |  | Warning threshold space space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Warning threshold space space usage free (B) |
+| `CRITICAL-WRITE-BYTES` |  | Critical threshold write (b/s) |
+| `FILTER-ID` |  | Filter arrays by id (can be a regexp) |
+| `FILTER-NAME` |  | Filter arrays by name (can be a regexp) |
+| `WARNING-DATA-REDUCTION` |  | Warning threshold data reduction |
+| `WARNING-READ-BYTES` |  | Warning threshold read (b/s) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space space usage free (B) |
+| `WARNING-WRITE-BYTES` |  | Warning threshold write (b/s) |
+| `CRITICAL-BYTES-PER-READ` |  | Critical threshold bytes per read (B) - The average I/O size per read |
+| `CRITICAL-BYTES-PER-WRITE` |  | Critical threshold bytes per write (B) - The average I/O size per write |
+| `CRITICAL-QUEUE-USEC-PER-READ-OPERATION` |  | Critical threshold average time that a read I/O request spends in the array waiting to be served (µs) |
+| `CRITICAL-QUEUE-USEC-PER-WRITE-OPERATION` |  | Critical threshold average time that a write I/O request spends in the array waiting to be served (µs) |
+| `CRITICAL-READS-PER-SEC` |  | Critical threshold reads per second - The number of bytes read per second |
+| `CRITICAL-SERVICE-USEC-PER-READ-OPERATION` |  | Critical threshold average time required for the array to service a read request (µs) |
+| `CRITICAL-SERVICE-USEC-PER-WRITE-OPERATION` |  | Critical threshold average time required for the array to service a write request (µs) |
+| `CRITICAL-USEC-PER-READ-OPERATION` |  | Critical threshold average time it takes the array to process an I/O read request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `CRITICAL-USEC-PER-WRITE-OPERATION` |  | Critical threshold average time it takes the array to process an I/O write request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `CRITICAL-WRITES-PER-SEC` |  | Critical threshold writes per second - The number of bytes writes per second |
+| `WARNING-BYTES-PER-READ` |  | Warning threshold bytes per read (B) - The average I/O size per read |
+| `WARNING-BYTES-PER-WRITE` |  | Warning threshold bytes per write (B) - The average I/O size per write |
+| `WARNING-QUEUE-USEC-PER-READ-OPERATION` |  | Warning threshold average time that a read I/O request spends in the array waiting to be served (µs) |
+| `WARNING-QUEUE-USEC-PER-WRITE-OPERATION` |  | Warning threshold average time that a write I/O request spends in the array waiting to be served (µs) |
+| `WARNING-READS-PER-SEC` |  | Warning threshold reads per second - The number of bytes read per second |
+| `WARNING-SERVICE-USEC-PER-READ-OPERATION` |  | Warning threshold average time required for the array to service a read request (µs) |
+| `WARNING-SERVICE-USEC-PER-WRITE-OPERATION` |  | Warning threshold average time required for the array to service a write request (µs) |
+| `WARNING-USEC-PER-READ-OPERATION` |  | Warning threshold average time it takes the array to process an I/O read request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `WARNING-USEC-PER-WRITE-OPERATION` |  | Warning threshold average time it takes the array to process an I/O write request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `WARNING-WRITES-PER-SEC` |  | Warning threshold writes per second - The number of bytes writes per second |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `array.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `array.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `array.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `array.data.reduction.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+| `array.io.read.usage.bytespersecond` | `B/s` | read bytes:  /s | `WARNING-READ-BYTES`, `CRITICAL-READ-BYTES` |
+| `array.io.read.usage.bytesperread` |  | bytes read | `WARNING-BYTES-PER-READ`, `CRITICAL-BYTES-PER-READ` |
+| `array.io.read.usage.readspersec` |  | read: /s | `WARNING-READS-PER-SEC`, `CRITICAL-READS-PER-SEC` |
+| `array.io.read.usage.serviceusecperreadop` |  | service usec read operation:  µs | `WARNING-SERVICE-USEC-PER-READ-OPERATION`, `CRITICAL-SERVICE-USEC-PER-READ-OPERATION` |
+| `array.io.read.usage.usecperreadop` |  | usec per read operation:  µs | `WARNING-USEC-PER-READ-OPERATION`, `CRITICAL-USEC-PER-READ-OPERATION` |
+| `array.io.read.usage.queueusecperreadop` |  | queue usec per read operation:  µs | `WARNING-QUEUE-USEC-PER-READ-OPERATION`, `CRITICAL-QUEUE-USEC-PER-READ-OPERATION` |
+| `array.io.write.usage.bytespersecond` | `B/s` | write bytes:  /s | `WARNING-WRITE-BYTES`, `CRITICAL-WRITE-BYTES` |
+| `array.io.write.usage.bytesperwrite` |  | bytes write | `WARNING-BYTES-PER-WRITE`, `CRITICAL-BYTES-PER-WRITE` |
+| `array.io.write.usage.writespersec` |  | write: /s | `WARNING-WRITES-PER-SEC`, `CRITICAL-WRITES-PER-SEC` |
+| `array.io.write.usage.serviceusecwriteop` |  | service usec read operation:  µs | `WARNING-SERVICE-USEC-PER-WRITE-OPERATION`, `CRITICAL-SERVICE-USEC-PER-WRITE-OPERATION` |
+| `array.io.write.usage.usecperwriteop` |  | usec per write operation:  µs | `WARNING-USEC-PER-WRITE-OPERATION`, `CRITICAL-USEC-PER-WRITE-OPERATION` |
+| `array.io.write.usage.queueusecperwriteop` |  | queue usec per write operation:  µs | `WARNING-QUEUE-USEC-PER-WRITE-OPERATION`, `CRITICAL-QUEUE-USEC-PER-WRITE-OPERATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #storage-purestorage-flasharray-v2-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'chassis', 'controller', 'cooling', 'drive', 'ethport', 'fcport', 'nvram', 'psu', 'sasport', 'temperature' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=controller) Can also exclude specific instance: --filter=drive,1 |
+| `WARNING` |  | Set warning threshold (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,OK,identifying' |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volumes {/* #storage-purestorage-flasharray-v2-volumes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERF-RESOLUTION` | `5m` | Time resolution for array performance. Can be: 1s, 30s, 5m, 30m, 2h, 8h, 24h (default: 5m) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `WARNING-READS-PER-SEC` | `60000` | Warning threshold reads per second - The number of bytes read per second |
+| `WARNING-WRITES-PER-SEC` | `40000` | Warning threshold writes per second - The number of bytes writes per second |
+| `CRITICAL-READS-PER-SEC` | `90000` | Critical threshold reads per second - The number of bytes read per second |
+| `CRITICAL-WRITES-PER-SEC` | `60000` | Critical threshold writes per second - The number of bytes writes per second |
+| `WARNING-USEC-PER-READ-OPERATION` | `10000` | Warning threshold average time it takes the array to process an I/O read request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `CRITICAL-USEC-PER-READ-OPERATION` | `15000` | Critical threshold average time it takes the array to process an I/O read request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `CRITICAL-USEC-PER-WRITE-OPERATION` | `15000` | Critical threshold average time it takes the array to process an I/O write request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `WARNING-USEC-PER-WRITE-OPERATION` | `10000` | Warning threshold average time it takes the array to process an I/O write request. Measured in microseconds. The average time does not include SAN time, queue time, or QoS rate limit time (µs) |
+| `WARNING-READ-BYTES` | `1000MB` | Warning threshold read bytes (b/s) |
+| `WARNING-WRITE-BYTES` | `500MB` | Warning threshold write bytes (b/s) |
+| `CRITICAL-WRITE-BYTES` | `1200MB` | Critical threshold write bytes (b/s) |
+| `CRITICAL-READ-BYTES` | `2000MB` | Critical threshold read bytes (b/s) |
+| `FILTER-ID` |  | Filter volumes by id (can be a regexp) |
+| `FILTER-NAME` |  | Filter volumes by name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `WARNING-DATA-REDUCTION` |  | Warning threshold data reduction |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+| `CRITICAL-DATA-REDUCTION` |  | Critical threshold data reduction |
+| `CRITICAL-BYTES-PER-READ` |  | Critical threshold bytes per read (B) - The average I/O size per read |
+| `CRITICAL-BYTES-PER-WRITE` |  | Critical threshold bytes per write (B) - The average I/O size per write |
+| `CRITICAL-QUEUE-USEC-PER-READ-OPERATION` |  | Critical threshold average time that a read I/O request spends in the array waiting to be served (µs) |
+| `CRITICAL-QUEUE-USEC-PER-WRITE-OPERATION` |  | Critical threshold average time that a write I/O request spends in the array waiting to be served (µs) |
+| `CRITICAL-SERVICE-USEC-PER-READ-OPERATION` |  | Critical threshold average time required for the array to service a read request (µs) |
+| `CRITICAL-SERVICE-USEC-PER-WRITE-OPERATION` |  | Critical threshold average time required for the array to service a write request (µs) |
+| `WARNING-BYTES-PER-READ` |  | Warning threshold bytes per read (B) - The average I/O size per read |
+| `WARNING-BYTES-PER-WRITE` |  | Warning threshold bytes per write (B) - The average I/O size per write |
+| `WARNING-QUEUE-USEC-PER-READ-OPERATION` |  | Warning threshold average time that a read I/O request spends in the array waiting to be served (µs) |
+| `WARNING-QUEUE-USEC-PER-WRITE-OPERATION` |  | Warning threshold average time that a write I/O request spends in the array waiting to be served (µs) |
+| `WARNING-SERVICE-USEC-PER-READ-OPERATION` |  | Warning threshold average time required for the array to service a read request (µs) |
+| `WARNING-SERVICE-USEC-PER-WRITE-OPERATION` |  | Warning threshold average time required for the array to service a write request (µs) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `volume.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `volume.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `volume.data.reduction.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+| `volume.io.read.usage.bytespersecond` | `B/s` | read:  /s |  |
+| `volume.io.write.usage.bytespersecond` | `B/s` | write:  /s |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20241011 - 20241124</summary>
+
+- Service template [`storage-purestorage-flasharray-v2-volumes`](#storage-purestorage-flasharray-v2-volumes)
+    - Macro `WARNING-READ-BYTES`: default changed from `1048576000` to `1000MB`
+    - Macro `WARNING-WRITE-BYTES`: default changed from `524288000` to `500MB`
+    - Macro `CRITICAL-WRITE-BYTES`: default changed from `1258291200` to `1200MB`
+    - Macro `CRITICAL-READ-BYTES`: default changed from `2097152000` to `2000MB`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241011 - 20241113</summary>
+
+- Service template [`storage-purestorage-flasharray-v2-volumes`](#storage-purestorage-flasharray-v2-volumes)
+    - Macro `WARNING-READS-PER-SEC` added (default `60000`)
+    - Macro `WARNING-WRITES-PER-SEC` added (default `40000`)
+    - Macro `CRITICAL-READS-PER-SEC` added (default `90000`)
+    - Macro `CRITICAL-WRITES-PER-SEC` added (default `60000`)
+    - Macro `WARNING-USEC-PER-READ-OPERATION` added (default `10000`)
+    - Macro `CRITICAL-USEC-PER-READ-OPERATION` added (default `15000`)
+    - Macro `CRITICAL-USEC-PER-WRITE-OPERATION` added (default `15000`)
+    - Macro `WARNING-USEC-PER-WRITE-OPERATION` added (default `10000`)
+    - Macro `WARNING-READ-BYTES` added (default `1048576000`)
+    - Macro `WARNING-WRITE-BYTES` added (default `524288000`)
+    - Macro `CRITICAL-WRITE-BYTES` added (default `1258291200`)
+    - Macro `CRITICAL-READ-BYTES` added (default `2097152000`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241011 - 20241111</summary>
+
+- Command `storage-purestorage-flasharray-v2-arrays`
+    - Option `--warning-read-bytes=$_SERVICEWARNING-READ-BYTES$` added
+    - Option `--warning-write-bytes=$_SERVICEWARNING-WRITE-BYTES$` added
+    - Option `--critical-read-bytes=$_SERVICECRITICAL-READ-BYTES$` added
+    - Option `--critical-write-bytes=$_SERVICECRITICAL-WRITE-BYTES$` added
+    - Option `--warning-bytes-per-read=$_SERVICEWARNING-BYTES-PER-READ$` added
+    - Option `--warning-reads-per-sec=$_SERVICEWARNING-READS-PER-SEC$` added
+    - Option `--warning-service-usec-per-read-operation=$_SERVICEWARNING-SERVICE-USEC-PER-READ-OPERATION$` added
+    - Option `--warning-usec-per-read-operation=$_SERVICEWARNING-USEC-PER-READ-OPERATION$` added
+    - Option `--warning-queue-usec-per-read-operation=$_SERVICEWARNING-QUEUE-USEC-PER-READ-OPERATION$` added
+    - Option `--warning-bytes-per-write=$_SERVICEWARNING-BYTES-PER-WRITE$` added
+    - Option `--warning-writes-per-sec=$_SERVICEWARNING-WRITES-PER-SEC$` added
+    - Option `--warning-service-usec-per-write-operation=$_SERVICEWARNING-SERVICE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--warning-usec-per-write-operation=$_SERVICEWARNING-USEC-PER-WRITE-OPERATION$` added
+    - Option `--warning-queue-usec-per-write-operation=$_SERVICEWARNING-QUEUE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--critical-bytes-per-read=$_SERVICECRITICAL-BYTES-PER-READ$` added
+    - Option `--critical-reads-per-sec=$_SERVICECRITICAL-READS-PER-SEC$` added
+    - Option `--critical-service-usec-per-read-operation=$_SERVICECRITICAL-SERVICE-USEC-PER-READ-OPERATION$` added
+    - Option `--critical-usec-per-read-operation=$_SERVICECRITICAL-USEC-PER-READ-OPERATION$` added
+    - Option `--critical-queue-usec-per-read-operation=$_SERVICECRITICAL-QUEUE-USEC-PER-READ-OPERATION$` added
+    - Option `--critical-bytes-per-write=$_SERVICECRITICAL-BYTES-PER-WRITE$` added
+    - Option `--critical-writes-per-sec=$_SERVICECRITICAL-WRITES-PER-SEC$` added
+    - Option `--critical-service-usec-per-write-operation=$_SERVICECRITICAL-SERVICE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--critical-usec-per-write-operation=$_SERVICECRITICAL-USEC-PER-WRITE-OPERATION$` added
+    - Option `--critical-queue-usec-per-write-operation=$_SERVICECRITICAL-QUEUE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--warning-read=$_SERVICEWARNING-READ$` removed
+    - Option `--warning-write=$_SERVICEWARNING-WRITE$` removed
+    - Option `--critical-read=$_SERVICECRITICAL-READ$` removed
+    - Option `--critical-write=$_SERVICECRITICAL-WRITE$` removed
+    - Macro `CRITICAL-READ-BYTES` added
+    - Macro `CRITICAL-WRITE-BYTES` added
+    - Macro `WARNING-READ-BYTES` added
+    - Macro `WARNING-WRITE-BYTES` added
+    - Macro `CRITICAL-BYTES-PER-READ` added
+    - Macro `CRITICAL-BYTES-PER-WRITE` added
+    - Macro `CRITICAL-QUEUE-USEC-PER-READ-OPERATION` added
+    - Macro `CRITICAL-QUEUE-USEC-PER-WRITE-OPERATION` added
+    - Macro `CRITICAL-READS-PER-SEC` added
+    - Macro `CRITICAL-SERVICE-USEC-PER-READ-OPERATION` added
+    - Macro `CRITICAL-SERVICE-USEC-PER-WRITE-OPERATION` added
+    - Macro `CRITICAL-USEC-PER-READ-OPERATION` added
+    - Macro `CRITICAL-USEC-PER-WRITE-OPERATION` added
+    - Macro `CRITICAL-WRITES-PER-SEC` added
+    - Macro `WARNING-BYTES-PER-READ` added
+    - Macro `WARNING-BYTES-PER-WRITE` added
+    - Macro `WARNING-QUEUE-USEC-PER-READ-OPERATION` added
+    - Macro `WARNING-QUEUE-USEC-PER-WRITE-OPERATION` added
+    - Macro `WARNING-READS-PER-SEC` added
+    - Macro `WARNING-SERVICE-USEC-PER-READ-OPERATION` added
+    - Macro `WARNING-SERVICE-USEC-PER-WRITE-OPERATION` added
+    - Macro `WARNING-USEC-PER-READ-OPERATION` added
+    - Macro `WARNING-USEC-PER-WRITE-OPERATION` added
+    - Macro `WARNING-WRITES-PER-SEC` added
+    - Macro `EXTRA-OPTS` removed
+    - Macro `WARNING-READ` removed
+    - Macro `WARNING-WRITE` removed
+    - Macro `CRITICAL-READ` removed
+    - Macro `CRITICAL-WRITE` removed
+- Command `storage-purestorage-flasharray-v2-volumes`
+    - Option `--warning-read-bytes=$_SERVICEWARNING-READ-BYTES$` added
+    - Option `--warning-write-bytes=$_SERVICEWARNING-WRITE-BYTES$` added
+    - Option `--critical-read-bytes=$_SERVICECRITICAL-READ-BYTES$` added
+    - Option `--critical-write-bytes=$_SERVICECRITICAL-WRITE-BYTES$` added
+    - Option `--warning-bytes-per-read=$_SERVICEWARNING-BYTES-PER-READ$` added
+    - Option `--warning-reads-per-sec=$_SERVICEWARNING-READS-PER-SEC$` added
+    - Option `--warning-service-usec-per-read-operation=$_SERVICEWARNING-SERVICE-USEC-PER-READ-OPERATION$` added
+    - Option `--warning-usec-per-read-operation=$_SERVICEWARNING-USEC-PER-READ-OPERATION$` added
+    - Option `--warning-queue-usec-per-read-operation=$_SERVICEWARNING-QUEUE-USEC-PER-READ-OPERATION$` added
+    - Option `--warning-bytes-per-write=$_SERVICEWARNING-BYTES-PER-WRITE$` added
+    - Option `--warning-writes-per-sec=$_SERVICEWARNING-WRITES-PER-SEC$` added
+    - Option `--warning-service-usec-per-write-operation=$_SERVICEWARNING-SERVICE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--warning-usec-per-write-operation=$_SERVICEWARNING-USEC-PER-WRITE-OPERATION$` added
+    - Option `--warning-queue-usec-per-write-operation=$_SERVICEWARNING-QUEUE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--critical-bytes-per-read=$_SERVICECRITICAL-BYTES-PER-READ$` added
+    - Option `--critical-reads-per-sec=$_SERVICECRITICAL-READS-PER-SEC$` added
+    - Option `--critical-service-usec-per-read-operation=$_SERVICECRITICAL-SERVICE-USEC-PER-READ-OPERATION$` added
+    - Option `--critical-usec-per-read-operation=$_SERVICECRITICAL-USEC-PER-READ-OPERATION$` added
+    - Option `--critical-queue-usec-per-read-operation=$_SERVICECRITICAL-QUEUE-USEC-PER-READ-OPERATION$` added
+    - Option `--critical-bytes-per-write=$_SERVICECRITICAL-BYTES-PER-WRITE$` added
+    - Option `--critical-writes-per-sec=$_SERVICECRITICAL-WRITES-PER-SEC$` added
+    - Option `--critical-service-usec-per-write-operation=$_SERVICECRITICAL-SERVICE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--critical-usec-per-write-operation=$_SERVICECRITICAL-USEC-PER-WRITE-OPERATION$` added
+    - Option `--critical-queue-usec-per-write-operation=$_SERVICECRITICAL-QUEUE-USEC-PER-WRITE-OPERATION$` added
+    - Option `--warning-read=$_SERVICEWARNING-READ$` removed
+    - Option `--warning-write=$_SERVICEWARNING-WRITE$` removed
+    - Option `--critical-read=$_SERVICECRITICAL-READ$` removed
+    - Option `--critical-write=$_SERVICECRITICAL-WRITE$` removed
+    - Macro `WARNING-READ-BYTES` added
+    - Macro `WARNING-WRITE-BYTES` added
+    - Macro `CRITICAL-READ-BYTES` added
+    - Macro `CRITICAL-WRITE-BYTES` added
+    - Macro `CRITICAL-BYTES-PER-READ` added
+    - Macro `CRITICAL-BYTES-PER-WRITE` added
+    - Macro `CRITICAL-QUEUE-USEC-PER-READ-OPERATION` added
+    - Macro `CRITICAL-QUEUE-USEC-PER-WRITE-OPERATION` added
+    - Macro `CRITICAL-READS-PER-SEC` added
+    - Macro `CRITICAL-SERVICE-USEC-PER-READ-OPERATION` added
+    - Macro `CRITICAL-SERVICE-USEC-PER-WRITE-OPERATION` added
+    - Macro `CRITICAL-USEC-PER-READ-OPERATION` added
+    - Macro `CRITICAL-USEC-PER-WRITE-OPERATION` added
+    - Macro `CRITICAL-WRITES-PER-SEC` added
+    - Macro `WARNING-BYTES-PER-READ` added
+    - Macro `WARNING-BYTES-PER-WRITE` added
+    - Macro `WARNING-QUEUE-USEC-PER-READ-OPERATION` added
+    - Macro `WARNING-QUEUE-USEC-PER-WRITE-OPERATION` added
+    - Macro `WARNING-READS-PER-SEC` added
+    - Macro `WARNING-SERVICE-USEC-PER-READ-OPERATION` added
+    - Macro `WARNING-SERVICE-USEC-PER-WRITE-OPERATION` added
+    - Macro `WARNING-USEC-PER-READ-OPERATION` added
+    - Macro `WARNING-USEC-PER-WRITE-OPERATION` added
+    - Macro `WARNING-WRITES-PER-SEC` added
+    - Macro `WARNING-READ` removed
+    - Macro `WARNING-WRITE` removed
+    - Macro `CRITICAL-READ` removed
+    - Macro `CRITICAL-WRITE` removed
+    - Macro `EXTRA-OPTS` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240516 - 20240621</summary>
+
+- Host template `PureStorage-Flasharray`
+    - Macro `API-VERSION` added (default `2.4`)
+- Service template [`storage-purestorage-flasharray-v2-alerts`](#storage-purestorage-flasharray-v2-alerts)
+    - Macro `EXTRA-OPTS` removed
+- Service template [`storage-purestorage-flasharray-v2-arrays`](#storage-purestorage-flasharray-v2-arrays)
+    - Macro `PERF-RESOLUTION` added (default `5m`)
+    - Macro `RESOLUTION` removed
+- Service template [`storage-purestorage-flasharray-v2-volumes`](#storage-purestorage-flasharray-v2-volumes)
+    - Macro `PERF-RESOLUTION` added (default `5m`)
+    - Macro `RESOLUTION` removed
+- Command `storage-purestorage-flasharray-v2-arrays`
+    - Option `--perf-resolution=$_SERVICEPERF-RESOLUTION$` added
+    - Option `--filter-resolution=$_SERVICERESOLUTION$` removed
+    - Macro `PERF-RESOLUTION` added
+    - Macro `RESOLUTION` removed
+- Command `storage-purestorage-flasharray-v2-volumes`
+    - Option `--perf-resolution=$_SERVICEPERF-RESOLUTION$` added
+    - Option `--filter-resolution=$_SERVICERESOLUTION$` removed
+    - Macro `PERF-RESOLUTION` added
+    - Macro `RESOLUTION` removed
+
+</details>

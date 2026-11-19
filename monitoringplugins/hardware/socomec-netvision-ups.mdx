@@ -1,0 +1,299 @@
+---
+title: "Socomec Netvision UPS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Socomec.png";
+
+<PluginPackHeader name="Socomec Netvision UPS" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Socomec Netvision UPS devices through SNMP: alarms, battery status (charge, temperature) and the input and output lines.
+
+The plugin pack provides these checks:
+
+* [Alarms](#hardware-ups-socomec-snmp-alarms)
+* [Battery status](#hardware-ups-socomec-snmp-battery)
+* [Input lines](#hardware-ups-socomec-snmp-input-lines)
+* [Output lines](#hardware-ups-socomec-snmp-output-lines)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Socomec-UPS
+
+*Socomec UPS SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alarms](#hardware-ups-socomec-snmp-alarms) | `hardware-ups-socomec-snmp-alarms` |
+| [Battery status](#hardware-ups-socomec-snmp-battery) | `hardware-ups-socomec-snmp-battery` |
+| [Input lines](#hardware-ups-socomec-snmp-input-lines) | `hardware-ups-socomec-snmp-input-lines` |
+| [Output lines](#hardware-ups-socomec-snmp-output-lines) | `hardware-ups-socomec-snmp-output-lines` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alarms {/* #hardware-ups-socomec-snmp-alarms */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-ALARMS-CURRENT` | `0` | Critical threshold current alarms |
+| `WARNING-ALARMS-CURRENT` |  | Warning threshold current alarms |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `alarms.current.count` |  | current alarms | `WARNING-ALARMS-CURRENT`, `CRITICAL-ALARMS-CURRENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Battery status {/* #hardware-ups-socomec-snmp-battery */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CHARGE-REMAINING` | `40:` | Threshold warning battery charge remaining (%) |
+| `WARNING-CHARGE-REMAINING-MINUTES` | `30:` | Threshold warning battery charge remaining in minutes |
+| `WARNING-TEMPERATURE` | `15:30` | Threshold warning temperature (C) |
+| `CRITICAL-CHARGE-REMAINING` | `20:` | Threshold critical battery charge remaining (%) |
+| `CRITICAL-CHARGE-REMAINING-MINUTES` | `15:` | Threshold critical battery charge remaining in minutes |
+| `CRITICAL-TEMPERATURE` | `10:40` | Threshold critical temperature (C) |
+| `CRITICAL-STATUS` | `'%{status} =~ /depleted\|failure/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /depleted\|failure/i'). You can use the following variables: %\{status\} |
+| `WARNING-STATUS` | `'%{status} =~ /low/i'` | Define the conditions to match for the status to be WARNING (default: '%\{status\} =~ /low/i'). You can use the following variables: %\{status\} |
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Define the conditions to match for the status to be UNKNOWN (default: '%\{status\} =~ /unknown/i'). You can use the following variables: %\{status\} |
+| `WARNING-CURRENT` |  | Threshold warning current (A) |
+| `WARNING-VOLTAGE` |  | Threshold warning voltage (V) |
+| `CRITICAL-CURRENT` |  | Threshold critical current (A) |
+| `CRITICAL-VOLTAGE` |  | Threshold critical voltage (V) |
+| `CRITICAL-TEMPERATURE-AMBIENT` |  | Threshold critical ambient temperature (C) |
+| `WARNING-TEMPERATURE-AMBIENT` |  | Threshold warning ambient temperature (C) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `battery.charge.remaining.percent` | `%` |  | `WARNING-CHARGE-REMAINING`, `CRITICAL-CHARGE-REMAINING` |
+| `battery.charge.remaining.minutes` |  | minutes remaining | `WARNING-CHARGE-REMAINING-MINUTES`, `CRITICAL-CHARGE-REMAINING-MINUTES` |
+| `battery.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `battery.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `battery.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `battery.temperatureambient.celsius` | `C` | temperatureambient:  C | `WARNING-TEMPERATURE-AMBIENT`, `CRITICAL-TEMPERATURE-AMBIENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Input lines {/* #hardware-ups-socomec-snmp-input-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-FREQUENCE` | `45:55` | Threshold warning in Hz |
+| `WARNING-VOLTAGE` | `200:245` | Threshold warning in Volt |
+| `CRITICAL-FREQUENCE` | `40:60` | Threshold critical in Hz |
+| `CRITICAL-VOLTAGE` | `180:255` | Threshold critical in Volt |
+| `WARNING-CURRENT` |  | Threshold warning in Ampere |
+| `CRITICAL-CURRENT` |  | Threshold critical in Ampere |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lines.input.frequence.hertz` | `Hz` | frequence:  Hz | `WARNING-FREQUENCE`, `CRITICAL-FREQUENCE` |
+| `line.input.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `line.input.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Output lines {/* #hardware-ups-socomec-snmp-output-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LOAD` | `80` | Threshold warning load in % |
+| `WARNING-VOLTAGE` | `200:245` | Threshold warning in Volt |
+| `CRITICAL-LOAD` | `90` | Threshold critical load in % |
+| `CRITICAL-VOLTAGE` | `180:255` | Threshold critical in Volt |
+| `WARNING-CURRENT` |  | Threshold warning in Ampere |
+| `CRITICAL-CURRENT` |  | Threshold critical in Ampere |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `line.output.load.percentage` | `%` | load:  %% | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `line.output.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `line.output.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250501 - 20250622</summary>
+
+- Service template [`hardware-ups-socomec-snmp-battery`](#hardware-ups-socomec-snmp-battery)
+    - Macro `CRITICAL-STATUS` added (default `'%{status} =~ /depleted|failure/i'`)
+    - Macro `WARNING-STATUS` added (default `'%{status} =~ /low/i'`)
+    - Macro `UNKNOWN-STATUS` added (default `'%{status} =~ /unknown/i'`)
+- Command `hardware-ups-socomec-snmp-battery`
+    - Option `--warning-temperatureambient=$_SERVICEWARNING-TEMPERATURE-AMBIENT$` added
+    - Option `--critical-temperatureambient=$_SERVICECRITICAL-TEMPERATURE-AMBIENT$` added
+    - Option `--warning-status=$_SERVICEWARNING-STATUS$` added
+    - Option `--critical-status=$_SERVICECRITICAL-STATUS$` added
+    - Option `--unknown-status=$_SERVICEUNKNOWN-STATUS$` added
+    - Macro `CRITICAL-TEMPERATURE-AMBIENT` added
+    - Macro `WARNING-TEMPERATURE-AMBIENT` added
+    - Macro `CRITICAL-STATUS` added
+    - Macro `UNKNOWN-STATUS` added
+    - Macro `WARNING-STATUS` added
+
+</details>

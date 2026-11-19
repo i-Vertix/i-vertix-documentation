@@ -1,0 +1,503 @@
+---
+title: "Quantum DXI series"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Quantum.png";
+
+<PluginPackHeader name="Quantum DXI series" image={image} category="Storage" metadata={["SSH"]} />
+
+## Description
+
+Monitors Quantum DXI appliances over SSH: system and health status, storage array, HBA and network status, disk usage, memory, deduplication and compaction, reclamation and throughput.
+
+The plugin pack provides these checks:
+
+* [Compaction](#storage-quantum-dxi-ssh-compaction)
+* [Deduplication NAS](#storage-quantum-dxi-ssh-dedupnas)
+* [Deduplication VTL](#storage-quantum-dxi-ssh-dedupvtl)
+* [Disk usage](#storage-quantum-dxi-ssh-disk-usage)
+* [HBA status](#storage-quantum-dxi-ssh-hostbus-adapter-status)
+* [Health status](#storage-quantum-dxi-ssh-health)
+* [Memory](#storage-quantum-dxi-ssh-memory)
+* [Network status](#storage-quantum-dxi-ssh-network)
+* [Reclamation](#storage-quantum-dxi-ssh-reclamation)
+* [Reduction](#storage-quantum-dxi-ssh-reduction)
+* [Storage Array status](#storage-quantum-dxi-ssh-storage-array-status)
+* [System status](#storage-quantum-dxi-ssh-system-status)
+* [Throughput](#storage-quantum-dxi-ssh-throughput)
+
+
+## Host Templates
+
+### Quantum-DXI-Series
+
+*Quantum DXI Series* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-PASSWORD` | *(password)* | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSHCLI-OPTION` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Compaction](#storage-quantum-dxi-ssh-compaction) | `storage-quantum-dxi-ssh-compaction` |
+| [Deduplication NAS](#storage-quantum-dxi-ssh-dedupnas) | `storage-quantum-dxi-ssh-dedupnas` |
+| [Deduplication VTL](#storage-quantum-dxi-ssh-dedupvtl) | `storage-quantum-dxi-ssh-dedupvtl` |
+| [Disk usage](#storage-quantum-dxi-ssh-disk-usage) | `storage-quantum-dxi-ssh-disk-usage` |
+| [Health status](#storage-quantum-dxi-ssh-health) | `storage-quantum-dxi-ssh-health` |
+| [HBA status](#storage-quantum-dxi-ssh-hostbus-adapter-status) | `storage-quantum-dxi-ssh-hostbus-adapter-status` |
+| [Memory](#storage-quantum-dxi-ssh-memory) | `storage-quantum-dxi-ssh-memory` |
+| [Network status](#storage-quantum-dxi-ssh-network) | `storage-quantum-dxi-ssh-network` |
+| [Reclamation](#storage-quantum-dxi-ssh-reclamation) | `storage-quantum-dxi-ssh-reclamation` |
+| [Reduction](#storage-quantum-dxi-ssh-reduction) | `storage-quantum-dxi-ssh-reduction` |
+| [Storage Array status](#storage-quantum-dxi-ssh-storage-array-status) | `storage-quantum-dxi-ssh-storage-array-status` |
+| [System status](#storage-quantum-dxi-ssh-system-status) | `storage-quantum-dxi-ssh-system-status` |
+| [Throughput](#storage-quantum-dxi-ssh-throughput) | `storage-quantum-dxi-ssh-throughput` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Compaction {/* #storage-quantum-dxi-ssh-compaction */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STILL-TO-COMPACT` | `1TB` | Threshold warning still to compact |
+| `CRITICAL-STATUS` | `'%{compaction_status} !~ /ready/i'` | Set critical threshold for status (Default: '%\{compaction_status\} !~ /ready/i'). Can used special variables like: %\{compaction_status\} |
+| `CRITICAL-STILL-TO-COMPACT` | `2TB` | Threshold critical still to compact |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{compaction_status\} |
+| `WARNING-STATUS-PROGRESS` |  | Threshold warning status progress |
+| `WARNING-COMPACTED` |  | Threshold warning compacted |
+| `CRITICAL-STATUS-PROGRESS` |  | Threshold critical status progress |
+| `CRITICAL-COMPACTED` |  | Threshold critical compacted |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `status_progress` | `%` | Status progress:  %% | `WARNING-STATUS-PROGRESS`, `CRITICAL-STATUS-PROGRESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Deduplication NAS {/* #storage-quantum-dxi-ssh-dedupnas */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{state} !~ /Enabled/i'` | Set warning threshold for status (Default: '%\{state\} !~ /Enabled/i'). Can used special variables like: %\{status\}, %\{state\}, %\{duration\}, %\{percent_complete\}. |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-ORIGINAL-DATA-SIZE` |  | Threshold warning original data size |
+| `WARNING-SENT-DATA-SIZE` |  | Threshold warning sent data size |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{state\}, %\{duration\}, %\{percent_complete\} |
+| `CRITICAL-ORIGINAL-DATA-SIZE` |  | Threshold critical original data size |
+| `CRITICAL-SENT-DATA-SIZE` |  | Threshold critical sent data size |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `original_data_size` | `B` | Original data size | `WARNING-ORIGINAL-DATA-SIZE`, `CRITICAL-ORIGINAL-DATA-SIZE` |
+| `sent_data_size` | `B` | Sent data size | `WARNING-SENT-DATA-SIZE`, `CRITICAL-SENT-DATA-SIZE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Deduplication VTL {/* #storage-quantum-dxi-ssh-dedupvtl */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{state} !~ /Enabled/i'` | Set warning threshold for status (Default: '%\{state\} !~ /Enabled/i'). Can used special variables like: %\{status\}, %\{state\}, %\{duration\}, %\{percent_complete\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-ORIGINAL-DATA-SIZE` |  | Threshold warning original data size |
+| `WARNING-SENT-DATA-SIZE` |  | Threshold warning sent data size |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{state\}, %\{duration\}, %\{percent_complete\} |
+| `CRITICAL-ORIGINAL-DATA-SIZE` |  | Threshold critical original data size |
+| `CRITICAL-SENT-DATA-SIZE` |  | Threshold critical sent data size |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `original_data_size` | `B` | Original data size | `WARNING-ORIGINAL-DATA-SIZE`, `CRITICAL-ORIGINAL-DATA-SIZE` |
+| `sent_data_size` | `B` | Sent data size | `WARNING-SENT-DATA-SIZE`, `CRITICAL-SENT-DATA-SIZE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk usage {/* #storage-quantum-dxi-ssh-disk-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-FREE-SPACE` | `100GB:` | Threshold warning free space |
+| `WARNING-RECLAIMABLE-SPACE` | `500GB` | Threshold warning reclaimable space |
+| `CRITICAL-FREE-SPACE` | `50GB:` | Threshold critical free space |
+| `CRITICAL-RECLAIMABLE-SPACE` | `1TB` | Threshold critical reclaimable space |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='usage' |
+| `WARNING-USAGE` |  | Threshold warning usage |
+| `WARNING-DEDUPLICATED-DATA` |  | Threshold warning deduplicated data |
+| `WARNING-SYSTEM-METADATA` |  | Threshold warning system metadata |
+| `WARNING-DATA-NOT-INTENDED-FOR-DEDUPLICATION` |  | Threshold warning data not intended for deduplication |
+| `CRITICAL-USAGE` |  | Threshold critical usage |
+| `CRITICAL-DEDUPLICATED-DATA` |  | Threshold critical deduplicated data |
+| `CRITICAL-SYSTEM-METADATA` |  | Threshold critical system metadata |
+| `CRITICAL-DATA-NOT-INTENDED-FOR-DEDUPLICATION` |  | Threshold critical data not intended for deduplication |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health status {/* #storage-quantum-dxi-ssh-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /Ready\|Success/i'` | Set critical threshold for status (Default: '%\{status\} !~ /Ready\|Success/i'). Can used special variables like: %\{name\}, %\{status\}, %\{state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{name\}, %\{status\}, %\{state\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HBA status {/* #storage-quantum-dxi-ssh-hostbus-adapter-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /Normal/i'` | Set critical threshold for status (Default: '%\{status\} !~ /Normal/i'). Can used special variables like: %\{name\}, %\{status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{name\}, %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #storage-quantum-dxi-ssh-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Network status {/* #storage-quantum-dxi-ssh-network */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /Up/i'` | Set critical threshold for status (Default: '%\{status\} !~ /Up/i'). Can used special variables like: %\{name\}, %\{status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{name\}, %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Reclamation {/* #storage-quantum-dxi-ssh-reclamation */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{reclamation_status} !~ /ready/i'` | Set critical threshold for status (Default: '%\{reclamation_status\} !~ /ready/i'). Can used special variables like: %\{reclamation_status\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{reclamation_status\} |
+| `WARNING-STATUS-PROGRESS` |  | Threshold warning status progress |
+| `WARNING-COMPACTED` |  | Threshold warning compacted |
+| `WARNING-STILL-TO-COMPACT` |  | Threshold warning still to compact |
+| `CRITICAL-STATUS-PROGRESS` |  | Threshold critical status progress |
+| `CRITICAL-COMPACTED` |  | Threshold critical compacted |
+| `CRITICAL-STILL-TO-COMPACT` |  | Threshold critical still to compact |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `stage_status_progress` | `%` | Stage Status progress:  %% |  |
+| `total_progress` | `%` | Total progress:  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Reduction {/* #storage-quantum-dxi-ssh-reduction */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='ratio' |
+| `WARNING-SIZE-BEFORE-REDUCTION` |  | Threshold warning size before reduction |
+| `WARNING-SIZE-AFTER-REDUCTION` |  | Threshold warning size after reduction |
+| `WARNING-INCOMING-NAMESPACE` |  | Threshold warning incoming namespace |
+| `WARNING-NFS-DEDUPLICATED-SHARES` |  | Threshold warning NFS deduplicated shares |
+| `WARNING-CIFS-SMB-DEDUPLICATED-SHARES` |  | Threshold warning CIFS SMB deduplicated shares |
+| `WARNING-APPLICATION-SPECIFIC-DEDUPLICATED-SHARES` |  | Threshold warning application specific deduplicated shares |
+| `WARNING-DEDUPLICATED-PARTITIONS` |  | Threshold warning deduplicated partitions |
+| `WARNING-OST-STORAGE-SERVERS` |  | Threshold warning OST storage servers |
+| `WARNING-TOTAL-REDUCTION-RATIO` |  | Threshold warning total reduction ratio |
+| `WARNING-DEDUPLICATION-RATIO` |  | Threshold warning deduplication ratio |
+| `WARNING-COMPRESSION-RATIO` |  | Threshold warning compression ratio |
+| `CRITICAL-SIZE-BEFORE-REDUCTION` |  | Threshold critical size before reduction |
+| `CRITICAL-SIZE-AFTER-REDUCTION` |  | Threshold critical size after reduction |
+| `CRITICAL-INCOMING-NAMESPACE` |  | Threshold critical incoming namespace |
+| `CRITICAL-NFS-DEDUPLICATED-SHARES` |  | Threshold critical NFS deduplicated shares |
+| `CRITICAL-CIFS-SMB-DEDUPLICATED-SHARES` |  | Threshold critical CIFS SMB deduplicated shares |
+| `CRITICAL-APPLICATION-SPECIFIC-DEDUPLICATED-SHARES` |  | Threshold critical application specific deduplicated shares |
+| `CRITICAL-DEDUPLICATED-PARTITIONS` |  | Threshold critical deduplicated partitions |
+| `CRITICAL-OST-STORAGE-SERVERS` |  | Threshold critical OST storage servers |
+| `CRITICAL-TOTAL-REDUCTION-RATIO` |  | Threshold critical total reduction ratio |
+| `CRITICAL-DEDUPLICATION-RATIO` |  | Threshold critical deduplication ratio |
+| `CRITICAL-COMPRESSION-RATIO` |  | Threshold critical compression ratio |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_reduction_ratio` | `%` | Total Reduction Ratio | `WARNING-TOTAL-REDUCTION-RATIO`, `CRITICAL-TOTAL-REDUCTION-RATIO` |
+| `deduplication_ratio` | `%` | Deduplication Ratio | `WARNING-DEDUPLICATION-RATIO`, `CRITICAL-DEDUPLICATION-RATIO` |
+| `compression_ratio` | `%` | Compression Ratio | `WARNING-COMPRESSION-RATIO`, `CRITICAL-COMPRESSION-RATIO` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage Array status {/* #storage-quantum-dxi-ssh-storage-array-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /Normal/i'` | Set critical threshold for status (Default: '%\{status\} !~ /Normal/i'). Can used special variables like: %\{name\}, %\{status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{name\}, %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System status {/* #storage-quantum-dxi-ssh-system-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /Normal/i'` | Set critical threshold for status (Default: '%\{status\} !~ /Normal/i'). Can used special variables like: %\{name\}, %\{status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{name\}, %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Throughput {/* #storage-quantum-dxi-ssh-throughput */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-READ-RATE` |  | Threshold warning read rate |
+| `WARNING-WRITE-RATE` |  | Threshold warning write rate |
+| `CRITICAL-READ-RATE` |  | Threshold critical read rate |
+| `CRITICAL-WRITE-RATE` |  | Threshold critical write rate |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260600 - 20260811</summary>
+
+- Plugin pack `Quantum DXI series`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260600 - 20260811`.

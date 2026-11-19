@@ -1,0 +1,173 @@
+---
+title: "Generic SNMP request"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Other/SNMP.png";
+
+<PluginPackHeader name="Generic SNMP request" image={image} category="Application" metadata={["SNMP"]} />
+
+## Description
+
+Monitors any SNMP-capable device with generic requests: numeric and string OID values and the SNMP response time.
+
+The plugin pack provides these checks:
+
+* [Generic numeric SNMP](#apps-protocols-snmp-numeric-value)
+* [Generic string SNMP](#apps-protocols-snmp-string-value)
+* [SNMP response time](#apps-protocols-snmp-response-time)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Generic numeric SNMP {/* #apps-protocols-snmp-numeric-value */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `OID-TYPE` | `gauge` | Type of the OID (Default: 'gauge'). Can be 'counter' also. 'counter' will use a retention file |
+| `FORMAT` | `current value is %s` | Output format (Default: 'current value is %s') |
+| `FORMAT-SCALE-TYPE` | `other` | Could be 'network' (value divide by 1000) or 'other' (divide by 1024) (Default: 'other') |
+| `PERFDATA-NAME` | `value` | Perfdata name in perfdata output (default: 'value') |
+| `OID` |  | OID value to check (numeric format only) |
+| `WARNING` |  | Threshold warning |
+| `CRITICAL` |  | Threshold critical |
+| `FORMAT-CUSTOM` |  | Apply a custom change on the value (Example to multiply the value: --format-custom='* 8') |
+| `PERFDATA-UNIT` |  | Perfdata unit in perfdata output (default: '') |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SNMP response time {/* #apps-protocols-snmp-response-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEOUT` | `5` | Set timeout in seconds (Default: 5) |
+| `PACKETS` | `5` | Number of packets to send (Default: 5 |
+| `WARNING-RTA` | `100` | Warning threshold rta |
+| `WARNING-PL` | `0` | Warning threshold packet lost |
+| `CRITICAL-RTA` | `250` | Critical threshold rta |
+| `CRITICAL-PL` | `60` | Critical threshold packet lost |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `roundtrip.time.average.milliseconds` | `ms` | rta ms | `WARNING-RTA`, `CRITICAL-RTA` |
+| `roundtrip.time.maximum.milliseconds` | `ms` |  |  |
+| `roundtrip.time.minimum.milliseconds` | `ms` |  |  |
+| `packets.loss.percentage` | `%` | lost %% | `WARNING-PL`, `CRITICAL-PL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Generic string SNMP {/* #apps-protocols-snmp-string-value */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FORMAT-OK` | `current value is: %{details_ok}` | Output format according the threshold |
+| `FORMAT-WARNING` | `current value is: %{details_warning}` | Output format according the threshold |
+| `FORMAT-CRITICAL` | `current value is: %{details_critical}` | Output format according the threshold |
+| `OID` |  | OID value to check (numeric format only) |
+| `WARNING-REGEXP` |  | Return Warning if an oid value match the regexp |
+| `CRITICAL-REGEXP` |  | Return Critical if an oid value match the regexp |
+| `MAP-VALUES` |  | Use to transform an integer value in most common case. Example: --map-values='1=>ok,10=>fan failed,11=>psu recovery' |
+| `FILTER-TABLE-INSTANCE` |  | Filter instance from --oid-table option (can be a regexp) |
+| `FILTER-TABLE-VALUE` |  | Filter value from --oid-table option (can be a regexp) |
+| `OID-INSTANCE` |  | OID table value for the instance (numeric format only). Can be used to have human readable instance name |
+| `OID-TABLE` |  | OID table value to check (numeric format only) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250114 - 20250210</summary>
+
+- Command `apps-protocols-snmp-string-value`
+    - Option `--oid-table='$_SERVICEOID-TABLE$'` added
+    - Option `--oid-instance='$_SERVICEOID-INSTANCE$'` added
+    - Option `--filter-table-value='$_SERVICEFILTER-TABLE-VALUE$'` added
+    - Option `--filter-table-instance='$_SERVICEFILTER-TABLE-INSTANCE$'` added
+    - Macro `FILTER-TABLE-INSTANCE` added
+    - Macro `FILTER-TABLE-VALUE` added
+    - Macro `OID-INSTANCE` added
+    - Macro `OID-TABLE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240531</summary>
+
+- Service template [`apps-protocols-snmp-string-value`](#apps-protocols-snmp-string-value)
+    - Macro `FORMAT-CRITICAL` added (default `current value is: %{details_critical}`)
+    - Macro `EXTRAOPTIONS` removed
+- Command `apps-protocols-snmp-numeric-value`
+    - Macro `FORMAT-SCALE` removed
+- Command `apps-protocols-snmp-string-value`
+    - Macro `FORMAT-CRITICAL` added
+    - Macro `EXTRAOPTIONS` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240317</summary>
+
+- Service template [`apps-protocols-snmp-string-value`](#apps-protocols-snmp-string-value)
+    - Macro `FORMAT-WARNING` added (default `current value is: %{details_warning}`)
+    - Macro `EXTRAOPTIONS` added (default `current value is: %{details_critical}`)
+    - Macro `FORMAT-DETAILS-WARNING` removed
+    - Macro `FORMAT-DETAILS-CRITICAL` removed
+- Command `apps-protocols-snmp-string-value`
+    - Option `--format-warning='$_SERVICEFORMAT-WARNING$'` added
+    - Option `--format-critical='$_SERVICEFORMAT-CRITICAL$'` added
+    - Option `--format-details-warning='$_SERVICEFORMAT-DETAILS-WARNING$'` removed
+    - Option `--format-details-critical='$_SERVICEFORMAT-DETAILS-CRITICAL$'` removed
+    - Macro `FORMAT-WARNING` added
+    - Macro `EXTRAOPTIONS` added
+    - Macro `FORMAT-DETAILS-WARNING` removed
+    - Macro `FORMAT-DETAILS-CRITICAL` removed
+
+</details>

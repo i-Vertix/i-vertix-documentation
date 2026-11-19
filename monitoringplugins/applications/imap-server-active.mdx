@@ -1,0 +1,169 @@
+---
+title: "IMAP Server (active)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/IMAP.png";
+
+<PluginPackHeader name="IMAP Server (active)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors IMAP servers with active checks: login and the search for messages in a mailbox.
+
+The plugin pack provides these checks:
+
+* [IMAP login](#apps-protocols-imap-login)
+* [IMAP search message](#apps-protocols-imap-search-message)
+
+
+## Host Templates
+
+### IMAP-login
+
+*IMAP login* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `IMAP-PASSWORD` |  | Specify password for authentification |
+| `IMAP-PORT` |  | Port used (default: 143). |
+| `IMAP-USERNAME` |  | Specify username for authentification |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [IMAP login](#apps-protocols-imap-login) | `apps-protocols-imap-login` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [IMAP search message](#apps-protocols-imap-search-message) | `apps-protocols-imap-search-message` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### IMAP login {/* #apps-protocols-imap-login */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1` | Threshold warning in seconds |
+| `CRITICAL` | `2` | Threshold critical in seconds |
+| `CUSTOM-OPTION` |  | --ssl Use SSL connection, --ssl-opt="SSL_verify_mode => SSL_VERIFY_NONE" --ssl-opt="SSL_version => 'TLSv1'" |
+| `TIMEOUT` |  | Connection timeout in seconds (default: 30) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IMAP search message {/* #apps-protocols-imap-search-message */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FOLDER` | `INBOX` | Set IMAP folder (Default: 'INBOX') |
+| `CUSTOM-OPTION` |  | --delete Delete messages found, --ssl Use SSL connection, --ssl-opt="SSL_verify_mode => SSL_VERIFY_NONE" --ssl-opt="SSL_version => 'TLSv1'" |
+| `SEARCH` |  | Set the search string (Required) |
+| `WARNING` |  | Threshold warning of number messages found |
+| `CRITICAL` |  | Threshold critical of number message found |
+| `TIMEOUT` |  | Connection timeout in seconds (Default: 30) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `messages.found.count` |  |  |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

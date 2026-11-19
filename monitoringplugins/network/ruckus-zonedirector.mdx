@@ -1,0 +1,256 @@
+---
+title: "Ruckus Zonedirector"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Ruckus.png";
+
+<PluginPackHeader name="Ruckus Zonedirector" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Ruckus ZoneDirector controllers through SNMP: system status, the managed access points and uptime.
+
+The plugin pack provides these checks:
+
+* [Access Points](#network-ruckus-zonedirector-snmp-access-points)
+* [System](#network-ruckus-zonedirector-snmp-system)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Access Points](#network-ruckus-zonedirector-snmp-access-points) | `Access Point - <description>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Ruckus-Zonedirector
+
+*Ruckus Zonedirector* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Access Points](#network-ruckus-zonedirector-snmp-access-points) | `network-ruckus-zonedirector-snmp-access-points` |
+| [System](#network-ruckus-zonedirector-snmp-system) | `network-ruckus-zonedirector-snmp-system` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Access Points {/* #network-ruckus-zonedirector-snmp-access-points */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by access point name (can be a regexp) |
+| `WARNING-MEMORY-USAGE-PRCT` | `80` | Threshold warning memory usage (%) |
+| `WARNING-CPU-UTILIZATION` | `80` | Threshold warning CPU utilization |
+| `CRITICAL-MEMORY-USAGE-PRCT` | `90` | Threshold critical memory usage (%) |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Threshold critical CPU utilization |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{zd_connection_status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{zd_connection_status\} |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning memory usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Threshold warning memory usage free (B) |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-CONNECTION-ACCESSPOINTS` |  | Threshold warning connection access points |
+| `WARNING-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |  | Threshold warning connection client devices authorized |
+| `WARNING-CONNECTION-ROGUE-DEVICES` |  | Threshold warning connection rogue devices |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{zd_connection_status\} |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical memory usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Threshold critical memory usage free (B) |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-CONNECTION-ACCESSPOINTS` |  | Threshold critical connection access points |
+| `CRITICAL-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |  | Threshold critical connection client devices authorized |
+| `CRITICAL-CONNECTION-ROGUE-DEVICES` |  | Threshold critical connection rogue devices |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoint.cpu.utilization.percentage` | `%` | cpu usage: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `accesspoint.memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `accesspoint.memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `accesspoint.memory.usage.percentage` | `%` | ram used:  %% | `WARNING-MEMORY-USAGE-PRCT`, `CRITICAL-MEMORY-USAGE-PRCT` |
+| `accesspoint.connection.accesspoints.count` |  | access points connections | `WARNING-CONNECTION-ACCESSPOINTS`, `CRITICAL-CONNECTION-ACCESSPOINTS` |
+| `accesspoint.connection.client.devices.authorized.count` |  | client devices authorized connections | `WARNING-CONNECTION-CLIENT-DEVICES-AUTHORIZED`, `CRITICAL-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |
+| `accesspoint.connection.rogue.devices.count` |  | rogue devices connections | `WARNING-CONNECTION-ROGUE-DEVICES`, `CRITICAL-CONNECTION-ROGUE-DEVICES` |
+| `accesspoint.traffic.in.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `accesspoint.traffic.out.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #network-ruckus-zonedirector-snmp-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY-USAGE-PRCT` | `80` | Threshold warning memory usage (%) |
+| `WARNING-CPU-UTILIZATION` | `80` | Threshold warning CPU utilization |
+| `CRITICAL-MEMORY-USAGE-PRCT` | `90` | Threshold critical memory usage (%) |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Threshold critical CPU utilization |
+| `CRITICAL-STATUS` | `'%{peer_connected_status} !~ /connected/'` | Set critical threshold for status. Can used special variables like: %\{system_status\}, %\{peer_connected_status\} |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status (Default: ''). Can used special variables like: %\{system_status\}, %\{peer_connected_status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{system_status\}, %\{peer_connected_status\} |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning memory usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Threshold warning memory usage free (B) |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-CONNECTION-ACCESSPOINTS` |  | Threshold warning connection access points |
+| `WARNING-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |  | Threshold warning connection client devices authorized |
+| `WARNING-CONNECTION-ROGUE-DEVICES` |  | Threshold warning connection rogue devices |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical memory usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Threshold critical memory usage free (B) |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-CONNECTION-ACCESSPOINTS` |  | Threshold critical connection access points |
+| `CRITICAL-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |  | Threshold critical connection client devices authorized |
+| `CRITICAL-CONNECTION-ROGUE-DEVICES` |  | Threshold critical connection rogue devices |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.cpu.utilization.percentage` | `%` | cpu usage: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `system.memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `system.memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `system.memory.usage.percentage` | `%` | ram used:  %% | `WARNING-MEMORY-USAGE-PRCT`, `CRITICAL-MEMORY-USAGE-PRCT` |
+| `system.connection.accesspoints.count` |  | access points connections | `WARNING-CONNECTION-ACCESSPOINTS`, `CRITICAL-CONNECTION-ACCESSPOINTS` |
+| `system.connection.client.devices.authorized.count` |  | client devices authorized connections | `WARNING-CONNECTION-CLIENT-DEVICES-AUTHORIZED`, `CRITICAL-CONNECTION-CLIENT-DEVICES-AUTHORIZED` |
+| `system.connection.rogue.devices.count` |  | rogue devices connections | `WARNING-CONNECTION-ROGUE-DEVICES`, `CRITICAL-CONNECTION-ROGUE-DEVICES` |
+| `system.traffic.in.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `system.traffic.out.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

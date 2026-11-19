@@ -1,0 +1,143 @@
+---
+title: "Apache CouchDB"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Databases/CouchDB.png";
+
+<PluginPackHeader name="Apache CouchDB" image={image} category="Database" metadata={["API"]} />
+
+## Description
+
+Monitors Apache CouchDB servers through the HTTP API: database size and the number of current and deleted documents.
+
+The plugin pack provides these checks:
+
+* [CouchDB Server](#database-couchdb-restapi-server)
+
+
+## Host Templates
+
+### Apache-CouchDB
+
+*Apache CouchDB* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `5984` | Port used (default: 5984) |
+| `PROTOCOL` | `http` | Specify https if needed (default: 'http') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CouchDB Server](#database-couchdb-restapi-server) | `database-couchdb-restapi-server` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CouchDB Server {/* #database-couchdb-restapi-server */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DB-NAME` | `.*` | Filter database name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /^ok/i'` | Set critical threshold for status (Default: '%\{status\} !~ /^ok/i'). Can used special variables like: %\{status\} |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `UNKNOWN-COMPACTION-STATUS` |  | Set unknown threshold for status (Default: ''). Can used special variables like: %\{compaction_status\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `WARNING-COMPACTION-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{compaction_status\}, %\{display\} |
+| `WARNING-DATABASE-SIZE-ACTIVE` |  | Threshold warning database size active (B) |
+| `WARNING-DATABASE-SIZE-FILE` |  | Threshold warning database size file (B) |
+| `WARNING-DATABASE-DOCUMENTS-DELETED` |  | Threshold warning database documents deleted |
+| `WARNING-DATABASE-DOCUMENTS-CURRENT` |  | Threshold warning database documents current |
+| `CRITICAL-COMPACTION-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{compaction_status\}, %\{display\} |
+| `CRITICAL-DATABASE-SIZE-ACTIVE` |  | Threshold critical database size active (B) |
+| `CRITICAL-DATABASE-SIZE-FILE` |  | Threshold critical  database size file (B) |
+| `CRITICAL-DATABASE-DOCUMENTS-DELETED` |  | Threshold critical database documents deleted |
+| `CRITICAL-DATABASE-DOCUMENTS-CURRENT` |  | Threshold critical database documents current |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `server.database.size.active.bytes` | `B` | live data size | `WARNING-DATABASE-SIZE-ACTIVE`, `CRITICAL-DATABASE-SIZE-ACTIVE` |
+| `server.database.size.file.bytes` | `B` | file size | `WARNING-DATABASE-SIZE-FILE`, `CRITICAL-DATABASE-SIZE-FILE` |
+| `server.database.documents.currrent.count` |  | number of documents | `WARNING-DATABASE-DOCUMENTS-CURRENT`, `CRITICAL-DATABASE-DOCUMENTS-CURRENT` |
+| `server.database.documents.deleted.count` |  | number of deleted documents | `WARNING-DATABASE-DOCUMENTS-DELETED`, `CRITICAL-DATABASE-DOCUMENTS-DELETED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

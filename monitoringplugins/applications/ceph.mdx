@@ -1,0 +1,258 @@
+---
+title: "Ceph"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Ceph.png";
+
+<PluginPackHeader name="Ceph" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Ceph storage clusters through the Ceph API: overall health, object storage daemons (OSD), pools and raw storage capacity.
+
+The plugin pack provides these checks:
+
+* [Ceph health](#apps-ceph-restapi-health)
+* [Ceph object storage deamon (OSD)](#apps-ceph-restapi-osd)
+* [Ceph pools](#apps-ceph-restapi-pools)
+* [Ceph storage](#apps-ceph-restapi-storage)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Ceph pools](#apps-ceph-restapi-pools) | `Pool - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Ceph
+
+*Ceph* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `8443` | Port used (default: 8443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `30` | Set timeout in seconds (default: 30). |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Ceph health](#apps-ceph-restapi-health) | `apps-ceph-restapi-health` |
+| [Ceph object storage deamon (OSD)](#apps-ceph-restapi-osd) | `apps-ceph-restapi-osd` |
+| [Ceph pools](#apps-ceph-restapi-pools) | `apps-ceph-restapi-pools` |
+| [Ceph storage](#apps-ceph-restapi-storage) | `apps-ceph-restapi-storage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ceph health {/* #apps-ceph-restapi-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~ /warn/i'` | Set warning threshold for status (Default: '%\{status\} =~ /warn/i') Can used special variables like: %\{status\}, %\{message\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /error/i'` | Set critical threshold for status (Default: '%\{status\} =~ /error/i'). Can used special variables like: %\{status\}, %\{message\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ceph object storage deamon (OSD) {/* #apps-ceph-restapi-osd */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OSD-ONLINE-PRCT` | `100:` | Warning threshold OSD online (%) |
+| `WARNING-OSD-PARTICIPATING-PRCT` | `100:` | Warning threshold OSD participating (%) |
+| `CRITICAL-OSD-ONLINE-PRCT` | `50:` | Critical threshold OSD online (%) |
+| `CRITICAL-OSD-PARTICIPATING-PRCT` | `50:` | Critical threshold OSD participating (%) |
+| `WARNING-OSD-DETECTED` |  | Warning threshold OSD detected |
+| `WARNING-OSD-ONLINE` |  | Warning threshold OSD online |
+| `WARNING-OSD-PARTICIPATING` |  | Warning threshold OSD participating |
+| `CRITICAL-OSD-DETECTED` |  | Critical threshold OSD detected |
+| `CRITICAL-OSD-ONLINE` |  | Critical threshold OSD online |
+| `CRITICAL-OSD-PARTICIPATING` |  | Critical threshold OSD participating |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `osd.detected.count` |  | detected | `WARNING-OSD-DETECTED`, `CRITICAL-OSD-DETECTED` |
+| `osd.online.count` |  |  | `WARNING-OSD-ONLINE`, `CRITICAL-OSD-ONLINE` |
+| `osd.online.percentage` | `%` |  | `WARNING-OSD-ONLINE-PRCT`, `CRITICAL-OSD-ONLINE-PRCT` |
+| `osd.participating.count` |  |  | `WARNING-OSD-PARTICIPATING`, `CRITICAL-OSD-PARTICIPATING` |
+| `osd.participating.percentage` | `%` |  | `WARNING-OSD-PARTICIPATING-PRCT`, `CRITICAL-OSD-PARTICIPATING-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ceph pools {/* #apps-ceph-restapi-pools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter pools by name (can be a regexp) |
+| `WARNINGPOOL-SPACE-USAGE-PRCT` | `90` | Warning threshold Pool space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold Pool space usage (%) |
+| `WARNING-POOLS-DETECTED` |  | Warning threshold Pools detected |
+| `WARNING-POOL-SPACE-USAGE` |  | Warning threshold Pool space usage |
+| `WARNING-POOL-SPACE-USAGE-FREE` |  | Warning threshold Pool space usage free |
+| `WARNING-POOL-READ` |  | Warning threshold Pool read |
+| `WARNING-POOL-WRITE` |  | Warning threshold Pool write |
+| `CRITICAL-POOLS-DETECTED` |  | Critical threshold Pools detected |
+| `CRITICAL-POOL-SPACE-USAGE` |  | Critical threshold Pool space usage |
+| `CRITICAL-POOL-SPACE-USAGE-FREE` |  | Critical threshold Pool space usage free |
+| `CRITICAL-POOL-READ` |  | Critical threshold Pool read |
+| `CRITICAL-POOL-WRITE` |  | Critical threshold Pool write |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pools.detected.count` |  | detected | `WARNING-POOLS-DETECTED`, `CRITICAL-POOLS-DETECTED` |
+| `pool.space.usage.bytes` | `B` |  | `WARNING-POOL-SPACE-USAGE`, `CRITICAL-POOL-SPACE-USAGE` |
+| `pool.space.free.bytes` | `B` |  | `WARNING-POOL-SPACE-USAGE-FREE`, `CRITICAL-POOL-SPACE-USAGE-FREE` |
+| `pool.space.usage.percentage` | `%` |  | `WARNINGPOOL-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `pool.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-POOL-READ`, `CRITICAL-POOL-READ` |
+| `pool.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-POOL-WRITE`, `CRITICAL-POOL-WRITE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ceph storage {/* #apps-ceph-restapi-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNINGPOOL-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.raw.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `storage.raw.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `storage.raw.space.usage.percentage` | `%` |  | `WARNINGPOOL-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

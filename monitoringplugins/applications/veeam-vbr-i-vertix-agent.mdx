@@ -1,0 +1,598 @@
+---
+title: "Veeam VBR (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Veeam.png";
+
+<PluginPackHeader name="Veeam VBR (i-Vertix agent)" image={image} category="Application" metadata={["iVertix agent"]} />
+
+## Description
+
+Monitors Veeam Backup & Replication servers through the i-Vertix agent: job status, licenses, repositories, tape jobs and SureBackup jobs.
+
+The plugin pack provides these checks:
+
+* [Veeam Job Status](#ivertix-agent-apps-backup-veeam-local-job-status) (`ivertix-agent-apps-backup-veeam-local-job-status`)
+* [Veeam Job status](#ivertix-agent-apps-backup-veeam13-local-job-status) (`ivertix-agent-apps-backup-veeam13-local-job-status`)
+* [Veeam License](#ivertix-agent-apps-backup-veeam-local-license) (`ivertix-agent-apps-backup-veeam-local-license`)
+* [Veeam License](#ivertix-agent-apps-backup-veeam13-local-license) (`ivertix-agent-apps-backup-veeam13-local-license`)
+* [Veeam Repositories](#ivertix-agent-apps-backup-veeam-local-repositories) (`ivertix-agent-apps-backup-veeam-local-repositories`)
+* [Veeam Repositories](#ivertix-agent-apps-backup-veeam13-local-repositories) (`ivertix-agent-apps-backup-veeam13-local-repositories`)
+* [Veeam Tape jobs](#ivertix-agent-apps-backup-veeam-local-tape-jobs) (`ivertix-agent-apps-backup-veeam-local-tape-jobs`)
+* [Veeam Tape jobs](#ivertix-agent-apps-backup-veeam13-local-tape-jobs) (`ivertix-agent-apps-backup-veeam13-local-tape-jobs`)
+* [Veeam VSB Jobs](#ivertix-agent-apps-backup-veeam-local-vsb-jobs) (`ivertix-agent-apps-backup-veeam-local-vsb-jobs`)
+* [Veeam VSB jobs](#ivertix-agent-apps-backup-veeam13-local-vsb-jobs) (`ivertix-agent-apps-backup-veeam13-local-vsb-jobs`)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Veeam Job Status](#ivertix-agent-apps-backup-veeam-local-job-status) | `Veeam Job Status - <name>` |
+| [Veeam Repositories](#ivertix-agent-apps-backup-veeam-local-repositories) | `Veeam Repository - <name>` |
+| [Veeam Job status](#ivertix-agent-apps-backup-veeam13-local-job-status) | `Veeam Job status - <name>` |
+| [Veeam Repositories](#ivertix-agent-apps-backup-veeam13-local-repositories) | `Veeam Repository - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Veeam-VBR-iVertix-agent
+
+*Veeam VBR iVertix agent* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `VEEAM-VERSION` | `12` | *(not used by the check command)* |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Veeam Job Status](#ivertix-agent-apps-backup-veeam-local-job-status) | `ivertix-agent-apps-backup-veeam-local-job-status` |
+| [Veeam License](#ivertix-agent-apps-backup-veeam-local-license) | `ivertix-agent-apps-backup-veeam-local-license` |
+| [Veeam Repositories](#ivertix-agent-apps-backup-veeam-local-repositories) | `ivertix-agent-apps-backup-veeam-local-repositories` |
+| [Veeam Tape jobs](#ivertix-agent-apps-backup-veeam-local-tape-jobs) | `ivertix-agent-apps-backup-veeam-local-tape-jobs` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Veeam Job status](#ivertix-agent-apps-backup-veeam13-local-job-status) | `ivertix-agent-apps-backup-veeam13-local-job-status` |
+| [Veeam License](#ivertix-agent-apps-backup-veeam13-local-license) | `ivertix-agent-apps-backup-veeam13-local-license` |
+| [Veeam Repositories](#ivertix-agent-apps-backup-veeam13-local-repositories) | `ivertix-agent-apps-backup-veeam13-local-repositories` |
+| [Veeam Tape jobs](#ivertix-agent-apps-backup-veeam13-local-tape-jobs) | `ivertix-agent-apps-backup-veeam13-local-tape-jobs` |
+| [Veeam VSB Jobs](#ivertix-agent-apps-backup-veeam-local-vsb-jobs) | `ivertix-agent-apps-backup-veeam-local-vsb-jobs` |
+| [Veeam VSB jobs](#ivertix-agent-apps-backup-veeam13-local-vsb-jobs) | `ivertix-agent-apps-backup-veeam13-local-vsb-jobs` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Veeam13-Backup-iVertix-agent
+
+*Veeam 13 or higher Backup iVertix agent* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+| `VEEAM-VERSION` | `13` |  |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Veeam Job status](#ivertix-agent-apps-backup-veeam13-local-job-status) | `ivertix-agent-apps-backup-veeam13-local-job-status` |
+| [Veeam License](#ivertix-agent-apps-backup-veeam13-local-license) | `ivertix-agent-apps-backup-veeam13-local-license` |
+| [Veeam Repositories](#ivertix-agent-apps-backup-veeam13-local-repositories) | `ivertix-agent-apps-backup-veeam13-local-repositories` |
+| [Veeam Tape jobs](#ivertix-agent-apps-backup-veeam13-local-tape-jobs) | `ivertix-agent-apps-backup-veeam13-local-tape-jobs` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Veeam Job Status](#ivertix-agent-apps-backup-veeam-local-job-status) | `ivertix-agent-apps-backup-veeam-local-job-status` |
+| [Veeam License](#ivertix-agent-apps-backup-veeam-local-license) | `ivertix-agent-apps-backup-veeam-local-license` |
+| [Veeam Repositories](#ivertix-agent-apps-backup-veeam-local-repositories) | `ivertix-agent-apps-backup-veeam-local-repositories` |
+| [Veeam Tape jobs](#ivertix-agent-apps-backup-veeam-local-tape-jobs) | `ivertix-agent-apps-backup-veeam-local-tape-jobs` |
+| [Veeam VSB Jobs](#ivertix-agent-apps-backup-veeam-local-vsb-jobs) | `ivertix-agent-apps-backup-veeam-local-vsb-jobs` |
+| [Veeam VSB jobs](#ivertix-agent-apps-backup-veeam13-local-vsb-jobs) | `ivertix-agent-apps-backup-veeam13-local-vsb-jobs` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Job Status {/* #ivertix-agent-apps-backup-veeam-local-job-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter job name (can be a regexp) |
+| `FILTER-END-TIME` | `86400` | Filter job with end time greater than current time less value in seconds (Default: 86400) |
+| `CRITICAL-TOTAL` | `1:` | Set critical threshold for total jobs |
+| `WARNING-STATUS` | `"%{is_running} == 0 and %{status} =~ /Warning/i"` | Set warning threshold for status. Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{is_running\}, %\{scheduled\} |
+| `CRITICAL-STATUS` | `"%{is_running} == 0 and %{status} !~ /Success\|Warning/i"` | Set critical threshold for status (Default: '%\{is_running\} == 0 and not %\{status\} =~ /Success/i'). Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{is_running\}, %\{scheduled\} |
+| `WARNING-TOTAL` |  | Set warning threshold for total jobs |
+| `CRITICAL-LONG` |  | Set critical threshold for long jobs. Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{elapsed\} |
+| `EXCLUDE-NAME` |  | Exclude job name (regexp can be used) |
+| `FILTER-TYPE` |  | Filter job type (can be a regexp) |
+| `WARNING-LONG` |  | Set warning threshold for long jobs. Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{elapsed\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam License {/* #ivertix-agent-apps-backup-veeam-local-license */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` |  |
+| `WARNING-EXPIRES` | `15:` |  |
+| `WARNING-LICENSE-USAGE-PRCT` |  |  |
+| `CRITICAL-EXPIRES` | `5:` |  |
+| `CRITICAL-LICENSE-USAGE-PRCT` | `98` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Repositories {/* #ivertix-agent-apps-backup-veeam-local-repositories */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter repositories by name (can be a regexp) |
+| `FILTER-TYPE` | `.*` | Filter repositories by type (can be a regexp) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `CRITICAL-STATUS` | `"not %{status} =~ /ordinal\|maintenance/i"` | Set critical threshold for status (Default: 'not %\{status\} =~ /ordinal\|maintenance/i'). Can used special variables like: %\{status\}, %\{name\}, %\{type\} |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\}, %\{type\} |
+| `EXCLUDE-NAME` |  | Exclude repositories by name (regexp can be used) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Tape jobs {/* #ivertix-agent-apps-backup-veeam-local-tape-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter job name (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude job name (regexp can be used) |
+| `FILTER-TYPE` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Job status {/* #ivertix-agent-apps-backup-veeam13-local-job-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` |  |
+| `FILTER-END-TIME` | `86400` |  |
+| `CRITICAL-TOTAL` | `1:` |  |
+| `WARNING-TOTAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam License {/* #ivertix-agent-apps-backup-veeam13-local-license */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` |  |
+| `WARNING-EXPIRES` | `15:` |  |
+| `WARNING-LICENSE-USAGE-PRCT` | `95` |  |
+| `CRITICAL-EXPIRES` | `50:` |  |
+| `CRITICAL-LICENSE-USAGE-PRCT` | `98` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Repositories {/* #ivertix-agent-apps-backup-veeam13-local-repositories */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` |  |
+| `FILTER-TYPE` | `.*` |  |
+| `WARNING-SPACE-USAGE-PRCT` | `90` |  |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` |  |
+| `CRITICAL-STATUS` | `"not %{status} =~ /ordinal\|maintenance/i"` | Critical threshold for http response code. |
+| `WARNING-SPACE-USAGE` |  |  |
+| `CRITICAL-SPACE-USAGE` |  |  |
+| `WARNING-STATUS` |  | Warning threshold for http response code. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Tape jobs {/* #ivertix-agent-apps-backup-veeam13-local-tape-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam VSB Jobs {/* #ivertix-agent-apps-backup-veeam-local-vsb-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter job name (can be a regexp) |
+| `FILTER-TYPE` | `.*` | Filter job type (can be a regexp) |
+| `WARNING-JOBS-WARNING` | `0` | Warning threshold Jobs warning |
+| `CRITICAL-JOBS-FAILED` | `0` | Critical threshold Jobs failed |
+| `CRITICAL-STATUS` | `"not %{status} =~ /success/i"` | Set critical threshold for status (Default: 'not %\{status\} =~ /success/i'). Can used special variables like: %\{name\}, %\{type\}, %\{status\}, %\{duration\} |
+| `WARNING-JOBS-DETECTED` |  | Warning threshold Jobs detected |
+| `WARNING-JOBS-SUCCESS` |  | Warning threshold Jobs success |
+| `WARNING-JOBS-FAILED` |  | Warning threshold Jobs failed |
+| `CRITICAL-JOBS-DETECTED` |  | Critical threshold Jobs detected |
+| `CRITICAL-JOBS-SUCCESS` |  | Critical threshold Jobs success |
+| `CRITICAL-JOBS-WARNING` |  | Critical threshold Jobs warning |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{name\}, %\{type\}, %\{status\}, %\{duration\} |
+| `EXCLUDE-NAME` |  | Exclude job name (regexp can be used) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam VSB jobs {/* #ivertix-agent-apps-backup-veeam13-local-vsb-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` |  |
+| `FILTER-TYPE` | `.*` |  |
+| `WARNING-JOBS-WARNING` | `0` |  |
+| `CRITICAL-JOBS-FAILED` | `0` |  |
+| `CRITICAL-STATUS` | `"not %{status} =~ /success/i"` | Critical threshold for http response code. |
+| `WARNING-JOBS-DETECTED` |  |  |
+| `WARNING-JOBS-SUCCESS` |  |  |
+| `WARNING-JOBS-FAILED` |  |  |
+| `CRITICAL-JOBS-DETECTED` |  |  |
+| `CRITICAL-JOBS-SUCCESS` |  |  |
+| `CRITICAL-JOBS-WARNING` |  |  |
+| `WARNING-STATUS` |  | Warning threshold for http response code. |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20261000 - 20261029</summary>
+
+- Plugin pack `Veeam VBR (i-Vertix agent)`
+    - Renamed from `Veeam backup (i-Vertix agent)`
+- Host template `Veeam-VBR-iVertix-agent`
+    - Renamed from `Veeam-Backup-iVertix-agent`
+    - Alias changed from `Veeam Backup iVertix agent` to `Veeam VBR iVertix agent`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260420</summary>
+
+- Host template `Veeam13-Backup-iVertix-agent`
+    - Macro `VEEAM-VERSION` added (default `13`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260401</summary>
+
+- Host template `Veeam-Backup-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Host template `Veeam13-Backup-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Command `ivertix-agent-apps-backup-veeam-local-job-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam-local-licenses`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam-local-list-repositories`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam-local-repositories`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam-local-tape-jobs`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam-local-vsb-jobs`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam13-local-job-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam13-local-licenses`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam13-local-repositories`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam13-local-tape-jobs`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-backup-veeam13-local-vsb-jobs`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password='$_HOSTNSCLIENT-PWD$'` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260331</summary>
+
+- Plugin pack `Veeam backup (i-Vertix agent)`
+    - Description updated
+- Host template `Veeam13-Backup-iVertix-agent`
+    - Host template added
+- Service template [`ivertix-agent-apps-backup-veeam13-local-job-status`](#ivertix-agent-apps-backup-veeam13-local-job-status)
+    - Service template added
+- Service template [`ivertix-agent-apps-backup-veeam13-local-license`](#ivertix-agent-apps-backup-veeam13-local-license)
+    - Service template added
+- Service template [`ivertix-agent-apps-backup-veeam13-local-repositories`](#ivertix-agent-apps-backup-veeam13-local-repositories)
+    - Service template added
+- Service template [`ivertix-agent-apps-backup-veeam13-local-tape-jobs`](#ivertix-agent-apps-backup-veeam13-local-tape-jobs)
+    - Service template added
+- Service template [`ivertix-agent-apps-backup-veeam13-local-vsb-jobs`](#ivertix-agent-apps-backup-veeam13-local-vsb-jobs)
+    - Service template added
+- Command `ivertix-agent-apps-backup-veeam13-local-job-status`
+    - Command added
+- Command `ivertix-agent-apps-backup-veeam13-local-licenses`
+    - Command added
+- Command `ivertix-agent-apps-backup-veeam13-local-repositories`
+    - Command added
+- Command `ivertix-agent-apps-backup-veeam13-local-tape-jobs`
+    - Command added
+- Command `ivertix-agent-apps-backup-veeam13-local-vsb-jobs`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Host template `Veeam-Backup-iVertix-agent`
+    - Macro `VEEAM-VERSION` added (default `12`)
+- Command `ivertix-agent-apps-backup-veeam-local-vsb-jobs`
+    - Option `--arg` changed from `--arg=' --filter-name="$_SERVICEFILTER-NAME$" --filter-type="$_SERVICEFILTER-TYPE$" --warning-jobs-detected=$_SERVICEWARNING-JOBS-DETECTED$ --warning-jobs-success=$_SERVICEWARNING-JOBS-SUCCESS$ --warning-jobs-warning=$_SERVICEWARNING-JOBS-WARNING$ --warning-jobs-failed=$_SERVICEWARNING-JOBS-FAILED$ --critical-jobs-detected=$_SERVICECRITICAL-JOBS-DETECTED$ --critical-jobs-success=$_SERVICECRITICAL-JOBS-SUCCESS$ --critical-jobs-warning=$_SERVICECRITICAL-JOBS-WARNING$ --critical-jobs-failed=$_SERVICECRITICAL-JOBS-FAILED$ --warning-status=$_SERVICEWARNING-STATUS$ --critical-status=$_SERVICECRITICAL-STATUS$ --verbose --exclude-name="$_SERVICEEXCLUDE-NAME$"'` to `--arg=' --filter-name="$_SERVICEFILTER-NAME$" --filter-type="$_SERVICEFILTER-TYPE$" --veeam-version=$_HOSTVEEAM-VERSION$ --warning-jobs-detected=$_SERVICEWARNING-JOBS-DETECTED$ --warning-jobs-success=$_SERVICEWARNING-JOBS-SUCCESS$ --warning-jobs-warning=$_SERVICEWARNING-JOBS-WARNING$ --warning-jobs-failed=$_SERVICEWARNING-JOBS-FAILED$ --critical-jobs-detected=$_SERVICECRITICAL-JOBS-DETECTED$ --critical-jobs-success=$_SERVICECRITICAL-JOBS-SUCCESS$ --critical-jobs-warning=$_SERVICECRITICAL-JOBS-WARNING$ --critical-jobs-failed=$_SERVICECRITICAL-JOBS-FAILED$ --warning-status=$_SERVICEWARNING-STATUS$ --critical-status=$_SERVICECRITICAL-STATUS$ --verbose --exclude-name="$_SERVICEEXCLUDE-NAME$"'`
+    - Macro `VEEAM-VERSION` added
+    - Macro `FILTER-TYPE` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Service template [`ivertix-agent-apps-backup-veeam-local-license`](#ivertix-agent-apps-backup-veeam-local-license)
+    - Macro `WARNING-LICENSE-USAGE-PRCT`: default changed from `95` to *(empty)*
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240516 - 20240621</summary>
+
+- Command `ivertix-agent-apps-backup-veeam-local-job-status`
+    - Option `--legacy-password` changed from `--legacy-password=$_HOSTNSCLIENT-PWD$` to `--legacy-password='$_HOSTNSCLIENT-PWD$'`
+- Command `ivertix-agent-apps-backup-veeam-local-licenses`
+    - Option `--legacy-password` changed from `--legacy-password=$_HOSTNSCLIENT-PWD$` to `--legacy-password='$_HOSTNSCLIENT-PWD$'`
+- Command `ivertix-agent-apps-backup-veeam-local-list-repositories`
+    - Option `--legacy-password` changed from `--legacy-password=$_HOSTNSCLIENT-PWD$` to `--legacy-password='$_HOSTNSCLIENT-PWD$'`
+- Command `ivertix-agent-apps-backup-veeam-local-repositories`
+    - Option `--legacy-password` changed from `--legacy-password=$_HOSTNSCLIENT-PWD$` to `--legacy-password='$_HOSTNSCLIENT-PWD$'`
+- Command `ivertix-agent-apps-backup-veeam-local-tape-jobs`
+    - Option `--legacy-password` changed from `--legacy-password=$_HOSTNSCLIENT-PWD$` to `--legacy-password='$_HOSTNSCLIENT-PWD$'`
+- Command `ivertix-agent-apps-backup-veeam-local-vsb-jobs`
+    - Option `--legacy-password` changed from `--legacy-password=$_HOSTNSCLIENT-PWD$` to `--legacy-password='$_HOSTNSCLIENT-PWD$'`
+
+</details>

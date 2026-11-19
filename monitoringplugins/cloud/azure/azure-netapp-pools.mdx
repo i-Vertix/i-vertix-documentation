@@ -12,15 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-NetApp.png";
 
 ## Description
 
-### Azure NetApp pool monitoring
-protocols used: HTTPS (Rest API)
+Monitors Azure NetApp Files capacity pools and their volumes: allocated, used and snapshot size and throughput of the pools, and size, inodes, IOPS, latency and throughput of each volume.
 
-- Pool volume
-- Pool capacity
+The plugin pack provides these checks:
 
-### Discovery modes
-
-- Volumes
+* [Pool Capacity](#cloud-azure-netapp-pool-capacity)
+* [Pool Volume](#cloud-azure-netapp-pool-volume)
 
 ## Prerequisites
 
@@ -28,6 +25,24 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure NetApp Pool](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Pool Volume](#cloud-azure-netapp-pool-volume) | `Pool volume <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

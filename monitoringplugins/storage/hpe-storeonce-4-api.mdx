@@ -1,0 +1,254 @@
+---
+title: "HPE Storeonce 4 (API)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HPE.png";
+
+<PluginPackHeader name="HPE Storeonce 4 (API)" image={image} category="Storage" metadata={[]} />
+
+## Description
+
+Monitors HPE StoreOnce 4 appliances through its API: appliances and their disk usage and deduplication ratio, hardware storage and stores.
+
+The plugin pack provides these checks:
+
+* [Appliances](#storage-hp-storeonce-4-restapi-appliances)
+* [Hardware storage](#storage-hp-storeonce-4-restapi-hardware-storage)
+* [Stores](#storage-hp-storeonce-4-restapi-stores)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Appliances](#storage-hp-storeonce-4-restapi-appliances) | `Appliance - <name>` |
+| [Stores](#storage-hp-storeonce-4-restapi-stores) | `Store - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### HP-Storeonce-4
+
+*HP Storeonce 4* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEOUT` | `30` | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PORT` | `443` | Port used (default: 443) |
+| `API-PROTO` | `https` | Specify https if needed (default: 'https') |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Appliances](#storage-hp-storeonce-4-restapi-appliances) | `storage-hp-storeonce-4-restapi-appliances` |
+| [Hardware storage](#storage-hp-storeonce-4-restapi-hardware-storage) | `storage-hp-storeonce-4-restapi-hardware-storage` |
+| [Stores](#storage-hp-storeonce-4-restapi-stores) | `storage-hp-storeonce-4-restapi-stores` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Appliances {/* #storage-hp-storeonce-4-restapi-appliances */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-UUID` | `.*` | Filter appliances by UUID |
+| `FILTER-HOSTNAME` | `.*` | Filter appliances by hostname |
+| `WARNING-SERVICE-STATUS` | `'%{status} =~ /warning/i'` | Set warning threshold for status (Default: '%\{status\} =~ /warning/i'). Can used special variables like: %\{service\}, %\{status\} |
+| `CRITICAL-SERVICE-STATUS` | `'%{status} =~ /critical/i'` | Set critical threshold for status (Default: '%\{status\} =~ /critical/i'). Can used special variables like: %\{service\}, %\{status\} |
+| `WARNING-DISK-SPACE-USAGE-PRCT` | `90` | Warning threshold Disk space usage (%) |
+| `CRITICAL-DISK-SPACE-USAGE-PRCT` | `95` | Critical threshold Disk space usage (%) |
+| `WARNING-DEDUP` |  | Warning threshold Deduplication |
+| `CRITICAL-DEDUP` |  | Critical threshold Deduplication |
+| `UNKNOWN-SERVICE-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{service\}, %\{status\} |
+| `WARNING-APPLIANCES-DETECTED` |  | Warning threshold Appliances detected |
+| `WARNING-DISK-SPACE-USAGE` |  | Warning threshold Disk space usage (B) |
+| `WARNING-DISK-SPACE-USAGE-FREE` |  | Warning threshold Disk space usage free (B) |
+| `CRITICAL-APPLIANCES-DETECTED` |  | Critical threshold Appliances detected |
+| `CRITICAL-DISK-SPACE-USAGE` |  | Critical threshold Disk space usage (B) |
+| `CRITICAL-DISK-SPACE-USAGE-FREE` |  | Critical threshold Disk space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `appliances.detected.count` |  | detected | `WARNING-APPLIANCES-DETECTED`, `CRITICAL-APPLIANCES-DETECTED` |
+| `appliance.disk.space.usage.bytes` | `B` |  | `WARNING-DISK-SPACE-USAGE`, `CRITICAL-DISK-SPACE-USAGE` |
+| `appliance.disk.space.free.bytes` | `B` |  | `WARNING-DISK-SPACE-USAGE-FREE`, `CRITICAL-DISK-SPACE-USAGE-FREE` |
+| `appliance.disk.space.usage.percentage` | `%` |  | `WARNING-DISK-SPACE-USAGE-PRCT`, `CRITICAL-DISK-SPACE-USAGE-PRCT` |
+| `appliance.deduplication.ratio.count` |  | deduplication ratio | `WARNING-DEDUP`, `CRITICAL-DEDUP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware storage {/* #storage-hp-storeonce-4-restapi-hardware-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check. Can be: 'drive', 'driveencl', 'fan', 'iomodule', 'pool', 'psu', 'temperature' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=psu) Can also exclude specific instance: --filter=fan,fan slot 1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,WARNING,missing' |
+| `WARNING` |  | Set warning threshold for 'fan.speed' (syntax: section,[instance,]status,regexp) Example: --warning='fan.speed,.*,10000' |
+| `CRITICAL` |  | Set critical threshold for 'fan.speed' (syntax: section,[instance,]status,regexp) Example: --critical='fan.speed,.*,11000' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Stores {/* #storage-hp-storeonce-4-restapi-stores */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-ID` | `.*` | Filter stores by id |
+| `FILTER-NAME` | `.*` | Filter stores by hostname |
+| `UNKNOWN-HEALTH` | `'%{health} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{health\} =~ /unknown/i'). Can used special variables like: %\{health\}, %\{name\} |
+| `WARNING-HEALTH` | `'%{health} =~ /warning/i'` | Set warning threshold for status (Default: '%\{health\} =~ /warning/i'). Can used special variables like: %\{health\}, %\{name\} |
+| `CRITICAL-HEALTH` | `'%{health} =~ /critical/i'` | Set critical threshold for status (Default: '%\{health\} =~ /critical/i'). Can used special variables like: %\{health\}, %\{name\} |
+| `WARNING-STORES-DETECTED` |  | Warning threshold Stores detected |
+| `WARNING-DISK-SPACE-USAGE` |  | Warning threshold Disc space usage (B) |
+| `WARNING-USER-SPACE-USAGE` |  | Warning threshold User space usage (B) |
+| `WARNING-DEDUP` |  | Warning threshold Deduplication |
+| `CRITICAL-STORES-DETECTED` |  | Critical threshold Stores detected |
+| `CRITICAL-DISK-SPACE-USAGE` |  | Critical threshold Disc space usage (B) |
+| `CRITICAL-USER-SPACE-USAGE` |  | Critical threshold User space usage (B) |
+| `CRITICAL-DEDUP` |  | Critical threshold Deduplication |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `stores.detected.count` |  | detected | `WARNING-STORES-DETECTED`, `CRITICAL-STORES-DETECTED` |
+| `store.disk.space.usage.bytes` | `B` | disk space used | `WARNING-DISK-SPACE-USAGE`, `CRITICAL-DISK-SPACE-USAGE` |
+| `store.user.space.usage.bytes` | `B` | user space used | `WARNING-USER-SPACE-USAGE`, `CRITICAL-USER-SPACE-USAGE` |
+| `store.deduplication.ratio.count` |  | deduplication ratio | `WARNING-DEDUP`, `CRITICAL-DEDUP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Command `storage-hp-storeonce-4-restapi-hardware-storage`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-hp-storeonce-4-restapi-hardware-storage`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `API-PASSWORD` added
+    - Macro `API-PORT` added
+    - Macro `API-PROTO` added
+    - Macro `API-USERNAME` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+    - Macro `USERNAME` removed
+    - Macro `PASSWORD` removed
+
+</details>

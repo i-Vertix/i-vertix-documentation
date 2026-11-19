@@ -12,13 +12,14 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS EC2.png";
 
 ## Description
 
-### AWS EC2 instance monitoring
-protocols used: awscli, Rest API
+Monitors Amazon EC2 instances through Amazon CloudWatch: CPU utilization and credits, disk and EBS I/O, network traffic and the instance status checks.
 
-- CPU usage
-- Disk IO
-- Network
-- Instance status
+The plugin pack provides these checks:
+
+* [EC2 CPU](#cloud-aws-ec2-cpu)
+* [EC2 Disk IO](#cloud-aws-ec2-diskio)
+* [EC2 Instance status](#cloud-aws-ec2-status)
+* [EC2 Network](#cloud-aws-ec2-network)
 
 ## Prerequisites
 
@@ -26,6 +27,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-EC2](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

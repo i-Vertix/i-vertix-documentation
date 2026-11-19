@@ -1,0 +1,148 @@
+---
+title: "Sahi Pro synthetic monitoring"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/SahiPro.png";
+
+<PluginPackHeader name="Sahi Pro synthetic monitoring" image={image} category="Application" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Sahi Pro synthetic web scenarios: execution time, number of steps, failures and errors of a scenario and the duration of its steps.
+
+The plugin pack provides these checks:
+
+* [SahiPro Scenario](#apps-sahipro-restapi-scenario)
+
+
+## Host Templates
+
+### SahiPro-scenario
+
+*SahiPro scenario* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SAHI-PORT` | `9999` | Port used (default: 9999) |
+| `SAHI-PROTOCOL` | `http` | Define HTTPS if needed (default: 'http') |
+| `SAHI-ENDPOINT` | `'/_s_/dyn/'` | Define endpoint (default: '/_s_/dyn/') |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SahiPro Scenario](#apps-sahipro-restapi-scenario) | `apps-sahipro-restapi-scenario` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### SahiPro Scenario {/* #apps-sahipro-restapi-scenario */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SAHI-HTTP-TIMEOUT` | `5` | Timeout for each HTTP requests (Default: 5) |
+| `SAHI-STARTWITH` | `BROWSER` | Specify the start mode (Default: BROWSER) |
+| `SAHI-BROWSERTYPE` | `chrome` | Browser on which scripts will be executed (Default: chrome) |
+| `SAHI-THREADS` | `1` | Number of simultaneous browser instances that can be executed (Default: 1) |
+| `TIMEOUT` | `50` | Specify the global script timeout. If timeout is reached, scenario is killed |
+| `CRITICAL-STATUS` | `'%{status} ne "SUCCESS"'` | Set critical threshold for scenario status (Default: '%\{status\} ne "SUCCESS"'). Can used special variables like: %\{status\} |
+| `RETRIES-SCENARIO-STATUS` |  | Specify the number of retries to get scenario status (if we fail to get the status) |
+| `INTERVAL-SCENARIO-STATUS` |  | Specify time interval to get scenario status in seconds (Default: 10) |
+| `UNKNOWN-RUN-STATUS` |  | Threshold unknown for running scenario rest api response. (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-RUN-STATUS` |  | Threshold warning for running scenario rest api response |
+| `WARNING-STATUS` |  | Set warning threshold for scenario status. Can used special variables like: %\{status\} |
+| `WARNING-TOTAL-TIME` |  | Threshold warning total time |
+| `WARNING-TOTAL-STEPS` |  | Threshold warning total steps |
+| `WARNING-FAILURES` |  | Threshold warning failures |
+| `WARNING-ERRORS` |  | Threshold warning errors |
+| `WARNING-STEP-TIME` |  | Threshold warning step time |
+| `CRITICAL-RUN-STATUS` |  | Threshold critical for running scenario rest api response |
+| `CRITICAL-TOTAL-TIME` |  | Threshold critical total time |
+| `CRITICAL-TOTAL-STEPS` |  | Threshold critical total steps |
+| `CRITICAL-FAILURES` |  | Threshold critical failures |
+| `CRITICAL-ERRORS` |  | Threshold critical errors |
+| `CRITICAL-STEP-TIME` |  | Threshold critical step time |
+| `SAHI-SUITE` |  | Full path to scenario and scenario name (Required) |
+| `SAHI-BASEURL` |  | Url where the script should start |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `scenario.execution.time.seconds` | `ms` | execution time:  ms | `WARNING-TOTAL-TIME`, `CRITICAL-TOTAL-TIME` |
+| `scenario.steps.count` |  | total steps | `WARNING-TOTAL-STEPS`, `CRITICAL-TOTAL-STEPS` |
+| `scenario.failures.count` |  | failures | `WARNING-FAILURES`, `CRITICAL-FAILURES` |
+| `scenario.errors.count` |  | errors | `WARNING-ERRORS`, `CRITICAL-ERRORS` |
+| `step.execution.time.second` | `ms` | execution time:  ms | `WARNING-STEP-TIME`, `CRITICAL-STEP-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

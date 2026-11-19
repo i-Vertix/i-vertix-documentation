@@ -1,0 +1,414 @@
+---
+title: "Alcatel OXE PBX"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Alcatel-Lucent.png";
+
+<PluginPackHeader name="Alcatel OXE PBX" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Alcatel-Lucent OXE PBX systems through SNMP: CPU, memory, swap and storage usage, PBX role and state, domains and trunks.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-alcatel-oxe-snmp-cpu)
+* [Domains](#network-alcatel-oxe-snmp-domains)
+* [Memory usage](#network-alcatel-oxe-snmp-memory)
+* [PBX Role](#network-alcatel-oxe-snmp-pbx-role)
+* [PBX State](#network-alcatel-oxe-snmp-pbx-state)
+* [Storage usage](#network-alcatel-oxe-snmp-storage)
+* [Swap usage](#network-alcatel-oxe-snmp-swap)
+* [Trunks](#network-alcatel-oxe-snmp-trunks)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Alcatel-OXE-PBX
+
+*OmniPCX Enterprise Communication Server* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-alcatel-oxe-snmp-cpu) | `network-alcatel-oxe-snmp-cpu` |
+| [Domains](#network-alcatel-oxe-snmp-domains) | `network-alcatel-oxe-snmp-domains` |
+| [Memory usage](#network-alcatel-oxe-snmp-memory) | `network-alcatel-oxe-snmp-memory` |
+| [PBX Role](#network-alcatel-oxe-snmp-pbx-role) | `network-alcatel-oxe-snmp-pbx-role` |
+| [PBX State](#network-alcatel-oxe-snmp-pbx-state) | `network-alcatel-oxe-snmp-pbx-state` |
+| [Storage usage](#network-alcatel-oxe-snmp-storage) | `network-alcatel-oxe-snmp-storage` |
+| [Swap usage](#network-alcatel-oxe-snmp-swap) | `network-alcatel-oxe-snmp-swap` |
+| [Trunks](#network-alcatel-oxe-snmp-trunks) | `network-alcatel-oxe-snmp-trunks` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-alcatel-oxe-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Threshold warning average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Threshold critical average CPU utilization |
+| `WARNING-CORE` |  | Threshold warning for each CPU core |
+| `CRITICAL-CORE` |  | Threshold critical for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Domains {/* #network-alcatel-oxe-snmp-domains */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DOMAIN` | `.*` | Filter by domain (regexp can be used) |
+| `CRITICAL-CAC-USAGE` | `95` | Threshold critical CAC usage (%) |
+| `CRITICAL-CONFERENCE-USAGE` | `95` | Threshold critical conference usage (%) |
+| `WARNING-CONFERENCE-USAGE` | `90` | Threshold warning conference usage (%) |
+| `WARNING-CAC-USAGE` | `90` | Threshold warning CAC usage (%) |
+| `CRITICAL-CAC-OVERRUN` |  | Threshold critical CAC overrun (absolute) |
+| `CRITICAL-CONF-OUTOFORDER` |  | Threshold critical Conf out of order (absolute) |
+| `CRITICAL-DSP-OUTOFSERVICE` |  | Threshold critical DSP out of service (absolute) |
+| `CRITICAL-DSP-OVERRUN` |  | Threshold critical DSP overrun (absolute) |
+| `CRITICAL-DSP-USAGE` |  | Threshold critical DSP usage (absolute) |
+| `WARNING-CAC-OVERRUN` |  | Threshold warning CAC overrun (absolute) |
+| `WARNING-CONF-OUTOFORDER` |  | Threshold warning Conf out of order (absolute) |
+| `WARNING-DSP-OUTOFSERVICE` |  | Threshold warning DSP out of service (absolute) |
+| `WARNING-DSP-OVERRUN` |  | Threshold warning DSP overrun (absolute) |
+| `WARNING-DSP-USAGE` |  | Threshold warning DSP usage (absolute) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `domain.communications.external.current.count` |  |  | `WARNING-CAC-USAGE`, `CRITICAL-CAC-USAGE` |
+| `domain.communications.external.overrun.count` |  | conference overrun | `WARNING-CAC-OVERRUN`, `CRITICAL-CAC-OVERRUN` |
+| `domain.conference.circuits.current.count` |  |  | `WARNING-CONFERENCE-USAGE`, `CRITICAL-CONFERENCE-USAGE` |
+| `domain.conference.circuits.outoforder.count` |  | conference out of order | `WARNING-CONF-OUTOFORDER`, `CRITICAL-CONF-OUTOFORDER` |
+| `domain.compressors.current.count` |  |  | `WARNING-DSP-USAGE`, `CRITICAL-DSP-USAGE` |
+| `domain.compressors.outofservice.count` |  | compressor out of service | `WARNING-DSP-OUTOFSERVICE`, `CRITICAL-DSP-OUTOFSERVICE` |
+| `domain.compressors.overrun.count` |  | compressor overrun | `WARNING-DSP-OVERRUN`, `CRITICAL-DSP-OVERRUN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory usage {/* #network-alcatel-oxe-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### PBX Role {/* #network-alcatel-oxe-snmp-pbx-role */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='role,CRITICAL,^(?!(main)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### PBX State {/* #network-alcatel-oxe-snmp-pbx-state */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example:--threshold-overload='state,CRITICAL,^(?!(normal)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage usage {/* #network-alcatel-oxe-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STORAGE` | `.*` | Set the storage (number expected) ex: 1, 2,... (empty means 'check all storage') |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USAGE` | `80` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical access. Check if storage is readOnly: --critical-access=readOnly |
+| `WARNING-ACCESS` |  | Threshold warning access |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap usage {/* #network-alcatel-oxe-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `35` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Trunks {/* #network-alcatel-oxe-snmp-trunks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-TRUNK` | `.*` | Filter by trunk name (regexp can be used) |
+| `CRITICAL-TRUNK-STATUS` | `'%{trunkstatus} =~ /oos/i'` | Set critical threshold for status (Default: '%\{trunkstatus\} =~ /oos/i'). Can used special variables like: %\{trunkstatus\} |
+| `WARNING-CHANNEL-USAGE` | `90` | Warning threshold Channel usage (%) |
+| `CRITICAL-CHANNEL-USAGE` | `95` | Critical threshold Channel usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-TRUNK-STATUS` |  | Set warning threshold for status Can used special variables like: %\{trunkstatus\} |
+| `WARNING-CHANNEL-OUTOFSERVICE` |  | Warning threshold Channel out of service (absolute) |
+| `CRITICAL-CHANNEL-OUTOFSERVICE` |  | Critical threshold Channel out of service (absolute) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `trunk.channels.usage.count` |  |  | `WARNING-CHANNEL-USAGE`, `CRITICAL-CHANNEL-USAGE` |
+| `trunk.channels.outofservice.count` |  | channels out of service | `WARNING-CHANNEL-OUTOFSERVICE`, `CRITICAL-CHANNEL-OUTOFSERVICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

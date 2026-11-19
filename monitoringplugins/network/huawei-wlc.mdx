@@ -1,0 +1,552 @@
+---
+title: "Huawei WLC"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Huawei.png";
+
+<PluginPackHeader name="Huawei WLC" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Huawei wireless LAN controllers through SNMP: CPU and memory usage, hardware health, interfaces, and the status and radios of the managed access points.
+
+The plugin pack provides these checks:
+
+* [AP health](#network-huawei-wlc-snmp-ap-health)
+* [AP radio](#network-huawei-wlc-snmp-ap-radio) (`network-huawei-wlc-snmp-ap-radio`)
+* [AP radio](#network-huawei-wlc-snmp-ap-status) (`network-huawei-wlc-snmp-ap-status`)
+* [CPU](#network-huawei-wlc-snmp-cpu)
+* [Global AP status](#network-huawei-wlc-snmp-wlan-global)
+* [Hardware](#network-huawei-wlc-snmp-hardware)
+* [Interfaces](#network-huawei-wlc-snmp-interfaces)
+* [Memory](#network-huawei-wlc-snmp-memory)
+* [Uptime](#network-huawei-wlc-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [AP health](#network-huawei-wlc-snmp-ap-health) | `Interface - <name>` |
+| [AP radio](#network-huawei-wlc-snmp-ap-radio) | `Interface - <name>` |
+| [AP radio](#network-huawei-wlc-snmp-ap-status) | `Interface - <name>` |
+| [Interfaces](#network-huawei-wlc-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Huawei-WLC
+
+*Huawei WLC* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP radio](#network-huawei-wlc-snmp-ap-status) | `network-huawei-wlc-snmp-ap-status` |
+| [CPU](#network-huawei-wlc-snmp-cpu) | `network-huawei-wlc-snmp-cpu` |
+| [Hardware](#network-huawei-wlc-snmp-hardware) | `network-huawei-wlc-snmp-hardware` |
+| [Memory](#network-huawei-wlc-snmp-memory) | `network-huawei-wlc-snmp-memory` |
+| [Uptime](#network-huawei-wlc-snmp-uptime) | `network-huawei-wlc-snmp-uptime` |
+| [Global AP status](#network-huawei-wlc-snmp-wlan-global) | `network-huawei-wlc-snmp-wlan-global` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP health](#network-huawei-wlc-snmp-ap-health) | `network-huawei-wlc-snmp-ap-health` |
+| [AP radio](#network-huawei-wlc-snmp-ap-radio) | `network-huawei-wlc-snmp-ap-radio` |
+| [Interfaces](#network-huawei-wlc-snmp-interfaces) | `network-huawei-wlc-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP radio {/* #network-huawei-wlc-snmp-ap-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{runstate} =~ /countryCodeMismatch\|typeNotMatch/'` | Define the conditions to match for the status to be WARNING. (default: '%\{runstate\} =~ /countryCodeMismatch\|typeNotMatch/'). You can use the following variables: "%\{runstate\}", "%\{display\}". "%(runstate)" can have one of these values: "idle", "autofind", "typeNotMatch", "fault", "config", "configFailed", "download", "normal", "committing", "commitFailed", "standby", "verMismatch", "nameConflicted", "invalid", "countryCodeMismatch" |
+| `WARNING-TOTAL-FAULT` | `0` | Warning threshold number of fault AP |
+| `WARNING-TOTAL-CONFIG-FAILED` | `0` | Warning threshold number of config failed AP |
+| `WARNING-TOTAL-COMMIT-FAILED` | `0` | Warning threshold number of committing failed AP |
+| `WARNING-TOTAL-VERSION-MISMATCH` | `0` | Warning threshold number of version mismatch AP |
+| `WARNING-TOTAL-NAME-CONFLICTED` | `0` | Warning threshold number of name conflicted AP |
+| `WARNING-TOTAL-INVALID` | `0` | Warning threshold number of invalid AP |
+| `WARNING-TOTAL-COUNTRY-CODE-MISMATCH` | `0` | Warning threshold number of country code mismatch AP |
+| `CRITICAL-STATUS` | `'%{runstate} =~ /fault\|configFailed\|commitFailed\|verMismatch\|nameConflicted\|invalid/'` | Define the conditions to match for the status to be CRITICAL. (default: '%\{runstate\} =~ /fault\|configFailed\|commitFailed\|verMismatch\|nameConflicted\|invalid/'). You can use the following variables: "%\{runstate\}", "%\{display\}". "%(runstate)" can have one of these values: "idle", "autofind", "typeNotMatch", "fault", "config", "configFailed", "download", "normal", "committing", "commitFailed", "standby", "verMismatch", "nameConflicted", "invalid", "countryCodeMismatch" |
+| `FILTER-NAME` |  | Filter access point name (can be a regexp) |
+| `FILTER-ADDRESS` |  | Filter access point IP address (can be a regexp) |
+| `FILTER-GROUP` |  | Filter access point group (can be a regexp) |
+| `WARNING-TOTAL` |  | Warning threshold number of total AP |
+| `WARNING-TOTAL-IDLE` |  | Warning threshold number of idle AP |
+| `WARNING-TOTAL-AUTOFIND` |  | Warning threshold number of autofind AP |
+| `WARNING-TOTAL-TYPENOTMATCH` |  | Warning threshold number of type not match AP |
+| `WARNING-TOTAL-CONFIG` |  | Warning threshold number of config AP |
+| `WARNING-TOTAL-DOWNLOAD` |  | Warning threshold number of download AP |
+| `WARNING-TOTAL-NORMAL` |  | Warning threshold number of normal AP |
+| `WARNING-TOTAL-COMMITTING` |  | Warning threshold number of committing AP |
+| `WARNING-TOTAL-STANDBY` |  | Warning threshold number of standby AP |
+| `CRITICAL-TOTAL` |  | Critical threshold number of total AP |
+| `CRITICAL-TOTAL-IDLE` |  | Critical threshold number of idle AP |
+| `CRITICAL-TOTAL-AUTOFIND` |  | Critical threshold number of autofind AP |
+| `CRITICAL-TOTAL-TYPENOTMATCH` |  | Critical threshold number of type not match AP |
+| `CRITICAL-TOTAL-FAULT` |  | Critical threshold number of fault AP |
+| `CRITICAL-TOTAL-CONFIG` |  | Critical threshold number of config AP |
+| `CRITICAL-TOTAL-CONFIG-FAILED` |  | Critical threshold number of config failed AP |
+| `CRITICAL-TOTAL-DOWNLOAD` |  | Critical threshold number of download AP |
+| `CRITICAL-TOTAL-NORMAL` |  | Critical threshold number of normal AP |
+| `CRITICAL-TOTAL-COMMITTING` |  | Critical threshold number of committing AP |
+| `CRITICAL-TOTAL-COMMIT-FAILED` |  | Critical threshold number of committing failed AP |
+| `CRITICAL-TOTAL-STANDBY` |  | Critical threshold number of standby AP |
+| `CRITICAL-TOTAL-VERSION-MISMATCH` |  | Critical threshold number of version mismatch AP |
+| `CRITICAL-TOTAL-NAME-CONFLICTED` |  | Critical threshold number of name conflicted AP |
+| `CRITICAL-TOTAL-INVALID` |  | Critical threshold number of invalid AP |
+| `CRITICAL-TOTAL-COUNTRY-CODE-MISMATCH` |  | Critical threshold number of country code mismatch AP |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoints.total.count` |  | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `accesspoints.idle.count` |  | idle | `WARNING-TOTAL-IDLE`, `CRITICAL-TOTAL-IDLE` |
+| `accesspoints.autofind.count` |  | autofind | `WARNING-TOTAL-AUTOFIND`, `CRITICAL-TOTAL-AUTOFIND` |
+| `accesspoints.typenotmatch.count` |  | type not match | `WARNING-TOTAL-TYPENOTMATCH`, `CRITICAL-TOTAL-TYPENOTMATCH` |
+| `accesspoints.fault.count` |  | fault | `WARNING-TOTAL-FAULT`, `CRITICAL-TOTAL-FAULT` |
+| `accesspoints.config.count` |  | config | `WARNING-TOTAL-CONFIG`, `CRITICAL-TOTAL-CONFIG` |
+| `accesspoints.configfailed.count` |  | config failed | `WARNING-TOTAL-CONFIG-FAILED`, `CRITICAL-TOTAL-CONFIG-FAILED` |
+| `accesspoints.download.count` |  | download | `WARNING-TOTAL-DOWNLOAD`, `CRITICAL-TOTAL-DOWNLOAD` |
+| `accesspoints.normal.count` |  | normal | `WARNING-TOTAL-NORMAL`, `CRITICAL-TOTAL-NORMAL` |
+| `accesspoints.committing.count` |  | committing | `WARNING-TOTAL-COMMITTING`, `CRITICAL-TOTAL-COMMITTING` |
+| `accesspoints.commitfailed.count` |  | commit failed | `WARNING-TOTAL-COMMIT-FAILED`, `CRITICAL-TOTAL-COMMIT-FAILED` |
+| `accesspoints.standby.count` |  | standby | `WARNING-TOTAL-STANDBY`, `CRITICAL-TOTAL-STANDBY` |
+| `accesspoints.vermismatch.count` |  | version mismatch | `WARNING-TOTAL-VERSION-MISMATCH`, `CRITICAL-TOTAL-VERSION-MISMATCH` |
+| `accesspoints.nameconflicted.count` |  | name conflicted | `WARNING-TOTAL-NAME-CONFLICTED`, `CRITICAL-TOTAL-NAME-CONFLICTED` |
+| `accesspoints.invalid.count` |  | invalid | `WARNING-TOTAL-INVALID`, `CRITICAL-TOTAL-INVALID` |
+| `accesspoints.countrycodemismatch.count` |  | country code mismatch | `WARNING-TOTAL-COUNTRY-CODE-MISMATCH`, `CRITICAL-TOTAL-COUNTRY-CODE-MISMATCH` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-huawei-wlc-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Warning thresholds cpu usage |
+| `CRITICAL-USAGE` | `90` | Critical thresholds cpu usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu` | `%` | Usage :  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-huawei-wlc-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (default: '.*'). Can be: 'fan' |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER` |  | Exclude the items given as a comma-separated list (example: --filter=fan --filter=psu). You can also exclude items from specific instances: --filter=fan,1.0 |
+| `WARNING` |  | Set warning threshold for 'fan', 'temperature' (syntax: type,regexp,threshold) Example: --warning='fan,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'fan', 'temperature' (syntax: type,regexp,threshold) Example: --critical='fan,.*,45' |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='fan,WARNING,abnormal' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-huawei-wlc-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Warning threshold (in percent) |
+| `CRITICAL-USAGE` | `90` | Critical threshold (in percent) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-huawei-wlc-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Warning threshold |
+| `CRITICAL-UPTIME` | `900:` | Critical threshold |
+| `UNIT` | `s` | Select the time unit for thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Global AP status {/* #network-huawei-wlc-snmp-wlan-global */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-NORMAL-PRCT` | `100:` | Warning threshold normal AP (%) |
+| `WARNING-FAULT` | `0` | Warning threshold number of fault AP |
+| `CRITICAL-NORMAL-PRCT` | `75:` | Critical threshold normal AP (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-TOTAL` |  | Warning threshold number of total AP |
+| `WARNING-NORMAL` |  | Warning threshold number of normal AP |
+| `WARNING-FAULT-PRCT` |  | Warning threshold fault AP (%) |
+| `WARNING-CURRENT-USER` |  | Warning threshold number of current users |
+| `WARNING-CURRENT-AUTH-USER` |  | Warning threshold number of authenticated users |
+| `WARNING-CURRENT-AUTH-USER-PRCT` |  | Warning threshold authenticated users (%) |
+| `CRITICAL-TOTAL` |  | Critical threshold number of total AP |
+| `CRITICAL-NORMAL` |  | Critical threshold number of normal AP |
+| `CRITICAL-FAULT` |  | Critical threshold number of fault AP |
+| `CRITICAL-FAULT-PRCT` |  | Critical threshold fault AP (%) |
+| `CRITICAL-CURRENT-USER` |  | Critical threshold number of current users |
+| `CRITICAL-CURRENT-AUTH-USER` |  | Critical threshold number of authenticated users |
+| `CRITICAL-CURRENT-AUTH-USER-PRCT` |  | Critical threshold authenticated users (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoints.total.count` |  | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `accesspoints.normal.count` |  |  | `WARNING-NORMAL`, `CRITICAL-NORMAL` |
+| `accesspoints.fault.count` |  |  | `WARNING-FAULT`, `CRITICAL-FAULT` |
+| `accesspoints.normal.percentage` | `%` |  | `WARNING-NORMAL-PRCT`, `CRITICAL-NORMAL-PRCT` |
+| `accesspoints.fault.percentage` | `%` |  | `WARNING-FAULT-PRCT`, `CRITICAL-FAULT-PRCT` |
+| `accesspoints.user.count` |  | current user | `WARNING-CURRENT-USER`, `CRITICAL-CURRENT-USER` |
+| `accesspoints.user.auth.count` |  |  | `WARNING-CURRENT-AUTH-USER`, `CRITICAL-CURRENT-AUTH-USER` |
+| `accesspoints.user.auth.percentage` | `%` |  | `WARNING-CURRENT-AUTH-USER-PRCT`, `CRITICAL-CURRENT-AUTH-USER-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP health {/* #network-huawei-wlc-snmp-ap-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{powersupply} eq "limited"'` | Define the conditions to match for the status to be WARNING. (default: '%\{powersupply\} eq "limited"'). You can use the following variables: %\{powersupply\}, %\{datalinkstate\}, %\{display\} |
+| `WARNING-MEMORY` | `80` | Warning threshold memory usage |
+| `WARNING-CPU` | `80` | Warning threshold cpu usage |
+| `WARNING-UP-PACKET-ERROR` | `0` | Warning threshold packet error rate of an upstream interface |
+| `CRITICAL-STATUS` | `'%{powersupply} =~ /insufficient\|limited/ \|\| %{datalinkstate} !~ /run/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{powersupply\} =~ /insufficient\|limited/ \|\| %\{datalinkstate\} !~ /run/'). You can use the following variables: %\{powersupply\}, %\{datalinkstate\}, %\{display\} |
+| `CRITICAL-MEMORY` | `90` | Critical threshold memory usage |
+| `CRITICAL-CPU` | `90` | Critical threshold cpu usage |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-NAME` |  | Filter access point name (can be a regexp) |
+| `FILTER-ADDRESS` |  | Filter access point IP address (can be a regexp) |
+| `FILTER-GROUP` |  | Filter access point group (can be a regexp) |
+| `WARNING-TEMPERATURE` |  | Warning threshold temperature (C) |
+| `WARNING-ONLIMETIME` |  | Warning threshold online time |
+| `WARNING-BOOTCOUNT-TOTAL` |  | Warning threshold total number of times an AP is restarted |
+| `WARNING-UP-PORT-SPEED` |  | Warning threshold real-time rate of an upstream interface (bps) |
+| `WARNING-ONLINE-USER-NUM` |  | Warning threshold number of online users |
+| `CRITICAL-TEMPERATURE` |  | Critical threshold temperature (C) |
+| `CRITICAL-ONLIMETIME` |  | Critical threshold online time |
+| `CRITICAL-BOOTCOUNT-TOTAL` |  | Critical threshold total number of times an AP is restarted |
+| `CRITICAL-UP-PORT-SPEED` |  | Critical threshold real-time rate of an upstream interface (bps) |
+| `CRITICAL-UP-PACKET-ERROR` |  | Critical threshold packet error rate of an upstream interface (%) |
+| `CRITICAL-ONLINE-USER-NUM` |  | Critical threshold number of online users |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ap.temperature.celsius` | `C` | access point temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `ap.online.time` |  |  | `WARNING-ONLIMETIME`, `CRITICAL-ONLIMETIME` |
+| `ap.boot.total.count` |  | access point bootcount total | `WARNING-BOOTCOUNT-TOTAL`, `CRITICAL-BOOTCOUNT-TOTAL` |
+| `ap.memory.used.percentage` | `%` | access point memory:  %% | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+| `ap.cpu.used.percentage` | `%` | access point cpu: %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `ap.up.port.bitspersecond` | `b/s` | access point up-Port speed:  b/s | `WARNING-UP-PORT-SPEED`, `CRITICAL-UP-PORT-SPEED` |
+| `ap.up.port.package.error.percentage` | `%` | access point up-Port packet errors: %% | `WARNING-UP-PACKET-ERROR`, `CRITICAL-UP-PACKET-ERROR` |
+| `ap.online.user.count` |  | access online user nums | `WARNING-ONLINE-USER-NUM`, `CRITICAL-ONLINE-USER-NUM` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP radio {/* #network-huawei-wlc-snmp-ap-radio */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PACKAGE-ERROR-RATE` | `5` | Warning threshold packet error rate at the wireless side (%) |
+| `WARNING-NOISE` | `-90` | Warning threshold interference noise of the radio (dBm) |
+| `WARNING-CHANNEL-UTILIZATION-RATE` | `90` | Warning threshold channel usage on the radio (%) |
+| `WARNING-CHANNEL-INTERFERENCE-RATE` | `40` | Warning threshold channel interference rate (%) |
+| `CRITICAL-STATUS` | `'%{runstate} ne "up"'` | Define the conditions to match for the status to be CRITICAL (default: '%\{runstate\} ne "up"'). You can use the following variables: %\{runstate\}, %\{display\} |
+| `CRITICAL-PACKAGE-ERROR-RATE` | `10` | Critical threshold packet error rate at the wireless side (%) |
+| `CRITICAL-NOISE` | `-80` | Critical threshold interference noise of the radio (dBm) |
+| `CRITICAL-CHANNEL-UTILIZATION-RATE` | `95` | Critical threshold channel usage on the radio (%) |
+| `CRITICAL-CHANNEL-INTERFERENCE-RATE` | `75` | Critical threshold channel interference rate (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-NAME` |  | Filter access point radio name (can be a regexp) |
+| `FILTER-ADDRESS` |  | Filter access point radio IP address (can be a regexp) |
+| `FILTER-GROUP` |  | Filter access point group (can be a regexp) |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{runstate\}, %\{display\} |
+| `WARNING-RECEIVE-RATE` |  | Warning threshold downstream rate at the wireless side (bps) |
+| `WARNING-SEND-RATE` |  | Warning threshold upstream rate at the wireless side (bps) |
+| `CRITICAL-RECEIVE-RATE` |  | Critical threshold downstream rate at the wireless side (bps) |
+| `CRITICAL-SEND-RATE` |  | Critical threshold upstream rate at the wireless side (bps) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ap.radio.packageerror.percentage` | `%` | radio package error rate: %% | `WARNING-PACKAGE-ERROR-RATE`, `CRITICAL-PACKAGE-ERROR-RATE` |
+| `ap.radio.noise.dbm` | `dBm` | radio noise:  dBm | `WARNING-NOISE`, `CRITICAL-NOISE` |
+| `ap.radio.channel.utilization.percentage` | `%` | radio channel utilization rate: %% | `WARNING-CHANNEL-UTILIZATION-RATE`, `CRITICAL-CHANNEL-UTILIZATION-RATE` |
+| `ap.radio.channel.interference.percentage` | `%` | radio channel interference rate: %% | `WARNING-CHANNEL-INTERFERENCE-RATE`, `CRITICAL-CHANNEL-INTERFERENCE-RATE` |
+| `ap.radio.receive.bitspersecond` | `b/s` | radio channel receive rate:  b/s | `WARNING-RECEIVE-RATE`, `CRITICAL-RECEIVE-RATE` |
+| `ap.radio.send.bitspersecond` | `b/s` | radio channel send rate:  b/s | `WARNING-SEND-RATE`, `CRITICAL-SEND-RATE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-huawei-wlc-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERFACE` | `.*` | Check only the interfaces with the specified IDs (OID indexes, e.g.: 1,2,...). If empty, all interfaces will be monitored. To filter on interface names, see --name. |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (default: 'percent_delta') ('percent_delta', 'bps', 'counter'). |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'deltaps', 'counter'). |
+| `OID-DISPLAY` | `ifName` | Define the OID that will be used to name the interfaces (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr). |
+| `WARNING-DISCARD-IN` | `0` | Warning threshold for in-discard |
+| `WARNING-DISCARD-OUT` | `0` | Warning threshold for out-discard |
+| `WARNING-ERROR-IN` | `0` | Warning threshold for in-error |
+| `WARNING-ERROR-OUT` | `0` | Warning threshold for out-error |
+| `WARNING-TRAFFIC-IN` | `80` | Warning threshold for in-traffic (b/s) |
+| `WARNING-TRAFFIC-OUT` | `80` | Warning threshold for out-traffic (b/s) |
+| `CRITICAL-DISCARD-IN` | `10` | Critical threshold for in-discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Critical threshold for out-discard |
+| `CRITICAL-ERROR-IN` | `10` | Critical threshold for in-error |
+| `CRITICAL-ERROR-OUT` | `10` | Critical threshold for out-error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Critical threshold for in-traffic (b/s) |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Critical threshold for out-traffic (b/s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.input.power.dbm` | `dBm` | Input Power:  dBm |  |
+| `interface.bias.current.milliampere` | `mA` | Bias Current:  mA |  |
+| `interface.output.power.dbm` | `dBm` | Output Power:  dBm |  |
+| `interface.module.temperature.celsius` | `C` | Module Temperature:  C |  |
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250114 - 20250210</summary>
+
+- Plugin pack `Huawei WLC`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250114 - 20250210`.

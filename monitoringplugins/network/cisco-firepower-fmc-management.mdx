@@ -1,0 +1,140 @@
+---
+title: "Cisco Firepower FMC (management)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco Firepower FMC (management)" image={image} category="Network" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Cisco Firepower Management Center through its HTTP(S) API: the status of the managed devices.
+
+The plugin pack provides these checks:
+
+* [Device status](#network-cisco-firepower-fmc-restapi-devices)
+
+
+## Host Templates
+
+### Cisco-Firepower-FMC
+
+*Cisco Firepower FMC Management* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `API-PASSWORD` | *(password)* | Set password. |
+| `API-USERNAME` |  | Set username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device status](#network-cisco-firepower-fmc-restapi-devices) | `network-cisco-firepower-fmc-restapi-devices` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device status {/* #network-cisco-firepower-fmc-restapi-devices */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DOMAIN-NAME` | `.*` | Filter devices by domain name (Can be a regexp) |
+| `FILTER-DEVICE-NAME` | `.*` | Filter devices by name (Can be a regexp) |
+| `WARNING-DEVICE-STATUS` | `%{status} =~ /yellow/i` | Set warning threshold for status (Default: '%\{status\} =~ /yellow/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-DEVICE-STATUS` | `%{status} =~ /red\|black/i` | Set critical threshold for status (Default: '%\{status\} =~ /red\|black/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-DEVICES-STATUS-YELLOW` | `0` | Warning threshold yellow devices |
+| `CRITICAL-DEVICES-STATUS-BLACK` | `0` | Critical threshold black devices |
+| `CRITICAL-DEVICES-STATUS-RED` | `0` | Critical threshold red devices |
+| `WARNING-DEVICES-TOTAL` |  | Warning threshold total devices |
+| `WARNING-DEVICES-STATUS-GREEN` |  | Warning threshold green devices |
+| `WARNING-DEVICES-STATUS-BLACK` |  | Warning threshold black devices |
+| `WARNING-DEVICES-STATUS-BLUE` |  | Warning threshold blue devices |
+| `WARNING-DEVICES-STATUS-RED` |  | Warning threshold red devices |
+| `CRITICAL-DEVICES-TOTAL` |  | Critical threshold total devices |
+| `CRITICAL-DEVICES-STATUS-GREEN` |  | Critical threshold green devices |
+| `CRITICAL-DEVICES-STATUS-BLUE` |  | Critical threshold blue devices |
+| `CRITICAL-DEVICES-STATUS-YELLOW` |  | Critical threshold yellow devices |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `devices.total.count` |  | total | `WARNING-DEVICES-TOTAL`, `CRITICAL-DEVICES-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

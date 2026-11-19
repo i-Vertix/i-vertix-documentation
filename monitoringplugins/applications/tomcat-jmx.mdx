@@ -1,0 +1,513 @@
+---
+title: "Tomcat JMX"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Tomcat.png";
+
+<PluginPackHeader name="Tomcat JMX" image={image} category="Application" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Apache Tomcat application servers through JMX: class loading, CPU load, file descriptors, garbage collection, load average, heap and non-heap memory, threads, connectors, datasources and web application sessions.
+
+The plugin pack provides these checks:
+
+* [JMX Class count](#apps-tomcat-jmx-class-count)
+* [JMX Connector usage](#apps-tomcat-jmx-connector-usage)
+* [JMX CPU Load](#apps-tomcat-jmx-cpu-load)
+* [JMX Datasource usage](#apps-tomcat-jmx-datasource-usage)
+* [JMX FD usage](#apps-tomcat-jmx-fd-usage)
+* [JMX GC usage](#apps-tomcat-jmx-gc-usage)
+* [JMX Load average](#apps-tomcat-jmx-load-average)
+* [JMX Memory](#apps-tomcat-jmx-memory)
+* [JMX Memory detailed](#apps-tomcat-jmx-memory-detailed)
+* [JMX Threads](#apps-tomcat-jmx-threads)
+* [JMX Web apps sessions](#apps-tomcat-jmx-webapps-sessions)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [JMX Datasource usage](#apps-tomcat-jmx-datasource-usage) | `JMX Datasource usage - <path>` |
+| [JMX Web apps sessions](#apps-tomcat-jmx-webapps-sessions) | `JMX Web apps sessions - <path>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Tomcat-JMX
+
+*Tomcat JMX Jolokia* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `JOLOKIA-JMX-URL` | `http://<IP>:8080/jolokia` | Url where the jolokia agent is deployed (required). Example: http://localhost:8080/jolokia |
+| `JOLOKIA-JMX-PASSWORD` | *(password)* | Credentials to use for the HTTP request |
+| `JOLOKIA-JMX-USERNAME` |  | Credentials to use for the HTTP request |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [JMX Class count](#apps-tomcat-jmx-class-count) | `apps-tomcat-jmx-class-count` |
+| [JMX Connector usage](#apps-tomcat-jmx-connector-usage) | `apps-tomcat-jmx-connector-usage` |
+| [JMX CPU Load](#apps-tomcat-jmx-cpu-load) | `apps-tomcat-jmx-cpu-load` |
+| [JMX Datasource usage](#apps-tomcat-jmx-datasource-usage) | `apps-tomcat-jmx-datasource-usage` |
+| [JMX FD usage](#apps-tomcat-jmx-fd-usage) | `apps-tomcat-jmx-fd-usage` |
+| [JMX GC usage](#apps-tomcat-jmx-gc-usage) | `apps-tomcat-jmx-gc-usage` |
+| [JMX Load average](#apps-tomcat-jmx-load-average) | `apps-tomcat-jmx-load-average` |
+| [JMX Memory](#apps-tomcat-jmx-memory) | `apps-tomcat-jmx-memory` |
+| [JMX Memory detailed](#apps-tomcat-jmx-memory-detailed) | `apps-tomcat-jmx-memory-detailed` |
+| [JMX Threads](#apps-tomcat-jmx-threads) | `apps-tomcat-jmx-threads` |
+| [JMX Web apps sessions](#apps-tomcat-jmx-webapps-sessions) | `apps-tomcat-jmx-webapps-sessions` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Class count {/* #apps-tomcat-jmx-class-count */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='current' |
+| `WARNING-UNLOADED` |  | Threshold warning unloaded |
+| `WARNING-LOADED` |  | Threshold warning loaded |
+| `WARNING-CURRENT` |  | Threshold warning curent |
+| `CRITICAL-UNLOADED` |  | Threshold critical unloaded |
+| `CRITICAL-LOADED` |  | Threshold critical loaded |
+| `CRITICAL-CURRENT` |  | Threshold critical curent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `class.loaded.current.count` |  | current | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `class.loaded.count` |  | loaded | `WARNING-LOADED`, `CRITICAL-LOADED` |
+| `class.unloaded.count` |  | unloaded | `WARNING-UNLOADED`, `CRITICAL-UNLOADED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Connector usage {/* #apps-tomcat-jmx-connector-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter connector name (can be a regexp) |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'absolute') |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='threads-busy' |
+| `WARNING-THREADS-COUNT` |  | Threshold warning threads count |
+| `WARNING-THREADS-BUSY` |  | Threshold warning threads busy |
+| `WARNING-REQUEST-COUNT` |  | Threshold warning request count |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-THREADS-COUNT` |  | Threshold critical threads count |
+| `CRITICAL-THREADS-BUSY` |  | Threshold critical threads busy |
+| `CRITICAL-REQUEST-COUNT` |  | Threshold critical request count |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `request_count` |  | Request Count | `WARNING-REQUEST-COUNT`, `CRITICAL-REQUEST-COUNT` |
+| `traffic_in` | `b/s` | Traffic In :  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `traffic_out` | `b/s` | Traffic Out :  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX CPU Load {/* #apps-tomcat-jmx-cpu-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SYSTEM` | `50` | Threshold warning system cpu load |
+| `WARNING-PROCESS` | `60` | Threshold warning process cpu load |
+| `CRITICAL-SYSTEM` | `75` | Threshold critical system cpu load |
+| `CRITICAL-PROCESS` | `80` | Threshold critical process cpu load |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.cpu.load.percentage` | `%` | system cpu load: %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `process.cpu.load.percentage` | `%` | process cpu load: %% | `WARNING-PROCESS`, `CRITICAL-PROCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Datasource usage {/* #apps-tomcat-jmx-datasource-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter datasource name (can be a regexp) |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'absolute') |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='num-active' |
+| `WARNING-NUM-ACTIVE` |  | Threshold warning number active |
+| `WARNING-NUM-IDLE` |  | Threshold warning number idle |
+| `CRITICAL-NUM-ACTIVE` |  | Threshold critical number active |
+| `CRITICAL-NUM-IDLE` |  | Threshold critical number idle |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX FD usage {/* #apps-tomcat-jmx-fd-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `60` | Threshold warning percentage concerning fd capacity |
+| `CRITICAL-USAGE-PRCT` | `75` | Threshold critical percentage concerning fd capacity |
+| `CRITICAL-USAGE` |  | Threshold critical fd capacity (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical fd free capacity (B) |
+| `WARNING-USAGE` |  | Threshold warning fd capacity (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning fd free capacity (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `fd.opened.usage.count` |  |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `fd.opened.free.count` |  |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `fd.opened.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX GC usage {/* #apps-tomcat-jmx-gc-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter garbage collector name (can be a regexp) |
+| `WARNING-TIME` | `100` | Threshold warning time (ms) |
+| `CRITICAL-TIME` | `250` | Threshold critical time (ms) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^count$' |
+| `WARNING-COUNT` |  | Threshold warning count |
+| `CRITICAL-COUNT` |  | Threshold critical count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `gc.collection.time.elapsed.milliseconds` | `ms` | collection time:  ms | `WARNING-TIME`, `CRITICAL-TIME` |
+| `gc.collection.count` |  | collection count | `WARNING-COUNT`, `CRITICAL-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Load average {/* #apps-tomcat-jmx-load-average */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LOAD1` | `2` | Warning threshold for loadaverage |
+| `CRITICAL-LOAD1` | `3` | Critical threshold for loadaverage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.load.1m.count` |  | System load average:  (1m) | `WARNING-LOAD1`, `CRITICAL-LOAD1` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Memory {/* #apps-tomcat-jmx-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-HEAP` | `60` | Threshold warning heap |
+| `WARNING-NONHEAP` | `65` | Threshold warning non heap |
+| `CRITICAL-HEAP` | `75` | Threshold critical heap |
+| `CRITICAL-NONHEAP` | `75` | Threshold critical non heap |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.heap.usage.bytes` | `B` |  | `WARNING-HEAP`, `CRITICAL-HEAP` |
+| `memory.nonheap.usage.bytes` | `B` |  | `WARNING-NONHEAP`, `CRITICAL-NONHEAP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Memory detailed {/* #apps-tomcat-jmx-memory-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-EDEN` | `60` | Threshold warning of Heap 'Eden Space' memory usage |
+| `WARNING-SURVIVOR` | `65` | Threshold warning of Heap 'Survivor Space' memory usage |
+| `CRITICAL-EDEN` | `75` | Threshold critical of Heap 'Survivor Space' memory usage |
+| `CRITICAL-SURVIVOR` | `75` | Threshold critical of Heap 'Survivor Space' memory usage |
+| `WARNING-TENURED` |  | Threshold warning of Heap 'Tenured Generation' memory usage |
+| `WARNING-PERMANENT` |  | Threshold warning of NonHeap 'Permanent Generation' memory usage |
+| `WARNING-CODE` |  | Threshold warning of NonHeap 'Code Cache' memory usage |
+| `CRITICAL-TENURED` |  | Threshold critical of Heap 'Tenured Generation' memory usage |
+| `CRITICAL-PERMANENT` |  | Threshold critical of NonHeap 'Permanent Generation' memory usage |
+| `CRITICAL-CODE` |  | Threshold critical of NonHeap 'Code Cache' memory usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.eden.usage.bytes` | `B` |  | `WARNING-EDEN`, `CRITICAL-EDEN` |
+| `memory.tenured.usage.bytes` | `B` |  | `WARNING-TENURED`, `CRITICAL-TENURED` |
+| `memory.survivor.usage.bytes` | `B` |  | `WARNING-SURVIVOR`, `CRITICAL-SURVIVOR` |
+| `memory.permanent.usage.bytes` | `B` |  | `WARNING-PERMANENT`, `CRITICAL-PERMANENT` |
+| `memory.code.usage.bytes` | `B` |  | `WARNING-CODE`, `CRITICAL-CODE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Threads {/* #apps-tomcat-jmx-threads */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ACTIVE` |  | Threshold warning active |
+| `WARNING-STARTED` |  | Threshold warning started |
+| `WARNING-DAEMON` |  | Threshold warning deamon |
+| `CRITICAL-ACTIVE` |  | Threshold critical active |
+| `CRITICAL-STARTED` |  | Threshold critical started |
+| `CRITICAL-DAEMON` |  | Threshold critical deamon |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `threads.active.count` |  | active | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `threads.started.count` |  | started | `WARNING-STARTED`, `CRITICAL-STARTED` |
+| `threads.daemon.count` |  | daemon | `WARNING-DAEMON`, `CRITICAL-DAEMON` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### JMX Web apps sessions {/* #apps-tomcat-jmx-webapps-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter webapps name (can be a regexp) |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'absolute') |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='sessions-active' |
+| `WARNING-SESSIONS-COUNT` |  | Threshold warning sessions count |
+| `WARNING-SESSIONS-ACTIVE` |  | Threshold warning sessions active |
+| `CRITICAL-SESSIONS-COUNT` |  | Threshold critical sessions count |
+| `CRITICAL-SESSIONS-ACTIVE` |  | Threshold critical sessions active |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sessions_count` |  | Sessions Count | `WARNING-SESSIONS-COUNT`, `CRITICAL-SESSIONS-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

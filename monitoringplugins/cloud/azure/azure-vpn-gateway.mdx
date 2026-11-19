@@ -12,13 +12,14 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-VPN-Gateway.png
 
 ## Description
 
-### Azure VPN Gateway monitoring
-Protocols used: Rest API
+Monitors Azure VPN Gateways: resource health, gateway status and the traffic of the site-to-site connections and tunnels.
 
-- Health
-- Site traffic
-- Tunnel traffic
-- VPN Gateway status
+The plugin pack provides these checks:
+
+* [Health](#cloud-azure-network-vpngateway-health)
+* [Site traffic](#cloud-azure-network-vpngateway-site-traffic)
+* [Tunnel traffic](#cloud-azure-network-vpngateway-tunnel-traffic)
+* [VPN Gateway status](#cloud-azure-network-vpngateway-vpn-gateway-status)
 
 ## Prerequisites
 
@@ -26,6 +27,7 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
 
 ## Host Templates
 

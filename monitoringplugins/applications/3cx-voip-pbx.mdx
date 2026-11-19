@@ -1,0 +1,284 @@
+---
+title: "3CX Voip PBX"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/3CX.png";
+
+<PluginPackHeader name="3CX Voip PBX" image={image} category="Application" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors a 3CX VoIP PBX through its API: registered and used extensions, active calls, call and extension capacity, and the license.
+
+The plugin pack provides these checks:
+
+* [Extensions](#apps-voip-3cx-restapi-extension)
+* [License](#apps-voip-3cx-restapi-license)
+* [System](#apps-voip-3cx-restapi-system)
+
+
+## Host Templates
+
+### 3CX-VoIP
+
+*3CX VoIP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Define the port to connect to (default: '443'). |
+| `PROTOCOL` | `https` | Define the protocol to reach the API (default: 'https'). |
+| `TIMEOUT` | `30` | Define the timeout in seconds (default: 30). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Define the password for authentication. For `oauth2` mode (Enterprise): the client_secret of the API client. For `login` mode (Pro): the password of the System Owner account. |
+| `API-USERNAME` |  | Define the username for authentication. For `oauth2` mode (Enterprise): the client_id of the API client created in 3CX admin console. For `login` mode (Pro): the email or extension number of a System Owner account (`2FA` must be disabled). |
+| `3CX-VERSION` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Extensions](#apps-voip-3cx-restapi-extension) | `apps-voip-3cx-restapi-extension` |
+| [License](#apps-voip-3cx-restapi-license) | `apps-voip-3cx-restapi-license` |
+| [System](#apps-voip-3cx-restapi-system) | `apps-voip-3cx-restapi-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Extensions {/* #apps-voip-3cx-restapi-extension */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-EXTENSION` |  | Filter extension (by number, first name or last name) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{extension\}, %\{registered\}, %\{dnd\}, %\{profile\}, %\{status\}, %\{duration\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{extension\}, %\{registered\}, %\{dnd\}, %\{profile\}, %\{status\}, %\{duration\} |
+| `WARNING-COUNT` |  | Threshold warning count |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{extension\}, %\{registered\}, %\{dnd\}, %\{profile\}, %\{status\}, %\{duration\} |
+| `CRITICAL-COUNT` |  | Threshold critical count |
+| `DND-PROFILE-NAME` |  | Name of the profile to consider as "DND" (Do Not Disturb). Default: "DND". In 3CX version 20, the "DND" boolean field no longer exists. "DND" status is derived from the "CurrentProfileName" field. Use this option to specify the exact profile name configured in your 3CX instance for "DND". Example: --dnd-profile-name='Do not disturb' |
+| `EXCLUDE-EXTENSION` |  | Exclude extension (by number, first name or last name) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `3cx.extensions.count` |  | Extensions count : %\{count\} | `WARNING-COUNT`, `CRITICAL-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### License {/* #apps-voip-3cx-restapi-license */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LICENSE` | `'%{expires_in} < 10'` | Set warning condition for license status. Default: '%\{expires_in\} &lt; 10' (license expires within 10 days). Variables available: "activated", "license_active", "expires_in", "expires_date" |
+| `WARNING-SUPPORT` | `'%{support} !~ /true/'` | Set warning condition for support status. Default: '%\{support\} !~ /true/' (support disabled). Variables available: "support", "maintenance_expires_in" (in days), "maintenance_expires_date" |
+| `CRITICAL-LICENSE` | `'%{activated} !~ /true/ \|\| %{license_active} !~ /true/'` | Set critical condition for license status. Default: '%\{activated\} !~ /true/ \|\| %\{license_active\} !~ /true/' (license not activated or not active). Variables available: "activated", "license_active", "expires_in" (in days), "expires_date" |
+| `CRITICAL-SUPPORT` |  | Set critical condition for support status. Variables available: "support", "maintenance_expires_in", "maintenance_expires_date" |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `3cx.extensions.count` |  | Extensions count : %\{count\} |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #apps-voip-3cx-restapi-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CALLS-ACTIVE-USAGE-PRCT` | `90` | Warning threshold active calls usage % |
+| `CRITICAL-STATUS` | `'%{error} =~ /false/'` | Set critical threshold for status (Default: '%\{error\} =~ /false/'). Can used special variables like: %\{error\}, %\{service\} |
+| `CRITICAL-CALLS-ACTIVE-USAGE-PRCT` | `95` | Critical threshold active calls usage % |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{error\}, %\{service\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{error\}, %\{service\} |
+| `WARNING-EXTENSIONS-REGISTERED` |  | Threshold warning registered extensions |
+| `CRITICAL-EXTENSIONS-REGISTERED` |  | Threshold critical registered extensions |
+| `FILTER-CATEGORY` |  | Filter updates by category (can be a regexp) |
+| `WARNING-CALLS-ACTIVE-USAGE` |  | Warning threshold active calls usage |
+| `WARNING-CALLS-ACTIVE-FREE` |  | Warning threshold active calls free |
+| `CRITICAL-CALLS-ACTIVE-USAGE` |  | Critical threshold active calls usage |
+| `CRITICAL-CALLS-ACTIVE-FREE` |  | Critical threshold active calls free |
+| `CRITICAL-EXTENSIONS-FREE` |  | Threshold for extensions free (count) |
+| `CRITICAL-EXTENSIONS-USAGE` |  | Threshold for extensions license usage (count) |
+| `CRITICAL-EXTENSIONS-USAGE-PRCT` |  | Threshold for extensions license usage percentage |
+| `EXCLUDE-CATEGORY` |  | Exclude updates by category (can be a regexp) |
+| `EXCLUDE-SERVICE` |  | ervices to exclude from checks (can be a regexp). Available services: "HasUnregisteredTrunks", "HasNotRunningServices", "HasUnregisteredSystemExtensions", "HasUpdatesAvailable" |
+| `INCLUDE-SERVICE` |  | Services to include in checks (can be a regexp). Available services: "HasUnregisteredTrunks", "HasNotRunningServices", "HasUnregisteredSystemExtensions", "HasUpdatesAvailable" |
+| `WARNING-EXTENSIONS-FREE` |  | Threshold for extensions free (count) |
+| `WARNING-EXTENSIONS-USAGE` |  | Threshold for extensions license usage (count) |
+| `WARNING-EXTENSIONS-USAGE-PRCT` |  | Threshold for extensions license usage percentage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.calls.active.usage.count` |  |  | `WARNING-CALLS-ACTIVE-USAGE`, `CRITICAL-CALLS-ACTIVE-USAGE` |
+| `system.calls.active.free.count` |  |  | `WARNING-CALLS-ACTIVE-FREE`, `CRITICAL-CALLS-ACTIVE-FREE` |
+| `system.calls.active.usage.percentage` | `%` |  | `WARNING-CALLS-ACTIVE-USAGE-PRCT`, `CRITICAL-CALLS-ACTIVE-USAGE-PRCT` |
+| `system.extensions.registered.count` |  | extensions registered: %\{extensions_registered\} | `WARNING-EXTENSIONS-REGISTERED`, `CRITICAL-EXTENSIONS-REGISTERED` |
+| `system.extensions.usage.count` |  |  | `WARNING-EXTENSIONS-USAGE`, `CRITICAL-EXTENSIONS-USAGE` |
+| `system.extensions.free.count` |  |  | `WARNING-EXTENSIONS-FREE`, `CRITICAL-EXTENSIONS-FREE` |
+| `system.extensions.usage.percentage` | `%` |  | `WARNING-EXTENSIONS-USAGE-PRCT`, `CRITICAL-EXTENSIONS-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Plugin pack `3CX Voip PBX`
+    - Description updated
+- Host template `3CX-VoIP`
+    - Service template `apps-voip-3cx-restapi-license` linked
+- Service template [`apps-voip-3cx-restapi-license`](#apps-voip-3cx-restapi-license)
+    - Service template added
+- Command `apps-voip-3cx-restapi-extension`
+    - Option `--include-extension=$_SERVICEFILTER-EXTENSION$` added
+    - Option `--exclude-extension=$_SERVICEEXCLUDE-EXTENSION$` added
+    - Option `--dnd-profile-name=$_SERVICEDND-PROFILE-NAME$` added
+    - Option `--filter-extension=$_SERVICEFILTER-EXTENSION$` removed
+    - Macro `HTTP-BACKEND` added
+    - Macro `DND-PROFILE-NAME` added
+    - Macro `EXCLUDE-EXTENSION` added
+- Command `apps-voip-3cx-restapi-license`
+    - Command added
+- Command `apps-voip-3cx-restapi-system`
+    - Option `--include-category=$_SERVICEFILTER-CATEGORY$` added
+    - Option `--exclude-category=$_SERVICEEXCLUDE-CATEGORY$` added
+    - Option `--include-service=$_SERVICEINCLUDE-SERVICE$` added
+    - Option `--exclude-service=$_SERVICEEXCLUDE-SERVICE$` added
+    - Option `--warning-extensions-usage=$_SERVICEWARNING-EXTENSIONS-USAGE$` added
+    - Option `--warning-extensions-free=$_SERVICEWARNING-EXTENSIONS-FREE$` added
+    - Option `--warning-extensions-usage-prct=$_SERVICEWARNING-EXTENSIONS-USAGE-PRCT$` added
+    - Option `--critical-extensions-usage=$_SERVICECRITICAL-EXTENSIONS-USAGE$` added
+    - Option `--critical-extensions-free=$_SERVICECRITICAL-EXTENSIONS-FREE$` added
+    - Option `--critical-extensions-usage-prct=$_SERVICECRITICAL-EXTENSIONS-USAGE-PRCT$` added
+    - Option `--filter-category=$_SERVICEFILTER-CATEGORY$` removed
+    - Macro `HTTP-BACKEND` added
+    - Macro `CRITICAL-EXTENSIONS-FREE` added
+    - Macro `CRITICAL-EXTENSIONS-USAGE` added
+    - Macro `CRITICAL-EXTENSIONS-USAGE-PRCT` added
+    - Macro `EXCLUDE-CATEGORY` added
+    - Macro `EXCLUDE-SERVICE` added
+    - Macro `INCLUDE-SERVICE` added
+    - Macro `WARNING-EXTENSIONS-FREE` added
+    - Macro `WARNING-EXTENSIONS-USAGE` added
+    - Macro `WARNING-EXTENSIONS-USAGE-PRCT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240808 - 20240826</summary>
+
+- Command `apps-voip-3cx-restapi-extension`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+    - Option `--3cx-version=$_HOST3CX-VERSION$` added
+    - Macro `3CX-VERSION` added
+- Command `apps-voip-3cx-restapi-system`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+    - Option `--3cx-version=$_HOST3CX-VERSION$` added
+    - Macro `3CX-VERSION` added
+    - Macro `HTTP-BACKEND` removed
+
+</details>

@@ -1,0 +1,397 @@
+---
+title: "Lenovo RackSwitch"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Lenovo.png";
+
+<PluginPackHeader name="Lenovo RackSwitch" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Lenovo RackSwitch switches through SNMP: CPU and memory usage, hardware health, interfaces and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-lenovo-rackswitch-snmp-cpu)
+* [Hardware](#network-lenovo-rackswitch-snmp-hardware)
+* [Interfaces](#network-lenovo-rackswitch-snmp-interfaces)
+* [Memory](#network-lenovo-rackswitch-snmp-memory)
+* [Uptime](#network-lenovo-rackswitch-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-lenovo-rackswitch-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Lenovo-RackSwitch
+
+*Lenovo RackSwitch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-lenovo-rackswitch-snmp-cpu) | `network-lenovo-rackswitch-snmp-cpu` |
+| [Hardware](#network-lenovo-rackswitch-snmp-hardware) | `network-lenovo-rackswitch-snmp-hardware` |
+| [Memory](#network-lenovo-rackswitch-snmp-memory) | `network-lenovo-rackswitch-snmp-memory` |
+| [Uptime](#network-lenovo-rackswitch-snmp-uptime) | `network-lenovo-rackswitch-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-lenovo-rackswitch-snmp-interfaces) | `network-lenovo-rackswitch-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-lenovo-rackswitch-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION-1M` | `85` | warning threshold for 1 minute |
+| `WARNING-CPU-UTILIZATION-5M` | `80` | warning threshold for 5 minutes |
+| `CRITICAL-CPU-UTILIZATION-1M` | `95` | critical threshold for 1 minute |
+| `CRITICAL-CPU-UTILIZATION-5M` | `90` | critical threshold for 5 minutes |
+| `WARNING-CPU-UTILIZATION-5S` |  | warning threshold for 5 seconds |
+| `CRITICAL-CPU-UTILIZATION-5S` |  | critical threshold for 5 seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-CPU-UTILIZATION-5S`, `CRITICAL-CPU-UTILIZATION-5S` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-CPU-UTILIZATION-1M`, `CRITICAL-CPU-UTILIZATION-1M` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-CPU-UTILIZATION-5M`, `CRITICAL-CPU-UTILIZATION-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-lenovo-rackswitch-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} eq "noncritical"'` | Set warning threshold for status (Default: '%\{status\} eq "noncritical"'). Can used special variables like: %\{status\} |
+| `CRITICAL-STATUS` | `'%{status} eq "critical"'` | Set critical threshold for status (Default: '%\{status\} eq "critical"'). Can used special variables like: %\{status\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\} |
+| `WARNING-SENSOR-TEMPERATURE` |  | Warning threshold for temperature is  C (C) |
+| `WARNING-FAN-SPEED` |  | Warning threshold for speed is  rpm (rpm) |
+| `CRITICAL-SENSOR-TEMPERATURE` |  | Critical threshold for temperature is  C (C) |
+| `CRITICAL-FAN-SPEED` |  | Critical threshold for speed is  rpm (rpm) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hardware.sensor.temperature.celsius` | `C` | temperature is  C | `WARNING-SENSOR-TEMPERATURE`, `CRITICAL-SENSOR-TEMPERATURE` |
+| `hardware.fan.speed.rpm` | `rpm` | speed is  rpm | `WARNING-FAN-SPEED`, `CRITICAL-FAN-SPEED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-lenovo-rackswitch-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | warning threshold usage prct (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | critical threshold usage prct (%) |
+| `WARNING-USAGE` |  | warning threshold usage (B) |
+| `WARNING-USAGE-FREE` |  | warning threshold usage-free (B) |
+| `CRITICAL-USAGE` |  | critical threshold usage (B) |
+| `CRITICAL-USAGE-FREE` |  | critical threshold usage-free (B) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-lenovo-rackswitch-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value. |
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FORCE-OID` |  | Can choose your oid (numeric format only). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-lenovo-rackswitch-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERFACE` | `.*` | Set the interface (number expected) ex: 1,2,... (empty means'check all interface'). |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: 'percent_delta') ('percent_delta', 'bps', 'counter'). |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default:'percent_delta')('percent_delta', 'percent', 'delta', 'counter'). |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr). |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display. |
+| `WARNING-DISCARD-IN` | `5` | Warning threshold for in-discard |
+| `WARNING-DISCARD-OUT` | `5` | Warning threshold for out-discard |
+| `WARNING-ERROR-IN` | `0` | Warning threshold for in-error |
+| `WARNING-ERROR-OUT` | `0` | Warning threshold for out-error |
+| `WARNING-TRAFFIC-IN` | `80` | Warning threshold for in-traffic (b/s) |
+| `WARNING-TRAFFIC-OUT` | `80` | Warning threshold for out-traffic (b/s) |
+| `CRITICAL-DISCARD-IN` | `10` | Critical threshold for in-discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Critical threshold for out-discard |
+| `CRITICAL-ERROR-IN` | `10` | Critical threshold for in-error |
+| `CRITICAL-ERROR-OUT` | `10` | Critical threshold for out-error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Critical threshold for in-traffic (b/s) |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Critical threshold for out-traffic (b/s) |
+| `CRITICAL-STATUS` | `'%{admstatus} eq "up" and %{opstatus} ne "up"'` | Set critical threshold for status (Default: '%\{admstatus\} eq "up" and %\{opstatus\} ne "up"').Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{duplexstatus\}, %\{display\} |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb). |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb). |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{duplexstatus\}, %\{display\} |
+| `WARNING-TOTAL-PORT` |  | Warning threshold for Total port |
+| `WARNING-TOTAL-ADMIN-UP` |  | Warning threshold for AdminStatus Up |
+| `WARNING-TOTAL-ADMIN-DOWN` |  | Warning threshold for AdminStatus Down |
+| `WARNING-TOTAL-OPER-UP` |  | Warning threshold for OperStatus Up |
+| `WARNING-TOTAL-OPER-DOWN` |  | Warning threshold for OperStatus Down |
+| `CRITICAL-TOTAL-PORT` |  | Critical threshold for Total port |
+| `CRITICAL-TOTAL-ADMIN-UP` |  | Critical threshold for AdminStatus Up |
+| `CRITICAL-TOTAL-ADMIN-DOWN` |  | Critical threshold for AdminStatus Down |
+| `CRITICAL-TOTAL-OPER-UP` |  | Critical threshold for OperStatus Up |
+| `CRITICAL-TOTAL-OPER-DOWN` |  | Critical threshold for OperStatus Down |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port | `WARNING-TOTAL-PORT`, `CRITICAL-TOTAL-PORT` |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up | `WARNING-TOTAL-ADMIN-UP`, `CRITICAL-TOTAL-ADMIN-UP` |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down | `WARNING-TOTAL-ADMIN-DOWN`, `CRITICAL-TOTAL-ADMIN-DOWN` |
+| `total.interfaces.operational.up.count` |  | OperStatus Up | `WARNING-TOTAL-OPER-UP`, `CRITICAL-TOTAL-OPER-UP` |
+| `total.interfaces.operational.down.count` |  | OperStatus Down | `WARNING-TOTAL-OPER-DOWN`, `CRITICAL-TOTAL-OPER-DOWN` |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240909 - 20241028</summary>
+
+- Service template [`network-lenovo-rackswitch-snmp-interfaces`](#network-lenovo-rackswitch-snmp-interfaces)
+    - Macro `CRITICAL-STATUS` added (default `'%{admstatus} eq "up" and %{opstatus} ne "up"'`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Service template [`network-lenovo-rackswitch-snmp-cpu`](#network-lenovo-rackswitch-snmp-cpu)
+    - Macro `WARNING-CPU-UTILIZATION-1M` added (default `85`)
+    - Macro `WARNING-CPU-UTILIZATION-5M` added (default `80`)
+    - Macro `CRITICAL-CPU-UTILIZATION-1M` added (default `95`)
+    - Macro `CRITICAL-CPU-UTILIZATION-5M` added (default `90`)
+    - Macro `WARNING-UTILIZATION-1M` removed
+    - Macro `WARNING-UTILIZATION-5M` removed
+    - Macro `CRITICAL-UTILIZATION-1M` removed
+    - Macro `CRITICAL-UTILIZATION-5M` removed
+- Command `network-lenovo-rackswitch-snmp-cpu`
+    - Option `--warning-cpu-utilization-5s=$_SERVICEWARNING-CPU-UTILIZATION-5S$` added
+    - Option `--warning-cpu-utilization-1m=$_SERVICEWARNING-CPU-UTILIZATION-1M$` added
+    - Option `--warning-cpu-utilization-5m=$_SERVICEWARNING-CPU-UTILIZATION-5M$` added
+    - Option `--critical-cpu-utilization-5s=$_SERVICECRITICAL-CPU-UTILIZATION-5S$` added
+    - Option `--critical-cpu-utilization-1m=$_SERVICECRITICAL-CPU-UTILIZATION-1M$` added
+    - Option `--critical-cpu-utilization-5m=$_SERVICECRITICAL-CPU-UTILIZATION-5M$` added
+    - Option `--warning-utilization-5s=$_SERVICEWARNING-UTILIZATION-5S$` removed
+    - Option `--warning-utilization-1m=$_SERVICEWARNING-UTILIZATION-1M$` removed
+    - Option `--warning-utilization-5m=$_SERVICEWARNING-UTILIZATION-5M$` removed
+    - Option `--critical-utilization-5s=$_SERVICECRITICAL-UTILIZATION-5S$` removed
+    - Option `--critical-utilization-1m=$_SERVICECRITICAL-UTILIZATION-1M$` removed
+    - Option `--critical-utilization-5m=$_SERVICECRITICAL-UTILIZATION-5M$` removed
+    - Macro `WARNING-CPU-UTILIZATION-5S` added
+    - Macro `WARNING-CPU-UTILIZATION-1M` added
+    - Macro `WARNING-CPU-UTILIZATION-5M` added
+    - Macro `CRITICAL-CPU-UTILIZATION-5S` added
+    - Macro `CRITICAL-CPU-UTILIZATION-1M` added
+    - Macro `CRITICAL-CPU-UTILIZATION-5M` added
+    - Macro `WARNING-UTILIZATION-5S` removed
+    - Macro `WARNING-UTILIZATION-1M` removed
+    - Macro `WARNING-UTILIZATION-5M` removed
+    - Macro `CRITICAL-UTILIZATION-5S` removed
+    - Macro `CRITICAL-UTILIZATION-1M` removed
+    - Macro `CRITICAL-UTILIZATION-5M` removed
+- Command `network-lenovo-rackswitch-snmp-hardware`
+    - Option `--unknown-status=$_SERVICEUNKNOWN-STATUS$` added
+    - Option `--unknowk-status=$_SERVICEUNKNOWN-STATUS$` removed
+
+</details>

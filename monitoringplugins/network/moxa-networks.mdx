@@ -1,0 +1,371 @@
+---
+title: "Moxa networks"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Moxa.png";
+
+<PluginPackHeader name="Moxa networks" image={image} category="Network" metadata={[]} />
+
+## Description
+
+Monitors Moxa network devices through SNMP: CPU and memory usage, interfaces and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-moxa-switch-snmp-cpu)
+* [Interfaces](#network-moxa-switch-snmp-interfaces)
+* [Memory](#network-moxa-switch-snmp-memory)
+* [Uptime](#network-moxa-switch-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-moxa-switch-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Moxa-Switch
+
+*Moxa Switch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-moxa-switch-snmp-cpu) | `network-moxa-switch-snmp-cpu` |
+| [Memory](#network-moxa-switch-snmp-memory) | `network-moxa-switch-snmp-memory` |
+| [Uptime](#network-moxa-switch-snmp-uptime) | `network-moxa-switch-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-moxa-switch-snmp-interfaces) | `network-moxa-switch-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-moxa-switch-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTIL-5S` |  | Threshold warning 5 seconds |
+| `WARNING-CPU-UTIL-1M` | `85` | Threshold warning 30 seconds |
+| `WARNING-CPU-UTIL-5M` | `80` | Threshold warning 300 seconds |
+| `CRITICAL-CPU-UTIL-5S` |  | Threshold critical 5 seconds |
+| `CRITICAL-CPU-UTIL-1M` | `95` | Threshold critical 30 seconds |
+| `CRITICAL-CPU-UTIL-5M` | `90` | Threshold critical 300 seconds |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^(30s\|300s)$' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-CPU-UTIL-5S`, `CRITICAL-CPU-UTIL-5S` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-CPU-UTIL-1M`, `CRITICAL-CPU-UTIL-1M` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-CPU-UTIL-5M`, `CRITICAL-CPU-UTIL-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-moxa-switch-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY-USAGE-PRCT` | `80` | Threshold warning usage |
+| `CRITICAL-MEMORY-USAGE-PRCT` | `90` | Threshold critical usage |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Threshold warning usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-MEMORY-USAGE-PRCT`, `CRITICAL-MEMORY-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-moxa-switch-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-moxa-switch-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800 - 20260827</summary>
+
+- Plugin pack `Moxa networks`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260700-hotfix-20260818 - 20260821</summary>
+
+- Plugin pack `Moxa networks`
+    - Description updated
+- Host template `Moxa-Switch`
+    - Service template `network-moxa-switch-snmp-interfaces` unlinked
+- Service template [`network-moxa-switch-snmp-cpu`](#network-moxa-switch-snmp-cpu)
+    - Macro `WARNING-CPU-UTIL-5S` added (default *(empty)*)
+    - Macro `WARNING-CPU-UTIL-1M` added (default `85`)
+    - Macro `WARNING-CPU-UTIL-5M` added (default `80`)
+    - Macro `CRITICAL-CPU-UTIL-5S` added (default *(empty)*)
+    - Macro `CRITICAL-CPU-UTIL-1M` added (default `95`)
+    - Macro `CRITICAL-CPU-UTIL-5M` added (default `90`)
+    - Macro `WARNING-5S` removed
+    - Macro `WARNING-30S` removed
+    - Macro `WARNING-300S` removed
+    - Macro `CRITICAL-5S` removed
+    - Macro `CRITICAL-30S` removed
+    - Macro `CRITICAL-300S` removed
+- Service template [`network-moxa-switch-snmp-memory`](#network-moxa-switch-snmp-memory)
+    - Macro `WARNING-MEMORY-USAGE-PRCT` added (default `80`)
+    - Macro `CRITICAL-MEMORY-USAGE-PRCT` added (default `90`)
+    - Macro `WARNING-USAGE` removed
+    - Macro `CRITICAL-USAGE` removed
+- Command `network-moxa-switch-snmp-cpu`
+    - Option `--warning-cpu-utilization-5s=$_SERVICEWARNING-CPU-UTIL-5S$` added
+    - Option `--warning-cpu-utilization-1m=$_SERVICEWARNING-CPU-UTIL-1M$` added
+    - Option `--warning-cpu-utilization-5m=$_SERVICEWARNING-CPU-UTIL-5M$` added
+    - Option `--critical-cpu-utilization-5s=$_SERVICECRITICAL-CPU-UTIL-5S$` added
+    - Option `--critical-cpu-utilization-1m=$_SERVICECRITICAL-CPU-UTIL-1M$` added
+    - Option `--critical-cpu-utilization-5m=$_SERVICECRITICAL-CPU-UTIL-5M$` added
+    - Option `--warning-5s=$_SERVICEWARNING-5S$` removed
+    - Option `--warning-30s=$_SERVICEWARNING-30S$` removed
+    - Option `--warning-300s=$_SERVICEWARNING-300S$` removed
+    - Option `--critical-5s=$_SERVICECRITICAL-5S$` removed
+    - Option `--critical-30s=$_SERVICECRITICAL-30S$` removed
+    - Option `--critical-300s=$_SERVICECRITICAL-300S$` removed
+    - Macro `CRITICAL-CPU-UTIL-5M` added
+    - Macro `CRITICAL-CPU-UTIL-1M` added
+    - Macro `CRITICAL-CPU-UTIL-5S` added
+    - Macro `WARNING-CPU-UTIL-5M` added
+    - Macro `WARNING-CPU-UTIL-1M` added
+    - Macro `WARNING-CPU-UTIL-5S` added
+    - Macro `WARNING-5S` removed
+    - Macro `WARNING-30S` removed
+    - Macro `WARNING-300S` removed
+    - Macro `CRITICAL-5S` removed
+    - Macro `CRITICAL-30S` removed
+    - Macro `CRITICAL-300S` removed
+    - Macro `SNMPTIMEOUT` removed
+- Command `network-moxa-switch-snmp-memory`
+    - Option `--warning-memory-usage-prct=$_SERVICEWARNING-MEMORY-USAGE-PRCT$` added
+    - Option `--critical-memory-usage-prct=$_SERVICECRITICAL-MEMORY-USAGE-PRCT$` added
+    - Option `--warning-memory-usage=$_SERVICEWARNING-MEMORY-USAGE$` added
+    - Option `--warning-memory-usage-free=$_SERVICEWARNING-MEMORY-USAGE-FREE$` added
+    - Option `--critical-memory-usage=$_SERVICECRITICAL-MEMORY-USAGE$` added
+    - Option `--critical-memory-usage-free=$_SERVICECRITICAL-MEMORY-USAGE-FREE$` added
+    - Option `--warning-usage=$_SERVICEWARNING-USAGE$` removed
+    - Option `--critical-usage=$_SERVICECRITICAL-USAGE$` removed
+    - Macro `WARNING-MEMORY-USAGE-PRCT` added
+    - Macro `CRITICAL-MEMORY-USAGE-PRCT` added
+    - Macro `CRITICAL-MEMORY-USAGE` added
+    - Macro `CRITICAL-MEMORY-USAGE-FREE` added
+    - Macro `WARNING-MEMORY-USAGE` added
+    - Macro `WARNING-MEMORY-USAGE-FREE` added
+    - Macro `WARNING-USAGE` removed
+    - Macro `CRITICAL-USAGE` removed
+    - Macro `SNMPTIMEOUT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201 - 20250217</summary>
+
+- Command `network-moxa-switch-snmp-interfaces`
+    - Option `--add-duplex-status` added
+    - Macro `SNMPTIMEOUT` removed
+
+</details>

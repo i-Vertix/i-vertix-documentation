@@ -1,0 +1,459 @@
+---
+title: "Rubrik Enterprise backup"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Rubrik.png";
+
+<PluginPackHeader name="Rubrik Enterprise backup" image={image} category="Application" metadata={["API", "HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors Rubrik backup clusters through the Rubrik REST API: cluster I/O, disk and node status, storage usage, backup compliance, job executions and task results.
+
+The plugin pack provides these checks:
+
+* [Rubrik Cluster status](#apps-backup-rubrik-restapi-cluster)
+* [Rubrik Compliance status](#apps-backup-rubrik-restapi-compliance)
+* [Rubrik Disks status](#apps-backup-rubrik-restapi-disks)
+* [Rubrik Jobs](#apps-backup-rubrik-restapi-jobs)
+* [Rubrik Node status](#apps-backup-rubrik-restapi-nodes)
+* [Rubrik Storage status](#apps-backup-rubrik-restapi-storage)
+* [Rubrik Tasks status](#apps-backup-rubrik-restapi-tasks)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Rubrik Jobs](#apps-backup-rubrik-restapi-jobs) | `Rubrik Job - <jobId>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Rubrik-Enterprise-Backup
+
+*Rubrik Enterprise Backup* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (11)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `30` | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `RUBRIK-CLUSTER-ID` | `me` | Which cluster to check (Default: 'me') |
+| `API-PASSWORD` | *(password)* | API password. |
+| `SECRET` | *(password)* | Service account secret (with --service-account and --organization-id options). |
+| `API-USERNAME` |  | API username. |
+| `TOKEN` |  | Use token authentication. If option is empty, token is created. |
+| `ORGANIZATION-ID` |  | Organization ID (with --service-account and --secret options). |
+| `SERVICE-ACCOUNT` |  | Service account ID (with --secret and --organization-id options). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Rubrik Cluster status](#apps-backup-rubrik-restapi-cluster) | `apps-backup-rubrik-restapi-cluster` |
+| [Rubrik Compliance status](#apps-backup-rubrik-restapi-compliance) | `apps-backup-rubrik-restapi-compliance` |
+| [Rubrik Disks status](#apps-backup-rubrik-restapi-disks) | `apps-backup-rubrik-restapi-disks` |
+| [Rubrik Jobs](#apps-backup-rubrik-restapi-jobs) | `apps-backup-rubrik-restapi-jobs` |
+| [Rubrik Node status](#apps-backup-rubrik-restapi-nodes) | `apps-backup-rubrik-restapi-nodes` |
+| [Rubrik Storage status](#apps-backup-rubrik-restapi-storage) | `apps-backup-rubrik-restapi-storage` |
+| [Rubrik Tasks status](#apps-backup-rubrik-restapi-tasks) | `apps-backup-rubrik-restapi-tasks` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rubrik Cluster status {/* #apps-backup-rubrik-restapi-cluster */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-READ` |  | Threshold warning read (B/s) |
+| `WARNING-WRITE` |  | Threshold warning write (B/s) |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-READ` |  | Threshold critical read (B/s) |
+| `CRITICAL-WRITE` |  | Threshold critical write (B/s) |
+| `CRITICAL-READ-IOPS` |  | Threshold critical read iops |
+| `CRITICAL-WRITE-IOPS` |  | Threshold critical write iops |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `cluster.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `cluster.io.read.usage.iops` | `iops` | read iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `cluster.io.write.usage.iops` | `iops` | write iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rubrik Compliance status {/* #apps-backup-rubrik-restapi-compliance */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-NONCOMPLIANCE` | `0` | Threshold warning noncompliance |
+| `CRITICAL-NONCOMPLIANCE` | `5` | Threshold critical noncompliance |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='noncompliance' |
+| `WARNING-INCOMPLIANCE` |  | Threshold warning incompliance |
+| `CRITICAL-INCOMPLIANCE` |  | Threshold critical incompliance |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `backup.objects.incompliance.24h.count` |  | in compliance | `WARNING-INCOMPLIANCE`, `CRITICAL-INCOMPLIANCE` |
+| `backup.objects.noncompliance.24h.count` |  | non compliance | `WARNING-NONCOMPLIANCE`, `CRITICAL-NONCOMPLIANCE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rubrik Disks status {/* #apps-backup-rubrik-restapi-disks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DISK-ID` | `.*` | Filter disks by disk id (can be a regexp) |
+| `CRITICAL-DISK-STATUS` | `'%{status} !~ /active/i'` | Set critical threshold for status (Default: '%\{status\} !~ /active/i'). Can used special variables like: %\{status\}, %\{id\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='disk-status' |
+| `WARNING-DISK-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{id\} |
+| `WARNING-CLUSTER-DISKS-TOTAL` |  | Threshold warning cluster disks total |
+| `WARNING-CLUSTER-DISKS-ACTIVE` |  | Threshold warning cluster disks active |
+| `CRITICAL-CLUSTER-DISKS-TOTAL` |  | Threshold critical cluster disks total |
+| `CRITICAL-CLUSTER-DISKS-ACTIVE` |  | Threshold critical cluster disks active |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.disks.total.count` |  | total | `WARNING-CLUSTER-DISKS-TOTAL`, `CRITICAL-CLUSTER-DISKS-TOTAL` |
+| `cluster.disks.active.count` |  | active | `WARNING-CLUSTER-DISKS-ACTIVE`, `CRITICAL-CLUSTER-DISKS-ACTIVE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rubrik Jobs {/* #apps-backup-rubrik-restapi-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for last execution time threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `LIMIT` | `500` | Define the number of entries to retrieve for the pagination (default: 500) |
+| `CRITICAL-EXECUTION-STATUS` | `'%{status} =~ /Failure/i'` | Set critical threshold for last job execution status (default: %\{status\} =~ /Failure/i). You can use the following variables: %\{status\}, %\{jobName\} |
+| `CRITICAL-JOB-EXECUTION-LAST` |  | Warning threshold Job last execution |
+| `CRITICAL-JOB-EXECUTIONS-FAILED-PRCT` |  | Warning threshold Job executions failed (%) |
+| `CRITICAL-JOB-RUNNING-DURATION` |  | Warning threshold Job running duration |
+| `CRITICAL-JOBS-EXECUTIONS-DETECTED` |  | Warning threshold Jobs executions detected |
+| `FILTER-JOB-ID` |  | Filter jobs by job ID |
+| `FILTER-JOB-NAME` |  | Filter jobs by job name |
+| `FILTER-JOB-TYPE` |  | Filter jobs by job type |
+| `FILTER-LOCATION-NAME` |  | Filter jobs by location name |
+| `UNKNOWN-EXECUTION-STATUS` |  | Set unknown threshold for last job execution status. You can use the following variables: %\{status\}, %\{jobName\} |
+| `WARNING-EXECUTION-STATUS` |  | Set warning threshold for last job execution status. You can use the following variables: %\{status\}, %\{jobName\} |
+| `WARNING-JOB-EXECUTION-LAST` |  | Warning threshold Job last execution |
+| `WARNING-JOB-EXECUTIONS-FAILED-PRCT` |  | Warning threshold Job executions failed (%) |
+| `WARNING-JOB-RUNNING-DURATION` |  | Warning threshold Job running duration |
+| `WARNING-JOBS-EXECUTIONS-DETECTED` |  | Warning threshold Jobs executions detected |
+| `FILTER-OBJECT-TYPE` |  | Filter jobs by object type |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.executions.detected.count` |  | executions detected | `WARNING-JOBS-EXECUTIONS-DETECTED`, `CRITICAL-JOBS-EXECUTIONS-DETECTED` |
+| `job.executions.failed.percentage` | `%` | number of failed executions:  %% | `WARNING-JOB-EXECUTIONS-FAILED-PRCT`, `CRITICAL-JOB-EXECUTIONS-FAILED-PRCT` |
+| `job.execution.last` |  | last execution | `WARNING-JOB-EXECUTION-LAST`, `CRITICAL-JOB-EXECUTION-LAST` |
+| `job.running.duration` |  | running duration | `WARNING-JOB-RUNNING-DURATION`, `CRITICAL-JOB-RUNNING-DURATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rubrik Node status {/* #apps-backup-rubrik-restapi-nodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE-ID` | `.*` | Filter nodes by node id (can be a regexp) |
+| `CRITICAL-NODE-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{ip_address\}, %\{id\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='node-status' |
+| `WARNING-NODE-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{ip_address\}, %\{id\} |
+| `WARNING-CLUSTER-NODES-TOTAL` |  | Threshold warning cluster nodes total |
+| `WARNING-CLUSTER-NODES-OK` |  | Threshold warning cluster nodes ok |
+| `CRITICAL-CLUSTER-NODES-TOTAL` |  | Threshold critical cluster nodes total |
+| `CRITICAL-CLUSTER-NODES-OK` |  | Threshold critical cluster nodes ok |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.nodes.total.count` |  | total | `WARNING-CLUSTER-NODES-TOTAL`, `CRITICAL-CLUSTER-NODES-TOTAL` |
+| `cluster.nodes.ok.count` |  | ok | `WARNING-CLUSTER-NODES-OK`, `CRITICAL-CLUSTER-NODES-OK` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rubrik Storage status {/* #apps-backup-rubrik-restapi-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Threshold warning usage (%) |
+| `WARNING-FULL-REMAIN-DAYS` | `15:` | Threshold warning full days remaining |
+| `CRITICAL-USAGE-PRCT` | `95` | Threshold warning usage (%) |
+| `CRITICAL-FULL-REMAIN-DAYS` | `5:` | Threshold warning full days remaining |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='remaining' |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold warning usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold warning usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `storage.space.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `storage.full.remaining.days.count` | `d` | remaining days before filled | `WARNING-FULL-REMAIN-DAYS`, `CRITICAL-FULL-REMAIN-DAYS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rubrik Tasks status {/* #apps-backup-rubrik-restapi-tasks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-FAILED` | `0` | Threshold warning fialed |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='failed' |
+| `WARNING-SUCCEEDED` |  | Threshold warning succeeded |
+| `WARNING-CANCELED` |  | Threshold warning canceled |
+| `CRITICAL-SUCCEEDED` |  | Threshold critical succeeded |
+| `CRITICAL-FAILED` |  | Threshold critical fialed |
+| `CRITICAL-CANCELED` |  | Threshold critical canceled |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tasks.succeeded.24h.count` |  | succeeded | `WARNING-SUCCEEDED`, `CRITICAL-SUCCEEDED` |
+| `tasks.failed.24h.count` |  | failed | `WARNING-FAILED`, `CRITICAL-FAILED` |
+| `tasks.canceled.24h.count` |  | canceled | `WARNING-CANCELED`, `CRITICAL-CANCELED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240212 - 20240317</summary>
+
+- Command `apps-backup-rubrik-restapi-jobs`
+    - Option `--filter-object-type=$_SERVICEFILTER-OBJECT-TYPE$` added
+    - Macro `API-PASSWORD` added
+    - Macro `FILTER-OBJECT-TYPE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231114 - 20231207</summary>
+
+- Command `apps-backup-rubrik-restapi-cluster`
+    - Option `--token=$_HOSTTOKEN$` added
+    - Macro `TOKEN` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-rubrik-restapi-compliance`
+    - Option `--token=$_HOSTTOKEN$` added
+    - Macro `TOKEN` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-rubrik-restapi-disks`
+    - Option `--token=$_HOSTTOKEN$` added
+    - Macro `TOKEN` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-rubrik-restapi-jobs`
+    - Option `--token=$_HOSTTOKEN$` added
+    - Macro `TOKEN` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-rubrik-restapi-nodes`
+    - Option `--token=$_HOSTTOKEN$` added
+    - Macro `TOKEN` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-rubrik-restapi-storage`
+    - Option `--token=$_HOSTTOKEN$` added
+    - Macro `TOKEN` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-rubrik-restapi-tasks`
+    - Option `--token=$_HOSTTOKEN$` added
+    - Macro `TOKEN` added
+    - Macro `API-PASSWORD` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Plugin pack `Rubrik Enterprise backup`
+    - Description updated
+- Host template `Rubrik-Enterprise-Backup`
+    - Service template `apps-backup-rubrik-restapi-jobs` linked
+- Service template [`apps-backup-rubrik-restapi-jobs`](#apps-backup-rubrik-restapi-jobs)
+    - Service template added
+- Command `apps-backup-rubrik-restapi-jobs`
+    - Command added
+
+</details>

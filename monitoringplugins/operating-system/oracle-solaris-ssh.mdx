@@ -1,0 +1,376 @@
+---
+title: "Oracle Solaris SSH"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/Solaris.png";
+
+<PluginPackHeader name="Oracle Solaris SSH" image={image} category="Operating System" metadata={["SSH"]} />
+
+## Description
+
+Monitors Oracle Solaris systems over SSH: CPU, hardware status and faults (prtdiag, RAID controllers), disk analysis, Fibre Channel connections and Veritas and virtual machine disk status.
+
+The plugin pack provides these checks:
+
+* [Analyze disks](#os-solaris-local-analyze-disks)
+* [CPU](#os-solaris-local-cpu)
+* [FC Connected](#os-solaris-local-fc-connected)
+* [Hardware Faults](#os-solaris-local-hardware-fmadm)
+* [Hardware Raid Status](#os-solaris-local-hwsas2ircu-status)
+* [Hardware Raidcontroller status](#os-solaris-local-hwraidctl-status)
+* [Hardware status for v120](#os-solaris-local-lom-v120-status)
+* [Hardware Status for v1280](#os-solaris-local-lom-v1280-status)
+* [SolarisVm disk status](#os-solaris-local-swm-disks)
+* [Sun Hardware - prtdiag](#os-solaris-local-prtdiag)
+* [Veritas disk status](#os-solaris-local-vx-disks)
+
+
+## Host Templates
+
+### Oracle-Solaris-SSH
+
+*Oracle Solaris OS SSH* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | *(not used by the check command)* |
+| `SSH-PASSWORD` | *(password)* | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSHCLI-OPTION` | `-o=StrictHostKeyChecking=no` | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+| `SSHCLI-OPTION2` | `-o=LogLevel=ERROR` | hides the SSH banner |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Analyze disks](#os-solaris-local-analyze-disks) | `os-solaris-local-analyze-disks` |
+| [CPU](#os-solaris-local-cpu) | `os-solaris-local-cpu` |
+| [FC Connected](#os-solaris-local-fc-connected) | `os-solaris-local-fc-connected` |
+| [Hardware Faults](#os-solaris-local-hardware-fmadm) | `os-solaris-local-hardware-fmadm` |
+| [Hardware Raidcontroller status](#os-solaris-local-hwraidctl-status) | `os-solaris-local-hwraidctl-status` |
+| [Hardware Raid Status](#os-solaris-local-hwsas2ircu-status) | `os-solaris-local-hwsas2ircu-status` |
+| [Hardware status for v120](#os-solaris-local-lom-v120-status) | `os-solaris-local-lom-v120-status` |
+| [Hardware Status for v1280](#os-solaris-local-lom-v1280-status) | `os-solaris-local-lom-v1280-status` |
+| [Sun Hardware - prtdiag](#os-solaris-local-prtdiag) | `os-solaris-local-prtdiag` |
+| [SolarisVm disk status](#os-solaris-local-swm-disks) | `os-solaris-local-swm-disks` |
+| [Veritas disk status](#os-solaris-local-vx-disks) | `os-solaris-local-vx-disks` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Analyze disks {/* #os-solaris-local-analyze-disks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Threshold warning |
+| `CRITICAL` | `90` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #os-solaris-local-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### FC Connected {/* #os-solaris-local-fc-connected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `2:` | Threshold warning |
+| `CRITICAL` | `1:` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware Faults {/* #os-solaris-local-hardware-fmadm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `0` | Threshold warning |
+| `CRITICAL` |  | Threshold critical hardware faults |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware Raidcontroller status {/* #os-solaris-local-hwraidctl-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning |
+| `CRITICAL` |  | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware Raid Status {/* #os-solaris-local-hwsas2ircu-status */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status for v120 {/* #os-solaris-local-lom-v120-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,WARNING,^(?!(ok)$)' |
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'voltage', 'sf' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware Status for v1280 {/* #os-solaris-local-lom-v1280-status */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sun Hardware - prtdiag {/* #os-solaris-local-prtdiag */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CONFIG-FILE` | `conf/prtdiag.conf` | Config file with prtdiag output description (Default: Directory 'conf/prtdiag.conf' under absolute mode path) |
+| `EXCLUDE` |  | Exclude some components (multiple) (Syntax: SECTION,INSTANCE,FILTER). SECTION = component type in prtdiag.conf (Example: temperature, fan,... INSTANCE = Set the instance (Example: %Location%) FILTER = regexp to filter |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SolarisVm disk status {/* #os-solaris-local-swm-disks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Threshold warning |
+| `CRITICAL` | `90` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veritas disk status {/* #os-solaris-local-vx-disks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Threshold warning |
+| `CRITICAL` | `90` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260100 - 20260311</summary>
+
+- Command `os-solaris-local-lom-v120-status`
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `CRITICAL` removed
+    - Macro `WARNING` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260120</summary>
+
+- Command `os-solaris-local-lom-v120-status`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `SSHCLI-OPTION` added
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Host template `Oracle-Solaris-SSH`
+    - Macro `SSHCLI-OPTION2` added (default `-o=LogLevel=ERROR`)
+- Command `os-solaris-local-analyze-disks`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-cpu`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-fc-connected`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-hardware-fmadm`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-hwraidctl-status`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-hwsas2ircu-status`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-lom-v120-status`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `CRITICAL` added
+    - Macro `NO-COMPONENT` added
+    - Macro `WARNING` added
+- Command `os-solaris-local-lom-v1280-status`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-prtdiag`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-svm-disks`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `os-solaris-local-vx-disks`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+
+</details>

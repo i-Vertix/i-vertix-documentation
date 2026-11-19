@@ -1,0 +1,360 @@
+---
+title: "Elasticsearch"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Elastic.png";
+
+<PluginPackHeader name="Elasticsearch" image={image} category="Database" metadata={["API"]} />
+
+## Description
+
+Monitors Elasticsearch through its REST API: cluster, node and index statistics, shard states, the license and the results of custom queries.
+
+The plugin pack provides these checks:
+
+* [Elastic Cluster statistics](#database-elasticsearch-cluster-statistics)
+* [Elastic Indice statistics](#database-elasticsearch-indice-statistics)
+* [Elastic License](#database-elasticsearch-license)
+* [Elastic Node statistics](#database-elasticsearch-node-statistics)
+* [Query](#database-elasticsearch-query)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Elastic Indice statistics](#database-elasticsearch-indice-statistics) | `Elastic Indice statistics - <name>` |
+| [Elastic Node statistics](#database-elasticsearch-node-statistics) | `Elastic Node statistics - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Elasticsearch
+
+*Elasticsearch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `ELASTICPORT` | `9200` | Port used by Elasticsearch API (Default: '9200') |
+| `ELASTICPROTOCOLL` | `http` | Specify https if needed (Default: 'http') |
+| `ELASTIC-PASSWORD` | *(password)* | Elasticsearch password. |
+| `ELASTIC-USERNAME` |  | Elasticsearch username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Elastic Cluster statistics](#database-elasticsearch-cluster-statistics) | `database-elasticsearch-cluster-statistics` |
+| [Elastic Indice statistics](#database-elasticsearch-indice-statistics) | `database-elasticsearch-indice-statistics` |
+| [Elastic License](#database-elasticsearch-license) | `database-elasticsearch-license` |
+| [Elastic Node statistics](#database-elasticsearch-node-statistics) | `database-elasticsearch-node-statistics` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Query](#database-elasticsearch-query) | `database-elasticsearch-query` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Elastic Cluster statistics {/* #database-elasticsearch-cluster-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SHAREDS-TOTAL` | `1900` | Threshold warning |
+| `CRITICAL-SHAREDS-TOTAL` | `1990` | Threshold critical |
+| `WARNING-STATUS` | `%{status} =~ /yellow/i` | Set warning threshold for status (Default: '%\{status\} =~ /yellow/i') Can used special variables like: %\{status\} |
+| `CRITICAL-STATUS` | `%{status} =~ /red/i` | Set critical threshold for status (Default: '%\{status\} =~ /red/i'). Can used special variables like: %\{status\} |
+| `WARNING-NODES-TOTAL` |  | Threshold warning no of total nodes |
+| `WARNING-NODES-DATA` |  | Threshold warning no of data nodes |
+| `WARNING-NODES-COORDINATING` |  | Threshold warning no of coordinating nodes |
+| `WARNING-NODES-MASTER` |  | Threshold warning no of master nodes |
+| `WARNING-NODES-INGEST` |  | Threshold warning no of ingest nodes |
+| `WARNING-INDICES-TOTAL` |  | Threshold warning no of total indices |
+| `WARNING-SHAREDS-ACTIVE-COUNT` |  | Threshold warning no of active shareds |
+| `WARNING-SHAREDS-ACTIVE-PERC` |  | Threshold warning active shareds (%) |
+| `WARNING-SHAREDS-UNASSIGNED` |  | Threshold warning no of unassigned shareds |
+| `WARNING-SHAREDS-RELOCATING` |  | Threshold warning no of relocating shareds |
+| `WARNING-SHAREDS-INITIALIZING` |  | Threshold warning no of initializing shareds |
+| `WARNING-TASKS-PENDING` |  | Threshold warning |
+| `WARNING-DOCUMENTS-TOTAL` |  | Threshold warning no of total documents |
+| `WARNING-DATA-SIZE` |  | Threshold warning data size |
+| `CRITICAL-NODES-TOTAL` |  | Threshold critical no of total nodes |
+| `CRITICAL-NODES-DATA` |  | Threshold critical no of data nodes |
+| `CRITICAL-NODES-COORDINATING` |  | Threshold critical no of coordinating nodes |
+| `CRITICAL-NODES-MASTER` |  | Threshold critical no of master nodes |
+| `CRITICAL-NODES-INGEST` |  | Threshold critical no of ingest nodes |
+| `CRITICAL-INDICES-TOTAL` |  | Threshold critical no of total indeces |
+| `CRITICAL-SHAREDS-ACTIVE-COUNT` |  | Threshold critical no of active shareds |
+| `CRITICAL-SHAREDS-ACTIVE-PERC` |  | Threshold critical active shareds (%) |
+| `CRITICAL-SHAREDS-UNASSIGNED` |  | Threshold critical no of unassigned shareds |
+| `CRITICAL-SHAREDS-RELOCATING` |  | Threshold critical no of relocating shareds |
+| `CRITICAL-SHAREDS-INITIALIZING` |  | Threshold critical no of initializing shareds |
+| `CRITICAL-TASKS-PENDING` |  | Threshold critical no of pending tasks |
+| `CRITICAL-DOCUMENTS-TOTAL` |  | Threshold critical no of total documents |
+| `CRITICAL-DATA-SIZE` |  | Threshold critical data size |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `nodes.total.count` |  | Nodes | `WARNING-NODES-TOTAL`, `CRITICAL-NODES-TOTAL` |
+| `nodes.data.count` |  | Nodes Data | `WARNING-NODES-DATA`, `CRITICAL-NODES-DATA` |
+| `nodes.coordinating.count` |  | Nodes Coordinating | `WARNING-NODES-COORDINATING`, `CRITICAL-NODES-COORDINATING` |
+| `nodes.master.count` |  | Nodes Master | `WARNING-NODES-MASTER`, `CRITICAL-NODES-MASTER` |
+| `nodes.ingest.count` |  | Nodes Ingest | `WARNING-NODES-INGEST`, `CRITICAL-NODES-INGEST` |
+| `indices.total.count` |  | Indices | `WARNING-INDICES-TOTAL`, `CRITICAL-INDICES-TOTAL` |
+| `shards.total.count` |  | Shards | `WARNING-SHAREDS-TOTAL`, `CRITICAL-SHAREDS-TOTAL` |
+| `shards.active.count` |  | Shards Active | `WARNING-SHAREDS-ACTIVE-COUNT`, `CRITICAL-SHAREDS-ACTIVE-COUNT` |
+| `shards.active.percentage` | `%` | Shards Active: %% | `WARNING-SHAREDS-ACTIVE-PERC`, `CRITICAL-SHAREDS-ACTIVE-PERC` |
+| `shards.unassigned.count` |  | Shards Unassigned | `WARNING-SHAREDS-UNASSIGNED`, `CRITICAL-SHAREDS-UNASSIGNED` |
+| `shards.relocating.count` |  | Shards Relocating | `WARNING-SHAREDS-RELOCATING`, `CRITICAL-SHAREDS-RELOCATING` |
+| `shards.initializing.count` |  | Shards Initializing | `WARNING-SHAREDS-INITIALIZING`, `CRITICAL-SHAREDS-INITIALIZING` |
+| `tasks.pending.count` |  | Tasks Pending | `WARNING-TASKS-PENDING`, `CRITICAL-TASKS-PENDING` |
+| `documents.total.count` |  | Documents | `WARNING-DOCUMENTS-TOTAL`, `CRITICAL-DOCUMENTS-TOTAL` |
+| `data.size.bytes` | `B` | Data | `WARNING-DATA-SIZE`, `CRITICAL-DATA-SIZE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Elastic Indice statistics {/* #database-elasticsearch-indice-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `%{status} =~ /yellow/i` | Set warning threshold for status (Default: '%\{status\} =~ /yellow/i') Can used special variables like: %\{display\}, %\{status\} |
+| `CRITICAL-STATUS` | `%{status} =~ /red/i` | Set critical threshold for status (Default: '%\{status\} =~ /red/i'). Can used special variables like: %\{display\}, %\{status\} |
+| `FILTER-NAME` |  | Filter name (can be a regexp) |
+| `WARNING-DOCUMENTS-TOTAL` |  | Threshold warning total documents |
+| `WARNING-DATA-SIZE-PRIMARIES` |  | Threshold warning primaries data size |
+| `WARNING-DATA-SIZE-TOTAL` |  | Threshold warning total data size |
+| `WARNING-SHAREDS-ACTIVE` |  | Threshold warning active shareds |
+| `WARNING-SHAREDS-UNASSIGNED` |  | Threshold warning unassigned shareds |
+| `CRITICAL-DOCUMENTS-TOTAL` |  | Threshold critical total documents |
+| `CRITICAL-DATA-SIZE-PRIMARIES` |  | Threshold critical primaries data size |
+| `CRITICAL-DATA-SIZE-TOTAL` |  | Threshold critical total data size |
+| `CRITICAL-SHAREDS-ACTIVE` |  | Threshold critical shared active |
+| `CRITICAL-SHAREDS-UNASSIGNED` |  | Threshold critical unassinged shareds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `indice.documents.total.count` |  | Documents | `WARNING-DOCUMENTS-TOTAL`, `CRITICAL-DOCUMENTS-TOTAL` |
+| `indice.data.primaries.size.bytes` | `B` | Data Primaries | `WARNING-DATA-SIZE-PRIMARIES`, `CRITICAL-DATA-SIZE-PRIMARIES` |
+| `indice.data.total.size.bytes` | `B` | Data Total | `WARNING-DATA-SIZE-TOTAL`, `CRITICAL-DATA-SIZE-TOTAL` |
+| `shards.active.count` |  | Shards Active | `WARNING-SHAREDS-ACTIVE`, `CRITICAL-SHAREDS-ACTIVE` |
+| `shards.unassigned.count` |  | Shards Unassigned | `WARNING-SHAREDS-UNASSIGNED`, `CRITICAL-SHAREDS-UNASSIGNED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Elastic License {/* #database-elasticsearch-license */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{status} !~ /active/i` | Set critical threshold for status (Default: '%\{status\} !~ /active/i'). Can used special variables like: %\{status\}, %\{type\}, %\{issued_to\}, %\{expiry_date_in_seconds\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{type\}, %\{issued_to\}, %\{expiry_date_in_seconds\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Elastic Node statistics {/* #database-elasticsearch-node-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-JVM-HEAP` | `85` | Threshold warning JVM Heap |
+| `WARNING-DISK-FREE` | `50GB:` | Threshold warning Disk free |
+| `CRITICAL-JVM-HEAP` | `95` | Threshold critical JVM Heap |
+| `CRITICAL-DISK-FREE` | `30GB:` | Threshold critical Disk free |
+| `FILTER-NAME` |  | Filter name (can be a regexp) |
+| `WARNING-DOCUMENTS-TOTAL` |  | Threshold warning Documents total |
+| `WARNING-DATA-SIZE` |  | Threshold warning Data size |
+| `CRITICAL-DOCUMENTS-TOTAL` |  | Threshold critical Documents total |
+| `CRITICAL-DATA-SIZE` |  | Threshold critical Data size |
+| `WARNING-JVM-HEAP-BYTES` |  | Threshold warning JVM Heap usage Bytes |
+| `CRITICAL-JVM-HEAP-BYTES` |  | Threshold critical JVM Heap usage Bytes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.jvm.heap.usage.percentage` | `%` | JVM Heap: %% | `WARNING-JVM-HEAP`, `CRITICAL-JVM-HEAP` |
+| `node.jvm.heap.usage.bytes` | `B` | JVM Heap Bytes | `WARNING-JVM-HEAP-BYTES`, `CRITICAL-JVM-HEAP-BYTES` |
+| `node.disk.free.bytes` | `B` | Free Disk Space | `WARNING-DISK-FREE`, `CRITICAL-DISK-FREE` |
+| `node.documents.total.count` |  | Documents | `WARNING-DOCUMENTS-TOTAL`, `CRITICAL-DOCUMENTS-TOTAL` |
+| `node.data.size.bytes` | `B` | Data | `WARNING-DATA-SIZE`, `CRITICAL-DATA-SIZE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Query {/* #database-elasticsearch-query */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^count$' |
+| `QUERY` |  | Set query to execute (required). Please refer to https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint -search for more information about query syntax. If the query starts with '@', it is considered as a file name to read the query from. Values returned by the query are displayed when "--verbose" is set |
+| `INDEX` |  | Specify the index to query. Defaults to '' (searches all index) |
+| `LOOKUP` |  | Set the JSONPath expression to extract values from the query result. (default: '$.hits.hits[*]._id') You might have to adjust the lookup value depending on the query. "count" and "value" metrics are based on values extracted using this expression. Please refer to https://goessner.net/articles/JsonPath/ for more information about JSONPath syntax |
+| `WARNING-COUNT` |  | Threshold on the number of results |
+| `WARNING-VALUE` |  | Threshold. Define the warning threshold based on values. Variables %\{index\} and %\{value\} can be used. Example: --warning-value='%\{value\} !~ /OK/ |
+| `CRITICAL-COUNT` |  | Threshold on the number of results |
+| `CRITICAL-VALUE` |  | Threshold. Define the critical threshold based on values. Variables %\{index\} and %\{value\} can be used. Example: --critical-value='%\{value\} =~ /FAILED/' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `query.match.count` |  | Result count | `WARNING-COUNT`, `CRITICAL-COUNT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Plugin pack `Elasticsearch`
+    - Description updated
+- Service template [`database-elasticsearch-query`](#database-elasticsearch-query)
+    - Service template added
+- Command `database-elasticsearch-query`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231011</summary>
+
+- Command `database-elasticsearch-indice-statistics`
+    - Option `--output-ignore-perfdata` added
+
+</details>

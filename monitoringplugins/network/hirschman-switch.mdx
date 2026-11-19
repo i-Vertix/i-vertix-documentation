@@ -1,0 +1,386 @@
+---
+title: "Hirschman switch"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Hirschmann.png";
+
+<PluginPackHeader name="Hirschman switch" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Hirschmann switches through SNMP: CPU and memory usage, running processes, hardware health, configuration status, interfaces and uptime.
+
+The plugin pack provides these checks:
+
+* [Configuration](#network-hirschmann-standard-snmp-configuration)
+* [CPU](#network-hirschmann-standard-snmp-cpu)
+* [Hardware](#network-hirschmann-standard-snmp-hardware)
+* [Interfaces](#network-hirschmann-standard-snmp-interfaces)
+* [Memory](#network-hirschmann-standard-snmp-memory)
+* [Process Count](#network-hirschmann-standard-snmp-processcount)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-hirschmann-standard-snmp-interfaces) | `Interfaces - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Hirschmann-switch
+
+*Hirschmann network equipment* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Configuration](#network-hirschmann-standard-snmp-configuration) | `network-hirschmann-standard-snmp-configuration` |
+| [CPU](#network-hirschmann-standard-snmp-cpu) | `network-hirschmann-standard-snmp-cpu` |
+| [Hardware](#network-hirschmann-standard-snmp-hardware) | `network-hirschmann-standard-snmp-hardware` |
+| [Memory](#network-hirschmann-standard-snmp-memory) | `network-hirschmann-standard-snmp-memory` |
+| [Process Count](#network-hirschmann-standard-snmp-processcount) | `network-hirschmann-standard-snmp-processcount` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-hirschmann-standard-snmp-interfaces) | `network-hirschmann-standard-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Configuration {/* #network-hirschmann-standard-snmp-configuration */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{config_status} =~ /notInSync\|outOfSync/'` | Set warning threshold for status (Default : '%\{config_status\} =~ /notInSync\|outOfSync/'). You can use the following variables: %\{config_status\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. You can use the following variables: %\{config_status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-hirschmann-standard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION-CURRENT` | `80` | Warning threshold current CPU util % |
+| `CRITICAL-CPU-UTILIZATION-CURRENT` | `90` | Critical threshold current CPU util % |
+| `WARNING-CPU-UTILIZATION-30M` |  | Warning threshold CPU util % 30 minutes |
+| `CRITICAL-CPU-UTILIZATION-30M` |  | Critical threshold CPU util % 30 minutes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.current.percentage` | `%` | %% (current) | `WARNING-CPU-UTILIZATION-CURRENT`, `CRITICAL-CPU-UTILIZATION-CURRENT` |
+| `cpu.utilization.30m.percentage` | `%` | %% (30min) | `WARNING-CPU-UTILIZATION-30M`, `CRITICAL-CPU-UTILIZATION-30M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-hirschmann-standard-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'temperature', 'led' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan) Can also exclude specific instance: --filter=fan,1.1 |
+| `WARNING` |  | Set warning threshold for temperatures (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperatures (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(ok)$)' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-hirschmann-standard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY-PRCT` | `80` | Warning threshold memory usage (%) |
+| `CRITICAL-MEMORY-PRCT` | `90` | Critical threshold memory usage (%) |
+| `WARNING-MEMORY-USAGE` |  | Warning threshold memory usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Warning threshold memory usage free (B) |
+| `CRITICAL-MEMORY-USAGE` |  | Critical threshold memory usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Critical threshold memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-MEMORY-PRCT`, `CRITICAL-MEMORY-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process Count {/* #network-hirschmann-standard-snmp-processcount */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PROCESSES-RUNNING-CURRENT` |  | Warning threshold current running processes |
+| `WARNING-PROCESSES-RUNNING-MAX` |  | Warning threshold max running processes |
+| `CRITICAL-PROCESSES-RUNNING-CURRENT` |  | Critical threshold current running processes |
+| `CRITICAL-PROCESSES-RUNNING-MAX` |  | Critical threshold max running processes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `processes.running.current.count` |  | (current) | `WARNING-PROCESSES-RUNNING-CURRENT`, `CRITICAL-PROCESSES-RUNNING-CURRENT` |
+| `processes.running.maximum.count` |  | (maximum last 30min) | `WARNING-PROCESSES-RUNNING-MAX`, `CRITICAL-PROCESSES-RUNNING-MAX` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-hirschmann-standard-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERFACE` | `.*` | Interface name - you can use regex |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `network-hirschmann-standard-snmp-hardware`
+    - Option `--component` changed from `--component='$_SERVICECOMPONENT$'` to `--component=$_SERVICECOMPONENT$`
+    - Option `--filter` changed from `--filter='$_SERVICEFILTER$'` to `--filter=$_SERVICEFILTER$`
+    - Option `--warning` changed from `--warning='$_SERVICEWARNING$'` to `--warning=$_SERVICEWARNING$`
+    - Option `--critical` changed from `--critical='$_SERVICECRITICAL$'` to `--critical=$_SERVICECRITICAL$`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>

@@ -1,0 +1,244 @@
+---
+title: "APC Netbotz"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/APC.png";
+
+<PluginPackHeader name="APC Netbotz" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors APC NetBotz environment monitoring devices through SNMP: temperature, humidity, dew point, other sensors and uptime.
+
+The plugin pack provides these checks:
+
+* [Dewpoint](#hardware-sensors-netbotz-snmp-sensors-dewpoint)
+* [Humidity](#hardware-sensors-netbotz-snmp-sensors-humidity)
+* [Netbotz Sensor](#hardware-sensors-netbotz-snmp-sensors)
+* [Temperature](#hardware-sensors-netbotz-snmp-sensors-temperature)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### APC-Netbotz
+
+*APC Netbotz* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Netbotz Sensor](#hardware-sensors-netbotz-snmp-sensors) | `hardware-sensors-netbotz-snmp-sensors` |
+| [Dewpoint](#hardware-sensors-netbotz-snmp-sensors-dewpoint) | `hardware-sensors-netbotz-snmp-sensors-dewpoint` |
+| [Humidity](#hardware-sensors-netbotz-snmp-sensors-humidity) | `hardware-sensors-netbotz-snmp-sensors-humidity` |
+| [Temperature](#hardware-sensors-netbotz-snmp-sensors-temperature) | `hardware-sensors-netbotz-snmp-sensors-temperature` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Netbotz Sensor {/* #hardware-sensors-netbotz-snmp-sensors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'temperature',  'humidity', 'dewpoint', 'airflow', 'doorswitch', 'camera', 'otherstate' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature --filter=humidity) Can also exclude specific instance: --filter=temperature,1 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax:             section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,CRITICAL,^(?!(normal)$)' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Dewpoint {/* #hardware-sensors-netbotz-snmp-sensors-dewpoint */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `dewpoint` | Which component to check (Default: '.*'). Can be: 'temperature',  'humidity', 'dewpoint', 'airflow', 'doorswitch', 'camera', 'otherstate' |
+| `WARNING` | `dewpoint,.*,5:15` | Set warning threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` | `dewpoint,.*,3:25` | Set critical threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,50' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature --filter=humidity) Can also exclude specific instance: --filter=temperature,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax:             section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,CRITICAL,^(?!(normal)$)' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Humidity {/* #hardware-sensors-netbotz-snmp-sensors-humidity */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `humidity` | Which component to check (Default: '.*'). Can be: 'temperature',  'humidity', 'dewpoint', 'airflow', 'doorswitch', 'camera', 'otherstate' |
+| `WARNING` | `humidity,.*,40:60` | Set warning threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` | `humidity,.*,30:70` | Set critical threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,50' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature --filter=humidity) Can also exclude specific instance: --filter=temperature,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax:             section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,CRITICAL,^(?!(normal)$)' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Temperature {/* #hardware-sensors-netbotz-snmp-sensors-temperature */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `temperature` | Which component to check (Default: '.*'). Can be: 'temperature',  'humidity', 'dewpoint', 'airflow', 'doorswitch', 'camera', 'otherstate' |
+| `WARNING` | `temperature,.*,17:27` | Set warning threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` | `temperature,.*,15:35` | Set critical threshold for 'temperature', 'humidity' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,50' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature --filter=humidity) Can also exclude specific instance: --filter=temperature,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax:             section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,CRITICAL,^(?!(normal)$)' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Command `hardware-sensors-netbotz-snmp-sensors`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `hardware-sensors-netbotz-snmp-sensors`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>

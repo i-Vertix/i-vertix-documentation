@@ -1,0 +1,218 @@
+---
+title: "Cisco Catalyst Center (DNA)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco Catalyst Center (DNA)" image={image} category="Application" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors Cisco Catalyst Center (DNA Center) through its REST API: the health of managed network devices, sites and connected clients.
+
+The plugin pack provides these checks:
+
+* [Network devices](#apps-cisco-dnac-restapi-network-devices)
+* [Sites](#apps-cisco-dnac-restapi-sites)
+
+
+## Host Templates
+
+### Cisco-Catalyst-Center
+
+*Cisco Catalyst Center (DNA)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `50` | Set timeout in seconds (default: 50). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Set password. |
+| `PORT` |  | Port used (default: 443) |
+| `API-USERNAME` |  | Set username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Network devices](#apps-cisco-dnac-restapi-network-devices) | `apps-cisco-dnac-restapi-network-devices` |
+| [Sites](#apps-cisco-dnac-restapi-sites) | `apps-cisco-dnac-restapi-sites` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Network devices {/* #apps-cisco-dnac-restapi-network-devices */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE` | `0` | Threshold warning category devices health unmonitored usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-BAD-USAGE` | `0` | Threshold critical category devices health bad usage |
+| `FILTER-CATEGORY-NAME` |  | Filter categories by name (Can be a regexp) |
+| `WARNING-CATEGORY-DEVICES-HEALTH-GOOD-USAGE` |  | Threshold warning category devices health good usage |
+| `WARNING-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE-PRCT` |  | Threshold warning category devices health unmonitored usage in percent |
+| `WARNING-CATEGORY-DEVICES-HEALTH-FAIR-USAGE` |  | Threshold warning category devices health fair usage |
+| `WARNING-CATEGORY-DEVICES-HEALTH-FAIR-USAGE-PRCT` |  | Threshold warning category devices health fair usage in percent |
+| `WARNING-CATEGORY-DEVICES-HEALTH-BAD-USAGE` |  | Threshold warning category devices health bad usage |
+| `WARNING-CATEGORY-DEVICES-HEALTH-BAD-USAGE-PRCT` |  | Threshold warning category devices health bad usage in percent |
+| `WARNING-DEVICES-TOTAL` |  | Threshold warning total devices |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-GOOD-USAGE` |  | Threshold critical category devices health good usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE` |  | Threshold critical category devices health unmonitored usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE-PRCT` |  | Threshold critical category devices health unmonitored usage in percent |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-FAIR-USAGE` |  | Threshold critical category devices health fair usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-FAIR-USAGE-PRCT` |  | Threshold critical category devices health fair usage in percent |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-BAD-USAGE-PRCT` |  | Threshold critical category devices health bad usage in percent |
+| `CRITICAL-DEVICES-TOTAL` |  | Threshold critical total devices |
+| `WARNING-CATEGORY-DEVICES-HEALTH-GOOD-USAGE-PRCT` |  | Threshold warning category devices health good usage in percent |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-GOOD-USAGE-PRCT` |  | Threshold critical category devices health good usage in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `network.devices.total.count` |  | total | `WARNING-DEVICES-TOTAL`, `CRITICAL-DEVICES-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sites {/* #apps-cisco-dnac-restapi-sites */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE` | `0` | Threshold warning category devices health unmonitored usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-BAD-USAGE` | `0` | Threshold critical category devices health bad usage |
+| `FILTER-SITE-NAME` |  | Filter sites by name (Can be a regexp) |
+| `WARNING-CATEGORY-DEVICES-HEALTH-GOOD-USAGE` |  | Threshold warning category devices health good usage |
+| `WARNING-CATEGORY-DEVICES-HEALTH-GOOD-USAGE-PRCT` |  | Threshold warning category devices health good usage in percent |
+| `WARNING-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE-PRCT` |  | Threshold warning category devices health unmonitored usage in percent |
+| `WARNING-CATEGORY-DEVICES-HEALTH-FAIR-USAGE` |  | Threshold warning category devices health fair usage |
+| `WARNING-CATEGORY-DEVICES-HEALTH-FAIR-USAGE-PRCT` |  | Threshold warning category devices health fair usage in percent |
+| `WARNING-CATEGORY-DEVICES-HEALTH-BAD-USAGE` |  | Threshold warning category devices health bad usage |
+| `WARNING-CATEGORY-DEVICES-HEALTH-BAD-USAGE-PRCT` |  | Threshold warning category devices health bad usage in percent |
+| `WARNING-DEVICES-TOTAL` |  | Threshold warning total devices |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-GOOD-USAGE` |  | Threshold critical category devices health good usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-GOOD-USAGE-PRCT` |  | Threshold critical category devices health good usage in percent |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE` |  | Threshold critical category devices health unmonitored usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-UNMONITORED-USAGE-PRCT` |  | Threshold critical category devices health unmonitored usage in percent |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-FAIR-USAGE` |  | Threshold critical category devices health fair usage |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-FAIR-USAGE-PRCT` |  | Threshold critical category devices health fair usage in percent |
+| `CRITICAL-CATEGORY-DEVICES-HEALTH-BAD-USAGE-PRCT` |  | Threshold critical category devices health bad usage in percent |
+| `CRITICAL-DEVICES-TOTAL` |  | Threshold critical total devices |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `site.network.devices.healthy.count` |  |  |  |
+| `site.network.devices.healthy.percentage` | `%` |  |  |
+| `site.clients.healthy.count` |  |  |  |
+| `site.clients.healthy.percentage` | `%` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Plugin pack `Cisco Catalyst Center (DNA)`
+    - Renamed from `Cisco DNAC Center`
+    - Description updated
+- Host template `Cisco-Catalyst-Center`
+    - Renamed from `Cisco-DNAC`
+    - Alias changed from `Cisco DNAC Center` to `Cisco Catalyst Center (DNA)`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240613 - 20240709</summary>
+
+- Plugin pack `Cisco DNAC Center`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240613 - 20240709`.

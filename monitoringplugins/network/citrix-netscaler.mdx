@@ -1,0 +1,656 @@
+---
+title: "Citrix Netscaler"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Citrix.png";
+
+<PluginPackHeader name="Citrix Netscaler" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Citrix NetScaler appliances through SNMP: CPU, memory and storage usage, connections, HA and health state, interfaces, certificate expiry and the status and traffic of the virtual servers.
+
+The plugin pack provides these checks:
+
+* [Certificates expire](#network-citrix-netscaler-snmp-certificates-expire)
+* [Connections](#network-citrix-netscaler-snmp-connections)
+* [CPU](#network-citrix-netscaler-snmp-cpu)
+* [HA state](#network-citrix-netscaler-snmp-ha-state)
+* [Health state](#network-citrix-netscaler-snmp-health)
+* [Interfaces](#network-citrix-netscaler-snmp-interfaces)
+* [Memory](#network-citrix-netscaler-snmp-memory)
+* [Storage](#network-citrix-netscaler-snmp-storage)
+* [Uptime](#network-citrix-netscaler-snmp-uptime)
+* [VServer status](#network-citrix-netscaler-vserver-snmp-status)
+* [VServer status - Load Balancer](#network-citrix-netscaler-vserver-snmp-status-loadbalanding)
+* [VServer status - SSLVPN - Contentswitching](#network-citrix-netscaler-vserver-snmp-status-sslvpn)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-citrix-netscaler-snmp-interfaces) | `Interface - <name>` |
+| [VServer status](#network-citrix-netscaler-vserver-snmp-status) | `VServer status - <name>` |
+| [VServer status - Load Balancer](#network-citrix-netscaler-vserver-snmp-status-loadbalanding) | `VServer status - <name>` |
+| [VServer status - SSLVPN - Contentswitching](#network-citrix-netscaler-vserver-snmp-status-sslvpn) | `VServer status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Citrix-Netscaler-HA
+
+*Citrix Netscaler HA* · Parent template: `Citrix-Netscaler-standalone`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA state](#network-citrix-netscaler-snmp-ha-state) | `network-citrix-netscaler-snmp-ha-state` |
+| [Certificates expire](#network-citrix-netscaler-snmp-certificates-expire) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-snmp-certificates-expire` |
+| [Connections](#network-citrix-netscaler-snmp-connections) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-snmp-connections` |
+| [CPU](#network-citrix-netscaler-snmp-cpu) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-snmp-cpu` |
+| [Health state](#network-citrix-netscaler-snmp-health) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-snmp-health` |
+| [Memory](#network-citrix-netscaler-snmp-memory) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-snmp-memory` |
+| [Storage](#network-citrix-netscaler-snmp-storage) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-snmp-storage` |
+| [Uptime](#network-citrix-netscaler-snmp-uptime) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-snmp-uptime` |
+| [VServer status](#network-citrix-netscaler-vserver-snmp-status) (inherited from `Citrix-Netscaler-standalone`) | `network-citrix-netscaler-vserver-snmp-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-citrix-netscaler-snmp-interfaces) | `network-citrix-netscaler-snmp-interfaces` |
+| [VServer status - Load Balancer](#network-citrix-netscaler-vserver-snmp-status-loadbalanding) | `network-citrix-netscaler-vserver-snmp-status-loadbalanding` |
+| [VServer status - SSLVPN - Contentswitching](#network-citrix-netscaler-vserver-snmp-status-sslvpn) | `network-citrix-netscaler-vserver-snmp-status-sslvpn` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Citrix-Netscaler-standalone
+
+*Citrix Netscaler standalone* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Certificates expire](#network-citrix-netscaler-snmp-certificates-expire) | `network-citrix-netscaler-snmp-certificates-expire` |
+| [Connections](#network-citrix-netscaler-snmp-connections) | `network-citrix-netscaler-snmp-connections` |
+| [CPU](#network-citrix-netscaler-snmp-cpu) | `network-citrix-netscaler-snmp-cpu` |
+| [Health state](#network-citrix-netscaler-snmp-health) | `network-citrix-netscaler-snmp-health` |
+| [Memory](#network-citrix-netscaler-snmp-memory) | `network-citrix-netscaler-snmp-memory` |
+| [Storage](#network-citrix-netscaler-snmp-storage) | `network-citrix-netscaler-snmp-storage` |
+| [Uptime](#network-citrix-netscaler-snmp-uptime) | `network-citrix-netscaler-snmp-uptime` |
+| [VServer status](#network-citrix-netscaler-vserver-snmp-status) | `network-citrix-netscaler-vserver-snmp-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA state](#network-citrix-netscaler-snmp-ha-state) | `network-citrix-netscaler-snmp-ha-state` |
+| [Interfaces](#network-citrix-netscaler-snmp-interfaces) | `network-citrix-netscaler-snmp-interfaces` |
+| [VServer status - Load Balancer](#network-citrix-netscaler-vserver-snmp-status-loadbalanding) | `network-citrix-netscaler-vserver-snmp-status-loadbalanding` |
+| [VServer status - SSLVPN - Contentswitching](#network-citrix-netscaler-vserver-snmp-status-sslvpn) | `network-citrix-netscaler-vserver-snmp-status-sslvpn` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA state {/* #network-citrix-netscaler-snmp-ha-state */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-HA-STATE` |  | Set unknown threshold for status. (Default: '%\{ha_status\} =~ /unknown/i'). Can use special variables like: %\{ha_status\} |
+| `WARNING-HA-STATE` |  | Set warning threshold for status. (Default: ''). Can use special variables like: %\{ha_status\}, %\{ha_mode\} |
+| `CRITICAL-HA-STATE` |  | Set critical threshold for status. (Default: '%\{ha_status\} =~ /down\|partialFail\|monitorFail\|completeFail\|partialFailSsl\|routemonitorFail/i'). Can use special variables like: %\{ha_status\}, %\{ha_mode\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Certificates expire {/* #network-citrix-netscaler-snmp-certificates-expire */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by name (can be a regexp) |
+| `WARNING-DAYS` | `30:` | Threshold warning in days |
+| `CRITICAL-DAYS` | `15:` | Threshold critical in days |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {/* #network-citrix-netscaler-snmp-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SERVER` |  | Warning threshold server connections |
+| `WARNING-ACTIVE` |  | Warning threshold active connections |
+| `WARNING-CLIENT` |  | Warning threshold client connections |
+| `CRITICAL-ACTIVE` |  | Critical  threshold server connections |
+| `CRITICAL-SERVER` |  | Critical  threshold active connections |
+| `CRITICAL-CLIENT` |  | Critical  threshold client connections |
+| `CRITICAL-ETABLISHED` |  | Critical threshold etablished connections |
+| `WARNING-ETABLISHED` |  | Warning threshold etablished connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.server.active.count` | `con` | Active Server TCP connections | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `connections.server.established.count` | `con` | Established Server TCP connections | `WARNING-ETABLISHED`, `CRITICAL-ETABLISHED` |
+| `connections.server.count` | `con` | Server TCP connections | `WARNING-SERVER`, `CRITICAL-SERVER` |
+| `connections.client.count` | `con` | Client TCP connections | `WARNING-CLIENT`, `CRITICAL-CLIENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-citrix-netscaler-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health state {/* #network-citrix-netscaler-snmp-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'temperature', 'voltage', 'fanspeed', 'psu' |
+| `ALTERNATIVE-STATUS-MAPPING` | `1` | Depending on the Netscaler product, the translation of OID .1.3.6.1.4.1.5951.4.1.1.41.7.1.2 may diverge. |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fanspeed', 'voltage' (syntax: type,regexp,threshold) Example: --warning='temperature,.,30' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fanspeed', 'voltage'(syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(normal)$)' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-citrix-netscaler-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-citrix-netscaler-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER_NAME` | `.*` | Filter storage name (can be a regexp) |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING` | `80` | Threshold warning |
+| `CRITICAL` | `90` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-citrix-netscaler-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VServer status {/* #network-citrix-netscaler-vserver-snmp-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-TYPE` | `.*` | Filter which type of vserver (can be a regexp) |
+| `FILTER-NAME` | `.*` | Filter by virtual server name (can be a regexp) |
+| `WARNING-HEALTH` | `100:` | Warning threshold health (%) |
+| `CRITICAL-HEALTH` | `50:` | Critical threshold health (%) |
+| `WARNING-IN-TRAFFIC` |  | Warning threshold traffic in |
+| `WARNING-OUT-TRAFFIC` |  | Warning threshold traffic out |
+| `WARNING-CLIENTS` |  | Warning threshold clients |
+| `WARNING-SERVERS` |  | Warning threshold server |
+| `CRITICAL-OUT-TRAFFIC` |  | Critical threshold traffic in |
+| `CRITICAL-IN-TRAFFIC` |  | Critical threshold traffic out |
+| `CRITICAL-CLIENTS` |  | Critical threshold clients |
+| `CRITICAL-SERVERS` |  | Critical threshold server |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vserver.health.percentage` | `%` | health:  %% | `WARNING-HEALTH`, `CRITICAL-HEALTH` |
+| `vserver.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-IN-TRAFFIC`, `CRITICAL-IN-TRAFFIC` |
+| `vserver.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-OUT-TRAFFIC`, `CRITICAL-OUT-TRAFFIC` |
+| `vserver.connections.client.count` |  | total client connections | `WARNING-CLIENTS`, `CRITICAL-CLIENTS` |
+| `vserver.connections.server.count` |  | total server connections | `WARNING-SERVERS`, `CRITICAL-SERVERS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-citrix-netscaler-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VServer status - Load Balancer {/* #network-citrix-netscaler-vserver-snmp-status-loadbalanding */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-TYPE` | `loadbalancing` | Filter which type of vserver (can be a regexp) |
+| `FILTER-NAME` | `.*` | Filter by virtual server name (can be a regexp) |
+| `WARNING-HEALTH` | `100:` | Warning threshold health (%) |
+| `CRITICAL-HEALTH` | `50:` | Critical threshold health (%) |
+| `WARNING-IN-TRAFFIC` |  | Warning threshold traffic in |
+| `WARNING-OUT-TRAFFIC` |  | Warning threshold traffic out |
+| `WARNING-CLIENTS` |  | Warning threshold clients |
+| `WARNING-SERVERS` |  | Warning threshold server |
+| `CRITICAL-OUT-TRAFFIC` |  | Critical threshold traffic in |
+| `CRITICAL-IN-TRAFFIC` |  | Critical threshold traffic out |
+| `CRITICAL-CLIENTS` |  | Critical threshold clients |
+| `CRITICAL-SERVERS` |  | Critical threshold server |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vserver.health.percentage` | `%` | health:  %% | `WARNING-HEALTH`, `CRITICAL-HEALTH` |
+| `vserver.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-IN-TRAFFIC`, `CRITICAL-IN-TRAFFIC` |
+| `vserver.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-OUT-TRAFFIC`, `CRITICAL-OUT-TRAFFIC` |
+| `vserver.connections.client.count` |  | total client connections | `WARNING-CLIENTS`, `CRITICAL-CLIENTS` |
+| `vserver.connections.server.count` |  | total server connections | `WARNING-SERVERS`, `CRITICAL-SERVERS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VServer status - SSLVPN - Contentswitching {/* #network-citrix-netscaler-vserver-snmp-status-sslvpn */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-TYPE` | `(sslvpn\|contentswitching)` | Filter which type of vserver (can be a regexp) |
+| `FILTER-NAME` | `.*` | Filter by virtual server name (can be a regexp) |
+| `WARNING-IN-TRAFFIC` |  | Warning threshold traffic in |
+| `WARNING-OUT-TRAFFIC` |  | Warning threshold traffic out |
+| `WARNING-HEALTH` |  | Warning threshold health (%) |
+| `WARNING-CLIENTS` |  | Warning threshold clients |
+| `WARNING-SERVERS` |  | Warning threshold server |
+| `CRITICAL-OUT-TRAFFIC` |  | Critical threshold traffic in |
+| `CRITICAL-IN-TRAFFIC` |  | Critical threshold traffic out |
+| `CRITICAL-HEALTH` |  | Critical threshold health (%) |
+| `CRITICAL-CLIENTS` |  | Critical threshold clients |
+| `CRITICAL-SERVERS` |  | Critical threshold server |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vserver.health.percentage` | `%` | health:  %% | `WARNING-HEALTH`, `CRITICAL-HEALTH` |
+| `vserver.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-IN-TRAFFIC`, `CRITICAL-IN-TRAFFIC` |
+| `vserver.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-OUT-TRAFFIC`, `CRITICAL-OUT-TRAFFIC` |
+| `vserver.connections.client.count` |  | total client connections | `WARNING-CLIENTS`, `CRITICAL-CLIENTS` |
+| `vserver.connections.server.count` |  | total server connections | `WARNING-SERVERS`, `CRITICAL-SERVERS` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `network-citrix-netscaler-snmp-health`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240516 - 20240621</summary>
+
+- Service template [`network-citrix-netscaler-snmp-health`](#network-citrix-netscaler-snmp-health)
+    - Macro `ALTERNATIVE-STATUS-MAPPING` added (default `1`)
+- Command `network-citrix-netscaler-snmp-health`
+    - Option `--alternative-status-mapping=$_SERVICEALTERNATIVE-STATUS-MAPPING$` added
+    - Macro `ALTERNATIVE-STATUS-MAPPING` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Service template [`network-citrix-netscaler-vserver-snmp-status-loadbalanding`](#network-citrix-netscaler-vserver-snmp-status-loadbalanding)
+    - Service template added
+- Service template [`network-citrix-netscaler-vserver-snmp-status-sslvpn`](#network-citrix-netscaler-vserver-snmp-status-sslvpn)
+    - Service template added
+
+</details>

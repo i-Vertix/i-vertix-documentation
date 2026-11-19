@@ -1,0 +1,141 @@
+---
+title: "Cisco Prime"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco Prime" image={image} category="Network" metadata={["API"]} />
+
+## Description
+
+Monitors Cisco Prime through its API: the access points it manages.
+
+The plugin pack provides these checks:
+
+* [AP usage](#network-cisco-prime-restapi-ap-usage)
+
+
+## Host Templates
+
+### Cisco-Prime
+
+*Cisco Prime* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PASSWORD` | *(password)* | Cisco Prime password. |
+| `PORT` | `443` | Port used (default: 443) |
+| `URL-PATH` | `/webacs/api/v1/data/` | Cisco Prime API Path (default: '/webacs/api/v1/data/'). |
+| `USERNAME` |  | Cisco Prime username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP usage](#network-cisco-prime-restapi-ap-usage) | `network-cisco-prime-restapi-ap-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP usage {/* #network-cisco-prime-restapi-ap-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILETR-AP` | `.*` | Filter ap name (can be a regexp) |
+| `FILTER-CONTROLLER` | `.*` | Filter controller name (can be a regexp) |
+| `WARNING-AP-STATUS` | `'%{admin_status} =~ /enable/i && %{status} =~ /minor\|warning/i'` | Set warning threshold for status (Default: '%\{admin_status\} =~ /enable/i && %\{status\} =~ /minor\|warning/i') Can used special variables like: %\{name\}, %\{status\}, %\{controller\}, %\{admin_status\} |
+| `CRITICAL-AP-STATUS` | `'%{admin_status} =~ /enable/i && %{status} =~ /major\|critical/i'` | Set critical threshold for status (Default: '%\{admin_status\} =~ /enable/i && %\{status\} =~ /major\|critical/i'). Can used special variables like: %\{name\}, %\{status\}, %\{controller\}, %\{admin_status\} |
+| `WARNING-AP-UPTIME` | `1800:` | Warning threshold AP uptime |
+| `CRITICAL-AP-UPTIME` | `900:` | Critical threshold AP uptime |
+| `WARNING-AP-CLIENTS` |  | Warning threshold AP clients |
+| `WARNING-AP-LWAPPUPTIME` |  | Warning threshold AP lwapp uptime |
+| `WARNING-CTRL-AP-COUNT` |  | Warning threshold Controller AP count |
+| `CRITICAL-AP-CLIENTS` |  | Critical threshold AP clients |
+| `CRITICAL-AP-LWAPPUPTIME` |  | Critical threshold AP lwapp uptime |
+| `CRITICAL-CTRL-AP-COUNT` |  | Critical threshold Controller AP count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ap_clients` |  | Clients | `WARNING-AP-CLIENTS`, `CRITICAL-AP-CLIENTS` |
+| `ap_uptime` | `s` |  | `WARNING-AP-UPTIME`, `CRITICAL-AP-UPTIME` |
+| `ap_lwappuptime` | `s` |  | `WARNING-AP-LWAPPUPTIME`, `CRITICAL-AP-LWAPPUPTIME` |
+| `ctrl_ap_count` |  | Number of access points | `WARNING-CTRL-AP-COUNT`, `CRITICAL-CTRL-AP-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

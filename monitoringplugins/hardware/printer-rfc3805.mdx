@@ -1,0 +1,249 @@
+---
+title: "Printer RFC3805"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/Printer.png";
+
+<PluginPackHeader name="Printer RFC3805" image={image} category="Hardware" metadata={[]} />
+
+## Description
+
+Monitors printers that support the RFC 3805 Printer MIB through SNMP: cover status, printer errors, marker supply and impressions, paper tray usage and the uptime.
+
+The plugin pack provides these checks:
+
+* [Cover status](#hardware-printers-standard-rfc3805-cover-status)
+* [Marker impression](#hardware-printers-standard-rfc3805-marker-impression)
+* [Marker supply usage](#hardware-printers-standard-rfc3805-markersupply-usage)
+* [Papertray usage](#hardware-printers-standard-rfc3805-papertray-usage)
+* [Printer Error](#hardware-printers-standard-rfc3805-printer-error)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+
+## Host Templates
+
+### Printer-RFC3805
+
+*Printer RFC3805* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cover status](#hardware-printers-standard-rfc3805-cover-status) | `hardware-printers-standard-rfc3805-cover-status` |
+| [Marker impression](#hardware-printers-standard-rfc3805-marker-impression) | `hardware-printers-standard-rfc3805-marker-impression` |
+| [Marker supply usage](#hardware-printers-standard-rfc3805-markersupply-usage) | `hardware-printers-standard-rfc3805-markersupply-usage` |
+| [Papertray usage](#hardware-printers-standard-rfc3805-papertray-usage) | `hardware-printers-standard-rfc3805-papertray-usage` |
+| [Printer Error](#hardware-printers-standard-rfc3805-printer-error) | `hardware-printers-standard-rfc3805-printer-error` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cover status {/* #hardware-printers-standard-rfc3805-cover-status */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Marker impression {/* #hardware-printers-standard-rfc3805-marker-impression */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning |
+| `CRITICAL` |  | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Marker supply usage {/* #hardware-printers-standard-rfc3805-markersupply-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `10:` | Threshold warning in percent |
+| `CRITICAL` | `5:` | Threshold critical in percent |
+| `FILTER` |  | Filter marker supply instance |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Papertray usage {/* #hardware-printers-standard-rfc3805-papertray-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `90` | Threshold warning in percent |
+| `CRITICAL` | `95` | Threshold critical in percent |
+| `FILTER-TRAY` |  | Filter tray to check (can use a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Printer Error {/* #hardware-printers-standard-rfc3805-printer-error */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~ /.*/'` | Set warning threshold for status (Default: '%\{status\} =~ /.*/'). Can used special variables like: %\{status\} |
+| `OK-STATUS` | `'%{status} =~ /ok/'` | Set warning threshold for status (Default: '%\{status\} =~ /ok/'). Can used special variables like: %\{status\} |
+| `EXTRA-OPTS` |  | --big-endian |
+| `UNKNOWN-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250800 - 20250915</summary>
+
+- Service template [`hardware-printers-standard-rfc3805-markersupply-usage`](#hardware-printers-standard-rfc3805-markersupply-usage)
+    - Macro `WARNING`: default changed from `90` to `10:`
+    - Macro `CRITICAL`: default changed from `95` to `5:`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241011 - 20241124</summary>
+
+- Service template [`hardware-printers-standard-rfc3805-printer-error`](#hardware-printers-standard-rfc3805-printer-error)
+    - Macro `EXTRA-OPTS` added (default *(empty)*)
+
+</details>

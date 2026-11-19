@@ -1,0 +1,345 @@
+---
+title: "Fujitsu Eternus DX storage"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Fujitsu.png";
+
+<PluginPackHeader name="Fujitsu Eternus DX storage" image={image} category="Storage" metadata={["SSH"]} />
+
+## Description
+
+Monitors Fujitsu Eternus DX storage over SSH: CPU, physical disks, power supplies, RAID groups, and port and volume statistics such as IOPS, throughput, response time and cache hits.
+
+The plugin pack provides these checks:
+
+* [CPU](#storage-fujitsu-eternus-dx-ssh-cpu)
+* [Physical disks](#storage-fujitsu-eternus-dx-ssh-physicaldisk)
+* [Port stats](#storage-fujitsu-eternus-dx-ssh-port-stats)
+* [PSU](#storage-fujitsu-eternus-dx-ssh-psu)
+* [Raid Groups](#storage-fujitsu-eternus-dx-ssh-raid-groups)
+* [Volume stats](#storage-fujitsu-eternus-dx-ssh-volume-stats)
+
+
+## Host Templates
+
+### Fujitsu-Eternus-DX-ssh
+
+*Fujitsu Eternus DX storage* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-PORT` | `22` | Define the TCP port on which SSH is listening. |
+| `SSH-BACKEND` | `sshcli` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-PASSWORD` |  | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSHCLI-OPTION` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#storage-fujitsu-eternus-dx-ssh-cpu) | `storage-fujitsu-eternus-dx-ssh-cpu` |
+| [Physical disks](#storage-fujitsu-eternus-dx-ssh-physicaldisk) | `storage-fujitsu-eternus-dx-ssh-physicaldisk` |
+| [Port stats](#storage-fujitsu-eternus-dx-ssh-port-stats) | `storage-fujitsu-eternus-dx-ssh-port-stats` |
+| [PSU](#storage-fujitsu-eternus-dx-ssh-psu) | `storage-fujitsu-eternus-dx-ssh-psu` |
+| [Raid Groups](#storage-fujitsu-eternus-dx-ssh-raid-groups) | `storage-fujitsu-eternus-dx-ssh-raid-groups` |
+| [Volume stats](#storage-fujitsu-eternus-dx-ssh-volume-stats) | `storage-fujitsu-eternus-dx-ssh-volume-stats` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #storage-fujitsu-eternus-dx-ssh-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning (in percent) |
+| `CRITICAL-USAGE` | `90` | Threshold critical (in percent) |
+| `FILTER-NAME` |  | Filter by name (regexp can be used) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | Usage :  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Physical disks {/* #storage-fujitsu-eternus-dx-ssh-physicaldisk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=disk,CE-Disk#0 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Port stats {/* #storage-fujitsu-eternus-dx-ssh-port-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter by name (regexp can be used) |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops |
+| `WARNING-READ-TRAFFIC` |  | Threshold warning read traffic |
+| `WARNING-WRITE-TRAFFIC` |  | Threshold warning write traffic |
+| `CRITICAL-READ-IOPS` |  | Threshold critical read iops |
+| `CRITICAL-WRITE-IOPS` |  | Threshold critical write iops |
+| `CRITICAL-READ-TRAFFIC` |  | Threshold critical read traffic |
+| `CRITICAL-WRITE-TRAFFIC` |  | Threshold critical write traffic |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `port.io.read.usage.iops` | `iops` | Read IOPS | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `port.io.write.usage.iops` | `iops` | Write IOPS | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `port.traffic.read.usage.bitspersecond` | `b/s` | Read Traffic :  /s | `WARNING-READ-TRAFFIC`, `CRITICAL-READ-TRAFFIC` |
+| `port.traffic.write.usage.bitspersecond` | `b/s` | Write Traffic :  /s | `WARNING-WRITE-TRAFFIC`, `CRITICAL-WRITE-TRAFFIC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### PSU {/* #storage-fujitsu-eternus-dx-ssh-psu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=psu,ce#0_0 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Raid Groups {/* #storage-fujitsu-eternus-dx-ssh-raid-groups */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `90` | Threshold warning (in percent) |
+| `CRITICAL-USAGE` | `95` | Threshold critical (in percent) |
+| `FILTER-NAME` |  | Filter by name (regexp can be used) |
+| `FILTER-LEVEL` |  | Filter by raid level (regexp can be used) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `raidgroup.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume stats {/* #storage-fujitsu-eternus-dx-ssh-volume-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-READ-CACHE-HIT-RATE` | `95:` | Threshold warning read cache hit rate |
+| `WARNING-WRITE-CACHE-HIT-RATE` | `95:` | Threshold warning write cache hit rate |
+| `CRITICAL-READ-CACHE-HIT-RATE` | `90:` | Threshold critical read cache hit rate |
+| `CRITICAL-WRITE-CACHE-HIT-RATE` | `90:` | Threshold critical write cache hit rate |
+| `FILTER-NAME` |  | Filter by name (regexp can be used) |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops |
+| `WARNING-READ-TRAFFIC` |  | Threshold warning read traffic |
+| `WARNING-WRITE-TRAFFIC` |  | Threshold warning write traffic |
+| `WARNING-READ-RESPONSE-TIME` |  | Threshold warning read response time |
+| `WARNING-WRITE-RESPONSE-TIME` |  | Threshold warning write response time |
+| `WARNING-READ-PROCESSING-TIME` |  | Threshold warning read processing time |
+| `WARNING-WRITE-PROCESSING-TIME` |  | Threshold warning write processing time |
+| `CRITICAL-READ-IOPS` |  | Threshold critical read iops |
+| `CRITICAL-WRITE-IOPS` |  | Threshold critical write iops |
+| `CRITICAL-READ-TRAFFIC` |  | Threshold critical read traffic |
+| `CRITICAL-WRITE-TRAFFIC` |  | Threshold critical write traffic |
+| `CRITICAL-READ-RESPONSE-TIME` |  | Threshold critical read response time |
+| `CRITICAL-WRITE-RESPONSE-TIME` |  | Threshold critical write response time |
+| `CRITICAL-READ-PROCESSING-TIME` |  | Threshold critical read processing time |
+| `CRITICAL-WRITE-PROCESSING-TIME` |  | Threshold critical write processing time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.io.read.usage.iops` | `iops` | Read IOPS | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `volume.io.write.usage.iops` | `iops` | Write IOPS | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `volume.traffic.read.usage.bitspersecond` | `b/s` | Read Traffic :  /s | `WARNING-READ-TRAFFIC`, `CRITICAL-READ-TRAFFIC` |
+| `volume.traffic.write.usage.bitspersecond` | `b/s` | Write Traffic :  /s | `WARNING-WRITE-TRAFFIC`, `CRITICAL-WRITE-TRAFFIC` |
+| `volume.io.read.time.response.milliseconds` | `ms` | Read Response Time :  ms | `WARNING-READ-RESPONSE-TIME`, `CRITICAL-READ-RESPONSE-TIME` |
+| `volume.io.write.time.response.milliseconds` | `ms` | Write Response Time :  ms | `WARNING-WRITE-RESPONSE-TIME`, `CRITICAL-WRITE-RESPONSE-TIME` |
+| `volume.io.read.time.processing.milliseconds` | `ms` | Read Processing Time :  ms | `WARNING-READ-PROCESSING-TIME`, `CRITICAL-READ-PROCESSING-TIME` |
+| `volume.io.write.time.processing.milliseconds` | `ms` | Write Processing Time :  ms | `WARNING-WRITE-PROCESSING-TIME`, `CRITICAL-WRITE-PROCESSING-TIME` |
+| `volume.io.read.cache.hits.percentage` | `%` | Read Cache Hit Rate :  %% | `WARNING-READ-CACHE-HIT-RATE`, `CRITICAL-READ-CACHE-HIT-RATE` |
+| `volume.io.write.cache.hits.percentage` | `%` | Write Cache Hit Rate :  %% | `WARNING-WRITE-CACHE-HIT-RATE`, `CRITICAL-WRITE-CACHE-HIT-RATE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240909 - 20240925</summary>
+
+- Plugin pack `Fujitsu Eternus DX storage`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Fujitsu Eternus DX storage`
+    - Renamed from `Fujistsu Eternus DX storage`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Command `storage-fujitsu-eternus-dx-ssh-physicaldisk`
+    - Option `--threshold-overload=$_SERVICETHRESHOLD-OVERLOAD$` removed
+    - Macro `SSH-BACKEND` added
+    - Macro `SSH-PORT` added
+    - Macro `SSH-USERNAME` added
+    - Macro `THRESHOLD-OVERLOAD` removed
+- Command `storage-fujitsu-eternus-dx-ssh-psu`
+    - Option `--threshold-overload=$_SERVICETHRESHOLD-OVERLOAD$` removed
+    - Macro `SSH-BACKEND` added
+    - Macro `SSH-PORT` added
+    - Macro `THRESHOLD-OVERLOAD` removed
+- Command `storage-fujitsu-eternus-dx-ssh-raid-groups`
+    - Option `--threshold-overload=$_SERVICETHRESHOLD-OVERLOAD$` removed
+    - Macro `SSH-BACKEND` added
+    - Macro `SSH-PORT` added
+    - Macro `SSH-USERNAME` added
+    - Macro `THRESHOLD-OVERLOAD` removed
+
+</details>

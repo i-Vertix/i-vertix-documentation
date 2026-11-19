@@ -1,0 +1,546 @@
+---
+title: "Fortinet FortiMail"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Fortinet.png";
+
+<PluginPackHeader name="Fortinet FortiMail" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Fortinet FortiMail through SNMP: CPU, memory, disk and system load, mail queue, hardware health, HA status, interfaces and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-fortinet-fortimail-snmp-cpu)
+* [Disk usage](#network-fortinet-fortimail-snmp-disk)
+* [HA status](#network-fortinet-fortimail-snmp-ha)
+* [Hardware](#network-fortinet-fortimail-snmp-hardware)
+* [Interfaces](#network-fortinet-fortimail-snmp-interfaces)
+* [Mail queue](#network-fortinet-fortimail-snmp-queues)
+* [Memory](#network-fortinet-fortimail-snmp-memory)
+* [System load](#network-fortinet-fortimail-snmp-load)
+* [Uptime](#network-fortinet-fortimail-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-fortinet-fortimail-snmp-interfaces) | `Interface - <name>` |
+| [Mail queue](#network-fortinet-fortimail-snmp-queues) | `Mail queue - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Fortinet-Fortimail
+
+*Fortinet Fortimail* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-fortinet-fortimail-snmp-cpu) | `network-fortinet-fortimail-snmp-cpu` |
+| [Disk usage](#network-fortinet-fortimail-snmp-disk) | `network-fortinet-fortimail-snmp-disk` |
+| [Hardware](#network-fortinet-fortimail-snmp-hardware) | `network-fortinet-fortimail-snmp-hardware` |
+| [Interfaces](#network-fortinet-fortimail-snmp-interfaces) | `network-fortinet-fortimail-snmp-interfaces` |
+| [System load](#network-fortinet-fortimail-snmp-load) | `network-fortinet-fortimail-snmp-load` |
+| [Memory](#network-fortinet-fortimail-snmp-memory) | `network-fortinet-fortimail-snmp-memory` |
+| [Mail queue](#network-fortinet-fortimail-snmp-queues) | `network-fortinet-fortimail-snmp-queues` |
+| [Uptime](#network-fortinet-fortimail-snmp-uptime) | `network-fortinet-fortimail-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-fortinet-fortimail-snmp-ha) | `network-fortinet-fortimail-snmp-ha` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Fortinet-Fortimail-HA
+
+*Fortinet Fortimail HA* · Parent template: `Fortinet-Fortimail`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-fortinet-fortimail-snmp-ha) | `network-fortinet-fortimail-snmp-ha` |
+| [CPU](#network-fortinet-fortimail-snmp-cpu) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-cpu` |
+| [Disk usage](#network-fortinet-fortimail-snmp-disk) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-disk` |
+| [Hardware](#network-fortinet-fortimail-snmp-hardware) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-hardware` |
+| [Interfaces](#network-fortinet-fortimail-snmp-interfaces) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-interfaces` |
+| [System load](#network-fortinet-fortimail-snmp-load) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-load` |
+| [Memory](#network-fortinet-fortimail-snmp-memory) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-memory` |
+| [Mail queue](#network-fortinet-fortimail-snmp-queues) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-queues` |
+| [Uptime](#network-fortinet-fortimail-snmp-uptime) (inherited from `Fortinet-Fortimail`) | `network-fortinet-fortimail-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-fortinet-fortimail-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION` | `80` | Threshold warning in percent |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Threshold critical in percent |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | Cpu usage is: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk usage {/* #network-fortinet-fortimail-snmp-disk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MAIL-USAGE-PRCT` | `85` | Warning threshold Mail usage (%) |
+| `CRITICAL-MAIL-USAGE-PRCT` | `95` | Critical threshold Mail usage (%) |
+| `WARNING-LOG-USAGE-PRCT` | `85` | Warning threshold Log usage (%) |
+| `CRITICAL-LOG-USAGE-PRCT` | `90` | Critical threshold Log usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.log.space.usage.percentage` | `%` | Log disk space used:  %% | `WARNING-LOG-USAGE-PRCT`, `CRITICAL-LOG-USAGE-PRCT` |
+| `disk.mail.space.usage.percentage` | `%` | Mail disk space used:  %% | `WARNING-MAIL-USAGE-PRCT`, `CRITICAL-MAIL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-fortinet-fortimail-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'sensors' |
+| `EXTRA-OPTS` | `--verbose` | Additional options appended to the plugin command line (host level). |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=sensors,1 |
+| `WARNING` |  | Set warning threshold for 'sensors' (syntax: type,regexp,threshold) Example: --warning='sensors,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'sensors' (syntax type,regexp,threshold) Example: --critical='sensors,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='sensors,WARNING,off' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hardware.sensors.measure` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-fortinet-fortimail-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'counter') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Set the interface (number expected) example: 1,2,... (empty means 'check all interfaces'). |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System load {/* #network-fortinet-fortimail-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LOAD` | `80` | Warning threshold Load (%) |
+| `CRITICAL-LOAD` | `90` | Critical threshold Load (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.load.percentage` | `%` | system load: %% | `WARNING-LOAD`, `CRITICAL-LOAD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-fortinet-fortimail-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Warning threshold memory usage (%) |
+| `CRITICAL-USAGE` | `90` | Critical threshold memory usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.percentage` | `%` | memory used:  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mail queue {/* #network-fortinet-fortimail-snmp-queues */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter queue name (can be a regexp) |
+| `WARNING-COUNT` |  | Warning threshold Queue count |
+| `CRITICAL-COUNT` |  | Critical threshold Queue count |
+| `WARNING-SIZE` |  | Warning threshold Queue size |
+| `CRITICAL-SIZE` |  | Critical threshold Queue size |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queue.mails.count` |  | mails | `WARNING-COUNT`, `CRITICAL-COUNT` |
+| `queue.mails.size.count` | `B` | size | `WARNING-SIZE`, `CRITICAL-SIZE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-fortinet-fortimail-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA status {/* #network-fortinet-fortimail-snmp-ha */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-HA-STATUS` | `'%{ha_status} ne %{ha_status_last}'` | Set critical threshold for status (Default: '%\{ha_status\} ne %\{ha_status_last\}'). Can used special variables like: %\{ha_status\}, %\{ha_status_last\} |
+| `WARNING-HA-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{ha_status\}, %\{ha_status_last\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Command `network-fortinet-fortimail-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Service template [`network-fortinet-fortimail-snmp-hardware`](#network-fortinet-fortimail-snmp-hardware)
+    - Macro `EXTRA-OPTS` added (default `--verbose`)
+- Command `network-fortinet-fortimail-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--verbose` removed
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`network-fortinet-fortimail-snmp-disk`](#network-fortinet-fortimail-snmp-disk)
+    - Renamed from `network-fortinet-fortimail-snmp-disk-usage`
+    - Check command changed from `network-fortinet-fortimail-snmp-disk-usage` to `network-fortinet-fortimail-snmp-disk`
+- Command `network-fortinet-fortimail-snmp-disk`
+    - Renamed from `network-fortinet-fortimail-snmp-disk-usage`
+    - Option `--mode` changed from `--mode=diskusage` to `--mode=disk`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Plugin pack `Fortinet FortiMail`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230608-hotfix20230630-2 - 20230717`.

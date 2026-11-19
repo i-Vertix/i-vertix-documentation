@@ -1,0 +1,228 @@
+---
+title: "Cisco CTS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco CTS" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco TelePresence (CTS) endpoints through SNMP: calls and call streams (jitter, packet loss, traffic, terminated calls) and the connected peripherals.
+
+The plugin pack provides these checks:
+
+* [Calls](#hardware-devices-cisco-cts-snmp-calls)
+* [Peripherals](#hardware-devices-cisco-cts-snmp-peripherals)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Cisco-CTS
+
+*Cisco CTS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Calls](#hardware-devices-cisco-cts-snmp-calls) | `hardware-devices-cisco-cts-snmp-calls` |
+| [Peripherals](#hardware-devices-cisco-cts-snmp-peripherals) | `hardware-devices-cisco-cts-snmp-peripherals` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Calls {/* #hardware-devices-cisco-cts-snmp-calls */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-INCOMPATIBLE-REMOTE-ENDPOINT` | `0` | Threshold warning total incompatible remote endpoint |
+| `WARNING-TOTAL-REMOTE-TERMINATED-ERROR` | `0` | Threshold warning total remote terminated error |
+| `WARNING-STREAMS-ACTIVE-MAXJITTER` | `50` | Threshold warning streams active maxjitter |
+| `WARNING-STREAMS-ACTIVE-PACKETLOSS-IN-PRCT` | `0` | Threshold warning streams active packet loss in (%) |
+| `WARNING-STREAMS-ACTIVE-PACKETLOSS-OUT-PRCT` | `0` | Threshold warning streams active packet loss out (%) |
+| `CRITICAL-TOTAL-INTERNAL-ERROR` | `0` | Threshold critical total internal error |
+| `CRITICAL-TOTAL-SECURITY-CONFIG-MISMATCHED` | `0` | Threshold critical total security config dismatched |
+| `CRITICAL-TOTAL-SERVICE-UNAVAILABLE` | `0` | Threshold critical total service unavailable |
+| `CRITICAL-STREAMS-ACTIVE-MAXJITTER` | `100` | Threshold critical streams active maxjitter |
+| `CRITICAL-STREAMS-ACTIVE-PACKETLOSS-IN-PRCT` | `10` | Threshold critical streams active packet loss in (%) |
+| `CRITICAL-STREAMS-ACTIVE-PACKETLOSS-OUT-PRCT` | `10` | Threshold critical streams active packet loss out (%) |
+| `WARNING-ACTIVE` |  | Threshold warning active |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `WARNING-TOTAL-UNKNOWN` |  | Threshold warning total unknown |
+| `WARNING-TOTAL-OTHER` |  | Threshold warning total other |
+| `WARNING-TOTAL-INTERNAL-ERROR` |  | Threshold warning total internal error |
+| `WARNING-TOTAL-LOCAL-DISCONNECTED` |  | Threshold warning total local disconnected |
+| `WARNING-TOTAL-REMOTE-DISCONNECTED` |  | Threshold warning total remote disconnected |
+| `WARNING-TOTAL-NETWORK-CONGESTION` |  | Threshold warning total network congestion |
+| `WARNING-TOTAL-MEDIA-NEGOTIATION-FAILURE` |  | Threshold warning total media negotiation failure |
+| `WARNING-TOTAL-SECURITY-CONFIG-MISMATCHED` |  | Threshold warning total security config dismatched |
+| `WARNING-TOTAL-SERVICE-UNAVAILABLE` |  | Threshold warning total service unavailable |
+| `WARNING-STREAMS-ACTIVE-TRAFFIC-IN` |  | Threshold warning streams active traffic in |
+| `WARNING-STREAMS-ACTIVE-PACKETLOSS-IN` |  | Threshold warning streams active packet loss in (absolute) |
+| `WARNING-STREAMS-ACTIVE-TRAFFIC-OUT` |  | Threshold warning streams active traffic out |
+| `WARNING-STREAMS-ACTIVE-PACKETLOSS-OUT` |  | Threshold warning streams active packet loss out (absolute) |
+| `CRITICAL-ACTIVE` |  | Threshold critical active |
+| `CRITICAL-TOTAL` |  | Threshold critical total |
+| `CRITICAL-TOTAL-UNKNOWN` |  | Threshold critical total unknown |
+| `CRITICAL-TOTAL-OTHER` |  | Threshold critical total other |
+| `CRITICAL-TOTAL-LOCAL-DISCONNECTED` |  | Threshold critical total local disconnected |
+| `CRITICAL-TOTAL-REMOTE-DISCONNECTED` |  | Threshold critical total remote disconnected |
+| `CRITICAL-TOTAL-NETWORK-CONGESTION` |  | Threshold critical total network congestion |
+| `CRITICAL-TOTAL-MEDIA-NEGOTIATION-FAILURE` |  | Threshold critical total media negotiation failure |
+| `CRITICAL-TOTAL-INCOMPATIBLE-REMOTE-ENDPOINT` |  | Threshold critical total incompatible remote endpoint |
+| `CRITICAL-TOTAL-REMOTE-TERMINATED-ERROR` |  | Threshold critical total remote terminated error |
+| `CRITICAL-STREAMS-ACTIVE-TRAFFIC-IN` |  | Threshold critical streams active traffic in |
+| `CRITICAL-STREAMS-ACTIVE-PACKETLOSS-IN` |  | Threshold critical streams active packet loss in (absolute) |
+| `CRITICAL-STREAMS-ACTIVE-TRAFFIC-OUT` |  | Threshold critical streams active traffic out |
+| `CRITICAL-STREAMS-ACTIVE-PACKETLOSS-OUT` |  | Threshold critical streams active packet loss out (absolute) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `calls.active.count` |  | active | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `calls.total.count` |  | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `calls.streams.active.maxjitter.milliseconds` | `ms` | max jitter:  ms | `WARNING-STREAMS-ACTIVE-MAXJITTER`, `CRITICAL-STREAMS-ACTIVE-MAXJITTER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Peripherals {/* #hardware-devices-cisco-cts-snmp-peripherals */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /^registered/'` | Set critical threshold for status (Default: '%\{status\} !~ /^registered/'). Can used special variables like: %\{status\}, %\{description\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `FILTER-DESCRIPTION` |  | Filter peripheral by description (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{description\} |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `CRITICAL-TOTAL` |  | Threshold critical total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `peripherals.total.count` |  | Total peripherals | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

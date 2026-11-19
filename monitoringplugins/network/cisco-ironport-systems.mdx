@@ -1,0 +1,407 @@
+---
+title: "Cisco IronPort Systems"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Ironport.png";
+
+<PluginPackHeader name="Cisco IronPort Systems" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco IronPort (Email and Web Security) appliances through SNMP: CPU and memory usage, hardware health, interfaces, mail and proxy usage and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-cisco-ironport-snmp-cpu)
+* [Hardware](#network-cisco-ironport-snmp-hardware)
+* [Interfaces](#network-cisco-ironport-snmp-interfaces)
+* [Mail usage](#network-cisco-ironport-snmp-mail-usage)
+* [Memory](#network-cisco-ironport-snmp-memory)
+* [Proxy usage](#network-cisco-ironport-snmp-proxy-usage)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-cisco-ironport-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Cisco-IronPort
+
+*Cisco IronPort Systems* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-cisco-ironport-snmp-cpu) | `network-cisco-ironport-snmp-cpu` |
+| [Hardware](#network-cisco-ironport-snmp-hardware) | `network-cisco-ironport-snmp-hardware` |
+| [Interfaces](#network-cisco-ironport-snmp-interfaces) | `network-cisco-ironport-snmp-interfaces` |
+| [Mail usage](#network-cisco-ironport-snmp-mail-usage) | `network-cisco-ironport-snmp-mail-usage` |
+| [Memory](#network-cisco-ironport-snmp-memory) | `network-cisco-ironport-snmp-memory` |
+| [Proxy usage](#network-cisco-ironport-snmp-proxy-usage) | `network-cisco-ironport-snmp-proxy-usage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-cisco-ironport-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-GLOBAL-UTITIZATION` | `80` | Threshold warning global utilization |
+| `CRITICAL-GLOBAL-UTITIZATION` | `90` | Threshold critical global utilization |
+| `WARNING-PROXY-UTITIZATION` |  | Threshold warning proxy utilization |
+| `CRITICAL-PROXY-UTITIZATION` |  | Threshold critical proxy utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.global.utilization.percentage` | `%` | cpu global usage is: %% | `WARNING-GLOBAL-UTITIZATION`, `CRITICAL-GLOBAL-UTITIZATION` |
+| `cpu.proxy.utilization.percentage` | `%` | cpu proxy usage is: %% | `WARNING-PROXY-UTITIZATION`, `CRITICAL-PROXY-UTITIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-cisco-ironport-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'fan', 'temperature', 'psu', 'raid' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=temperature) Can also exclude specific instance: --filter=fan,1 |
+| `WARNING` |  | Set warning threshold for temperatures (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperatures (syntax: type,regexp,threshold) Example: --critical='fan,.*,6000' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(powerSupplyHealthy)$)' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-cisco-ironport-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mail usage {/* #network-cisco-ironport-snmp-mail-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{resource_conservation} =~ /memoryShortage\|queueSpaceShortage/i \|\| %{queue_status} =~ /queueSpaceShortage/i'` | Set warning threshold for status (Default: '%\{resource_conservation\} =~ /memoryShortage\|queueSpaceShortage/i \|\| %\{queue_status\} =~ /queueSpaceShortage/i'). Can used special variables like: %\{queue_status\}, %\{resource_conservation\} |
+| `CRITICAL-STATUS` | `'%{resource_conservation} =~ /queueFull/i \|\| %{queue_status} =~ /queueFull/i'` | Set critical threshold for status (Default: '%\{resource_conservation\} =~ /queueFull/i \|\| %\{queue_status\} =~ /queueFull/i'). Can used special variables like: %\{queue_status\}, %\{resource_conservation\} |
+| `UNKNOWN-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{queue_status\}, %\{resource_conservation\} |
+| `WARNING-MESSAGES-WORKQUEUE` |  | Threshold warning messages work queue |
+| `WARNING-DNS-REQUESTS-OUTSTANDING` |  | Threshold warning DNS requests outstanding |
+| `WARNING-DNS-REQUESTS-PENDING` |  | Threshold warning DNS requests pending |
+| `WARNING-FD-OPENED` |  | Threshold warning FD opened |
+| `WARNING-THREADS-MAIL` |  | Threshold warning mail threads |
+| `WARNING-UPDATE-FAILURES` |  | Threshold warning update failures |
+| `WARNING-TIME-EXPIRATION` |  | Threshold warning time expiration |
+| `CRITICAL-MESSAGES-WORKQUEUE` |  | Threshold critical messages work queue |
+| `CRITICAL-DNS-REQUESTS-OUTSTANDING` |  | Threshold critical DNS requests outstanding |
+| `CRITICAL-DNS-REQUESTS-PENDING` |  | Threshold critical DNS requests pending |
+| `CRITICAL-FD-OPENED` |  | Threshold critical FD opened |
+| `CRITICAL-THREADS-MAIL` |  | Threshold critical mail threads |
+| `CRITICAL-UPDATE-FAILURES` |  | Threshold critical update failures |
+| `CRITICAL-TIME-EXPIRATION` |  | Threshold critical time expiration |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.queue.messages.workqueue.count` |  | messages in work queue | `WARNING-MESSAGES-WORKQUEUE`, `CRITICAL-MESSAGES-WORKQUEUE` |
+| `system.dns.requests.outstanding.count` |  | dns requests with no reply | `WARNING-DNS-REQUESTS-OUTSTANDING`, `CRITICAL-DNS-REQUESTS-OUTSTANDING` |
+| `system.dns.requests.pending.count` |  | dns requests pending | `WARNING-DNS-REQUESTS-PENDING`, `CRITICAL-DNS-REQUESTS-PENDING` |
+| `system.fd.opened.count` |  | fd opened | `WARNING-FD-OPENED`, `CRITICAL-FD-OPENED` |
+| `system.threads.mail.count` |  | threads mail | `WARNING-THREADS-MAIL`, `CRITICAL-THREADS-MAIL` |
+| `service.update.failures.count` |  | update failures | `WARNING-UPDATE-FAILURES`, `CRITICAL-UPDATE-FAILURES` |
+| `key.time.expiration.seconds` | `s` | remaining before expiration | `WARNING-TIME-EXPIRATION`, `CRITICAL-TIME-EXPIRATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-ironport-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning (%) |
+| `CRITICAL` | `90` | Threshold critical (%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Proxy usage {/* #network-cisco-ironport-snmp-proxy-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CLIENT-HTTP-HITS-RATE` | `80:` | Threshold warning client HTTP hits rate |
+| `WARNING-CLIENT-ICP-HITS-RATE` | `80:` | Threshold warning client ICP hits rate |
+| `CRITICAL-CLIENT-HTTP-HITS-RATE` | `50:` | Threshold critical client HTTP hits rate |
+| `CRITICAL-CLIENT-ICP-HITS-RATE` | `50:` | Threshold critical client ICP hits rate |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='http' |
+| `WARNING-CLIENT-HTTP-ERRORS` |  | Threshold warning client HTTP errors |
+| `WARNING-CLIENT-HTTP-TRAFFIC-IN` |  | Threshold warning client HTTP traffic in |
+| `WARNING-CLIENT-HTTP-TRAFFIC-OUT` |  | Threshold warning client HTTP traffic out |
+| `WARNING-CLIENT-HTTP-REQUESTS` |  | Threshold warning client HTTP requests |
+| `WARNING-TOTAL-CON-CLIENTS` |  | Threshold warning total client connections |
+| `WARNING-SERVER-TRAFFIC-IN` |  | Threshold warning server traffic in |
+| `WARNING-SERVER-TRAFFIC-OUT` |  | Threshold warning server traffic out |
+| `WARNING-HTTP-MEAN-TIME` |  | Threshold warning HTTP mean time |
+| `CRITICAL-CLIENT-HTTP-ERRORS` |  | Threshold critical client HTTP errors |
+| `CRITICAL-CLIENT-HTTP-TRAFFIC-IN` |  | Threshold critical client HTTP traffic in |
+| `CRITICAL-CLIENT-HTTP-TRAFFIC-OUT` |  | Threshold critical client HTTP traffic out |
+| `CRITICAL-CLIENT-HTTP-REQUESTS` |  | Threshold critical client HTTP requests |
+| `CRITICAL-TOTAL-CON-CLIENTS` |  | Threshold critical total client connections |
+| `CRITICAL-SERVER-TRAFFIC-IN` |  | Threshold critical server traffic in |
+| `CRITICAL-SERVER-TRAFFIC-OUT` |  | Threshold critical server traffic out |
+| `CRITICAL-HTTP-MEAN-TIME` |  | Threshold critical HTTP mean time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `client.http.hits.percentage` | `%` | client hits rate:  %% | `WARNING-CLIENT-HTTP-HITS-RATE`, `CRITICAL-CLIENT-HTTP-HITS-RATE` |
+| `client.http.errors.count` |  | client errors | `WARNING-CLIENT-HTTP-ERRORS`, `CRITICAL-CLIENT-HTTP-ERRORS` |
+| `client.http.traffic.in.bitspersecond` | `b/s` | client traffic in:  /s | `WARNING-CLIENT-HTTP-TRAFFIC-IN`, `CRITICAL-CLIENT-HTTP-TRAFFIC-IN` |
+| `client.http.traffic.out.bitspersecond` | `b/s` | client traffic out:  /s | `WARNING-CLIENT-HTTP-TRAFFIC-OUT`, `CRITICAL-CLIENT-HTTP-TRAFFIC-OUT` |
+| `client.http.total.connections.count` |  | total number of clients | `WARNING-TOTAL-CON-CLIENTS`, `CRITICAL-TOTAL-CON-CLIENTS` |
+| `client.http.requests.persecond` | `/s` | client requests: /s | `WARNING-CLIENT-HTTP-REQUESTS`, `CRITICAL-CLIENT-HTTP-REQUESTS` |
+| `client.icp.hits.percentage` | `%` | client hits rate:  %% | `WARNING-CLIENT-ICP-HITS-RATE`, `CRITICAL-CLIENT-ICP-HITS-RATE` |
+| `http.response.mean.time.milliseconds` | `ms` | http mean response time:  ms | `WARNING-HTTP-MEAN-TIME`, `CRITICAL-HTTP-MEAN-TIME` |
+| `server.traffic.in.bitspersecond` | `b/s` | server traffic in:  /s | `WARNING-SERVER-TRAFFIC-IN`, `CRITICAL-SERVER-TRAFFIC-IN` |
+| `server.traffic.out.bitspersecond` | `b/s` | server traffic out:  /s | `WARNING-SERVER-TRAFFIC-OUT`, `CRITICAL-SERVER-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `network-cisco-ironport-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>

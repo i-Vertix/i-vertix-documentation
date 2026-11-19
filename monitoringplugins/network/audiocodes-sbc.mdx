@@ -1,0 +1,385 @@
+---
+title: "Audiocodes SBC"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Audiocodes.png";
+
+<PluginPackHeader name="Audiocodes SBC" image={image} category="Network" metadata={[]} />
+
+## Description
+
+Monitors Audiocodes session border controllers: CPU and memory usage, hardware health, uptime and call statistics such as active, established and failed inbound and outbound calls.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-audiocodes-snmp-cpu)
+* [Hardware](#network-audiocodes-snmp-hardware)
+* [Memory](#network-audiocodes-snmp-memory)
+* [SBC calls](#network-audiocodes-snmp-sbc-calls)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| `network-audiocodes-snmp-interfaces` | `Interface - <name>` |
+| `network-audiocodes-snmp-trunk-status` | `Trunk status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Audiocodes-SBC
+
+*Audiocodes SBC* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-audiocodes-snmp-cpu) | `network-audiocodes-snmp-cpu` |
+| [Hardware](#network-audiocodes-snmp-hardware) | `network-audiocodes-snmp-hardware` |
+| [Memory](#network-audiocodes-snmp-memory) | `network-audiocodes-snmp-memory` |
+| [SBC calls](#network-audiocodes-snmp-sbc-calls) | `network-audiocodes-snmp-sbc-calls` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-audiocodes-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-VOIP` | `80` | Threshold warning VoIP |
+| `WARNING-DATA` | `80` | Threshold warning data |
+| `CRITICAL-VOIP` | `90` | Threshold critical VoIP |
+| `CRITICAL-DATA` | `90` | Threshold critical data |
+| `CRITICAL-CORE-CPU-UTIL` | `90` | Threshold critical core cpu utilization |
+| `WARNING-CORE-CPU-UTIL` | `80` | Threshold warning core cpu utilization |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^voip$' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.voip.utilization.percentage` | `%` | CPU VoIp usage:  %% | `WARNING-VOIP`, `CRITICAL-VOIP` |
+| `cpu.data.utilization.percentage` | `%` | CPU data usage:  %% | `WARNING-DATA`, `CRITICAL-DATA` |
+| `core.cpu.utilization.percentage` | `%` | average usage is: %% | `WARNING-CORE-CPU-UTIL`, `CRITICAL-CORE-CPU-UTIL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-audiocodes-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fantray', 'module', 'psu' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fantray,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(cleared)$)' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-audiocodes-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-VOIP` | `80` | Threshold warning VoIP |
+| `WARNING-DATA` | `80` | Threshold warning data |
+| `CRITICAL-VOIP` | `90` | Threshold critical VoIP |
+| `CRITICAL-DATA` | `90` | Threshold critical data |
+| `CRITICAL-SYSTEM` | `90` | Threshold critical system |
+| `WARNING-SYSTEM` | `80` | Threshold warning system |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^voip$' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.voip.usage.percentage` | `%` | VoIp usage:  %% | `WARNING-VOIP`, `CRITICAL-VOIP` |
+| `memory.data.usage.percentage` | `%` | data usage:  %% | `WARNING-DATA`, `CRITICAL-DATA` |
+| `memory.system.usage.percentage` | `%` | system usage:  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SBC calls {/* #network-audiocodes-snmp-sbc-calls */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^calls' |
+| `WARNING-SBC-CALLS-DURATION-AVG` |  | Warning threshold SBC calls duration average |
+| `WARNING-SBC-CALLS-ACTIVE-INBOUND` |  | Warning threshold SBC calls active inbound |
+| `WARNING-SBC-CALLS-ACTIVE-OUTBOUND` |  | Warning threshold SBC calls active outbound |
+| `WARNING-SBC-CALLS-ESTABLISHED-INBOUND` |  | Warning threshold SBC calls established inbound |
+| `WARNING-SBC-CALLS-ESTABLISHED-OUTBOUND` |  | Warning threshold SBC calls established outbound |
+| `WARNING-SBC-CALLS-NOTESTABLISHED-INBOUND-FAILED` |  | Warning threshold SBC calls not established inbound failed |
+| `WARNING-SBC-SESSIONS-ACTIVE` |  | Warning threshold SBC sessions active |
+| `CRITICAL-SBC-CALLS-DURATION-AVG` |  | Critical threshold SBC calls duration average |
+| `CRITICAL-SBC-CALLS-ACTIVE-INBOUND` |  | Critical threshold SBC calls active inbound |
+| `CRITICAL-SBC-CALLS-ACTIVE-OUTBOUND` |  | Critical threshold SBC calls active outbound |
+| `CRITICAL-SBC-CALLS-ESTABLISHED-INBOUND` |  | Critical threshold SBC calls established inbound |
+| `CRITICAL-SBC-CALLS-ESTABLISHED-OUTBOUND` |  | Critical threshold SBC calls established outbound |
+| `CRITICAL-SBC-CALLS-NOTESTABLISHED-INBOUND-FAILED` |  | Critical threshold SBC calls not established inbound failed |
+| `CRITICAL-SBC-SESSIONS-ACTIVE` |  | Critical threshold SBC sessions active |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sbc.calls.duration.average.seconds` | `s` | average duration:  s | `WARNING-SBC-CALLS-DURATION-AVG`, `CRITICAL-SBC-CALLS-DURATION-AVG` |
+| `sbc.calls.active.inbound.count` |  | active inbound | `WARNING-SBC-CALLS-ACTIVE-INBOUND`, `CRITICAL-SBC-CALLS-ACTIVE-INBOUND` |
+| `sbc.calls.active.outbound.count` |  | active outbound | `WARNING-SBC-CALLS-ACTIVE-OUTBOUND`, `CRITICAL-SBC-CALLS-ACTIVE-OUTBOUND` |
+| `sbc.calls.established.inbound.count` |  | established inbound | `WARNING-SBC-CALLS-ESTABLISHED-INBOUND`, `CRITICAL-SBC-CALLS-ESTABLISHED-INBOUND` |
+| `sbc.calls.established.outbound.count` |  | established outbound | `WARNING-SBC-CALLS-ESTABLISHED-OUTBOUND`, `CRITICAL-SBC-CALLS-ESTABLISHED-OUTBOUND` |
+| `sbc.calls.notestablished.inbound.failed.count` |  | not established inbound failed | `WARNING-SBC-CALLS-NOTESTABLISHED-INBOUND-FAILED`, `CRITICAL-SBC-CALLS-NOTESTABLISHED-INBOUND-FAILED` |
+| `sbc.calls.notestablished.outbound.failed.count` |  | not established outbound failed |  |
+| `sbc.sessions.active.count` |  | active sessions | `WARNING-SBC-SESSIONS-ACTIVE`, `CRITICAL-SBC-SESSIONS-ACTIVE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260600 - 20260811</summary>
+
+- Host template `Audiocodes-SBC`
+    - Service template `network-audiocodes-snmp-interfaces` unlinked
+    - Service template `network-audiocodes-snmp-trunk-status` unlinked
+- Service template `network-audiocodes-snmp-interfaces`
+    - Service template removed
+- Service template `network-audiocodes-snmp-trunk-status`
+    - Service template removed
+- Command `network-audiocodes-snmp-interfaces`
+    - Command removed
+- Command `network-audiocodes-snmp-trunk-status`
+    - Command removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260301</summary>
+
+- Command `network-audiocodes-snmp-hardware`
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `CRITICAL` removed
+    - Macro `WARNING` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `network-audiocodes-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `CRITICAL` added
+    - Macro `NO-COMPONENT` added
+    - Macro `WARNING` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250600 - 20250721</summary>
+
+- Command `network-audiocodes-snmp-sbc-calls`
+    - Option `--warning-sbc-sbc-calls-notestablished-outbound-failed=$_SERVICEWARNING-SBC-CALLS-NOTESTABLISHED-OUTBOUND-FAILED$` removed
+    - Option `--critical-sbc-sbc-calls-notestablished-outbound-failed=$_SERVICECRITICAL-SBC-CALLS-NOTESTABLISHED-OUTBOUND-FAILED$` removed
+    - Macro `WARNING-SBC-CALLS-NOTESTABLISHED-OUTBOUND-FAILED` removed
+    - Macro `CRITICAL-SBC-CALLS-NOTESTABLISHED-OUTBOUND-FAILED` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Plugin pack `Audiocodes SBC`
+    - Description updated
+- Host template `Audiocodes-SBC`
+    - Service template `network-audiocodes-snmp-sbc-calls` linked
+- Service template [`network-audiocodes-snmp-cpu`](#network-audiocodes-snmp-cpu)
+    - Macro `CRITICAL-CORE-CPU-UTIL` added (default `90`)
+    - Macro `WARNING-CORE-CPU-UTIL` added (default `80`)
+- Service template `network-audiocodes-snmp-interfaces`
+    - Macro `UNITS-TRAFFIC`: default changed from `%` to `percent_delta`
+    - Macro `UNITS-ERROR`: default changed from `%` to `percent_delta`
+- Service template [`network-audiocodes-snmp-memory`](#network-audiocodes-snmp-memory)
+    - Macro `CRITICAL-SYSTEM` added (default `90`)
+    - Macro `WARNING-SYSTEM` added (default `80`)
+- Service template [`network-audiocodes-snmp-sbc-calls`](#network-audiocodes-snmp-sbc-calls)
+    - Service template added
+- Command `network-audiocodes-snmp-cpu`
+    - Option `--snmp-timeout=$_HOSTSNMPTIMEOUT$` added
+    - Option `--warning-core-cpu-utilization=$_SERVICEWARNING-CORE-CPU-UTIL$` added
+    - Option `--critical-core-cpu-utilization=$_SERVICECRITICAL-CORE-CPU-UTIL$` added
+    - Macro `CRITICAL-CORE-CPU-UTIL` added
+    - Macro `WARNING-CORE-CPU-UTIL` added
+- Command `network-audiocodes-snmp-hardware`
+    - Option `--snmp-timeout=$_HOSTSNMPTIMEOUT$` added
+- Command `network-audiocodes-snmp-interfaces`
+    - Option `--snmp-timeout=$_HOSTSNMPTIMEOUT$` added
+    - Macro `SNMPTIMEOUT` added
+- Command `network-audiocodes-snmp-memory`
+    - Option `--snmp-timeout=$_HOSTSNMPTIMEOUT$` added
+    - Option `--warning-system=$_SERVICEWARNING-SYSTEM$` added
+    - Option `--critical-system=$_SERVICECRITICAL-SYSTEM$` added
+    - Macro `CRITICAL-SYSTEM` added
+    - Macro `WARNING-SYSTEM` added
+- Command `network-audiocodes-snmp-sbc-calls`
+    - Command added
+- Command `network-audiocodes-snmp-trunk-status`
+    - Option `--snmp-timeout=$_HOSTSNMPTIMEOUT$` added
+
+</details>

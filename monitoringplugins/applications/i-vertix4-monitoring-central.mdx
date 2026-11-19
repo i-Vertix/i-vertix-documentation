@@ -1,0 +1,1943 @@
+---
+title: "i-Vertix4 Monitoring Central"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/i-Vertix-red.png";
+
+<PluginPackHeader name="i-Vertix4 Monitoring Central" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors an i-Vertix4 monitoring central server: Gorgone, broker statistics, poller delay and database partitioning, together with Apache, MariaDB, PHP-FPM, system resources and the platform processes.
+
+The plugin pack provides these checks:
+
+* [Apache CPU](#apps-apache-serverstatus-cpu)
+* [Apache requests](#apps-apache-serverstatus-requests)
+* [Apache response time](#apps-apache-serverstatus_responsetime)
+* [Apache slot states](#apps-apache-serverstatus-slotstates)
+* [Apache workers](#apps-apache-serverstatus-workers)
+* [CPU](#os-linux-snmp-cpu)
+* [CPU detailed](#os-linux-snmp-cpu-detailed)
+* [Disk IO](#os-linux-snmp-diskio)
+* [Gorgone - Events](#apps-gorgone-restapi-events)
+* [Gorgone - Nodes](#apps-gorgone-restapi-nodes)
+* [i-Vertix Count Hosts/Services](#apps-centreon-sql-countservices)
+* [i-Vertix DB partitioning](#apps-centreon-sql-partitioning)
+* [i-Vertix Poller delay](#apps-centreon-sql-pollerdelay)
+* [i-Vertix4 Broker Master statistics](#apps-centreon-local-broker-stats-broker-master-ivertix4)
+* [i-Vertix4 Broker Module Master statistics](#apps-centreon-local-broker-stats-broker-module-ivertix4)
+* [i-Vertix4 Broker RRD statistics](#apps-centreon-local-broker-stats-broker-rrd-ivertix4)
+* [MariaDB Connection time](#database-mysql-connection-time)
+* [MariaDB Databases size](#database-mysql-databases-size)
+* [MariaDB Innodb bufferpool hitrate](#database-mysql-innodb-bufferpool-hitrate)
+* [MariaDB long queries](#database-mysql-long-queries)
+* [MariaDB Myisam keycache hitrate](#database-mysql-myisam-keycache-hitrate)
+* [MariaDB Open files](#database-mysql-open-files)
+* [MariaDB Open tables](#database-mysql-open-tables)
+* [MariaDB Qcache hitrate](#database-mysql-qcache-hitrate)
+* [MariaDB Queries usage](#database-mysql-queries)
+* [MariaDB Slow queries](#database-mysql-slowqueries)
+* [MariaDB Threads connected](#database-mysql-threadsconnected)
+* [MariaDB Uptime](#database-mysql-uptime)
+* [Memory](#os-linux-snmp-memory-no-swap)
+* [NTP](#os-linux-snmp-time)
+* [PHP-FPM usage - pool Monitoring](#apps-php-fpm-web-usage-monitoring)
+* [Process - centengine](#os-linux-snmp-processcount-centengine)
+* [Process - centreontrapd](#os-linux-snmp-processcount-centreontrapd)
+* [Process - gorgone-action](#os-linux-snmp-processcount-gorgone-action)
+* [Process - gorgone-cron](#os-linux-snmp-processcount-gorgone-cron)
+* [Process - gorgone-dbclean](#os-linux-snmp-processcount-gorgone-dbclean)
+* [Process - gorgone-engine](#os-linux-snmp-processcount-gorgone-engine)
+* [Process - gorgone-httpser](#os-linux-snmp-processcount-gorgone-httpser)
+* [Process - gorgone-ivertix](#os-linux-snmp-processcount-gorgone-ivertix)
+* [Process - gorgone-legacyc](#os-linux-snmp-processcount-gorgone-legacyc)
+* [Process - gorgone-nodes](#os-linux-snmp-processcount-gorgone-nodes)
+* [Process - rrdcached](#os-linux-snmp-processcount-rrdcached)
+* [Process - rsyslogd](#os-linux-snmp-processcount-rsyslogd)
+* [Process - snmptrapd](#os-linux-snmp-processcount-snmptrapd)
+* [SMTP login](#apps-protocols-smtp-login)
+* [Swap](#os-linux-snmp-swap)
+* [System Load](#os-linux-snmp-load)
+* [TCP connections](#os-linux-snmp-tcpcon)
+* [UDP connections](#os-linux-snmp-udpcon)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [`os-linux-snmp-inodes`](/monitoringplugins/operating-system/linux-snmp#os-linux-snmp-inodes) | `Inodes <name>` |
+| [`os-linux-snmp-processcount`](/monitoringplugins/operating-system/linux-snmp#os-linux-snmp-processcount) | `Process memory <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### i-Vertix4-Central
+
+*i-Vertix Poller4 Central Server* · Parent template: `Linux-Server-SNMP`, `generic-host`, `MariaDB-MySQL-database`, `SMTP-login`, `Apache-Serverstatus`
+
+<details className="plugin-pack-details">
+<summary>Macros (35)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MARIADB-USERNAME` | `ivertix` | User name used to connect to the database. |
+| `MARIADB-PASSWORD` | *(password)* | Password for the defined user name. |
+| `GORGONE-PORT` | `8085` | Port used (default: 8085) |
+| `GORGONE-PROTO` | `http` | Specify https if needed (default: 'http') |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `APACHE-PORT` |  | Port used by Apache |
+| `APACHE-PROTO` |  | Specify https if needed |
+| `APACHE-SSL-OPT` |  | Set SSL Options (--ssl-opt="SSL_version => TLSv1" --ssl-opt="SSL_verify_mode => SSL_VERIFY_NONE"). |
+| `APACHE-SSL` |  | Set SSL version (--ssl=TLSv1). |
+| `APACHE-URL-PATH` |  | Set path to get server-status page in auto mode (default: '/server-status/?auto') |
+| `MARIADB-PORT` |  | Database Server Port. |
+| `PHPFPM-USERNAME` |  | Specify the username for authentication (mandatory if --credentials is specified) |
+| `PHPFPM-PASSWORD` |  | Specify the password for authentication (mandatory if --credentials is specified) |
+| `GORGONE_SSL-OPT` |  | Set SSL Options (--ssl-opt="SSL_version => TLSv1" --ssl-opt="SSL_verify_mode => SSL_VERIFY_NONE"). |
+| `SMTP-PORT` |  | Port used |
+| `SMTP-USER` |  | Specify username for authentification |
+| `SMTP-PWD` |  | Specify password for authentification |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [i-Vertix4 Broker Master statistics](#apps-centreon-local-broker-stats-broker-master-ivertix4) | `apps-centreon-local-broker-stats-broker-master-ivertix4` |
+| [i-Vertix4 Broker Module Master statistics](#apps-centreon-local-broker-stats-broker-module-ivertix4) | `apps-centreon-local-broker-stats-broker-module-ivertix4` |
+| [i-Vertix4 Broker RRD statistics](#apps-centreon-local-broker-stats-broker-rrd-ivertix4) | `apps-centreon-local-broker-stats-broker-rrd-ivertix4` |
+| [i-Vertix Count Hosts/Services](#apps-centreon-sql-countservices) | `apps-centreon-sql-countservices` |
+| [i-Vertix DB partitioning](#apps-centreon-sql-partitioning) | `apps-centreon-sql-partitioning` |
+| [i-Vertix Poller delay](#apps-centreon-sql-pollerdelay) | `apps-centreon-sql-pollerdelay` |
+| [Gorgone - Events](#apps-gorgone-restapi-events) | `apps-gorgone-restapi-events` |
+| [Gorgone - Nodes](#apps-gorgone-restapi-nodes) | `apps-gorgone-restapi-nodes` |
+| [PHP-FPM usage - pool Monitoring](#apps-php-fpm-web-usage-monitoring) | `apps-php-fpm-web-usage-monitoring` |
+| [Process - centengine](#os-linux-snmp-processcount-centengine) | `os-linux-snmp-processcount-centengine` |
+| [Process - centreontrapd](#os-linux-snmp-processcount-centreontrapd) | `os-linux-snmp-processcount-centreontrapd` |
+| [Process - gorgone-action](#os-linux-snmp-processcount-gorgone-action) | `os-linux-snmp-processcount-gorgone-action` |
+| [Process - gorgone-cron](#os-linux-snmp-processcount-gorgone-cron) | `os-linux-snmp-processcount-gorgone-cron` |
+| [Process - gorgone-dbclean](#os-linux-snmp-processcount-gorgone-dbclean) | `os-linux-snmp-processcount-gorgone-dbclean` |
+| [Process - gorgone-engine](#os-linux-snmp-processcount-gorgone-engine) | `os-linux-snmp-processcount-gorgone-engine` |
+| [Process - gorgone-httpser](#os-linux-snmp-processcount-gorgone-httpser) | `os-linux-snmp-processcount-gorgone-httpser` |
+| [Process - gorgone-ivertix](#os-linux-snmp-processcount-gorgone-ivertix) | `os-linux-snmp-processcount-gorgone-ivertix` |
+| [Process - gorgone-legacyc](#os-linux-snmp-processcount-gorgone-legacyc) | `os-linux-snmp-processcount-gorgone-legacyc` |
+| [Process - gorgone-nodes](#os-linux-snmp-processcount-gorgone-nodes) | `os-linux-snmp-processcount-gorgone-nodes` |
+| [Process - rrdcached](#os-linux-snmp-processcount-rrdcached) | `os-linux-snmp-processcount-rrdcached` |
+| [Process - rsyslogd](#os-linux-snmp-processcount-rsyslogd) | `os-linux-snmp-processcount-rsyslogd` |
+| [Process - snmptrapd](#os-linux-snmp-processcount-snmptrapd) | `os-linux-snmp-processcount-snmptrapd` |
+| [CPU](#os-linux-snmp-cpu) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-cpu` |
+| [CPU detailed](#os-linux-snmp-cpu-detailed) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-cpu-detailed` |
+| [Disk IO](#os-linux-snmp-diskio) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-diskio` |
+| [System Load](#os-linux-snmp-load) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-load` |
+| [Memory](#os-linux-snmp-memory-no-swap) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-memory-no-swap` |
+| [Swap](#os-linux-snmp-swap) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-swap` |
+| [TCP connections](#os-linux-snmp-tcpcon) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-tcpcon` |
+| [NTP](#os-linux-snmp-time) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-time` |
+| [UDP connections](#os-linux-snmp-udpcon) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-udpcon` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+| [MariaDB Connection time](#database-mysql-connection-time) (inherited from `MariaDB-MySQL-database`) | `database-mysql-connection-time` |
+| [MariaDB Databases size](#database-mysql-databases-size) (inherited from `MariaDB-MySQL-database`) | `database-mysql-databases-size` |
+| [MariaDB Innodb bufferpool hitrate](#database-mysql-innodb-bufferpool-hitrate) (inherited from `MariaDB-MySQL-database`) | `database-mysql-innodb-bufferpool-hitrate` |
+| [MariaDB long queries](#database-mysql-long-queries) (inherited from `MariaDB-MySQL-database`) | `database-mysql-long-queries` |
+| [MariaDB Myisam keycache hitrate](#database-mysql-myisam-keycache-hitrate) (inherited from `MariaDB-MySQL-database`) | `database-mysql-myisam-keycache-hitrate` |
+| [MariaDB Open files](#database-mysql-open-files) (inherited from `MariaDB-MySQL-database`) | `database-mysql-open-files` |
+| [MariaDB Open tables](#database-mysql-open-tables) (inherited from `MariaDB-MySQL-database`) | `database-mysql-open-tables` |
+| [MariaDB Qcache hitrate](#database-mysql-qcache-hitrate) (inherited from `MariaDB-MySQL-database`) | `database-mysql-qcache-hitrate` |
+| [MariaDB Queries usage](#database-mysql-queries) (inherited from `MariaDB-MySQL-database`) | `database-mysql-queries` |
+| [MariaDB Slow queries](#database-mysql-slowqueries) (inherited from `MariaDB-MySQL-database`) | `database-mysql-slowqueries` |
+| [MariaDB Threads connected](#database-mysql-threadsconnected) (inherited from `MariaDB-MySQL-database`) | `database-mysql-threadsconnected` |
+| [MariaDB Uptime](#database-mysql-uptime) (inherited from `MariaDB-MySQL-database`) | `database-mysql-uptime` |
+| [SMTP login](#apps-protocols-smtp-login) (inherited from `SMTP-login`) | `apps-protocols-smtp-login` |
+| [Apache CPU](#apps-apache-serverstatus-cpu) (inherited from `Apache-Serverstatus`) | `apps-apache-serverstatus-cpu` |
+| [Apache requests](#apps-apache-serverstatus-requests) (inherited from `Apache-Serverstatus`) | `apps-apache-serverstatus-requests` |
+| [Apache slot states](#apps-apache-serverstatus-slotstates) (inherited from `Apache-Serverstatus`) | `apps-apache-serverstatus-slotstates` |
+| [Apache workers](#apps-apache-serverstatus-workers) (inherited from `Apache-Serverstatus`) | `apps-apache-serverstatus-workers` |
+| [Apache response time](#apps-apache-serverstatus_responsetime) (inherited from `Apache-Serverstatus`) | `apps-apache-serverstatus_responsetime` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix4 Broker Master statistics {/* #apps-centreon-local-broker-stats-broker-master-ivertix4 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `BROKER-STATSFILE` | `/var/lib/centreon-broker/central-broker-master-stats.json` | Specify the centreon-broker json stats file (Required) |
+| `FILTER-NAME` |  | Filter endpoint name |
+| `WARNING-SPEED-EVENTS` |  | Threshold warningThreshold warning speed events |
+| `WARNING-QUEUED-EVENTS` |  | Threshold warning queued events |
+| `WARNING-UNACK-EVENTS` |  | Threshold warning unacknowledged events |
+| `CRITICAL-SPEED-EVENTS` |  | Threshold critical speed events |
+| `CRITICAL-QUEUED-EVENTS` |  | Threshold critical queued events |
+| `CRITICAL-UNACK-EVENTS` |  | Threshold critical unacknowledged events |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{type\} eq "output" and %\{queue_file_enabled\} =~ /yes/i'). Can used special variables like: %\{queue_file_enabled\}, %\{state\}, %\{status\}, %\{type\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{queue_file_enabled\}, %\{state\}, %\{status\}, %\{type\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `speed_events` | `events/s` | Speed Events: /s | `WARNING-SPEED-EVENTS`, `CRITICAL-SPEED-EVENTS` |
+| `queued_events` | `events` | Queued Events | `WARNING-QUEUED-EVENTS`, `CRITICAL-QUEUED-EVENTS` |
+| `unacknowledged_events` | `events` | Unacknowledged Events | `WARNING-UNACK-EVENTS`, `CRITICAL-UNACK-EVENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix4 Broker Module Master statistics {/* #apps-centreon-local-broker-stats-broker-module-ivertix4 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `BROKER-STATSFILE` | `/var/lib/centreon-broker/central-module-master-stats.json` | Specify the centreon-broker json stats file (Required) |
+| `FILTER-NAME` |  | Filter endpoint name |
+| `WARNING-SPEED-EVENTS` |  | Threshold warningThreshold warning speed events |
+| `WARNING-QUEUED-EVENTS` |  | Threshold warning queued events |
+| `WARNING-UNACK-EVENTS` |  | Threshold warning unacknowledged events |
+| `CRITICAL-SPEED-EVENTS` |  | Threshold critical speed events |
+| `CRITICAL-QUEUED-EVENTS` |  | Threshold critical queued events |
+| `CRITICAL-UNACK-EVENTS` |  | Threshold critical unacknowledged events |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{type\} eq "output" and %\{queue_file_enabled\} =~ /yes/i'). Can used special variables like: %\{queue_file_enabled\}, %\{state\}, %\{status\}, %\{type\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{queue_file_enabled\}, %\{state\}, %\{status\}, %\{type\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `speed_events` | `events/s` | Speed Events: /s | `WARNING-SPEED-EVENTS`, `CRITICAL-SPEED-EVENTS` |
+| `queued_events` | `events` | Queued Events | `WARNING-QUEUED-EVENTS`, `CRITICAL-QUEUED-EVENTS` |
+| `unacknowledged_events` | `events` | Unacknowledged Events | `WARNING-UNACK-EVENTS`, `CRITICAL-UNACK-EVENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix4 Broker RRD statistics {/* #apps-centreon-local-broker-stats-broker-rrd-ivertix4 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `BROKER-STATSFILE` | `/var/lib/centreon-broker/central-rrd-master-stats.json` | Specify the centreon-broker json stats file (Required) |
+| `FILTER-NAME` |  | Filter endpoint name |
+| `WARNING-SPEED-EVENTS` |  | Threshold warningThreshold warning speed events |
+| `WARNING-QUEUED-EVENTS` |  | Threshold warning queued events |
+| `WARNING-UNACK-EVENTS` |  | Threshold warning unacknowledged events |
+| `CRITICAL-SPEED-EVENTS` |  | Threshold critical speed events |
+| `CRITICAL-QUEUED-EVENTS` |  | Threshold critical queued events |
+| `CRITICAL-UNACK-EVENTS` |  | Threshold critical unacknowledged events |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{type\} eq "output" and %\{queue_file_enabled\} =~ /yes/i'). Can used special variables like: %\{queue_file_enabled\}, %\{state\}, %\{status\}, %\{type\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{queue_file_enabled\}, %\{state\}, %\{status\}, %\{type\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `speed_events` | `events/s` | Speed Events: /s | `WARNING-SPEED-EVENTS`, `CRITICAL-SPEED-EVENTS` |
+| `queued_events` | `events` | Queued Events | `WARNING-QUEUED-EVENTS`, `CRITICAL-QUEUED-EVENTS` |
+| `unacknowledged_events` | `events` | Unacknowledged Events | `WARNING-UNACK-EVENTS`, `CRITICAL-UNACK-EVENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix Count Hosts/Services {/* #apps-centreon-sql-countservices */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-HOST` |  | Critical threshold number hosts total |
+| `CRITICAL-SERVICE` |  | Critical threshold number services total |
+| `FILTER-POLLER` |  | Filter by poller name (regexp can be used) |
+| `WARNING-HOST` |  | Warning threshold number hosts total |
+| `WARNING-HOSTS-DOWN` |  | Warning threshold number hosts status down |
+| `WARNING-HOSTS-PENDING` |  | Warning threshold number hosts status pending |
+| `WARNING-HOSTS-UNREACHABLE` |  | Warning threshold number hosts status unreachable |
+| `WARNING-HOSTS-UP` |  | Warning threshold number hosts status up |
+| `WARNING-SERVICE` |  | Warning threshold number services total |
+| `WARNING-SERVICES-CRITICAL` |  | Warning threshold number services status critical |
+| `WARNING-SERVICES-OK` |  | Warning threshold number services status ok |
+| `WARNING-SERVICES-PENDING` |  | Warning threshold number services status pending |
+| `WARNING-SERVICES-UNKNOWN` |  | Warning threshold number services status unknown |
+| `WARNING-SERVICES-WARNING` |  | Warning threshold number services status warning |
+| `CRITICAL-HOSTS-DOWN` |  | Critical threshold number hosts status down |
+| `CRITICAL-HOSTS-PENDING` |  | Critical threshold number hosts status pending |
+| `CRITICAL-HOSTS-UNREACHABLE` |  | Critical threshold number hosts status unreachable |
+| `CRITICAL-HOSTS-UP` |  | Critical threshold number hosts status up |
+| `CRITICAL-SERVICES-CRITICAL` |  | Critical threshold number services status critical |
+| `CRITICAL-SERVICES-OK` |  | Critical threshold number services status ok |
+| `CRITICAL-SERVICES-PENDING` |  | Critical threshold number services status pending |
+| `CRITICAL-SERVICES-UNKNOWN` |  | Critical threshold number services status unknown |
+| `CRITICAL-SERVICES-WARNING` |  | Critical threshold number services status warning |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix DB partitioning {/* #apps-centreon-sql-partitioning */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `5:` | Threshold warning (number of retention forward days) |
+| `CRITICAL` | `3:` | Threshold critical (number of retention forward days) |
+| `TABLE-NAME1` | `centreon_storage.data_bin` |  |
+| `TABLE-NAME2` | `centreon_storage.logs` |  |
+| `TABLE-NAME3` | `centreon_storage.log_archive_host` |  |
+| `TABLE-NAME4` | `centreon_storage.log_archive_service` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix Poller delay {/* #apps-centreon-sql-pollerdelay */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DELAY` | `300` | Threshold warning in seconds |
+| `CRITICAL-DELAY` | `1800` | Threshold critical in seconds |
+| `FILTER-NAME` |  | Filter by poller name (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Gorgone - Events {/* #apps-gorgone-restapi-events */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-EVENT-TOTAL` |  | Threshold warning event total |
+| `WARNING-EVENTS-TOTAL` |  | Threshold warning events total |
+| `CRITICAL-EVENT-TOTAL` |  | Threshold critical event total |
+| `CRITICAL-EVENTS-TOTAL` |  | Threshold critical events total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `path.events.total.count` |  | total events | `WARNING-EVENTS-TOTAL`, `CRITICAL-EVENTS-TOTAL` |
+| `event.total.count` |  | total | `WARNING-EVENT-TOTAL`, `CRITICAL-EVENT-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Gorgone - Nodes {/* #apps-gorgone-restapi-nodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PING-LASTTIME` | `480` | Threshold warning ping lasttime |
+| `CRITICAL-PING-LASTTIME` | `720` | Threshold critical ping lasttime |
+| `WARNING-NODES-TOTAL` |  | Threshold warning nodes total |
+| `CRITICAL-NODES-TOTAL` |  | Threshold critical nodes total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `nodes.total.count` |  | total nodes | `WARNING-NODES-TOTAL`, `CRITICAL-NODES-TOTAL` |
+| `node.ping.received.lasttime.seconds` | `s` | last ping received | `WARNING-PING-LASTTIME`, `CRITICAL-PING-LASTTIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### PHP-FPM usage - pool Monitoring {/* #apps-php-fpm-web-usage-monitoring */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL_PATH` | `/php8-fpm-status` | Set path to get server-status page in auto mode (Default: '/fpm-status') |
+| `PORT` |  | Port used by web server |
+| `PROTO` |  | Specify https if needed |
+| `WARNING-ACTIVE-PROCESSES` |  | Threshold warning active processes |
+| `WARNING-IDLE-PROCESSES` |  | Threshold warning idle processes |
+| `WARNING-LISTEN-QUEUE` |  | Threshold warning listen queue |
+| `WARNING-REQUESTS` |  | Threshold warning requests |
+| `CRITICAL-ACTIVE-PROCESSES` |  | Threshold critical active processes |
+| `CRITICAL-IDLE-PROCESSES` |  | Threshold critical idle processes |
+| `CRITICAL-LISTEN-QUEUE` |  | Threshold critical listen queue |
+| `CRITICAL-REQUESTS` |  | Threshold critical requests |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `fpm.processes.active.count` |  |  | `WARNING-ACTIVE-PROCESSES`, `CRITICAL-ACTIVE-PROCESSES` |
+| `fpm.processes.idle.count` |  |  | `WARNING-IDLE-PROCESSES`, `CRITICAL-IDLE-PROCESSES` |
+| `fpm.queue.listen.count` |  | listen queue | `WARNING-LISTEN-QUEUE`, `CRITICAL-LISTEN-QUEUE` |
+| `fpm.requests.persecond` | `/s` | requests: /s | `WARNING-REQUESTS`, `CRITICAL-REQUESTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - centengine {/* #os-linux-snmp-processcount-centengine */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^centengine$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `200MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `400MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - centreontrapd {/* #os-linux-snmp-processcount-centreontrapd */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^centreontrapd$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `50MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `100MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-action {/* #os-linux-snmp-processcount-gorgone-action */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-action$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-cron {/* #os-linux-snmp-processcount-gorgone-cron */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-cron$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-dbclean {/* #os-linux-snmp-processcount-gorgone-dbclean */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-dbclean$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-engine {/* #os-linux-snmp-processcount-gorgone-engine */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-engine$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-httpser {/* #os-linux-snmp-processcount-gorgone-httpser */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-httpser$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-ivertix {/* #os-linux-snmp-processcount-gorgone-ivertix */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-ivertix$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `6:6` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-legacyc {/* #os-linux-snmp-processcount-gorgone-legacyc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-legacyc$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - gorgone-nodes {/* #os-linux-snmp-processcount-gorgone-nodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^gorgone-nodes$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `150MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `250MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - rrdcached {/* #os-linux-snmp-processcount-rrdcached */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^rrdcached$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `100MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `200MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - rsyslogd {/* #os-linux-snmp-processcount-rsyslogd */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^rsyslogd$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `500MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `1000MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - snmptrapd {/* #os-linux-snmp-processcount-snmptrapd */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^snmptrapd$` | Process name - can be a regexp |
+| `WARNING-MEM-AVG` | `50MB` | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL` | `1:1` | Threshold critical (process count) |
+| `CRITICAL-MEM-AVG` | `100MB` | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #os-linux-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #os-linux-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning WaitThreshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk IO {/* #os-linux-snmp-diskio */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DEVICE` | `.*` | Set the device name ex: sda, sda1, sdb (empty means 'check all devices') - you can use regex |
+| `WARNING-READ` | `500MB` | Warning threshold reads (bytes per second) |
+| `WARNING-WRITE` | `500MB` | Warning threshold writes (bytes per second) |
+| `WARNING-READ-IOPS` | `2500` | Warning threshold read IOPs |
+| `WARNING-WRITE-IOPS` | `2500` | Warning threshold write IOPs |
+| `CRITICAL-READ` | `2000MB` | Critical threshold reads (bytes per second) |
+| `CRITICAL-WRITE` | `2000MB` | Critical threshold writes(bytes per second) |
+| `CRITICAL-READ-IOPS` | `10000` | Critical threshold read IOPs |
+| `CRITICAL-WRITE-IOPS` | `10000` | Critical threshold write IOPs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_read` | `B/s` | Read I/O :  /s |  |
+| `total_write` | `B/s` | Write I/O :  /s |  |
+| `total_read_iops` | `iops` | Read IOPs |  |
+| `total_write_iops` | `iops` | Write IOPs |  |
+| `sum_read_write` | `B/s` | R+W I/O :  /s |  |
+| `sum_read_write_iops` | `iops` | R+W IOPs |  |
+| `read` | `B/s` | Read I/O :  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `write` | `B/s` | Write I/O :  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `read_iops` | `iops` | Read IOPs | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `write_iops` | `iops` | Write IOPs | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Load {/* #os-linux-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #os-linux-snmp-memory-no-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #os-linux-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `25` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP connections {/* #os-linux-snmp-tcpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.tcp.count` |  |  |  |
+| `application.connections.tcp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #os-linux-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### UDP connections {/* #os-linux-snmp-udpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.udp.count` |  |  |  |
+| `application.connections.udp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Connection time {/* #database-mysql-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `500` | Threshold warning in milliseconds |
+| `CRITICAL` | `1000` | Threshold critical in milliseconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Databases size {/* #database-mysql-databases-size */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DB` | `^(?!(information_schema\|performance_schema\|test))` | Filter database to checks (Can be a regexp) |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-TABLE` |  | Filter table name (can be a regexp) |
+| `WARNING-TOTAL-USAGE` |  | Threshold warning total usage |
+| `WARNING-TOTAL-FREE` |  | Threshold warning total free |
+| `WARNING-DB-USAGE` |  | Threshold warning DB usage |
+| `WARNING-DB-FREE` |  | Threshold warning DB free |
+| `WARNING-TABLE-USAGE` |  | Threshold warning table usage |
+| `WARNING-TABLE-FREE` |  | Threshold warning table free |
+| `WARNING-TABLE-FRAG` |  | Threshold warning table fragmentation |
+| `CRITICAL-TOTAL-USAGE` |  | Threshold critical total usage |
+| `CRITICAL-TOTAL-FREE` |  | Threshold critical total free |
+| `CRITICAL-DB-USAGE` |  | Threshold critical DB usage |
+| `CRITICAL-DB-FREE` |  | Threshold critical DB free |
+| `CRITICAL-TABLE-USAGE` |  | Threshold critical table usage |
+| `CRITICAL-TABLE-FREE` |  | Threshold critical table free |
+| `CRITICAL-TABLE-FRAG` |  | Threshold critical table fragmentation |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `databases.space.usage.bytes` | `B` | Used Space | `WARNING-TOTAL-USAGE`, `CRITICAL-TOTAL-USAGE` |
+| `databases.space.free.bytes` | `B` | Free Space | `WARNING-TOTAL-FREE`, `CRITICAL-TOTAL-FREE` |
+| `database.space.usage.bytes` | `B` | Used | `WARNING-DB-USAGE`, `CRITICAL-DB-USAGE` |
+| `database.space.free.bytes` | `B` | Free | `WARNING-DB-FREE`, `CRITICAL-DB-FREE` |
+| `table.space.usage.bytes` | `B` | Used | `WARNING-TABLE-USAGE`, `CRITICAL-TABLE-USAGE` |
+| `table.space.free.bytes` | `B` | Free | `WARNING-TABLE-FREE`, `CRITICAL-TABLE-FREE` |
+| `table.fragmentation.percentage` | `%` | Fragmentation:  %% | `WARNING-TABLE-FRAG`, `CRITICAL-TABLE-FRAG` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Innodb bufferpool hitrate {/* #database-mysql-innodb-bufferpool-hitrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `95:` | Threshold warning |
+| `CRITICAL` | `90:` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB long queries {/* #database-mysql-long-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SECONDS` | `60` | The minimum execution time in seconds for a long query (Default: 60) |
+| `WARNING` | `0` | Threshold warning (number of long queries) |
+| `CRITICAL` | `5` | Threshold critical (number of long queries) |
+| `FILTER-COMMAND` | `'^(?!(sleep)$)'` | Filter by command (can be a regexp. Default: '^(?!(sleep)$)') |
+| `FILTER-USER` |  | Filter by user (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.longqueries.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Myisam keycache hitrate {/* #database-mysql-myisam-keycache-hitrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `95:` | Threshold warning |
+| `CRITICAL` | `90:` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Open files {/* #database-mysql-open-files */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.open.files.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Open tables {/* #database-mysql-open-tables */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `90` | Warning threshold in percent |
+| `CRITICAL` | `95` | Critical threshold in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.open.tables.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Qcache hitrate {/* #database-mysql-qcache-hitrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `95:` | Threshold warning |
+| `CRITICAL` | `90:` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Queries usage {/* #database-mysql-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL` |  | Threshold warning average number of queries executed |
+| `WARNING-UPDATE` |  | Threshold warning average number of queries UPDATES |
+| `WARNING-INSERT` |  | Threshold warning average number of queries INSERTS |
+| `WARNING-DELETE` |  | Threshold warning average number of queries DELETES |
+| `WARNING-TRUNCATE` |  | Threshold warning average number of queries TRUNCATES |
+| `WARNING-SELECT` |  | Threshold warning average number of queries SELECTS |
+| `WARNING-BEGIN` |  | Threshold warning average number of queries BEGINS |
+| `WARNING-COMMIT` |  | Threshold warning average number of queries COMMITS |
+| `CRITICAL-TOTAL` |  | Threshold critical average number of queries executed |
+| `CRITICAL-UPDATE` |  | Threshold critical average number of queries UPDATES |
+| `CRITICAL-INSERT` |  | Threshold critical  average number of queries INSERTS |
+| `CRITICAL-DELETE` |  | Threshold critical average number of queries DELETES |
+| `CRITICAL-TRUNCATE` |  | Threshold critical average number of queries TRUNCATES |
+| `CRITICAL-SELECT` |  | Threshold critical average number of queries SELECTS |
+| `CRITICAL-BEGIN` |  | Threshold critical average number of queries BEGINS |
+| `CRITICAL-COMMIT` |  | Threshold critical average number of queries COMMITS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queries.total.persecond` | `/s` | Total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Slow queries {/* #database-mysql-slowqueries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `0` | Warning number for slow queries since last check |
+| `CRITICAL` | `10` | Critical number for slow queries since last check |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.slowqueries.delta.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Threads connected {/* #database-mysql-threadsconnected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning Connection usage in % |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical Connection usage in % |
+| `WARNING-USAGE` |  | Threshold warning Connection usage |
+| `CRITICAL-USAGE` |  | Threshold critical Connection usage |
+| `WARNING-DB-THREATS-CONNECTED` |  | Threshold warning DB threats connected |
+| `CRITICAL-DB-THREATS-CONNECTED` |  | Threshold critical DB threats connected |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `threads.connected.count` |  |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `threads.connected.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `database.threads.connected.count` |  | threads connected | `WARNING-DB-THREATS-CONNECTED`, `CRITICAL-DB-THREATS-CONNECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Uptime {/* #database-mysql-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1800:` | Threshold warning |
+| `CRITICAL` | `900:` | Threshold critical |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.uptime.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SMTP login {/* #apps-protocols-smtp-login */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1` | Threshold warning in seconds |
+| `CRITICAL` | `2` | Threshold critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache CPU {/* #apps-apache-serverstatus-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Warning Threshold for CpuLoad |
+| `CRITICAL` | `90` | Critical Threshold for CpuLoad |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache requests {/* #apps-apache-serverstatus-requests */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1000` | Warning Threshold for Request per seconds |
+| `CRITICAL` | `5000` | Critical Threshold for Request per seconds |
+| `WARNING-BYTES` |  | Warning Threshold for Bytes per seconds |
+| `WARNING-ACCESS` |  | Warning Threshold for Access per seconds |
+| `CRITICAL-BYTES` |  | Critical Threshold for Bytes per seconds |
+| `CRITICAL-ACCESS` |  | Critical Threshold for Access per seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `apache.bytes.persecond` | `B` | BytesPerSec |  |
+| `apache.access.persecond` | `/s` | AccessPerSec |  |
+| `apache.request.average.persecond` | `/s` | RequestPerSec |  |
+| `apache.bytes.average.perrequest` | `B` | BytesPerRequest |  |
+| `apache.bytes.average.persecond` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache slot states {/* #apps-apache-serverstatus-slotstates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Threshold unit (Default: '%'. Can be: '%' or 'absolute') |
+| `WARNING-BUSY` | `85` | Warning threshold Busy |
+| `CRITICAL-BUSY` | `90` | Critical threshold Busy |
+| `WARNING-FREE` |  | Warning threshold Free |
+| `WARNING-WAITING` |  | Warning threshold Waiting |
+| `WARNING-STARTING` |  | Warning threshold Starting |
+| `WARNING-READING` |  | Warning threshold Reading |
+| `WARNING-SENDING` |  | Warning threshold Sending |
+| `WARNING-KEEPALIVE` |  | Warning threshold Keepalive |
+| `WARNING-DNS-LOOKUP` |  | Warning threshold DNS Lookup |
+| `WARNING-CLOSING` |  | Warning threshold Closing |
+| `WARNING-LOGGING` |  | Warning threshold Logging |
+| `WARNING-GRACEFULY-FINISHED` |  | Warning threshold Gracefuly finished |
+| `WARNING-IDLE-CLEANUP-WORKER` |  | Warning threshold Idle cleanup worker |
+| `CRITICAL-FREE` |  | Critical threshold Free |
+| `CRITICAL-WAITING` |  | Critical threshold Waiting |
+| `CRITICAL-STARTING` |  | Critical threshold Starting |
+| `CRITICAL-READING` |  | Critical threshold Reading |
+| `CRITICAL-SENDING` |  | Critical threshold Sending |
+| `CRITICAL-KEEPALIVE` |  | Critical threshold Keepalive |
+| `CRITICAL-DNS-LOOKUP` |  | Critical threshold DNS Lookup |
+| `CRITICAL-CLOSING` |  | Critical threshold Closing |
+| `CRITICAL-LOGGING` |  | Critical threshold Logging |
+| `CRITICAL-GRACEFULY-FINISHED` |  | Critical threshold Gracefuly finished |
+| `CRITICAL-IDLE-CLEANUP-WORKER` |  | Critical threshold Idle cleanup worker |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `apache.slot.busy.count` |  |  | `WARNING-BUSY`, `CRITICAL-BUSY` |
+| `apache.slot.free.count` |  |  | `WARNING-FREE`, `CRITICAL-FREE` |
+| `apache.slot.waiting.count` |  |  | `WARNING-WAITING`, `CRITICAL-WAITING` |
+| `apache.slot.starting.count` |  |  | `WARNING-STARTING`, `CRITICAL-STARTING` |
+| `apache.slot.reading.count` |  |  | `WARNING-READING`, `CRITICAL-READING` |
+| `apache.slot.sending.count` |  |  | `WARNING-SENDING`, `CRITICAL-SENDING` |
+| `apache.slot.keepalive.count` |  |  | `WARNING-KEEPALIVE`, `CRITICAL-KEEPALIVE` |
+| `apache.slot.dnslookup.count` |  |  | `WARNING-DNS-LOOKUP`, `CRITICAL-DNS-LOOKUP` |
+| `apache.slot.closing.count` |  |  | `WARNING-CLOSING`, `CRITICAL-CLOSING` |
+| `apache.slot.logging.count` |  |  | `WARNING-LOGGING`, `CRITICAL-LOGGING` |
+| `apache.slot.gracefullyfinishing.count` |  |  |  |
+| `apache.slot.idlecleanupworker.count` |  |  | `WARNING-IDLE-CLEANUP-WORKER`, `CRITICAL-IDLE-CLEANUP-WORKER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache workers {/* #apps-apache-serverstatus-workers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Warning Threshold (%) of busy workers |
+| `CRITICAL` | `90` | Critical Threshold (%) of busy workers |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Apache response time {/* #apps-apache-serverstatus_responsetime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `2` | Threshold warning in seconds (server-status page response time) |
+| `CRITICAL` | `5` | Threshold critical in seconds (server-status page response time) |
+| `CRITICAL-STATUS` | `%{http_code} < 200 or %{http_code} >= 300` | Threshold critical for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260301</summary>
+
+- Service template [`os-linux-snmp-processcount-centengine`](#os-linux-snmp-processcount-centengine)
+    - Macro `WARNING-MEM-AVG`: default changed from `100MB` to `200MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `200MB` to `400MB`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240531</summary>
+
+- Host template `i-Vertix4-Central`
+    - Service template `apps-centreon-local-broker-stats-broker-master-ivertix4` linked
+    - Service template `apps-centreon-local-broker-stats-broker-module-ivertix4` linked
+    - Service template `apps-centreon-local-broker-stats-broker-rrd-ivertix4` linked
+    - Service template `apps-centreon-local-broker-stats-broker-master` unlinked
+    - Service template `apps-centreon-local-broker-stats-broker-module` unlinked
+    - Service template `apps-centreon-local-broker-stats-broker-rrd` unlinked
+- Service template [`apps-centreon-local-broker-stats-broker-master-ivertix4`](#apps-centreon-local-broker-stats-broker-master-ivertix4)
+    - Service template added
+- Service template [`apps-centreon-local-broker-stats-broker-module-ivertix4`](#apps-centreon-local-broker-stats-broker-module-ivertix4)
+    - Service template added
+- Service template [`apps-centreon-local-broker-stats-broker-rrd-ivertix4`](#apps-centreon-local-broker-stats-broker-rrd-ivertix4)
+    - Service template added
+- Service template `apps-centreon-local-broker-stats-broker-master`
+    - Service template removed
+- Service template `apps-centreon-local-broker-stats-broker-module`
+    - Service template removed
+- Service template `apps-centreon-local-broker-stats-broker-rrd`
+    - Service template removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240424</summary>
+
+- Host template `i-Vertix4-Central`
+    - Macro `MARIADB-USERNAME` added (default `ivertix`)
+    - Macro `MARIADB-PASSWORD` added (default `********`)
+    - Macro `GORGONE-PORT` added (default `8085`)
+    - Macro `GORGONE-PROTO` added (default `http`)
+    - Macro `MYSQLUSER` removed
+    - Macro `MYSQLPASSWORD` removed
+- Service template [`os-linux-snmp-processcount-gorgone-action`](#os-linux-snmp-processcount-gorgone-action)
+    - Macro `WARNING-MEM-AVG`: default changed from `70MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `100MB` to `250MB`
+- Service template [`os-linux-snmp-processcount-gorgone-cron`](#os-linux-snmp-processcount-gorgone-cron)
+    - Macro `WARNING-MEM-AVG`: default changed from `70MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `100MB` to `250MB`
+- Service template [`os-linux-snmp-processcount-gorgone-dbclean`](#os-linux-snmp-processcount-gorgone-dbclean)
+    - Macro `WARNING-MEM-AVG`: default changed from `70MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `100MB` to `250MB`
+- Service template [`os-linux-snmp-processcount-gorgone-engine`](#os-linux-snmp-processcount-gorgone-engine)
+    - Macro `WARNING-MEM-AVG`: default changed from `70MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `100MB` to `250MB`
+- Service template [`os-linux-snmp-processcount-gorgone-httpser`](#os-linux-snmp-processcount-gorgone-httpser)
+    - Macro `WARNING-MEM-AVG`: default changed from `70MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `100MB` to `250MB`
+- Service template [`os-linux-snmp-processcount-gorgone-ivertix`](#os-linux-snmp-processcount-gorgone-ivertix)
+    - Macro `WARNING-MEM-AVG`: default changed from `100MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `200MB` to `250MB`
+- Service template [`os-linux-snmp-processcount-gorgone-legacyc`](#os-linux-snmp-processcount-gorgone-legacyc)
+    - Macro `WARNING-MEM-AVG`: default changed from `70MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `100MB` to `250MB`
+- Service template [`os-linux-snmp-processcount-gorgone-nodes`](#os-linux-snmp-processcount-gorgone-nodes)
+    - Macro `WARNING-MEM-AVG`: default changed from `100MB` to `150MB`
+    - Macro `CRITICAL-MEM-AVG`: default changed from `200MB` to `250MB`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240411</summary>
+
+- Plugin pack `i-Vertix4 Monitoring Central`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240311 - 20240411`.

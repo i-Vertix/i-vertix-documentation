@@ -1,0 +1,202 @@
+---
+title: "Aruba Instant"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Aruba.png";
+
+<PluginPackHeader name="Aruba Instant" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Aruba Instant wireless networks through SNMP: access point and client counts, SSID status, CPU and memory usage and uptime.
+
+The plugin pack provides these checks:
+
+* [AP Usage](#network-aruba-instant-snmp-ap-usage)
+* [SSID Status](#network-aruba-instant-snmp-ssid-status)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+
+## Host Templates
+
+### Aruba-Instant
+
+*Aruba Instant* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP Usage](#network-aruba-instant-snmp-ap-usage) | `network-aruba-instant-snmp-ap-usage` |
+| [SSID Status](#network-aruba-instant-snmp-ssid-status) | `network-aruba-instant-snmp-ssid-status` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP Usage {/* #network-aruba-instant-snmp-ap-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter access point name (can be a regexp) |
+| `WARNING-CPU` | `80` | Threshold warning cpu |
+| `WARNING-MEM-USAGE-PRCT` | `80` | Threshold warning memory usage (%) |
+| `CRITICAL-CPU` | `90` | Threshold critical cpu |
+| `CRITICAL-MEM-USAGE-PRCT` | `90` | Threshold critical memory usage (%) |
+| `CRITICAL-STATUS` | `'%{status} !~ /up/i'` | Set critical threshold for status (Default: '%\{status\} !~ /up/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^cpu$' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TOTAL-AP` |  | Threshold warning total AP |
+| `WARNING-CLIENTS` |  | Threshold warning clients |
+| `WARNING-MEM-USAGE` |  | Threshold warning memory usage (B) |
+| `WARNING-MEM-USAGE-FREE` |  | Threshold warning memory usage free (B) |
+| `CRITICAL-TOTAL-AP` |  | Threshold critical total AP |
+| `CRITICAL-CLIENTS` |  | Threshold critical clients |
+| `CRITICAL-MEM-USAGE` |  | Threshold critical memory usage (B) |
+| `CRITICAL-MEM-USAGE-FREE` |  | Threshold critical memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoints.total.count` |  | total access points | `WARNING-TOTAL-AP`, `CRITICAL-TOTAL-AP` |
+| `clients.current.count` |  | Current Clients | `WARNING-CLIENTS`, `CRITICAL-CLIENTS` |
+| `cpu.utilization.percentage` | `%` | Cpu: %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `memory.usage.bytes` | `B` |  | `WARNING-MEM-USAGE`, `CRITICAL-MEM-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-MEM-USAGE-FREE`, `CRITICAL-MEM-USAGE-FREE` |
+| `memory.usage.percentage` | `%` | Memory Used:  %% | `WARNING-MEM-USAGE-PRCT`, `CRITICAL-MEM-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSID Status {/* #network-aruba-instant-snmp-ssid-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter SSID name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /enable/i'` | Set critical threshold for status (Default: '%\{status\} !~ /enable/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

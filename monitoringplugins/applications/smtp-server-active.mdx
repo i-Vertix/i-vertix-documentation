@@ -1,0 +1,146 @@
+---
+title: "SMTP Server (active)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/SMTP.png";
+
+<PluginPackHeader name="SMTP Server (active)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors SMTP servers with active checks: login to the server and the sending of a test message.
+
+The plugin pack provides these checks:
+
+* [SMTP login](#apps-protocols-smtp-login)
+* [SMTP send message](#apps-protocols-smtp-message)
+
+
+## Host Templates
+
+### SMTP-login
+
+*SMTP login* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SMTP-PORT` |  | Port used |
+| `SMTP-USER` |  | Specify username for authentification |
+| `SMTP-PWD` |  | Specify password for authentification |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SMTP login](#apps-protocols-smtp-login) | `apps-protocols-smtp-login` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SMTP send message](#apps-protocols-smtp-message) | `apps-protocols-smtp-message` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### SMTP login {/* #apps-protocols-smtp-login */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1` | Threshold warning in seconds |
+| `CRITICAL` | `2` | Threshold critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SMTP send message {/* #apps-protocols-smtp-message */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1` | Threshold warning in seconds |
+| `CRITICAL` | `2` | Threshold critical in seconds |
+| `SMTP-FROM` |  | Set 'from' email (required) |
+| `SMTP-TO` |  | Set 'to' email (required) |
+| `SMTP-SEND-OPTIONS` |  | Add custom smtp send options. Example: --smtp-send-options='contenttype=text/html" --smtp-send-options='subject=My subject" |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

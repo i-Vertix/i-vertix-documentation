@@ -1,7 +1,0 @@
----
-title: "IBM Informix database"
----
-
-:::info
-Documentation for this plugin pack is coming soon.
-:::

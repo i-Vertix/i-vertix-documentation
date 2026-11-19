@@ -1,0 +1,1061 @@
+---
+title: "Oracle RDBMS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Oracle.png";
+
+<PluginPackHeader name="Oracle RDBMS" image={image} category="Database" metadata={[]} />
+
+## Description
+
+Monitors Oracle databases: connection time, sessions, tablespaces and data files, caches, redo logs, RMAN backups, Data Guard, ASM disk groups, fast recovery area and TNS ping.
+
+The plugin pack provides these checks:
+
+* [Oracle ASM Diskgroup usage](#database-oracle-asm-diskgroup-usage)
+* [Oracle collection](#database-oracle-collection)
+* [Oracle Connected users](#database-oracle-connected-users)
+* [Oracle Connection time](#database-oracle-connection-time)
+* [Oracle Corrupted blocks](#database-oracle-corrupted-blocks)
+* [Oracle Data File status](#database-oracle-data-files-status)
+* [Oracle Datacache hitratio](#database-oracle-datacache-hitratio)
+* [Oracle Dataguard](#database-oracle-dataguard)
+* [Oracle Dictionary Cache usage](#database-oracle-dictionary-cache-usage)
+* [Oracle Event Waits usage](#database-oracle-event-waits-usage)
+* [Oracle Fast Recovery usage](#database-oracle-fra-usage)
+* [Oracle Invalid Objects](#database-oracle-invalid-object)
+* [Oracle Library Cache usage](#database-oracle-library-cache-usage)
+* [Oracle Long Queries](#database-oracle-long-queries)
+* [Oracle Password expiration](#database-oracle-password-expiration)
+* [Oracle Process usage](#database-oracle-process-usage)
+* [Oracle Redolog usage](#database-oracle-redolog-usage)
+* [Oracle RMAN backup age](#database-oracle-rman-backup-age)
+* [Oracle RMAN backup problems](#database-oracle-rman-backup-problems)
+* [Oracle RMAN Online backup problems](#database-oracle-rman-online-backup-age)
+* [Oracle Rollback Segment usage](#database-oracle-rollback-segment-usage)
+* [Oracle Session usage](#database-oracle-session-usage)
+* [Oracle Tablespace usage](#database-oracle-tablespace)
+* [Oracle TNS ping](#database-oracle-tnsping)
+* [SQL](#database-oracle-sql)
+* [SQL string](#database-oracle-sql-string)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Oracle ASM Diskgroup usage](#database-oracle-asm-diskgroup-usage) | `Oracle ASM Diskgroup usage - <name>` |
+| [Oracle Tablespace usage](#database-oracle-tablespace) | `Oracle Tablespace usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Oracle-Database
+
+*Oracle RDBMS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `ORACLE-PORT` | `1521` | Database Server Port. |
+| `ORACLE-PASSWORD` | *(password)* | Password for the defined user name. |
+| `COMPONENT-TYPE` | `database` | Define the component to monitor. Can be "database" or "rman_catalog" (default: "database"). This enables the use of "rman-backup-problems" and "rman-backup-age" modes when an external RMAN catalog is used |
+| `ORACLE-SERVICENAME` |  | Database Service Name. |
+| `ORACLE-SID` |  | Database SID. |
+| `ORACLE-USER` |  | User name used to connect to the database. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Oracle ASM Diskgroup usage](#database-oracle-asm-diskgroup-usage) | `database-oracle-asm-diskgroup-usage` |
+| [Oracle Connected users](#database-oracle-connected-users) | `database-oracle-connected-users` |
+| [Oracle Connection time](#database-oracle-connection-time) | `database-oracle-connection-time` |
+| [Oracle Corrupted blocks](#database-oracle-corrupted-blocks) | `database-oracle-corrupted-blocks` |
+| [Oracle Data File status](#database-oracle-data-files-status) | `database-oracle-data-files-status` |
+| [Oracle Datacache hitratio](#database-oracle-datacache-hitratio) | `database-oracle-datacache-hitratio` |
+| [Oracle Dictionary Cache usage](#database-oracle-dictionary-cache-usage) | `database-oracle-dictionary-cache-usage` |
+| [Oracle Event Waits usage](#database-oracle-event-waits-usage) | `database-oracle-event-waits-usage` |
+| [Oracle Fast Recovery usage](#database-oracle-fra-usage) | `database-oracle-fra-usage` |
+| [Oracle Invalid Objects](#database-oracle-invalid-object) | `database-oracle-invalid-object` |
+| [Oracle Library Cache usage](#database-oracle-library-cache-usage) | `database-oracle-library-cache-usage` |
+| [Oracle Long Queries](#database-oracle-long-queries) | `database-oracle-long-queries` |
+| [Oracle Process usage](#database-oracle-process-usage) | `database-oracle-process-usage` |
+| [Oracle Redolog usage](#database-oracle-redolog-usage) | `database-oracle-redolog-usage` |
+| [Oracle RMAN backup age](#database-oracle-rman-backup-age) | `database-oracle-rman-backup-age` |
+| [Oracle RMAN backup problems](#database-oracle-rman-backup-problems) | `database-oracle-rman-backup-problems` |
+| [Oracle Rollback Segment usage](#database-oracle-rollback-segment-usage) | `database-oracle-rollback-segment-usage` |
+| [Oracle Session usage](#database-oracle-session-usage) | `database-oracle-session-usage` |
+| [Oracle Tablespace usage](#database-oracle-tablespace) | `database-oracle-tablespace` |
+| [Oracle TNS ping](#database-oracle-tnsping) | `database-oracle-tnsping` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Oracle collection](#database-oracle-collection) | `database-oracle-collection` |
+| [Oracle Dataguard](#database-oracle-dataguard) | `database-oracle-dataguard` |
+| [Oracle Password expiration](#database-oracle-password-expiration) | `database-oracle-password-expiration` |
+| [Oracle RMAN Online backup problems](#database-oracle-rman-online-backup-age) | `database-oracle-rman-online-backup-age` |
+| [SQL](#database-oracle-sql) | `database-oracle-sql` |
+| [SQL string](#database-oracle-sql-string) | `database-oracle-sql-string` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Oracle-Database-Dataguard
+
+*Oracle RDBMS Dataguard* · Parent template: `Oracle-Database`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `ORACLE-PASSWORD` |  | Password for the defined user name. |
+| `ORACLE-PORT` |  | Database Server Port. |
+| `ORACLE-SERVICENAME` |  | Database Service Name. |
+| `ORACLE-SID` |  | Database SID. |
+| `ORACLE-USER` |  | User name used to connect to the database. |
+| `COMPONENT-TYPE` |  | Define the component to monitor. Can be `database` or `rman_catalog` (default: `database`). This enables the use of `rman-backup-problems` and `rman-backup-age` modes when an external RMAN catalog is used. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Oracle Dataguard](#database-oracle-dataguard) | `database-oracle-dataguard` |
+| [Oracle ASM Diskgroup usage](#database-oracle-asm-diskgroup-usage) (inherited from `Oracle-Database`) | `database-oracle-asm-diskgroup-usage` |
+| [Oracle Connected users](#database-oracle-connected-users) (inherited from `Oracle-Database`) | `database-oracle-connected-users` |
+| [Oracle Connection time](#database-oracle-connection-time) (inherited from `Oracle-Database`) | `database-oracle-connection-time` |
+| [Oracle Corrupted blocks](#database-oracle-corrupted-blocks) (inherited from `Oracle-Database`) | `database-oracle-corrupted-blocks` |
+| [Oracle Data File status](#database-oracle-data-files-status) (inherited from `Oracle-Database`) | `database-oracle-data-files-status` |
+| [Oracle Datacache hitratio](#database-oracle-datacache-hitratio) (inherited from `Oracle-Database`) | `database-oracle-datacache-hitratio` |
+| [Oracle Dictionary Cache usage](#database-oracle-dictionary-cache-usage) (inherited from `Oracle-Database`) | `database-oracle-dictionary-cache-usage` |
+| [Oracle Event Waits usage](#database-oracle-event-waits-usage) (inherited from `Oracle-Database`) | `database-oracle-event-waits-usage` |
+| [Oracle Fast Recovery usage](#database-oracle-fra-usage) (inherited from `Oracle-Database`) | `database-oracle-fra-usage` |
+| [Oracle Invalid Objects](#database-oracle-invalid-object) (inherited from `Oracle-Database`) | `database-oracle-invalid-object` |
+| [Oracle Library Cache usage](#database-oracle-library-cache-usage) (inherited from `Oracle-Database`) | `database-oracle-library-cache-usage` |
+| [Oracle Long Queries](#database-oracle-long-queries) (inherited from `Oracle-Database`) | `database-oracle-long-queries` |
+| [Oracle Process usage](#database-oracle-process-usage) (inherited from `Oracle-Database`) | `database-oracle-process-usage` |
+| [Oracle Redolog usage](#database-oracle-redolog-usage) (inherited from `Oracle-Database`) | `database-oracle-redolog-usage` |
+| [Oracle RMAN backup age](#database-oracle-rman-backup-age) (inherited from `Oracle-Database`) | `database-oracle-rman-backup-age` |
+| [Oracle RMAN backup problems](#database-oracle-rman-backup-problems) (inherited from `Oracle-Database`) | `database-oracle-rman-backup-problems` |
+| [Oracle Rollback Segment usage](#database-oracle-rollback-segment-usage) (inherited from `Oracle-Database`) | `database-oracle-rollback-segment-usage` |
+| [Oracle Session usage](#database-oracle-session-usage) (inherited from `Oracle-Database`) | `database-oracle-session-usage` |
+| [Oracle Tablespace usage](#database-oracle-tablespace) (inherited from `Oracle-Database`) | `database-oracle-tablespace` |
+| [Oracle TNS ping](#database-oracle-tnsping) (inherited from `Oracle-Database`) | `database-oracle-tnsping` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Oracle collection](#database-oracle-collection) | `database-oracle-collection` |
+| [Oracle Password expiration](#database-oracle-password-expiration) | `database-oracle-password-expiration` |
+| [Oracle RMAN Online backup problems](#database-oracle-rman-online-backup-age) | `database-oracle-rman-online-backup-age` |
+| [SQL](#database-oracle-sql) | `database-oracle-sql` |
+| [SQL string](#database-oracle-sql-string) | `database-oracle-sql-string` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle ASM Diskgroup usage {/* #database-oracle-asm-diskgroup-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USAGE` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage (%) |
+| `CRITICAL-OFFLINE-DISKS` | `0` | Set critical threshold for offline disks (Default: '%\{offline_disks\} > 0 && %\{type\} =~ /^normal\|high$/'). Can used special variables like: %\{offline_disks\}, %\{type\}, %\{display\} |
+| `FILTER-NAME` |  | Filter by name (regexp can be used) |
+| `WARNING-USAGE-FAILURE` |  | Threshold warning usage failure |
+| `CRITICAL-USAGE-FAILURE` |  | Threshold critical usage failure |
+| `WARNING-OFFLINE-DISKS` |  | Set warning threshold for offline disks (Default: '(%\{offline_disks\} > 0 && %\{type\} eq "extern") \|\| (%\{offline_disks\} > 1 && %\{type\} eq "high")'). Can used special variables like: %\{offline_disks\}, %\{type\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Connected users {/* #database-oracle-connected-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning |
+| `CRITICAL` |  | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Connection time {/* #database-oracle-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `500` | Threshold warning in milliseconds |
+| `CRITICAL` | `1000` | Threshold critical in milliseconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Corrupted blocks {/* #database-oracle-corrupted-blocks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `0` | Threshold critical |
+| `WARNING` |  | Threshold warning |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Data File status {/* #database-oracle-data-files-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-TRAFFIC` |  | Threshold warning Total traffic (iops) |
+| `CRITICAL-TOTAL-TRAFFIC` |  | Threshold critical Total traffic (iops) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: none). Can used special variables like: %\{display\}, %\{status\} |
+| `WARNING-ONLINE-STATUS` |  | Set warning threshold for online status (Default: '%\{online_status\} =~ /sysoff/i'). Can used special variables like: %\{display\}, %\{online_status\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{status\} =~ /offline\|invalid/i'). Can used special variables like: %\{display\}, %\{status\} |
+| `CRITICAL-ONLINE-STATUS` |  | Set critical threshold for online status (Default: '%\{online_status\} =~ /offline\|recover/i'). Can used special variables like: %\{display\}, %\{online_status\} |
+| `FILTER-TABLESPACE` |  | Filter tablespace name (can be a regexp). |
+| `FILTER-DATAFILE` |  | Filter data file name (can be a regexp). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `datafiles.traffic.io.usage.iops` | `iops` | Total Traffic IOPs | `WARNING-TOTAL-TRAFFIC`, `CRITICAL-TOTAL-TRAFFIC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Datacache hitratio {/* #database-oracle-datacache-hitratio */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `90:` | Threshold warning usage |
+| `CRITICAL-USAGE` | `80:` | Threshold critical usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sga_data_buffer_hit_ratio` | `%` | Buffer cache hit ratio is %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Dictionary Cache usage {/* #database-oracle-dictionary-cache-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-GET-HITS` | `95:` | Threshold warning Get Hits |
+| `CRITICAL-GET-HITS` | `90:` | Threshold critical Get Hits |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `dictionary.cache.get.hitratio.percentage` | `%` | get hit ratio %% | `WARNING-GET-HITS`, `CRITICAL-GET-HITS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Event Waits usage {/* #database-oracle-event-waits-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WAIT-TIME-MIN` | `1000` | Time in ms above which we count an event as waiting |
+| `WARNING-EVENT-COUNT` | `0` | Threshold warning Event count |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-NAME` |  | Filter by event name. Can be a regex |
+| `WARNING-TOTAL-WAITS-SEC` |  | Threshold warning Total waits seconds |
+| `WARNING-TOTAL-WAITS-TIME` |  | Threshold warning Total waits time |
+| `CRITICAL-TOTAL-WAITS-SEC` |  | Threshold critical Total waits seconds |
+| `CRITICAL-TOTAL-WAITS-TIME` |  | Threshold critical Total waits time |
+| `CRITICAL-EVENT-COUNT` |  | Threshold critical Event count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `event_wait_count` |  | Event Wait Count :  events | `WARNING-EVENT-COUNT`, `CRITICAL-EVENT-COUNT` |
+| `total_waits` | `/s` | Total Waits : /s | `WARNING-TOTAL-WAITS-SEC`, `CRITICAL-TOTAL-WAITS-SEC` |
+| `total_waits_time` | `%` | Total Waits Time :  %% | `WARNING-TOTAL-WAITS-TIME`, `CRITICAL-TOTAL-WAITS-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Fast Recovery usage {/* #database-oracle-fra-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE` | `85` | Warning threshold Space usage |
+| `CRITICAL-SPACE-USAGE` | `90` | Critical threshold Space usage |
+| `CRITICAL-FILE-SPACE-RECLAIMABLE` | `25` | Critical threshold File space reclaimable |
+| `CRITICAL-SPACE-RECLAIMABLE` | `25` | Critical threshold Space reclaimable |
+| `WARNING-FILE-SPACE-RECLAIMABLE` | `10` | Warning threshold File space reclaimable |
+| `WARNING-SPACE-RECLAIMABLE` | `10` | Warning threshold Space reclaimable |
+| `FILTER-TYPE` |  | Filter file type (can be a regexp) |
+| `CRITICAL-FILE-SPACE-USAGE` |  | Critical threshold File space usage |
+| `WARNING-FILE-SPACE-USAGE` |  | Warning threshold File space usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `recoveryarea.space.usage.percentage` | `%` | used:  %% | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `recoveryarea.space.reclaimable.percentage` | `%` | reclaimable:  %% | `WARNING-SPACE-RECLAIMABLE`, `CRITICAL-SPACE-RECLAIMABLE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Invalid Objects {/* #database-oracle-invalid-object */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RETENTION-OBJECTS` | `3` | Retention in days for invalid objects (default : 3) |
+| `WARNING-OBJECTS` | `0` | Warning threshold invalid objects |
+| `WARNING-INDEXES` | `0` | Warning threshold invalid indexes |
+| `WARNING-IND-PARTITIONS` | `0` | Warning threshold invalid ind partitions |
+| `WARNING-IND-SUBPARTITIONS` | `0` | Warning threshold invalid ind subpartitions |
+| `WARNING-REGISTRY-COMPONENTS` | `0` | Warning threshold invalid registry components |
+| `FILTER-MESSAGE` |  | Filter by message (can be a regexp) |
+| `CRITICAL-OBJECTS` |  | Critical threshold invalid objects |
+| `CRITICAL-INDEXES` |  | Critical threshold invalid indexes |
+| `CRITICAL-IND-PARTITIONS` |  | Critical threshold invalid ind partitions |
+| `CRITICAL-IND-SUBPARTITIONS` |  | Critical threshold invalid ind subpartitions |
+| `CRITICAL-REGISTRY-COMPONENTS` |  | Critical threshold invalid registry components |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `invalid_objects` |  | objects | `WARNING-OBJECTS`, `CRITICAL-OBJECTS` |
+| `invalid_indexes` |  | indexes | `WARNING-INDEXES`, `CRITICAL-INDEXES` |
+| `invalid_ind_partitions` |  | index partitions | `WARNING-IND-PARTITIONS`, `CRITICAL-IND-PARTITIONS` |
+| `invalid_ind_subpartitions` |  | index subpartitions | `WARNING-IND-SUBPARTITIONS`, `CRITICAL-IND-SUBPARTITIONS` |
+| `invalid_registry_components` |  | registry components | `WARNING-REGISTRY-COMPONENTS`, `CRITICAL-REGISTRY-COMPONENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Library Cache usage {/* #database-oracle-library-cache-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-GET-HITS` | `98:` | Threshold warning Get hits |
+| `WARNING-PIN-HITS` | `98:` | Threshold warning Pin hits |
+| `WARNING-RELOADS` | `10` | Threshold warning Reloads |
+| `CRITICAL-GET-HITS` | `95:` | Threshold critical Get hits |
+| `CRITICAL-PIN-HITS` | `95:` | Threshold critical  Pin hits |
+| `CRITICAL-RELOADS` | `50` | Threshold critical Reloads |
+| `WARNING-INVALIDS` |  | Threshold warning Invalid |
+| `CRITICAL-INVALIDS` |  | Threshold critical Invalid |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `library.cache.get.hitratio.percentage` | `%` | get hit ratio %% | `WARNING-GET-HITS`, `CRITICAL-GET-HITS` |
+| `library.cache.pin.hitratio.percentage` | `%` | pin hit ratio %% | `WARNING-PIN-HITS`, `CRITICAL-PIN-HITS` |
+| `library.cache.reloads.persecond` | `/s` | reloads /s | `WARNING-RELOADS`, `CRITICAL-RELOADS` |
+| `library.cache.invalids.persecond` | `/s` | invalids /s | `WARNING-INVALIDS`, `CRITICAL-INVALIDS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Long Queries {/* #database-oracle-long-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '') Can used special variables like: %\{username\}, %\{sql_text\}, %\{since\}, %\{status\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{username\}, %\{sql_text\}, %\{since\}, %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Process usage {/* #database-oracle-process-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Threshold warning in % |
+| `CRITICAL` | `95` | Threshold critical in % |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Redolog usage {/* #database-oracle-redolog-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RETRY-RATIO` | `0.5` | Threshold warning Retry ratio (%) |
+| `CRITICAL-RETRY-RATIO` | `1` | Threshold critical Retry ratio (%) |
+| `WARNING-TRAFFIC-IO` |  | Threshold warning Traffic IO (b/s) |
+| `CRITICAL-TRAFFIC-IO` |  | Threshold critical Traffic IO (b/s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `redolog.retry.ratio.percentage` | `%` | retry ratio %% | `WARNING-RETRY-RATIO`, `CRITICAL-RETRY-RATIO` |
+| `redolog.traffic.io.bytespersecond` | `B/s` | traffic io  /s | `WARNING-TRAFFIC-IO`, `CRITICAL-TRAFFIC-IO` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle RMAN backup age {/* #database-oracle-rman-backup-age */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DB-FULL` | `86400` | Warning threshold full backup in seconds |
+| `WARNING-ARCHIVELOG` | `86400` | Warning threshold archivelog backup in seconds |
+| `WARNING-CONTROLFILE` | `86400` | Warning threshold controlfile backup in seconds |
+| `CRITICAL-DB-FULL` | `259200` | Critical threshold full backup in seconds |
+| `CRITICAL-ARCHIVELOG` | `259200` | Critical threshold archivelog backup in seconds |
+| `CRITICAL-CONTROLFILE` | `259200` | Critical threshold controlfile backup in seconds |
+| `FILTER-TYPE` |  | Filter backup type. (type can be : 'DB INCR', 'DB FULL', 'ARCHIVELOG') |
+| `INCREMENTAL-LEVEL` |  | Please use the following option if your using incremental level 0 for full backup |
+| `WARNING-DB-INCR` |  | Warning threshold incremental backup in seconds |
+| `CRITICAL-DB-INCR` |  | Critical threshold incremental backup in seconds |
+| `CUSTOM-OPTION` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle RMAN backup problems {/* #database-oracle-rman-backup-problems */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RMAN-RETENTION` | `3` | Retention in days (default : 3) |
+| `CRITICAL-COMPLETED-ERRORS` | `0` | Critical completed backups with error |
+| `CRITICAL-FAILED` | `0` | Critical completed failed backups |
+| `WARNING-COMPLETED-WARNINGS` | `0` | Warning completed backups completed with warnings |
+| `CRITICAL-COMPLETED` | `1:` | Critical completed backups |
+| `WARNING-COMPLETED-ERRORS` |  | Warning completed backups with error |
+| `CRITICAL-COMPLETED-WARNINGS` |  | Critical completed backups with warnings |
+| `WARNING-COMPLETED` |  | Warning completed backups |
+| `WARNING-FAILED` |  | Warning completed failed backups |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `rman.backups.completed.count` |  | completed | `WARNING-COMPLETED`, `CRITICAL-COMPLETED` |
+| `rman.backups.failed.count` |  | failed | `WARNING-FAILED`, `CRITICAL-FAILED` |
+| `rman.backups.completed_with_warnings.count` |  | completed with warnings | `WARNING-COMPLETED-WARNINGS`, `CRITICAL-COMPLETED-WARNINGS` |
+| `rman.backups.completed_with_errors.count` |  | completed with errors | `WARNING-COMPLETED-ERRORS`, `CRITICAL-COMPLETED-ERRORS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Rollback Segment usage {/* #database-oracle-rollback-segment-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-HIT-RATIO` | `90:` | Threshold warning Rollback Hit ratio |
+| `CRITICAL-HIT-RATIO` | `80:` | Threshold critical Rollback Hit ratio |
+| `WARNING-HEADER-CONTENTION` |  | Threshold warning Rollback Header contention |
+| `WARNING-BLOCK-CONTENTION` |  | Threshold warning Rollback Block contention |
+| `WARNING-EXTENDS` |  | Threshold warning Rollback extends |
+| `WARNING-WRAPS` |  | Threshold warning Rollback wraps |
+| `CRITICAL-HEADER-CONTENTION` |  | Threshold critical Rollback Header contention |
+| `CRITICAL-BLOCK-CONTENTION` |  | Threshold critical Rollback Block contention |
+| `CRITICAL-EXTENDS` |  | Threshold critical Rollback extends |
+| `CRITICAL-WRAPS` |  | Threshold critical Rollback wraps |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `extends` | `/s` | Extends : /s | `WARNING-EXTENDS`, `CRITICAL-EXTENDS` |
+| `wraps` | `/s` | Wraps : /s | `WARNING-WRAPS`, `CRITICAL-WRAPS` |
+| `header_contention` | `%` | Header Contention :   %% | `WARNING-HEADER-CONTENTION`, `CRITICAL-HEADER-CONTENTION` |
+| `block_contention` | `%` | Block Contention :   %% | `WARNING-BLOCK-CONTENTION`, `CRITICAL-BLOCK-CONTENTION` |
+| `hit_ratio` | `%` | gets/waits Ratio :   %% | `WARNING-HIT-RATIO`, `CRITICAL-HIT-RATIO` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Session usage {/* #database-oracle-session-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Threshold warning in % |
+| `CRITICAL` | `95` | Threshold critical in % |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Tablespace usage {/* #database-oracle-tablespace */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Default is '%', can be 'B' |
+| `WARNING-TABLESPACE` | `90` | Threshold warning usage (%) |
+| `CRITICAL-TABLESPACE` | `95` | Threshold critical usage (%) |
+| `FILTER-TABLESPACE` |  | Filter tablespace by name. Can be a regex |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle TNS ping {/* #database-oracle-tnsping */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Dataguard {/* #database-oracle-dataguard */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STANDBY-LAG` | `10` | Warning threshold Standby LAG |
+| `CRITICAL-STANDBY-LAG` | `60` | Critical threshold Standby LAG |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '%\{mrp_status\} =~ /WAIT_FOR_LOG/i and %\{log_transport\} =~ /LGWR/i'). Can used special variables like: %\{roleLast\}, %\{role\}, %\{open_mode\}, %\{mrp_status\}, %\{mrp_process\}, %\{log_transport\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{roleLast\} ne %\{role\} \|\| %\{mrp_status\} !~ /undefined\|APPLYING_LOG\|WAIT_FOR_LOG/i'). Can used special variables like: %\{roleLast\}, %\{role\}, %\{open_mode\}, %\{mrp_status\}, %\{mrp_process\}, %\{log_transport\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `dataguard.standby.lag.minutes` | `m` | dataguard standby lag  minutes | `WARNING-STANDBY-LAG`, `CRITICAL-STANDBY-LAG` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle collection {/* #database-oracle-collection */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CONFIG` |  | config used (required). Can be a file or json content |
+| `FILTER-SELECTION` |  | Filter selections. Example: --filter-selection='name=test' |
+| `CONSTANT1` |  | Add a constant. Example: --constant='warning=30' |
+| `CONSTANT2` |  | Add a constant. Example: --constant='critical=45' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle Password expiration {/* #database-oracle-password-expiration */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '') Can used special variables like: %\{username\}, %\{account_status\}, %\{expire\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{username\}, %\{account_status\}, %\{expire\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Oracle RMAN Online backup problems {/* #database-oracle-rman-online-backup-age */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `86400` | Threshold warning in seconds |
+| `CRITICAL` | `259200` | Threshold critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SQL {/* #database-oracle-sql */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FORMAT` | `SQL statement result : %i.` | Output format (Default: 'SQL statement result : %i.') |
+| `PERFDATA-NAME` | `value` | Perfdata name in perfdata output (Default: 'value') |
+| `SQL-STATEMENT` |  | SQL statement that returns a number |
+| `PERFDATA-UNIT` |  | Perfdata unit in perfdata output (Default: '') |
+| `WARNING-VALUE` |  | Warning threshold value |
+| `WARNING-EXECUTION-TIME` |  | Warning threshold execution time |
+| `CRITICAL-VALUE` |  | Critical threshold value |
+| `CRITICAL-EXECUTION-TIME` |  | Critical threshold execution time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqlrequest.execution.time.seconds` | `s` | execution time:  second(s) | `WARNING-EXECUTION-TIME`, `CRITICAL-EXECUTION-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SQL string {/* #database-oracle-sql-string */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EMPTY-SQL-STRING` | `No row returned or --key-column/--value-column do not correctly match selected field` | Set this option to change the output message when the sql statement result is empty. (Default: 'No row returned or --key-column/--value-column do not correctly match selected field') |
+| `SQL-STATEMENT` |  | SQL statement that returns a string |
+| `KEY-COLUMN` |  | Key column (must be one of the selected field). NOT mandatory if you select only one field |
+| `VALUE-COLUMN` |  | Value column (must be one of the selected field). MANDATORY |
+| `PRINTF-FORMAT` |  | Specify a custom output message relying on printf formatting |
+| `WARNING-STRING` |  | Set warning condition (if statement syntax) for status evaluation. (Can be: %\{key_field\}, %\{value_field\}) e.g  --warning-string '%\{key_field\} eq 'Central' && %\{value_field\} =~ /127.0.0.1/' |
+| `CRITICAL-STRING` |  | Set critical condition (if statement syntax) for status evaluation. (Can be: %\{key_field\} or %\{value_field\}) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Host template `Oracle-Database`
+    - Macro `COMPONENT-TYPE` added (default `database`)
+- Command `database-oracle-rman-backup-age`
+    - Option `--component-type=$_HOSTCOMPONENT-TYPE$` added
+    - Macro `COMPONENT-TYPE` added
+- Command `database-oracle-rman-backup-problems`
+    - Option `--component-type=$_HOSTCOMPONENT-TYPE$` added
+    - Macro `COMPONENT-TYPE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250512</summary>
+
+- Plugin pack `Oracle RDBMS`
+    - Description updated
+- Service template [`database-oracle-collection`](#database-oracle-collection)
+    - Service template added
+- Command `database-oracle-collection`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Service template [`database-oracle-redolog-usage`](#database-oracle-redolog-usage)
+    - Macro `WARNING-RETRY-RATIO`: default changed from `0` to `0.5`
+    - Macro `CRITICAL-RETRY-RATIO`: default changed from `10` to `1`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250210</summary>
+
+- Service template [`database-oracle-event-waits-usage`](#database-oracle-event-waits-usage)
+    - Macro `EXTRA-OPTS` added (default `--filter-perfdata=noperfdata`)
+- Command `database-oracle-event-waits-usage`
+    - Option `--filter-name` changed from `--filter-name=$_SERVICEFILTER-NAME$` to `--filter-name='$_SERVICEFILTER-NAME$'`
+    - Macro `EXTRA-OPTS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231122</summary>
+
+- Service template [`database-oracle-fra-usage`](#database-oracle-fra-usage)
+    - Macro `CRITICAL-FILE-SPACE-RECLAIMABLE` added (default `25`)
+    - Macro `CRITICAL-SPACE-RECLAIMABLE` added (default `25`)
+    - Macro `WARNING-FILE-SPACE-RECLAIMABLE` added (default `10`)
+    - Macro `WARNING-SPACE-RECLAIMABLE` added (default `10`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `Oracle RDBMS`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`database-oracle-sql-string`](#database-oracle-sql-string)
+    - Macro `EMPTY-SQL-STRING`: default changed from `'No row returned or --key-column/--value-column do not correctly match selected field` to `No row returned or --key-column/--value-column do not correctly match selected field`
+
+</details>

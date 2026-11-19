@@ -1,0 +1,1266 @@
+---
+title: "i-Vertix Business Intelligence Server"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/i-Vertix-red.png";
+
+<PluginPackHeader name="i-Vertix Business Intelligence Server" image={image} category="Application" metadata={["API", "SNMP"]} />
+
+## Description
+
+Monitors the i-Vertix Business Intelligence server through its API and SNMP: BI status, ETL runs and data consistency, MariaDB performance, and system resources such as CPU, memory, swap, load and disk I/O.
+
+The plugin pack provides these checks:
+
+* [CPU](#os-linux-snmp-cpu)
+* [CPU detailed](#os-linux-snmp-cpu-detailed)
+* [Disk IO](#os-linux-snmp-diskio)
+* [i-vertix BI API response](#apps-protocols-http-response-ivertix-bi)
+* [i-Vertix BI database update API](#apps-protocols-http-json-content-ivertix-bi-database-update-api)
+* [i-Vertix BI database update ETL](#apps-protocols-http-json-content-ivertix-bi-database-update-etl)
+* [i-Vertix BI ETL data consistency](#apps-protocols-http-json-content-ivertix-bi-data-consistency)
+* [i-Vertix BI ETL data recovery](#apps-protocols-http-json-content-ivertix-bi-data-recovery)
+* [i-Vertix BI ETL last run](#apps-protocols-http-json-content-ivertix-bi-etl-last-run)
+* [i-Vertix BI status](#apps-protocols-http-json-content-ivertix-bi-status)
+* [MariaDB Connection time](#database-mysql-connection-time)
+* [MariaDB Databases size](#database-mysql-databases-size)
+* [MariaDB Innodb bufferpool hitrate](#database-mysql-innodb-bufferpool-hitrate)
+* [MariaDB long queries](#database-mysql-long-queries)
+* [MariaDB Myisam keycache hitrate](#database-mysql-myisam-keycache-hitrate)
+* [MariaDB Open files](#database-mysql-open-files)
+* [MariaDB Open tables](#database-mysql-open-tables)
+* [MariaDB Qcache hitrate](#database-mysql-qcache-hitrate)
+* [MariaDB Queries usage](#database-mysql-queries)
+* [MariaDB Slow queries](#database-mysql-slowqueries)
+* [MariaDB Threads connected](#database-mysql-threadsconnected)
+* [MariaDB Uptime](#database-mysql-uptime)
+* [Memory](#os-linux-snmp-memory-no-swap)
+* [NTP](#os-linux-snmp-time)
+* [Swap](#os-linux-snmp-swap)
+* [System Load](#os-linux-snmp-load)
+* [TCP connections](#os-linux-snmp-tcpcon)
+* [UDP connections](#os-linux-snmp-udpcon)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### i-Vertix-BI-Server
+
+*i-Vertix Business Intelligence Server* · Parent template: `Linux-Server-SNMP`, `generic-host`, `MariaDB-MySQL-database`
+
+<details className="plugin-pack-details">
+<summary>Macros (24)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MARIADB-USERNAME` | `ivertix_readonly` | User name used to connect to the database. |
+| `API-TOKEN` | *(password)* | Specify api token for authentication |
+| `API-PORT` | `3000` | Port used by API |
+| `API-PROTO` | `https` | Specify https if needed (Default: 'http') |
+| `API-EXTRA-OPTS` | `--insecure` |  |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `MARIADB-PORT` |  | Database Server Port. |
+| `MARIADB-PASSWORD` |  | Password for the defined user name. |
+| `HTTP-BACKEND` |  | Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [i-Vertix BI ETL data consistency](#apps-protocols-http-json-content-ivertix-bi-data-consistency) | `apps-protocols-http-json-content-ivertix-bi-data-consistency` |
+| [i-Vertix BI ETL data recovery](#apps-protocols-http-json-content-ivertix-bi-data-recovery) | `apps-protocols-http-json-content-ivertix-bi-data-recovery` |
+| [i-Vertix BI database update API](#apps-protocols-http-json-content-ivertix-bi-database-update-api) | `apps-protocols-http-json-content-ivertix-bi-database-update-api` |
+| [i-Vertix BI database update ETL](#apps-protocols-http-json-content-ivertix-bi-database-update-etl) | `apps-protocols-http-json-content-ivertix-bi-database-update-etl` |
+| [i-Vertix BI ETL last run](#apps-protocols-http-json-content-ivertix-bi-etl-last-run) | `apps-protocols-http-json-content-ivertix-bi-etl-last-run` |
+| [i-Vertix BI status](#apps-protocols-http-json-content-ivertix-bi-status) | `apps-protocols-http-json-content-ivertix-bi-status` |
+| [i-vertix BI API response](#apps-protocols-http-response-ivertix-bi) | `apps-protocols-http-response-ivertix-bi` |
+| [CPU](#os-linux-snmp-cpu) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-cpu` |
+| [CPU detailed](#os-linux-snmp-cpu-detailed) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-cpu-detailed` |
+| [Disk IO](#os-linux-snmp-diskio) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-diskio` |
+| [System Load](#os-linux-snmp-load) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-load` |
+| [Memory](#os-linux-snmp-memory-no-swap) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-memory-no-swap` |
+| [Swap](#os-linux-snmp-swap) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-swap` |
+| [TCP connections](#os-linux-snmp-tcpcon) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-tcpcon` |
+| [NTP](#os-linux-snmp-time) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-time` |
+| [UDP connections](#os-linux-snmp-udpcon) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-udpcon` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `Linux-Server-SNMP`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+| [MariaDB Connection time](#database-mysql-connection-time) (inherited from `MariaDB-MySQL-database`) | `database-mysql-connection-time` |
+| [MariaDB Databases size](#database-mysql-databases-size) (inherited from `MariaDB-MySQL-database`) | `database-mysql-databases-size` |
+| [MariaDB Innodb bufferpool hitrate](#database-mysql-innodb-bufferpool-hitrate) (inherited from `MariaDB-MySQL-database`) | `database-mysql-innodb-bufferpool-hitrate` |
+| [MariaDB long queries](#database-mysql-long-queries) (inherited from `MariaDB-MySQL-database`) | `database-mysql-long-queries` |
+| [MariaDB Myisam keycache hitrate](#database-mysql-myisam-keycache-hitrate) (inherited from `MariaDB-MySQL-database`) | `database-mysql-myisam-keycache-hitrate` |
+| [MariaDB Open files](#database-mysql-open-files) (inherited from `MariaDB-MySQL-database`) | `database-mysql-open-files` |
+| [MariaDB Open tables](#database-mysql-open-tables) (inherited from `MariaDB-MySQL-database`) | `database-mysql-open-tables` |
+| [MariaDB Qcache hitrate](#database-mysql-qcache-hitrate) (inherited from `MariaDB-MySQL-database`) | `database-mysql-qcache-hitrate` |
+| [MariaDB Queries usage](#database-mysql-queries) (inherited from `MariaDB-MySQL-database`) | `database-mysql-queries` |
+| [MariaDB Slow queries](#database-mysql-slowqueries) (inherited from `MariaDB-MySQL-database`) | `database-mysql-slowqueries` |
+| [MariaDB Threads connected](#database-mysql-threadsconnected) (inherited from `MariaDB-MySQL-database`) | `database-mysql-threadsconnected` |
+| [MariaDB Uptime](#database-mysql-uptime) (inherited from `MariaDB-MySQL-database`) | `database-mysql-uptime` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix BI ETL data consistency {/* #apps-protocols-http-json-content-ivertix-bi-data-consistency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/etl/data/incomplete` | Set path to get Webpage (Default: '/') |
+| `LOOKUP` | `$..pollerId` | What to lookup in JSON response (JSON XPath string) (can be multiple) See: http://goessner.net/articles/JsonPath/ |
+| `THRESHOLD-VALUE` | `count` | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-NUMERIC` | `0` | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code |
+| `FORMAT-OK` | `All data available` | Customize the format of the output when the status is OK  (default: '%\{count\} element(s) found') You can use the following             variables: '%\{values\}' = display all values (also text string)             '%\{values_ok\}' = values from attributes and text node only             (separated by option values-separator) '%\{values_warning\}' and '%\{values_critical\}' |
+| `FORMAT-CRITICAL` | `%{count} days incomplete. See Business Intelligence - Maintenance for more details` | Customize the format of the output when the status is CRITICAL  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DATA` |  | Set file with JSON request |
+| `FORMAT-LOOKUP` |  | Take the output message from the JSON response (JSON XPath string) Override all the format options but substitute are still applied |
+| `UNKNOWN-STRING` |  | Threshold unknown if the string match |
+| `WARNING-NUMERIC` |  | Threshold warning (Default: on total matching elements) |
+| `WARNING-STRING` |  | Threshold warning if the string match |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `FORMAT-WARNING` |  | Customize the format of the output when the status is WARNING  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `FORMAT-UNKNOWN` |  | Customize the format of the output when the status is UNKNOWN default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `json.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix BI ETL data recovery {/* #apps-protocols-http-json-content-ivertix-bi-data-recovery */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/etl/data/recoverable` | Set path to get Webpage (Default: '/') |
+| `LOOKUP` | `$..id` | What to lookup in JSON response (JSON XPath string) (can be multiple) See: http://goessner.net/articles/JsonPath/ |
+| `THRESHOLD-VALUE` | `count` | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-NUMERIC` | `0` | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code |
+| `FORMAT-OK` | `All data available. Nothing to recover` | Customize the format of the output when the status is OK  (default: '%\{count\} element(s) found') You can use the following             variables: '%\{values\}' = display all values (also text string)             '%\{values_ok\}' = values from attributes and text node only             (separated by option values-separator) '%\{values_warning\}' and '%\{values_critical\}' |
+| `FORMAT-WARNING` | `%{count} days available to recover. See Business Intelligence - Maintenance for more details` | Customize the format of the output when the status is WARNING  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DATA` |  | Set file with JSON request |
+| `FORMAT-LOOKUP` |  | Take the output message from the JSON response (JSON XPath string) Override all the format options but substitute are still applied |
+| `UNKNOWN-STRING` |  | Threshold unknown if the string match |
+| `WARNING-NUMERIC` |  | Threshold warning (Default: on total matching elements) |
+| `WARNING-STRING` |  | Threshold warning if the string match |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `FORMAT-CRITICAL` |  | Customize the format of the output when the status is CRITICAL  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `FORMAT-UNKNOWN` |  | Customize the format of the output when the status is UNKNOWN default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `json.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix BI database update API {/* #apps-protocols-http-json-content-ivertix-bi-database-update-api */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/database/update` | Set path to get Webpage (Default: '/') |
+| `LOOKUP` | `$.apiDb` | What to lookup in JSON response (JSON XPath string) (can be multiple) See: http://goessner.net/articles/JsonPath/ |
+| `THRESHOLD-VALUE` | `values` | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `WARNING-NUMERIC` |  | Threshold warning (Default: on total matching elements) |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code |
+| `FORMAT-OK` | `no pending updates` | Customize the format of the output when the status is OK  (default: '%\{count\} element(s) found') You can use the following             variables: '%\{values\}' = display all values (also text string)             '%\{values_ok\}' = values from attributes and text node only             (separated by option values-separator) '%\{values_warning\}' and '%\{values_critical\}' |
+| `FORMAT-WARNING` | `pending updates (%{values}). See Business Intelligence - Maintenance for more details` | Customize the format of the output when the status is WARNING  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `WARNING-STRING` | `^(?!false$).*` | Threshold warning if the string match |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DATA` |  | Set file with JSON request |
+| `FORMAT-LOOKUP` |  | Take the output message from the JSON response (JSON XPath string) Override all the format options but substitute are still applied |
+| `UNKNOWN-STRING` |  | Threshold unknown if the string match |
+| `CRITICAL-NUMERIC` |  | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `FORMAT-CRITICAL` |  | Customize the format of the output when the status is CRITICAL  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `FORMAT-UNKNOWN` |  | Customize the format of the output when the status is UNKNOWN default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `json.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix BI database update ETL {/* #apps-protocols-http-json-content-ivertix-bi-database-update-etl */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/database/update` | Set path to get Webpage (Default: '/') |
+| `LOOKUP` | `$.etlDb` | What to lookup in JSON response (JSON XPath string) (can be multiple) See: http://goessner.net/articles/JsonPath/ |
+| `THRESHOLD-VALUE` | `values` | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `WARNING-NUMERIC` |  | Threshold warning (Default: on total matching elements) |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code |
+| `FORMAT-OK` | `no pending updates` | Customize the format of the output when the status is OK  (default: '%\{count\} element(s) found') You can use the following             variables: '%\{values\}' = display all values (also text string)             '%\{values_ok\}' = values from attributes and text node only             (separated by option values-separator) '%\{values_warning\}' and '%\{values_critical\}' |
+| `FORMAT-WARNING` | `pending updates (%{values}). See Business Intelligence - Maintenance for more details` | Customize the format of the output when the status is WARNING  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `WARNING-STRING` | `^(?!false$).*` | Threshold warning if the string match |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DATA` |  | Set file with JSON request |
+| `FORMAT-LOOKUP` |  | Take the output message from the JSON response (JSON XPath string) Override all the format options but substitute are still applied |
+| `UNKNOWN-STRING` |  | Threshold unknown if the string match |
+| `CRITICAL-NUMERIC` |  | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `FORMAT-CRITICAL` |  | Customize the format of the output when the status is CRITICAL  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `FORMAT-UNKNOWN` |  | Customize the format of the output when the status is UNKNOWN default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `json.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix BI ETL last run {/* #apps-protocols-http-json-content-ivertix-bi-etl-last-run */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/etl/history/last?format=relative` | Set path to get Webpage (Default: '/') |
+| `LOOKUP` | `$..relative` | What to lookup in JSON response (JSON XPath string) (can be multiple) See: http://goessner.net/articles/JsonPath/ |
+| `THRESHOLD-VALUE` | `values` | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `WARNING-NUMERIC` | `100800` | Threshold warning (Default: on total matching elements) |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-NUMERIC` | `115200` | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code |
+| `FORMAT-OK` | `ETL running %{values} seconds ago` | Customize the format of the output when the status is OK  (default: '%\{count\} element(s) found') You can use the following             variables: '%\{values\}' = display all values (also text string)             '%\{values_ok\}' = values from attributes and text node only             (separated by option values-separator) '%\{values_warning\}' and '%\{values_critical\}' |
+| `FORMAT-WARNING` | `ETL running %{values} seconds ago` | Customize the format of the output when the status is WARNING  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `FORMAT-CRITICAL` | `ETL running %{values} seconds ago` | Customize the format of the output when the status is CRITICAL  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DATA` |  | Set file with JSON request |
+| `FORMAT-LOOKUP` |  | Take the output message from the JSON response (JSON XPath string) Override all the format options but substitute are still applied |
+| `UNKNOWN-STRING` |  | Threshold unknown if the string match |
+| `WARNING-STRING` |  | Threshold warning if the string match |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `FORMAT-UNKNOWN` |  | Customize the format of the output when the status is UNKNOWN default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `json.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-Vertix BI status {/* #apps-protocols-http-json-content-ivertix-bi-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/status` | Set path to get Webpage (Default: '/') |
+| `LOOKUP` | `$.maintenance` | What to lookup in JSON response (JSON XPath string) (can be multiple) See: http://goessner.net/articles/JsonPath/ |
+| `THRESHOLD-VALUE` | `values` | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `WARNING-NUMERIC` | `0` | Threshold warning (Default: on total matching elements) |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code |
+| `FORMAT-OK` | `i-Vertix BI status is OK` | Customize the format of the output when the status is OK  (default: '%\{count\} element(s) found') You can use the following             variables: '%\{values\}' = display all values (also text string)             '%\{values_ok\}' = values from attributes and text node only             (separated by option values-separator) '%\{values_warning\}' and '%\{values_critical\}' |
+| `FORMAT-WARNING` | `Maintenance activated (%{values})` | Customize the format of the output when the status is WARNING  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `DATA` |  | Set file with JSON request |
+| `FORMAT-LOOKUP` |  | Take the output message from the JSON response (JSON XPath string) Override all the format options but substitute are still applied |
+| `UNKNOWN-STRING` |  | Threshold unknown if the string match |
+| `WARNING-STRING` |  | Threshold warning if the string match |
+| `CRITICAL-NUMERIC` |  | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `FORMAT-CRITICAL` |  | Customize the format of the output when the status is CRITICAL  (default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+| `FORMAT-UNKNOWN` |  | Customize the format of the output when the status is UNKNOWN default: '%\{count\} element(s) found') You can use the variables described in --format-ok |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `json.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### i-vertix BI API response {/* #apps-protocols-http-response-ivertix-bi */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `METHOD` | `GET` | Specify http method used (Default: 'GET') |
+| `URL-PATH` | `/ping` | Set path to get webpage (Default: '/') |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-TIME` | `1` | Threshold warning in seconds (Webpage response time) |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds (Webpage response time) |
+| `PROTO` | `https` | *(not used by the check command)* |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 5) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `http.response.time.seconds` | `s` | response time s | `WARNING-TIME`, `CRITICAL-TIME` |
+| `http.response.size.count` | `B` | content size |  |
+| `http.response.resolve.time.milliseconds` | `ms` | resolve:  ms |  |
+| `http.response.connect.time.milliseconds` | `ms` | connect:  ms |  |
+| `http.response.tls.time.milliseconds` | `ms` | tls:  ms |  |
+| `http.response.processing.time.milliseconds` | `ms` | processing:  ms |  |
+| `http.response.transfer.time.milliseconds` | `ms` | transfer:  ms |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #os-linux-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #os-linux-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning WaitThreshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk IO {/* #os-linux-snmp-diskio */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DEVICE` | `.*` | Set the device name ex: sda, sda1, sdb (empty means 'check all devices') - you can use regex |
+| `WARNING-READ` | `500MB` | Warning threshold reads (bytes per second) |
+| `WARNING-WRITE` | `500MB` | Warning threshold writes (bytes per second) |
+| `WARNING-READ-IOPS` | `2500` | Warning threshold read IOPs |
+| `WARNING-WRITE-IOPS` | `2500` | Warning threshold write IOPs |
+| `CRITICAL-READ` | `2000MB` | Critical threshold reads (bytes per second) |
+| `CRITICAL-WRITE` | `2000MB` | Critical threshold writes(bytes per second) |
+| `CRITICAL-READ-IOPS` | `10000` | Critical threshold read IOPs |
+| `CRITICAL-WRITE-IOPS` | `10000` | Critical threshold write IOPs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_read` | `B/s` | Read I/O :  /s |  |
+| `total_write` | `B/s` | Write I/O :  /s |  |
+| `total_read_iops` | `iops` | Read IOPs |  |
+| `total_write_iops` | `iops` | Write IOPs |  |
+| `sum_read_write` | `B/s` | R+W I/O :  /s |  |
+| `sum_read_write_iops` | `iops` | R+W IOPs |  |
+| `read` | `B/s` | Read I/O :  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `write` | `B/s` | Write I/O :  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `read_iops` | `iops` | Read IOPs | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `write_iops` | `iops` | Write IOPs | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Load {/* #os-linux-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #os-linux-snmp-memory-no-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #os-linux-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `25` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP connections {/* #os-linux-snmp-tcpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.tcp.count` |  |  |  |
+| `application.connections.tcp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #os-linux-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### UDP connections {/* #os-linux-snmp-udpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.udp.count` |  |  |  |
+| `application.connections.udp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Connection time {/* #database-mysql-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `500` | Threshold warning in milliseconds |
+| `CRITICAL` | `1000` | Threshold critical in milliseconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Databases size {/* #database-mysql-databases-size */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DB` | `^(?!(information_schema\|performance_schema\|test))` | Filter database to checks (Can be a regexp) |
+| `EXTRA-OPTS` | `--filter-perfdata=noperfdata` | Additional options appended to the plugin command line (host level). |
+| `FILTER-TABLE` |  | Filter table name (can be a regexp) |
+| `WARNING-TOTAL-USAGE` |  | Threshold warning total usage |
+| `WARNING-TOTAL-FREE` |  | Threshold warning total free |
+| `WARNING-DB-USAGE` |  | Threshold warning DB usage |
+| `WARNING-DB-FREE` |  | Threshold warning DB free |
+| `WARNING-TABLE-USAGE` |  | Threshold warning table usage |
+| `WARNING-TABLE-FREE` |  | Threshold warning table free |
+| `WARNING-TABLE-FRAG` |  | Threshold warning table fragmentation |
+| `CRITICAL-TOTAL-USAGE` |  | Threshold critical total usage |
+| `CRITICAL-TOTAL-FREE` |  | Threshold critical total free |
+| `CRITICAL-DB-USAGE` |  | Threshold critical DB usage |
+| `CRITICAL-DB-FREE` |  | Threshold critical DB free |
+| `CRITICAL-TABLE-USAGE` |  | Threshold critical table usage |
+| `CRITICAL-TABLE-FREE` |  | Threshold critical table free |
+| `CRITICAL-TABLE-FRAG` |  | Threshold critical table fragmentation |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `databases.space.usage.bytes` | `B` | Used Space | `WARNING-TOTAL-USAGE`, `CRITICAL-TOTAL-USAGE` |
+| `databases.space.free.bytes` | `B` | Free Space | `WARNING-TOTAL-FREE`, `CRITICAL-TOTAL-FREE` |
+| `database.space.usage.bytes` | `B` | Used | `WARNING-DB-USAGE`, `CRITICAL-DB-USAGE` |
+| `database.space.free.bytes` | `B` | Free | `WARNING-DB-FREE`, `CRITICAL-DB-FREE` |
+| `table.space.usage.bytes` | `B` | Used | `WARNING-TABLE-USAGE`, `CRITICAL-TABLE-USAGE` |
+| `table.space.free.bytes` | `B` | Free | `WARNING-TABLE-FREE`, `CRITICAL-TABLE-FREE` |
+| `table.fragmentation.percentage` | `%` | Fragmentation:  %% | `WARNING-TABLE-FRAG`, `CRITICAL-TABLE-FRAG` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Innodb bufferpool hitrate {/* #database-mysql-innodb-bufferpool-hitrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `95:` | Threshold warning |
+| `CRITICAL` | `90:` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB long queries {/* #database-mysql-long-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SECONDS` | `60` | The minimum execution time in seconds for a long query (Default: 60) |
+| `WARNING` | `0` | Threshold warning (number of long queries) |
+| `CRITICAL` | `5` | Threshold critical (number of long queries) |
+| `FILTER-COMMAND` | `'^(?!(sleep)$)'` | Filter by command (can be a regexp. Default: '^(?!(sleep)$)') |
+| `FILTER-USER` |  | Filter by user (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.longqueries.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Myisam keycache hitrate {/* #database-mysql-myisam-keycache-hitrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `95:` | Threshold warning |
+| `CRITICAL` | `90:` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Open files {/* #database-mysql-open-files */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.open.files.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Open tables {/* #database-mysql-open-tables */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `90` | Warning threshold in percent |
+| `CRITICAL` | `95` | Critical threshold in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.open.tables.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Qcache hitrate {/* #database-mysql-qcache-hitrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `95:` | Threshold warning |
+| `CRITICAL` | `90:` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Queries usage {/* #database-mysql-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL` |  | Threshold warning average number of queries executed |
+| `WARNING-UPDATE` |  | Threshold warning average number of queries UPDATES |
+| `WARNING-INSERT` |  | Threshold warning average number of queries INSERTS |
+| `WARNING-DELETE` |  | Threshold warning average number of queries DELETES |
+| `WARNING-TRUNCATE` |  | Threshold warning average number of queries TRUNCATES |
+| `WARNING-SELECT` |  | Threshold warning average number of queries SELECTS |
+| `WARNING-BEGIN` |  | Threshold warning average number of queries BEGINS |
+| `WARNING-COMMIT` |  | Threshold warning average number of queries COMMITS |
+| `CRITICAL-TOTAL` |  | Threshold critical average number of queries executed |
+| `CRITICAL-UPDATE` |  | Threshold critical average number of queries UPDATES |
+| `CRITICAL-INSERT` |  | Threshold critical  average number of queries INSERTS |
+| `CRITICAL-DELETE` |  | Threshold critical average number of queries DELETES |
+| `CRITICAL-TRUNCATE` |  | Threshold critical average number of queries TRUNCATES |
+| `CRITICAL-SELECT` |  | Threshold critical average number of queries SELECTS |
+| `CRITICAL-BEGIN` |  | Threshold critical average number of queries BEGINS |
+| `CRITICAL-COMMIT` |  | Threshold critical average number of queries COMMITS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queries.total.persecond` | `/s` | Total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Slow queries {/* #database-mysql-slowqueries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `0` | Warning number for slow queries since last check |
+| `CRITICAL` | `10` | Critical number for slow queries since last check |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.slowqueries.delta.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Threads connected {/* #database-mysql-threadsconnected */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning Connection usage in % |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical Connection usage in % |
+| `WARNING-USAGE` |  | Threshold warning Connection usage |
+| `CRITICAL-USAGE` |  | Threshold critical Connection usage |
+| `WARNING-DB-THREATS-CONNECTED` |  | Threshold warning DB threats connected |
+| `CRITICAL-DB-THREATS-CONNECTED` |  | Threshold critical DB threats connected |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `threads.connected.count` |  |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `threads.connected.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `database.threads.connected.count` |  | threads connected | `WARNING-DB-THREATS-CONNECTED`, `CRITICAL-DB-THREATS-CONNECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### MariaDB Uptime {/* #database-mysql-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1800:` | Threshold warning |
+| `CRITICAL` | `900:` | Threshold critical |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.uptime.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240909 - 20241028</summary>
+
+- Plugin pack `i-Vertix Business Intelligence Server`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240909 - 20241028`.

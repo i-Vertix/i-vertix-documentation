@@ -1,0 +1,384 @@
+---
+title: "Viptela (Cisco) networks"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Viptela.png";
+
+<PluginPackHeader name="Viptela (Cisco) networks" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco Viptela SD-WAN devices through SNMP: CPU, memory and disk usage, hardware, control connections and GRE tunnels.
+
+The plugin pack provides these checks:
+
+* [Control connections](#network-viptela-snmp-control-connections)
+* [CPU](#network-viptela-snmp-cpu)
+* [Disk](#network-viptela-snmp-disk)
+* [GRE tunnels](#network-viptela-snmp-gre-tunnels)
+* [Hardware](#network-viptela-snmp-hardware)
+* [Memory](#network-viptela-snmp-memory)
+* [Uptime](#network-viptela-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [GRE tunnels](#network-viptela-snmp-gre-tunnels) | `GRE tunnel - <sourceIp>` |
+| `network-viptela-snmp-interfaces` | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Viptela-network
+
+*Viptela network device* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMP-TIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Control connections](#network-viptela-snmp-control-connections) | `network-viptela-snmp-control-connections` |
+| [CPU](#network-viptela-snmp-cpu) | `network-viptela-snmp-cpu` |
+| [Disk](#network-viptela-snmp-disk) | `network-viptela-snmp-disk` |
+| [GRE tunnels](#network-viptela-snmp-gre-tunnels) | `network-viptela-snmp-gre-tunnels` |
+| [Hardware](#network-viptela-snmp-hardware) | `network-viptela-snmp-hardware` |
+| [Memory](#network-viptela-snmp-memory) | `network-viptela-snmp-memory` |
+| [Uptime](#network-viptela-snmp-uptime) | `network-viptela-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Control connections {/* #network-viptela-snmp-control-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /up\|connect/'` | Set critical threshold for status (Default: '%\{status\} !~ /up\|connect/'). Can used special variables like: %\{status\}, %\{type\}, %\{privateIp\}, %\{publicIp\} |
+| `FILTER-PUBLIC-IP` |  | Filter connections by public ip address |
+| `FILTER-PRIVATE-IP` |  | Filter connections by private ip address |
+| `FILTER-TYPE` |  | Filter connections by type |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{type\}, %\{privateIp\}, %\{publicIp\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{type\}, %\{privateIp\}, %\{publicIp\} |
+| `WARNING-CONNECTIONS-DETECTED` |  | Warning threshold connections detected |
+| `WARNING-CONNECTIONS-HANDSHAKE` |  | Warning threshold connections handshake |
+| `WARNING-CONNECTIONS-CHALLENGE` |  | Warning threshold connections challenge |
+| `WARNING-CONNECTIONS-TEARDOWN` |  | Warning threshold connections teardown |
+| `WARNING-CONNECTIONS-CHALLENGERESP` |  | Warning threshold connections challenge response |
+| `WARNING-CONNECTIONS-UP` |  | Warning threshold connections up |
+| `WARNING-CONNECTIONS-CONNECT` |  | Warning threshold connections connect |
+| `WARNING-CONNECTIONS-TRYING` |  | Warning threshold connections trying |
+| `WARNING-CONNECTIONS-DOWN` |  | Warning threshold connections down |
+| `CRITICAL-CONNECTIONS-DETECTED` |  | Critical threshold connections detected |
+| `CRITICAL-CONNECTIONS-HANDSHAKE` |  | Critical threshold connections handshake |
+| `CRITICAL-CONNECTIONS-CHALLENGE` |  | Critical threshold connections challenge |
+| `CRITICAL-CONNECTIONS-TEARDOWN` |  | Critical threshold connections teardown |
+| `CRITICAL-CONNECTIONS-CHALLENGERESP` |  | Critical threshold connections challenge response |
+| `CRITICAL-CONNECTIONS-UP` |  | Critical threshold connections up |
+| `CRITICAL-CONNECTIONS-CONNECT` |  | Critical threshold connections connect |
+| `CRITICAL-CONNECTIONS-TRYING` |  | Critical threshold connections trying |
+| `CRITICAL-CONNECTIONS-DOWN` |  | Critical threshold connections down |
+| `WARNING-CONNECTIONS-CHALLENGEACK` |  | Critical threshold connections challange ack |
+| `CRITICAL-CONNECTIONS-CHALLENGEACK` |  | Critical threshold connections challange ack |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `control.connections.detected.count` |  | detected | `WARNING-CONNECTIONS-DETECTED`, `CRITICAL-CONNECTIONS-DETECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-viptela-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Critical threshold average CPU utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | Cpu utilization: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk {/* #network-viptela-snmp-disk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Warning threshold usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Critical threshold usage (%) |
+| `WARNING-USAGE` |  | Warning threshold usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold usage free (B) |
+| `CRITICAL-USAGE` |  | Critical threshold usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `disk.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `disk.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### GRE tunnels {/* #network-viptela-snmp-gre-tunnels */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{adminState} eq "up" and %{operState} ne "up"'` | Set critical threshold for status (Default: '%\{adminState\} eq "up" and %\{operState\} ne "up"'). Can used special variables like: %\{adminState\}, %\{operState\}, %\{sourceIp\}, %\{destIp\} |
+| `FILTER-SRC-IP` |  | Filter tunnels by source ip address |
+| `FILTER-DEST-IP` |  | Filter tunnels by destination ip address |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{adminState\}, %\{operState\}, %\{sourceIp\}, %\{destIp\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{adminState\}, %\{operState\}, %\{sourceIp\}, %\{destIp\} |
+| `WARNING-GRETUNNELS-DETECTED` |  | Warning threshold GRE tunnels detected |
+| `WARNING-GRETUNNELS-UP` |  | Warning threshold GRE tunnels up |
+| `WARNING-GRETUNNELS-DOWN` |  | Warning threshold GRE tunnels down |
+| `WARNING-GRETUNNELS-INVALID` |  | Warning threshold GRE tunnels invalid |
+| `WARNING-GRETUNNEL-PACKETS-IN` |  | Warning threshold GRE tunnel packets in |
+| `WARNING-GRETUNNEL-PACKETS-OUT` |  | Warning threshold GRE tunnel packets out |
+| `CRITICAL-GRETUNNELS-DETECTED` |  | Critical threshold GRE tunnels detected |
+| `CRITICAL-GRETUNNELS-UP` |  | Critical threshold GRE tunnels up |
+| `CRITICAL-GRETUNNELS-DOWN` |  | Critical threshold GRE tunnels down |
+| `CRITICAL-GRETUNNELS-INVALID` |  | Critical threshold GRE tunnels invalid |
+| `CRITICAL-GRETUNNEL-PACKETS-IN` |  | Critical threshold GRE tunnel packets in |
+| `CRITICAL-GRETUNNEL-PACKETS-OUT` |  | Critical threshold GRE tunnel packets out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `gre_tunnels.detected.count` |  | detected | `WARNING-GRETUNNELS-DETECTED`, `CRITICAL-GRETUNNELS-DETECTED` |
+| `gre_tunnels.operational.up.count` |  | up | `WARNING-GRETUNNELS-UP`, `CRITICAL-GRETUNNELS-UP` |
+| `gre_tunnels.operational.down.count` |  | down | `WARNING-GRETUNNELS-DOWN`, `CRITICAL-GRETUNNELS-DOWN` |
+| `gre_tunnels.operational.invalid.count` |  | invalid | `WARNING-GRETUNNELS-INVALID`, `CRITICAL-GRETUNNELS-INVALID` |
+| `gre_tunnel.packets.in.count` |  | in | `WARNING-GRETUNNEL-PACKETS-IN`, `CRITICAL-GRETUNNEL-PACKETS-IN` |
+| `gre_tunnel.packets.out.count` |  | out | `WARNING-GRETUNNEL-PACKETS-OUT`, `CRITICAL-GRETUNNEL-PACKETS-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-viptela-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'fan', 'led', 'nim', 'pem', 'pim', 'temperature', 'usb' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature) Can also exclude specific instance: --filter=temperature,Board |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,OK,down' |
+| `WARNING` |  | Set warning threshold for 'temperature' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-viptela-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Warning threshold on used memory (in %) |
+| `CRITICAL-USAGE-PRCT` | `90` | Critical threshold on used memory (in %) |
+| `WARNING-USAGE` |  | Warning threshold on used memory (in B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold on free memory (in B) |
+| `CRITICAL-USAGE` |  | Critical threshold on used memory (in B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold on free memory (in B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | buffer |  |
+| `memory.cached.bytes` | `B` | cached |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-viptela-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250800 - 20250915</summary>
+
+- Host template `Viptela-network`
+    - Parent templates changed from *(empty)* to `generic-host`
+
+</details>

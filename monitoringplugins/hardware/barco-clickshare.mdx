@@ -1,0 +1,148 @@
+---
+title: "Barco Clickshare"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Barco.png";
+
+<PluginPackHeader name="Barco Clickshare" image={image} category="Hardware" metadata={["API"]} />
+
+## Description
+
+Monitors Barco ClickShare devices through the device API: overall device status, process status, CPU, PCIe and SIO temperatures and the CPU fan speed.
+
+The plugin pack provides these checks:
+
+* [Device status](#hardware-devices-barco-cs-restapi-device)
+
+
+## Host Templates
+
+### Barco-ClickShare
+
+*Barco Clickshare* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `4001` | Port used (default: 4001) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device status](#hardware-devices-barco-cs-restapi-device) | `hardware-devices-barco-cs-restapi-device` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device status {/* #hardware-devices-barco-cs-restapi-device */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DEVICE-STATUS` | `'%{status} =~ /warning/'` | Set warning threshold (default: '%\{status\} =~ /warning/'). You can use the following variables: %\{status\} |
+| `CRITICAL-DEVICE-STATUS` | `'%{status} =~ /error/'` | Set critical threshold (default: '%\{status\} =~ /error/'). You can use the following variables: %\{status\} |
+| `WARNING-PROCESS-STATUS` |  | Set warning threshold. You can use the following variables: %\{name\}, %\{status\} |
+| `WARNING-CPU-TEMPERATURE` |  | Warning threshold CPU temperature |
+| `WARNING-PCIE-TEMPERATURE` |  | Warning threshold PCIE temperature |
+| `WARNING-SIO-TEMPERATURE` |  | Warning threshold SIO temperature |
+| `WARNING-CPU-FANSPEED` |  | Warning threshold CPU fanspeed (rpm) |
+| `CRITICAL-PROCESS-STATUS` |  | Set critical threshold. You can use the following variables: %\{name\}, %\{status\} |
+| `CRITICAL-CPU-TEMPERATURE` |  | Critical threshold CPU temperature |
+| `CRITICAL-PCIE-TEMPERATURE` |  | Critical threshold PCIE temperature |
+| `CRITICAL-SIO-TEMPERATURE` |  | Critical threshold SIO temperature |
+| `CRITICAL-CPU-FANSPEED` |  | Critical threshold CPU fanspeed (rpm) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hardware.temperature.celsius` | `C` | cpu  C | `WARNING-CPU-TEMPERATURE`, `CRITICAL-CPU-TEMPERATURE` |
+| `hardware.fan.speed.rpm` | `rpm` | cpu fan speed  rpm | `WARNING-CPU-FANSPEED`, `CRITICAL-CPU-FANSPEED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231215 - 20240213</summary>
+
+- Plugin pack `Barco Clickshare`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231215 - 20240213`.

@@ -1,0 +1,394 @@
+---
+title: "Kadiska"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Kadiska.png";
+
+<PluginPackHeader name="Kadiska" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Kadiska through its API: alerts, network tracer statistics and watcher statistics.
+
+The plugin pack provides these checks:
+
+* [Alerts](#apps-monitoring-kadiska-alerts)
+* [Net tracer statistics](#apps-monitoring-kadiska-nettracer-statistics)
+* [Watcher statistics](#apps-monitoring-kadiska-watcher-statistics)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Alerts](#apps-monitoring-kadiska-alerts) | `Alerts - <name>` |
+| [Net tracer statistics](#apps-monitoring-kadiska-nettracer-statistics) | `Net tracer statistics - <name>` |
+| [Net tracer statistics](#apps-monitoring-kadiska-nettracer-statistics) | `Net tracer statistics - <name>` |
+| [Watcher statistics](#apps-monitoring-kadiska-watcher-statistics) | `Watcher statistics - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Kadiska-Net-Tracer
+
+*Kadiska Net-Tracer* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PERIOD` | `15` | Set period in minutes from which you want to get information. (default: '15') Example: --period=60 would return you the data from last hour. |
+| `CLIENT-SECRET` | *(password)* | Set client secret. |
+| `HOSTNAME` | `app.kadiska.com` | Set hostname (default: 'app.kadiska.com'). |
+| `CLIENT-ID` |  | Set client id. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#apps-monitoring-kadiska-alerts) | `apps-monitoring-kadiska-alerts` |
+| [Net tracer statistics](#apps-monitoring-kadiska-nettracer-statistics) | `apps-monitoring-kadiska-nettracer-statistics` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Watcher statistics](#apps-monitoring-kadiska-watcher-statistics) | `apps-monitoring-kadiska-watcher-statistics` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Kadiska-Watcher
+
+*Kadiska Watcher* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PERIOD` | `15` | Set period in minutes from which you want to get information. (default: '15') Example: --period=60 would return you the data from last hour. |
+| `CLIENT-SECRET` | *(password)* | Set client secret. |
+| `HOSTNAME` | `app.kadiska.com` | Set hostname (default: 'app.kadiska.com'). |
+| `CLIENT-ID` |  | Set client id. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#apps-monitoring-kadiska-alerts) | `apps-monitoring-kadiska-alerts` |
+| [Watcher statistics](#apps-monitoring-kadiska-watcher-statistics) | `apps-monitoring-kadiska-watcher-statistics` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Net tracer statistics](#apps-monitoring-kadiska-nettracer-statistics) | `apps-monitoring-kadiska-nettracer-statistics` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #apps-monitoring-kadiska-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Only get rules by name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `rules.total.count` |  | total rules |  |
+| `rules.criticals.count` |  | total criticals |  |
+| `rules.warnings.count` |  | total warnings |  |
+| `rules.nodata.count` |  | total no data |  |
+| `rule.ok.count` |  | ok count |  |
+| `rule.warning.count` |  | warning count |  |
+| `rule.critical.count` |  | critical count |  |
+| `rule.nodata.count` |  | no data count |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Net tracer statistics {/* #apps-monitoring-kadiska-nettracer-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ROUND-TRIP` | `500` | Warning threshold for round trip in milliseconds |
+| `WARNING-PACKET-LOSS-PRCT` | `0` | Warning threshold for packets' loss in percentage |
+| `CRITICAL-ROUND-TRIP` | `1000` | Critical threshold for round trip in milliseconds |
+| `CRITICAL-PACKET-LOSS-PRCT` | `25` | Critical threshold for packets' loss in percentage |
+| `FILTER-RUNNER-NAME` |  | Filter on runner name to display net tracer targets' statistics linked to a particular runner |
+| `FILTER-TARGET-NAME` |  | Filter to display statistics for particular net tracer targets. Can be a regex or a single tracer target. A target name must be given |
+| `WARNING-PATH-LENGHT` |  | Warning threshold for path length to reach targets |
+| `CRITICAL-PATH-LENGHT` |  | Critical threshold for path length to reach targets |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tracer.round.trip.persecond` | `/s` | round trip:  ms | `WARNING-ROUND-TRIP`, `CRITICAL-ROUND-TRIP` |
+| `tracer.path.length` |  | path length | `WARNING-PATH-LENGHT`, `CRITICAL-PATH-LENGHT` |
+| `tracer.packets.loss.percentage` | `%` | packets loss:  %% | `WARNING-PACKET-LOSS-PRCT`, `CRITICAL-PACKET-LOSS-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Watcher statistics {/* #apps-monitoring-kadiska-watcher-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SELECT-SITE-NAME` |  | Display statistics for watchers on a particular site. Leave empty to get work-from-home watchers statistics: --select-site-name="" --select-watcher-name="GitHub" |
+| `SELECT-GATEWAY-NAME` |  | Display statistics for watchers attached to a particular gateway |
+| `SELECT-WATCHER-NAME` |  | Display statistics for a particular watcher |
+| `COUNTRY` |  | Display statistics per country. Leave empty to get statistics from all countries, or specify particular country |
+| `ISP` |  | Display statistics per ISP. Leave empty to get statistics from all ISP, or specify particular ISP |
+| `WARNING-COUNTRY-DTT-SPENT` |  | Warning threshold Country DDT spent (ms) |
+| `WARNING-COUNTRY-ERRORS-PRCT` |  | Warning threshold Country errors (%) |
+| `WARNING-COUNTRY-FULL-NETWORK-TIME-SPENT` |  | Warning threshold Country full network time spent (ms) |
+| `WARNING-COUNTRY-SESSIONS` |  | Warning threshold Country sessions (count) |
+| `WARNING-COUNTRY-SRT-SPENT` |  | Warning threshold Country SRT spent (ms) |
+| `WARNING-COUNTRY-REQUESTS` |  | Warning threshold Country requests (count) |
+| `WARNING-COUNTRY-REDIRECT-TIME-AVG` |  | Warning threshold Country redirect time average (ms) |
+| `WARNING-COUNTRY-LOADING-PAGE` |  | Warning threshold Country loading page (ms) |
+| `WARNING-COUNTRY-PAGES` |  | Warning threshold Country pages (count) |
+| `WARNING-COUNTRY-USERS` |  | Warning threshold Country users (count) |
+| `WARNING-COUNTRY-WAITING-TIME-AVG` |  | Warning threshold Country waiting time avg (ms) |
+| `WARNING-ISP-DTT-SPENT` |  | Warning threshold ISP DDT spent (ms) |
+| `WARNING-ISP-ERRORS-PRCT` |  | Warning threshold ISP errors (%) |
+| `WARNING-ISP-FULL-NETWORK-TIME-SPENT` |  | Warning threshold ISP full network time spent (ms) |
+| `WARNING-ISP-SESSIONS` |  | Warning threshold ISP sessions (count) |
+| `WARNING-ISP-SRT-SPENT` |  | Warning threshold ISP SRT spent (ms) |
+| `WARNING-ISP-REQUESTS` |  | Warning threshold ISP requests (count) |
+| `WARNING-ISP-REDIRECT-TIME-AVG` |  | Warning threshold ISP redirect time average (ms) |
+| `WARNING-ISP-LOADING-PAGE` |  | Warning threshold ISP loading page (ms) |
+| `WARNING-ISP-PAGES` |  | Warning threshold ISP pages (count) |
+| `WARNING-ISP-USERS` |  | Warning threshold ISP users (count) |
+| `WARNING-ISP-WAITING-TIME-AVG` |  | Warning threshold ISP waiting time avg (ms) |
+| `WARNING-WATCHER-DTT-SPENT` |  | Warning threshold Watcher DDT spent (ms) |
+| `WARNING-WATCHER-ERRORS-PRCT` |  | Warning threshold Watcher errors (%) |
+| `WARNING-WATCHER-FULL-NETWORK-TIME-SPENT` |  | Warning threshold Watcher full network time spent (ms) |
+| `WARNING-WATCHER-SESSIONS` |  | Warning threshold Watcher sessions (count) |
+| `WARNING-WATCHER-SRT-SPENT` |  | Warning threshold Watcher SRT spent (ms) |
+| `WARNING-WATCHER-REQUESTS` |  | Warning threshold Watcher requests (count) |
+| `WARNING-WATCHER-REDIRECT-TIME-AVG` |  | Warning threshold Watcher redirect time average (ms) |
+| `WARNING-WATCHER-LOADING-PAGE` |  | Warning threshold Watcher loading page (ms) |
+| `WARNING-WATCHER-PAGES` |  | Warning threshold Watcher pages (count) |
+| `WARNING-WATCHER-USERS` |  | Warning threshold Watcher users (count) |
+| `WARNING-WATCHER-WAITING-TIME-AVG` |  | Warning threshold Watcher waiting time avg (ms) |
+| `CRITICAL-COUNTRY-DTT-SPENT` |  | Critical threshold Country DDT spent (ms) |
+| `CRITICAL-COUNTRY-ERRORS-PRCT` |  | Critical threshold Country errors (%) |
+| `CRITICAL-COUNTRY-FULL-NETWORK-TIME-SPENT` |  | Critical threshold Country full network time spent (ms) |
+| `CRITICAL-COUNTRY-SESSIONS` |  | Critical threshold Country sessions (count) |
+| `CRITICAL-COUNTRY-SRT-SPENT` |  | Critical threshold Country SRT spent (ms) |
+| `CRITICAL-COUNTRY-REQUESTS` |  | Critical threshold Country requests (count) |
+| `CRITICAL-COUNTRY-REDIRECT-TIME-AVG` |  | Critical threshold Country redirect time average (ms) |
+| `CRITICAL-COUNTRY-LOADING-PAGE` |  | Critical threshold Country loading page (ms) |
+| `CRITICAL-COUNTRY-PAGES` |  | Critical threshold Country pages (count) |
+| `CRITICAL-COUNTRY-USERS` |  | Critical threshold Country users (count) |
+| `CRITICAL-COUNTRY-WAITING-TIME-AVG` |  | Critical threshold Country waiting time avg (ms) |
+| `CRITICAL-ISP-DTT-SPENT` |  | Critical threshold ISP DDT spent (ms) |
+| `CRITICAL-ISP-ERRORS-PRCT` |  | Critical threshold ISP errors (%) |
+| `CRITICAL-ISP-FULL-NETWORK-TIME-SPENT` |  | Critical threshold ISP full network time spent (ms) |
+| `CRITICAL-ISP-SESSIONS` |  | Critical threshold ISP sessions (count) |
+| `CRITICAL-ISP-SRT-SPENT` |  | Critical threshold ISP SRT spent (ms) |
+| `CRITICAL-ISP-REQUESTS` |  | Critical threshold ISP requests (count) |
+| `CRITICAL-ISP-REDIRECT-TIME-AVG` |  | Critical threshold ISP redirect time average (ms) |
+| `CRITICAL-ISP-LOADING-PAGE` |  | Critical threshold ISP loading page (ms) |
+| `CRITICAL-ISP-PAGES` |  | Critical threshold ISP pages (count) |
+| `CRITICAL-ISP-USERS` |  | Critical threshold ISP users (count) |
+| `CRITICAL-ISP-WAITING-TIME-AVG` |  | Critical threshold ISP waiting time avg (ms) |
+| `CRITICAL-WATCHER-DTT-SPENT` |  | Critical threshold Watcher DDT spent (ms) |
+| `CRITICAL-WATCHER-ERRORS-PRCT` |  | Critical threshold Watcher errors (%) |
+| `CRITICAL-WATCHER-FULL-NETWORK-TIME-SPENT` |  | Critical threshold Watcher full network time spent (ms) |
+| `CRITICAL-WATCHER-SESSIONS` |  | Critical threshold Watcher sessions (count) |
+| `CRITICAL-WATCHER-SRT-SPENT` |  | Critical threshold Watcher SRT spent (ms) |
+| `CRITICAL-WATCHER-REQUESTS` |  | Critical threshold Watcher requests (count) |
+| `CRITICAL-WATCHER-REDIRECT-TIME-AVG` |  | Critical threshold Watcher redirect time average (ms) |
+| `CRITICAL-WATCHER-LOADING-PAGE` |  | Critical threshold Watcher loading page (ms) |
+| `CRITICAL-WATCHER-PAGES` |  | Critical threshold Watcher pages (count) |
+| `CRITICAL-WATCHER-USERS` |  | Critical threshold Watcher users (count) |
+| `CRITICAL-WATCHER-WAITING-TIME-AVG` |  | Critical threshold Watcher waiting time avg (ms) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `isp.dtt.spent.time.milliseconds` | `ms` | DTT spent:  ms | `WARNING-ISP-DTT-SPENT`, `CRITICAL-ISP-DTT-SPENT` |
+| `isp.errors.percentage` | `%` | Errors: %% | `WARNING-ISP-ERRORS-PRCT`, `CRITICAL-ISP-ERRORS-PRCT` |
+| `isp.network.spent.time.milliseconds` | `ms` | Full time network spent:  ms |  |
+| `isp.sessions.count` |  | Sessions | `WARNING-ISP-SESSIONS`, `CRITICAL-ISP-SESSIONS` |
+| `isp.srt.spent.time.milliseconds` | `ms` | SRT spent:  ms | `WARNING-ISP-SRT-SPENT`, `CRITICAL-ISP-SRT-SPENT` |
+| `isp.requests.count` |  | Requests | `WARNING-ISP-REQUESTS`, `CRITICAL-ISP-REQUESTS` |
+| `isp.redirect.time.milliseconds` | `ms` | Redirect time avg:  ms | `WARNING-ISP-REDIRECT-TIME-AVG`, `CRITICAL-ISP-REDIRECT-TIME-AVG` |
+| `isp.loading.page.duration.milliseconds` | `ms` | Loading page duration:  ms | `WARNING-ISP-LOADING-PAGE`, `CRITICAL-ISP-LOADING-PAGE` |
+| `isp.pages.count` |  | Loaded pages | `WARNING-ISP-PAGES`, `CRITICAL-ISP-PAGES` |
+| `isp.processing.duration.milliseconds` | `ms` | API Processing duration:  ms |  |
+| `isp.users.count` |  | Connected users | `WARNING-ISP-USERS`, `CRITICAL-ISP-USERS` |
+| `isp.waiting.time.milliseconds` | `ms` | Waiting time avg:  ms | `WARNING-ISP-WAITING-TIME-AVG`, `CRITICAL-ISP-WAITING-TIME-AVG` |
+| `watcher.dtt.spent.time.milliseconds` | `ms` | DTT spent:  ms | `WARNING-COUNTRY-DTT-SPENT`, `CRITICAL-COUNTRY-DTT-SPENT` |
+| `watcher.errors.percentage` | `%` | Errors: %% | `WARNING-COUNTRY-ERRORS-PRCT`, `CRITICAL-COUNTRY-ERRORS-PRCT` |
+| `watcher.network.spent.time.milliseconds` | `ms` | Full time network spent:  ms |  |
+| `watcher.sessions.count` |  | Sessions | `WARNING-COUNTRY-SESSIONS`, `CRITICAL-COUNTRY-SESSIONS` |
+| `watcher.srt.spent.time.milliseconds` | `ms` | SRT spent:  ms | `WARNING-COUNTRY-SRT-SPENT`, `CRITICAL-COUNTRY-SRT-SPENT` |
+| `watcher.requests.count` |  | Requests | `WARNING-COUNTRY-REQUESTS`, `CRITICAL-COUNTRY-REQUESTS` |
+| `watcher.redirect.time.milliseconds` | `ms` | Redirect time avg:  ms | `WARNING-COUNTRY-REDIRECT-TIME-AVG`, `CRITICAL-COUNTRY-REDIRECT-TIME-AVG` |
+| `watchers.loading.page.duration.milliseconds` | `ms` | Loading page duration:  ms | `WARNING-COUNTRY-LOADING-PAGE`, `CRITICAL-COUNTRY-LOADING-PAGE` |
+| `watchers.pages.count` |  | Loaded pages | `WARNING-COUNTRY-PAGES`, `CRITICAL-COUNTRY-PAGES` |
+| `watchers.processing.duration.milliseconds` | `ms` | API Processing duration:  ms |  |
+| `watchers.users.count` |  | Connected users | `WARNING-COUNTRY-USERS`, `CRITICAL-COUNTRY-USERS` |
+| `watchers.waiting.time.milliseconds` | `ms` | Waiting time avg:  ms | `WARNING-COUNTRY-WAITING-TIME-AVG`, `CRITICAL-COUNTRY-WAITING-TIME-AVG` |
+| `watcher.loading.page.duration.milliseconds` | `ms` | Loading page duration:  ms | `WARNING-WATCHER-LOADING-PAGE`, `CRITICAL-WATCHER-LOADING-PAGE` |
+| `watcher.pages.count` |  | Loaded pages | `WARNING-WATCHER-PAGES`, `CRITICAL-WATCHER-PAGES` |
+| `watcher.processing.duration.milliseconds` | `ms` | API Processing duration:  ms |  |
+| `watcher.users.count` |  | Connected users | `WARNING-WATCHER-USERS`, `CRITICAL-WATCHER-USERS` |
+| `watcher.waiting.time.milliseconds` | `ms` | Waiting time:  ms |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Kadiska`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231031`.

@@ -1,0 +1,668 @@
+---
+title: "F5 Load Balancer"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/F5.png";
+
+<PluginPackHeader name="F5 Load Balancer" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors F5 BIG-IP load balancers through SNMP: CPU and TMM usage, connections, virtual servers, pools and nodes, failover status, certificates, trunks, Access Policy Manager sessions and hardware status.
+
+The plugin pack provides these checks:
+
+* [Access Policy Manager](#network-f5-bigip-snmp-apm)
+* [Certificates](#network-f5-bigip-snmp-certificates)
+* [Connections](#network-f5-bigip-snmp-connections)
+* [CPU usage](#network-f5-bigip-snmp-cpu-usage)
+* [Failover status](#network-f5-bigip-snmp-failover)
+* [Hardware status](#network-f5-bigip-snmp-hardware)
+* [Node status](#network-f5-bigip-snmp-node-status)
+* [Pool status](#network-f5-bigip-snmp-pool-status)
+* [TMM usage](#network-f5-bigip-snmp-tmm-usage)
+* [Trunks](#network-f5-bigip-snmp-trunks)
+* [Uptime](#os-linux-snmp-uptime)
+* [Virtual Server status](#network-f5-bigip-snmp-virtualserver-status)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Node status](#network-f5-bigip-snmp-node-status) | `Node status - <name>` |
+| [Pool status](#network-f5-bigip-snmp-pool-status) | `Pool status - <name>` |
+| [Trunks](#network-f5-bigip-snmp-trunks) | `Trunk - <name>` |
+| [Virtual Server status](#network-f5-bigip-snmp-virtualserver-status) | `Virtual Server status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### F5-Loadbalancer
+
+*F5 Load balancer* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Access Policy Manager](#network-f5-bigip-snmp-apm) | `network-f5-bigip-snmp-apm` |
+| [Certificates](#network-f5-bigip-snmp-certificates) | `network-f5-bigip-snmp-certificates` |
+| [Connections](#network-f5-bigip-snmp-connections) | `network-f5-bigip-snmp-connections` |
+| [CPU usage](#network-f5-bigip-snmp-cpu-usage) | `network-f5-bigip-snmp-cpu-usage` |
+| [Failover status](#network-f5-bigip-snmp-failover) | `network-f5-bigip-snmp-failover` |
+| [Hardware status](#network-f5-bigip-snmp-hardware) | `network-f5-bigip-snmp-hardware` |
+| [Node status](#network-f5-bigip-snmp-node-status) | `network-f5-bigip-snmp-node-status` |
+| [Pool status](#network-f5-bigip-snmp-pool-status) | `network-f5-bigip-snmp-pool-status` |
+| [TMM usage](#network-f5-bigip-snmp-tmm-usage) | `network-f5-bigip-snmp-tmm-usage` |
+| [Trunks](#network-f5-bigip-snmp-trunks) | `network-f5-bigip-snmp-trunks` |
+| [Virtual Server status](#network-f5-bigip-snmp-virtualserver-status) | `network-f5-bigip-snmp-virtualserver-status` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Access Policy Manager {/* #network-f5-bigip-snmp-apm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SESSIONS-PENDING` | `0` | Warning threshold Sessions pending |
+| `FILTER-VS` |  | Filter virtual server name (can be a regexp) |
+| `FILTER-AP` |  | Filter access profile name (can be a regexp) |
+| `WARNING-SESSIONS-CREATED` |  | Warning threshold Sessions created |
+| `WARNING-SESSIONS-ACTIVE` |  | Warning threshold Sessions active |
+| `WARNING-AP-SESSIONS-CREATED` |  | Warning threshold AP Sessions created |
+| `WARNING-AP-SESSIONS-ACTIVE` |  | Warning threshold AP Sessions active |
+| `WARNING-AP-SESSIONS-PENDING` |  | Warning threshold AP Sessions pending |
+| `CRITICAL-SESSIONS-CREATED` |  | Critical threshold Sessions created |
+| `CRITICAL-SESSIONS-ACTIVE` |  | Critical threshold Sessions active |
+| `CRITICAL-SESSIONS-PENDING` |  | Critical threshold Sessions pending |
+| `CRITICAL-AP-SESSIONS-CREATED` |  | Critical threshold AP Sessions created |
+| `CRITICAL-AP-SESSIONS-ACTIVE` |  | Critical threshold AP Sessions active |
+| `CRITICAL-AP-SESSIONS-PENDING` |  | Critical threshold AP Sessions pending |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.sessions.created.count` |  | created sessions | `WARNING-SESSIONS-CREATED`, `CRITICAL-SESSIONS-CREATED` |
+| `system.sessions.active.count` |  | active sessions | `WARNING-SESSIONS-ACTIVE`, `CRITICAL-SESSIONS-ACTIVE` |
+| `system.sessions.pending.count` |  | pending sessions | `WARNING-SESSIONS-PENDING`, `CRITICAL-SESSIONS-PENDING` |
+| `accessprofile.sessions.created.count` |  | created sessions | `WARNING-AP-SESSIONS-CREATED`, `CRITICAL-AP-SESSIONS-CREATED` |
+| `accessprofile.sessions.active.count` |  | active sessions | `WARNING-AP-SESSIONS-ACTIVE`, `CRITICAL-AP-SESSIONS-ACTIVE` |
+| `accessprofile.sessions.pending.count` |  | pending sessions | `WARNING-AP-SESSIONS-PENDING`, `CRITICAL-AP-SESSIONS-PENDING` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Certificates {/* #network-f5-bigip-snmp-certificates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` | Select the time unit for the expiration thresholds. May be 's' for seconds,'m' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-CERTIFICATE-EXPIRES` | `30:` | Warning threshold certificate expires |
+| `CRITICAL-CERTIFICATE-EXPIRES` | `10:` | Critical threshold certificate expires |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Can be : certificate-expires, certificates-count Example : --filter-counters='^certificate-expires$' |
+| `INCLUDE-NAME` |  | Filter certificate by name (regexp can be used). Example : --include-name='ABCaBundle' |
+| `INCLUDE-ISSUER` |  | Filter certificate by issuer (regexp can be used) |
+| `INCLUDE-VALIDATION` |  | Filter certificate by status validation options (regexp can be used). Example : --include-validation='1' |
+| `EXCLUDE-NAME` |  | Exclude certificate by name (regexp can be used) |
+| `EXCLUDE-ISSUER` |  | Exclude certificate by issuer (regexp can be used) |
+| `EXCLUDE-VALIDATION` |  | Exclude certificate by status validation options (regexp can be used) |
+| `WARNING-CERTIFICATE-COUNTS` |  | Warning threshold certificate counts |
+| `CRITICAL-CERTIFICATE-COUNTS` |  | Critical threshold certificate counts |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `certificates.count` |  | number of certificates | `WARNING-CERTIFICATE-COUNTS`, `CRITICAL-CERTIFICATE-COUNTS` |
+| `certificate.expires` |  |  | `WARNING-CERTIFICATE-EXPIRES`, `CRITICAL-CERTIFICATE-EXPIRES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {/* #network-f5-bigip-snmp-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CLIENT` |  | Warning threshold Client connections |
+| `WARNING-SERVER` |  | Warning threshold Server connections |
+| `WARNING-CLIENT-SSL` |  | Warning threshold Client SSL connections |
+| `WARNING-SERVER-SSL` |  | Warning threshold Server SSL connections |
+| `WARNING-CLIENT-SSL-TPS` |  | Warning threshold Client SSL TPS connections |
+| `CRITICAL-CLIENT` |  | Critical threshold Client connections |
+| `CRITICAL-SERVER` |  | Critical threshold Server connections |
+| `CRITICAL-CLIENT-SSL` |  | Critical threshold Client SSL connections |
+| `CRITICAL-SERVER-SSL` |  | Critical threshold Server SSL connections |
+| `CRITICAL-CLIENT-SSL-TPS` |  | Critical threshold Client SSL TPS connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.client.current.count` |  | Current client connections | `WARNING-CLIENT`, `CRITICAL-CLIENT` |
+| `connections.client.ssl.current.count` |  | Current client SSL connections | `WARNING-CLIENT-SSL`, `CRITICAL-CLIENT-SSL` |
+| `connections.client.ssl.persecond` | `/s` | TPS client SSL connections | `WARNING-CLIENT-SSL-TPS`, `CRITICAL-CLIENT-SSL-TPS` |
+| `connections.server.current.count` |  | Current server connections | `WARNING-SERVER`, `CRITICAL-SERVER` |
+| `connections.server.ssl.current.count` |  | Current server SSL connections | `WARNING-SERVER-SSL`, `CRITICAL-SERVER-SSL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU usage {/* #network-f5-bigip-snmp-cpu-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-1M` | `85` | Warning threshold CPU 1 minute |
+| `WARNING-USAGE-5M` | `80` | Warning threshold CPU 5 minutes |
+| `CRITICAL-USAGE-1M` | `95` | Critical threshold CPU 1 minute |
+| `CRITICAL-USAGE-5M` | `90` | Critical threshold CPU 5 minutes |
+| `CRITICAL-USAGE-5S` |  | Critical threshold CPU 5 seconds |
+| `FILTER-NAME` |  | Filter by CPU id (regexp can be used). Example : --filter-name='2' |
+| `WARNING-USAGE-5S` |  | Warning threshold CPU 5 seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `usage_5s` | `%` | CPU Usage 5sec :  %% | `WARNING-USAGE-5S`, `CRITICAL-USAGE-5S` |
+| `usage_1m` | `%` | CPU Usage 1min :  %% | `WARNING-USAGE-1M`, `CRITICAL-USAGE-1M` |
+| `usage_5m` | `%` | CPU Usage 5min :  %% | `WARNING-USAGE-5M`, `CRITICAL-USAGE-5M` |
+| `user_5s` | `%` | CPU User 5sec :  %% |  |
+| `user_1m` | `%` | CPU User 1min :  %% |  |
+| `user_5m` | `%` | CPU User 5min :  %% |  |
+| `iowait_5s` | `%` | CPU IO Wait 5sec :  %% |  |
+| `iowait_1m` | `%` | CPU IO Wait 1min :  %% |  |
+| `iowait_5m` | `%` | CPU IO Wait 5min :  %% |  |
+| `system_5s` | `%` | CPU System 5sec :  %% |  |
+| `system_1m` | `%` | CPU System 1min :  %% |  |
+| `system_5m` | `%` | CPU System 5min :  %% |  |
+| `idle_5s` | `%` | CPU Idle 5sec :  %% |  |
+| `idle_1m` | `%` | CPU Idle 1min :  %% |  |
+| `idle_5m` | `%` | CPU Idle 5min :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Failover status {/* #network-f5-bigip-snmp-failover */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SYNC-STATUS` |  | Set warning threshold for sync status Can used special variables like: %\{syncstatus\} |
+| `WARNING-FAILOVER-STATUS` |  | Set warning threshold for failover status Can used special variables like: %\{failoverstatus\} |
+| `CRITICAL-SYNC-STATUS` |  | Set critical threshold for sync status (Default: '%\{syncstatus\} =~ /unknown\|syncFailed\|syncDisconnected\|incompatibleVersion/'). Can used special variables like: %\{syncstatus\} |
+| `CRITICAL-FAILOVER-STATUS` |  | Set critical threshold for failover status (Default: '%\{failoverstatus\} =~ /unknown/'). Can used special variables like: %\{failoverstatus\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-f5-bigip-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'temperature' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(good)$)' |
+| `WARNING` |  | Set warning threshold for temperatures, fan speed (syntax: type,instance,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperatures, fan speed (syntax: type,instance,threshold) Example: --critical='temperature,.*,40' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Node status {/* #network-f5-bigip-snmp-node-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by name (regexp can be used) |
+| `CRITICAL-STATUS` | `'%{state} eq "enabled" and %{status} eq "red"'` | Set critical threshold for status (Default: '%\{state\} eq "enabled" and %\{status\} eq "red"'). Can used special variables like: %\{state\}, %\{status\}, %\{display\} |
+| `WARNING-STATUS` | `'%{state} eq "enabled" and %{status} eq "yellow"'` | Set warning threshold for status (Default: '%\{state\} eq "enabled" and %\{status\} eq "yellow"'). Can used special variables like: %\{state\}, %\{status\}, %\{display\} |
+| `WARNING-CURRENT-SERVER-CONNECTIONS` |  | Warning threshold current Server connections |
+| `CRITICAL-CURRENT-SERVER-CONNECTIONS` |  | Critical threshold current Server connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.connections.server.current.count` |  | current server connections | `WARNING-CURRENT-SERVER-CONNECTIONS`, `CRITICAL-CURRENT-SERVER-CONNECTIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pool status {/* #network-f5-bigip-snmp-pool-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by name (regexp can be used) |
+| `WARNING-STATUS` | `'%{state} eq "enabled" and %{status} eq "yellow"'` | Set warning threshold for status (Default: '%\{state\} eq "enabled" and %\{status\} eq "yellow"'). Can used special variables like: %\{state\}, %\{status\}, %\{display\} |
+| `CRITICAL-STATUS` | `'%{state} eq "enabled" and %{status} eq "red"'` | Set critical threshold for status (Default: '%\{state\} eq "enabled" and %\{status\} eq "red"'). Can used special variables like: %\{state\}, %\{status\}, %\{display\} |
+| `WARNING-CURRENT-SERVER-CONNECTIONS` |  | Warning threshold current Server connections |
+| `WARNING-CURRENT-ACTIVE-MEMBERS` |  | Warning threshold current active Members |
+| `WARNING-CURRENT-TOTAL-MEMBERS` |  | Warning threshold current total Members |
+| `CRITICAL-CURRENT-SERVER-CONNECTIONS` |  | Critical threshold current Server connections |
+| `CRITICAL-CURRENT-ACTIVE-MEMBERS` |  | Critical threshold current active Members |
+| `CRITICAL-CURRENT-TOTAL-MEMBERS` |  | Critical threshold current total Members |
+| `CRITICAL-MEMBER-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{state\}, %\{status\}, %\{poolName\}, %\{nodeName\} |
+| `UNKNOWN-MEMBER-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\}, %\{status\}, %\{poolName\}, %\{nodeName\} |
+| `WARNING-MEMBER-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\}, %\{status\}, %\{poolName\}, %\{nodeName\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pool.connections.server.current.count` |  | current server connections | `WARNING-CURRENT-SERVER-CONNECTIONS`, `CRITICAL-CURRENT-SERVER-CONNECTIONS` |
+| `pool.members.active.count` |  | current active members | `WARNING-CURRENT-ACTIVE-MEMBERS`, `CRITICAL-CURRENT-ACTIVE-MEMBERS` |
+| `pool.members.total.count` |  | current total members | `WARNING-CURRENT-TOTAL-MEMBERS`, `CRITICAL-CURRENT-TOTAL-MEMBERS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TMM usage {/* #network-f5-bigip-snmp-tmm-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-1M` | `85` | Warning threshold CPU 1 minute |
+| `WARNING-MEMORY-USAGE` | `80` | Warning threshold Memory usage |
+| `CRITICAL-CPU-1M` | `90` | Critical threshold CPU 1 minute |
+| `CRITICAL-MEMORY-USAGE` | `90` | Critical threshold Memory usage |
+| `FILTER-NAME` |  | Filter by TMM name (regexp can be used) |
+| `WARNING-CPU-5M` |  | Warning threshold CPU 5 minutes |
+| `WARNING-TOTAL-CLIENT-CONNECTIONS` |  | Warning threshold total client connections |
+| `WARNING-TOTAL-SERVER-CONNECTIONS` |  | Warning threshold total server connections |
+| `CRITICAL-CPU-5M` |  | Critical threshold CPU 5 minutes |
+| `CRITICAL-TOTAL-CLIENT-CONNECTIONS` |  | Critical threshold total client connections |
+| `CRITICAL-TOTAL-SERVER-CONNECTIONS` |  | Critical threshold total server connections |
+| `WARNING-CURRENT-CLIENT-CONNECTIONS` |  | Warning threshold current client connections |
+| `WARNING-CURRENT-SERVER-CONNECTIONS` |  | Warning threshold current server connections |
+| `CRITICAL-CURRENT-CLIENT-CONNECTIONS` |  | Critical threshold current client connections |
+| `CRITICAL-CURRENT-SERVER-CONNECTIONS` |  | Critical threshold current server connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tmm.memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `tmm.cpu.utilization.1m.percentage` | `%` | CPU Usage 1min :  %% | `WARNING-CPU-1M`, `CRITICAL-CPU-1M` |
+| `tmm.cpu.utilization.5m.percentage` | `%` | CPU Usage 5min :  %% | `WARNING-CPU-5M`, `CRITICAL-CPU-5M` |
+| `tmm.connections.client.curent.count` |  | Current Client Connections | `WARNING-CURRENT-CLIENT-CONNECTIONS`, `CRITICAL-CURRENT-CLIENT-CONNECTIONS` |
+| `tmm.connections.client.total.count` |  | Total Client Connections | `WARNING-TOTAL-CLIENT-CONNECTIONS`, `CRITICAL-TOTAL-CLIENT-CONNECTIONS` |
+| `tmm.connections.server.current.count` |  | Current Server Connections | `WARNING-CURRENT-SERVER-CONNECTIONS`, `CRITICAL-CURRENT-SERVER-CONNECTIONS` |
+| `tmm.connections.server.total.count` |  | Total Server Connections | `WARNING-TOTAL-SERVER-CONNECTIONS`, `CRITICAL-TOTAL-SERVER-CONNECTIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Trunks {/* #network-f5-bigip-snmp-trunks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by trunks name (regexp can be used) |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `WARNING-PACKETS-DROP-IN` | `0` | Warning threshold packets droped in |
+| `WARNING-PACKETS-DROP-OUT` | `0` | Warning threshold packets droped out |
+| `WARNING-PACKETS-ERROR-IN` | `0` | Warning threshold packets error in |
+| `WARNING-PACKETS-ERROR-OUT` | `0` | Warning threshold packets error out |
+| `WARNING-TRAFFIC-IN` | `80` | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Warning threshold traffic out |
+| `CRITICAL-PACKETS-DROP-IN` | `10` | Critical threshold packets droped in |
+| `CRITICAL-PACKETS-DROP-OUT` | `10` | Critical threshold packets droped out |
+| `CRITICAL-PACKETS-ERROR-IN` | `10` | Critical threshold packets error in |
+| `CRITICAL-PACKETS-ERROR-OUT` | `10` | Critical threshold packets error out |
+| `CRITICAL-TRAFFIC-IN` | `90` | Critical threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Critical threshold traffic out |
+| `CRITICAL-STATUS` | `'%{status} =~ /uninitialized\|down/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /uninitialized\|down/'). You can use the following variables: %\{status\}, %\{display\} |
+| `SPEED` |  | Set trunk speed in Mbps (Default: sysTrunkOperBw). If not set and sysTrunkOperBw OID value is 0, percentage thresholds will not be applied on traffic metrics |
+| `CRITICAL-INTERFACE-STATUS` |  | Define the conditions to match for the status to be CRITICAL. You can use the following variables: %\{status\}, %\{display\} |
+| `UNKNOWN-INTERFACE-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{status\}, %\{display\} |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{status\}, %\{display\} |
+| `WARNING-INTERFACE-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{status\}, %\{display\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `trunk.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `trunk.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `trunk.packets.in.error.percentage` | `%` |  | `WARNING-PACKETS-ERROR-IN`, `CRITICAL-PACKETS-ERROR-IN` |
+| `trunk.packets.out.error.percentage` | `%` |  | `WARNING-PACKETS-ERROR-OUT`, `CRITICAL-PACKETS-ERROR-OUT` |
+| `trunk.packets.in.dropped.percentage` | `%` |  | `WARNING-PACKETS-DROP-IN`, `CRITICAL-PACKETS-DROP-IN` |
+| `trunk.packets.out.dropped.percentage` | `%` |  | `WARNING-PACKETS-DROP-OUT`, `CRITICAL-PACKETS-DROP-OUT` |
+| `trunk.interfaces.total.count` |  | total interfaces |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virtual Server status {/* #network-f5-bigip-snmp-virtualserver-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by name (regexp can be used) |
+| `WARNING-CURRENT-CLIENT-CONNECTIONS` |  | Warning threshold current Client connections |
+| `CRITICAL-CURRENT-CLIENT-CONNECTIONS` |  | Critical threshold current Client connections |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '%\{state\} eq "enabled" and %\{status\} eq "yellow"'). Can used special variables like: %\{state\}, %\{status\}, %\{display\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{state\} eq "enabled" and %\{status\} eq "red"'). Can used special variables like: %\{state\}, %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `virtualserver.connections.client.current.count` |  | current client connections | `WARNING-CURRENT-CLIENT-CONNECTIONS`, `CRITICAL-CURRENT-CLIENT-CONNECTIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `network-f5-bigip-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250600 - 20250721</summary>
+
+- Plugin pack `F5 Load Balancer`
+    - Description updated
+- Host template `F5-Loadbalancer`
+    - Service template `network-f5-bigip-snmp-certificates` linked
+- Service template [`network-f5-bigip-snmp-certificates`](#network-f5-bigip-snmp-certificates)
+    - Service template added
+- Command `network-f5-bigip-snmp-certificates`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250423</summary>
+
+- Plugin pack `F5 Load Balancer`
+    - Description updated
+- Host template `F5-Loadbalancer`
+    - Service template `network-f5-bigip-snmp-cpu-usage` linked
+- Service template [`network-f5-bigip-snmp-cpu-usage`](#network-f5-bigip-snmp-cpu-usage)
+    - Service template added
+- Service template [`network-f5-bigip-snmp-trunks`](#network-f5-bigip-snmp-trunks)
+    - Macro `CRITICAL-STATUS` added (default `'%{status} =~ /uninitialized|down/'`)
+- Command `network-f5-bigip-snmp-cpu-usage`
+    - Command added
+- Command `network-f5-bigip-snmp-trunks`
+    - Option `--unknown-status=$_SERVICEUNKNOWN-STATUS$` added
+    - Option `--warning-status=$_SERVICEWARNING-STATUS$` added
+    - Option `--critical-status=$_SERVICECRITICAL-STATUS$` added
+    - Option `--unknown-interface-status=$_SERVICEUNKNOWN-INTERFACE-STATUS$` added
+    - Option `--warning-interface-status=$_SERVICEWARNING-INTERFACE-STATUS$` added
+    - Option `--critical-interface-status=$_SERVICECRITICAL-INTERFACE-STATUS$` added
+    - Macro `CRITICAL-INTERFACE-STATUS` added
+    - Macro `CRITICAL-STATUS` added
+    - Macro `UNKNOWN-INTERFACE-STATUS` added
+    - Macro `UNKNOWN-STATUS` added
+    - Macro `WARNING-INTERFACE-STATUS` added
+    - Macro `WARNING-STATUS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240531</summary>
+
+- Service template [`network-f5-bigip-snmp-node-status`](#network-f5-bigip-snmp-node-status)
+    - Macro `CRITICAL-STATUS` added (default `'%{state} eq "enabled" and %{status} eq "red"'`)
+    - Macro `WARNING-STATUS` added (default `'%{state} eq "enabled" and %{status} eq "yellow"'`)
+- Service template [`network-f5-bigip-snmp-pool-status`](#network-f5-bigip-snmp-pool-status)
+    - Macro `WARNING-STATUS` added (default `'%{state} eq "enabled" and %{status} eq "yellow"'`)
+    - Macro `CRITICAL-STATUS` added (default `'%{state} eq "enabled" and %{status} eq "red"'`)
+
+</details>

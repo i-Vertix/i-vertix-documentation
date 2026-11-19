@@ -1,0 +1,1103 @@
+---
+title: "Cisco WLC (Wireless Lan Controller)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco WLC (Wireless Lan Controller)" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco Wireless LAN Controllers through SNMP: access point status, users, channel noise and interference, CPU, memory and load, environment and hardware status, interfaces, RADIUS servers and uptime.
+
+The plugin pack provides these checks:
+
+* [AP channel interference](#network-cisco-wlc-snmp-ap-channel-interference)
+* [AP channel noise](#network-cisco-wlc-snmp-ap-channel-noise)
+* [AP status](#network-cisco-wlc-snmp-ap-status)
+* [AP users](#network-cisco-wlc-snmp-ap-users)
+* [ARP](#network-cisco-standard-snmp-arp)
+* [Configuration status](#network-cisco-standard-snmp-configuration)
+* [CPU](#network-cisco-standard-snmp-cpu) (`network-cisco-standard-snmp-cpu`)
+* [CPU](#network-cisco-wlc-snmp-cpu) (`network-cisco-wlc-snmp-cpu`)
+* [Environment](#network-cisco-standard-snmp-environment) (`network-cisco-standard-snmp-environment`)
+* [Environment](#network-cisco-standard-snmp-environment-catalyst) (`network-cisco-standard-snmp-environment-catalyst`)
+* [Hardware status](#network-cisco-wlc-snmp-hardware)
+* [Interfaces](#network-cisco-wlc-snmp-interfaces)
+* [Load](#network-cisco-standard-snmp-load)
+* [Memory](#network-cisco-standard-snmp-memory) (`network-cisco-standard-snmp-memory`)
+* [Memory](#network-cisco-standard-snmp-memory-catalyst) (`network-cisco-standard-snmp-memory-catalyst`)
+* [Memory](#network-cisco-wlc-snmp-memory) (`network-cisco-wlc-snmp-memory`)
+* [Memory flash](#network-cisco-standard-snmp-memory-flash)
+* [Radius Accounting Servers](#network-cisco-wlc-snmp-radius-acc-servers)
+* [Radius Authentication Servers](#network-cisco-wlc-snmp-radius-auth-servers)
+* [Uptime](#network-cisco-standard-snmp-uptime) (`network-cisco-standard-snmp-uptime`)
+* [Uptime](#os-linux-snmp-uptime) (`os-linux-snmp-uptime`)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [AP channel interference](#network-cisco-wlc-snmp-ap-channel-interference) | `AP channel interference - <name>` |
+| [AP channel noise](#network-cisco-wlc-snmp-ap-channel-noise) | `AP channel noise - <name>` |
+| [AP status](#network-cisco-wlc-snmp-ap-status) | `AP status - <name>` |
+| [AP users](#network-cisco-wlc-snmp-ap-users) | `AP users - <name>` |
+| [Interfaces](#network-cisco-wlc-snmp-interfaces) | `Interface - <name>` |
+| [Radius Accounting Servers](#network-cisco-wlc-snmp-radius-acc-servers) | `Radius Access Servers - <name>` |
+| [Radius Authentication Servers](#network-cisco-wlc-snmp-radius-auth-servers) | `Radius Authentication Server - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Cisco-WLC
+
+*Cisco Wireless Lan Controller* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP channel interference](#network-cisco-wlc-snmp-ap-channel-interference) | `network-cisco-wlc-snmp-ap-channel-interference` |
+| [AP channel noise](#network-cisco-wlc-snmp-ap-channel-noise) | `network-cisco-wlc-snmp-ap-channel-noise` |
+| [AP status](#network-cisco-wlc-snmp-ap-status) | `network-cisco-wlc-snmp-ap-status` |
+| [AP users](#network-cisco-wlc-snmp-ap-users) | `network-cisco-wlc-snmp-ap-users` |
+| [CPU](#network-cisco-wlc-snmp-cpu) | `network-cisco-wlc-snmp-cpu` |
+| [Hardware status](#network-cisco-wlc-snmp-hardware) | `network-cisco-wlc-snmp-hardware` |
+| [Memory](#network-cisco-wlc-snmp-memory) | `network-cisco-wlc-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ARP](#network-cisco-standard-snmp-arp) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) | `network-cisco-standard-snmp-environment` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [Interfaces](#network-cisco-wlc-snmp-interfaces) | `network-cisco-wlc-snmp-interfaces` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory) | `network-cisco-standard-snmp-memory` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) | `network-cisco-standard-snmp-memory-flash` |
+| [Radius Accounting Servers](#network-cisco-wlc-snmp-radius-acc-servers) | `network-cisco-wlc-snmp-radius-acc-servers` |
+| [Radius Authentication Servers](#network-cisco-wlc-snmp-radius-auth-servers) | `network-cisco-wlc-snmp-radius-auth-servers` |
+| [Uptime](#network-cisco-standard-snmp-uptime) | `network-cisco-standard-snmp-uptime` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-WLC-Catalyst
+
+*Cisco IOS Wireless Lan Controller* · Parent template: `Cisco-Catalyst-Switch`, `Cisco-Standard-Switch`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP channel interference](#network-cisco-wlc-snmp-ap-channel-interference) | `network-cisco-wlc-snmp-ap-channel-interference` |
+| [AP channel noise](#network-cisco-wlc-snmp-ap-channel-noise) | `network-cisco-wlc-snmp-ap-channel-noise` |
+| [AP status](#network-cisco-wlc-snmp-ap-status) | `network-cisco-wlc-snmp-ap-status` |
+| [AP users](#network-cisco-wlc-snmp-ap-users) | `network-cisco-wlc-snmp-ap-users` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) (inherited from `Cisco-Catalyst-Switch`) | `network-cisco-standard-snmp-environment-catalyst` |
+| [Load](#network-cisco-standard-snmp-load) (inherited from `Cisco-Catalyst-Switch`) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) (inherited from `Cisco-Catalyst-Switch`) | `network-cisco-standard-snmp-memory-catalyst` |
+| [ARP](#network-cisco-standard-snmp-arp) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-cisco-wlc-snmp-cpu) | `network-cisco-wlc-snmp-cpu` |
+| [Hardware status](#network-cisco-wlc-snmp-hardware) | `network-cisco-wlc-snmp-hardware` |
+| [Interfaces](#network-cisco-wlc-snmp-interfaces) | `network-cisco-wlc-snmp-interfaces` |
+| [Memory](#network-cisco-wlc-snmp-memory) | `network-cisco-wlc-snmp-memory` |
+| [Radius Accounting Servers](#network-cisco-wlc-snmp-radius-acc-servers) | `network-cisco-wlc-snmp-radius-acc-servers` |
+| [Radius Authentication Servers](#network-cisco-wlc-snmp-radius-auth-servers) | `network-cisco-wlc-snmp-radius-auth-servers` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP channel interference {/* #network-cisco-wlc-snmp-ap-channel-interference */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-INTERFERENCE-UTIL` | `80` | Threshold warning interference util (%) |
+| `CRITICAL-INTERFERENCE-UTIL` | `90` | Threshold critical interference util (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='interference-util' |
+| `FILTER-NAME` |  | Filter access point name (can be a regexp) |
+| `FILTER-GROUP` |  | Filter access point group (can be a regexp) |
+| `FILTER-CHANNEL` |  | Filter channel (can be a regexp). Example: --filter-channel='slot0\:channel3' |
+| `WARNING-INTERFERENCE-POWER` |  | Threshold warning interference power |
+| `CRITICAL-INTERFERENCE-POWER` |  | Threshold critical interference power |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoint.interference.power.count` |  | interference power | `WARNING-INTERFERENCE-POWER`, `CRITICAL-INTERFERENCE-POWER` |
+| `accesspoint.interference.utilization.percentage` | `%` | interference utilization:  %% | `WARNING-INTERFERENCE-UTIL`, `CRITICAL-INTERFERENCE-UTIL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP channel noise {/* #network-cisco-wlc-snmp-ap-channel-noise */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-NOISE-POWER` | `-120:-60` | Threshold warning noise power (dBm) |
+| `CRITICAL-NOISE-POWER` | `-120:-50` | Threshold critical noise power (dBm) |
+| `FILTER-NAME` |  | Filter access point name (can be a regexp) |
+| `FILTER-GROUP` |  | Filter access point group (can be a regexp) |
+| `FILTER-CHANNEL` |  | Filter channel (can be a regexp). Example: --filter-channel='slot0\:channel3' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoint.noise.power.dbm` | `dBm` | noise power:  dBm | `WARNING-NOISE-POWER`, `CRITICAL-NOISE-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP status {/* #network-cisco-wlc-snmp-ap-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-DISABLED` | `0` | Threshold warning total disabled |
+| `CRITICAL-TOTAL-DISASSOCIATING` | `0` | Threshold critical total disassociating |
+| `CRITICAL-STATUS` | `'%{admstatus} eq "enable" and %{opstatus} !~ /associated\|downloading/'` | Set critical threshold for status (Default: '%\{admstatus\} eq "enable" and %\{opstatus\} !~ /associated\|downloading/'). Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{display\} |
+| `CRITICAL-RADIO-INTERFACE-CHANNELS-UTILIZATION` | `95` | Threshold critical radio interface channels utilization |
+| `WARNING-RADIO-INTERFACE-CHANNELS-UTILIZATION` | `90` | Threshold warning radio interface channels utilization |
+| `CRITICAL-RADIO-STATUS` | `'%{admstatus} eq "enable" and %{opstatus} eq "down"'` | Set critical threshold for status (Default: '%\{admstatus\} eq "enable" and %\{opstatus\} eq "down"'). Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{display\} |
+| `CRITICAL-TOTAL` | `1:` | Threshold critical total |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^total-disassociating\|total-associated$' |
+| `FILTER-NAME` |  | Filter access point name (can be a regexp) |
+| `FILTER-GROUP` |  | Filter access point group (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{display\} |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `WARNING-TOTAL-ASSOCIATED` |  | Threshold warning total associated |
+| `WARNING-TOTAL-DISASSOCIATING` |  | Threshold warning total disassociating |
+| `WARNING-TOTAL-DOWNLOADING` |  | Threshold warning total downloading |
+| `WARNING-TOTAL-ENABLED` |  | Threshold warning total enabled |
+| `CRITICAL-TOTAL-ASSOCIATED` |  | Threshold critical total associated |
+| `CRITICAL-TOTAL-DOWNLOADING` |  | Threshold critical total downloading |
+| `CRITICAL-TOTAL-ENABLED` |  | Threshold critical total enabled |
+| `CRITICAL-TOTAL-DISABLED` |  | Threshold critical total disabled |
+| `WARNING-RADIO-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{display\} |
+| `EXCLUDE-NAME` |  | Exclude access point by name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoints.total.count` |  | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `accesspoints.associated.count` |  | associated | `WARNING-TOTAL-ASSOCIATED`, `CRITICAL-TOTAL-ASSOCIATED` |
+| `accesspoints.disassociating.count` |  | disassociating | `WARNING-TOTAL-DISASSOCIATING`, `CRITICAL-TOTAL-DISASSOCIATING` |
+| `accesspoints.downloading.count` |  | downloading | `WARNING-TOTAL-DOWNLOADING`, `CRITICAL-TOTAL-DOWNLOADING` |
+| `accesspoints.enabled.count` |  | enabled | `WARNING-TOTAL-ENABLED`, `CRITICAL-TOTAL-ENABLED` |
+| `accesspoints.disabled.count` |  | disabled | `WARNING-TOTAL-DISABLED`, `CRITICAL-TOTAL-DISABLED` |
+| `accesspoint.radio.interface.channels.utilization.percentage` | `%` | channels utilization:  %% | `WARNING-RADIO-INTERFACE-CHANNELS-UTILIZATION`, `CRITICAL-RADIO-INTERFACE-CHANNELS-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP users {/* #network-cisco-wlc-snmp-ap-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-AAAPENDING` | `0` | Threshold warning total aaapending |
+| `WARNING-TOTAL-BLACKLISTED` | `0` | Threshold warning total blacklisted |
+| `CRITICAL-TOTAL-AAAPENDING` | `5` | Threshold criical total aaapending |
+| `CRITICAL-TOTAL-BLACKLISTED` | `5` | Threshold criical total blacklisted |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^total\|total-idle$' |
+| `FILTER-SSID` |  | Filter by SSID (can be a regexp) |
+| `FILTER-AP` |  | Filter by access point name (can be a regexp) |
+| `FILTER-GROUP` |  | Filter by access point group (can be a regexp) |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `WARNING-TOTAL-IDLE` |  | Threshold warning total idle |
+| `WARNING-TOTAL-AUTHENTICATED` |  | Threshold warning total authenticated |
+| `WARNING-TOTAL-ASSOCIATED` |  | Threshold warning total associated |
+| `WARNING-TOTAL-POWERSAVE` |  | Threshold warning total powersave |
+| `WARNING-TOTAL-DISASSOCIATED` |  | Threshold warning total disassociated |
+| `WARNING-TOTAL-TOBEDELETED` |  | Threshold warning total tobe deleted |
+| `WARNING-TOTAL-PROBING` |  | Threshold warning total probing |
+| `CRITICAL-TOTAL` |  | Threshold criical total |
+| `CRITICAL-TOTAL-IDLE` |  | Threshold criical total idle |
+| `CRITICAL-TOTAL-AUTHENTICATED` |  | Threshold criical total authenticated |
+| `CRITICAL-TOTAL-ASSOCIATED` |  | Threshold criical total associated |
+| `CRITICAL-TOTAL-POWERSAVE` |  | Threshold criical total powersave |
+| `CRITICAL-TOTAL-DISASSOCIATED` |  | Threshold criical total disassociated |
+| `CRITICAL-TOTAL-TOBEDELETED` |  | Threshold criical total tobe deleted |
+| `CRITICAL-TOTAL-PROBING` |  | Threshold criical total probing |
+| `WARNING-SSID` |  | Threshold warning ssid |
+| `WARNING-AP` |  | Threshold warning ap |
+| `CRITICAL-SSID` |  | Threshold criical ssid |
+| `CRITICAL-AP` |  | Threshold criical ap |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `users.total.count` | `users` | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `users.idle.count` | `users` | idle | `WARNING-TOTAL-IDLE`, `CRITICAL-TOTAL-IDLE` |
+| `users.aaapending.count` | `users` | aaaPending | `WARNING-TOTAL-AAAPENDING`, `CRITICAL-TOTAL-AAAPENDING` |
+| `users.authenticated.count` | `users` | authenticated | `WARNING-TOTAL-AUTHENTICATED`, `CRITICAL-TOTAL-AUTHENTICATED` |
+| `users.associated.count` | `users` | associated | `WARNING-TOTAL-ASSOCIATED`, `CRITICAL-TOTAL-ASSOCIATED` |
+| `users.disassociated.count` | `users` | disassociated | `WARNING-TOTAL-DISASSOCIATED`, `CRITICAL-TOTAL-DISASSOCIATED` |
+| `users.powersave.count` | `users` | powersave | `WARNING-TOTAL-POWERSAVE`, `CRITICAL-TOTAL-POWERSAVE` |
+| `users.tobedeleted.count` | `users` | to be deleted | `WARNING-TOTAL-TOBEDELETED`, `CRITICAL-TOTAL-TOBEDELETED` |
+| `users.probing.count` | `users` | probing | `WARNING-TOTAL-PROBING`, `CRITICAL-TOTAL-PROBING` |
+| `users.blacklisted.count` | `users` | blacklisted | `WARNING-TOTAL-BLACKLISTED`, `CRITICAL-TOTAL-BLACKLISTED` |
+| `ssid.users.total.count` | `users` | users | `WARNING-SSID`, `CRITICAL-SSID` |
+| `accesspoint.users.total.count` | `users` | users | `WARNING-AP`, `CRITICAL-AP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-cisco-wlc-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION` | `80` | Threshold warning CPU utilization (%) |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Threshold critical CPU utilization (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | cpu usage is: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-cisco-wlc-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'psu' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=psu) Can also exclude specific instance: --filter=psu,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,WARNING,not operational' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-wlc-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` | Ram used:  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #network-cisco-standard-snmp-environment-catalyst */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `sensor.celsius,\d01\d,60` | Set warning threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'temperature', 'voltage', 'module', 'physical', 'sensor' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(up\|normal)$)' |
+| `CRITICAL` |  | Set critical threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `FILTER2` |  | Exclude the items given as a comma-separated list (example: --filter=fan --filter=psu). You can also exclude items from specific instances: --filter=fan,1 |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-cisco-standard-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CORE-LOAD-1M` |  | Threshold warning load 1 minute |
+| `WARNING-CORE-LOAD-5M` | `70` | Threshold warning load 5 minute |
+| `WARNING-CORE-LOAD-15M` |  | Threshold warning load 15 minute |
+| `CRITICAL-CORE-LOAD-1M` |  | Threshold critical load 1 minute |
+| `CRITICAL-CORE-LOAD-5M` | `85` | Threshold critical load 5 minute |
+| `CRITICAL-CORE-LOAD-15M` |  | Threshold critical load 15 minute |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `core.cpu.load.1m.count` |  | (1m) | `WARNING-CORE-LOAD-1M`, `CRITICAL-CORE-LOAD-1M` |
+| `core.cpu.load.5m.count` |  | (5m) | `WARNING-CORE-LOAD-5M`, `CRITICAL-CORE-LOAD-5M` |
+| `core.cpu.load.15m.count` |  | (15m) | `WARNING-CORE-LOAD-15M`, `CRITICAL-CORE-LOAD-15M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-standard-snmp-memory-catalyst */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CHECK-ORDER` | `process,pool,enhanced_pool,system_ext` | Check memory in standard cisco mib. If you have some issue (wrong memory information in a specific mib), you can change the order (Default: 'enhanced_pool,pool,process,system_ext') |
+| `FILTER-POOL` |  | Filter pool to check (can use regexp) |
+| `WARNING-USAGE` |  | Threshold warning in percent |
+| `CRITICAL-USAGE` |  | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ARP {/* #network-cisco-standard-snmp-arp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DUPLICATE-IPADDR` | `0` | Threshold warning Duplicate IP addresses |
+| `CRITICAL-DUPLICATE-IPADDR` | `10` | Threshold critical Duplicate IP addresses |
+| `WARNING-TOTAL-ENTRIES` |  | Threshold warning Total entries |
+| `WARNING-DUPLICATE-MACADDR` |  | Threshold warning Duplicate MAC addresses |
+| `CRITICAL-TOTAL-ENTRIES` |  | Threshold critical Total entries |
+| `CRITICAL-DUPLICATE-MACADDR` |  | Threshold critical Duplicate MAC addresses |
+| `FILTER-IPADDR` |  | Filter ip addresses (can be a regexp) |
+| `FILTER-MACADDR` |  | Filter mac addresses (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `arp.total.entries.count` |  | total entries | `WARNING-TOTAL-ENTRIES`, `CRITICAL-TOTAL-ENTRIES` |
+| `arp.duplicate.macaddr.count` |  | duplicate mac address | `WARNING-DUPLICATE-MACADDR`, `CRITICAL-DUPLICATE-MACADDR` |
+| `arp.duplicate.ipaddr.count` |  | duplicate ip address | `WARNING-DUPLICATE-IPADDR`, `CRITICAL-DUPLICATE-IPADDR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Configuration status {/* #network-cisco-standard-snmp-configuration */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-CONFIG-RUNNING-AHEAD` | `14400` | Set critical threshold in seconds configuration running ahead |
+| `WARNING-CONFIG-RUNNING-AHEAD` | `3600` | Set warning threshold in seconds configuration running ahead |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `configuration.running.ahead.since.seconds` | `s` |  | `WARNING-CONFIG-RUNNING-AHEAD`, `CRITICAL-CONFIG-RUNNING-AHEAD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-cisco-standard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CHECK-ORDER` | `process,old_sys,system_ext` | Check cpu in standard cisco mib. If you have some issue (wrong cpu information in a specific mib), you can change the order (Default: 'process,old_sys,system_ext') |
+| `WARNING-AVERAGE-1M` | `85` | Threshold warning Average 1 min |
+| `WARNING-AVERAGE-5M` | `80` | Threshold warning Average 5 min |
+| `CRITICAL-AVERAGE-1M` | `95` | Threshold warning Average 1 min |
+| `CRITICAL-AVERAGE-5M` | `90` | Threshold warning Average 5 min |
+| `WARNING-CORE-5s` |  | Threshold warning Core 5 sec |
+| `WARNING-CORE-1M` |  | Threshold warning Core 1 min |
+| `WARNING-CORE-5M` |  | Threshold warning Core 5 min |
+| `WARNING-AVERAGE-5s` |  | Threshold warning Average 5 sec |
+| `CRITICAL-CORE-5s` |  | Threshold warning Core 5 sec |
+| `CRITICAL-CORE-1M` |  | Threshold warning Core 1 min |
+| `CRITICAL-CORE-5M` |  | Threshold warning Core 5 min |
+| `CRITICAL-AVERAGE-5s` |  | Threshold warning Average 5 sec |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-AVERAGE-5s`, `CRITICAL-AVERAGE-5s` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-AVERAGE-1M`, `CRITICAL-AVERAGE-1M` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-AVERAGE-5M`, `CRITICAL-AVERAGE-5M` |
+| `core.cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-CORE-5s`, `CRITICAL-CORE-5s` |
+| `core.cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-CORE-1M`, `CRITICAL-CORE-1M` |
+| `core.cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-CORE-5M`, `CRITICAL-CORE-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #network-cisco-standard-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'temperature', 'voltage', 'module', 'physical', 'sensor' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(up\|normal)$)' |
+| `WARNING` |  | Set warning threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `FILTER2` |  | Exclude the items given as a comma-separated list (example: --filter=fan --filter=psu). You can also exclude items from specific instances: --filter=fan,1 |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-standard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CHECK-ORDER` | `enhanced_pool,pool,process,system_ext` | Check memory in standard cisco mib. If you have some issue (wrong memory information in a specific mib), you can change the order (Default: 'enhanced_pool,pool,process,system_ext') |
+| `WARNING-USAGE` | `85` | Threshold warning in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical in percent |
+| `FILTER-POOL` |  | Filter pool to check (can use regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory flash {/* #network-cisco-standard-snmp-memory-flash */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `FILTER-NAME` | `'^((?!webui\|ucode0).)*$'` | Filter partition name (can be a regexp) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.flash.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.flash.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.flash.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-cisco-standard-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-cisco-wlc-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `INTERFACE` | `.*` | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Radius Accounting Servers {/* #network-cisco-wlc-snmp-radius-acc-servers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ACCSERVERS-ROUNDTRIP-TIME` | `50000` | Threshold warning accservers roundtrip time (µs) |
+| `WARNING-ACCSERVERS-CLIENTS-TIMEOUT` | `0` | Threshold warning accservers clients timeout |
+| `CRITICAL-ACCSERVERS-ROUNDTRIP-TIME` | `200000` | Threshold critical accservers roundtrip time (µs) |
+| `CRITICAL-ACCSERVERS-CLIENTS-TIMEOUT` | `5` | Threshold critical accservers clients timeout |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^total$' |
+| `FILTER-NAME` |  | Filter radius servers by name (can be a regexp) |
+| `WARNING-ACCSERVERS-TOTAL` |  | Threshold warning accservers total |
+| `WARNING-ACCSERVERS-PACKETS-SENT` |  | Threshold warning accservers packets sent |
+| `WARNING-ACCSERVERS-PACKETS-RECEIVED` |  | Threshold warning accservers packets received |
+| `CRITICAL-ACCSERVERS-TOTAL` |  | Threshold critical accservers total |
+| `CRITICAL-ACCSERVERS-PACKETS-SENT` |  | Threshold critical accservers packets sent |
+| `CRITICAL-ACCSERVERS-PACKETS-RECEIVED` |  | Threshold critical accservers packets received |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `radius.accservers.total.count` |  | total accounting servers | `WARNING-ACCSERVERS-TOTAL`, `CRITICAL-ACCSERVERS-TOTAL` |
+| `radius.accservers.roundtrip.time.milliseconds` | `ms` | round trip time:  ms | `WARNING-ACCSERVERS-ROUNDTRIP-TIME`, `CRITICAL-ACCSERVERS-ROUNDTRIP-TIME` |
+| `radius.accservers.packets.sent.persecond` | `/s` | packets sent: /s | `WARNING-ACCSERVERS-PACKETS-SENT`, `CRITICAL-ACCSERVERS-PACKETS-SENT` |
+| `radius.accservers.packets.received.persecond` | `/s` | packets received: /s | `WARNING-ACCSERVERS-PACKETS-RECEIVED`, `CRITICAL-ACCSERVERS-PACKETS-RECEIVED` |
+| `radius.accservers.clients.timeout.count` |  | clients timeout | `WARNING-ACCSERVERS-CLIENTS-TIMEOUT`, `CRITICAL-ACCSERVERS-CLIENTS-TIMEOUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Radius Authentication Servers {/* #network-cisco-wlc-snmp-radius-auth-servers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AUTHSERVER-ROUNDTRIP-TIME` | `50000` | Threshold warning authserver roundtrip time (µs) |
+| `WARNING-AUTHSERVER-CLIENTS-TIMEOUT` | `0` | Threshold warning authserver clients timeout |
+| `CRITICAL-AUTHSERVER-ROUNDTRIP-TIME` | `200000` | Threshold warning authserver roundtrip time (µs) |
+| `CRITICAL-AUTHSERVER-CLIENTS-TIMEOUT` | `5` | Threshold warning authserver clients timeout |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^total$' |
+| `FILTER-NAME` |  | Filter radius servers by name (can be a regexp) |
+| `WARNING-AUTHSERVERS-TOTAL` |  | Threshold warning authservers total |
+| `WARNING-AUTHSERVER-PACKETS-ACCESS-REQUESTS` |  | Threshold warning authserver packets access requests |
+| `WARNING-AUTHSERVER-PACKETS-ACCESS-ACCEPTS` |  | Threshold warning authserver packets access accepts |
+| `CRITICAL-AUTHSERVERS-TOTAL` |  | Threshold warning authservers total |
+| `CRITICAL-AUTHSERVER-PACKETS-ACCESS-REQUESTS` |  | Threshold warning authserver packets access requests |
+| `CRITICAL-AUTHSERVER-PACKETS-ACCESS-ACCEPTS` |  | Threshold warning authserver packets access accepts |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `radius.authservers.total.count` |  | total authentication servers | `WARNING-AUTHSERVERS-TOTAL`, `CRITICAL-AUTHSERVERS-TOTAL` |
+| `radius.authserver.roundtrip.time.microseconds` | `µs` | round trip time:  µs | `WARNING-AUTHSERVER-ROUNDTRIP-TIME`, `CRITICAL-AUTHSERVER-ROUNDTRIP-TIME` |
+| `radius.authserver.packets.access.requests.persecond` | `/s` | access requests: /s | `WARNING-AUTHSERVER-PACKETS-ACCESS-REQUESTS`, `CRITICAL-AUTHSERVER-PACKETS-ACCESS-REQUESTS` |
+| `radius.authserver.packets.access.accepts.persecond` | `/s` | access accepts: /s | `WARNING-AUTHSERVER-PACKETS-ACCESS-ACCEPTS`, `CRITICAL-AUTHSERVER-PACKETS-ACCESS-ACCEPTS` |
+| `radius.authserver.clients.timeout.count` |  | clients timeout | `WARNING-AUTHSERVER-CLIENTS-TIMEOUT`, `CRITICAL-AUTHSERVER-CLIENTS-TIMEOUT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Command `network-cisco-wlc-snmp-ap-status`
+    - Option `--include-name=$_SERVICEFILTER-NAME$` added
+    - Option `--exclude-name=$_SERVICEEXCLUDE-NAME$` added
+    - Option `--filter-name=$_SERVICEFILTER-NAME$` removed
+    - Macro `EXCLUDE-NAME` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260100 - 20260311</summary>
+
+- Command `network-cisco-wlc-snmp-hardware`
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `CRITICAL` removed
+    - Macro `WARNING` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `network-cisco-wlc-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Macro `SNMPAUTH-PASSPHRASE` added
+    - Macro `SNMPAUTH-PROTOCOL` added
+    - Macro `SNMPPRIV-PASSPHRASE` added
+    - Macro `SNMPPRIV-PROTOCOL` added
+    - Macro `SNMPTIMEOUT` added
+    - Macro `SNMPUSERNAME` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `CRITICAL` added
+    - Macro `NO-COMPONENT` added
+    - Macro `WARNING` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241206 - 20250115</summary>
+
+- Host template `Cisco-WLC-Catalyst`
+    - Renamed from `Cisco-WLC-IOS`
+    - Parent templates changed from `Cisco-Standard-Switch, generic-host` to `Cisco-Catalyst-Switch, Cisco-Standard-Switch, generic-host`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241011 - 20241207</summary>
+
+- Service template [`network-cisco-wlc-snmp-ap-status`](#network-cisco-wlc-snmp-ap-status)
+    - Macro `CRITICAL-TOTAL` added (default `1:`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240531</summary>
+
+- Service template [`network-cisco-wlc-snmp-radius-acc-servers`](#network-cisco-wlc-snmp-radius-acc-servers)
+    - Macro `WARNING-ACCSERVERS-ROUNDTRIP-TIME`: default changed from `50` to `50000`
+    - Macro `CRITICAL-ACCSERVERS-ROUNDTRIP-TIME`: default changed from `200` to `200000`
+- Service template [`network-cisco-wlc-snmp-radius-auth-servers`](#network-cisco-wlc-snmp-radius-auth-servers)
+    - Macro `WARNING-AUTHSERVER-ROUNDTRIP-TIME`: default changed from `50` to `50000`
+    - Macro `CRITICAL-AUTHSERVER-ROUNDTRIP-TIME`: default changed from `200` to `200000`
+
+</details>

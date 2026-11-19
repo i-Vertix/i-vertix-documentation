@@ -1,0 +1,411 @@
+---
+title: "Dell EquaLogic"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dell.png";
+
+<PluginPackHeader name="Dell EquaLogic" image={image} category="Storage" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Dell EqualLogic storage through SNMP: array, pool and disk usage, hardware status, interfaces, NTP time and uptime.
+
+The plugin pack provides these checks:
+
+* [Array usage](#storage-dell-equallogic-snmp-array-usage)
+* [Disk usage](#storage-dell-equallogic-snmp-disk-usage)
+* [Hardware](#storage-dell-equallogic-snmp-hardware)
+* [Interfaces](#storage-dell-equallogic-snmp-interfaces)
+* [NTP time](#storage-dell-equallogic-snmp-time)
+* [Pool usage](#storage-dell-equallogic-snmp-pool-usage)
+* [Uptime](#storage-dell-equallogic-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#storage-dell-equallogic-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Dell-Equallogic
+
+*Dell Equallogic* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Array usage](#storage-dell-equallogic-snmp-array-usage) | `storage-dell-equallogic-snmp-array-usage` |
+| [Disk usage](#storage-dell-equallogic-snmp-disk-usage) | `storage-dell-equallogic-snmp-disk-usage` |
+| [Hardware](#storage-dell-equallogic-snmp-hardware) | `storage-dell-equallogic-snmp-hardware` |
+| [Interfaces](#storage-dell-equallogic-snmp-interfaces) | `storage-dell-equallogic-snmp-interfaces` |
+| [Pool usage](#storage-dell-equallogic-snmp-pool-usage) | `storage-dell-equallogic-snmp-pool-usage` |
+| [NTP time](#storage-dell-equallogic-snmp-time) | `storage-dell-equallogic-snmp-time` |
+| [Uptime](#storage-dell-equallogic-snmp-uptime) | `storage-dell-equallogic-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Array usage {/* #storage-dell-equallogic-snmp-array-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter array name (can be a regexp) |
+| `WARNING-USED` | `90` | Threshold warning used (%) |
+| `WARNING-GLOBAL-READ-AVG-LATENCY` | `250` | Threshold warning global read average latency (ms) |
+| `WARNING-GLOBAL-WRITE-AVG-LATENCY` | `250` | Threshold warning global write average latency (ms) |
+| `WARNING-READ-AVG-LATENCY` | `250` | Threshold warning read average latency (ms) |
+| `WARNING-WRITE-AVG-LATENCY` | `250` | Threshold warning write average latency (ms) |
+| `CRITICAL-USED` | `95` | Threshold warning used (%) |
+| `CRITICAL-GLOBAL-READ-AVG-LATENCY` | `500` | Threshold warning global read average latency (ms) |
+| `CRITICAL-GLOBAL-WRITE-AVG-LATENCY` | `500` | Threshold warning global write average latency (ms) |
+| `CRITICAL-READ-AVG-LATENCY` | `500` | Threshold warning read average latency (ms) |
+| `CRITICAL-WRITE-AVG-LATENCY` | `500` | Threshold warning write average latency (ms) |
+| `WARNING-SNAPSHOT` |  | Threshold warning snapshot (B) |
+| `WARNING-REPLICATION` |  | Threshold warning replication (B) |
+| `WARNING-CONNECTIONS` |  | Threshold warning connections |
+| `WARNING-EXT-CONNECTIONS` |  | Threshold warning ext connections |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops (iops) |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops (iops) |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in (b/s) |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic in (b/s) |
+| `CRITICAL-SNAPSHOT` |  | Threshold warning snapshot (B) |
+| `CRITICAL-REPLICATION` |  | Threshold warning replication (B) |
+| `CRITICAL-CONNECTIONS` |  | Threshold warning connections |
+| `CRITICAL-EXT-CONNECTIONS` |  | Threshold warning ext connections |
+| `CRITICAL-READ-IOPS` |  | Threshold warning read iops (iops) |
+| `CRITICAL-WRITE-IOPS` |  | Threshold warning write iops (iops) |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold warning traffic in (b/s) |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold warning traffic in (b/s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `snapshost` | `B` | Snapshot usage | `WARNING-SNAPSHOT`, `CRITICAL-SNAPSHOT` |
+| `replication` | `B` | Replication usage | `WARNING-REPLICATION`, `CRITICAL-REPLICATION` |
+| `connections` |  | iSCSI connections | `WARNING-CONNECTIONS`, `CRITICAL-CONNECTIONS` |
+| `ext_connections` |  | External iSCSI connections | `WARNING-EXT-CONNECTIONS`, `CRITICAL-EXT-CONNECTIONS` |
+| `global_read_avg_latency` | `ms` | Global read average latency :  ms | `WARNING-GLOBAL-READ-AVG-LATENCY`, `CRITICAL-GLOBAL-READ-AVG-LATENCY` |
+| `global_write_avg_latency` | `ms` | Global write average latency :  ms | `WARNING-GLOBAL-WRITE-AVG-LATENCY`, `CRITICAL-GLOBAL-WRITE-AVG-LATENCY` |
+| `read_avg_latency` | `ms` | Read average latency :  ms | `WARNING-READ-AVG-LATENCY`, `CRITICAL-READ-AVG-LATENCY` |
+| `write_avg_latency` | `ms` | Write average latency :  ms | `WARNING-WRITE-AVG-LATENCY`, `CRITICAL-WRITE-AVG-LATENCY` |
+| `read_iops` | `iops` | Read IOPs | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `write_iops` | `iops` | Write IOPs | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `traffic_in` | `b/s` | Traffic In :  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `traffic_out` | `b/s` | Traffic Out :  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk usage {/* #storage-dell-equallogic-snmp-disk-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter disk name (can be a regexp) |
+| `WARNING-BUSY-TIME` | `2` | Threshold warning busy time (s) |
+| `CRITICAL-STATUS` | `'%{status} !~ /on-line\|spare\|off-line/i'` | Set critical threshold for status (Default: '%\{status\} !~ /on-line\|spare\|off-line/i'). Can used special variables like: %\{health\}, %\{status\}, %\{display\} |
+| `CRITICAL-BUSY-TIME` | `5` | Threshold critical busy time (s) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status (Default: ''). Can used special variables like: %\{health\}, %\{status\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{health\}, %\{status\}, %\{display\} |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops (iops) |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops (iops) |
+| `CRITICAL-READ-IOPS` |  | Threshold critical read iops (iops) |
+| `CRITICAL-WRITE-IOPS` |  | Threshold critical write iops (iops) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `read_iops` | `B/s` | read:  /s |  |
+| `write` | `B/s` | write:  /s |  |
+| `busy_time` | `s` | time busy:  sec | `WARNING-BUSY-TIME`, `CRITICAL-BUSY-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #storage-dell-equallogic-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` | `.*` | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'temperature', 'raid', 'disk', 'health' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax:             section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(normal)$)' |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #storage-dell-equallogic-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERFACE` | `.*` | Interface name - you can use regex |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pool usage {/* #storage-dell-equallogic-snmp-pool-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter pool name (can be a regexp) |
+| `WARNING-USED` | `90` | Threshold warning used (%) |
+| `CRITICAL-USED` | `95` | Threshold critical used (%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP time {/* #storage-dell-equallogic-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Time offset warning threshold (in seconds) |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #storage-dell-equallogic-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Command `storage-dell-equallogic-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-dell-equallogic-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>

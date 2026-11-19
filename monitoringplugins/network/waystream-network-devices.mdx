@@ -1,0 +1,594 @@
+---
+title: "Waystream network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Waystream.png";
+
+<PluginPackHeader name="Waystream network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Waystream network devices through SNMP: CPU and memory usage, hardware, SFP port status, interfaces, TCP and UDP connections, NTP and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-waystream-snmp-cpu)
+* [CPU detailed](#network-waystream-snmp-cpu-detailed)
+* [Hardware](#network-waystream-snmp-hardware)
+* [Interfaces](#network-waystream-snmp-interfaces)
+* [Memory](#network-waystream-snmp-memory)
+* [NTP](#network-waystream-snmp-time)
+* [SFP port status](#network-waystream-snmp-sfp-port-status)
+* [TCP connections](#network-waystream-snmp-tcpcon)
+* [UDP connections](#network-waystream-snmp-udpcon)
+* [Uptime](#network-waystream-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-waystream-snmp-interfaces) | `Interface - <name>` |
+| [SFP port status](#network-waystream-snmp-sfp-port-status) | `SFP port <number> - <interface_name> - status` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Waystream-Switch
+
+*Waystream Switch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-waystream-snmp-cpu) | `network-waystream-snmp-cpu` |
+| [CPU detailed](#network-waystream-snmp-cpu-detailed) | `network-waystream-snmp-cpu-detailed` |
+| [Hardware](#network-waystream-snmp-hardware) | `network-waystream-snmp-hardware` |
+| [Memory](#network-waystream-snmp-memory) | `network-waystream-snmp-memory` |
+| [TCP connections](#network-waystream-snmp-tcpcon) | `network-waystream-snmp-tcpcon` |
+| [NTP](#network-waystream-snmp-time) | `network-waystream-snmp-time` |
+| [UDP connections](#network-waystream-snmp-udpcon) | `network-waystream-snmp-udpcon` |
+| [Uptime](#network-waystream-snmp-uptime) | `network-waystream-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-waystream-snmp-interfaces) | `network-waystream-snmp-interfaces` |
+| [SFP port status](#network-waystream-snmp-sfp-port-status) | `network-waystream-snmp-sfp-port-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-waystream-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `85` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #network-waystream-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `WARNING-AVERAGE` | `85` | Warning threshold average CPU utilization. *(not used by the check command)* |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization. *(not used by the check command)* |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-waystream-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `COMPONENT` |  | Which component to check (default: '.*'). Can be: 'temperature', 'fan', 'temperature', 'voltage' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature --filter=fan) Can also exclude specific instance: --filter=fan,1 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,CRITICAL,^(?!(ok)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-waystream-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Warning threhold memory usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Critical  threhold memory usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE` |  | Warning threhold memory usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threhold memory usage free (B) |
+| `CRITICAL-USAGE` |  | Critical  threhold memory usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical  threhold memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` | Ram Total: %\{total\|storage\} Used: %\{used\|storage\} (%\{prct_used\|\}%%) Free: %\{free\|storage\} (%\{prct_free\|\}%%) | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` | Ram Total: %\{total\|storage\} Used: %\{used\|storage\} (%\{prct_used\|\}%%) Free: %\{free\|storage\} (%\{prct_free\|\}%%) | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` | Ram Total: %\{total\|storage\} Used: %\{used\|storage\} (%\{prct_used\|\}%%) Free: %\{free\|storage\} (%\{prct_free\|\}%%) | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP connections {/* #network-waystream-snmp-tcpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.tcp.count` |  |  |  |
+| `application.connections.tcp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #network-waystream-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### UDP connections {/* #network-waystream-snmp-udpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.udp.count` |  |  |  |
+| `application.connections.udp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-waystream-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-waystream-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SFP port status {/* #network-waystream-snmp-sfp-port-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `%{status} =~ /ok/ && (%{temp_status} =~ /unknown/ \|\| %{tx_power_status} =~ /unknown/ \|\| %{rx_power_status} =~ /unknown/ \|\| %{bias_status} =~ /unknown/ \|\| %{volt_status} =~ /unknown/)` | %\{status\} =~ /ok/ && (%\{temp_status\} =~ /unknown/ \|\| %\{tx_power_status\} =~ /unknown/ \|\| %\{rx_power_status\} =~ /unknown/ \|\| %\{bias_status\} =~ /unknown/ \|\| %\{volt_status\} =~ /unknown/) |
+| `WARNING-STATUS` | `%{temp_status} =~ /warn/ \|\| %{tx_power_status} =~ /warn/ \|\| %{rx_power_status} =~ /warn/ \|\| %{bias_status} =~ /warn/ \|\| %{volt_status} =~ /warn/` | %\{temp_status\} =~ /warn/ \|\| %\{tx_power_status\} =~ /warn/ \|\| %\{rx_power_status\} =~ /warn/ \|\| %\{bias_status\} =~ /warn/ \|\| %\{volt_status\} =~ /warn/ |
+| `CRITICAL-STATUS` | `%{status} =~ /invalid/ \|\| %{temp_status} =~ /alarm/ \|\| %{tx_power_status} =~ /alarm/ \|\| %{rx_power_status} =~ /alarm/ \|\| %{bias_status} =~ /alarm/ \|\| %{volt_status} =~ /alarm/` | %\{status\} =~ /invalid/ \|\| %\{temp_status\} =~ /alarm/ \|\| %\{tx_power_status\} =~ /alarm/ \|\| %\{rx_power_status\} =~ /alarm/ \|\| %\{bias_status\} =~ /alarm/ \|\| %\{volt_status\} =~ /alarm/ |
+| `FILTER-PORT` |  | Filter ports by index (can be a regexp). |
+| `WARNING-RX-INPUT-POWER` |  | Warning threshold for measured RX power (mW) |
+| `CRITICAL-RX-INPUT-POWER` |  | Critical threshold for measured RX power (mW) |
+| `WARNING-RX-INPUT-POWER-DBM` |  | Warning threshold for measured RX power (dBm) |
+| `CRITICAL-RX-INPUT-POWER-DBM` |  | Critical threshold for measured RX power (dBm) |
+| `WARNING-TX-OUTPUT-POWER` |  | Warning threshold for measured TX power (mW) |
+| `CRITICAL-TX-OUTPUT-POWER` |  | Critical threshold for measured TX power (mW) |
+| `WARNING-TX-OUTPUT-POWER-DBM` |  | Warning threshold for measured TX power (dBm) |
+| `CRITICAL-TX-OUTPUT-POWER-DBM` |  | Critical threshold for measured TX power (dBm) |
+| `WARNING-BIAS-CURRENT` |  | Warning threshold for measured TX current (mA) |
+| `CRITICAL-BIAS-CURRENT` |  | Critical threshold for measured TX current (mA) |
+| `WARNING-TEMPERATURE` |  | Warning threshold for temperature celsius degrees |
+| `CRITICAL-TEMPERATURE` |  | Critical threshold for temperature celsius degrees |
+| `WARNING-VOLT` |  | Warning threshold for voltage (V) |
+| `CRITICAL-VOLT` |  | Critical threshold for voltage (V) |
+| `WARNING-BITRATE` |  | Warning threshold for bitrate (b/s) |
+| `CRITICAL-BITRATE` |  | Critical threshold for bitrate (b/s) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-INTERFACE` |  | Filter ports by interface name (can be a regexp). Can be used only together with --add-interface-name. |
+| `EXCLUDE-INTERFACE` |  | Excludes ports by interface name (can be a regexp). Can be used only together with --add-interface-name. |
+| `EXCLUDE-PORT` |  | Excludes ports by index (can be a regexp). |
+| `EXCLUDE-SERIAL` |  | Excludes ports by serial (can be a regexp). |
+| `INCLUDE-SERIAL` |  | Filter ports by serial (can be a regexp). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `port.input.power.milliwatt` | `mW` | input power:  mW | `WARNING-RX-INPUT-POWER`, `CRITICAL-RX-INPUT-POWER` |
+| `port.input.power.dbm` | `dBm` | input power:  dBm | `WARNING-RX-INPUT-POWER-DBM`, `CRITICAL-RX-INPUT-POWER-DBM` |
+| `port.output.power.milliwatt` | `mW` | output power:  mW | `WARNING-TX-OUTPUT-POWER`, `CRITICAL-TX-OUTPUT-POWER` |
+| `port.output.power.dbm` | `dBm` | output power:  dBm | `WARNING-TX-OUTPUT-POWER-DBM`, `CRITICAL-TX-OUTPUT-POWER-DBM` |
+| `port.bias.current.milliampere` | `mA` | Bias Current :  mA | `WARNING-BIAS-CURRENT`, `CRITICAL-BIAS-CURRENT` |
+| `port.bitrate.bitspersecond` | `b/s` | Bitrate :  /s | `WARNING-BITRATE`, `CRITICAL-BITRATE` |
+| `port.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `port.voltage.volt` | `V` | Voltage :  V | `WARNING-VOLT`, `CRITICAL-VOLT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Host template `Waystream-Switch`
+    - Service template `network-waystream-snmp-memory` linked
+- Service template [`network-waystream-snmp-memory`](#network-waystream-snmp-memory)
+    - Service template added
+- Command `network-waystream-snmp-memory`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260500 - 20260529</summary>
+
+- Command `network-waystream-snmp-sfp-port-status`
+    - Option `--include-port=$_SERVICEFILTER-PORT$` added
+    - Option `--exclude-port=$_SERVICEEXCLUDE-PORT$` added
+    - Option `--include-interface=$_SERVICEFILTER-INTERFACE$` added
+    - Option `--exclude-interface=$_SERVICEEXCLUDE-INTERFACE$` added
+    - Option `--include-serial=$_SERVICEINCLUDE-SERIAL$` added
+    - Option `--exclude-serial=$_SERVICEEXCLUDE-SERIAL$` added
+    - Option `--filter-port=$_SERVICEFILTER-PORT$` removed
+    - Option `--filter-interface=$_SERVICEFILTER-INTERFACE$` removed
+    - Macro `EXCLUDE-INTERFACE` added
+    - Macro `EXCLUDE-PORT` added
+    - Macro `EXCLUDE-SERIAL` added
+    - Macro `INCLUDE-SERIAL` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260400 - 20260424</summary>
+
+- Command `network-waystream-snmp-sfp-port-status`
+    - Option `--filter-interface=$_SERVICEFILTER-INTERFACE$` added
+    - Option `--add-interface-name` added
+    - Macro `FILTER-INTERFACE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260331-2</summary>
+
+- Plugin pack `Waystream network devices`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260100 - 20260311</summary>
+
+- Service template [`network-waystream-snmp-cpu`](#network-waystream-snmp-cpu)
+    - Macro `CRITICAL-CORE` added (default *(empty)*)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Plugin pack `Waystream network devices`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20251100 - 20260114`.

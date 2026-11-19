@@ -12,15 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-Cloudwatch.png";
 
 ## Description
 
-### AWS Cloudwatch monitoring
-protocols used: Rest API
+Monitors Amazon CloudWatch alarms and any CloudWatch metric of the AWS services, such as EC2, EBS, ELB, RDS, S3 or Lambda, with freely selectable namespaces, dimensions and thresholds.
 
-- get alarms
-- get metrics
+The plugin pack provides these checks:
 
-### Discovery
-
-- metrics (you need to setup manually the dimension)
+* [Cloudwatch Alarm](#cloud-aws-cloudwatch-get-alarms)
+* [Cloudwatch Metrics](#cloud-aws-cloudwatch-get-metrics)
 
 ## Prerequisites
 
@@ -28,6 +25,18 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Cloudwatch Metrics](#cloud-aws-cloudwatch-get-metrics) | `Metric - <dimension_metric>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

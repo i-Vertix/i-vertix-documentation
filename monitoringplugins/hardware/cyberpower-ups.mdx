@@ -1,0 +1,291 @@
+---
+title: "Cyberpower UPS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cyberpower.png";
+
+<PluginPackHeader name="Cyberpower UPS" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cyberpower UPS devices through SNMP: battery status (charge, voltage, temperature, runtime) and the voltage, frequency and load of the input and output lines.
+
+The plugin pack provides these checks:
+
+* [Battery Status](#hardware-ups-cyberpower-snmp-battery-status)
+* [Input Lines](#hardware-ups-cyberpower-snmp-input-lines)
+* [Output Lines](#hardware-ups-cyberpower-snmp-output-lines)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+
+## Host Templates
+
+### CyberPower-UPS
+
+*CyberPower UPS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Battery Status](#hardware-ups-cyberpower-snmp-battery-status) | `hardware-ups-cyberpower-snmp-battery-status` |
+| [Input Lines](#hardware-ups-cyberpower-snmp-input-lines) | `hardware-ups-cyberpower-snmp-input-lines` |
+| [Output Lines](#hardware-ups-cyberpower-snmp-output-lines) | `hardware-ups-cyberpower-snmp-output-lines` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Battery Status {/* #hardware-ups-cyberpower-snmp-battery-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown\|notPresent/i'` | Set warning threshold for status (Default: '%\{status\} =~ /unknown\|notPresent/i'). Can used special variables like: %\{status\} |
+| `WARNING-STATUS` | `'%{status} =~ /low/i'` | Set warning threshold for status (Default: '%\{status\} =~ /low/i'). Can used special variables like: %\{status\} |
+| `WARNING-CHARGE-REMAINING` | `40:` | Threshold warning charge remaining (%) |
+| `WARNING-TEMPERATURE` | `15:30` | Threshold warning temperature (°C) |
+| `CRITICAL-CHARGE-REMAINING` | `20:` | Threshold critical charge remaining (%) |
+| `CRITICAL-TEMPERATURE` | `10:40` | Threshold critical temperature (°C) |
+| `CRITICAL-STATUS` | `'%{replace} =~ /yes/i'` | Set critical threshold for status (Default: '%\{replace\} =~ /yes/i'). Can used special variables like: %\{status\}, %\{replace\} |
+| `CRITICAL-BATTERY-LIFE-TIME` | `1:` | Threshold critical battery life time in months |
+| `WARNING-BATTERY-LIFE-TIME` | `3:` | Threshold warning battery life time in months |
+| `WARNING-VOLTAGE` |  | Threshold warning voltage (V) |
+| `CRITICAL-VOLTAGE` |  | Threshold critical voltage (V) |
+| `CRITICAL-TIME-ON-BATTERY` |  | Threshold critical time on battery. Use --unit to change the unit |
+| `WARNING-TIME-ON-BATTERY` |  | Threshold warning time on battery. Use --unit to change the unit |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `battery.charge.remaining.percent` | `%` |  | `WARNING-CHARGE-REMAINING`, `CRITICAL-CHARGE-REMAINING` |
+| `battery.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `battery.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Input Lines {/* #hardware-ups-cyberpower-snmp-input-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-VOLTAGE` | `200:245` | Threshold warning voltage |
+| `WARNING-FREQUENCE` | `45:55` | Threshold warning frequence |
+| `CRITICAL-STATUS` | `'%{status} !~ /normal/'` | Set critical threshold for status (Default: '%\{status\} !~ /normal/'). Can used special variables like: %\{status\} |
+| `CRITICAL-VOLTAGE` | `180:255` | Threshold critical voltage |
+| `CRITICAL-FREQUENCE` | `40:60` | Threshold critical frequence |
+| `UNKNOWN-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lines.input.voltage.volt` | `V` | Voltage :  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `lines.input.frequence.hertz` | `Hz` | Frequence :  Hz | `WARNING-FREQUENCE`, `CRITICAL-FREQUENCE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Output Lines {/* #hardware-ups-cyberpower-snmp-output-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set warning threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\} |
+| `WARNING-STATUS` | `'%{status} =~ /rebooting\|onBattery\|onBypass/i'` | Set warning threshold for status (Default: '%\{status\} =~ /rebooting\|onBattery\|onBypass/i'). Can used special variables like: %\{status\} |
+| `WARNING-LOAD` | `80` | Threshold warning load |
+| `WARNING-VOLTAGE` | `210:235` | Threshold warning voltage |
+| `WARNING-FREQUENCE` | `45:55` | Threshold warning frequence |
+| `CRITICAL-LOAD` | `90` | Threshold critical load |
+| `CRITICAL-VOLTAGE` | `200:245` | Threshold critical voltage |
+| `CRITICAL-FREQUENCE` | `40:60` | Threshold critical frequence |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `WARNING-POWER` |  | Threshold warning power |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `CRITICAL-POWER` |  | Threshold critical power |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lines.output.load.percentage` | `%` | Load :  %% | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `lines.output.current.ampere` | `A` | Current :  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `lines.output.voltage.volt` | `V` | Voltage :  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `lines.output.power.watt` | `W` | Power :  W | `WARNING-POWER`, `CRITICAL-POWER` |
+| `lines.output.frequence.hertz` | `Hz` | Frequence :  Hz | `WARNING-FREQUENCE`, `CRITICAL-FREQUENCE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260331-2</summary>
+
+- Plugin pack `Cyberpower UPS`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260301</summary>
+
+- Service template [`hardware-ups-cyberpower-snmp-battery-status`](#hardware-ups-cyberpower-snmp-battery-status)
+    - Macro `CRITICAL-STATUS` added (default `'%{replace} =~ /yes/i'`)
+    - Macro `CRITICAL-BATTERY-LIFE-TIME` added (default `1:`)
+    - Macro `WARNING-BATTERY-LIFE-TIME` added (default `3:`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260120</summary>
+
+- Command `hardware-ups-cyberpower-snmp-battery-status`
+    - Option `--warning-battery-life-time=$_SERVICEWARNING-BATTERY-LIFE-TIME$` added
+    - Option `--critical-battery-life-time=$_SERVICECRITICAL-BATTERY-LIFE-TIME$` added
+    - Option `--warning-timeon=$_SERVICEWARNING-TIME-ON-BATTERY$` added
+    - Option `--critical-timeon=$_SERVICECRITICAL-TIME-ON-BATTERY$` added
+    - Macro `CRITICAL-BATTERY-LIFE-TIME` added
+    - Macro `CRITICAL-TIME-ON-BATTERY` added
+    - Macro `WARNING-BATTERY-LIFE-TIME` added
+    - Macro `WARNING-TIME-ON-BATTERY` added
+
+</details>

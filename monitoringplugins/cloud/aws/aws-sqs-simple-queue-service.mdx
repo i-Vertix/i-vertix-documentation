@@ -12,14 +12,11 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-SQS.png";
 
 ## Description
 
-### AWS SQS (Simple Queue Service)
-protocols used: Rest API
+Monitors Amazon SQS queues through Amazon CloudWatch: messages sent, received, deleted, delayed, visible and not visible, empty receives and the age of the oldest message.
 
-- Queues
+The plugin pack provides these checks:
 
-### Discovery mode
-
-- Queues
+* [SQS queues](#cloud-aws-sqs-queues)
 
 ## Prerequisites
 
@@ -27,6 +24,24 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-SQS](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [SQS queues](#cloud-aws-sqs-queues) | `SQS queue - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

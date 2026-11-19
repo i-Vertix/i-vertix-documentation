@@ -1,0 +1,221 @@
+---
+title: "Podman container"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Podman.png";
+
+<PluginPackHeader name="Podman container" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Podman through its API: container usage, pod status and the state of the system.
+
+The plugin pack provides these checks:
+
+* [Container usage](#apps-podman-restapi-container-usage)
+* [Pod status](#apps-podman-restapi-pod-status)
+* [System status](#apps-podman-restapi-system-status)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Container usage](#apps-podman-restapi-container-usage) | `Container usage - <name>` |
+| [Pod status](#apps-podman-restapi-pod-status) | `Pod status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Podman
+
+*Podman* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/v5.0.0/libpod/` |  |
+| `PORT` | `443` |  |
+| `PROTOCOL` | `https` |  |
+| `TIMEOUT` | `1` |  |
+| `HTTP-BACKEND` | `lwp` |  |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [System status](#apps-podman-restapi-system-status) | `apps-podman-restapi-system-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Container usage](#apps-podman-restapi-container-usage) | `apps-podman-restapi-container-usage` |
+| [Pod status](#apps-podman-restapi-pod-status) | `apps-podman-restapi-pod-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### System status {/* #apps-podman-restapi-system-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-USAGE` | `80` | Threshold warning in percent for CPU usage |
+| `WARNING-UPTIME` | `1800:` | Threshold warning for uptime in seconds |
+| `CRITICAL-CPU-USAGE` | `90` | Threshold critical in percent for CPU usage |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical for uptime in seconds |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning in bytes for memory usage |
+| `WARNING-RUNNING-CONTAINERS` |  | Threshold warning for the number of running containers |
+| `WARNING-STOPPED-CONTAINERS` |  | Threshold warning for the number of stopped containers |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical in bytes for memory usage |
+| `CRITICAL-RUNNING-CONTAINERS` |  | Threshold critical for the number of running containers |
+| `CRITICAL-STOPPED-CONTAINERS` |  | Threshold critical for the number of stopped containers |
+| `WARNING-SWAP-USAGE` |  | Threshold warning in bytes for swap usage |
+| `CRITICAL-SWAP-USAGE` |  | Threshold critical in bytes for swap usage |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Container usage {/* #apps-podman-restapi-container-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-USAGE` | `80` | Threshold warning for CPU usage |
+| `WARNING-CONTAINER-STATE` | `'%{state} =~ /Paused/'` | Define the conditions to match for the state to be WARNING (default: '%\{state\} =~ /Paused/'). You can use the following variables: "%\{state\}" |
+| `CRITICAL-CPU-USAGE` | `90` | Threshold critical for CPU usage |
+| `CRITICAL-CONTAINER-STATE` | `'%{state} =~ /Exited/'` | Define the conditions to match for the state to be CRITICAL (default: '%\{state\} =~ /Exited/'). You can use the following variables: "%\{state\}" |
+| `CONTAINER-NAME` |  |  |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning for memory usage (B) |
+| `WARNING-READ-IO` |  | Threshold warning for read IO |
+| `WARNING-WRITE-IO` |  | Threshold warning for write IO |
+| `WARNING-NETWORK-IN` |  | Threshold warning for network in |
+| `WARNING-NETWORK-OUT` |  | Threshold warning for network out |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical for memory usage (B) |
+| `CRITICAL-READ-IO` |  | Threshold critical for read IO |
+| `CRITICAL-WRITE-IO` |  | Threshold critical for write IO |
+| `CRITICAL-NETWORK-IN` |  | Threshold critical for network in |
+| `CRITICAL-NETWORK-OUT` |  | Threshold critical for network out |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pod status {/* #apps-podman-restapi-pod-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-USAGE` | `80` | Threshold warning for CPU usage |
+| `WARNING-STATE` | `'%{state} =~ /Exited/'` | Define the conditions to match for the state to be WARNING (default: '%\{state\} =~ /Exited/'). You can use the following variables: "%\{state\}" |
+| `CRITICAL-CPU-USAGE` | `90` | Threshold critical for CPU usage |
+| `CRITICAL-STATE` | `'%{state} =~ /Degraded/'` | Define the conditions to match for the state to be CRITICAL (default: '%\{state\} =~ /Degraded/'). You can use the following variables: "%\{state\}" |
+| `POD-NAME` |  |  |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning for memory usage (B) |
+| `WARNING-RUNNING-CONTAINERS` |  | Threshold warning for running containers |
+| `WARNING-STOPPED-CONTAINERS` |  | Threshold warning for stopped containers |
+| `WARNING-PAUSED-CONTAINERS` |  | Threshold warning for paused containers |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical for memory usage (B) |
+| `CRITICAL-RUNNING-CONTAINERS` |  | Threshold critical for running containers |
+| `CRITICAL-STOPPED-CONTAINERS` |  | Threshold critical for stopped containers |
+| `CRITICAL-PAUSED-CONTAINERS` |  | Threshold critical for paused containers |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Plugin pack `Podman container`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20251100 - 20260114`.

@@ -1,0 +1,160 @@
+---
+title: "IBM HMC (Hardware Managemement Console)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/IBM.png";
+
+<PluginPackHeader name="IBM HMC (Hardware Managemement Console)" image={image} category="Hardware" metadata={["SSH"]} />
+
+## Description
+
+Monitors IBM Hardware Management Consoles over SSH: hardware errors and the LED status of the managed systems.
+
+The plugin pack provides these checks:
+
+* [Hardware errors](#hardware-server-ibm-hmc-ssh-hardware-errors)
+* [LED status](#hardware-server-ibm-hmc-ssh-led-status)
+
+
+## Host Templates
+
+### IBM-HMC
+
+*IBM HMC* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` |  | Set the backend used (Default: 'sshcli') Can be: sshcli, plink, libssh |
+| `SSH-PASSWORD` |  | Login with specified password. Cannot be used with sshcli backend |
+| `SSH-PORT` |  | Connect to specified port |
+| `SSH-PRIV-KEY` |  | Private key file for user authentication |
+| `SSH-USERNAME` |  | Connect with specified username |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hardware errors](#hardware-server-ibm-hmc-ssh-hardware-errors) | `hardware-server-ibm-hmc-ssh-hardware-errors` |
+| [LED status](#hardware-server-ibm-hmc-ssh-led-status) | `hardware-server-ibm-hmc-ssh-led-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware errors {/* #hardware-server-ibm-hmc-ssh-hardware-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RETENTION` | `1` | Retention of errors in days |
+| `HMC-COMMAND` | `lssvcevents` | Hmc command to list events (default: lssvcevents) |
+| `FILTER-STATUS` |  | Filter by status ("open" or "closed") (Default : open) |
+| `FILTER-PROBLEM-NUMS` |  | Filter by problem number (several number can be specified, separated by coma) |
+| `FILTER-SYSTEM` |  | Filter by system. The name may either be the user-defined name for the managed system, or be in the form tttt-mmm*ssssssss, where tttt is the machine type, mmm is the model, and ssssssss is the serial number of the managed system |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LED status {/* #hardware-server-ibm-hmc-ssh-led-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-PHYSICAL-STATUS` | `'%{ledstate} =~ /on/'` | Set critical threshold (Default: '%\{ledstate\} =~ /on/'). Can used special variables like: %\{ledstate\}, %\{display\} |
+| `CRITICAL-VIRTUALLPAR-STATUS` | `'%{ledstate} =~ /on/'` | Set critical threshold (Default: '%\{ledstate\} =~ /on/'). Can used special variables like: %\{ledstate\}, %\{display\} |
+| `FILTER-NAME` |  | Filter name (can be a regexp). Format of names: systemname[\:lparname] |
+| `WARNING-PHYSICAL-STATUS` |  | Set warning threshold (Default: ''). Can used special variables like: %\{ledstate\}, %\{display\} |
+| `WARNING-VIRTUALLPAR-STATUS` |  | Set warning threshold (Default: ''). Can used special variables like: %\{ledstate\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240613 - 20240709</summary>
+
+- Service template [`hardware-server-ibm-hmc-ssh-hardware-errors`](#hardware-server-ibm-hmc-ssh-hardware-errors)
+    - Macro `HMC-COMMAND` added (default `lssvcevents`)
+- Service template [`hardware-server-ibm-hmc-ssh-led-status`](#hardware-server-ibm-hmc-ssh-led-status)
+    - Macro `CRITICAL-PHYSICAL-STATUS` added (default `'%{ledstate} =~ /on/'`)
+    - Macro `CRITICAL-VIRTUALLPAR-STATUS` added (default `'%{ledstate} =~ /on/'`)
+- Command `hardware-server-ibm-hmc-ssh-hardware-errors`
+    - Option `--hmc-command=$_SERVICEHMC-COMMAND$` added
+    - Option `--command-hmc=$_SERVICECOMMAND-HMC$` removed
+    - Macro `HMC-COMMAND` added
+    - Macro `COMMAND-HMC` removed
+
+</details>

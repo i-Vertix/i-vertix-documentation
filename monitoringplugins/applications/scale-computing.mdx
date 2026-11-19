@@ -1,0 +1,274 @@
+---
+title: "Scale Computing"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/ScaleComputing.png";
+
+<PluginPackHeader name="Scale Computing" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Scale Computing clusters through the REST API: cluster status, nodes, drives, virtual domains and virtual disk usage.
+
+The plugin pack provides these checks:
+
+* [Cluster status](#apps-scalecomputing-restapi-cluster-status)
+* [Drive usage](#apps-scalecomputing-restapi-drive-usage)
+* [Node usage](#apps-scalecomputing-restapi-node-usage)
+* [Virtual disk usage](#apps-scalecomputing-restapi-virtual-domain-block-device-usage)
+* [Virtual domain status](#apps-scalecomputing-restapi-virtual-domain-status)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Cluster status](#apps-scalecomputing-restapi-cluster-status) | `Cluster status - <cluster_name>` |
+| [Drive usage](#apps-scalecomputing-restapi-drive-usage) | `Drive usage - <uuid>` |
+| [Node usage](#apps-scalecomputing-restapi-node-usage) | `Node usage - <uuid>` |
+| [Drive usage](#apps-scalecomputing-restapi-drive-usage) | `vdomain <vir_domain_name> - block dev <uuid>` |
+| [Virtual domain status](#apps-scalecomputing-restapi-virtual-domain-status) | `Virtual domain status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Scale-Computing
+
+*Scale Computing* · Parent template: `generic-host-tcp-port`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROTOCOL` | `https` | Specify http if needed (default: 'https') |
+| `TIMEOUT` | `30` | Request timeout |
+| `API-PATH` | `/rest/v1` | *(not used by the check command)* |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `API-USERNAME` |  | API username |
+| `TCP-PORT` |  | API TCP port |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#apps-scalecomputing-restapi-cluster-status) | `apps-scalecomputing-restapi-cluster-status` |
+| [Drive usage](#apps-scalecomputing-restapi-drive-usage) | `apps-scalecomputing-restapi-drive-usage` |
+| [Node usage](#apps-scalecomputing-restapi-node-usage) | `apps-scalecomputing-restapi-node-usage` |
+| [Virtual disk usage](#apps-scalecomputing-restapi-virtual-domain-block-device-usage) | `apps-scalecomputing-restapi-virtual-domain-block-device-usage` |
+| [Virtual domain status](#apps-scalecomputing-restapi-virtual-domain-status) | `apps-scalecomputing-restapi-virtual-domain-status` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster status {/* #apps-scalecomputing-restapi-cluster-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `%{task_state} eq "UNINITIALIZED"` | Unknown cluster status. Default %\{task_state\} eq "UNINITIALIZED" |
+| `CRITICAL-STATUS` | `%{task_state} eq "ERROR"` | Critical cluster status. Default %\{task_state\} eq "ERROR" |
+| `UUID` |  | Filter cluster by his uuid |
+| `WARNING-STATUS` |  | Warning cluster status |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Drive usage {/* #apps-scalecomputing-restapi-drive-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-DRIVE-STATUS` | `%{is_healthy} eq "false" \|\| %{current_disposition} !~ %{desired_disposition} \|\| %{scribe_availability} !~ %{online} \|\| %{scribe_reachable} eq "false"` | Critical drive status. Default %\{is_healthy\} eq "false" \|\| %\{current_disposition\} !~ %\{desired_disposition\} \|\| %\{scribe_availability\} !~ %\{online\} \|\| %\{scribe_reachable\} eq "false" |
+| `WARNING-USAGE` | `90` | Threshold warning drive space usage (%) |
+| `CRITICAL-USAGE` | `95` | Threshold critical drive space usage (%) |
+| `CRITICAL-ERRORS` | `0` | Thresholds critical errors |
+| `UUID` |  | Filter drive by his uuid |
+| `UNKNOWN-DRIVE-STATUS` |  | Unknown drive status |
+| `WARNING-DRIVE-STATUS` |  | Warning drive status |
+| `WARNING-ERRORS` |  | Thresholds warning errors |
+| `WARNING-REALLOCATED-SECTORS` |  | Thresholds warning reallocated sectors |
+| `WARNING-TEMPERATURE` |  | Thresholds warning temperature |
+| `CRITICAL-REALLOCATED-SECTORS` |  | Thresholds critical reallocated sectors |
+| `CRITICAL-TEMPERATURE` |  | Thresholds critical temperature |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `drive.error.count` |  | errors | `WARNING-ERRORS`, `CRITICAL-ERRORS` |
+| `drive.reallocatedsectors.count` |  | reallocated-sectors | `WARNING-REALLOCATED-SECTORS`, `CRITICAL-REALLOCATED-SECTORS` |
+| `drive.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `drive.space.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Node usage {/* #apps-scalecomputing-restapi-node-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-NODE-STATUS` | `%{network_status} ne "ONLINE" \|\| %{virtualization_online} ne "true" \|\| %{current_disposition} !~ %{desired_disposition}` | Critical node status. Default %\{network_status\} ne "ONLINE" \|\| %\{virtualization_online\} ne "true" \|\| %\{current_disposition\} !~ %\{desired_disposition\} |
+| `WARNING-MEMORY` | `90` | Threshold warning memory (%) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning cpu (%) |
+| `CRITICAL-MEMORY` | `95` | Threshold critical memory (%) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical cpu (%) |
+| `WARNING-CPU-MHZ` |  | Threshold warning cpu mHz |
+| `CRITICAL-CPU-MHZ` |  | Threshold critical cpu mHz |
+| `UUID` |  | Filter node by his uuid |
+| `UNKNOWN-NODE-STATUS` |  | Unknown node status |
+| `WARNING-NODE-STATUS` |  | Warning node status |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.cpu.utilization.percentage` | `%` |  | `WARNING-CPU-TOTAL`, `CRITICAL-CPU-TOTAL` |
+| `node.cpu.utilization.mhz` | `MHz` | MHz | `WARNING-CPU-MHZ`, `CRITICAL-CPU-MHZ` |
+| `node.memory.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virtual disk usage {/* #apps-scalecomputing-restapi-virtual-domain-block-device-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning disk space usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical disk space usage (%) |
+| `UUID` |  | Filter virtual disk by his uuid |
+| `WARNING-USAGE` |  | Threshold warning disk space usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning disk space usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical disk space usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical disk space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vdisk.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `vdisk.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `vdisk.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virtual domain status {/* #apps-scalecomputing-restapi-virtual-domain-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `%{task_state} eq "UNINITIALIZED"` | Unknown virtual domain status. Default %\{task_state\} eq "UNINITIALIZED" |
+| `WARNING-STATUS` | `%{state} =~ /PAUSED\|SHUTDOWN/ \|\| %{ui_state} =~ /BLOCKED\|PAUSED\|SHUTDOWN/` | Warning virtual domain status. Default %\{state\} =~ /PAUSED\|SHUTDOWN/ \|\| %\{ui_state\} =~ /BLOCKED\|PAUSED\|SHUTDOWN/ |
+| `CRITICAL-STATUS` | `%{state} =~ /BLOCKED\|CRASHED\|SHUTOFF/ \|\| %{ui_state} =~ /CRASHED\|SHUTOFF/ \|\| %{state} ne %{desired_disposition} \|\| %{task_state} eq "ERROR"` | Critical virtual domain status. Default %\{state\} =~ /BLOCKED\|CRASHED\|SHUTOFF/ \|\| %\{ui_state\} =~ /CRASHED\|SHUTOFF/ \|\| %\{state\} ne %\{desired_disposition\} \|\| %\{task_state\} eq "ERROR" |
+| `UUID` |  | Filter virtual domain by his uuid |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250300 - 20250330</summary>
+
+- Plugin pack `Scale Computing`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250300 - 20250330`.

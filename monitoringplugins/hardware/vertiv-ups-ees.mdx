@@ -1,0 +1,386 @@
+---
+title: "Vertiv UPS (EES)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/vertiv.png";
+
+<PluginPackHeader name="Vertiv UPS (EES)" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Vertiv (EES) UPS devices through SNMP: battery, input lines, rectifier, system status, temperature and the uptime.
+
+The plugin pack provides these checks:
+
+* [Battery](#hardware-ups-ees-snmp-battery)
+* [Input Lines](#hardware-ups-ees-snmp-input)
+* [Rectifier](#hardware-ups-ees-snmp-rectifier)
+* [System](#hardware-ups-ees-snmp-system)
+* [Temperature](#hardware-ups-ees-snmp-temperature)
+* [Uptime](#hardware-ups-ees-snmp-uptime)
+
+
+## Host Templates
+
+### Vertiv-EES-UPS
+
+*Vertiv EES UPS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Battery](#hardware-ups-ees-snmp-battery) | `hardware-ups-ees-snmp-battery` |
+| [Input Lines](#hardware-ups-ees-snmp-input) | `hardware-ups-ees-snmp-input` |
+| [Rectifier](#hardware-ups-ees-snmp-rectifier) | `hardware-ups-ees-snmp-rectifier` |
+| [System](#hardware-ups-ees-snmp-system) | `hardware-ups-ees-snmp-system` |
+| [Temperature](#hardware-ups-ees-snmp-temperature) | `hardware-ups-ees-snmp-temperature` |
+| [Uptime](#hardware-ups-ees-snmp-uptime) | `hardware-ups-ees-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Battery {/* #hardware-ups-ees-snmp-battery */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CAPACITY` | `40:` | Threshold warning battery capacity |
+| `CRITICAL-CAPACITY` | `20:` | Threshold critical battery capacity |
+| `UNKNOWN-BATTERY-MODE` | `'%{battery_mode} =~ /unknown/i'` | Set unknown threshold for battery mode (Default: '%\{battery_mode\} =~ /unknown/i'). You can use the following variables: %\{battery_mode\} |
+| `WARNING-BATTERY-MODE` | `'%{battery_mode} =~ /ShortTest\|BoostChargingForTest\|ManualTesting\|PlanTesting\|ManualBoostCharging\|AutoBoostCharging\|CyclicBoostCharging\|MasterBoostCharging\|MasterBateryTesting/i'` | Set warning threshold for battery mode (Default: '%\{battery_mode\} =~ /ShortTest\|BoostChargingForTest\|ManualTesting\|PlanTesting\|ManualBoostCharging\|AutoBoostCharging\|CyclicBoostCharging\|MasterBoostCharging\|MasterBateryTesting/i'). You can use the following variables: %\{battery_mode\} |
+| `CRITICAL-BATTERY-MODE` | `'%{battery_mode} =~ /ACFailTesting\|ACFail/i'` | Set critical threshold for battery mode (Default: '%\{battery_mode\} =~ /ACFailTesting\|ACFail/i'). You can use the following variables: %\{battery_mode\} |
+| `WARNING-VOLTAGE` |  | Threshold warning battery voltage |
+| `CRITICAL-VOLTAGE` |  | Threshold critical battery voltage |
+| `WARNING-CURRENT` |  | Threshold warning battery current (A) |
+| `CRITICAL-CURRENT` |  | Threshold critical battery current (A) |
+| `WARNING-NOMINAL-CAPACITY` |  | Threshold warning battery nominal capacity (Ah) |
+| `CRITICAL-NOMINAL-CAPACITY` |  | Threshold critical battery nominal capacity (Ah) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `battery.voltage.volt` | `V` | voltage: V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `battery.current.ampere` | `A` | current: A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `battery.capacity.percentage` | `%` | capacity: %% | `WARNING-CAPACITY`, `CRITICAL-CAPACITY` |
+| `battery.nominal.capacity.amperehour` | `Ah` | used capacity: Ah | `WARNING-NOMINAL-CAPACITY`, `CRITICAL-NOMINAL-CAPACITY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Input Lines {/* #hardware-ups-ees-snmp-input */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LINE-A` | `200:245` | Threshold warning input line A |
+| `WARNING-LINE-B` | `200:245` | Threshold warning input line B |
+| `WARNING-LINE-C` | `200:245` | Threshold warning input line C |
+| `CRITICAL-LINE-A` | `180:255` | Threshold critical input line A |
+| `CRITICAL-LINE-B` | `180:255` | Threshold critical input line B |
+| `CRITICAL-LINE-C` | `180:255` | Threshold critical input line C |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lineA.input.voltage.volt` | `V` | line A voltage: V | `WARNING-LINE-A`, `CRITICAL-LINE-A` |
+| `lineB.input.voltage.volt` | `V` | line B voltage: V | `WARNING-LINE-B`, `CRITICAL-LINE-B` |
+| `lineC.input.voltage.volt` | `V` | line C voltage: V | `WARNING-LINE-C`, `CRITICAL-LINE-C` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rectifier {/* #hardware-ups-ees-snmp-rectifier */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{installed} != %{communicating}'` | Set warning threshold for status (Default: '%\{installed\} > %\{communicating\}'). You can use the following variables: %\{installed\},  %\{communicating\},  %\{used_capacity\} |
+| `WARNING-USED-CAPACITY` | `80` | Threshold warning used capacity |
+| `CRITICAL-USED-CAPACITY` | `90` | Threshold critical used capacity |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status (Default: ''). You can use the following variables: %\{installed\},  %\{communicating\},  %\{used_capacity\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). You can use the following variables: %\{installed\},  %\{communicating\},  %\{used_capacity\} |
+| `WARNING-INSTALLED` |  | Threshold warning installed |
+| `CRITICAL-INSTALLED` |  | Threshold critical installed |
+| `WARNING-COMMUNICATING` |  | Threshold warning communicating |
+| `CRITICAL-COMMUNICATING` |  | Threshold critical communicating |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `rectifier.capacity.used.percentage` | `%` | used capacity: %% | `WARNING-USED-CAPACITY`, `CRITICAL-USED-CAPACITY` |
+| `rectifier.installed.count` |  | installed | `WARNING-INSTALLED`, `CRITICAL-INSTALLED` |
+| `rectifier.communicating.count` |  | communicating | `WARNING-COMMUNICATING`, `CRITICAL-COMMUNICATING` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #hardware-ups-ees-snmp-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USED-CAPACITY` | `80` | Threshold warning used capacity |
+| `CRITICAL-USED-CAPACITY` | `90` | Threshold critical used capacity |
+| `UNKNOWN-STATUS` | `'%{system_status} =~ /unknown\|unmanaged\|restricted\|testing\|disabled/i \|\| %{communication_status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{system_status\} =~ /unknown\|unmanaged\|restricted\|testing\|disabled/i \|\| %\{communication_status\} =~ /unknown/i'). You can use the following variables: %\{system_status\}, %\{communication_status\} |
+| `WARNING-STATUS` | `'%{system_status} =~ /warning\|minor/i'` | Set warning threshold for status (Default: '%\{system_status\} =~ /warning\|minor/i'). You can use the following variables: %\{system_status\}, %\{communication_status\} |
+| `CRITICAL-STATUS` | `'%{system_status} =~ /major\|critical/i \|\| %{communication_status} =~ /interrupt/i'` | Set critical threshold for status (Default: '%\{system_status\} =~ /major\|critical/i \|\| %\{communication_status\} =~ /interrupt/i'). You can use the following variables: %\{system_status\}, %\{communication_status\} |
+| `WARNING-VOLTAGE` |  | Threshold warning voltage |
+| `CRITICAL-VOLTAGE` |  | Threshold critical voltage |
+| `WARNING-CURRENT` |  | Threshold warning current (A) |
+| `CRITICAL-CURRENT` |  | Threshold critical current (A) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.voltage.volt` | `V` | voltage: V | `CRITICAL-VOLTAGE` |
+| `system.current.ampere` | `A` | current: A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `system.used.capacity.percentage` | `%` | used capacity: %% | `WARNING-USED-CAPACITY`, `CRITICAL-USED-CAPACITY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Temperature {/* #hardware-ups-ees-snmp-temperature */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-ALARM-STATUS` | `'%{alarm_status} =~ /fail/i'` | Set unknown threshold for status (Default: '%\{alarm_status\} =~ /fail/i'). You can use the following variables: %\{alarm_status\} |
+| `WARNING-ALARM-STATUS` | `'%{alarm_status} =~ /low/i'` | Set warning threshold for status (Default: '%\{alarm_status\} =~ /low/i'). You can use the following variables: %\{alarm_status\} |
+| `CRITICAL-ALARM-STATUS` | `'%{alarm_status} =~ /high/i'` | Set critical threshold for status (Default: '%\{alarm_status\} =~ /high/i'). You can use the following variables: %\{alarm_status\} |
+| `WARNING-TEMPERATURE` |  | Threshold warning in celsius degrees |
+| `CRITICAL-TEMPERATURE` |  | Threshold critical in celsius degrees |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `probe.temperature.celsius` | `C` | temperature: C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #hardware-ups-ees-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240311 - 20240411</summary>
+
+- Command `hardware-ups-ees-snmp-input`
+    - Option `--warning-line-a=$_SERVICEWARNING-LINE-A$` added
+    - Option `--warning-line-b=$_SERVICEWARNING-LINE-B$` added
+    - Option `--warning-line-c=$_SERVICEWARNING-LINE-C$` added
+    - Option `--critical-line-a=$_SERVICECRITICAL-LINE-A$` added
+    - Option `--critical-line-b=$_SERVICECRITICAL-LINE-B$` added
+    - Option `--critical-line-c=$_SERVICECRITICAL-LINE-C$` added
+    - Option `--warning-line-A=$_SERVICEWARNING-LINE-A$` removed
+    - Option `--warning-line-B=$_SERVICEWARNING-LINE-B$` removed
+    - Option `--warning-line-C=$_SERVICEWARNING-LINE-C$` removed
+    - Option `--critical-line-A=$_SERVICECRITICAL-LINE-A$` removed
+    - Option `--critical-line-B=$_SERVICECRITICAL-LINE-B$` removed
+    - Option `--critical-line-C=$_SERVICECRITICAL-LINE-C$` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231031</summary>
+
+- Service template [`hardware-ups-ees-snmp-battery`](#hardware-ups-ees-snmp-battery)
+    - Renamed from `hardware-ups-ees-vertiv-snmp-battery`
+    - Check command changed from `hardware-ups-ees-vertiv-snmp-battery` to `hardware-ups-ees-snmp-battery`
+- Service template [`hardware-ups-ees-snmp-input`](#hardware-ups-ees-snmp-input)
+    - Renamed from `hardware-ups-ees-vertiv-snmp-input`
+    - Check command changed from `hardware-ups-ees-vertiv-snmp-input` to `hardware-ups-ees-snmp-input`
+- Service template [`hardware-ups-ees-snmp-rectifier`](#hardware-ups-ees-snmp-rectifier)
+    - Renamed from `hardware-ups-ees-vertiv-snmp-rectifier`
+    - Check command changed from `hardware-ups-ees-vertiv-snmp-rectifier` to `hardware-ups-ees-snmp-rectifier`
+- Service template [`hardware-ups-ees-snmp-system`](#hardware-ups-ees-snmp-system)
+    - Renamed from `hardware-ups-ees-vertiv-snmp-system`
+    - Check command changed from `hardware-ups-ees-vertiv-snmp-system` to `hardware-ups-ees-snmp-system`
+- Service template [`hardware-ups-ees-snmp-temperature`](#hardware-ups-ees-snmp-temperature)
+    - Renamed from `hardware-ups-ees-vertiv-snmp-temperature`
+    - Check command changed from `hardware-ups-ees-vertiv-snmp-temperature` to `hardware-ups-ees-snmp-temperature`
+- Service template [`hardware-ups-ees-snmp-uptime`](#hardware-ups-ees-snmp-uptime)
+    - Renamed from `hardware-ups-ees-vertiv-snmp-uptime`
+    - Check command changed from `hardware-ups-ees-vertiv-snmp-uptime` to `hardware-ups-ees-snmp-uptime`
+- Command `hardware-ups-ees-snmp-battery`
+    - Renamed from `hardware-ups-ees-vertiv-snmp-battery`
+    - Option `--plugin` changed from `--plugin=hardware::ups::ees::vertiv::snmp::plugin` to `--plugin=hardware::ups::ees::snmp::plugin`
+- Command `hardware-ups-ees-snmp-input`
+    - Renamed from `hardware-ups-ees-vertiv-snmp-input`
+    - Option `--plugin` changed from `--plugin=hardware::ups::ees::vertiv::snmp::plugin` to `--plugin=hardware::ups::ees::snmp::plugin`
+    - Macro `SNMPTIMEOUT` removed
+- Command `hardware-ups-ees-snmp-rectifier`
+    - Renamed from `hardware-ups-ees-vertiv-snmp-rectifier`
+    - Option `--plugin` changed from `--plugin=hardware::ups::ees::vertiv::snmp::plugin` to `--plugin=hardware::ups::ees::snmp::plugin`
+- Command `hardware-ups-ees-snmp-system`
+    - Renamed from `hardware-ups-ees-vertiv-snmp-system`
+    - Option `--plugin` changed from `--plugin=hardware::ups::ees::vertiv::snmp::plugin` to `--plugin=hardware::ups::ees::snmp::plugin`
+    - Macro `SNMPTIMEOUT` removed
+- Command `hardware-ups-ees-snmp-temperature`
+    - Renamed from `hardware-ups-ees-vertiv-snmp-temperature`
+    - Option `--plugin` changed from `--plugin=hardware::ups::ees::vertiv::snmp::plugin` to `--plugin=hardware::ups::ees::snmp::plugin`
+    - Macro `SNMPTIMEOUT` removed
+- Command `hardware-ups-ees-snmp-uptime`
+    - Renamed from `hardware-ups-ees-vertiv-snmp-uptime`
+    - Option `--plugin` changed from `--plugin=hardware::ups::ees::vertiv::snmp::plugin` to `--plugin=hardware::ups::ees::snmp::plugin`
+    - Macro `SNMPTIMEOUT` removed
+
+</details>

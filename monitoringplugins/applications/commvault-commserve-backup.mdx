@@ -1,0 +1,372 @@
+---
+title: "Commvault Commserve backup"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Commvault.png";
+
+<PluginPackHeader name="Commvault Commserve backup" image={image} category="Application" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Commvault CommServe backup environments through the REST API: alerts, jobs, media agents and the space usage of storage pools.
+
+The plugin pack provides these checks:
+
+* [Alerts](#apps-backup-commvault-commserve-restapi-alerts)
+* [Jobs](#apps-backup-commvault-commserve-restapi-jobs)
+* [Media Agents](#apps-backup-commvault-commserve-restapi-media-agents)
+* [Storage Pools](#apps-backup-commvault-commserve-restapi-storage-pools)
+* [Token refresh](#apps-backup-commvault-commserve-restapi-token)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Media Agents](#apps-backup-commvault-commserve-restapi-media-agents) | `Media Agent - <name>` |
+| [Storage Pools](#apps-backup-commvault-commserve-restapi-storage-pools) | `Storage Pool - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Commvault-Commserve
+
+*Commvault Commserve Backup* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/webconsole/api` | API url path (default: '/webconsole/api') |
+| `PORT` | `443` | API port (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `30` | Set HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Set API password |
+| `INSTANCE` | `default` | Set instance name to differentiate cache files when --api-token and 'token' authentication are used (default: 'default'). |
+| `REFRESH-FREQUENCY` | `1500` |  |
+| `API-USERNAME` |  | Set API username |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#apps-backup-commvault-commserve-restapi-alerts) | `apps-backup-commvault-commserve-restapi-alerts` |
+| [Jobs](#apps-backup-commvault-commserve-restapi-jobs) | `apps-backup-commvault-commserve-restapi-jobs` |
+| [Media Agents](#apps-backup-commvault-commserve-restapi-media-agents) | `apps-backup-commvault-commserve-restapi-media-agents` |
+| [Storage Pools](#apps-backup-commvault-commserve-restapi-storage-pools) | `apps-backup-commvault-commserve-restapi-storage-pools` |
+| [Token refresh](#apps-backup-commvault-commserve-restapi-token) | `apps-backup-commvault-commserve-restapi-token` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #apps-backup-commvault-commserve-restapi-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{severity} =~ /warning/'` | Set warning threshold for status (Default: '%\{severity\} =~ /warning/') Can used special variables like: %\{severity\}, %\{status\}, %\{type\}, %\{name\}, %\{since\} |
+| `CRITICAL-STATUS` | `'%{severity} =~ /critical/'` | Set critical threshold for status (Default: '%\{severity\} =~ /critical/'). Can used special variables like: %\{severity\}, %\{status\}, %\{type\}, %\{name\}, %\{since\} |
+| `FILTER-ALERT-NAME` |  | Filter alerts by name (can be a regexp) |
+| `FILTER-ALERT-TYPE` |  | Filter alerts by type (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `alerts.total.count` |  | total |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Jobs {/* #apps-backup-commvault-commserve-restapi-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~ /abnormal/i'` | Set warning threshold for status (Default: '%\{status\} =~ /abnormal/i') Can used special variables like: %\{display\}, %\{status\}, %\{type\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /errors\|failed/i'` | Set critical threshold for status (Default: '%\{status\} =~ /errors\|failed/i'). Can used special variables like: %\{display\}, %\{status\}, %\{type\} |
+| `CRITICAL-JOBS-TOTAL` | `1:` | Threshold critical jobs total |
+| `FILTER-POLICY-NAME` |  | Filter jobs by policy name (can be a regexp) |
+| `FILTER-POLICY-ID` |  | Filter jobs by policy id (can be a regexp) |
+| `FILTER-TYPE` |  | Filter jobs by type (can be a regexp) |
+| `FILTER-CLIENT-NAME` |  | Filter jobs by client name (can be a regexp) |
+| `FILTER-CLIENT-GROUP` |  | Filter jobs by client groups (can be a regexp) |
+| `WARNING-LONG` |  | Set warning threshold for long jobs. You can use the following variables: %\{display\}, %\{status\}, %\{elapsed\}, %\{type\}, %\{client_name\} |
+| `WARNING-JOBS-TOTAL` |  | Threshold warning jobs total |
+| `CRITICAL-LONG` |  | Set critical threshold for long jobs. You can use the following variables: %\{display\}, %\{status\}, %\{elapsed\}, %\{type\}, %\{client_name\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | Total jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Media Agents {/* #apps-backup-commvault-commserve-restapi-media-agents */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{is_maintenance} eq "no" and %{status} eq "offline"'` | Set critical threshold for status (Default: '%\{is_maintenance\} eq "no" and %\{status\} eq "offline"'). Can used special variables like: %\{status\}, %\{is_maintenance\}, %\{offline_reason\}, %\{name\} |
+| `CRITICAL-MEDIA-AGENTS-TOTAL` | `1:` | Threshold critical total media agents |
+| `WARNING-MEDIA-AGENTS-OFFLINE` | `0` | Threshold warning offline media agents |
+| `FILTER-MEDIA-AGENT-ID` |  | Filter media agents by id (Can be a regexp) |
+| `FILTER-MEDIA-AGENT-NAME` |  | Filter media agents by name (Can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{is_maintenance\}, %\{offline_reason\}, %\{name\} |
+| `WARNING-MEDIA-AGENTS-TOTAL` |  | Threshold warning total media agents |
+| `CRITICAL-MEDIA-AGENTS-OFFLINE` |  | Threshold critical offline media agents |
+| `CRITICAL-MEDIA-AGENTS-ONLINE` |  | Threshold critical online media agents |
+| `WARNING-MEDIA-AGENTS-ONLINE` |  | Threshold warning online media agents |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `media.agents.total.count` |  | total | `WARNING-MEDIA-AGENTS-TOTAL`, `CRITICAL-MEDIA-AGENTS-TOTAL` |
+| `media.agents.online.count` |  | online | `WARNING-MEDIA-AGENTS-ONLINE`, `CRITICAL-MEDIA-AGENTS-ONLINE` |
+| `media.agents.offline.count` |  | offline | `WARNING-MEDIA-AGENTS-OFFLINE`, `CRITICAL-MEDIA-AGENTS-OFFLINE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage Pools {/* #apps-backup-commvault-commserve-restapi-storage-pools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Threshold warning usage (%) |
+| `CRITICAL-STATUS` | `'%{status} !~ /online/i'` | Set critical threshold for status (Default: '%\{status\} !~ /online/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-USAGE-PRCT` | `95` | Threshold critical usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^usage$' |
+| `FILTER-NAME` |  | Filter storage pools by name (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storagepool.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storagepool.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `storagepool.space.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Token refresh {/* #apps-backup-commvault-commserve-restapi-token */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260331</summary>
+
+- Host template `Commvault-Commserve`
+    - Macro `REFRESH-FREQUENCY` added (default `1500`)
+    - Service template `apps-backup-commvault-commserve-restapi-token` linked
+- Service template [`apps-backup-commvault-commserve-restapi-token`](#apps-backup-commvault-commserve-restapi-token)
+    - Service template added
+- Command `apps-backup-commvault-commserve-restapi-alerts`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` removed
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` removed
+    - Option `--instance=$_HOSTINSTANCE$` removed
+    - Macro `API-PASSWORD` added
+    - Macro `INSTANCE` removed
+- Command `apps-backup-commvault-commserve-restapi-jobs`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` removed
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` removed
+    - Option `--instance=$_HOSTINSTANCE$` removed
+    - Macro `INSTANCE` removed
+    - Macro `API-TOKEN` removed
+    - Macro `REFRESH-TOKEN` removed
+- Command `apps-backup-commvault-commserve-restapi-media-agents`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` removed
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` removed
+    - Option `--instance=$_HOSTINSTANCE$` removed
+    - Macro `API-PASSWORD` added
+    - Macro `INSTANCE` removed
+- Command `apps-backup-commvault-commserve-restapi-storage-pools`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` removed
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` removed
+    - Option `--instance=$_HOSTINSTANCE$` removed
+    - Macro `API-PASSWORD` added
+    - Macro `INSTANCE` removed
+- Command `apps-backup-commvault-commserve-restapi-token`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260100 - 20260305</summary>
+
+- Command `apps-backup-commvault-commserve-restapi-jobs`
+    - Macro `API-PASSWORD` added
+    - Macro `API-TOKEN` added
+    - Macro `REFRESH-TOKEN` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Host template `Commvault-Commserve`
+    - Macro `INSTANCE` added (default `default`)
+- Command `apps-backup-commvault-commserve-restapi-alerts`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` added
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` added
+    - Option `--instance=$_HOSTINSTANCE$` added
+    - Macro `INSTANCE` added
+    - Macro `HTTP-BACKEND` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-commvault-commserve-restapi-jobs`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` added
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` added
+    - Option `--instance=$_HOSTINSTANCE$` added
+    - Macro `INSTANCE` added
+    - Macro `HTTP-BACKEND` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-commvault-commserve-restapi-media-agents`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` added
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` added
+    - Option `--instance=$_HOSTINSTANCE$` added
+    - Macro `INSTANCE` added
+    - Macro `API-PASSWORD` removed
+- Command `apps-backup-commvault-commserve-restapi-storage-pools`
+    - Option `--api-token=$_HOSTAPI-TOKEN$` added
+    - Option `--refresh-token=$_HOSTREFRESH-TOKEN$` added
+    - Option `--instance=$_HOSTINSTANCE$` added
+    - Macro `INSTANCE` added
+    - Macro `HTTP-BACKEND` added
+    - Macro `API-PASSWORD` removed
+
+</details>

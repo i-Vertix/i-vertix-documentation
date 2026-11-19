@@ -34,6 +34,11 @@
         },
         {
           "type": "doc",
+          "id": "applications/active-directory-i-vertix-agent",
+          "label": "Active Directory (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
           "id": "applications/active-directory-winrm",
           "label": "Active Directory (WinRM)"
         },
@@ -51,6 +56,11 @@
           "type": "doc",
           "id": "applications/apache-solr",
           "label": "Apache Solr"
+        },
+        {
+          "type": "doc",
+          "id": "applications/apache-webserver",
+          "label": "Apache Webserver"
         },
         {
           "type": "doc",
@@ -171,6 +181,16 @@
           "type": "doc",
           "id": "applications/i-vertix-business-intelligence-server",
           "label": "i-Vertix Business Intelligence Server"
+        },
+        {
+          "type": "doc",
+          "id": "applications/i-vertix3-monitoring-central-legacy",
+          "label": "i-Vertix3 Monitoring Central (legacy)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/i-vertix3-poller-legacy",
+          "label": "i-Vertix3 Poller (legacy)"
         },
         {
           "type": "doc",
@@ -314,6 +334,11 @@
         },
         {
           "type": "doc",
+          "id": "applications/php-fpm",
+          "label": "PHP-FPM"
+        },
+        {
+          "type": "doc",
           "id": "applications/podman-container",
           "label": "Podman container"
         },
@@ -429,8 +454,18 @@
         },
         {
           "type": "doc",
+          "id": "applications/ssl-certificates-x509",
+          "label": "SSL certificates - x509"
+        },
+        {
+          "type": "doc",
           "id": "applications/tcp-ports-active",
           "label": "TCP ports (active)"
+        },
+        {
+          "type": "doc",
+          "id": "applications/tomcat-basic",
+          "label": "Tomcat basic"
         },
         {
           "type": "doc",
@@ -454,6 +489,11 @@
         },
         {
           "type": "doc",
+          "id": "applications/veeam-vbr-i-vertix-agent",
+          "label": "Veeam VBR (i-Vertix agent)"
+        },
+        {
+          "type": "doc",
           "id": "applications/veeam-vbr-rest-api",
           "label": "Veeam VBR (Rest API)"
         },
@@ -469,6 +509,16 @@
         },
         {
           "type": "doc",
+          "id": "applications/vmware-vcenter",
+          "label": "VMware vCenter"
+        },
+        {
+          "type": "doc",
+          "id": "applications/vmware-vsphere-vcsa-legacy",
+          "label": "VMware vSphere vCSA (legacy)"
+        },
+        {
+          "type": "doc",
           "id": "applications/vmware-vsphere8-vcsa",
           "label": "VMware vSphere8 vCSA"
         },
@@ -481,6 +531,11 @@
           "type": "doc",
           "id": "applications/whois-domain-verification",
           "label": "Whois Domain verification"
+        },
+        {
+          "type": "doc",
+          "id": "applications/windows-dhcp-server",
+          "label": "Windows DHCP Server"
         }
       ]
     },

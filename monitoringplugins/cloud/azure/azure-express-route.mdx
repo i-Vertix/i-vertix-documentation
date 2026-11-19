@@ -12,16 +12,13 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-ExpressRoute.pn
 
 ## Description
 
-### Azure Express Route monitoring
-protocols used: Rest API
+Monitors Azure ExpressRoute circuits: the provisioning state of the circuits, the resource health and the traffic over the private connection.
 
-- Circuit status
-- Health
-- Traffic
+The plugin pack provides these checks:
 
-### Discovery modes
-
-- Circuits
+* [Circuit status](#cloud-azure-network-expressroute-circuit-status)
+* [Health](#cloud-azure-network-expressroute-health)
+* [Traffic](#cloud-azure-network-expressroute-traffic)
 
 ## Prerequisites
 
@@ -29,6 +26,18 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Circuit status](#cloud-azure-network-expressroute-circuit-status) | `Circuit status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

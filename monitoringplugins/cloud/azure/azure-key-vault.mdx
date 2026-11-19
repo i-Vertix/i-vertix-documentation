@@ -12,14 +12,14 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-Key-Vault.png";
 
 ## Description
 
-### Azure-Key-Vault monitoring
+Monitors Azure Key Vaults: availability and saturation of the vault, and the number and latency of the service API requests.
 
-protocols used: HTTPS (Rest API)
+The plugin pack provides these checks:
 
-* Service API latency
-* Service API requests
-* Vault availability
-* Vault capacity
+* [Service API latency](#cloud-azure-security-keyvault-service-api-latency)
+* [Service API requests](#cloud-azure-security-keyvault-service-api-requests)
+* [Vault availability](#cloud-azure-security-keyvault-vault-availability)
+* [Vault capacity](#cloud-azure-security-keyvault-vault-capacity)
 
 ## Prerequisites
 
@@ -27,6 +27,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Key Vault](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

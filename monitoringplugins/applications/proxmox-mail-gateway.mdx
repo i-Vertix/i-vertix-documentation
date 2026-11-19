@@ -1,0 +1,184 @@
+---
+title: "Proxmox Mail Gateway"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Proxmox.png";
+
+<PluginPackHeader name="Proxmox Mail Gateway" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Proxmox Mail Gateway through its API: incoming and outgoing mail, spam and virus counts, mail traffic and the installed version.
+
+The plugin pack provides these checks:
+
+* [Mail](#apps-proxmox-mg-restapi-mail)
+* [Version](#apps-proxmox-mg-restapi-version)
+
+
+## Host Templates
+
+### Proxmox-MailGateway
+
+*Proxmox MailGateway* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `8806` | API port (default: 8806) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `URL-PATH` | `/api2/json` | API url path (default: '/api2/json') |
+| `REALM` | `pmg` | Set user realm (default: 'pmg') |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `TIMEOUT` | `10` | Set HTTP timeout |
+| `API-PASSWORD` | *(password)* | Set API password |
+| `API-USERNAME` |  | Set API username |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Mail](#apps-proxmox-mg-restapi-mail) | `apps-proxmox-mg-restapi-mail` |
+| [Version](#apps-proxmox-mg-restapi-version) | `apps-proxmox-mg-restapi-version` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mail {/* #apps-proxmox-mg-restapi-mail */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `HOURS` | `12` | How many hours of statistics you want (default: 12) |
+| `TIMESPAN` | `1800` | Timespan for datapoints in hours timeframe (default: 1800) |
+| `WARNING-VIRUS-INCOMING` | `0` | Warning threshold virus incoming |
+| `WARNING-VIRUS-OUTGOING` | `0` | Warning threshold virus outgoing |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold traffic out |
+| `WARNING-MAILS-INCOMING` |  | Warning threshold mails incoming |
+| `WARNING-MAILS-OUTGOING` |  | Warning threshold mails outgoing |
+| `WARNING-SPAM-INCOMING` |  | Warning threshold spam incoming |
+| `WARNING-SPAM-OUTGOING` |  | Warning threshold spam outgoing |
+| `CRITICAL-VIRUS-INCOMING` |  | Critical threshold virus incoming |
+| `CRITICAL-VIRUS-OUTGOING` |  | Critical threshold virus outgoing |
+| `CRITICAL-TRAFFIC-IN` |  | Critical  threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical  threshold traffic out |
+| `CRITICAL-MAILS-INCOMING` |  | Critical threshold mails incoming |
+| `CRITICAL-MAILS-OUTGOING` |  | Critical threshold mails outgoing |
+| `CRITICAL-SPAM-INCOMING` |  | Critical threshold spam incoming |
+| `CRITICAL-SPAM-OUTGOING` |  | Critical threshold spam outgoing |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `mails.incoming.count` |  | incoming | `WARNING-MAILS-INCOMING`, `CRITICAL-MAILS-INCOMING` |
+| `mails.outgoing.count` |  | outgoing | `WARNING-MAILS-OUTGOING`, `CRITICAL-MAILS-OUTGOING` |
+| `mails.traffic.in.bytespersecond` | `B/s` | in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `mails.traffic.out.bytespersecond` | `B/s` | out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `mails.spam.incoming.count` |  | incoming | `WARNING-SPAM-INCOMING`, `CRITICAL-SPAM-INCOMING` |
+| `mails.spam.outgoing.count` |  | outgoing | `WARNING-SPAM-OUTGOING`, `CRITICAL-SPAM-OUTGOING` |
+| `mails.virus.incoming.count` |  | incoming | `WARNING-VIRUS-INCOMING`, `CRITICAL-VIRUS-INCOMING` |
+| `mails.virus.outgoing.count` |  | outgoing | `WARNING-VIRUS-OUTGOING`, `CRITICAL-VIRUS-OUTGOING` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Version {/* #apps-proxmox-mg-restapi-version */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-VERSION` |  | Set warning threshold for version. You can use the following variables: %\{version\}, %\{repoid\}, %\{release\} |
+| `CRITICAL-VERSION` |  | Set critical threshold for version. You can use the following variables: %\{version\}, %\{repoid\}, %\{release\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240808 - 20240912</summary>
+
+- Plugin pack `Proxmox Mail Gateway`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240808 - 20240912`.

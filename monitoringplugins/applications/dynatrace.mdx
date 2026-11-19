@@ -1,0 +1,257 @@
+---
+title: "Dynatrace"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Dynatrace.png";
+
+<PluginPackHeader name="Dynatrace" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Dynatrace through its API: application Apdex, synthetic monitor availability, events and open problems.
+
+The plugin pack provides these checks:
+
+* [Dynatrace apdex](#apps-monitoring-dynatrace-restapi-apdex)
+* [Dynatrace availability](#apps-monitoring-dynatrace-restapi-availability)
+* [Dynatrace events](#apps-monitoring-dynatrace-restapi-events)
+* [Dynatrace problems](#apps-monitoring-dynatrace-restapi-problems)
+
+
+## Host Templates
+
+### Dynatrace
+
+*Dynatrace Monitoring* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Set Dynatrace Port (default: '443'). |
+| `PROTOCOL` | `https` | Specify http if needed (default: 'https'). |
+| `TIMEOUT` | `30` | Threshold for HTTP timeout (default: '30'). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Set Dynatrace API token. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Dynatrace apdex](#apps-monitoring-dynatrace-restapi-apdex) | `apps-monitoring-dynatrace-restapi-apdex` |
+| [Dynatrace availability](#apps-monitoring-dynatrace-restapi-availability) | `apps-monitoring-dynatrace-restapi-availability` |
+| [Dynatrace events](#apps-monitoring-dynatrace-restapi-events) | `apps-monitoring-dynatrace-restapi-events` |
+| [Dynatrace problems](#apps-monitoring-dynatrace-restapi-problems) | `apps-monitoring-dynatrace-restapi-problems` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Dynatrace apdex {/* #apps-monitoring-dynatrace-restapi-apdex */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RELATIVE-TIME` | `30min` | Set request relative time (default: '30min'). Can use: min, 5mins, 10mins, 15mins, 30mins, hour, 2hours, 6hours, day, 3days, week, month |
+| `AGGREGATION-TYPE` | `count` | Set aggregation type (default: 'count') |
+| `WARNING-APDEX` | `0.7:` | Set warning threshold for Apdex |
+| `CRITICAL-APDEX` | `0.5:` | Set critical threshold for Apdex |
+| `FILTER-ENTITY` |  | Filter Apdex by entity (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `apdex` |  | apdex | `WARNING-APDEX`, `CRITICAL-APDEX` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Dynatrace availability {/* #apps-monitoring-dynatrace-restapi-availability */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RELATIVE-TIME` | `30min` | Set request relative time (default: '30min'). Can use: min, 5mins, 10mins, 15mins, 30mins, hour, 2hours, 6hours, day, 3days, week, month |
+| `WARNING-AVAILABILITY` | `100:` | Set warning threshold for availability |
+| `CRITICAL-AVAILABILITY` | `50:` | Set critical threshold for availability |
+| `FILTER-SYNTHETIC` |  | Filter availability by Synthetic Monitor (can be a regexp) |
+| `FILTER-GEOLOCATION` |  | Filter availability by geolocation (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `synthetic.monitor.availability.percentage` | `%` | availability :  %% | `WARNING-AVAILABILITY`, `CRITICAL-AVAILABILITY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Dynatrace events {/* #apps-monitoring-dynatrace-restapi-events */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RELATIVE-TIME` | `2h` | Set request relative time (default: '2h'). Can use: Xm (minutes), Xh (hours), Xd (days), Xm (months), Xy (year) where 'X' is the amount of time |
+| `FILTER-MANAGEMENT-ZONE` |  | Filter problems by management zone. Mutliple management zones need to be separated by comma. Example: --management-zone='MZ1,MZ2' |
+| `FILTER-EVENT-TYPE` |  | Filter event by type (can be a regexp) |
+| `FILTER-NAME` |  | Filter events by entity/name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. Can use special variables like: %\{status\}, %\{managementZone\}, %\{entityName\}, %\{entityId\}, %\{eventType\}, %\{startTime\}, %\{endTime\}, %\{time\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. Can use special variables like: %\{status\}, %\{managementZone\}, %\{entityName\}, %\{entityId\}, %\{eventType\}, %\{startTime\}, %\{endTime\}, %\{time\} |
+| `CRITICAL-STATUS` |  | Define the conditions to match for the status to be CRITICAL. Can use special variables like: %\{status\}, %\{managementZone\}, %\{entityName\}, %\{entityId\}, %\{eventType\}, %\{startTime\}, %\{endTime\}, %\{time\} |
+| `WARNING-EVENTS` |  | Warning threshold events |
+| `WARNING-MANAGEMENTZONE-EVENTS` |  | Warning threshold management zone events |
+| `CRITICAL-EVENTS` |  | Critical threshold events |
+| `CRITICAL-MANAGEMENTZONE-EVENTS` |  | Critical threshold management zone events |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.events.count` |  | number of events | `WARNING-EVENTS`, `CRITICAL-EVENTS` |
+| `events.count` |  | number of event | `WARNING-MANAGEMENTZONE-EVENTS`, `CRITICAL-MANAGEMENTZONE-EVENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Dynatrace problems {/* #apps-monitoring-dynatrace-restapi-problems */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RELATIVE-TIME` | `2h` | Set request relative time (default: '2h'). Can use: Xm (minutes), Xh (hours), Xd (days), Xm (months), Xy (year) where 'X' is the amount of time |
+| `CRITICAL-STATUS` | `'%{status} eq "OPEN"'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} eq "OPEN"'). Can use special variables like: %\{status\}, %\{impactLevel\}, %\{severityLevel\}, %\{managementZone\}, %\{entityName\}, %\{entityId\}, %\{startTime\}, %\{endTime\}, %\{time\} |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. Can use special variables like: %\{status\}, %\{impactLevel\}, %\{severityLevel\}, %\{managementZone\}, %\{entityName\}, %\{entityId\}, %\{startTime\}, %\{endTime\}, %\{time\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. Can use special variables like: %\{status\}, %\{impactLevel\}, %\{severityLevel\}, %\{managementZone\}, %\{entityName\}, %\{entityId\}, %\{startTime\}, %\{endTime\}, %\{time\} |
+| `WARNING-PROBLEMS-OPEN` |  | Threshold warning problems open |
+| `CRITICAL-PROBLEMS-OPEN` |  | Threshold critical problems open |
+| `FILTER-MANAGEMENT-ZONE` |  | Filter problems by management zone. Mutliple management zones need to be separated by comma. Example: --management-zone='MZ1,MZ2' |
+| `FILTER-ENTITY` |  | Filter problems by entity. Mutliple entities need to be separated by comma. Example: --entity='entity1,entity2' |
+| `WARNING-MANAGEMENTZONE-PROBLEMS-OPEN` |  | Threshold warning management zone problems open |
+| `CRITICAL-MANAGEMENTZONE-PROBLEMS-OPEN` |  | Threshold critical management zone problems open |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.problems.open.count` |  | number of total open problems | `WARNING-PROBLEMS-OPEN`, `CRITICAL-PROBLEMS-OPEN` |
+| `problems.open.count` |  | number of open problems | `WARNING-MANAGEMENTZONE-PROBLEMS-OPEN`, `CRITICAL-MANAGEMENTZONE-PROBLEMS-OPEN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240311 - 20240424</summary>
+
+- Plugin pack `Dynatrace`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240311 - 20240424`.

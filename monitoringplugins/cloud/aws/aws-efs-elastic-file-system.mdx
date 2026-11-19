@@ -12,11 +12,12 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-EFS.png";
 
 ## Description
 
-### AWS EFS (Elastic File System) monitoring
-protocols used: Rest API
+Monitors Amazon EFS file systems through Amazon CloudWatch: client connections, data read and written, metadata and total I/O, and the burst credit balance.
 
-- Connections
-- Data usage
+The plugin pack provides these checks:
+
+* [Connections](#cloud-aws-efs-connections)
+* [Data Usage](#cloud-aws-efs-datausage)
 
 ## Prerequisites
 
@@ -24,6 +25,7 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
 
 ## Host Templates
 

@@ -12,18 +12,20 @@ import image from "../../assets/pluginpacks/Databases/Azure-SQL-DB.png";
 
 ## Description
 
-### Azure SQL database monitoring
-protocols used: Rest API
+Monitors Azure SQL databases (provisioned and serverless) and their logical servers: health, CPU, memory, storage, connections, sessions, workers, deadlocks and the application resources of serverless databases.
 
-- Application ressources
-- Connections
-- CPU
-- Deadlocks
-- Health
-- Memory
-- Sessions
-- Storage
-- Workers
+The plugin pack provides these checks:
+
+* [Application ressources](#cloud-azure-database-sqldatabase-app-resources)
+* [Connections](#cloud-azure-database-sqldatabase-connections)
+* [CPU](#cloud-azure-database-sqldatabase-cpu)
+* [Deadlocks](#cloud-azure-database-sqldatabase-deadlocks)
+* [Health](#cloud-azure-database-sqldatabase-health)
+* [Memory](#cloud-azure-database-sqldatabase-memory)
+* [Server status](#cloud-azure-database-sqlserver-server-status)
+* [Sessions](#cloud-azure-database-sqldatabase-sessions)
+* [Storage](#cloud-azure-database-sqldatabase-storage)
+* [Workers](#cloud-azure-database-sqldatabase-workers)
 
 ## Prerequisites
 
@@ -31,6 +33,16 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure SQL database](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+* [Azure SQL Server](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

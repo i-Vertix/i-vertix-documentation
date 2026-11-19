@@ -1,0 +1,1263 @@
+---
+title: "IBM AS400 (iSeries)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/AS-400.png";
+
+<PluginPackHeader name="IBM AS400 (iSeries)" image={image} category="Operating System" metadata={[]} />
+
+## Description
+
+Monitors IBM AS400 (iSeries) systems: disks, subsystems, job queues and individual system jobs, message queues such as QSYSOPR, page faults and overall system utilization.
+
+The plugin pack provides these checks:
+
+* [Command](#os-as400-connector-command)
+* [Disks](#os-as400-connector-disks)
+* [Job QALERT](#os-as400-connector-jobs-qalert)
+* [Job QFILESYS1](#os-as400-connector-jobs-qfilesys1)
+* [Job QJOBSCD](#os-as400-connector-jobs-qjobscd)
+* [Job QLUR](#os-as400-connector-jobs-qlur)
+* [Job QLUS](#os-as400-connector-jobs-qlus)
+* [Job QQQTEMP1](#os-as400-connector-jobs-qqqtemp1)
+* [Job QQQTEMP2](#os-as400-connector-jobs-qqqtemp2)
+* [Job QSPLMAINT](#os-as400-connector-jobs-qsplmaint)
+* [Job QSPPF00001](#os-as400-connector-jobs-qsppf00001)
+* [Job QSPRC00001](#os-as400-connector-jobs-qsprc00001)
+* [Job QSYSARB](#os-as400-connector-jobs-qsysarb)
+* [Job QTCPCTL](#os-as400-connector-jobs-qtcpctl)
+* [Job QTCPWRK](#os-as400-connector-jobs-qtcpwrk)
+* [Job Queues](#os-as400-connector-job-queues)
+* [Job QWCPJOBS](#os-as400-connector-jobs-qwcpjobs)
+* [Job QWCTJOBS](#os-as400-connector-jobs-qwctjobs)
+* [Job SCPF](#os-as400-connector-jobs-scpf)
+* [Message queue](#os-as400-connector-message-queue)
+* [Message queue - QSYSOPR](#os-as400-connector-message-queue-qsysopr.msgq)
+* [Message queue - QSYSOPR over 90](#os-as400-connector-message-queue-qsysopr.msgq-90)
+* [Page faults](#os-as400-connector-page-faults)
+* [Subsystems](#os-as400-connector-subsystems)
+* [Systems](#os-as400-connector-system)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Disks](#os-as400-connector-disks) | `Disk - <name>` |
+| [Subsystems](#os-as400-connector-subsystems) | `Subsystem - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### IBM-AS400
+
+*IBM AS400* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CONNECTOR-HOSTNAME` | `127.0.0.1` | Centreon connector hostname (default: 127.0.0.1) |
+| `CONNECTOR-PORT` | `8091` | Port used (default: 8091) |
+| `CONNECTOR-PROTO` | `http` | Specify https if needed (default: 'http') |
+| `CONNECTOR-TIMEOUT` | `50` | Set timeout in seconds (default: 50) |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `AS400-PASSWORD` | *(password)* | AS/400 password (required) |
+| `AS400-USERNAME` |  | AS/400 username (required) |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Disks](#os-as400-connector-disks) | `os-as400-connector-disks` |
+| [Job QALERT](#os-as400-connector-jobs-qalert) | `os-as400-connector-jobs-qalert` |
+| [Job QFILESYS1](#os-as400-connector-jobs-qfilesys1) | `os-as400-connector-jobs-qfilesys1` |
+| [Job QJOBSCD](#os-as400-connector-jobs-qjobscd) | `os-as400-connector-jobs-qjobscd` |
+| [Job QLUR](#os-as400-connector-jobs-qlur) | `os-as400-connector-jobs-qlur` |
+| [Job QLUS](#os-as400-connector-jobs-qlus) | `os-as400-connector-jobs-qlus` |
+| [Job QQQTEMP1](#os-as400-connector-jobs-qqqtemp1) | `os-as400-connector-jobs-qqqtemp1` |
+| [Job QQQTEMP2](#os-as400-connector-jobs-qqqtemp2) | `os-as400-connector-jobs-qqqtemp2` |
+| [Job QSPLMAINT](#os-as400-connector-jobs-qsplmaint) | `os-as400-connector-jobs-qsplmaint` |
+| [Job QSPPF00001](#os-as400-connector-jobs-qsppf00001) | `os-as400-connector-jobs-qsppf00001` |
+| [Job QSPRC00001](#os-as400-connector-jobs-qsprc00001) | `os-as400-connector-jobs-qsprc00001` |
+| [Job QSYSARB](#os-as400-connector-jobs-qsysarb) | `os-as400-connector-jobs-qsysarb` |
+| [Job QTCPCTL](#os-as400-connector-jobs-qtcpctl) | `os-as400-connector-jobs-qtcpctl` |
+| [Job QTCPWRK](#os-as400-connector-jobs-qtcpwrk) | `os-as400-connector-jobs-qtcpwrk` |
+| [Job QWCPJOBS](#os-as400-connector-jobs-qwcpjobs) | `os-as400-connector-jobs-qwcpjobs` |
+| [Job QWCTJOBS](#os-as400-connector-jobs-qwctjobs) | `os-as400-connector-jobs-qwctjobs` |
+| [Job SCPF](#os-as400-connector-jobs-scpf) | `os-as400-connector-jobs-scpf` |
+| [Message queue - QSYSOPR](#os-as400-connector-message-queue-qsysopr.msgq) | `os-as400-connector-message-queue-QSYSOPR.MSGQ` |
+| [Message queue - QSYSOPR over 90](#os-as400-connector-message-queue-qsysopr.msgq-90) | `os-as400-connector-message-queue-QSYSOPR.MSGQ-90` |
+| [Page faults](#os-as400-connector-page-faults) | `os-as400-connector-page-faults` |
+| [Subsystems](#os-as400-connector-subsystems) | `os-as400-connector-subsystems` |
+| [Systems](#os-as400-connector-system) | `os-as400-connector-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Command](#os-as400-connector-command) | `os-as400-connector-command` |
+| [Job Queues](#os-as400-connector-job-queues) | `os-as400-connector-job-queues` |
+| [Message queue](#os-as400-connector-message-queue) | `os-as400-connector-message-queue` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### IBM-AS400-SSL
+
+*IBM AS400 SSL* · Parent template: `IBM-AS400`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--as400-ssl` | --verbose: Display messages in verbose output |
+| `CONNECTOR-HOSTNAME` |  | Centreon connector hostname (default: 127.0.0.1) |
+| `CONNECTOR-PORT` |  | Port used (default: 8091) |
+| `CONNECTOR-PROTO` |  | Specify https if needed (default: 'http') |
+| `CONNECTOR-TIMEOUT` |  | Set timeout in seconds (default: 50) |
+| `AS400-USERNAME` |  | AS/400 username (required) |
+| `AS400-PASSWORD` |  | AS/400 password (required) |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Disks](#os-as400-connector-disks) (inherited from `IBM-AS400`) | `os-as400-connector-disks` |
+| [Job QALERT](#os-as400-connector-jobs-qalert) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qalert` |
+| [Job QFILESYS1](#os-as400-connector-jobs-qfilesys1) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qfilesys1` |
+| [Job QJOBSCD](#os-as400-connector-jobs-qjobscd) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qjobscd` |
+| [Job QLUR](#os-as400-connector-jobs-qlur) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qlur` |
+| [Job QLUS](#os-as400-connector-jobs-qlus) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qlus` |
+| [Job QQQTEMP1](#os-as400-connector-jobs-qqqtemp1) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qqqtemp1` |
+| [Job QQQTEMP2](#os-as400-connector-jobs-qqqtemp2) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qqqtemp2` |
+| [Job QSPLMAINT](#os-as400-connector-jobs-qsplmaint) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qsplmaint` |
+| [Job QSPPF00001](#os-as400-connector-jobs-qsppf00001) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qsppf00001` |
+| [Job QSPRC00001](#os-as400-connector-jobs-qsprc00001) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qsprc00001` |
+| [Job QSYSARB](#os-as400-connector-jobs-qsysarb) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qsysarb` |
+| [Job QTCPCTL](#os-as400-connector-jobs-qtcpctl) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qtcpctl` |
+| [Job QTCPWRK](#os-as400-connector-jobs-qtcpwrk) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qtcpwrk` |
+| [Job QWCPJOBS](#os-as400-connector-jobs-qwcpjobs) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qwcpjobs` |
+| [Job QWCTJOBS](#os-as400-connector-jobs-qwctjobs) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-qwctjobs` |
+| [Job SCPF](#os-as400-connector-jobs-scpf) (inherited from `IBM-AS400`) | `os-as400-connector-jobs-scpf` |
+| [Message queue - QSYSOPR](#os-as400-connector-message-queue-qsysopr.msgq) (inherited from `IBM-AS400`) | `os-as400-connector-message-queue-QSYSOPR.MSGQ` |
+| [Message queue - QSYSOPR over 90](#os-as400-connector-message-queue-qsysopr.msgq-90) (inherited from `IBM-AS400`) | `os-as400-connector-message-queue-QSYSOPR.MSGQ-90` |
+| [Page faults](#os-as400-connector-page-faults) (inherited from `IBM-AS400`) | `os-as400-connector-page-faults` |
+| [Subsystems](#os-as400-connector-subsystems) (inherited from `IBM-AS400`) | `os-as400-connector-subsystems` |
+| [Systems](#os-as400-connector-system) (inherited from `IBM-AS400`) | `os-as400-connector-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Command](#os-as400-connector-command) | `os-as400-connector-command` |
+| [Job Queues](#os-as400-connector-job-queues) | `os-as400-connector-job-queues` |
+| [Message queue](#os-as400-connector-message-queue) | `os-as400-connector-message-queue` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disks {/* #os-as400-connector-disks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-STATUS` | `'%{status} =~ /noReady\|busy\|hwFailureOk\|hwFailurePerf\|Protected\|rebuilding/i'` | Set warning threshold for status (Default: '%\{status\} =~ /noReady\|busy\|hwFailureOk\|hwFailurePerf\|Protected\|rebuilding/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /^(noAccess\|otherDiskSubFailed\|failed\|notOperational\|noUnitControl)$/i'` | Set critical threshold for status (Default: '%\{status\} =~ /^(noAccess\|otherDiskSubFailed\|failed\|notOperational\|noUnitControl)$/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold Disk space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold Disk space usage (%) |
+| `CRITICAL-DISKS-ERROR` | `0` | Critical threshold error disks |
+| `INCLUDE-DISK-NAME` |  | Filter disks by name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold Disk space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold Disk space usage free (B) |
+| `WARNING-RESERVED` |  | Warning threshold Disk space reserved (B) |
+| `WARNING-DISKS-TOTAL` |  | Warning threshold total disks |
+| `WARNING-DISKS-ACTIVE` |  | Warning threshold active disks |
+| `WARNING-DISKS-ERROR` |  | Warning threshold error disks |
+| `WARNING-DISK-GAP-REPARTITION` |  | Warning threshold GAP repartition disks |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold Disk space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold Disk space usage free (B) |
+| `CRITICAL-RESERVED` |  | Critical threshold Disk space reserved (B) |
+| `CRITICAL-DISKS-TOTAL` |  | Critical threshold total disks |
+| `CRITICAL-DISKS-ACTIVE` |  | Critical threshold active disks |
+| `CRITICAL-DISK-GAP-REPARTITION` |  | Critical threshold GAP repartition disks |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disks.total.count` |  | total | `WARNING-DISKS-TOTAL`, `CRITICAL-DISKS-TOTAL` |
+| `disks.active.count` |  | active |  |
+| `disks.errors.count` |  | errors | `WARNING-DISKS-ERROR`, `CRITICAL-DISKS-ERROR` |
+| `disks.gap.repartition.percentage` | `%` | gap repartition between min/max:  %% | `WARNING-DISK-GAP-REPARTITION`, `CRITICAL-DISK-GAP-REPARTITION` |
+| `disk.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `disk.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `disk.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `disk.space.reserved.bytes` | `B` | reserved | `WARNING-RESERVED`, `CRITICAL-RESERVED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QALERT {/* #os-as400-connector-jobs-qalert */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QALERT` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QFILESYS1 {/* #os-as400-connector-jobs-qfilesys1 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QFILESYS1` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QJOBSCD {/* #os-as400-connector-jobs-qjobscd */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QJOBSCD` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QLUR {/* #os-as400-connector-jobs-qlur */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QLUR` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QLUS {/* #os-as400-connector-jobs-qlus */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QLUS` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QQQTEMP1 {/* #os-as400-connector-jobs-qqqtemp1 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QQQTEMP1` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QQQTEMP2 {/* #os-as400-connector-jobs-qqqtemp2 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QQQTEMP2` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QSPLMAINT {/* #os-as400-connector-jobs-qsplmaint */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QSPLMAINT` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QSPPF00001 {/* #os-as400-connector-jobs-qsppf00001 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QSPPF00001 ` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QSPRC00001 {/* #os-as400-connector-jobs-qsprc00001 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QSPRC00001` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QSYSARB {/* #os-as400-connector-jobs-qsysarb */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QSYSARB` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QTCPCTL {/* #os-as400-connector-jobs-qtcpctl */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QTCPCTL` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QTCPWRK {/* #os-as400-connector-jobs-qtcpwrk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QTCPWRK` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QWCPJOBS {/* #os-as400-connector-jobs-qwcpjobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QWCPJOBS` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job QWCTJOBS {/* #os-as400-connector-jobs-qwctjobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `QWCTJOBS` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job SCPF {/* #os-as400-connector-jobs-scpf */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-NAME` | `SCPF` | Filter jobs by name (can be a regexp) |
+| `INCLUDE-SUBSYSTEM` |  | Filter jobs by subsystem (can be a regexp) |
+| `WARNING-JOBS-TOTAL` |  | Warning threshold total jobs |
+| `CRITICAL-JOBS-TOTAL` |  | Critical threshold total jobs |
+| `INCLUDE-ACTIVE-STATUS` |  | Filter jobs by ACTIVE_JOB_STATUS (can be a regexp). Example: --filter-active-status='MSGW' to count jobs with MSGW |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | number of jobs | `WARNING-JOBS-TOTAL`, `CRITICAL-JOBS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Message queue - QSYSOPR {/* #os-as400-connector-message-queue-qsysopr.msgq */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MESSAGE-QUEUE-PATH` | `/QSYS.LIB/QSYSOPR.MSGQ` | Specify the message queue (Required. Eg: --message-queue-path='/QSYS.LIB/QSYSOPR.MSGQ') |
+| `INCLUDE-MESSAGE-ID` |  | Filter messages by id (can be a regexp) |
+| `MIN-SEVERITY` |  | Filter messages with severity greater than or equal to X |
+| `MAX-SEVERITY` |  | Filter messages with severity less than to X |
+| `WARNING-MESSAGES` |  | Warning threshold messages |
+| `CRITICAL-MESSAGES` |  | Critical threshold messages |
+| `EXTRA-OPTS` |  | --verbose: Display messages in verbose output |
+| `EXCLUDE-REPLY-STATUS` |  | Exclude messages by reply status (can be a regexp) (default: 'A') |
+| `EXCLUDE-TEXT` |  | Exclude messages by text (can be a regexp) |
+| `INCLUDE-REPLY-STATUS` |  | Filter messages by reply status (can be a regexp) |
+| `INCLUDE-TEXT` |  | Filter messages by text (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `mq.messages.count` |  | number of messages | `WARNING-MESSAGES`, `CRITICAL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Message queue - QSYSOPR over 90 {/* #os-as400-connector-message-queue-qsysopr.msgq-90 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MESSAGE-QUEUE-PATH` | `/QSYS.LIB/QSYSOPR.MSGQ` | Specify the message queue (Required. Eg: --message-queue-path='/QSYS.LIB/QSYSOPR.MSGQ') |
+| `MIN-SEVERITY` | `90` | Filter messages with severity greater than or equal to X |
+| `EXTRA-OPTS` | `--verbose` | --verbose: Display messages in verbose output |
+| `CRITICAL-MESSAGES` | `0` | Critical threshold messages |
+| `INCLUDE-MESSAGE-ID` |  | Filter messages by id (can be a regexp) |
+| `MAX-SEVERITY` |  | Filter messages with severity less than to X |
+| `WARNING-MESSAGES` |  | Warning threshold messages |
+| `EXCLUDE-REPLY-STATUS` |  | Exclude messages by reply status (can be a regexp) (default: 'A') |
+| `EXCLUDE-TEXT` |  | Exclude messages by text (can be a regexp) |
+| `INCLUDE-REPLY-STATUS` |  | Filter messages by reply status (can be a regexp) |
+| `INCLUDE-TEXT` |  | Filter messages by text (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `mq.messages.count` |  | number of messages | `WARNING-MESSAGES`, `CRITICAL-MESSAGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Page faults {/* #os-as400-connector-page-faults */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PAGEFAULTS-DATABASE` | `20` | Warning threshold page faults database |
+| `WARNING-PAGEFAULTS-NONDATABASE` | `20` | Warning threshold page faults non database |
+| `CRITICAL-PAGEFAULTS-DATABASE` | `90` | Critical threshold page faults database |
+| `CRITICAL-PAGEFAULTS-NONDATABASE` | `90` | Critical threshold page faults non database |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pagefaults.database.ratio.percentage` | `%` | database page faults:  %% | `WARNING-PAGEFAULTS-DATABASE`, `CRITICAL-PAGEFAULTS-DATABASE` |
+| `pagefaults.nondatabase.ratio.percentage` | `%` | nondatabase page faults:  %% | `WARNING-PAGEFAULTS-NONDATABASE`, `CRITICAL-PAGEFAULTS-NONDATABASE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Subsystems {/* #os-as400-connector-subsystems */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INCLUDE-SUBSYSTEM-NAME` | `.*` | Filter subsystems by name (can be a regexp) |
+| `INCLUDER-SUBSYSTEM-LIBRARY` | `.*` | Filter subsystems by library (can be a regexp) |
+| `WARNING-STATUS` | `'%{status} =~ /ending\|restricted\|starting/i'` | Set warning threshold for status (Default: '%\{status\} =~ /ending\|restricted\|starting/i'). Can used special variables like: %\{status\}, %\{name\}, %\{library\} |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{name\}, %\{library\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{status\}, %\{name\}, %\{library\} |
+| `WARNING-SUBSYSTEMS-TOTAL` |  | Warning threshold total subsystems |
+| `WARNING-SUBSYSTEMS-ACTIVE` |  | Warning threshold active subsystems |
+| `WARNING-SUBSYSTEMS-ENDING` |  | Warning threshold ending subsystems |
+| `WARNING-SUBSYSTEMS-INACTIVE` |  | Warning threshold inactive subsystems |
+| `WARNING-SUBSYSTEMS-RESTRICTED` |  | Warning threshold restricted subsystems |
+| `WARNING-SUBSYSTEMS-STARTING` |  | Warning threshold starting subsystems |
+| `WARNING-JOBS-ACTIVE` |  | Warning threshold active jobs |
+| `CRITICAL-SUBSYSTEMS-TOTAL` |  | Critical threshold total subsystems |
+| `CRITICAL-SUBSYSTEMS-ACTIVE` |  | Critical threshold active subsystems |
+| `CRITICAL-SUBSYSTEMS-ENDING` |  | Critical threshold ending subsystems |
+| `CRITICAL-SUBSYSTEMS-INACTIVE` |  | Critical threshold inactive subsystems |
+| `CRITICAL-SUBSYSTEMS-RESTRICTED` |  | Critical threshold restricted subsystems |
+| `CRITICAL-SUBSYSTEMS-STARTING` |  | Critical threshold starting subsystems |
+| `CRITICAL-JOBS-ACTIVE` |  | Critical threshold active jobs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `subsystems.total.count` |  | total | `WARNING-SUBSYSTEMS-TOTAL`, `CRITICAL-SUBSYSTEMS-TOTAL` |
+| `subsystem.jobs.active.count` |  | current active jobs | `WARNING-JOBS-ACTIVE`, `CRITICAL-JOBS-ACTIVE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Systems {/* #os-as400-connector-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PROCESSING-UNITS-USAGE` | `90` | Warning threshold processing units usage (%) |
+| `WARNING-STORAGE-SPACE-USAGE` | `90` | Warning threshold storage space usage (%) |
+| `CRITICAL-PROCESSING-UNITS-USAGE` | `95` | Critical threshold processing units usage (%) |
+| `CRITICAL-STORAGE-SPACE-USAGE` | `95` | Critical threshold storage space usage (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.processing.units.usage.percentage` | `%` | processing units used:  %% | `WARNING-PROCESSING-UNITS-USAGE`, `CRITICAL-PROCESSING-UNITS-USAGE` |
+| `system.storage.pool.space.usage.percentage` | `%` | storage pool space used:  %% | `WARNING-STORAGE-SPACE-USAGE`, `CRITICAL-STORAGE-SPACE-USAGE` |
+| `system.jobs.total.count` |  | total |  |
+| `system.jobs.active.count` |  | active |  |
+| `system.batch_jobs.running.count` |  | running |  |
+| `system.batch_jobs.waiting_message.count` |  | waiting for message |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Command {/* #os-as400-connector-command */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} =~ /failed/i'` | Set critical threshold for status (Default: '%\{status\} =~ /failed/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `COMMAND-NAME` |  | Specify the command to execute (Required) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job Queues {/* #os-as400-connector-job-queues */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} =~ /HELD/i'` | Set critical threshold for status (Default: '%\{status\} =~ /HELD/i'). Can used special variables like: %\{status\}, %\{name\}, %\{library\} |
+| `CRITICAL-JOBQUEUE-JOBS-HELD` | `0` | Critical threshold jobqueue jobs held |
+| `JOBQ` |  | JOBQ selection. Eg: --jobq='QGPL\:QBASE' --jobq='QGPL\:QPGMR' |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{name\}, %\{library\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\}, %\{library\} |
+| `WARNING-JOBQUEUES-TOTAL` |  | Warning threshold total jobqueues |
+| `WARNING-JOBQUEUE-JOBS-ACTIVE` |  | Warning threshold jobqueue jobs active |
+| `WARNING-JOBQUEUE-JOBS-SCHEDULED` |  | Warning threshold jobqueue jobs scheduled |
+| `WARNING-JOBQUEUE-JOBS-HELD` |  | Warning threshold jobqueue jobs held |
+| `CRITICAL-JOBQUEUES-TOTAL` |  | Critical threshold total jobqueues |
+| `CRITICAL-JOBQUEUE-JOBS-ACTIVE` |  | Critical threshold jobqueue jobs active |
+| `CRITICAL-JOBQUEUE-JOBS-SCHEDULED` |  | Critical threshold jobqueue jobs scheduled |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobqueues.total.count` |  | total | `WARNING-JOBQUEUES-TOTAL`, `CRITICAL-JOBQUEUES-TOTAL` |
+| `jobqueue.jobs.active.count` |  | active jobs | `WARNING-JOBQUEUE-JOBS-ACTIVE`, `CRITICAL-JOBQUEUE-JOBS-ACTIVE` |
+| `jobqueue.jobs.scheduled.count` |  | scheduled jobs | `WARNING-JOBQUEUE-JOBS-SCHEDULED`, `CRITICAL-JOBQUEUE-JOBS-SCHEDULED` |
+| `jobqueue.jobs.held.count` |  | held jobs | `WARNING-JOBQUEUE-JOBS-HELD`, `CRITICAL-JOBQUEUE-JOBS-HELD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Message queue {/* #os-as400-connector-message-queue */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXCLUDE-REPLY-STATUS` | `A` | Exclude messages by reply status (can be a regexp) (default: 'A') |
+| `MESSAGE-QUEUE-PATH` |  | Specify the message queue (Required. Eg: --message-queue-path='/QSYS.LIB/QSYSOPR.MSGQ') |
+| `INCLUDE-MESSAGE-ID` |  | Filter messages by id (can be a regexp) |
+| `MIN-SEVERITY` |  | Filter messages with severity greater than or equal to X |
+| `MAX-SEVERITY` |  | Filter messages with severity less than to X |
+| `WARNING-MESSAGES` |  | Warning threshold messages |
+| `CRITICAL-MESSAGES` |  | Critical threshold messages |
+| `EXTRA-OPTS` |  | --verbose: Display messages in verbose output |
+| `EXCLUDE-TEXT` |  | Exclude messages by text (can be a regexp) |
+| `INCLUDE-REPLY-STATUS` |  | Filter messages by reply status (can be a regexp) |
+| `INCLUDE-TEXT` |  | Filter messages by text (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `mq.messages.count` |  | number of messages | `WARNING-MESSAGES`, `CRITICAL-MESSAGES` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250800 - 20251001</summary>
+
+- Command `os-as400-connector-message-queue`
+    - Option `--exclude-reply-status=$_SERVICEEXCLUDE-REPLY-STATUS$` added
+    - Option `--exclude-reply-statuss=$_SERVICEEXCLUDE-REPLY-STATUS$` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250800 - 20250915</summary>
+
+- Service template [`os-as400-connector-jobs-qalert`](#os-as400-connector-jobs-qalert)
+    - Macro `INCLUDE-NAME` added (default `QALERT`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qfilesys1`](#os-as400-connector-jobs-qfilesys1)
+    - Macro `INCLUDE-NAME` added (default `QFILESYS1`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qjobscd`](#os-as400-connector-jobs-qjobscd)
+    - Macro `INCLUDE-NAME` added (default `QJOBSCD`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qlur`](#os-as400-connector-jobs-qlur)
+    - Macro `INCLUDE-NAME` added (default `QLUR`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qlus`](#os-as400-connector-jobs-qlus)
+    - Macro `INCLUDE-NAME` added (default `QLUS`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qqqtemp1`](#os-as400-connector-jobs-qqqtemp1)
+    - Macro `INCLUDE-NAME` added (default `QQQTEMP1`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qqqtemp2`](#os-as400-connector-jobs-qqqtemp2)
+    - Macro `INCLUDE-NAME` added (default `QQQTEMP2`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qsplmaint`](#os-as400-connector-jobs-qsplmaint)
+    - Macro `INCLUDE-NAME` added (default `QSPLMAINT`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qsppf00001`](#os-as400-connector-jobs-qsppf00001)
+    - Macro `INCLUDE-NAME` added (default `QSPPF00001 `)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qsprc00001`](#os-as400-connector-jobs-qsprc00001)
+    - Macro `INCLUDE-NAME` added (default `QSPRC00001`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qsysarb`](#os-as400-connector-jobs-qsysarb)
+    - Macro `INCLUDE-NAME` added (default `QSYSARB`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qtcpctl`](#os-as400-connector-jobs-qtcpctl)
+    - Macro `INCLUDE-NAME` added (default `QTCPCTL`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qtcpwrk`](#os-as400-connector-jobs-qtcpwrk)
+    - Macro `INCLUDE-NAME` added (default `QTCPWRK`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qwcpjobs`](#os-as400-connector-jobs-qwcpjobs)
+    - Macro `INCLUDE-NAME` added (default `QWCPJOBS`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-qwctjobs`](#os-as400-connector-jobs-qwctjobs)
+    - Macro `INCLUDE-NAME` added (default `QWCTJOBS`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-jobs-scpf`](#os-as400-connector-jobs-scpf)
+    - Macro `INCLUDE-NAME` added (default `SCPF`)
+    - Macro `FILTER-NAME` removed
+- Service template [`os-as400-connector-message-queue`](#os-as400-connector-message-queue)
+    - Macro `EXCLUDE-REPLY-STATUS` added (default `A`)
+- Service template [`os-as400-connector-subsystems`](#os-as400-connector-subsystems)
+    - Macro `INCLUDE-SUBSYSTEM-NAME` added (default `.*`)
+    - Macro `INCLUDER-SUBSYSTEM-LIBRARY` added (default `.*`)
+    - Macro `FILTER-SUBSYSTEM-NAME` removed
+    - Macro `FILTER-SUBSYSTEM-LIBRARY` removed
+- Command `os-as400-connector-disks`
+    - Option `--include-disk-name='$_SERVICEINCLUDE-DISK-NAME$'` added
+    - Option `--filter-disk-name='$_SERVICEFILTER-DISK-NAME$'` removed
+    - Macro `INCLUDE-DISK-NAME` added
+    - Macro `FILTER-DISK-NAME` removed
+- Command `os-as400-connector-jobs`
+    - Option `--include-name='$_SERVICEINCLUDE-NAME$'` added
+    - Option `--include-subsystem='$_SERVICEINCLUDE-SUBSYSTEM$'` added
+    - Option `--include-active-status='$_SERVICEINCLUDE-ACTIVE-STATUS$'` added
+    - Option `--filter-name='$_SERVICEFILTER-NAME$'` removed
+    - Option `--filter-subsystem='$_SERVICEFILTER-SUBSYSTEM$'` removed
+    - Option `--filter-active-status='$_SERVICEFILTER-ACTIVE-STATUS$'` removed
+    - Macro `INCLUDE-NAME` added
+    - Macro `INCLUDE-SUBSYSTEM` added
+    - Macro `INCLUDE-ACTIVE-STATUS` added
+    - Macro `FILTER-NAME` removed
+    - Macro `FILTER-SUBSYSTEM` removed
+    - Macro `FILTER-ACTIVE-STATUS` removed
+- Command `os-as400-connector-message-queue`
+    - Option `--include-message-id='$_SERVICEINCLUDE-MESSAGE-ID$'` added
+    - Option `--include-reply-status=$_SERVICEINCLUDE-REPLY-STATUS$` added
+    - Option `--exclude-reply-statuss=$_SERVICEEXCLUDE-REPLY-STATUS$` added
+    - Option `--include-text=$_SERVICEINCLUDE-TEXT$` added
+    - Option `--exclude-text=$_SERVICEEXCLUDE-TEXT$` added
+    - Option `--filter-message-id='$_SERVICEFILTER-MESSAGE-ID$'` removed
+    - Macro `INCLUDE-MESSAGE-ID` added
+    - Macro `EXCLUDE-REPLY-STATUS` added
+    - Macro `EXCLUDE-TEXT` added
+    - Macro `INCLUDE-REPLY-STATUS` added
+    - Macro `INCLUDE-TEXT` added
+    - Macro `FILTER-MESSAGE-ID` removed
+- Command `os-as400-connector-subsystems`
+    - Option `--include-subsystem-name='$_SERVICEINCLUDE-SUBSYSTEM-NAME$'` added
+    - Option `--include-subsystem-library='$_SERVICEINCLUDER-SUBSYSTEM-LIBRARY$'` added
+    - Option `--filter-subsystem-name='$_SERVICEFILTER-SUBSYSTEM-NAME$'` removed
+    - Option `--filter-subsystem-library='$_SERVICEFILTER-SUBSYSTEM-LIBRARY$'` removed
+    - Macro `INCLUDE-SUBSYSTEM-NAME` added
+    - Macro `INCLUDER-SUBSYSTEM-LIBRARY` added
+    - Macro `FILTER-SUBSYSTEM-NAME` removed
+    - Macro `FILTER-SUBSYSTEM-LIBRARY` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Host template `IBM-AS400-SSL`
+    - Host template added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240130</summary>
+
+- Command `os-as400-connector-subsystems`
+    - Option `--filter-subsystem-library` changed from `--filter-subsystem-library` to `--filter-subsystem-library='$_SERVICEFILTER-SUBSYSTEM-LIBRARY$'`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `IBM AS400 (iSeries)`
+    - Description updated
+
+</details>

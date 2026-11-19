@@ -1,0 +1,191 @@
+---
+title: "Masterclock NTP100 GPS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Masterclock.png";
+
+<PluginPackHeader name="Masterclock NTP100 GPS" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Masterclock NTP100 GPS time servers through SNMP: GPS status, NTP performance (stratum, precision, poll interval) and the uptime.
+
+The plugin pack provides these checks:
+
+* [GPS status](#hardware-devices-masterclock-ntp100gps-snmp-gps-status)
+* [NTP performance](#hardware-devices-masterclock-ntp100gps-snmp-ntp-performance)
+* [Uptime](#hardware-devices-masterclock-ntp100gps-snmp-uptime)
+
+
+## Host Templates
+
+### Masterclock-NTP100-GPS
+
+*Masterclock NTP100 GPS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [GPS status](#hardware-devices-masterclock-ntp100gps-snmp-gps-status) | `hardware-devices-masterclock-ntp100gps-snmp-gps-status` |
+| [NTP performance](#hardware-devices-masterclock-ntp100gps-snmp-ntp-performance) | `hardware-devices-masterclock-ntp100gps-snmp-ntp-performance` |
+| [Uptime](#hardware-devices-masterclock-ntp100gps-snmp-uptime) | `hardware-devices-masterclock-ntp100gps-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### GPS status {/* #hardware-devices-masterclock-ntp100gps-snmp-gps-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{satellites} =~ /No satellites in view/'` | Set warning threshold for status (Default: '%\{satellites\} =~ /No satellites in view/') Can used special variables like: %\{health\}, %\{satellites\}, %\{latitude\}, %\{longitude\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '') Can used special variables like: %\{health\}, %\{satellites\}, %\{latitude\}, %\{longitude\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP performance {/* #hardware-devices-masterclock-ntp100gps-snmp-ntp-performance */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{health} !~ /No leap second today/'` | Set warning threshold for status (Default: '%\{health\} !~ /No leap second today/') Can used special variables like: %\{leap\} |
+| `WARNING-STRATUM-LEVEL` | `2` | Threshold warning stratum level |
+| `CRITICAL-STRATUM-LEVEL` | `4` | Threshold critical stratum level |
+| `WARNING-PRECISION` | `0.001` | Threshold warning precision |
+| `CRITICAL-PRECISION` | `0.01` | Threshold critical precision |
+| `WARNING-POLL-INTERVAL` | `2048` | Threshold warning poll interval |
+| `CRITICAL-POLL-INTERVAL` | `4096` | Threshold critical poll interval |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '') Can used special variables like: %\{health\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `stratum_level` |  | Stratum level | `WARNING-STRATUM-LEVEL`, `CRITICAL-STRATUM-LEVEL` |
+| `precision` | `seconds` | Precision :  seconds | `WARNING-PRECISION`, `CRITICAL-PRECISION` |
+| `poll_interval` | `seconds` | Poll interval :  seconds | `WARNING-POLL-INTERVAL`, `CRITICAL-POLL-INTERVAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #hardware-devices-masterclock-ntp100gps-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260600 - 20260811</summary>
+
+- Plugin pack `Masterclock NTP100 GPS`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260600 - 20260811`.

@@ -1,0 +1,278 @@
+---
+title: "Axentia e-paper"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Axentia.png";
+
+<PluginPackHeader name="Axentia e-paper" image={image} category="Hardware" metadata={["API"]} />
+
+## Description
+
+Monitors Axentia e-paper displays through the Axentia REST API: server status, the health of the displays and their operational status.
+
+The plugin pack provides these checks:
+
+* [Display health](#hardware-devices-axentia-epaper-restapi-health)
+* [Operational display status](#hardware-devices-axentia-epaper-restapi-operational-display-status)
+* [Server status](#hardware-devices-axentia-epaper-restapi-server-status)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Display health](#hardware-devices-axentia-epaper-restapi-health) | `Display <stoppoint_name> - <ibus_id>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Axentia-e-paper
+
+*Axentia e-paper* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-PATH` | `api` | API path to the iBus API. |
+| `API-VERSION` | `4.0` | API version to use for the iBus API. Can be '1.0', '2.0', '3.0', '4.0' |
+| `API-KEY` | *(password)* | API key to access iBus API. |
+| `PORT` | `443` | default: 443 |
+| `PROTO` | `https` | default: https |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Operational display status](#hardware-devices-axentia-epaper-restapi-operational-display-status) | `hardware-devices-axentia-epaper-restapi-operational-display-status` |
+| [Server status](#hardware-devices-axentia-epaper-restapi-server-status) | `hardware-devices-axentia-epaper-restapi-server-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Display health](#hardware-devices-axentia-epaper-restapi-health) | `hardware-devices-axentia-epaper-restapi-health` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Operational display status {/* #hardware-devices-axentia-epaper-restapi-operational-display-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ERROR` | `15` | Warning threshold for the total error display count |
+| `CRITICAL-ERROR` | `20` | Critical threshold for the total error display count |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-OK` |  | Warning threshold for the total ok display count |
+| `CRITICAL-OK` |  | Critical threshold for the total ok display count |
+| `WARNING-OK-PRCT` |  | Warning threshold for the total ok percent display count |
+| `CRITICAL-OK-PRCT` |  | Critical threshold for the total ok percent display count |
+| `WARNING-ERROR-PRCT` |  | Warning threshold for the total error percent display count |
+| `CRITICAL-ERROR-PRCT` |  | Critical threshold for the total error percent display count |
+| `WARNING-NOTICE` |  | Warning threshold for the total notice display count |
+| `CRITICAL-NOTICE` |  | Critical threshold for the total notice display count |
+| `WARNING-NOTICE-PRCT` |  | Warning threshold for the total notice percent display count |
+| `CRITICAL-NOTICE-PRCT` |  | Critical threshold for the total notice percent display count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `displays.operation.ok.count` |  |  | `WARNING-OK`, `CRITICAL-OK` |
+| `displays.operation.ok.percentage` | `%` |  | `WARNING-OK-PRCT`, `CRITICAL-OK-PRCT` |
+| `displays.operation.error.count` |  |  | `WARNING-ERROR`, `CRITICAL-ERROR` |
+| `displays.operation.error.percentage` | `%` |  | `WARNING-ERROR-PRCT`, `CRITICAL-ERROR-PRCT` |
+| `displays.operation.notice.count` |  |  | `WARNING-NOTICE`, `CRITICAL-NOTICE` |
+| `displays.operation.notice.percentage` | `%` |  | `WARNING-NOTICE-PRCT`, `CRITICAL-NOTICE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Server status {/* #hardware-devices-axentia-epaper-restapi-server-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LAST-UPDATE` | `60` | Warning threshold for last update in seconds |
+| `CRITICAL-LAST-UPDATE` | `300` | Critical threshold for last update in seconds |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-DEPARTURES` |  | Warning threshold for departures |
+| `CRITICAL-DEPARTURES` |  | Critical threshold for departures |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `departures.count` |  | Number of departures | `WARNING-DEPARTURES`, `CRITICAL-DEPARTURES` |
+| `last-update.seconds` | `s` | Last Database sync  seconds ago | `WARNING-LAST-UPDATE`, `CRITICAL-LAST-UPDATE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Display health {/* #hardware-devices-axentia-epaper-restapi-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `%{status} eq "unknown" \|\| %{display_mode} eq "unknown"` | Set unknown threshold for status. (Default: '%\{status\} eq "NOT_DOCUMENTED" \|\| %\{display_mode\} eq "NOT_DOCUMENTED"'). Can used special variables like: %\{status\}, %\{display_mode\} |
+| `WARNING-STATUS` | `%{status} eq "notice"` | Set warning threshold for status (Default: '%\{status\} eq "notice"'). Can used special variables like: %\{status\}, %\{display_mode\} |
+| `CRITICAL-STATUS` | `%{status} eq "error"` | Set critical threshold for status (Default: '%\{status\} eq "error"'). Can used special variables like: %\{status\}, %\{display_mode\} |
+| `CRITICAL-BATTERY-STATUS` | `10:` | Critical threshold for Battery status in % |
+| `CRITICAL-BATTERY-VOLTAGE` | `3:` | Critical threshold for Battery voltage in V |
+| `CRITICAL-TCP-QUALITY` | `50:` | Critical threshold for TCP-Quality in % |
+| `CRITICAL-TEMPERATURE` | `-20:70` | Critical threshold for temperature in C |
+| `CRITICAL-UDP-QUALITY` | `50:` | Critical threshold for UDP-Quality in % |
+| `CRITICAL-UPTIME` | `900:` | Critical threshold for uptime in seconds |
+| `WARNING-BATTERY-STATUS` | `15:` | Warning threshold for Battery status in % |
+| `WARNING-BATTERY-VOLTAGE` | `3.2:` | Warning threshold for Battery voltage in V |
+| `WARNING-TCP-QUALITY` | `65:` | Warning threshold for TCP-Quality in % |
+| `WARNING-TEMPERATURE` | `-10:60` | Warning threshold for temperature in C |
+| `WARNING-UDP-QUALITY` | `65:` | Warning threshold for UDP-Quality in % |
+| `WARNING-UPTIME` | `1800:` | Warning threshold for uptime in seconds |
+| `DISPLAY-ID` |  | Filter display by ibusId. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `temperature.celsius` | `C` | Temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `uptime.seconds` | `s` |  | `WARNING-UPTIME`, `CRITICAL-UPTIME` |
+| `tcp.quality.percentage` | `%` | TCP quality : %% | `WARNING-TCP-QUALITY`, `CRITICAL-TCP-QUALITY` |
+| `udp.quality.percentage` | `%` | UDP quality : %% | `WARNING-UDP-QUALITY`, `CRITICAL-UDP-QUALITY` |
+| `battery.status.percentage` | `%` | Battery status : %% | `WARNING-BATTERY-STATUS`, `CRITICAL-BATTERY-STATUS` |
+| `battery.voltage.volt` | `V` | Battery voltage:  V | `WARNING-BATTERY-VOLTAGE`, `CRITICAL-BATTERY-VOLTAGE` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250901 - 20251029</summary>
+
+- Service template [`hardware-devices-axentia-epaper-restapi-health`](#hardware-devices-axentia-epaper-restapi-health)
+    - Macro `CRITICAL-BATTERY-STATUS` added (default `10:`)
+    - Macro `CRITICAL-BATTERY-VOLTAGE` added (default `3:`)
+    - Macro `CRITICAL-TCP-QUALITY` added (default `50:`)
+    - Macro `CRITICAL-TEMPERATURE` added (default `-20:70`)
+    - Macro `CRITICAL-UDP-QUALITY` added (default `50:`)
+    - Macro `CRITICAL-UPTIME` added (default `900:`)
+    - Macro `WARNING-BATTERY-STATUS` added (default `15:`)
+    - Macro `WARNING-BATTERY-VOLTAGE` added (default `3.2:`)
+    - Macro `WARNING-TCP-QUALITY` added (default `65:`)
+    - Macro `WARNING-TEMPERATURE` added (default `-10:60`)
+    - Macro `WARNING-UDP-QUALITY` added (default `65:`)
+    - Macro `WARNING-UPTIME` added (default `1800:`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250800 - 20250915</summary>
+
+- Plugin pack `Axentia e-paper`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250800 - 20250915`.

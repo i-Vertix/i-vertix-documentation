@@ -1,0 +1,207 @@
+---
+title: "Hikvision NVR"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Hikvision.png";
+
+<PluginPackHeader name="Hikvision NVR" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Hikvision network video recorders through SNMP: the status and space usage of the disks, memory and the uptime.
+
+The plugin pack provides these checks:
+
+* [Disks](#hardware-devices-hikvision-nvr-snmp-disks)
+* [Memory](#hardware-devices-hikvision-nvr-snmp-memory)
+* [Uptime](#hardware-devices-hikvision-nvr-snmp-uptime)
+
+
+## Host Templates
+
+### Hikvision-NVR
+
+*Hikvision NVR SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Disks](#hardware-devices-hikvision-nvr-snmp-disks) | `hardware-devices-hikvision-nvr-snmp-disks` |
+| [Memory](#hardware-devices-hikvision-nvr-snmp-memory) | `hardware-devices-hikvision-nvr-snmp-memory` |
+| [Uptime](#hardware-devices-hikvision-nvr-snmp-uptime) | `hardware-devices-hikvision-nvr-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disks {/* #hardware-devices-hikvision-nvr-snmp-disks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~/reparing\|formatting/i'` | Set warning threshold for status (Default: '%\{status\} =~/reparing\|formatting/i'). Can used special variables like:%\{status\}, %\{name\} |
+| `CRITICAL-STATUS` | `'%{status} =~/abnormal\|smartfailed/i'` | Set critical threshold for status (Default: '%\{status\} =~/abnormal\|smartfailed/i'). Can used special variables like:%\{status\}, %\{name\} |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold % |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold % |
+| `CRITICAL-DISKS-ERRORS` | `0` | Disks errors in critical |
+| `WARNING-SPACE-USAGE` |  | Warning space usage threshold |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold free |
+| `WARNING-DISKS-TOTAL` |  | Disks total in warning |
+| `WARNING-DISKS-ERRORS` |  | Disks errors in warning |
+| `CRITICAL-SPACE-USAGE` |  | Critical space usage threshold |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold free |
+| `CRITICAL-DISKS-TOTAL` |  | Disks total in critical |
+| `FILTER-NAME` |  | Filter disks by name (can be a regexp). |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disks.total.count` |  | total | `WARNING-DISKS-TOTAL`, `CRITICAL-DISKS-TOTAL` |
+| `disks.errors.count` |  | errors | `WARNING-DISKS-ERRORS`, `CRITICAL-DISKS-ERRORS` |
+| `disk.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `disk.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `disk.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #hardware-devices-hikvision-nvr-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Warning threshold in % |
+| `CRITICAL-USAGE-PRCT` | `90` | Critical threshold in % |
+| `WARNING-USAGE` |  | Warning threshold in B |
+| `WARNING-USAGE-FREE` |  | Warning threshold in B |
+| `CRITICAL-USAGE` |  | Critical threshold in B |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold in B |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #hardware-devices-hikvision-nvr-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Warning threshold |
+| `CRITICAL-UPTIME` | `900:` | Critical threshold |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

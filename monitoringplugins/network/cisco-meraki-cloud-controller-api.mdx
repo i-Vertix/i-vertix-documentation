@@ -1,0 +1,654 @@
+---
+title: "Cisco Meraki Cloud Controller (API)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco-Meraki.png";
+
+<PluginPackHeader name="Cisco Meraki Cloud Controller (API)" image={image} category="Network" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Cisco Meraki cloud-managed networks through the Meraki Dashboard API: networks, device status and usage, VPN tunnels and the state of the API cache.
+
+The plugin pack provides these checks:
+
+* [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices) (`network-cisco-meraki-cloudcontroller-restapi-devices`)
+* [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices-cache) (`network-cisco-meraki-cloudcontroller-restapi-devices-cache`)
+* [Meraki API cache](#ivertix-host-discovery-meraki-cache)
+* [Networks](#network-cisco-meraki-cloudcontroller-restapi-networks)
+* [VPN tunnels](#network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Cisco Meraki Discovery](/monitoring/monitoring-resources/discovery/meraki-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices) | `Device - <name>` |
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices) | `Devices tag - <name>` |
+| [VPN tunnels](#network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels) | `VPN tunnel - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Cisco-Meraki-CloudController-API
+
+*Cisco Meraki CloudController API* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MERAKI-FQDN` | `api.meraki.com` | Meraki API hostname (default: 'api.meraki.com') The default value 'api.meraki.com' will work for most of the world. However, for organizations hosted in the following country dashboards, you need to override this value and specify the respective base URI instead: Canada: https://api.meraki.ca/api/v1 China: https://api.meraki.cn/api/v1 India: https://api.meraki.in/api/v1 United States FedRAMP: https://api.gov-meraki.com/api/v1 Please refer to Meraki API documentation https://developer.cisco.com/meraki/api-v1/getting-started/#base-uri for more details. |
+| `MERAKI-PORT` | `443` | Define the TCP port to use to reach the API (default: 443). |
+| `MERAKI-PROTOCOL` | `https` | Define the protocol to reach the API (default: 'https'). |
+| `MERAKI-API-TOKEN` | *(password)* | Meraki API token. |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `TIMEOUT` | `15` | Define the timeout for HTTP requests. |
+| `API-FILTER-ORGS` |  | Filter organizations (regexp) |
+| `MERAKI-EXTRA-OPTS` |  | Filter organizations (regexp) |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices) | `network-cisco-meraki-cloudcontroller-restapi-devices` |
+| [Networks](#network-cisco-meraki-cloudcontroller-restapi-networks) | `network-cisco-meraki-cloudcontroller-restapi-networks` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices-cache) | `network-cisco-meraki-cloudcontroller-restapi-devices-cache` |
+| [Meraki API cache](#ivertix-host-discovery-meraki-cache) | `ivertix-host-discovery-meraki-cache` |
+| [VPN tunnels](#network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels) | `network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Meraki-Device-cache
+
+*Cisco Meraki Device (with cache)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MERAKI-FQDN` | `api.meraki.com` | Meraki API hostname (default: 'api.meraki.com') The default value 'api.meraki.com' will work for most of the world. However, for organizations hosted in the following country dashboards, you need to override this value and specify the respective base URI instead: Canada: https://api.meraki.ca/api/v1 China: https://api.meraki.cn/api/v1 India: https://api.meraki.in/api/v1 United States FedRAMP: https://api.gov-meraki.com/api/v1 Please refer to Meraki API documentation https://developer.cisco.com/meraki/api-v1/getting-started/#base-uri for more details. |
+| `MERAKI-PORT` | `443` | Define the TCP port to use to reach the API (default: 443). |
+| `MERAKI-PROTOCOL` | `https` | Define the protocol to reach the API (default: 'https'). |
+| `MERAKI-API-TOKEN` | *(password)* | Meraki API token. |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `FILTER-DEVICE-NAME` |  | Filter devices by name (can be a regexp). |
+| `MERAKI-EXTRA-OPTS` | `--cache-use` |  |
+| `FILTER-NETWORK-ID` |  | Filter devices by network ID (can be a regexp). |
+| `FILTER-ORGANIZATION-ID` |  | Filter devices by organization ID (can be a regexp). |
+| `FILTER-ORGANIZATION-NAME` |  | Filter devices by organization name (can be a regexp). |
+| `FILTER-TAGS` |  | Filter devices by tags (can be a regexp). |
+| `TIMEOUT` |  | Define the timeout for HTTP requests. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices-cache) | `network-cisco-meraki-cloudcontroller-restapi-devices-cache` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices) | `network-cisco-meraki-cloudcontroller-restapi-devices` |
+| [Meraki API cache](#ivertix-host-discovery-meraki-cache) | `ivertix-host-discovery-meraki-cache` |
+| [Networks](#network-cisco-meraki-cloudcontroller-restapi-networks) | `network-cisco-meraki-cloudcontroller-restapi-networks` |
+| [VPN tunnels](#network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels) | `network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### generic-host-tcp-port
+
+*generic-host-tcp-port*
+
+<details className="plugin-pack-details">
+<summary>Macros (2)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TICKET_ID` |  | *(not used by the check command)* |
+| `TCP-PORT` | `443` | Port used |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+*No service templates are linked to this host template.*
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices) | `network-cisco-meraki-cloudcontroller-restapi-devices` |
+| [Device usage](#network-cisco-meraki-cloudcontroller-restapi-devices-cache) | `network-cisco-meraki-cloudcontroller-restapi-devices-cache` |
+| [Meraki API cache](#ivertix-host-discovery-meraki-cache) | `ivertix-host-discovery-meraki-cache` |
+| [Networks](#network-cisco-meraki-cloudcontroller-restapi-networks) | `network-cisco-meraki-cloudcontroller-restapi-networks` |
+| [Ping](#ping-lan) | `Ping-LAN` |
+| [VPN tunnels](#network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels) | `network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device usage {/* #network-cisco-meraki-cloudcontroller-restapi-devices */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-DEVICE-NAME` | `.*` | Filter devices by name (Can be a regexp) |
+| `FILTER-NETWORK-ID` | `.*` | Filter devices by network id (Can be a regexp) |
+| `FILTER-ORGANIZATION-ID` | `.*` | Filter devices by organization id (Can be a regexp) |
+| `FILTER-ORGANIZATION-NAME` | `.*` | Filter devices by organization name (Can be a regexp) |
+| `FILTER-TAGS` | `.*` | Filter devices by tags (Can be a regexp) |
+| `WARNING-LOAD` | `80` | Warning threshold Load |
+| `CRITICAL-LOAD` | `90` | Critical threshold Load |
+| `CRITICAL-TOTAL-ALERTING` | `0` | Critical threshold total alerting |
+| `CRITICAL-TOTAL-OFFLINE` | `0` | Critical threshold total offline |
+| `CRITICAL-CONNECTIONS-ASSOC` |  | Critical threshold connections associate |
+| `CRITICAL-CONNECTIONS-AUTH` |  | Critical threshold connections auth |
+| `CRITICAL-CONNECTIONS-DHCP` |  | Critical threshold connections DHCP |
+| `CRITICAL-CONNECTIONS-DNS` |  | Critical threshold connections DNS |
+| `CRITICAL-CONNECTIONS-SUCCES` |  | Critical threshold connections success |
+| `CRITICAL-LINK-LATENCY` |  | Critical threshold Link latency |
+| `CRITICAL-LINK-LOSS` |  | Critical threshold Link loss |
+| `CRITICAL-PORT-TRAFFIC-IN` |  | Critical threshold Port traffic in |
+| `CRITICAL-PORT-TRAFFIC-OUT` |  | Critical threshold Port traffic out |
+| `CRITICAL-TOTAL-OFFLINE-PRCT` |  | Critical threshold total offline (%) |
+| `CRITICAL-TOTAL-ONLINE` |  | Critical threshold total online |
+| `CRITICAL-TOTAL-ONLINE-PRCT` |  | Critical threshold total online (%) |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold traffic out |
+| `WARNING-CONNECTIONS-ASSOC` |  | Warning threshold connections associate |
+| `WARNING-CONNECTIONS-AUTH` |  | Warning threshold connections auth |
+| `WARNING-CONNECTIONS-DHCP` |  | Warning threshold connections DHCP |
+| `WARNING-CONNECTIONS-DNS` |  | Warning threshold connections DNS |
+| `WARNING-CONNECTIONS-SUCCES` |  | Warning threshold connections success |
+| `WARNING-LINK-LATENCY` |  | Warning threshold Link latency |
+| `WARNING-LINK-LOSS` |  | Warning threshold Link loss |
+| `WARNING-PORT-TRAFFIC-IN` |  | Warning threshold Port traffic in |
+| `WARNING-PORT-TRAFFIC-OUT` |  | Warning threshold Port traffic out |
+| `WARNING-TOTAL-ALERTING` |  | Warning threshold total alerting |
+| `WARNING-TOTAL-OFFLINE` |  | Warning threshold total offline |
+| `WARNING-TOTAL-OFFLINE-PRCT` |  | Warning threshold total offline (%) |
+| `WARNING-TOTAL-ONLINE` |  | Warning threshold total online |
+| `WARNING-TOTAL-ONLINE-PRCT` |  | Warning threshold total online (%) |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold traffic out |
+| `FILTER-SWITCH-PORT` |  | Filter switch port (Can be a regexp) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `CRITICAL-LINKS-INEFFECTIVE` |  | Critical threshold Links ineffective |
+| `WARNING-LINKS-INEFFECTIVE` |  | Warning threshold Links ineffective |
+| `FILTER-LINK-NAME` |  | Filter VPN links by name (can be a regexp). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `devices.total.online.count` |  | online | `WARNING-TOTAL-ONLINE`, `CRITICAL-TOTAL-ONLINE` |
+| `devices.total.online.percentage` | `%` | online: %% | `WARNING-TOTAL-ONLINE-PRCT`, `CRITICAL-TOTAL-ONLINE-PRCT` |
+| `devices.total.offline.count` |  | offline | `WARNING-TOTAL-OFFLINE`, `CRITICAL-TOTAL-OFFLINE` |
+| `devices.total.offline.percentage` | `%` | offline: %% | `WARNING-TOTAL-OFFLINE-PRCT`, `CRITICAL-TOTAL-OFFLINE-PRCT` |
+| `devices.total.alerting.count` |  | alerting | `WARNING-TOTAL-ALERTING`, `CRITICAL-TOTAL-ALERTING` |
+| `device.load.count` |  | load | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `device.connections.success.count` |  | success | `WARNING-CONNECTIONS-SUCCES`, `CRITICAL-CONNECTIONS-SUCCES` |
+| `device.connections.auth.count` |  | auth | `WARNING-CONNECTIONS-AUTH`, `CRITICAL-CONNECTIONS-AUTH` |
+| `device.connections.assoc.count` |  | assoc | `WARNING-CONNECTIONS-ASSOC`, `CRITICAL-CONNECTIONS-ASSOC` |
+| `device.connections.dhcp.count` |  | dhcp | `WARNING-CONNECTIONS-DHCP`, `CRITICAL-CONNECTIONS-DHCP` |
+| `device.connections.dns.count` |  | dns | `WARNING-CONNECTIONS-DNS`, `CRITICAL-CONNECTIONS-DNS` |
+| `device.traffic.in.bitspersecond` | `b/s` | in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `device.traffic.out.bitspersecond` | `b/s` | out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `device.links.ineffective.count` |  | links ineffective | `WARNING-LINKS-INEFFECTIVE`, `CRITICAL-LINKS-INEFFECTIVE` |
+| `device.link.latency.milliseconds` | `ms` | latency:  ms | `WARNING-LINK-LATENCY`, `CRITICAL-LINK-LATENCY` |
+| `device.link.loss.percentage` | `%` | loss:  %% | `WARNING-LINK-LOSS`, `CRITICAL-LINK-LOSS` |
+| `device.port.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-PORT-TRAFFIC-IN`, `CRITICAL-PORT-TRAFFIC-IN` |
+| `device.port.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-PORT-TRAFFIC-OUT`, `CRITICAL-PORT-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Networks {/* #network-cisco-meraki-cloudcontroller-restapi-networks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NETWORK-NAME` | `.*` | Filter network name (Can be a regexp) |
+| `FILTER-ORGANIZATION-ID` | `.*` | Filter networks by organization id (Can be a regexp) |
+| `FILTER-ORGANIZATION-NAME` | `.*` | Filter networks by organization name (Can be a regexp) |
+| `WARNING-CONNECTIONS-SUCCES` |  | Threshold warning connections success |
+| `WARNING-CONNECTIONS-AUTH` |  | Threshold warning connections auth |
+| `WARNING-CONNECTIONS-ASSOC` |  | Threshold warning connections associate |
+| `WARNING-CONNECTIONS-DHCP` |  | Threshold warning connections DHCP |
+| `WARNING-CONNECTIONS-DNS` |  | Threshold warning connections DNS |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-CONNECTIONS-SUCCES` |  | Threshold critical connections success |
+| `CRITICAL-CONNECTIONS-AUTH` |  | Threshold critical connections auth |
+| `CRITICAL-CONNECTIONS-ASSOC` |  | Threshold critical connections associate |
+| `CRITICAL-CONNECTIONS-DHCP` |  | Threshold critical connections DHCP |
+| `CRITICAL-CONNECTIONS-DNS` |  | Threshold critical connections DNS |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `network.connections.success.count` |  | connections success | `WARNING-CONNECTIONS-SUCCES`, `CRITICAL-CONNECTIONS-SUCCES` |
+| `network.connections.auth.count` |  | connections auth | `WARNING-CONNECTIONS-AUTH`, `CRITICAL-CONNECTIONS-AUTH` |
+| `network.connections.assoc.count` |  | connections assoc | `WARNING-CONNECTIONS-ASSOC`, `CRITICAL-CONNECTIONS-ASSOC` |
+| `network.connections.dhcp.count` |  | connections dhcp | `WARNING-CONNECTIONS-DHCP`, `CRITICAL-CONNECTIONS-DHCP` |
+| `network.connections.dns.count` |  | connections dns | `WARNING-CONNECTIONS-DNS`, `CRITICAL-CONNECTIONS-DNS` |
+| `network.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `network.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device usage {/* #network-cisco-meraki-cloudcontroller-restapi-devices-cache */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LOAD` | `80` | Warning threshold Load |
+| `CRITICAL-LOAD` | `90` | Critical threshold Load |
+| `CRITICAL-TOTAL-OFFLINE` | `0` | Critical threshold total offline |
+| `CRITICAL-TOTAL-ALERTING` | `0` | Critical threshold total alerting |
+| `WARNING-TOTAL-ONLINE` |  | Warning threshold total online |
+| `WARNING-TOTAL-ONLINE-PRCT` |  | Warning threshold total online (%) |
+| `WARNING-TOTAL-OFFLINE` |  | Warning threshold total offline |
+| `WARNING-TOTAL-OFFLINE-PRCT` |  | Warning threshold total offline (%) |
+| `WARNING-TOTAL-ALERTING` |  | Warning threshold total alerting |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold traffic out |
+| `WARNING-CONNECTIONS-SUCCES` |  | Warning threshold connections success |
+| `WARNING-CONNECTIONS-AUTH` |  | Warning threshold connections auth |
+| `WARNING-CONNECTIONS-ASSOC` |  | Warning threshold connections associate |
+| `WARNING-CONNECTIONS-DHCP` |  | Warning threshold connections DHCP |
+| `WARNING-CONNECTIONS-DNS` |  | Warning threshold connections DNS |
+| `WARNING-LINK-LATENCY` |  | Warning threshold Link latency |
+| `WARNING-LINK-LOSS` |  | Warning threshold Link loss |
+| `WARNING-PORT-TRAFFIC-IN` |  | Warning threshold Port traffic in |
+| `WARNING-PORT-TRAFFIC-OUT` |  | Warning threshold Port traffic out |
+| `CRITICAL-TOTAL-ONLINE` |  | Critical threshold total online |
+| `CRITICAL-TOTAL-ONLINE-PRCT` |  | Critical threshold total online (%) |
+| `CRITICAL-TOTAL-OFFLINE-PRCT` |  | Critical threshold total offline (%) |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold traffic out |
+| `CRITICAL-CONNECTIONS-SUCCES` |  | Critical threshold connections success |
+| `CRITICAL-CONNECTIONS-AUTH` |  | Critical threshold connections auth |
+| `CRITICAL-CONNECTIONS-ASSOC` |  | Critical threshold connections associate |
+| `CRITICAL-CONNECTIONS-DHCP` |  | Critical threshold connections DHCP |
+| `CRITICAL-CONNECTIONS-DNS` |  | Critical threshold connections DNS |
+| `CRITICAL-LINK-LATENCY` |  | Critical threshold Link latency |
+| `CRITICAL-LINK-LOSS` |  | Critical threshold Link loss |
+| `CRITICAL-PORT-TRAFFIC-IN` |  | Critical threshold Port traffic in |
+| `CRITICAL-PORT-TRAFFIC-OUT` |  | Critical threshold Port traffic out |
+| `FILTER-SWITCH-PORT` |  | Filter switch port (Can be a regexp) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `CRITICAL-LINKS-INEFFECTIVE` |  | Critical threshold Links ineffective |
+| `WARNING-LINKS-INEFFECTIVE` |  | Warning threshold Links ineffective |
+| `FILTER-LINK-NAME` |  | Filter VPN links by name (can be a regexp). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `devices.total.online.count` |  | online | `WARNING-TOTAL-ONLINE`, `CRITICAL-TOTAL-ONLINE` |
+| `devices.total.online.percentage` | `%` | online: %% | `WARNING-TOTAL-ONLINE-PRCT`, `CRITICAL-TOTAL-ONLINE-PRCT` |
+| `devices.total.offline.count` |  | offline | `WARNING-TOTAL-OFFLINE`, `CRITICAL-TOTAL-OFFLINE` |
+| `devices.total.offline.percentage` | `%` | offline: %% | `WARNING-TOTAL-OFFLINE-PRCT`, `CRITICAL-TOTAL-OFFLINE-PRCT` |
+| `devices.total.alerting.count` |  | alerting | `WARNING-TOTAL-ALERTING`, `CRITICAL-TOTAL-ALERTING` |
+| `device.load.count` |  | load | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `device.connections.success.count` |  | success | `WARNING-CONNECTIONS-SUCCES`, `CRITICAL-CONNECTIONS-SUCCES` |
+| `device.connections.auth.count` |  | auth | `WARNING-CONNECTIONS-AUTH`, `CRITICAL-CONNECTIONS-AUTH` |
+| `device.connections.assoc.count` |  | assoc | `WARNING-CONNECTIONS-ASSOC`, `CRITICAL-CONNECTIONS-ASSOC` |
+| `device.connections.dhcp.count` |  | dhcp | `WARNING-CONNECTIONS-DHCP`, `CRITICAL-CONNECTIONS-DHCP` |
+| `device.connections.dns.count` |  | dns | `WARNING-CONNECTIONS-DNS`, `CRITICAL-CONNECTIONS-DNS` |
+| `device.traffic.in.bitspersecond` | `b/s` | in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `device.traffic.out.bitspersecond` | `b/s` | out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `device.links.ineffective.count` |  | links ineffective | `WARNING-LINKS-INEFFECTIVE`, `CRITICAL-LINKS-INEFFECTIVE` |
+| `device.link.latency.milliseconds` | `ms` | latency:  ms | `WARNING-LINK-LATENCY`, `CRITICAL-LINK-LATENCY` |
+| `device.link.loss.percentage` | `%` | loss:  %% | `WARNING-LINK-LOSS`, `CRITICAL-LINK-LOSS` |
+| `device.port.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-PORT-TRAFFIC-IN`, `CRITICAL-PORT-TRAFFIC-IN` |
+| `device.port.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-PORT-TRAFFIC-OUT`, `CRITICAL-PORT-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Meraki API cache {/* #ivertix-host-discovery-meraki-cache */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `MERAKI-API-TOKEN` | *(password)* | user token |
+| `TIMEOUT` | `290` | network-cisco-meraki-cloudcontroller-restapi plugin timeout |
+| `MERAKI-FQDN` |  | FQDN for meraki API |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VPN tunnels {/* #network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-DEVICE-STATUS` | `'%{status} =~ /offline/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /offline/i'). You can use the following variables: %\{status\}, %\{deviceSerial\}, %\{mode\} |
+| `CRITICAL-TOTAL-UNREACHABLE` | `0` | Critical threshold total VPN unreachable |
+| `UNKNOWN-DEVICE-STATUS` | `'%{deviceStatus} =~ /offline/i'` | Define the conditions to match for the status to be UNKNOWN (default: '%\{deviceStatus\} =~ /offline/i'). You can use the following variables: %\{deviceStatus\}, %\{deviceSerial\}, %\{deviceMode\} |
+| `CRITICAL-VPN-STATUS` | `'%{deviceStatus} =~ /online/i and %{vpnStatus} =~ /unreachable/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{deviceStatus\} =~ /online/i and %\{vpnStatus\} =~ /unreachable/i'). You can use the following variables: %\{vpnStatus\}, %\{vpnName\}, %\{vpnType\}, %\{deviceStatus\}, %\{deviceSerial\} |
+| `WARNING-TOTAL-UNREACHABLE` |  | Warning threshold total VPN unreachable |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-DEVICE-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{deviceStatus\}, %\{deviceSerial\}, %\{deviceMode\} |
+| `FILTER-DEVICE-SERIAL` |  | Filter VPN tunnels by device serial (can be a regexp) |
+| `FILTER-NETWORK-NAME` |  | Filter VPN tunnels by network name (can be a regexp) |
+| `FILTER-VPN-NAME` |  | Filter VPN tunnels by VPN name (can be a regexp) |
+| `FILTER-VPN-TYPE` |  | Filter VPN tunnels by VPN type (can be a regexp) |
+| `UNKNOWN-VPN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{vpnStatus\}, %\{vpnName\}, %\{vpnType\}, %\{deviceStatus\}, %\{deviceSerial\} |
+| `WARNING-VPN-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{vpnStatus\}, %\{vpnName\}, %\{vpnType\}, %\{deviceStatus\}, %\{deviceSerial\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vpn.tunnels.unreachable.count` |  | unreachable | `WARNING-TOTAL-UNREACHABLE`, `CRITICAL-TOTAL-UNREACHABLE` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250114 - 20250210</summary>
+
+- Service template [`network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels`](#network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels)
+    - Macro `CRITICAL-DEVICE-STATUS` added (default `'%{status} =~ /offline/i'`)
+    - Macro `CRITICAL-TOTAL-UNREACHABLE` added (default `0`)
+    - Macro `UNKNOWN-DEVICE-STATUS` added (default `'%{deviceStatus} =~ /offline/i'`)
+    - Macro `CRITICAL-VPN-STATUS` added (default `'%{deviceStatus} =~ /online/i and %{vpnStatus} =~ /unreachable/i'`)
+    - Macro `CRITICAL-STATUS` removed
+- Command `network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels`
+    - Option `--unknown-device-status=$_SERVICEUNKNOWN-DEVICE-STATUS$` added
+    - Option `--warning-device-status=$_SERVICEWARNING-DEVICE-STATUS$` added
+    - Option `--critical-device-status=$_SERVICECRITICAL-DEVICE-STATUS$` added
+    - Option `--warning-total-unreachable=$_SERVICEWARNING-TOTAL-UNREACHABLE$` added
+    - Option `--critical-total-unreachable=$_SERVICECRITICAL-TOTAL-UNREACHABLE$` added
+    - Option `--filter-network-name=$_SERVICEFILTER-NETWORK-NAME$` added
+    - Option `--filter-vpn-type=$_SERVICEFILTER-VPN-TYPE$` added
+    - Option `--filter-vpn-name=$_SERVICEFILTER-VPN-NAME$` added
+    - Option `--unknown-vpn-status=$_SERVICEUNKNOWN-VPN-STATUS$` added
+    - Option `--warning-vpn-status=$_SERVICEWARNING-VPN-STATUS$` added
+    - Option `--critical-vpn-status=$_SERVICECRITICAL-VPN-STATUS$` added
+    - Option `--unknown-status=$_SERVICEUNKNOWN-STATUS$` removed
+    - Option `--warning-status=$_SERVICEWARNING-STATUS$` removed
+    - Option `--critical-status=$_SERVICECRITICAL-STATUS$` removed
+    - Option `--warning-total-online=$_SERVICEWARNING-TOTAL-ONLINE$` removed
+    - Option `--warning-total-offline=$_SERVICEWARNING-TOTAL-OFFLINE$` removed
+    - Option `--warning-total-dormant=$_SERVICEWARNING-TOTAL-DORMANT$` removed
+    - Option `--critical-total-online=$_SERVICECRITICAL-TOTAL-ONLINE$` removed
+    - Option `--critical-total-offline=$_SERVICECRITICAL-TOTAL-OFFLINE$` removed
+    - Option `--critical-total-dormant=$_SERVICECRITICAL-TOTAL-DORMANT$` removed
+    - Macro `WARNING-TOTAL-UNREACHABLE` added
+    - Macro `CRITICAL-TOTAL-UNREACHABLE` added
+    - Macro `UNKNOWN-DEVICE-STATUS` added
+    - Macro `WARNING-DEVICE-STATUS` added
+    - Macro `CRITICAL-DEVICE-STATUS` added
+    - Macro `FILTER-VPN-NAME` added
+    - Macro `FILTER-VPN-TYPE` added
+    - Macro `CRITICAL-VPN-STATUS` added
+    - Macro `UNKNOWN-VPN-STATUS` added
+    - Macro `WARNING-VPN-STATUS` added
+    - Macro `WARNING-TOTAL-ONLINE` removed
+    - Macro `WARNING-TOTAL-OFFLINE` removed
+    - Macro `CRITICAL-TOTAL-ONLINE` removed
+    - Macro `CRITICAL-TOTAL-OFFLINE` removed
+    - Macro `UNKNOWN-STATUS` removed
+    - Macro `WARNING-STATUS` removed
+    - Macro `CRITICAL-STATUS` removed
+    - Macro `WARNING-TOTAL-DORMANT` removed
+    - Macro `CRITICAL-TOTAL-DORMANT` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240808 - 20240826</summary>
+
+- Plugin pack `Cisco Meraki Cloud Controller (API)`
+    - Description updated
+- Service template [`network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels`](#network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels)
+    - Service template added
+- Command `network-cisco-meraki-cloudcontroller-restapi-devices`
+    - Option `--filter-link-name=$_SERVICEFILTER-LINK-NAME$` added
+    - Macro `FILTER-LINK-NAME` added
+- Command `network-cisco-meraki-cloudcontroller-restapi-devices-cache`
+    - Option `--filter-link-name=$_SERVICEFILTER-LINK-NAME$` added
+    - Macro `FILTER-LINK-NAME` added
+- Command `network-cisco-meraki-cloudcontroller-restapi-vpn-tunnels`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240603</summary>
+
+- Command `ivertix-host-discovery-meraki-cache`
+    - Option `--ignore-orgs-api-disabled` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240531</summary>
+
+- Command `ivertix-host-discovery-meraki-cache`
+    - Option `--ignore-orgs-api-disabled` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240320</summary>
+
+- Host template `generic-host-tcp-port`
+    - Host template added
+- Command `check_host_alive-tcp-port`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Command `network-cisco-meraki-cloudcontroller-restapi-devices`
+    - Option `--warning-links-ineffective=$_SERVICEWARNING-LINKS-INEFFECTIVE$` added
+    - Option `--critical-links-ineffective=$_SERVICECRITICAL-LINKS-INEFFECTIVE$` added
+    - Macro `CRITICAL-LINKS-INEFFECTIVE` added
+    - Macro `WARNING-LINKS-INEFFECTIVE` added
+- Command `network-cisco-meraki-cloudcontroller-restapi-devices-cache`
+    - Option `--warning-links-ineffective=$_SERVICEWARNING-LINKS-INEFFECTIVE$` added
+    - Option `--critical-links-ineffective=$_SERVICECRITICAL-LINKS-INEFFECTIVE$` added
+    - Macro `CRITICAL-LINKS-INEFFECTIVE` added
+    - Macro `WARNING-LINKS-INEFFECTIVE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230812</summary>
+
+- Host template `Cisco-Meraki-CloudController-API`
+    - Service template `network-cisco-meraki-cloudcontroller-restapi-api-requests` unlinked
+- Service template `network-cisco-meraki-cloudcontroller-restapi-api-requests`
+    - Service template removed
+- Command `network-cisco-meraki-cloudcontroller-restapi-api-requests`
+    - Command removed
+
+</details>

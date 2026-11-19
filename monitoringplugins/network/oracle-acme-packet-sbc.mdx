@@ -1,0 +1,598 @@
+---
+title: "Oracle Acme Packet (SBC)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Oracle.png";
+
+<PluginPackHeader name="Oracle Acme Packet (SBC)" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Oracle Acme Packet session border controllers through SNMP: system usage, hardware, interfaces, SIP usage, realms, codecs, policy servers and security.
+
+The plugin pack provides these checks:
+
+* [Codec](#network-acmepacket-snmp-codec)
+* [Hardware](#network-acmepacket-snmp-hardware)
+* [Interfaces](#network-acmepacket-snmp-interfaces)
+* [Policy servers](#network-acmepacket-snmp-policy-servers)
+* [Realm usage](#network-acmepacket-snmp-realm-usage)
+* [Security](#network-acmepacket-snmp-security)
+* [SIP usage](#network-acmepacket-snmp-sip-usage)
+* [System usage](#network-acmepacket-snmp-system-usage)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-acmepacket-snmp-interfaces) | `Interface - <name>` |
+| [Realm usage](#network-acmepacket-snmp-realm-usage) | `Realm usage - <name>` |
+| [SIP usage](#network-acmepacket-snmp-sip-usage) | `SIP usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Oracle-Acme-Packet
+
+*Oracle Acme Packet* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Codec](#network-acmepacket-snmp-codec) | `network-acmepacket-snmp-codec` |
+| [Hardware](#network-acmepacket-snmp-hardware) | `network-acmepacket-snmp-hardware` |
+| [Policy servers](#network-acmepacket-snmp-policy-servers) | `network-acmepacket-snmp-policy-servers` |
+| [Realm usage](#network-acmepacket-snmp-realm-usage) | `network-acmepacket-snmp-realm-usage` |
+| [Security](#network-acmepacket-snmp-security) | `network-acmepacket-snmp-security` |
+| [SIP usage](#network-acmepacket-snmp-sip-usage) | `network-acmepacket-snmp-sip-usage` |
+| [System usage](#network-acmepacket-snmp-system-usage) | `network-acmepacket-snmp-system-usage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-acmepacket-snmp-interfaces) | `network-acmepacket-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Codec {/* #network-acmepacket-snmp-codec */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RESOURCES-USAGE-PRCT` | `90` | Warning threshold resources usage (%) |
+| `CRITICAL-RESOURCES-USAGE-PRCT` | `95` | Warning threshold resources usage (%) |
+| `WARNING-SESSIONS-ACTIVE` |  | Warning threshold sessions active |
+| `WARNING-RESOURCES-USAGE` |  | Warning threshold resources usage (B) |
+| `WARNING-RESOURCES-USAGE-FREE` |  | Warning threshold resources usage free (B) |
+| `CRITICAL-SESSIONS-ACTIVE` |  | Warning threshold sessions active |
+| `CRITICAL-RESOURCES-USAGE` |  | Warning threshold resources usage (B) |
+| `CRITICAL-RESOURCES-USAGE-FREE` |  | Warning threshold resources usage free (B) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `transcoding.sessions.active.count` |  | running | `WARNING-SESSIONS-ACTIVE`, `CRITICAL-SESSIONS-ACTIVE` |
+| `transcoding.resources.usage.count` |  |  | `WARNING-RESOURCES-USAGE`, `CRITICAL-RESOURCES-USAGE` |
+| `transcoding.resources.free.count` |  |  | `WARNING-RESOURCES-USAGE-FREE`, `CRITICAL-RESOURCES-USAGE-FREE` |
+| `transcoding.resources.usage.percentage` | `%` |  | `WARNING-RESOURCES-USAGE-PRCT`, `CRITICAL-RESOURCES-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-acmepacket-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'voltage', 'temperature', 'fan', 'psu' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='psu,CRITICAL,^(?!(normal\|initial)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Policy servers {/* #network-acmepacket-snmp-policy-servers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CURRENT-IN-SESSIONS` |  | Threshold warning current in sessions *(not used by the check command)* |
+| `WARNING-CURRENT-IN-SESSIONS-RATE` |  | Threshold warning current in sessions rate *(not used by the check command)* |
+| `WARNING-TOTAL-IN-SESSIONS` |  | Threshold warning total in sessions *(not used by the check command)* |
+| `WARNING-CURRENT-OUT-SESSIONS` |  | Threshold warning current out sessions *(not used by the check command)* |
+| `WARNING-CURRENT-OUT-SESSIONS-RATE` |  | Threshold warning current out sessions rate *(not used by the check command)* |
+| `WARNING-TOTAL-OUT-SESSIONS` |  | Threshold warning total out sessions *(not used by the check command)* |
+| `WARNING-AVG-QOS-RFACTOR` |  | Threshold warning average QoS r-factor *(not used by the check command)* |
+| `WARNING-TOTAL-RFACTOR` |  | Threshold warning total r-factor *(not used by the check command)* |
+| `CRITICAL-CURRENT-IN-SESSIONS` |  | Threshold critical current in sessions *(not used by the check command)* |
+| `CRITICAL-CURRENT-IN-SESSIONS-RATE` |  | Threshold critical current in sessions rate *(not used by the check command)* |
+| `CRITICAL-TOTAL-IN-SESSIONS` |  | Threshold critical total in sessions *(not used by the check command)* |
+| `CRITICAL-CURRENT-OUT-SESSIONS` |  | Threshold critical current out sessions *(not used by the check command)* |
+| `CRITICAL-CURRENT-OUT-SESSIONS-RATE` |  | Threshold critical current out sessions rate *(not used by the check command)* |
+| `CRITICAL-TOTAL-OUT-SESSIONS` |  | Threshold critical total out sessions *(not used by the check command)* |
+| `CRITICAL-AVG-QOS-RFACTOR` |  | Threshold critical average QoS r-factor *(not used by the check command)* |
+| `CRITICAL-TOTAL-RFACTOR` |  | Threshold critical total r-factor *(not used by the check command)* |
+| `FILTER-NAME` |  | Filter policy servers by name (can be a regexp) |
+| `WARNING-CLIENT-TRANSACTIONS-TOTAL` |  | Warning threshold total Client transactions |
+| `WARNING-CLIENT-TRANSACTIONS` |  | Warning threshold Client transactions |
+| `WARNING-SERVER-TRANSACTIONS-TOTAL` |  | Warning threshold total Server transactions |
+| `WARNING-SERVER-TRANSACTIONS-REQUESTS` |  | Warning threshold Server transactions requests |
+| `WARNING-SERVER-TRANSACTIONS-REQUESTS-DROPPED` |  | Warning threshold Server transactions requests dropped |
+| `WARNING-SERVER-TRANSACTIONS-RESPONSES-SUCCEDED` |  | Warning threshold Server transactions responses succeded |
+| `WARNING-SERVER-TRANSACTIONS-RESPONSES-ERRORS` |  | Warning threshold Server transactions responses errors |
+| `WARNING-MESSAGES-AAR` |  | Warning threshold AAR messages |
+| `WARNING-MESSAGES-AAA-SUCCEDED` |  | Warning threshold AAA messages succeded |
+| `WARNING-MESSAGES-AAA-ERRORS` |  | Warning threshold AAA messages errors |
+| `WARNING-MESSAGES-RAR` |  | Warning threshold RAR messages |
+| `WARNING-MESSAGES-RAA-SUCCEDED` |  | Warning threshold RAA messages succeded |
+| `WARNING-MESSAGES-RAA-ERRORS` |  | Warning threshold RAA messages errors |
+| `WARNING-MESSAGES-STR` |  | Warning threshold STR messages |
+| `WARNING-MESSAGES-STA-SUCCEDED` |  | Warning threshold STA messages succeded |
+| `WARNING-MESSAGES-STA-ERRORS` |  | Warning threshold STA messages errors |
+| `WARNING-MESSAGES-ASR` |  | Warning threshold ASR messages |
+| `WARNING-MESSAGES-ASA-SUCCEDED` |  | Warning threshold ASA messages succeded |
+| `WARNING-MESSAGES-ASA-ERRORS` |  | Warning threshold ASA messages errors |
+| `CRITICAL-MESSAGES-AAR` |  | Critical threshold AAR messages |
+| `CRITICAL-MESSAGES-AAA-SUCCEDED` |  | Critical threshold AAA messages succeded |
+| `CRITICAL-MESSAGES-AAA-ERRORS` |  | Critical threshold AAA messages errors |
+| `CRITICAL-MESSAGES-RAR` |  | Critical threshold RAR messages |
+| `CRITICAL-MESSAGES-RAA-SUCCEDED` |  | Critical threshold RAA messages succeded |
+| `CRITICAL-MESSAGES-RAA-ERRORS` |  | Critical threshold RAA messages errors |
+| `CRITICAL-MESSAGES-STR` |  | Critical threshold STR messages |
+| `CRITICAL-MESSAGES-STA-SUCCEDED` |  | Critical threshold STA messages succeded |
+| `CRITICAL-MESSAGES-STA-ERRORS` |  | Critical threshold STA messages errors |
+| `CRITICAL-MESSAGES-ASR` |  | Critical threshold ASR messages |
+| `CRITICAL-MESSAGES-ASA-SUCCEDED` |  | Critical threshold ASA messages succeded |
+| `CRITICAL-MESSAGES-ASA-ERRORS` |  | Critical threshold ASA messages errors |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `policy_servers.total.count` |  | number of policy servers |  |
+| `policy_server.client_transactions.total.count` |  | total | `WARNING-CLIENT-TRANSACTIONS-TOTAL` |
+| `policy_server.client_transactions.errors.count` |  | errors | `WARNING-CLIENT-TRANSACTIONS` |
+| `policy_server.server_transactions.total.count` |  | total | `WARNING-SERVER-TRANSACTIONS-TOTAL` |
+| `policy_server.server_transactions.requests.count` |  | requests | `WARNING-SERVER-TRANSACTIONS-REQUESTS` |
+| `policy_server.server_transactions.requests.dropped.count` |  | requests dropped | `WARNING-SERVER-TRANSACTIONS-REQUESTS-DROPPED` |
+| `policy_server.server_transactions.responses.succeeded.count` |  | responses succeeded | `WARNING-SERVER-TRANSACTIONS-RESPONSES-SUCCEDED` |
+| `policy_server.server_transactions.responses.errors.count` |  | responses errors | `WARNING-SERVER-TRANSACTIONS-RESPONSES-ERRORS` |
+| `policy_server.messages.authorization_authentication_request.count` |  | request | `WARNING-MESSAGES-AAR`, `CRITICAL-MESSAGES-AAR` |
+| `policy_server.messages.authorization_authentication_answer.succeeded.count` |  | answer succeeded | `WARNING-MESSAGES-AAA-SUCCEDED`, `CRITICAL-MESSAGES-AAA-SUCCEDED` |
+| `policy_server.messages.authorization_authentication_answer.errors.count` |  | answer errors | `WARNING-MESSAGES-AAA-ERRORS`, `CRITICAL-MESSAGES-AAA-ERRORS` |
+| `policy_server.messages.session_termination_request.count` |  | request | `WARNING-MESSAGES-STR`, `CRITICAL-MESSAGES-STR` |
+| `policy_server.messages.session_termination_answer.succeeded.count` |  | answer succeeded | `WARNING-MESSAGES-STA-SUCCEDED`, `CRITICAL-MESSAGES-STA-SUCCEDED` |
+| `policy_server.messages.session_termination_answer.errors.count` |  | answer errors | `WARNING-MESSAGES-STA-ERRORS`, `CRITICAL-MESSAGES-STA-ERRORS` |
+| `policy_server.messages.abort_session_request.count` |  | request | `WARNING-MESSAGES-ASR`, `CRITICAL-MESSAGES-ASR` |
+| `policy_server.messages.abort_session_answer.succeeded.count` |  | answer succeeded | `WARNING-MESSAGES-ASA-SUCCEDED`, `CRITICAL-MESSAGES-ASA-SUCCEDED` |
+| `policy_server.messages.abort_session_answer.errors.count` |  | answer errors | `WARNING-MESSAGES-ASA-ERRORS`, `CRITICAL-MESSAGES-ASA-ERRORS` |
+| `policy_server.messages.re_auth_request.count` |  | request | `WARNING-MESSAGES-RAR`, `CRITICAL-MESSAGES-RAR` |
+| `policy_server.messages.re_auth_answer.succeeded.count` |  | answer succeeded | `WARNING-MESSAGES-RAA-SUCCEDED`, `CRITICAL-MESSAGES-RAA-SUCCEDED` |
+| `policy_server.messages.re_auth_answer.errors.count` |  | answer errors | `WARNING-MESSAGES-RAA-ERRORS`, `CRITICAL-MESSAGES-RAA-ERRORS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Realm usage {/* #network-acmepacket-snmp-realm-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by realm name (can be a regexp) |
+| `WARNING-CURRENT-IN-SESSIONS` |  | Threshold warning current in sessions |
+| `WARNING-CURRENT-IN-SESSIONS-RATE` |  | Threshold warning current in sessions rate |
+| `WARNING-TOTAl-IN-SESSIONS` |  | Threshold warning total in sessions |
+| `WARNING-CURRENT-OUT-SESSIONS` |  | Threshold warning current out sessions |
+| `WARNING-CURRENT-OUT-SESSIONS-RATE` |  | Threshold warning current out sessions rate |
+| `WARNING-TOTAl-OUT-SESSIONS` |  | Threshold warning total out sessions |
+| `WARNING-AVG-QOS-RFACTOR` |  | Threshold warning average QoS r-factor |
+| `WARNING-TOTAL-RFACTOR` |  | Threshold warning total r-factor |
+| `CRITICAL-CURRENT-IN-SESSIONS` |  | Threshold critical current in sessions |
+| `CRITICAL-CURRENT-IN-SESSIONS-RATE` |  | Threshold critical current in sessions rate |
+| `CRITICAL-TOTAl-IN-SESSIONS` |  | Threshold critical total in sessions |
+| `CRITICAL-CURRENT-OUT-SESSIONS` |  | Threshold critical current out sessions |
+| `CRITICAL-CURRENT-OUT-SESSIONS-RATE` |  | Threshold critical current out sessions rate |
+| `CRITICAL-TOTAl-OUT-SESSIONS` |  | Threshold critical total out sessions |
+| `CRITICAL-AVG-QOS-RFACTOR` |  | Threshold critical average QoS r-factor |
+| `CRITICAL-TOTAL-RFACTOR` |  | Threshold critical total r-factor |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `realm.sessions.in.current.count` |  | current inbound sessions | `WARNING-CURRENT-IN-SESSIONS`, `CRITICAL-CURRENT-IN-SESSIONS` |
+| `realm.sessions.in.rate.count` |  | current inbound sessions rate: /s | `WARNING-CURRENT-IN-SESSIONS-RATE`, `CRITICAL-CURRENT-IN-SESSIONS-RATE` |
+| `realm.sessions.in.total.count` |  | total inbound sessions | `WARNING-TOTAl-IN-SESSIONS`, `CRITICAL-TOTAl-IN-SESSIONS` |
+| `realm.sessions.out.current.count` |  | current outbound sessions | `WARNING-CURRENT-OUT-SESSIONS`, `CRITICAL-CURRENT-OUT-SESSIONS` |
+| `realm.sessions.out.rate.count` |  | current outbound sessions rate: /s | `WARNING-CURRENT-OUT-SESSIONS-RATE`, `CRITICAL-CURRENT-OUT-SESSIONS-RATE` |
+| `realm.sessions.out.total.count` |  | total outbound sessions | `WARNING-TOTAl-OUT-SESSIONS`, `CRITICAL-TOTAl-OUT-SESSIONS` |
+| `realm.rfactor.qos.average.count` |  | average QoS RFactor | `WARNING-AVG-QOS-RFACTOR`, `CRITICAL-AVG-QOS-RFACTOR` |
+| `realm.rfactor.execeded.total.count` |  | total RFactor exceeded | `WARNING-TOTAL-RFACTOR`, `CRITICAL-TOTAL-RFACTOR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Security {/* #network-acmepacket-snmp-security */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-REGISTRATIONS-TOTAL` |  | Warning threshold total registrations |
+| `WARNING-REGISTRATIONS-PROTECTED` |  | Warning threshold protected registrations |
+| `WARNING-IPSEC-TUNNELS` |  | Warning threshold IPSEC tunnels |
+| `WARNING-IPSEC-LICENSE-USAGE` |  | Warning threshold IPSEC license usage |
+| `WARNING-IMSAKA-SA-ADD-REQUESTS-IN` |  | Warning threshold for requests in |
+| `WARNING-IMSAKA-SA-ADD-RESPONSES-SUCCEDED` |  | Warning threshold for responses out succeeded |
+| `WARNING-IMSAKA-SA-ADD-RESPONSES-FAILED` |  | Warning threshold for responses out failed |
+| `WARNING-IMSAKA-SA-ADD-ADDED` |  | Warning threshold for added |
+| `WARNING-IMSAKA-SA-DEL-REQUESTS-IN` |  | Warning threshold for requests in |
+| `WARNING-IMSAKA-SA-DEL-RESPONSES-SUCCEDED` |  | Warning threshold for responses out succeeded |
+| `WARNING-IMSAKA-SA-DEL-RESPONSES-FAILED` |  | Warning threshold for responses out failed |
+| `WARNING-IMSAKA-SA-DEL-DELETED` |  | Warning threshold for deleted |
+| `CRITICAL-REGISTRATIONS-TOTAL` |  | Critical threshold for total |
+| `CRITICAL-REGISTRATIONS-PROTECTED` |  | Critical threshold for protected |
+| `CRITICAL-IPSEC-TUNNELS` |  | Critical threshold for number of tunnels |
+| `CRITICAL-IPSEC-LICENSE-USAGE` |  | Critical threshold for license used:  %% (%) |
+| `CRITICAL-IMSAKA-SA-ADD-REQUESTS-IN` |  | Critical threshold for requests in |
+| `CRITICAL-IMSAKA-SA-ADD-RESPONSES-SUCCEDED` |  | Critical threshold for responses out succeeded |
+| `CRITICAL-IMSAKA-SA-ADD-RESPONSES-FAILED` |  | Critical threshold for responses out failed |
+| `CRITICAL-IMSAKA-SA-ADD-ADDED` |  | Critical threshold for added |
+| `CRITICAL-IMSAKA-SA-DEL-REQUESTS-IN` |  | Critical threshold for requests in |
+| `CRITICAL-IMSAKA-SA-DEL-RESPONSES-SUCCEDED` |  | Critical threshold for responses out succeeded |
+| `CRITICAL-IMSAKA-SA-DEL-RESPONSES-FAILED` |  | Critical threshold for responses out failed |
+| `CRITICAL-IMSAKA-SA-DEL-DELETED` |  | Critical threshold for deleted |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `security.ipsec.tunnels.count` |  | number of tunnels | `WARNING-IPSEC-TUNNELS`, `CRITICAL-IPSEC-TUNNELS` |
+| `security.ipsec.license.usage.percentage` | `%` | license used:  %% | `WARNING-IPSEC-LICENSE-USAGE`, `CRITICAL-IPSEC-LICENSE-USAGE` |
+| `security.ims_aka.registrations.total.count` |  | total | `WARNING-REGISTRATIONS-TOTAL`, `CRITICAL-REGISTRATIONS-TOTAL` |
+| `security.ims_aka.registrations.protected.count` |  | protected | `WARNING-REGISTRATIONS-PROTECTED`, `CRITICAL-REGISTRATIONS-PROTECTED` |
+| `security.ims_aka.security_association_add.requests.in.count` |  | requests in | `WARNING-IMSAKA-SA-ADD-REQUESTS-IN`, `CRITICAL-IMSAKA-SA-ADD-REQUESTS-IN` |
+| `security.ims_aka.security_association_add.responses.out.succeded.count` |  | responses out succeeded | `WARNING-IMSAKA-SA-ADD-RESPONSES-SUCCEDED`, `CRITICAL-IMSAKA-SA-ADD-RESPONSES-SUCCEDED` |
+| `security.ims_aka.security_association_add.responses.out.failed.count` |  | responses out failed | `WARNING-IMSAKA-SA-ADD-RESPONSES-FAILED`, `CRITICAL-IMSAKA-SA-ADD-RESPONSES-FAILED` |
+| `security.ims_aka.security_association_add.added.count` |  | added | `WARNING-IMSAKA-SA-ADD-ADDED`, `CRITICAL-IMSAKA-SA-ADD-ADDED` |
+| `security.ims_aka.security_association_del.requests.in.count` |  | requests in | `WARNING-IMSAKA-SA-DEL-REQUESTS-IN`, `CRITICAL-IMSAKA-SA-DEL-REQUESTS-IN` |
+| `security.ims_aka.security_association_del.responses.out.succeded.count` |  | responses out succeeded | `WARNING-IMSAKA-SA-DEL-RESPONSES-SUCCEDED`, `CRITICAL-IMSAKA-SA-DEL-RESPONSES-SUCCEDED` |
+| `security.ims_aka.security_association_del.responses.out.failed.count` |  | responses out failed | `WARNING-IMSAKA-SA-DEL-RESPONSES-FAILED`, `CRITICAL-IMSAKA-SA-DEL-RESPONSES-FAILED` |
+| `security.ims_aka.security_association_del.deleted.count` |  | deleted | `WARNING-IMSAKA-SA-DEL-DELETED`, `CRITICAL-IMSAKA-SA-DEL-DELETED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SIP usage {/* #network-acmepacket-snmp-sip-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LATENCY` | `100` | Threshold warning latency |
+| `CRITICAL-STATUS` | `'%{status} =~ /outOfService\|constraintsViolation\|inServiceTimedOut/i'` | Set critical threshold for status (Default: '%\{status\} =~ /outOfService\|constraintsViolation\|inServiceTimedOut/i'). Can used special variables like: %\{status\} |
+| `CRITICAL-LATENCY` | `500` | Threshold critical latency |
+| `FILTER-NAME` |  | Filter by SIP name (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: -). Can used special variables like: %\{status\} |
+| `WARNING-IN-SESSIONS-RATE` |  | Threshold warning in sessions rate |
+| `WARNING-OUT-SESSIONS-RATE` |  | Threshold warning out sessions rate |
+| `WARNING-ASR` |  | Threshold warning ASR |
+| `CRITICAL-IN-SESSIONS-RATE` |  | Threshold critical in sessions rate |
+| `CRITICAL-OUT-SESSIONS-RATE` |  | Threshold critical out sessions rate |
+| `CRITICAL-ASR` |  | Threshold critical ASR |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sip.sessions.in.rate` |  | inbound sessions rate: /s | `WARNING-IN-SESSIONS-RATE`, `CRITICAL-IN-SESSIONS-RATE` |
+| `sip.sessions.out.rate` |  | outbound sessions rate: /s | `WARNING-OUT-SESSIONS-RATE`, `CRITICAL-OUT-SESSIONS-RATE` |
+| `sip.stats.latency.milliseconds` | `ms` | average latency:  ms | `WARNING-LATENCY`, `CRITICAL-LATENCY` |
+| `sip.stats.asr.percentage` | `%` | answer-to-seizure ratio:  %% | `WARNING-ASR`, `CRITICAL-ASR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System usage {/* #network-acmepacket-snmp-system-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY-USAGE` | `80` | Threshold warning memory usage (%) |
+| `WARNING-CPU-LOAD` | `80` | Threshold warning CPU load (%) |
+| `CRITICAL-LICENSE-USAGE` | `100` | Threshold critical license usage (%) |
+| `CRITICAL-MEMORY-USAGE` | `90` | Threshold critical memory usage (%) |
+| `CRITICAL-CPU-LOAD` | `90` | Threshold critical CPU load (%) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{replication_state\} |
+| `WARNING-LICENSE-USAGE` |  | Threshold warning license usage (%) |
+| `WARNING-HEALTH-SCORE` |  | Threshold warning health score (%) |
+| `WARNING-CURRENT-SESSIONS` |  | Threshold warning current sessions |
+| `WARNING-CURRENT-CALLS` |  | Threshold warning current calls |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{replication_state\} =~ /outOfService/i'). Can used special variables like: %\{replication_state\} |
+| `CRITICAL-HEALTH-SCORE` |  | Threshold critical health score (%) |
+| `CRITICAL-CURRENT-SESSIONS` |  | Threshold critical current sessions |
+| `CRITICAL-CURRENT-CALLS` |  | Threshold critical current calls |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `health.score.percentage` | `%` | health score:  %% | `WARNING-HEALTH-SCORE`, `CRITICAL-HEALTH-SCORE` |
+| `cpu.utilization.percentage` | `%` | cpu load:  %% | `WARNING-CPU-LOAD`, `CRITICAL-CPU-LOAD` |
+| `memory.usage.percentage` | `%` | memory used:  %% | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `licence.usage.percentage` | `%` | license used:  %% | `WARNING-LICENSE-USAGE`, `CRITICAL-LICENSE-USAGE` |
+| `sessions.current.count` |  | current sessions | `WARNING-CURRENT-SESSIONS`, `CRITICAL-CURRENT-SESSIONS` |
+| `calls.current.count` | `/s` | current calls: /s | `WARNING-CURRENT-CALLS`, `CRITICAL-CURRENT-CALLS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-acmepacket-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `5` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `5` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `Oracle Acme Packet (SBC)`
+    - Renamed from `Oracle Acme Packet`
+    - Description updated
+
+</details>

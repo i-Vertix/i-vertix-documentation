@@ -1,0 +1,184 @@
+---
+title: "Speedtest"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/Internet1.png";
+
+<PluginPackHeader name="Speedtest" image={image} category="Application" metadata={["HTTP", "HTTPS", "SSH"]} />
+
+## Description
+
+Monitors internet connection quality with Speedtest: ping latency and jitter, download bandwidth and upload bandwidth.
+
+The plugin pack provides these checks:
+
+* [Speedtest - Internet bandwidth](#apps-monitoring-speedtest-internet-bandwidth)
+
+
+## Host Templates
+
+### Speedtest
+
+*Speedtest* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (2)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | *(not used by the check command)* |
+| `SSH-PASSWORD` | *(password)* | *(not used by the check command)* |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Speedtest - Internet bandwidth](#apps-monitoring-speedtest-internet-bandwidth) | `apps-monitoring-speedtest-internet-bandwidth` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Speedtest - Internet bandwidth {/* #apps-monitoring-speedtest-internet-bandwidth */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PING-LATENCY` | `200` | Warning threshold Ping time |
+| `CRITICAL-PING-LATENCY` | `500` | Critical threshold Ping time |
+| `CRITICAL-PING-JITTER` | `25` | Critical threshold Ping jitter (ms) |
+| `WARNING-PING-JITTER` | `10` | Warning threshold Ping jitter (ms) |
+| `CRITICAL-BANDWIDTH-DOWNLOAD` |  | Critical threshold Bandwidth download (b/s) - example: 100MB: |
+| `CRITICAL-BANDWIDTH-UPLOAD` |  | Critical threshold Bandwidth upload (b/s) - example: 100MB: |
+| `WARNING-BANDWIDTH-DOWNLOAD` |  | Warning threshold Bandwidth download (b/s) - example: 100MB: |
+| `WARNING-BANDWIDTH-UPLOAD` |  | Warning threshold Bandwidth upload (b/s) - example: 100MB: |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ping.latency.milliseconds` | `ms` | latency:  ms | `WARNING-PING-LATENCY`, `CRITICAL-PING-LATENCY` |
+| `ping.jitter.milliseconds` | `ms` | jitter:  ms | `WARNING-PING-JITTER`, `CRITICAL-PING-JITTER` |
+| `internet.bandwidth.download.bitspersecond` | `b/s` | download:  /s | `WARNING-BANDWIDTH-DOWNLOAD`, `CRITICAL-BANDWIDTH-DOWNLOAD` |
+| `internet.bandwidth.upload.bitspersecond` | `b/s` | upload:  /s | `WARNING-BANDWIDTH-UPLOAD`, `CRITICAL-BANDWIDTH-UPLOAD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `apps-monitoring-speedtest-internet-bandwidth`
+    - Macro `EXTRA-OPTS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Service template [`apps-monitoring-speedtest-internet-bandwidth`](#apps-monitoring-speedtest-internet-bandwidth)
+    - Macro `CRITICAL-PING-JITTER` added (default `25`)
+    - Macro `WARNING-PING-JITTER` added (default `10`)
+- Command `apps-monitoring-speedtest-internet-bandwidth`
+    - Option `--hostname=$HOSTADDRESS$` removed
+    - Option `--ssh-backend=$_HOSTSSH-BACKEND$` removed
+    - Option `--ssh-username=$_HOSTSSH-USERNAME$` removed
+    - Option `--ssh-password=$_HOSTSSH-PASSWORD$` removed
+    - Option `--ssh-priv-key='$_HOSTSSH-PRIV-KEY$'` removed
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION$'` removed
+    - Macro `SSH-BACKEND` removed
+    - Macro `SSH-PASSWORD` removed
+    - Macro `SSH-PRIV-KEY` removed
+    - Macro `SSH-USERNAME` removed
+    - Macro `SSHCLI-OPTION` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`apps-monitoring-speedtest-internet-bandwidth`](#apps-monitoring-speedtest-internet-bandwidth)
+    - Macro `WARNING-PING-LATENCY` added (default `200`)
+    - Macro `CRITICAL-PING-LATENCY` added (default `500`)
+    - Macro `WARNING-PING-TIME` removed
+    - Macro `CRITICAL-PING-TIME` removed
+- Command `apps-monitoring-speedtest-internet-bandwidth`
+    - Option `--warning-ping-latency=$_SERVICEWARNING-PING-LATENCY$` added
+    - Option `--critical-ping-latency=$_SERVICECRITICAL-PING-LATENCY$` added
+    - Option `--warning-ping-jitter=$_SERVICEWARNING-PING-JITTER$` added
+    - Option `--critical-ping-jitter=$_SERVICECRITICAL-PING-JITTER$` added
+    - Option `--warning-ping-time=$_SERVICEWARNING-PING-TIME$` removed
+    - Option `--critical-ping-time=$_SERVICECRITICAL-PING-TIME$` removed
+    - Macro `CRITICAL-PING-LATENCY` added
+    - Macro `WARNING-PING-LATENCY` added
+    - Macro `CRITICAL-PING-JITTER` added
+    - Macro `WARNING-PING-JITTER` added
+    - Macro `WARNING-PING-TIME` removed
+    - Macro `CRITICAL-PING-TIME` removed
+
+</details>

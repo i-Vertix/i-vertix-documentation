@@ -12,13 +12,16 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-classic-ELB.png";
 
 ## Description
 
-### AWS classic ELB - Loadbalancer monitoring
-Protocols used: Rest API
+Monitors AWS Classic Load Balancers through Amazon CloudWatch: HTTP response codes, latency, request counts, surge queue and spillover, and the health of the registered instances.
 
-- HTTP codes
-- Performances (requests/latency)
-- Queues (spillover count/surgequeue lenght)
-- Target health
+The plugin pack provides these checks:
+
+* [HTTP codes](#cloud-aws-elb-classic-loadbalancer-http-codes)
+* [Performances Latency](#cloud-aws-elb-classic-loadbalancer-performances-latency)
+* [Performances requests count](#cloud-aws-elb-classic-loadbalancer-performances-requests)
+* [Queues SpilloverCount](#cloud-aws-elb-classic-loadbalancer-queues-spillovercount)
+* [Queues SurgeQueueLength](#cloud-aws-elb-classic-loadbalancer-queues-surgequeuelenght)
+* [Targets Health](#cloud-aws-elb-classic-loadbalancer-targets-health)
 
 ## Prerequisites
 
@@ -26,6 +29,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-Classic-ELB](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

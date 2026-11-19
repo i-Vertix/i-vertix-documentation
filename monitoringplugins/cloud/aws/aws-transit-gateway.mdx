@@ -12,14 +12,11 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-TransitGW.png";
 
 ## Description
 
-### AWS Transit Gateway monitoring
-Protocols used: Rest API (HTTPS)
+Monitors the traffic of AWS Transit Gateways and their attachments: bytes and packets in and out, dropped packets.
 
-- Traffic
+The plugin pack provides these checks:
 
-### Discovery modes
-
-- Gateways
+* [Transit gateway](#cloud-aws-transitgateway-traffic)
 
 ## Prerequisites
 
@@ -27,6 +24,18 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Transit gateway](#cloud-aws-transitgateway-traffic) | `Transit gateway - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

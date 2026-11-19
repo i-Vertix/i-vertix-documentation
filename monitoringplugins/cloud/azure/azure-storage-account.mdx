@@ -12,32 +12,28 @@ import image from "../../assets/pluginpacks/Brands/Azure.png";
 
 ## Description
 
-### Azure Storage Account monitoring
-protocols used: Rest API (https)
+Monitors Azure storage accounts and their blob, file, queue and table services: used capacity, object counts, health and the availability, latency and throughput of the transactions.
 
-- Account used capacity
-- Blob capacity
-- Blob container count
-- Blob count
-- File capacity
-- File count
-- File share count
-- File share quota
-- Health
-- Queue capacity
-- Queue count
-- Queue message count
-- Table capacity
-- Table count
-- Table entity count
-- Transactions availability
-- Transactions count
-- Transactions latency
-- Transactions throughput
+The plugin pack provides these checks:
 
-### Discovery modes
-
-- File shares
+* [Account Resources used capacity](#cloud-azure-storage-storageaccount-account-used-capacity)
+* [Blob capacity](#cloud-azure-storage-storageaccount-blob-capacity)
+* [Blob container count](#cloud-azure-storage-storageaccount-blob-container-count)
+* [Blob count](#cloud-azure-storage-storageaccount-blob-count)
+* [File capacity](#cloud-azure-storage-storageaccount-file-capacity)
+* [File count](#cloud-azure-storage-storageaccount-file-count)
+* [File share count](#cloud-azure-storage-storageaccount-file-share-count)
+* [Health](#cloud-azure-storage-storageaccount-health)
+* [Queue capacity](#cloud-azure-storage-storageaccount-queue-capacity)
+* [Queue count](#cloud-azure-storage-storageaccount-queue-count)
+* [Queue message count](#cloud-azure-storage-storageaccount-queue-message-count)
+* [Table capacity](#cloud-azure-storage-storageaccount-table-capacity)
+* [Table count](#cloud-azure-storage-storageaccount-table-count)
+* [Table entity count](#cloud-azure-storage-storageaccount-table-entity-count)
+* [Transactions availability](#cloud-azure-storage-storageaccount-transactions-availability)
+* [Transactions count](#cloud-azure-storage-storageaccount-transactions-count)
+* [Transactions latency](#cloud-azure-storage-storageaccount-transactions-latency)
+* [Transactions throughput](#cloud-azure-storage-storageaccount-transactions-throughput)
 
 ## Prerequisites
 
@@ -45,6 +41,24 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Storage Accounts](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| `cloud-azure-storage-storageaccount-file-share-quota` | `File share quota - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

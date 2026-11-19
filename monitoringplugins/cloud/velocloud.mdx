@@ -1,0 +1,404 @@
+---
+title: "VeloCloud"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Velocloud.png";
+
+<PluginPackHeader name="VeloCloud" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+Monitors VMware VeloCloud SD-WAN through the VeloCloud API: edge and link status, link usage, edge quality of experience, and traffic per application and category.
+
+The plugin pack provides these checks:
+
+* [Application usage](#cloud-vmware-velocloud-restapi-application-usage)
+* [Category usage](#cloud-vmware-velocloud-restapi-category-usage)
+* [Edge QoE](#cloud-vmware-velocloud-restapi-edge-qoe)
+* [Edge status](#cloud-vmware-velocloud-restapi-edge-status)
+* [Link status](#cloud-vmware-velocloud-restapi-link-status)
+* [Link usage](#cloud-vmware-velocloud-restapi-link-usage)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [VeloCloud](/monitoring/monitoring-resources/discovery/common-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Link status](#cloud-vmware-velocloud-restapi-link-status) | `Link status - <display_name>` |
+| [Link usage](#cloud-vmware-velocloud-restapi-link-usage) | `Link usage - <display_name>` |
+| [Edge QoE](#cloud-vmware-velocloud-restapi-edge-qoe) | `Edge QoE - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Velocloud
+
+*Velocloud* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (11)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `API-PATH` | `/portal/rest` | API base url path (default: '/portal/rest'). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `EXTENDED-OPTIONS` | `--insecure --operator-user` |  |
+| `TIMEFRAME` | `900` | Set timeframe in seconds (default: 900). |
+| `TIMEOUT` | `10` | Set HTTP timeout in seconds (default: '10'). |
+| `CACHE-EXPIRES-IN` | `7200` | Cache (application) expires each X seconds (default: 7200) |
+| `HOSTNAME` |  | VMware VeloCloud Orchestrator hostname. |
+| `USERNAME` |  | VMware VeloCloud Orchestrator username. |
+| `PASSWORD` |  | VMware VeloCloud Orchestrator password. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Application usage](#cloud-vmware-velocloud-restapi-application-usage) | `cloud-vmware-velocloud-restapi-application-usage` |
+| [Category usage](#cloud-vmware-velocloud-restapi-category-usage) | `cloud-vmware-velocloud-restapi-category-usage` |
+| [Edge QoE](#cloud-vmware-velocloud-restapi-edge-qoe) | `cloud-vmware-velocloud-restapi-edge-qoe` |
+| [Edge status](#cloud-vmware-velocloud-restapi-edge-status) | `cloud-vmware-velocloud-restapi-edge-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Link status](#cloud-vmware-velocloud-restapi-link-status) | `cloud-vmware-velocloud-restapi-link-status` |
+| [Link usage](#cloud-vmware-velocloud-restapi-link-usage) | `cloud-vmware-velocloud-restapi-link-usage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Application usage {/* #cloud-vmware-velocloud-restapi-application-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-EDGE-NAME` | `.*` | Filter edge by name (Can be a regexp) *(not used by the check command)* |
+| `CRITICAL-EDGE-APPLICATIONS-COUNT` | `1:` | Critical threshold Edge applications count |
+| `WARNING-EDGE-APPLICATIONS-COUNT` |  | Warning threshold Edge applications count |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold Traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold Traffic out |
+| `WARNING-PACKETS-IN` |  | Warning threshold Packet in |
+| `WARNING-PACKETS-OUT` |  | Warning threshold Packet out |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold Traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold Traffic out |
+| `CRITICAL-PACKETS-IN` |  | Critical threshold Packet in |
+| `CRITICAL-PACKETS-OUT` |  | Critical threshold Packet out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `edge.applications.total.count` |  | application(s) | `WARNING-EDGE-APPLICATIONS-COUNT`, `CRITICAL-EDGE-APPLICATIONS-COUNT` |
+| `application.traffic.in.bitspersecond` | `b/s` | Traffic In:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `application.traffic.out.bitspersecond` | `b/s` | Traffic Out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `application.packets.in.persecond` | `packets/s` | Packets In:  packets/s | `WARNING-PACKETS-IN`, `CRITICAL-PACKETS-IN` |
+| `application.packets.out.persecond` | `packets/s` | Packets Out:  packets/s | `WARNING-PACKETS-OUT`, `CRITICAL-PACKETS-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Category usage {/* #cloud-vmware-velocloud-restapi-category-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-EDGE-NAME` | `.*` | Filter edge by name (Can be a regexp) *(not used by the check command)* |
+| `FILTER-CATEGORY-NAME` | `.*` | Filter category by name (Can be a regexp) |
+| `CRITICAL-EDGE-CATEGORIES-COUNT` | `1:` | Critical threshold Edge categories count |
+| `WARNING-EDGE-CATEGORIES-COUNT` |  | Warning threshold Edge categories count |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold Traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold Traffic out |
+| `WARNING-PACKETS-IN` |  | Warning threshold Packet in |
+| `WARNING-PACKETS-OUT` |  | Warning threshold Packet out |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold Traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold Traffic out |
+| `CRITICAL-PACKETS-IN` |  | Critical threshold Packet in |
+| `CRITICAL-PACKETS-OUT` |  | Critical threshold Packet out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `edge.categories.total.count` |  | categorie(s) | `WARNING-EDGE-CATEGORIES-COUNT`, `CRITICAL-EDGE-CATEGORIES-COUNT` |
+| `category.traffic.in.bitspersecond` | `b/s` | Traffic In:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `category.traffic.out.bitspersecond` | `b/s` | Traffic Out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `category.packets.in.persecond` | `packets/s` | Packets In:  packets/s | `WARNING-PACKETS-IN`, `CRITICAL-PACKETS-IN` |
+| `category.packets.out.persecond` | `packets/s` | Packets Out:  packets/s | `WARNING-PACKETS-OUT`, `CRITICAL-PACKETS-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Edge QoE {/* #cloud-vmware-velocloud-restapi-edge-qoe */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-EDGE-NAME` | `.*` | Filter edge by name (Can be a regexp) *(not used by the check command)* |
+| `FILTER-LINK-NAME` | `.*` | Filter link by name (Can be a regexp) |
+| `WARNING-QUE-VOICE-GLOBAL` | `5:` | Warning threshold Global QUE Voice |
+| `WARNING-QUE-VIDEO-GLOBAL` | `5:` | Warning threshold Global QUE Video |
+| `WARNING-QUE-TRANSACTIONAL-GLOBAL` | `5:` | Warning threshold Global QUE Transactional |
+| `WARNING-QUE-VOICE` | `5:` | Warning threshold QUE Voice |
+| `WARNING-QUE-VIDEO` | `5:` | Warning threshold QUE Video |
+| `WARNING-QUE-TRANSACTIONAL` | `5:` | Warning threshold QUE Transactional |
+| `CRITICAL-EDGE-LINKS-COUNT` | `1:` | Critical threshold Edge links count |
+| `CRITICAL-QUE-VOICE-GLOBAL` | `3:` | Critical threshold Global QUE Voice |
+| `CRITICAL-QUE-VIDEO-GLOBAL` | `3:` | Critical threshold Global QUE Video |
+| `CRITICAL-QUE-TRANSACTIONAL-GLOBAL` | `3:` | Critical threshold Global QUE Transactional |
+| `CRITICAL-QUE-VOICE` | `3:` | Critical threshold QUE Voice |
+| `CRITICAL-QUE-VIDEO` | `3:` | Critical threshold QUE Video |
+| `CRITICAL-QUE-TRANSACTIONAL` | `3:` | Critical threshold QUE Transactional |
+| `WARNING-EDGE-LINKS-COUNT` |  | Warning threshold Edge links count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `global.qoe.voice.count` |  | Global voice QOE | `WARNING-QUE-VOICE-GLOBAL`, `CRITICAL-QUE-VOICE-GLOBAL` |
+| `global.qoe.video.count` |  | Global video QOE | `WARNING-QUE-VIDEO-GLOBAL`, `CRITICAL-QUE-VIDEO-GLOBAL` |
+| `global.qoe.transactional.count` |  | Global transactional QOE | `WARNING-QUE-TRANSACTIONAL-GLOBAL`, `CRITICAL-QUE-TRANSACTIONAL-GLOBAL` |
+| `global.links.total.count` |  | link(s) | `WARNING-EDGE-LINKS-COUNT`, `CRITICAL-EDGE-LINKS-COUNT` |
+| `link.qoe.voice.count` |  | Voice QOE | `WARNING-QUE-VOICE`, `CRITICAL-QUE-VOICE` |
+| `link.qoe.video.count` |  | Video QOE | `WARNING-QUE-VIDEO`, `CRITICAL-QUE-VIDEO` |
+| `link.qoe.transactional.count` |  | Transactional QOE | `WARNING-QUE-TRANSACTIONAL`, `CRITICAL-QUE-TRANSACTIONAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Edge status {/* #cloud-vmware-velocloud-restapi-edge-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter edge by name (Can be a regexp) *(not used by the check command)* |
+| `CRITICAL-STATUS` | `'%{edge_state} !~ /CONNECTED/ && %{edge_state} !~ /NEVER_ACTIVATED/'` | Set critical threshold for status (Default: '%\{edge_state\} !~ /CONNECTED/ && %\{edge_state\} !~ /NEVER_ACTIVATED/'). Can used special variables like: %\{edge_state\}, %\{service_state\}, %\{ha_state\}, %\{activation_state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{edge_state\}, %\{service_state\}, %\{ha_state\}, %\{activation_state\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Link status {/* #cloud-vmware-velocloud-restapi-link-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-EDGE-NAME` | `.*` | Filter edge by name (Can be a regexp) *(not used by the check command)* |
+| `FILTER-LINK-NAME` | `.*` | Filter link by name (Can be a regexp) |
+| `CRITICAL-STATUS` | `'%{state} !~ /STABLE/ \|\| %{vpn_state} !~ /STABLE/'` | For 'status', special variables can be used: %\{state\}, %\{vpn_state\}, %\{backup_state\} (Critical threshold default: '%\{state\} !~ /STABLE/ \|\| %\{vpn_state\} !~ /STABLE/') |
+| `WARNING-STATUS` |  | For 'status', special variables can be used: %\{state\}, %\{vpn_state\}, %\{backup_state\} |
+| `CRITICAL-EDGE-LINKS-COUNT` |  | Critical threshold Edge links count |
+| `WARNING-EDGE-LINKS-COUNT` |  | Warning threshold Edge links count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `edge.links.total.count` |  | link(s) | `WARNING-EDGE-LINKS-COUNT`, `CRITICAL-EDGE-LINKS-COUNT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Link usage {/* #cloud-vmware-velocloud-restapi-link-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-EDGE-NAME` | `.*` | Filter edge by name (Can be a regexp) *(not used by the check command)* |
+| `FILTER-LINK-NAME` | `.*` | Filter link by name (Can be a regexp) |
+| `WARNING-LATENCY-IN` | `25` | Warning threshold Latency in |
+| `WARNING-LATENCY-OUT` | `25` | Warning threshold Latency out |
+| `WARNING-JITTER-IN` | `30` | Warning threshold Jitter in |
+| `WARNING-JITTER-OUT` | `30` | Warning threshold Jitter out |
+| `WARNING-PACKET-LOSS-IN` | `0` | Warning threshold Packet loss in |
+| `WARNING-PACKET-LOSS-OUT` | `0` | Warning threshold Packet loss in |
+| `CRITICAL-EDGE-LINKS-COUNT` | `1:` | Critical threshold Edge links count |
+| `CRITICAL-LATENCY-IN` | `250` | Critical threshold Latency in |
+| `CRITICAL-LATENCY-OUT` | `250` | Critical threshold Latency out |
+| `CRITICAL-JITTER-IN` | `100` | Critical threshold Jitter in |
+| `CRITICAL-JITTER-OUT` | `100` | Critical threshold Jitter out |
+| `CRITICAL-PACKET-LOSS-IN` | `10` | Critical threshold Packet loss in |
+| `CRITICAL-PACKET-LOSS-OUT` | `10` | Critical threshold Packet loss in |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold Traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold Traffic out |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold Traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold Traffic out |
+| `WARNING-EDGE-LINKS-COUNT` |  | Warning threshold Edge links count |
+| `WARNING-LINKS_TRAFFIC-IN` |  | Warning threshold Links Traffic in |
+| `WARNING-LINKS-TRAFFIC-OUT` |  | Warning threshold Links Traffic out |
+| `CRITICAL-LINKS_TRAFFIC-IN` |  | Critical threshold Links Traffic in |
+| `CRITICAL-LINKS-TRAFFIC-OUT` |  | Critical threshold Links Traffic out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `links.traffic.in.bitspersecond` | `b/s` | Total Traffic In:  /s | `WARNING-LINKS_TRAFFIC-IN`, `CRITICAL-LINKS_TRAFFIC-IN` |
+| `links.traffic.out.bitspersecond` | `b/s` | Total Traffic Out:  /s | `WARNING-LINKS-TRAFFIC-OUT`, `CRITICAL-LINKS-TRAFFIC-OUT` |
+| `links.total.count` |  | link(s) | `WARNING-EDGE-LINKS-COUNT`, `CRITICAL-EDGE-LINKS-COUNT` |
+| `link.traffic.in.bitspersecond` | `b/s` | Traffic In:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `link.traffic.out.bitspersecond` | `b/s` | Traffic Out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `link.latency.in.milliseconds` | `ms` | Latency In:  ms | `WARNING-LATENCY-IN`, `CRITICAL-LATENCY-IN` |
+| `link.latency.out.milliseconds` | `ms` | Latency Out:  ms | `WARNING-LATENCY-OUT`, `CRITICAL-LATENCY-OUT` |
+| `link.jitter.in.milliseconds` | `ms` | Jitter In:  ms | `WARNING-JITTER-IN`, `CRITICAL-JITTER-IN` |
+| `link.jitter.out.milliseconds` | `ms` | Jitter Out:  ms | `WARNING-JITTER-OUT`, `CRITICAL-JITTER-OUT` |
+| `link.packet.loss.in.percentage` | `%` | Packet Loss In: %% | `WARNING-PACKET-LOSS-IN`, `CRITICAL-PACKET-LOSS-IN` |
+| `link.packet.loss.out.percentage` | `%` | Packet Loss Out: %% | `WARNING-PACKET-LOSS-OUT`, `CRITICAL-PACKET-LOSS-OUT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260800-new-discovery - 20261005</summary>
+
+- Plugin pack `VeloCloud`
+    - Renamed from `VMware VeloCloud`
+    - Description updated
+- Host template `Velocloud`
+    - Renamed from `VMware-Velocloud`
+    - Alias changed from `VMware Velocloud` to `Velocloud`
+
+</details>

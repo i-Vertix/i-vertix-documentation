@@ -1,0 +1,680 @@
+---
+title: "Ribbon (Sonus) SBC"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Ribbon.png";
+
+<PluginPackHeader name="Ribbon (Sonus) SBC" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Ribbon (Sonus) session border controllers through SNMP: CPU, memory, load, swap and storage, interfaces, call statistics, channels and DSP statistics.
+
+The plugin pack provides these checks:
+
+* [Call Statistics](#network-sonus-sbc-snmp-call-statistics)
+* [Channels](#network-sonus-sbc-snmp-channels)
+* [CPU](#network-sonus-sbc-snmp-cpu)
+* [CPU detailed](#network-sonus-sbc-snmp-cpu-detailed)
+* [DSP statistics](#network-sonus-sbc-snmp-dsp-stats)
+* [Interfaces](#network-sonus-sbc-snmp-interfaces)
+* [Load](#network-sonus-sbc-snmp-load)
+* [Memory](#network-sonus-sbc-snmp-memory)
+* [Storage](#network-sonus-sbc-snmp-storage)
+* [Swap](#network-sonus-sbc-snmp-swap)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-sonus-sbc-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Ribbon-Sonus-SBC
+
+*Ribbon (Sonus) Session Border Controller* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Call Statistics](#network-sonus-sbc-snmp-call-statistics) | `network-sonus-sbc-snmp-call-statistics` |
+| [Channels](#network-sonus-sbc-snmp-channels) | `network-sonus-sbc-snmp-channels` |
+| [CPU](#network-sonus-sbc-snmp-cpu) | `network-sonus-sbc-snmp-cpu` |
+| [CPU detailed](#network-sonus-sbc-snmp-cpu-detailed) | `network-sonus-sbc-snmp-cpu-detailed` |
+| [DSP statistics](#network-sonus-sbc-snmp-dsp-stats) | `network-sonus-sbc-snmp-dsp-stats` |
+| [Load](#network-sonus-sbc-snmp-load) | `network-sonus-sbc-snmp-load` |
+| [Memory](#network-sonus-sbc-snmp-memory) | `network-sonus-sbc-snmp-memory` |
+| [Storage](#network-sonus-sbc-snmp-storage) | `network-sonus-sbc-snmp-storage` |
+| [Swap](#network-sonus-sbc-snmp-swap) | `network-sonus-sbc-snmp-swap` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-sonus-sbc-snmp-interfaces) | `network-sonus-sbc-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Call Statistics {/* #network-sonus-sbc-snmp-call-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CURRENT` |  | Threshold warning current calls |
+| `WARNING-TOTAL` |  | Threshold warning total per second |
+| `WARNING-CONNECTED` |  | Threshold warning connected per second |
+| `WARNING-REFUSED` |  | Threshold warning refused per second |
+| `WARNING-ERRORED` |  | Threshold warning errored per second |
+| `WARNING-BLOCKED` |  | Threshold warning blocked per second |
+| `CRITICAL-CURRENT` |  | Threshold critical current calls |
+| `CRITICAL-TOTAL` |  | Threshold critical total per second |
+| `CRITICAL-CONNECTED` |  | Threshold critical connected per second |
+| `CRITICAL-REFUSED` |  | Threshold critical refused per second |
+| `CRITICAL-ERRORED` |  | Threshold critical errored per second |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `port.calls.current.count` |  | current | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `port.calls.total.count` |  | total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `port.calls.connected.count` |  | connected | `WARNING-CONNECTED`, `CRITICAL-CONNECTED` |
+| `port.calls.refused.count` |  | refused | `WARNING-REFUSED`, `CRITICAL-REFUSED` |
+| `port.calls.errored.count` |  | errored | `WARNING-ERRORED`, `CRITICAL-ERRORED` |
+| `port.calls.blocked.count` |  | blocked | `WARNING-BLOCKED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Channels {/* #network-sonus-sbc-snmp-channels */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CHANNELS-ALERTING` | `0` | Threshold warning channels alerting |
+| `WARNING-CHANNELS-DOWN` | `0` | Threshold warning channels down |
+| `FILTER-COUNTERS` |  | Only display some counters (Can be 'channels' or 'global') |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{display\} |
+| `WARNING-CHANNELS-TOTAL` |  | Threshold warning total channels |
+| `WARNING-CHANNELS-OUTOFSERVICE` |  | Threshold warning channels out of service |
+| `WARNING-CHANNELS-IDLE` |  | Threshold warning channels idle |
+| `WARNING-CHANNELS-PENDING` |  | Threshold warning channels pending |
+| `WARNING-CHANNELS-WAITINGFORROUTE` |  | Threshold warning channels waiting for route |
+| `WARNING-CHANNELS-ACTIONLIST` |  | Threshold warning channels action list |
+| `WARNING-CHANNELS-WAITINGFORDIGITS` |  | Threshold warning channels waiting for digits |
+| `WARNING-CHANNELS-REMOTESETUP` |  | Threshold warning channels remote setup |
+| `WARNING-CHANNELS-PEERSETUP` |  | Threshold warning channels peer setup |
+| `WARNING-CHANNELS-INBANDINFO` |  | Threshold warning channels in band info |
+| `WARNING-CHANNELS-CONNECTED` |  | Threshold warning channels connected |
+| `WARNING-CHANNELS-TONEGENERATION` |  | Threshold warning channels tone generation |
+| `WARNING-CHANNELS-RELEASING` |  | Threshold warning channels releasing |
+| `WARNING-CHANNELS-ABORTING` |  | Threshold warning channels aborting |
+| `WARNING-CHANNELS-RESETTING` |  | Threshold warning channels resetting |
+| `WARNING-CHANNELS-UP` |  | Threshold warning channels up |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{admstatus\}, %\{opstatus\}, %\{display\} |
+| `CRITICAL-CHANNELS-TOTAL` |  | Threshold critical total channels |
+| `CRITICAL-CHANNELS-OUTOFSERVICE` |  | Threshold critical channels out of service |
+| `CRITICAL-CHANNELS-IDLE` |  | Threshold critical channels idle |
+| `CRITICAL-CHANNELS-PENDING` |  | Threshold critical channels pending |
+| `CRITICAL-CHANNELS-WAITINGFORROUTE` |  | Threshold critical channels waiting for route |
+| `CRITICAL-CHANNELS-ACTIONLIST` |  | Threshold critical channels action list |
+| `CRITICAL-CHANNELS-WAITINGFORDIGITS` |  | Threshold critical channels waiting for digits |
+| `CRITICAL-CHANNELS-REMOTESETUP` |  | Threshold critical channels remote setup |
+| `CRITICAL-CHANNELS-PEERSETUP` |  | Threshold critical channels peer setup |
+| `CRITICAL-CHANNELS-ALERTING` |  | Threshold critical channels alerting |
+| `CRITICAL-CHANNELS-INBANDINFO` |  | Threshold critical channels in band info |
+| `CRITICAL-CHANNELS-CONNECTED` |  | Threshold critical channels connected |
+| `CRITICAL-CHANNELS-TONEGENERATION` |  | Threshold critical channels tone generation |
+| `CRITICAL-CHANNELS-RELEASING` |  | Threshold critical channels releasing |
+| `CRITICAL-CHANNELS-ABORTING` |  | Threshold critical channels aborting |
+| `CRITICAL-CHANNELS-RESETTING` |  | Threshold critical channels resetting |
+| `CRITICAL-CHANNELS-UP` |  | Threshold critical channels up |
+| `CRITICAL-CHANNELS-DOWN` |  | Threshold critical channels down |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-SHELF-ID` |  | Filter channels by shelf id (can be a regexp) |
+| `FILTER-SLOT-ID` |  | Filter channels by slot id (can be a regexp) |
+| `FILTER-PORT-ID` |  | Filter channels by port id (can be a regexp) |
+| `FILTER-CHANNEL-ID` |  | Filter channels by channel id (can be a regexp) |
+| `WARNING-CHANNEL-LIFETIME` |  | Threshold warning channel live time |
+| `CRITICAL-CHANNEL-LIFETIME` |  | Threshold critical channel live time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `channels.total.count` |  | total | `WARNING-CHANNELS-TOTAL`, `CRITICAL-CHANNELS-TOTAL` |
+| `channels.outofservice.count` |  | out of service | `WARNING-CHANNELS-OUTOFSERVICE`, `CRITICAL-CHANNELS-OUTOFSERVICE` |
+| `channels.idle.count` |  | idle | `WARNING-CHANNELS-IDLE`, `CRITICAL-CHANNELS-IDLE` |
+| `channels.pending.count` |  | pending | `WARNING-CHANNELS-PENDING`, `CRITICAL-CHANNELS-PENDING` |
+| `channels.waiting_for_route.count` |  | waiting for route | `WARNING-CHANNELS-WAITINGFORROUTE`, `CRITICAL-CHANNELS-WAITINGFORROUTE` |
+| `channels.action_list.count` |  | action list | `WARNING-CHANNELS-ACTIONLIST`, `CRITICAL-CHANNELS-ACTIONLIST` |
+| `channels.waiting_for_digits.count` |  | waiting for digits | `WARNING-CHANNELS-WAITINGFORDIGITS`, `CRITICAL-CHANNELS-WAITINGFORDIGITS` |
+| `channels.remote_setup.count` |  | remote setup | `WARNING-CHANNELS-REMOTESETUP`, `CRITICAL-CHANNELS-REMOTESETUP` |
+| `channels.peer_setup.count` |  | peer setup | `WARNING-CHANNELS-PEERSETUP`, `CRITICAL-CHANNELS-PEERSETUP` |
+| `channels.alerting.count` |  | alerting | `WARNING-CHANNELS-ALERTING`, `CRITICAL-CHANNELS-ALERTING` |
+| `channels.inband_info.count` |  | inband info | `WARNING-CHANNELS-INBANDINFO`, `CRITICAL-CHANNELS-INBANDINFO` |
+| `channels.connected.count` |  | connected | `WARNING-CHANNELS-CONNECTED`, `CRITICAL-CHANNELS-CONNECTED` |
+| `channels.tone_generation.count` |  | tone generation | `WARNING-CHANNELS-TONEGENERATION`, `CRITICAL-CHANNELS-TONEGENERATION` |
+| `channels.releasing.count` |  | releasing | `WARNING-CHANNELS-RELEASING`, `CRITICAL-CHANNELS-RELEASING` |
+| `channels.aborting.count` |  | aborting | `WARNING-CHANNELS-ABORTING`, `CRITICAL-CHANNELS-ABORTING` |
+| `channels.resetting.count` |  | resetting | `WARNING-CHANNELS-RESETTING`, `CRITICAL-CHANNELS-RESETTING` |
+| `channels.up.count` |  | up | `WARNING-CHANNELS-UP`, `CRITICAL-CHANNELS-UP` |
+| `channels.down.count` |  | down | `WARNING-CHANNELS-DOWN`, `CRITICAL-CHANNELS-DOWN` |
+| `channel.lifetime.seconds` | `s` | lifetime:  seconds | `WARNING-CHANNEL-LIFETIME`, `CRITICAL-CHANNEL-LIFETIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-sonus-sbc-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Threshold warning average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Threshold critical average CPU utilization |
+| `WARNING-CORE` |  | Threshold warning for each CPU core |
+| `CRITICAL-CORE` |  | Threshold critical for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #network-sonus-sbc-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DSP statistics {/* #network-sonus-sbc-snmp-dsp-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION` | `80` | Warning threshold CPU utilization |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Critical threshold CPU utilization |
+| `WARNING-STATUS` |  | Set warning threshold for status. Use "%\{state\}" as a special variable. Useful to be notified when tunnel is up "%\{state\} eq 'up'" |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Use "%\{state\}" as a special variable. Useful to be notified when tunnel is up "%\{state\} eq 'up'" |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-CHANNELS-ACTIVE` |  | Warning threshold active channels |
+| `CRITICAL-CHANNELS-ACTIVE` |  | Critical threshold active channels |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `dsp.cpu.utilization.percentage` | `%` | CPU usage:  %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `dsp.channels.active.count` |  | active channels | `WARNING-CHANNELS-ACTIVE`, `CRITICAL-CHANNELS-ACTIVE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-sonus-sbc-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `2,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `4,3,3` | Threshold critical (1min,5min,15min) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-sonus-sbc-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-sonus-sbc-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning storage usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical storage usage |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical access. Check if storage is readOnly: --critical-access=@2:2 |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `STORAGE` | `^((?!\/mnt\/ext).)*$` | Storage name (can be a regexp) |
+| `WARNING-ACCESS` |  | Threshold warning access |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #network-sonus-sbc-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `25` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-sonus-sbc-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231114 - 20231230</summary>
+
+- Plugin pack `Ribbon (Sonus) SBC`
+    - Renamed from `Sonus SBC`
+    - Description updated
+- Host template `Ribbon-Sonus-SBC`
+    - Renamed from `Sonus-SBC`
+    - Alias changed from `Sonus Session Border Controller` to `Ribbon (Sonus) Session Border Controller`
+- Service template [`network-sonus-sbc-snmp-storage`](#network-sonus-sbc-snmp-storage)
+    - Macro `STORAGE` added (default `^((?!\/mnt\/ext).)*$`)
+- Command `network-sonus-sbc-snmp-channels`
+    - Option `--warning-channel-lifetime=$_SERVICEWARNING-CHANNEL-LIFETIME$` added
+    - Option `--critical-channel-lifetime=$_SERVICECRITICAL-CHANNEL-LIFETIME$` added
+    - Option `--warning-channel-livetime=$_SERVICEWARNING-CHANNEL-LIVETIME$` removed
+    - Option `--critical-channel-livetime=$_SERVICECRITICAL-CHANNEL-LIVETIME$` removed
+    - Macro `WARNING-CHANNEL-LIFETIME` added
+    - Macro `CRITICAL-CHANNEL-LIFETIME` added
+    - Macro `WARNING-CHANNEL-LIVETIME` removed
+    - Macro `CRITICAL-CHANNEL-LIVETIME` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231114 - 20231207</summary>
+
+- Plugin pack `Sonus SBC`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231114 - 20231207`.

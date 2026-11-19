@@ -1,0 +1,399 @@
+---
+title: "Veeam VBR (WinRM)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Veeam.png";
+
+<PluginPackHeader name="Veeam VBR (WinRM)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors Veeam Backup & Replication servers through WinRM: job status, licenses, repository space usage, tape jobs and SureBackup jobs.
+
+The plugin pack provides these checks:
+
+* [Veeam Job status](#apps-backup-veeam-wsman-job-status)
+* [Veeam License](#apps-backup-veeam-wsman-licenses)
+* [Veeam Repositories](#apps-backup-veeam-wsman-repositories)
+* [Veeam Tape jobs](#apps-backup-veeam-wsman-tape-jobs)
+* [Veeam VSB jobs](#apps-backup-veeam-wsman-vsb-jobs)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Veeam Job status](#apps-backup-veeam-wsman-job-status) | `Veeam Job status - <name>` |
+| [Veeam Repositories](#apps-backup-veeam-wsman-repositories) | `Veeam Repository - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Veeam-VBR-iVertix-WinRM
+
+*Veeam VBR iVertix WinRM* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WSMAN-PORT` | `5986` | Define the port to connect to (default: 5985). |
+| `WSMAN-PATH` | `/wsman` | Define the path of the WSMAN URL if it has been customized (default: '/wsman'). |
+| `WSMAN-SCHEME` | `https` | Define the transport scheme (default: 'http'). |
+| `WSMAN-TIMEOUT` | `50` | Define the HTTP transport timeout in seconds (default: 30). |
+| `WSMAN-AUTH-METHOD` |  | Define the authentication method. Available methods: `noauth`, `basic` (default), `pass`, `digest`, `ntlm`, `gssnegotiate`. |
+| `WSMAN-PASSWORD` | *(password)* | Define the password associated with the user name. |
+| `VEEAM-VERSION` | `12` | The Veeam version to monitor (default: 12). Veeam version 13 and later require PowerShell 7 whereas earlier versions use PowerShell 5. |
+| `WSMAN-USERNAME` |  | Define the username for authentication. |
+| `WSMAN-PROXY-URL` |  | Define the URL of the HTTP proxy to use. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Veeam Job status](#apps-backup-veeam-wsman-job-status) | `apps-backup-veeam-wsman-job-status` |
+| [Veeam License](#apps-backup-veeam-wsman-licenses) | `apps-backup-veeam-wsman-licenses` |
+| [Veeam Repositories](#apps-backup-veeam-wsman-repositories) | `apps-backup-veeam-wsman-repositories` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Veeam Tape jobs](#apps-backup-veeam-wsman-tape-jobs) | `apps-backup-veeam-wsman-tape-jobs` |
+| [Veeam VSB jobs](#apps-backup-veeam-wsman-vsb-jobs) | `apps-backup-veeam-wsman-vsb-jobs` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Job status {/* #apps-backup-veeam-wsman-job-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-END-TIME` | `86400` | Filter job with end time greater than current time less value in seconds (Default: 86400) |
+| `CRITICAL-TOTAL` | `1:` | Set critical threshold for total job |
+| `FILTER-NAME` |  | Filter job name (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{is_running\}, %\{scheduled\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{is_running\} == 0 and not %\{status\} =~ /Success/i'). Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{is_running\}, %\{scheduled\} |
+| `EXCLUDE-NAME` |  | Exclude job name (regexp can be used) |
+| `FILTER-TYPE` |  | Filter job type (can be a regexp) |
+| `WARNING-TOTAL` |  | Set warning threshold for total job |
+| `WARNING-LONG` |  | Set warning threshold for long jobs. Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{elapsed\} |
+| `CRITICAL-LONG` |  | Set critical threshold for long jobs. Can used special variables like: %\{display\}, %\{status\}, %\{type\}, %\{elapsed\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.detected.count` |  | Total jobs | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam License {/* #apps-backup-veeam-wsman-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` | Select the unit for expires threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-EXPIRES` | `30:` | Warning threhold licenses expires |
+| `CRITICAL-EXPIRES` | `15:` | Critical threhold licenses expires |
+| `FILTER-TYPE` |  | Filter licenses by type (can be a regexp) |
+| `FILTER-TO` |  | Filter licenses by person/organization (can be a regexp) |
+| `FILTER-STATUS` |  | Filter licenses by status (can be a regexp) |
+| `WARNING-LICENSE-USAGE-PRCT` |  | Warning threhold licenses usage (%) |
+| `CRITICAL-LICENSE-USAGE-PRCT` |  | Critical threhold licenses usage (%) |
+| `WARNING-LICENSE-USAGE` |  | Warning threhold instance license usage |
+| `WARNING-LICENSE-FREE` |  | Warning threhold instance license free |
+| `WARNING-TOTAL` |  | Warning threhold total licenses |
+| `CRITICAL-LICENSE-USAGE` |  | Critical threhold instance license usage |
+| `CRITICAL-LICENSE-FREE` |  | Critical threhold instance license free |
+| `CRITICAL-TOTAL` |  | Critical threhold total licenses |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `licenses.total.count` |  | Number of licenses | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `license.expires` |  | expires in | `WARNING-EXPIRES`, `CRITICAL-EXPIRES` |
+| `license.instances.usage.count` |  |  | `WARNING-LICENSE-USAGE`, `CRITICAL-LICENSE-USAGE` |
+| `license.instances.free.count` |  |  | `WARNING-LICENSE-FREE`, `CRITICAL-LICENSE-FREE` |
+| `license.instances.usage.percentage` | `%` |  | `WARNING-LICENSE-USAGE-PRCT`, `CRITICAL-LICENSE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Repositories {/* #apps-backup-veeam-wsman-repositories */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threhold space usage (%) |
+| `CRITICAL-STATUS` | `"not %{status} =~ /ordinal\|maintenance/i"` | Set critical threshold for status (Default: 'not %\{status\} =~ /ordinal\|maintenance/i'). Can used special variables like: %\{status\}, %\{name\}, %\{type\} |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threhold space usage (%) |
+| `FILTER-TYPE` |  | Filter repositories by type (can be a regexp) |
+| `FILTER-NAME` |  | Filter repositories by name (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude repositories by name (regexp can be used) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\}, %\{type\} |
+| `WARNING-SPACE-USAGE` |  | Warning threhold space usage (B) |
+| `WARNING-SPACE-USAG-FREE` |  | Warning threhold space usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threhold space usage (B) |
+| `CRITICAL-SPACE-USAG-FREE` |  | Critical threhold space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `repository.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `repository.space.free.bytes` | `B` |  | `WARNING-SPACE-USAG-FREE`, `CRITICAL-SPACE-USAG-FREE` |
+| `repository.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam Tape jobs {/* #apps-backup-veeam-wsman-tape-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{enabled} == 1 and not %{last_result} =~ /Success\|None/i'` | Set critical threshold for status (Default: '%\{enabled\} == 1 and not %\{last_result\} =~ /Success\|None/i'). Can used special variables like: %\{display\}, %\{enabled\}, %\{type\}, %\{ %\{last_state\} |
+| `FILTER-TYPE` |  | Filter job type (can be a regexp) |
+| `FILTER-NAME` |  | Filter job name (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude job name (regexp can be used) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status (Default: '') Can used special variables like: %\{display\}, %\{enabled\}, %\{type\}, %\{last_result\}, %\{last_state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '') Can used special variables like: %\{display\}, %\{enabled\}, %\{type\}, %\{last_result\}, %\{last_state\} |
+| `WARNING-TOTAL` |  | Set warning threshold for total jobs |
+| `CRITICAL-TOTAL` |  | Set critical threshold for total jobs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tapejobs.total.count` |  | total jobs | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Veeam VSB jobs {/* #apps-backup-veeam-wsman-vsb-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `"not %{status} =~ /success/i"` | Set critical threshold for status (Default: 'not %\{status\} =~ /success/i'). Can used special variables like: %\{name\}, %\{type\}, %\{status\}, %\{duration\} |
+| `FILTER-TYPE` |  | Filter job name (can be a regexp) |
+| `FILTER-NAME` |  | Filter job type (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude job name (regexp can be used) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{name\}, %\{type\}, %\{status\}, %\{duration\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{name\}, %\{type\}, %\{status\}, %\{duration\} |
+| `WARNING-JOBS-DETECTED` |  | Warning jobs detected |
+| `WARNING-JOBS-SUCCESS` |  | Warning jobs success |
+| `WARNING-JOBS-WARNING` |  | Warning jobs warning |
+| `WARNING-JOBS-FAILED` |  | Warning jobs failed |
+| `CRITICAL-JOBS-DETECTED` |  | Critical jobs detected |
+| `CRITICAL-JOBS-SUCCESS` |  | Critical jobs success |
+| `CRITICAL-JOBS-WARNING` |  | Critical jobs warning |
+| `CRITICAL-JOBS-FAILED` |  | Critical jobs failed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sure_backup.jobs.detected.count` |  | detected jobs | `WARNING-JOBS-DETECTED`, `CRITICAL-JOBS-DETECTED` |
+| `sure_backup.jobs.success.count` |  | success | `WARNING-JOBS-SUCCESS`, `CRITICAL-JOBS-SUCCESS` |
+| `sure_backup.jobs.failed.count` |  | failed | `WARNING-JOBS-FAILED`, `CRITICAL-JOBS-FAILED` |
+| `sure_backup.jobs.warning.count` |  | warning | `WARNING-JOBS-WARNING`, `CRITICAL-JOBS-WARNING` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20261000 - 20261029</summary>
+
+- Plugin pack `Veeam VBR (WinRM)`
+    - Renamed from `Veeam backup (WinRM)`
+- Host template `Veeam-VBR-iVertix-WinRM`
+    - Renamed from `Veeam-Backup-iVertix-WinRM`
+    - Alias changed from `Veeam Backup iVertix WinRM` to `Veeam VBR iVertix WinRM`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260331</summary>
+
+- Plugin pack `Veeam backup (WinRM)`
+    - Description updated
+- Host template `Veeam-Backup-iVertix-WinRM`
+    - Macro `WSMAN-AUTH-METHOD`: default changed from `basic` to *(empty)*
+- Command `apps-backup-veeam-wsman-job-status`
+    - Option `--veeam-version=$_HOSTVEEAM-VERSION$` added
+    - Macro `VEEAM-VERSION` added
+- Command `apps-backup-veeam-wsman-licenses`
+    - Option `--veeam-version=$_HOSTVEEAM-VERSION$` added
+    - Macro `VEEAM-VERSION` added
+- Command `apps-backup-veeam-wsman-repositories`
+    - Option `--veeam-version=$_HOSTVEEAM-VERSION$` added
+    - Macro `VEEAM-VERSION` added
+- Command `apps-backup-veeam-wsman-tape-jobs`
+    - Option `--veeam-version=$_HOSTVEEAM-VERSION$` added
+    - Macro `VEEAM-VERSION` added
+- Command `apps-backup-veeam-wsman-vsb-jobs`
+    - Macro `WSMAN-PROXY-URL` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Host template `Veeam-Backup-iVertix-WinRM`
+    - Macro `VEEAM-VERSION` added (default `12`)
+- Command `apps-backup-veeam-wsman-vsb-jobs`
+    - Option `--veeam-version=$_HOSTVEEAM-VERSION$` added
+    - Macro `VEEAM-VERSION` added
+    - Macro `WSMAN-PROXY-URL` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250512</summary>
+
+- Command `apps-backup-veeam-wsman-job-status`
+    - Option `--warning-long` changed from `--warning-long="$_SERVICEWARNING-LONG$"` to `--warning-long=$_SERVICEWARNING-LONG$`
+    - Option `--critical-long` changed from `--critical-long="$_SERVICECRITICAL-LONG$` to `--critical-long=$_SERVICECRITICAL-LONG$`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Plugin pack `Veeam backup (WinRM)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250300 - 20250330`.

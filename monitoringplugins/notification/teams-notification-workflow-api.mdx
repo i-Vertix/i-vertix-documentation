@@ -1,0 +1,44 @@
+---
+title: "Teams notification (workflow api)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/O365-Teams.png";
+
+<PluginPackHeader name="Teams notification (workflow api)" image={image} category="Notification" metadata={["API"]} />
+
+## Description
+
+Provides notification commands that send host and service alerts to Microsoft Teams through a Workflow webhook.
+
+
+
+## Host Templates
+
+## Service Templates
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250800 - 20250915</summary>
+
+- Command `host-notify-by-teams-workflowapi`
+    - Option `--teams-workflow` changed from `--teams-workflow='$CONTACTADDRESS1$$CONTACTADDRESS2$'` to `--teams-workflow='$CONTACTADDRESS1$'`
+    - Option `--teams-workflow-params='$CONTACTADDRESS2$'` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240808 - 20240826</summary>
+
+- Plugin pack `Teams notification (workflow api)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240808 - 20240826`.

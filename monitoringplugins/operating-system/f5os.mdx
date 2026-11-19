@@ -1,0 +1,269 @@
+---
+title: "F5OS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/F5.png";
+
+<PluginPackHeader name="F5OS" image={image} category="Operating System" metadata={["SNMP"]} />
+
+## Description
+
+Monitors F5 F5OS appliances through SNMP: CPU and memory usage, hardware and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU usage](#os-f5os-snmp-cpu-usage)
+* [Hardware](#os-f5os-snmp-hardware)
+* [Memory](#os-f5os-snmp-memory)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### F5OS
+
+*F5OS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU usage](#os-f5os-snmp-cpu-usage) | `os-f5os-snmp-cpu-usage` |
+| [Hardware](#os-f5os-snmp-hardware) | `os-f5os-snmp-hardware` |
+| [Memory](#os-f5os-snmp-memory) | `os-f5os-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU usage {/* #os-f5os-snmp-cpu-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CORE-CURRENT` | `85` | Threshold in percentage |
+| `WARNING-CORE-AVG-5S` | `80` | Threshold in percentage |
+| `WARNING-CORE-AVG-1M` | `70` | Threshold in percentage |
+| `WARNING-CORE-AVG-5M` | `65` | Threshold in percentage |
+| `CRITICAL-CORE-CURRENT` | `95` | Threshold in percentage |
+| `CRITICAL-CORE-AVG-5S` | `90` | Threshold in percentage |
+| `CRITICAL-CORE-AVG-1M` | `85` | Threshold in percentage |
+| `CRITICAL-CORE-AVG-5M` | `80` | Threshold in percentage |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `INCLUDE-ID` |  | Filter by CPU id (regexp can be used). Example : --include-id='2' |
+| `INCLUDE-NAME` |  | Filter by CPU name (regexp can be used). Example : --include-name='cpu02' |
+| `EXCLUDE-ID` |  | Exclude CPU id from check (regexp can be used). Example : --exclude-id='21' |
+| `EXCLUDE-NAME` |  | Exclude CPU name from check (regexp can be used). Example : --exclude-name='cpu02' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.usage.percent` | `%` | CPU(s) average usage is:  %% |  |
+| `cpu.core.current.usage.percent` | `%` | CPU Usage Current :  %% | `WARNING-CORE-CURRENT`, `CRITICAL-CORE-CURRENT` |
+| `cpu.core.usage.avg.5s.percent` | `%` | CPU Usage 5sec :  %% | `WARNING-CORE-AVG-5S`, `CRITICAL-CORE-AVG-5S` |
+| `cpu.core.usage.avg.1m.percent` | `%` | CPU Usage 1min :  %% | `WARNING-CORE-AVG-1M`, `CRITICAL-CORE-AVG-1M` |
+| `cpu.core.usage.avg.5m.percent` | `%` | CPU Usage 5min :  %% | `WARNING-CORE-AVG-5M`, `CRITICAL-CORE-AVG-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #os-f5os-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NO-COMPONENT` | `critical` | Define the expected status if no components are found (default: critical) |
+| `WARNING-CURRENT-TEMPERATURE` | `40` | Threshold in C |
+| `WARNING-AVG-TEMPERATURE` | `38` | Threshold in C |
+| `CRITICAL-CURRENT-TEMPERATURE` | `50` | Threshold in C |
+| `CRITICAL-AVG-TEMPERATURE` | `45` | Threshold in C |
+| `INCLUDE-ID` |  | Filter by fan id (regexp can be used). Example : --include-id='2' |
+| `EXCLUDE-ID` |  | Exclude fan id from check (can be a regexp). Example : --exclude-id='10' |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `COMPONENT` |  | Which component to check (default: '.*'). Can be: "temperature", "fantray" |
+| `WARNING-MIN-TEMPERATURE` |  | Threshold in C |
+| `WARNING-MAX-TEMPERATURE` |  | Threshold in C |
+| `WARNING-FANTRAY-FAN-SPEED` |  | Threshold in rpm |
+| `CRITICAL-MIN-TEMPERATURE` |  | Threshold in C |
+| `CRITICAL-MAX-TEMPERATURE` |  | Threshold in C |
+| `CRITICAL-FANTRAY-FAN-SPEED` |  | Threshold in rpm |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `temperature.current.celsius` | `C` | Current temperature:  C | `WARNING-CURRENT-TEMPERATURE`, `CRITICAL-CURRENT-TEMPERATURE` |
+| `temperature.average.1h.celsius` | `C` | average:  C | `WARNING-AVG-TEMPERATURE`, `CRITICAL-AVG-TEMPERATURE` |
+| `temperature.min.1h.celsius` | `C` | minimum:  C | `WARNING-MIN-TEMPERATURE`, `CRITICAL-MIN-TEMPERATURE` |
+| `temperature.max.1h.celsius` | `C` | maximum:  C | `WARNING-MAX-TEMPERATURE`, `CRITICAL-MAX-TEMPERATURE` |
+| `fantray.fanspeed.rpm` | `rpm` | speed is  rpm | `WARNING-FANTRAY-FAN-SPEED`, `CRITICAL-FANTRAY-FAN-SPEED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #os-f5os-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold in percentage |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold in percentage |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-FREE` |  | Threshold in bytes |
+| `WARNING-FREE-PRCT` |  | Threshold in percentage |
+| `WARNING-USAGE` |  | Threshold in bytes |
+| `CRITICAL-FREE` |  | Threshold in bytes |
+| `CRITICAL-FREE-PRCT` |  | Threshold in percentage |
+| `CRITICAL-USAGE` |  | Threshold in bytes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-FREE`, `CRITICAL-FREE` |
+| `memory.usage.percent` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.free.percent` | `%` |  | `WARNING-FREE-PRCT`, `CRITICAL-FREE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Plugin pack `F5OS`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260700 - 20260818`.

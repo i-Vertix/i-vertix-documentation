@@ -1,0 +1,708 @@
+---
+title: "Exchange OnPremise Extended (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Exchange.png";
+
+<PluginPackHeader name="Exchange OnPremise Extended (i-Vertix agent)" image={image} category="Application" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors Microsoft Exchange on-premises servers in depth through the i-Vertix agent: .NET and ASP.NET performance, CPU, database and log I/O latency, RPC and LDAP response times and other Exchange performance counters.
+
+The plugin pack provides these checks:
+
+* [Exchange - .NET - % Time in GC](#ivertix-agent-check_pdh-exchange-2013-net-time-in-gc)
+* [Exchange - ASP.NET - Application Restarts](#ivertix-agent-check_pdh-exchange-2013-asp.net-application-restarts)
+* [Exchange - ASP.NET - Request Wait Time](#ivertix-agent-check_pdh-exchange-2013-asp.net-request-wait-time)
+* [Exchange - ASP.NET - Requests In Application Queue](#ivertix-agent-check_pdh-exchange-2013-asp.net-requests-in-application-queue)
+* [Exchange - ASP.NET - Worker Process Restarts](#ivertix-agent-check_pdh-exchange-2013-asp.net-worker-process-restarts)
+* [Exchange - CAS - RPC Averaged Latency](#ivertix-agent-check_pdh-exchange-2013-cas-rpc-average-latency)
+* [Exchange - CAS - RPC Requests](#ivertix-agent-check_pdh-exchange-2013-cas-rpc-requests)
+* [Exchange - CPU - Privileged Time](#ivertix-agent-check_pdh-exchange-2013-cpu-privileged-time)
+* [Exchange - CPU - Processor Time](#ivertix-agent-check_pdh-exchange-2013-cpu-processor-time)
+* [Exchange - CPU - Queue Length (all instances)](#ivertix-agent-check_pdh-exchange-2013-cpu-queue-length)
+* [Exchange - CPU - User Time](#ivertix-agent-check_pdh-exchange-2013-cpu-user-time)
+* [Exchange - DB - I/O Database Reads (Attached) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-attached-avg-latency)
+* [Exchange - DB - I/O Database Reads (Recovery) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-recovery-avg-latency)
+* [Exchange - DB - I/O Database Writes (Attached) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-attached-avg-latency)
+* [Exchange - DB - I/O Database Writes (Recovery) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-recovery-avg-latency)
+* [Exchange - DB - I/O Log Writes Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-log-writes-avg-latency)
+* [Exchange - DC - LDAP Read Time](#ivertix-agent-check_pdh-exchange-2013-dc-ldap-read-time)
+* [Exchange - DC - LDAP Search Time](#ivertix-agent-check_pdh-exchange-2013-dc-ldap-search-time)
+* [Exchange - DC - Processes LDAP Read Time](#ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-read-time)
+* [Exchange - DC - Processes LDAP Search Time](#ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-search-time)
+* [Exchange - IS Client - RPC Average Latency](#ivertix-agent-check_pdh-exchange-2013-is-client-rpc-average-latency)
+* [Exchange - IS Store - RPC Average Latency](#ivertix-agent-check_pdh-exchange-2013-is-store-rpc-average-latency)
+* [Exchange - IS Store - RPC Requests](#ivertix-agent-check_pdh-exchange-2013-is-store-rpc-requests)
+* [Exchange - Memory - Committed Bytes In Use](#ivertix-agent-check_pdh-exchange-2013-mem-commited-bytes-in-use)
+* [Exchange - Network - Packets Outbound Errors](#ivertix-agent-check_pdh-exchange-2013-netword-packets-outbound-errors)
+
+
+## Host Templates
+
+### Exchange-2013/2016-Extended-iVertix-agent
+
+*Exchange 2013/2016 Performance Counters* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Exchange - ASP.NET - Application Restarts](#ivertix-agent-check_pdh-exchange-2013-asp.net-application-restarts) | `ivertix-agent-check_pdh-exchange-2013-asp.net-application-restarts` |
+| [Exchange - ASP.NET - Request Wait Time](#ivertix-agent-check_pdh-exchange-2013-asp.net-request-wait-time) | `ivertix-agent-check_pdh-exchange-2013-asp.net-request-wait-time` |
+| [Exchange - ASP.NET - Requests In Application Queue](#ivertix-agent-check_pdh-exchange-2013-asp.net-requests-in-application-queue) | `ivertix-agent-check_pdh-exchange-2013-asp.net-requests-in-application-queue` |
+| [Exchange - ASP.NET - Worker Process Restarts](#ivertix-agent-check_pdh-exchange-2013-asp.net-worker-process-restarts) | `ivertix-agent-check_pdh-exchange-2013-asp.net-worker-process-restarts` |
+| [Exchange - CAS - RPC Averaged Latency](#ivertix-agent-check_pdh-exchange-2013-cas-rpc-average-latency) | `ivertix-agent-check_pdh-exchange-2013-cas-rpc-average-latency` |
+| [Exchange - CAS - RPC Requests](#ivertix-agent-check_pdh-exchange-2013-cas-rpc-requests) | `ivertix-agent-check_pdh-exchange-2013-cas-rpc-requests` |
+| [Exchange - CPU - Privileged Time](#ivertix-agent-check_pdh-exchange-2013-cpu-privileged-time) | `ivertix-agent-check_pdh-exchange-2013-cpu-privileged-time` |
+| [Exchange - CPU - Processor Time](#ivertix-agent-check_pdh-exchange-2013-cpu-processor-time) | `ivertix-agent-check_pdh-exchange-2013-cpu-processor-time` |
+| [Exchange - CPU - Queue Length (all instances)](#ivertix-agent-check_pdh-exchange-2013-cpu-queue-length) | `ivertix-agent-check_pdh-exchange-2013-cpu-queue-length` |
+| [Exchange - CPU - User Time](#ivertix-agent-check_pdh-exchange-2013-cpu-user-time) | `ivertix-agent-check_pdh-exchange-2013-cpu-user-time` |
+| [Exchange - DB - I/O Database Reads (Attached) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-attached-avg-latency) | `ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-attached-avg-latency` |
+| [Exchange - DB - I/O Database Reads (Recovery) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-recovery-avg-latency) | `ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-recovery-avg-latency` |
+| [Exchange - DB - I/O Database Writes (Attached) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-attached-avg-latency) | `ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-attached-avg-latency` |
+| [Exchange - DB - I/O Database Writes (Recovery) Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-recovery-avg-latency) | `ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-recovery-avg-latency` |
+| [Exchange - DB - I/O Log Writes Average Latency](#ivertix-agent-check_pdh-exchange-2013-database-io-log-writes-avg-latency) | `ivertix-agent-check_pdh-exchange-2013-database-io-log-writes-avg-latency` |
+| [Exchange - DC - LDAP Read Time](#ivertix-agent-check_pdh-exchange-2013-dc-ldap-read-time) | `ivertix-agent-check_pdh-exchange-2013-dc-ldap-read-time` |
+| [Exchange - DC - LDAP Search Time](#ivertix-agent-check_pdh-exchange-2013-dc-ldap-search-time) | `ivertix-agent-check_pdh-exchange-2013-dc-ldap-search-time` |
+| [Exchange - DC - Processes LDAP Read Time](#ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-read-time) | `ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-read-time` |
+| [Exchange - DC - Processes LDAP Search Time](#ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-search-time) | `ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-search-time` |
+| [Exchange - IS Client - RPC Average Latency](#ivertix-agent-check_pdh-exchange-2013-is-client-rpc-average-latency) | `ivertix-agent-check_pdh-exchange-2013-is-client-rpc-average-latency` |
+| [Exchange - IS Store - RPC Average Latency](#ivertix-agent-check_pdh-exchange-2013-is-store-rpc-average-latency) | `ivertix-agent-check_pdh-exchange-2013-is-store-rpc-average-latency` |
+| [Exchange - IS Store - RPC Requests](#ivertix-agent-check_pdh-exchange-2013-is-store-rpc-requests) | `ivertix-agent-check_pdh-exchange-2013-is-store-rpc-requests` |
+| [Exchange - Memory - Committed Bytes In Use](#ivertix-agent-check_pdh-exchange-2013-mem-commited-bytes-in-use) | `ivertix-agent-check_pdh-exchange-2013-mem-commited-bytes-in-use` |
+| [Exchange - .NET - % Time in GC](#ivertix-agent-check_pdh-exchange-2013-net-time-in-gc) | `ivertix-agent-check_pdh-exchange-2013-net-time-in-gc` |
+| [Exchange - Network - Packets Outbound Errors](#ivertix-agent-check_pdh-exchange-2013-netword-packets-outbound-errors) | `ivertix-agent-check_pdh-exchange-2013-netword-packets-outbound-errors` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - ASP.NET - Application Restarts {/* #ivertix-agent-check_pdh-exchange-2013-asp.net-application-restarts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\ASP.NET\\Application Restarts` |  |
+| `PERF_SYNTAX` | `count` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 10` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - ASP.NET - Request Wait Time {/* #ivertix-agent-check_pdh-exchange-2013-asp.net-request-wait-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\ASP.NET\\Request Wait Time` |  |
+| `PERF_SYNTAX` | `time (ms)` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 10` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - ASP.NET - Requests In Application Queue {/* #ivertix-agent-check_pdh-exchange-2013-asp.net-requests-in-application-queue */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\ASP.NET Applications(*)\\Requests In Application Queue` |  |
+| `PERF_SYNTAX` | `count` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 10` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - ASP.NET - Worker Process Restarts {/* #ivertix-agent-check_pdh-exchange-2013-asp.net-worker-process-restarts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\ASP.NET\\Worker Process Restarts` |  |
+| `PERF_SYNTAX` | `count` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 10` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - CAS - RPC Averaged Latency {/* #ivertix-agent-check_pdh-exchange-2013-cas-rpc-average-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange RpcClientAccess\\RPC Averaged Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 250` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 500` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - CAS - RPC Requests {/* #ivertix-agent-check_pdh-exchange-2013-cas-rpc-requests */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange RpcClientAccess\\RPC Requests` |  |
+| `PERF_SYNTAX` | `count` |  |
+| `WARNING` | `warning=value > 40` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - CPU - Privileged Time {/* #ivertix-agent-check_pdh-exchange-2013-cpu-privileged-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Processor(_Total)\\% Privileged Time` |  |
+| `PERF_SYNTAX` | `used %` |  |
+| `WARNING` | `warning=value > 75` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 95` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - CPU - Processor Time {/* #ivertix-agent-check_pdh-exchange-2013-cpu-processor-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Processor(_Total)\\% Processor Time` |  |
+| `PERF_SYNTAX` | `used %` |  |
+| `WARNING` | `warning=value > 75` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 95` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - CPU - Queue Length (all instances) {/* #ivertix-agent-check_pdh-exchange-2013-cpu-queue-length */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\System\\Processor Queue Length (all instances)` |  |
+| `PERF_SYNTAX` | `queue` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 25` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - CPU - User Time {/* #ivertix-agent-check_pdh-exchange-2013-cpu-user-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Processor(_Total)\\% User Time` |  |
+| `PERF_SYNTAX` | `used %` |  |
+| `WARNING` | `warning=value > 75` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 95` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DB - I/O Database Reads (Attached) Average Latency {/* #ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-attached-avg-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange Database ==> Instances(*)\\I/O Database Reads (Attached) Average Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 20` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DB - I/O Database Reads (Recovery) Average Latency {/* #ivertix-agent-check_pdh-exchange-2013-database-io-database-reads-recovery-avg-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange Database ==> Instances(*)\\I/O Database Reads (Recovery) Average Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 200` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 500` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DB - I/O Database Writes (Attached) Average Latency {/* #ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-attached-avg-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange Database ==> Instances(*)\\I/O Database Writes (Attached) Average Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DB - I/O Database Writes (Recovery) Average Latency {/* #ivertix-agent-check_pdh-exchange-2013-database-io-database-writes-recovery-avg-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange Database ==> Instances(*)\\I/O Database Writes (Recovery) Average Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 200` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 500` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DB - I/O Log Writes Average Latency {/* #ivertix-agent-check_pdh-exchange-2013-database-io-log-writes-avg-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange Database ==> Instances(*)\\I/O Log Writes Average Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 10` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DC - LDAP Read Time {/* #ivertix-agent-check_pdh-exchange-2013-dc-ldap-read-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange ADAccess Domain Controllers(*)\\LDAP Read Time` |  |
+| `PERF_SYNTAX` | `time (ms)` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DC - LDAP Search Time {/* #ivertix-agent-check_pdh-exchange-2013-dc-ldap-search-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange ADAccess Domain Controllers(*)\\LDAP Search Time` |  |
+| `PERF_SYNTAX` | `time (ms)` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DC - Processes LDAP Read Time {/* #ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-read-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange ADAccess Processes(*)\\LDAP Read Time` |  |
+| `PERF_SYNTAX` | `time (ms)` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - DC - Processes LDAP Search Time {/* #ivertix-agent-check_pdh-exchange-2013-dc-processes-ldap-search-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchange ADAccess Processes(*)\\LDAP Search Time` |  |
+| `PERF_SYNTAX` | `time (ms)` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - IS Client - RPC Average Latency {/* #ivertix-agent-check_pdh-exchange-2013-is-client-rpc-average-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchangeIS Client Type(*)\\RPC Average Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 200` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - IS Store - RPC Average Latency {/* #ivertix-agent-check_pdh-exchange-2013-is-store-rpc-average-latency */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchangeIS Store(*)\\RPC Average Latency` |  |
+| `PERF_SYNTAX` | `latency (ms)` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - IS Store - RPC Requests {/* #ivertix-agent-check_pdh-exchange-2013-is-store-rpc-requests */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\MSExchangeIS Store(*)\\RPC Requests` |  |
+| `PERF_SYNTAX` | `count` |  |
+| `WARNING` | `warning=value > 70` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 250` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - Memory - Committed Bytes In Use {/* #ivertix-agent-check_pdh-exchange-2013-mem-commited-bytes-in-use */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Memory\\% Committed Bytes In Use` |  |
+| `PERF_SYNTAX` | `used %` |  |
+| `WARNING` | `warning=value > 80` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 90` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - .NET - % Time in GC {/* #ivertix-agent-check_pdh-exchange-2013-net-time-in-gc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\.NET CLR Memory(*)\\% Time in GC` |  |
+| `PERF_SYNTAX` | `used %` |  |
+| `WARNING` | `warning=value > 10` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 25` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Exchange - Network - Packets Outbound Errors {/* #ivertix-agent-check_pdh-exchange-2013-netword-packets-outbound-errors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Network Interface(*)\\Packets Outbound Errors` |  |
+| `PERF_SYNTAX` | `packets` |  |
+| `WARNING` | `warning=value > 0` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `Exchange-2013/2016-Extended-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+    - Macro `NSCLIENT-PWD`: default changed from `**********` to `********`
+- Command `ivertix-agent-check_pdh`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>

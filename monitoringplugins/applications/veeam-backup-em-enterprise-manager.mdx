@@ -1,0 +1,260 @@
+---
+title: "Veeam Backup EM (Enterprise Manager)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Veeam.png";
+
+<PluginPackHeader name="Veeam Backup EM (Enterprise Manager)" image={image} category="Application" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors Veeam Backup Enterprise Manager through its REST API: job status and execution results, and the space usage of the backup repositories.
+
+The plugin pack provides these checks:
+
+* [Job status](#apps-backup-veeam-vbem-restapi-jobs)
+* [Repositories](#apps-backup-veeam-vbem-restapi-repositories)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Job status](#apps-backup-veeam-vbem-restapi-jobs) | `Job status - <jobName>` |
+| [Repositories](#apps-backup-veeam-vbem-restapi-repositories) | `Repository - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Veeam-Backup-Enterprise-Manager
+
+*Veeam Backup Enterprise Manager* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `9398` | Port used (default: 9398) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `50` | Set timeout in seconds (default: 50). |
+| `API-PASSWORD` | *(password)* | Set password. |
+| `HTTP-BACKEND` | `curl` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-USERNAME` |  | Set username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Job status](#apps-backup-veeam-vbem-restapi-jobs) | `apps-backup-veeam-vbem-restapi-jobs` |
+| [Repositories](#apps-backup-veeam-vbem-restapi-repositories) | `apps-backup-veeam-vbem-restapi-repositories` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Job status {/* #apps-backup-veeam-vbem-restapi-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `TIMEFRAME` | `86400` | Timeframe to get BackupJobSession (in seconds. Default: 86400) |
+| `UNIT` | `h` | Select the unit for last execution time threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-EXECUTION-STATUS` | `%{status} =~ /warning/i` | Set warning threshold for last job execution status (Default: %\{status\} =~ /warning/i). You can use the following variables like: %\{status\}, %\{jobName\} |
+| `CRTICAL-EXECUTION-STATUS` | `%{status} =~ /failed/i` | Set critical threshold for last job execution status (Default: %\{status\} =~ /failed/i). You can use the following variables: %\{status\}, %\{jobName\} |
+| `WARNING-JOBS-EXECUTIONS-DETECTED` | `1:` | Warning threshold Jobs executions detected |
+| `FILTER-UID` |  | Filter jobs by UID |
+| `FILTER-NAME` |  | Filter jobs by name |
+| `FILTER-TYPE` |  | Filter jobs by type |
+| `UNKNOWN-EXECUTION-STATUS` |  | Set unknown threshold for last job execution status. You can use the following variables: %\{status\}, %\{jobName\} |
+| `WARNING-JOB-EXECUTION-FAILED-PRCT` |  | Warning threshold Jobs execution failed (%) |
+| `WARNING-JOB-EXECUTION-LAST` |  | Warning threshold Jobs last execution |
+| `WARNING-JOB-RUNNING-DURATION` |  | Warning threshold Jobs running duration |
+| `CRTICAL-JOBS-EXECUTIONS-DETECTED` |  | Critical threshold Jobs executions detected |
+| `CRTICAL-JOB-EXECUTION-FAILED-PRCT` |  | Critical threshold Jobs execution failed (%) |
+| `CRTICAL-JOB-EXECUTION-LAST` |  | Critical threshold Jobs last execution |
+| `CRTICAL-JOB-RUNNING-DURATION` |  | Critical threshold Jobs running duration |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.executions.detected.count` |  | executions detected | `WARNING-JOBS-EXECUTIONS-DETECTED`, `CRTICAL-JOBS-EXECUTIONS-DETECTED` |
+| `job.executions.failed.percentage` | `%` | number of failed executions:  %% | `WARNING-JOB-EXECUTION-FAILED-PRCT`, `CRTICAL-JOB-EXECUTION-FAILED-PRCT` |
+| `job.execution.last` |  | last execution | `WARNING-JOB-EXECUTION-LAST`, `CRTICAL-JOB-EXECUTION-LAST` |
+| `job.running.duration` |  | running duration | `WARNING-JOB-RUNNING-DURATION`, `CRTICAL-JOB-RUNNING-DURATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Repositories {/* #apps-backup-veeam-vbem-restapi-repositories */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Threshold in percentage. |
+| `CRTICAL-SPACE-USAGE-PRCT` | `95` | Threshold in percentage. |
+| `FILTER-NAME` |  | Filter repositories by name (can be a regexp). |
+| `CRTICAL-SPACE-USAGE` |  | Threshold in bytes. |
+| `CRTICAL-SPACE-USAGE-FREE` |  | Threshold in bytes. |
+| `WARNING-SPACE-USAGE` |  | Threshold in bytes. |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold in bytes. |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `repository.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRTICAL-SPACE-USAGE` |
+| `repository.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRTICAL-SPACE-USAGE-FREE` |
+| `repository.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRTICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240311 - 20240424</summary>
+
+- Host template `Veeam-Backup-Enterprise-Manager`
+    - Macro `HTTP-BACKEND`: default changed from `lwp` to `curl`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240411</summary>
+
+- Host template `Veeam-Backup-Enterprise-Manager`
+    - Macro `HTTP-BACKEND` added (default `lwp`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240317</summary>
+
+- Command `apps-backup-veeam-vbem-restapi-jobs`
+    - Option `--filter-name` changed from `--filter-name=$_SERVICEFILTER-NAME$` to `--filter-name='$_SERVICEFILTER-NAME$'`
+    - Macro `API-PASSWORD` added
+    - Macro `API-USERNAME` added
+    - Macro `HTTP-BACKEND` added
+    - Macro `PORT` added
+    - Macro `PROTO` added
+    - Macro `TIMEOUT` added
+    - Macro `-PORT` removed
+    - Macro `-PROTO` removed
+    - Macro `-TIMEOUT` removed
+    - Macro `-HTTP-BACKEND` removed
+- Command `apps-backup-veeam-vbem-restapi-repositories`
+    - Option `--filter-name` changed from `--filter-name=$_SERVICEFILTER-NAME$` to `--filter-name='$_SERVICEFILTER-NAME$'`
+    - Macro `CRTICAL-SPACE-USAGE` added
+    - Macro `CRTICAL-SPACE-USAGE-FREE` added
+    - Macro `CRTICAL-SPACE-USAGE-PRCT` added
+    - Macro `WARNING-SPACE-USAGE` added
+    - Macro `WARNING-SPACE-USAGE-FREE` added
+    - Macro `WARNING-SPACE-USAGE-PRCT` added
+    - Macro `FILTER-UID` removed
+    - Macro `FILTER-TYPE` removed
+    - Macro `TIMEFRAME` removed
+    - Macro `UNIT` removed
+    - Macro `UNKNOWN-EXECUTION-STATUS` removed
+    - Macro `WARNING-EXECUTION-STATUS` removed
+    - Macro `CRTICAL-EXECUTION-STATUS` removed
+    - Macro `WARNING-JOBS-EXECUTIONS-DETECTED` removed
+    - Macro `WARNING-JOB-EXECUTION-FAILED-PRCT` removed
+    - Macro `WARNING-JOB-EXECUTION-LAST` removed
+    - Macro `WARNING-JOB-RUNNING-DURATION` removed
+    - Macro `CRTICAL-JOBS-EXECUTIONS-DETECTED` removed
+    - Macro `CRTICAL-JOB-EXECUTION-FAILED-PRCT` removed
+    - Macro `CRTICAL-JOB-EXECUTION-LAST` removed
+    - Macro `CRTICAL-JOB-RUNNING-DURATION` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231023</summary>
+
+- Plugin pack `Veeam Backup EM (Enterprise Manager)`
+    - Description updated
+
+</details>

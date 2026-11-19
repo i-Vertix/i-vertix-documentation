@@ -1,0 +1,1003 @@
+---
+title: "Active Directory (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/OS/Windows.png";
+
+<PluginPackHeader name="Active Directory (i-Vertix agent)" image={image} category="Application" metadata={["HTTPS", "i-Vertix agent"]} />
+
+## Description
+
+Monitors Active Directory domain controllers through the i-Vertix agent: DCDIAG and Netdom checks, LDAP and directory service performance counters, replication, the status of the core services and security events such as locked out or deleted accounts.
+
+The plugin pack provides these checks:
+
+* [Active Directory - DCDIAG](#ivertix-agent-apps-microsoft-activedirectory-local-dcdiag)
+* [Active Directory - Netdom](#ivertix-agent-apps-microsoft-activedirectory-local-netdom)
+* [Address Book Client Sessions](#ivertix-agent-check_pdh-ntds-ab-client-sessions)
+* [ATQ Threads LDAP](#ivertix-agent-check_pdh-ntds-atq-threads-ldap)
+* [ATQ Threads Total](#ivertix-agent-check_pdh-ntds-atq-threads-total)
+* [Directory Service Notify Queue Size](#ivertix-agent-check_pdh-ntds-ds-notification-queue-size)
+* [Directory Service Reads/sec](#ivertix-agent-check_pdh-ntds-ds-reads-sec)
+* [Directory Service Threads in Use](#ivertix-agent-check_pdh-ntds-ds-threads-in-use)
+* [Directory Service Writes/sec](#ivertix-agent-check_pdh-ntds-ds-writes-sec)
+* [DRA Inbound Full Sync Objects Remaining](#ivertix-agent-check_pdh-ntds-dra-inbound-full-sync-remain)
+* [DRA Inbound Values (DNs only)/sec](#ivertix-agent-check_pdh-ntds-dra-inbound-values-dns-only)
+* [DRA Outbound Values (DNs only)/sec](#ivertix-agent-check_pdh-ntds-dra-outbound-values-dns-only)
+* [DRA Pending Replication Synchronizations](#ivertix-agent-check_pdh-ntds-dra-pending-replication-sync)
+* [LDAP Active Threads](#ivertix-agent-check_pdh-ntds-ldap-active-threads)
+* [LDAP Bind Time](#ivertix-agent-check_pdh-ntds-ldap-bind-time)
+* [LDAP Client Sessions](#ivertix-agent-check_pdh-ntds-ldap-client-sessions)
+* [LDAP Searches/sec](#ivertix-agent-check_pdh-ntds-ldap-searches-sec)
+* [LDAP Successful Binds/sec](#ivertix-agent-check_pdh-ntds-ldap-successful-binds)
+* [LDAP: lsass.exe - Processor Time](#ivertix-agent-check_pdh-lsass-processor-time)
+* [Service Active Directory Domain Services](#ivertix-agent-check_service-ntds)
+* [Service Active Directory Web Services](#ivertix-agent-check_service-adws)
+* [Service DFS Namespace](#ivertix-agent-check_service-dfs)
+* [Service DFS Replication](#ivertix-agent-check_service-dfsr)
+* [Service DNS Server](#ivertix-agent-check_service-dns)
+* [Service Intersite Messaging](#ivertix-agent-check_service-lsmserv)
+* [Service Kerberos Key Distribution Center](#ivertix-agent-check_service-kdc)
+* [Service Netlogon](#ivertix-agent-check_service-netlogon)
+* [Service Remote Procedure Call](#ivertix-agent-check_service-rpcss)
+* [Service Security Accounts Manager](#ivertix-agent-check_service-samss)
+* [Service Windows Time](#ivertix-agent-check_service-w32time)
+* [User account was deleted](#ivertix-agent-check_eventlog-user-deleted)
+* [User account was locked out](#ivertix-agent-check_eventlog-user-lockedout)
+* [User added to privileged group](#ivertix-agent-check_eventlog-user-added-priv-group)
+
+
+## Host Templates
+
+### Active-Directory-2016-Extended-iVertix-agent
+
+*Microsoft Active Directory 2016 Extended* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [User added to privileged group](#ivertix-agent-check_eventlog-user-added-priv-group) | `ivertix-agent-check_eventlog-user-added-priv-group` |
+| [User account was deleted](#ivertix-agent-check_eventlog-user-deleted) | `ivertix-agent-check_eventlog-user-deleted` |
+| [User account was locked out](#ivertix-agent-check_eventlog-user-lockedout) | `ivertix-agent-check_eventlog-user-lockedout` |
+| [LDAP: lsass.exe - Processor Time](#ivertix-agent-check_pdh-lsass-processor-time) | `ivertix-agent-check_pdh-lsass-processor-time` |
+| [Address Book Client Sessions](#ivertix-agent-check_pdh-ntds-ab-client-sessions) | `ivertix-agent-check_pdh-ntds-ab-client-sessions` |
+| [ATQ Threads LDAP](#ivertix-agent-check_pdh-ntds-atq-threads-ldap) | `ivertix-agent-check_pdh-ntds-atq-threads-ldap` |
+| [ATQ Threads Total](#ivertix-agent-check_pdh-ntds-atq-threads-total) | `ivertix-agent-check_pdh-ntds-atq-threads-total` |
+| [DRA Inbound Full Sync Objects Remaining](#ivertix-agent-check_pdh-ntds-dra-inbound-full-sync-remain) | `ivertix-agent-check_pdh-ntds-dra-inbound-full-sync-remain` |
+| [DRA Inbound Values (DNs only)/sec](#ivertix-agent-check_pdh-ntds-dra-inbound-values-dns-only) | `ivertix-agent-check_pdh-ntds-dra-inbound-values-dns-only` |
+| [DRA Outbound Values (DNs only)/sec](#ivertix-agent-check_pdh-ntds-dra-outbound-values-dns-only) | `ivertix-agent-check_pdh-ntds-dra-outbound-values-dns-only` |
+| [DRA Pending Replication Synchronizations](#ivertix-agent-check_pdh-ntds-dra-pending-replication-sync) | `ivertix-agent-check_pdh-ntds-dra-pending-replication-sync` |
+| [Directory Service Notify Queue Size](#ivertix-agent-check_pdh-ntds-ds-notification-queue-size) | `ivertix-agent-check_pdh-ntds-ds-notification-queue-size` |
+| [Directory Service Reads/sec](#ivertix-agent-check_pdh-ntds-ds-reads-sec) | `ivertix-agent-check_pdh-ntds-ds-reads-sec` |
+| [Directory Service Threads in Use](#ivertix-agent-check_pdh-ntds-ds-threads-in-use) | `ivertix-agent-check_pdh-ntds-ds-threads-in-use` |
+| [Directory Service Writes/sec](#ivertix-agent-check_pdh-ntds-ds-writes-sec) | `ivertix-agent-check_pdh-ntds-ds-writes-sec` |
+| [LDAP Active Threads](#ivertix-agent-check_pdh-ntds-ldap-active-threads) | `ivertix-agent-check_pdh-ntds-ldap-active-threads` |
+| [LDAP Bind Time](#ivertix-agent-check_pdh-ntds-ldap-bind-time) | `ivertix-agent-check_pdh-ntds-ldap-bind-time` |
+| [LDAP Client Sessions](#ivertix-agent-check_pdh-ntds-ldap-client-sessions) | `ivertix-agent-check_pdh-ntds-ldap-client-sessions` |
+| [LDAP Searches/sec](#ivertix-agent-check_pdh-ntds-ldap-searches-sec) | `ivertix-agent-check_pdh-ntds-ldap-searches-sec` |
+| [LDAP Successful Binds/sec](#ivertix-agent-check_pdh-ntds-ldap-successful-binds) | `ivertix-agent-check_pdh-ntds-ldap-successful-binds` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Active Directory - DCDIAG](#ivertix-agent-apps-microsoft-activedirectory-local-dcdiag) | `ivertix-agent-apps-microsoft-activedirectory-local-dcdiag` |
+| [Active Directory - Netdom](#ivertix-agent-apps-microsoft-activedirectory-local-netdom) | `ivertix-agent-apps-microsoft-activedirectory-local-netdom` |
+| [Service Active Directory Domain Services](#ivertix-agent-check_service-ntds) | `ivertix-agent-check_service-ntds` |
+| [Service Active Directory Web Services](#ivertix-agent-check_service-adws) | `ivertix-agent-check_service-adws` |
+| [Service DFS Namespace](#ivertix-agent-check_service-dfs) | `ivertix-agent-check_service-dfs` |
+| [Service DFS Replication](#ivertix-agent-check_service-dfsr) | `ivertix-agent-check_service-dfsr` |
+| [Service DNS Server](#ivertix-agent-check_service-dns) | `ivertix-agent-check_service-dns` |
+| [Service Intersite Messaging](#ivertix-agent-check_service-lsmserv) | `ivertix-agent-check_service-lsmserv` |
+| [Service Kerberos Key Distribution Center](#ivertix-agent-check_service-kdc) | `ivertix-agent-check_service-kdc` |
+| [Service Netlogon](#ivertix-agent-check_service-netlogon) | `ivertix-agent-check_service-netlogon` |
+| [Service Remote Procedure Call](#ivertix-agent-check_service-rpcss) | `ivertix-agent-check_service-rpcss` |
+| [Service Security Accounts Manager](#ivertix-agent-check_service-samss) | `ivertix-agent-check_service-samss` |
+| [Service Windows Time](#ivertix-agent-check_service-w32time) | `ivertix-agent-check_service-w32time` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Active-Directory-2016-iVertix-agent
+
+*Microsoft Active Directory 2016* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-TIMEOUT` | `30` | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` | `8443` | Port used (default: 8443). |
+| `NSCLIENT-PROTO` | `https` | Specify http if needed (default: 'https'). |
+| `NSCLIENT-USERNAME` | `admin` | User for agent authentication |
+| `NSCLIENT-PWD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Active Directory - DCDIAG](#ivertix-agent-apps-microsoft-activedirectory-local-dcdiag) | `ivertix-agent-apps-microsoft-activedirectory-local-dcdiag` |
+| [Active Directory - Netdom](#ivertix-agent-apps-microsoft-activedirectory-local-netdom) | `ivertix-agent-apps-microsoft-activedirectory-local-netdom` |
+| [Service Active Directory Web Services](#ivertix-agent-check_service-adws) | `ivertix-agent-check_service-adws` |
+| [Service DFS Namespace](#ivertix-agent-check_service-dfs) | `ivertix-agent-check_service-dfs` |
+| [Service DFS Replication](#ivertix-agent-check_service-dfsr) | `ivertix-agent-check_service-dfsr` |
+| [Service DNS Server](#ivertix-agent-check_service-dns) | `ivertix-agent-check_service-dns` |
+| [Service Kerberos Key Distribution Center](#ivertix-agent-check_service-kdc) | `ivertix-agent-check_service-kdc` |
+| [Service Intersite Messaging](#ivertix-agent-check_service-lsmserv) | `ivertix-agent-check_service-lsmserv` |
+| [Service Netlogon](#ivertix-agent-check_service-netlogon) | `ivertix-agent-check_service-netlogon` |
+| [Service Active Directory Domain Services](#ivertix-agent-check_service-ntds) | `ivertix-agent-check_service-ntds` |
+| [Service Remote Procedure Call](#ivertix-agent-check_service-rpcss) | `ivertix-agent-check_service-rpcss` |
+| [Service Security Accounts Manager](#ivertix-agent-check_service-samss) | `ivertix-agent-check_service-samss` |
+| [Service Windows Time](#ivertix-agent-check_service-w32time) | `ivertix-agent-check_service-w32time` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Address Book Client Sessions](#ivertix-agent-check_pdh-ntds-ab-client-sessions) | `ivertix-agent-check_pdh-ntds-ab-client-sessions` |
+| [ATQ Threads LDAP](#ivertix-agent-check_pdh-ntds-atq-threads-ldap) | `ivertix-agent-check_pdh-ntds-atq-threads-ldap` |
+| [ATQ Threads Total](#ivertix-agent-check_pdh-ntds-atq-threads-total) | `ivertix-agent-check_pdh-ntds-atq-threads-total` |
+| [Directory Service Notify Queue Size](#ivertix-agent-check_pdh-ntds-ds-notification-queue-size) | `ivertix-agent-check_pdh-ntds-ds-notification-queue-size` |
+| [Directory Service Reads/sec](#ivertix-agent-check_pdh-ntds-ds-reads-sec) | `ivertix-agent-check_pdh-ntds-ds-reads-sec` |
+| [Directory Service Threads in Use](#ivertix-agent-check_pdh-ntds-ds-threads-in-use) | `ivertix-agent-check_pdh-ntds-ds-threads-in-use` |
+| [Directory Service Writes/sec](#ivertix-agent-check_pdh-ntds-ds-writes-sec) | `ivertix-agent-check_pdh-ntds-ds-writes-sec` |
+| [DRA Inbound Full Sync Objects Remaining](#ivertix-agent-check_pdh-ntds-dra-inbound-full-sync-remain) | `ivertix-agent-check_pdh-ntds-dra-inbound-full-sync-remain` |
+| [DRA Inbound Values (DNs only)/sec](#ivertix-agent-check_pdh-ntds-dra-inbound-values-dns-only) | `ivertix-agent-check_pdh-ntds-dra-inbound-values-dns-only` |
+| [DRA Outbound Values (DNs only)/sec](#ivertix-agent-check_pdh-ntds-dra-outbound-values-dns-only) | `ivertix-agent-check_pdh-ntds-dra-outbound-values-dns-only` |
+| [DRA Pending Replication Synchronizations](#ivertix-agent-check_pdh-ntds-dra-pending-replication-sync) | `ivertix-agent-check_pdh-ntds-dra-pending-replication-sync` |
+| [LDAP Active Threads](#ivertix-agent-check_pdh-ntds-ldap-active-threads) | `ivertix-agent-check_pdh-ntds-ldap-active-threads` |
+| [LDAP Bind Time](#ivertix-agent-check_pdh-ntds-ldap-bind-time) | `ivertix-agent-check_pdh-ntds-ldap-bind-time` |
+| [LDAP Client Sessions](#ivertix-agent-check_pdh-ntds-ldap-client-sessions) | `ivertix-agent-check_pdh-ntds-ldap-client-sessions` |
+| [LDAP Searches/sec](#ivertix-agent-check_pdh-ntds-ldap-searches-sec) | `ivertix-agent-check_pdh-ntds-ldap-searches-sec` |
+| [LDAP Successful Binds/sec](#ivertix-agent-check_pdh-ntds-ldap-successful-binds) | `ivertix-agent-check_pdh-ntds-ldap-successful-binds` |
+| [LDAP: lsass.exe - Processor Time](#ivertix-agent-check_pdh-lsass-processor-time) | `ivertix-agent-check_pdh-lsass-processor-time` |
+| [User account was deleted](#ivertix-agent-check_eventlog-user-deleted) | `ivertix-agent-check_eventlog-user-deleted` |
+| [User account was locked out](#ivertix-agent-check_eventlog-user-lockedout) | `ivertix-agent-check_eventlog-user-lockedout` |
+| [User added to privileged group](#ivertix-agent-check_eventlog-user-added-priv-group) | `ivertix-agent-check_eventlog-user-added-priv-group` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### User added to privileged group {/* #ivertix-agent-check_eventlog-user-added-priv-group */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` | `id = 4728 or id = 4732 or id = 4756` | Event log query: id = 4728 and provider = 'Citrix' |
+| `SCAN_RANGE` |  |  |
+| `EVENTLOG` |  |  |
+| `WARNING` |  | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` |  | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` |  |  |
+| `TOP_SYNTAX` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### User account was deleted {/* #ivertix-agent-check_eventlog-user-deleted */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` | `level <= 4 and (id = 4726)` | Event log query: id = 4728 and provider = 'Citrix' |
+| `SCAN_RANGE` |  |  |
+| `EVENTLOG` |  |  |
+| `WARNING` |  | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` |  | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` |  |  |
+| `TOP_SYNTAX` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### User account was locked out {/* #ivertix-agent-check_eventlog-user-lockedout */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` | `level <= 4 and (id = 4740)` | Event log query: id = 4728 and provider = 'Citrix' |
+| `SCAN_RANGE` |  |  |
+| `EVENTLOG` |  |  |
+| `WARNING` |  | Set arguments (multiple option. Example: --arg='arg1'). |
+| `CRITICAL` |  | Set arguments (multiple option. Example: --arg='arg1'). |
+| `TRUNCATE_MESSAGE` |  |  |
+| `TOP_SYNTAX` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP: lsass.exe - Processor Time {/* #ivertix-agent-check_pdh-lsass-processor-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\Process(lsass)\\% Processor Time` |  |
+| `PERF_SYNTAX` | `lsass Processor time` |  |
+| `WARNING` | `warning=value > 60` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 80` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Address Book Client Sessions {/* #ivertix-agent-check_pdh-ntds-ab-client-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\AB Client Sessions` |  |
+| `PERF_SYNTAX` | `AB Client Sessions` |  |
+| `WARNING` | `warning=value > 500` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 2000` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ATQ Threads LDAP {/* #ivertix-agent-check_pdh-ntds-atq-threads-ldap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\ATQ Threads LDAP` |  |
+| `PERF_SYNTAX` | `ATQ Threads LDAP` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### ATQ Threads Total {/* #ivertix-agent-check_pdh-ntds-atq-threads-total */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\ATQ Threads Total` |  |
+| `PERF_SYNTAX` | `ATQ Threads Total` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DRA Inbound Full Sync Objects Remaining {/* #ivertix-agent-check_pdh-ntds-dra-inbound-full-sync-remain */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DRA Inbound Full Sync Objects Remaining` |  |
+| `PERF_SYNTAX` | `DRA Inbound Full Sync Objects Remaining` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DRA Inbound Values (DNs only)/sec {/* #ivertix-agent-check_pdh-ntds-dra-inbound-values-dns-only */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DRA Inbound Values (DNs only)/sec` |  |
+| `PERF_SYNTAX` | `DRA Inbound Values (DNs only)/sec` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DRA Outbound Values (DNs only)/sec {/* #ivertix-agent-check_pdh-ntds-dra-outbound-values-dns-only */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DRA Outbound Values (DNs only)/sec` |  |
+| `PERF_SYNTAX` | `DRA Outbound Values (DNs only)/sec` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DRA Pending Replication Synchronizations {/* #ivertix-agent-check_pdh-ntds-dra-pending-replication-sync */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DRA Pending Replication Synchronizations` |  |
+| `PERF_SYNTAX` | `DRA Pending Replication Synchronizations` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Directory Service Notify Queue Size {/* #ivertix-agent-check_pdh-ntds-ds-notification-queue-size */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DS Notify Queue Size` |  |
+| `PERF_SYNTAX` | `DS Notify Queue Size` |  |
+| `WARNING` | `warning=value > 5` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 50` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Directory Service Reads/sec {/* #ivertix-agent-check_pdh-ntds-ds-reads-sec */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DS Directory Reads/sec` |  |
+| `PERF_SYNTAX` | `DS Directory Reads/sec` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 250` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Directory Service Threads in Use {/* #ivertix-agent-check_pdh-ntds-ds-threads-in-use */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DS Threads in Use` |  |
+| `PERF_SYNTAX` | `DS Threads in Use` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Directory Service Writes/sec {/* #ivertix-agent-check_pdh-ntds-ds-writes-sec */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\DS Directory Writes/sec` |  |
+| `PERF_SYNTAX` | `DS Directory Writes/sec` |  |
+| `WARNING` | `warning=value > 50` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 250` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP Active Threads {/* #ivertix-agent-check_pdh-ntds-ldap-active-threads */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\LDAP Active Threads` |  |
+| `PERF_SYNTAX` | `LDAP Active Threads` |  |
+| `WARNING` | `warning=value > 25` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 100` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP Bind Time {/* #ivertix-agent-check_pdh-ntds-ldap-bind-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\LDAP Bind Time` |  |
+| `PERF_SYNTAX` | `LDAP Bind Time` |  |
+| `WARNING` | `warning=value > 15` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 30` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP Client Sessions {/* #ivertix-agent-check_pdh-ntds-ldap-client-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\LDAP Client Sessions` |  |
+| `PERF_SYNTAX` | `LDAP Client Sessions` |  |
+| `WARNING` | `warning=value > 500` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 2000` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP Searches/sec {/* #ivertix-agent-check_pdh-ntds-ldap-searches-sec */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\LDAP Searches/sec` |  |
+| `PERF_SYNTAX` | `LDAP Searches/sec` |  |
+| `WARNING` | `warning=value > 500` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 2000` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDAP Successful Binds/sec {/* #ivertix-agent-check_pdh-ntds-ldap-successful-binds */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COUNTER_NAME` | `\\NTDS\\LDAP Successful Binds/sec` |  |
+| `PERF_SYNTAX` | `LDAP Successful Binds/sec` |  |
+| `WARNING` | `warning=value > 100` | warning=value > 0 |
+| `CRITICAL` | `critical=value > 500` | critical=value > 5 |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Active Directory - DCDIAG {/* #ivertix-agent-apps-microsoft-activedirectory-local-dcdiag */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CONFIG` | `scripts\\ivertix\\conf\\dcdiag.xml` | command can be localized by using a configuration file. This parameter can be used to specify an alternative location for the configuration file |
+| `LANGUAGE` | `en` | Set the language used in config file (default: 'en') |
+| `OPTIONS` | `--dfsr --noeventlog` | --dfsr  Specifies that SysVol replication uses DFS instead of FRS (Windows 2008 or later); -noeventlog Don't run the dc tests kccevent, frsevent and dfsrevent; --nomachineaccount Don't run the dc tests machineaccount |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Active Directory - Netdom {/* #ivertix-agent-apps-microsoft-activedirectory-local-netdom */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WORKSTATION` |  | Set the name of the workstation (Default: current hostname) |
+| `DOMAIN` |  | Set the name of the domain (Default: current domain of the workstation) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Active Directory Web Services {/* #ivertix-agent-check_service-adws */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `ADWS` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service DFS Namespace {/* #ivertix-agent-check_service-dfs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Dfs` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service DFS Replication {/* #ivertix-agent-check_service-dfsr */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `DFSR` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service DNS Server {/* #ivertix-agent-check_service-dns */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `DNS` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Kerberos Key Distribution Center {/* #ivertix-agent-check_service-kdc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Kdc` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Intersite Messaging {/* #ivertix-agent-check_service-lsmserv */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `IsmServ` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Netlogon {/* #ivertix-agent-check_service-netlogon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `Netlogon` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Active Directory Domain Services {/* #ivertix-agent-check_service-ntds */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `NTDS` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Remote Procedure Call {/* #ivertix-agent-check_service-rpcss */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `RpcSs` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Security Accounts Manager {/* #ivertix-agent-check_service-samss */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `SamSs` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Windows Time {/* #ivertix-agent-check_service-w32time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SERVICENAME` | `W32Time` |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `Active-Directory-2016-Extended-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Host template `Active-Directory-2016-iVertix-agent`
+    - Macro `NSCLIENT-USERNAME` added (default `admin`)
+- Command `ivertix-agent-apps-microsoft-activedirectory-local-dcdiag`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-activedirectory-local-netdom`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_eventlog`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_pdh`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-check_service`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201-hotfix-20250305 - 20250321</summary>
+
+- Plugin pack `Active Directory (i-Vertix agent)`
+    - Renamed from `Active Directory 2016 (i-Vertix agent)`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240317</summary>
+
+- Service template [`ivertix-agent-check_pdh-lsass-processor-time`](#ivertix-agent-check_pdh-lsass-processor-time)
+    - Alias changed from `LDAP: lsass.exe - % Processor Time` to `LDAP: lsass.exe - Processor Time`
+
+</details>

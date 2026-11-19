@@ -1,0 +1,1000 @@
+---
+title: "PaloAlto Firewall"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/PaloAlto.png";
+
+<PluginPackHeader name="PaloAlto Firewall" image={image} category="Network" metadata={["SNMP", "SSH"]} />
+
+## Description
+
+Monitors Palo Alto firewalls through SNMP and SSH: CPU, memory and sessions, hardware and environment, interfaces, HA and cluster status, IPsec and GlobalProtect tunnels, licenses and signature updates.
+
+The plugin pack provides these checks:
+
+* [Cluster status](#network-paloalto-snmp-cluster-status)
+* [CPU](#network-paloalto-snmp-cpu)
+* [Environment](#network-paloalto-ssh-environment)
+* [Global Protect tunnel usage](#network-paloalto-snmp-gp-usage)
+* [HA status](#network-paloalto-ssh-ha)
+* [Hardware status](#network-paloalto-snmp-hardware)
+* [Interfaces](#network-paloalto-snmp-interfaces) (`network-paloalto-snmp-interfaces`)
+* [Interfaces](#network-paloalto-ssh-interfaces) (`network-paloalto-ssh-interfaces`)
+* [IPSEC tunnels](#network-paloalto-ssh-ipsec)
+* [Memory](#network-paloalto-snmp-memory)
+* [Panorama connection status](#network-paloalto-snmp-panorama)
+* [Sensors](#network-paloalto-snmp-sensors)
+* [Sessions](#network-paloalto-snmp-sessions)
+* [Signatures update](#network-paloalto-snmp-signatures)
+* [System licenses](#network-paloalto-ssh-licenses)
+* [System status](#network-paloalto-ssh-system)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-paloalto-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### PaloAlto-Firewall-Cluster-SNMP
+
+*Palo Alto Firewall Cluster SNMP* · Parent template: `PaloAlto-Firewall-SNMP`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | --add-vsys: Monitor virtual systems |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-paloalto-snmp-cluster-status) | `network-paloalto-snmp-cluster-status` |
+| [CPU](#network-paloalto-snmp-cpu) (inherited from `PaloAlto-Firewall-SNMP`) | `network-paloalto-snmp-cpu` |
+| [Global Protect tunnel usage](#network-paloalto-snmp-gp-usage) (inherited from `PaloAlto-Firewall-SNMP`) | `network-paloalto-snmp-gp-usage` |
+| [Hardware status](#network-paloalto-snmp-hardware) (inherited from `PaloAlto-Firewall-SNMP`) | `network-paloalto-snmp-hardware` |
+| [Memory](#network-paloalto-snmp-memory) (inherited from `PaloAlto-Firewall-SNMP`) | `network-paloalto-snmp-memory` |
+| [Sensors](#network-paloalto-snmp-sensors) (inherited from `PaloAlto-Firewall-SNMP`) | `network-paloalto-snmp-sensors` |
+| [Sessions](#network-paloalto-snmp-sessions) (inherited from `PaloAlto-Firewall-SNMP`) | `network-paloalto-snmp-sessions` |
+| [Signatures update](#network-paloalto-snmp-signatures) (inherited from `PaloAlto-Firewall-SNMP`) | `network-paloalto-snmp-signatures` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `PaloAlto-Firewall-SNMP`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Environment](#network-paloalto-ssh-environment) | `network-paloalto-ssh-environment` |
+| [HA status](#network-paloalto-ssh-ha) | `network-paloalto-ssh-ha` |
+| [Interfaces](#network-paloalto-snmp-interfaces) | `network-paloalto-snmp-interfaces` |
+| [Interfaces](#network-paloalto-ssh-interfaces) | `network-paloalto-ssh-interfaces` |
+| [IPSEC tunnels](#network-paloalto-ssh-ipsec) | `network-paloalto-ssh-ipsec` |
+| [Panorama connection status](#network-paloalto-snmp-panorama) | `network-paloalto-snmp-panorama` |
+| [System licenses](#network-paloalto-ssh-licenses) | `network-paloalto-ssh-licenses` |
+| [System status](#network-paloalto-ssh-system) | `network-paloalto-ssh-system` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### PaloAlto-Firewall-Cluster-SSH
+
+*Palo Alto Firewall Cluster SSH* · Parent template: `PaloAlto-Firewall-SSH`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` |  | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSH-PASSWORD` |  | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSHCLI-OPTION` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+| `SSH-TIMEOUT` |  | Timeout in seconds for the command (default: 45). |
+| `SSHCLI-OPTION2` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-paloalto-ssh-ha) | `network-paloalto-ssh-ha` |
+| [Environment](#network-paloalto-ssh-environment) (inherited from `PaloAlto-Firewall-SSH`) | `network-paloalto-ssh-environment` |
+| [IPSEC tunnels](#network-paloalto-ssh-ipsec) (inherited from `PaloAlto-Firewall-SSH`) | `network-paloalto-ssh-ipsec` |
+| [System licenses](#network-paloalto-ssh-licenses) (inherited from `PaloAlto-Firewall-SSH`) | `network-paloalto-ssh-licenses` |
+| [System status](#network-paloalto-ssh-system) (inherited from `PaloAlto-Firewall-SSH`) | `network-paloalto-ssh-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-paloalto-snmp-cluster-status) | `network-paloalto-snmp-cluster-status` |
+| [CPU](#network-paloalto-snmp-cpu) | `network-paloalto-snmp-cpu` |
+| [Global Protect tunnel usage](#network-paloalto-snmp-gp-usage) | `network-paloalto-snmp-gp-usage` |
+| [Hardware status](#network-paloalto-snmp-hardware) | `network-paloalto-snmp-hardware` |
+| [Interfaces](#network-paloalto-snmp-interfaces) | `network-paloalto-snmp-interfaces` |
+| [Interfaces](#network-paloalto-ssh-interfaces) | `network-paloalto-ssh-interfaces` |
+| [Memory](#network-paloalto-snmp-memory) | `network-paloalto-snmp-memory` |
+| [Panorama connection status](#network-paloalto-snmp-panorama) | `network-paloalto-snmp-panorama` |
+| [Sensors](#network-paloalto-snmp-sensors) | `network-paloalto-snmp-sensors` |
+| [Sessions](#network-paloalto-snmp-sessions) | `network-paloalto-snmp-sessions` |
+| [Signatures update](#network-paloalto-snmp-signatures) | `network-paloalto-snmp-signatures` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### PaloAlto-Firewall-SNMP
+
+*Palo Alto Firewall SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | --add-vsys: Monitor virtual systems |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-paloalto-snmp-cpu) | `network-paloalto-snmp-cpu` |
+| [Global Protect tunnel usage](#network-paloalto-snmp-gp-usage) | `network-paloalto-snmp-gp-usage` |
+| [Hardware status](#network-paloalto-snmp-hardware) | `network-paloalto-snmp-hardware` |
+| [Memory](#network-paloalto-snmp-memory) | `network-paloalto-snmp-memory` |
+| [Sensors](#network-paloalto-snmp-sensors) | `network-paloalto-snmp-sensors` |
+| [Sessions](#network-paloalto-snmp-sessions) | `network-paloalto-snmp-sessions` |
+| [Signatures update](#network-paloalto-snmp-signatures) | `network-paloalto-snmp-signatures` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-paloalto-snmp-cluster-status) | `network-paloalto-snmp-cluster-status` |
+| [Environment](#network-paloalto-ssh-environment) | `network-paloalto-ssh-environment` |
+| [HA status](#network-paloalto-ssh-ha) | `network-paloalto-ssh-ha` |
+| [Interfaces](#network-paloalto-snmp-interfaces) | `network-paloalto-snmp-interfaces` |
+| [Interfaces](#network-paloalto-ssh-interfaces) | `network-paloalto-ssh-interfaces` |
+| [IPSEC tunnels](#network-paloalto-ssh-ipsec) | `network-paloalto-ssh-ipsec` |
+| [Panorama connection status](#network-paloalto-snmp-panorama) | `network-paloalto-snmp-panorama` |
+| [System licenses](#network-paloalto-ssh-licenses) | `network-paloalto-ssh-licenses` |
+| [System status](#network-paloalto-ssh-system) | `network-paloalto-ssh-system` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### PaloAlto-Firewall-SSH
+
+*Palo Alto Firewall SSH* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `libssh` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-TIMEOUT` | `45` | Timeout in seconds for the command (default: 45). |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSH-PASSWORD` |  | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSHCLI-OPTION` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+| `SSHCLI-OPTION2` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Environment](#network-paloalto-ssh-environment) | `network-paloalto-ssh-environment` |
+| [IPSEC tunnels](#network-paloalto-ssh-ipsec) | `network-paloalto-ssh-ipsec` |
+| [System licenses](#network-paloalto-ssh-licenses) | `network-paloalto-ssh-licenses` |
+| [System status](#network-paloalto-ssh-system) | `network-paloalto-ssh-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-paloalto-snmp-cluster-status) | `network-paloalto-snmp-cluster-status` |
+| [CPU](#network-paloalto-snmp-cpu) | `network-paloalto-snmp-cpu` |
+| [Global Protect tunnel usage](#network-paloalto-snmp-gp-usage) | `network-paloalto-snmp-gp-usage` |
+| [HA status](#network-paloalto-ssh-ha) | `network-paloalto-ssh-ha` |
+| [Hardware status](#network-paloalto-snmp-hardware) | `network-paloalto-snmp-hardware` |
+| [Interfaces](#network-paloalto-snmp-interfaces) | `network-paloalto-snmp-interfaces` |
+| [Interfaces](#network-paloalto-ssh-interfaces) | `network-paloalto-ssh-interfaces` |
+| [Memory](#network-paloalto-snmp-memory) | `network-paloalto-snmp-memory` |
+| [Panorama connection status](#network-paloalto-snmp-panorama) | `network-paloalto-snmp-panorama` |
+| [Sensors](#network-paloalto-snmp-sensors) | `network-paloalto-snmp-sensors` |
+| [Sessions](#network-paloalto-snmp-sessions) | `network-paloalto-snmp-sessions` |
+| [Signatures update](#network-paloalto-snmp-signatures) | `network-paloalto-snmp-signatures` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster status {/* #network-paloalto-snmp-cluster-status */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-paloalto-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DATAPLANE` | `80` | Warning threshold average data plane CPU utilization |
+| `WARNING-MANAGEMENTPLANE` | `80` | Warning threshold average management plane CPU utilization |
+| `CRITICAL-DATAPLANE` | `90` | Critical threshold average data plane CPU utilization |
+| `CRITICAL-MANAGEMENTPLANE` | `90` | Critical threshold average management plane CPU utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.managementplane.utilization.percentage` | `%` | management plane usage is:  %% | `WARNING-MANAGEMENTPLANE`, `CRITICAL-MANAGEMENTPLANE` |
+| `cpu.dataplane.utilization.percentage` | `%` | dataplane usage is:  %% | `WARNING-DATAPLANE`, `CRITICAL-DATAPLANE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Global Protect tunnel usage {/* #network-paloalto-snmp-gp-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TUNNEL-USAGE-PRCT` | `85` | Warning threshold Global Protect Tunnel usage % |
+| `CRITICAL-TUNNEL-USAGE-PRCT` | `90` | Critical threshold Global Protect Tunnel usage % |
+| `WARNING-TUNNEL-USAGE` |  | Warning threshold Global Protect Tunnel usage |
+| `WARNING-TUNNEL-USAGE-FREE` |  | Warning threshold Global Protect Tunnel usage free |
+| `CRITICAL-TUNNEL-USAGE` |  | Critical threshold Global Protect Tunnel usage |
+| `CRITICAL-TUNNEL-USAGE-FREE` |  | Critical threshold Global Protect Tunnel usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `globalprotect.tunnels.usage.count` |  |  | `WARNING-TUNNEL-USAGE`, `CRITICAL-TUNNEL-USAGE` |
+| `globalprotect.tunnels.free.count` |  |  | `WARNING-TUNNEL-USAGE-FREE`, `CRITICAL-TUNNEL-USAGE-FREE` |
+| `globalprotect.tunnels.usage.percentage` | `%` |  | `WARNING-TUNNEL-USAGE-PRCT`, `CRITICAL-TUNNEL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-paloalto-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'device' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=device,network.* |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='device.network,OK,down' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-paloalto-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `85` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `STORAGE` | `.*` | Storage name - can be a regexp |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sensors {/* #network-paloalto-snmp-sensors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NO-COMPONENT` | `critical` | Define the expected status if no components are found (default: critical) |
+| `COMPONENT` |  | Which component to check (default: '.*'). Can be: 'sensor' |
+| `FILTER` |  | Exclude some parts (comma separated list) You can also exclude             items from specific instances: --filter=sensor,celsius.* |
+| `WARNING` |  | Set warning threshold (syntax: type,regexp,threshold) Example: --warning='sensor.celsius,.*,30' |
+| `CRITICAL` |  | Set critical threshold (syntax: type,regexp,threshold) Example: --critical='sensor.celsius,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='sensor.celsius,OK,nonoperational' |
+| `SENSOR-SCALE` |  | Apply scaling value (some equipments are buggy. So we don't use scale by default) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sessions {/* #network-paloalto-snmp-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ACTIVE-PRCT` | `85` | Warning threshold active sessions in % |
+| `WARNING-VSYS-ACTIVE-PRCT` | `85` | Warning threshold active VSYS sessions in % |
+| `CRITICAL-ACTIVE-PRCT` | `90` | Critical threshold active sessions in % |
+| `CRITICAL-VSYS-ACTIVE-PRCT` | `90` | Critical threshold active VSYS sessions in % |
+| `FILTER-VSYS-NAME` | `.*` | Filter virtual systems by name (can be a regexp) |
+| `WARNING-ACTIVE` |  | Warning threshold active sessions |
+| `WARNING-ACTIVE-TCP` |  | Warning threshold active TCP sessions |
+| `WARNING-ACTIVE-UDP` |  | Warning threshold active UDP sessions |
+| `WARNING-ACTIVE-ICMP` |  | Warning threshold active ICMP sessions |
+| `WARNING-VSYS-ACTIVE` |  | Warning threshold active VSYS sessions |
+| `WARNING-VSYS-ACTIVE-TCP` |  | Warning threshold active VSYS TCP sessions |
+| `WARNING-VSYS-ACTIVE-UDP` |  | Warning threshold active VSYS UDP sessions |
+| `WARNING-VSYS-ACTIVE-OTHER` |  | Warning threshold active VSYS other sessions |
+| `CRITICAL-ACTIVE` |  | Critical threshold active sessions |
+| `CRITICAL-ACTIVE-TCP` |  | Critical threshold active TCP sessions |
+| `CRITICAL-ACTIVE-UDP` |  | Critical threshold active UDP sessions |
+| `CRITICAL-ACTIVE-ICMP` |  | Critical threshold active ICMP sessions |
+| `CRITICAL-VSYS-ACTIVE` |  | Critical threshold active VSYS sessions |
+| `CRITICAL-VSYS-ACTIVE-TCP` |  | Critical threshold active VSYS TCP sessions |
+| `CRITICAL-VSYS-ACTIVE-UDP` |  | Critical threshold active VSYS UDP sessions |
+| `CRITICAL-VSYS-ACTIVE-OTHER` |  | Critical threshold active VSYS other sessions |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sessions.active.count` |  |  | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `sessions.active.percentage` | `%` | active:  %% | `WARNING-ACTIVE-PRCT`, `CRITICAL-ACTIVE-PRCT` |
+| `sessions.active.tcp.count` |  | active TCP | `WARNING-ACTIVE-TCP`, `CRITICAL-ACTIVE-TCP` |
+| `sessions.active.udp.count` |  | active UDP | `WARNING-ACTIVE-UDP`, `CRITICAL-ACTIVE-UDP` |
+| `sessions.active.icmp.count` |  | active ICMP | `WARNING-ACTIVE-ICMP`, `CRITICAL-ACTIVE-ICMP` |
+| `vsys.sessions.active.count` |  |  | `WARNING-VSYS-ACTIVE`, `CRITICAL-VSYS-ACTIVE` |
+| `vsys.sessions.active.percentage` | `%` | active:  %% | `WARNING-VSYS-ACTIVE-PRCT`, `CRITICAL-VSYS-ACTIVE-PRCT` |
+| `vsys.sessions.active.tcp.count` |  | active TCP | `WARNING-VSYS-ACTIVE-TCP`, `CRITICAL-VSYS-ACTIVE-TCP` |
+| `vsys.sessions.active.udp.count` |  | active UDP | `WARNING-VSYS-ACTIVE-UDP`, `CRITICAL-VSYS-ACTIVE-UDP` |
+| `vsys.sessions.active.other.count` |  | other | `WARNING-VSYS-ACTIVE-OTHER`, `CRITICAL-VSYS-ACTIVE-OTHER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Signatures update {/* #network-paloalto-snmp-signatures */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AV-UPDATE` | `604800` | Warning threshold AV update (s) |
+| `WARNING-THREAD-UPDATE` | `604800` | Warning threshold Thread update (s) |
+| `WARNING-WILDFIRE-UPDATE` | `604800` | Warning threshold Wildfire update (s) |
+| `CRITICAL-AV-UPDATE` | `1296000` | Critical threshold AV update (s) |
+| `CRITICAL-THREAD-UPDATE` | `1296000` | Critical threshold Thread update (s) |
+| `CRITICAL-WILDFIRE-UPDATE` | `1296000` | Critical threshold Wildfire update (s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `signature.antivirus.lastupdate.time.seconds` | `s` |  | `WARNING-AV-UPDATE`, `CRITICAL-AV-UPDATE` |
+| `signature.threat.lastupdate.time.seconds` | `s` |  | `WARNING-THREAD-UPDATE`, `CRITICAL-THREAD-UPDATE` |
+| `signature.wildfire.lastupdate.time.seconds` | `s` |  | `WARNING-WILDFIRE-UPDATE`, `CRITICAL-WILDFIRE-UPDATE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA status {/* #network-paloalto-ssh-ha */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #network-paloalto-ssh-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'psu', 'temperature', 'voltage' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example:--filter=temperature) Can also exclude specific instance: --filter='temperature,Temperature @ U48' |
+| `WARNING` |  | Set warning threshold for 'temperature', 'voltage' (syntax\:type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'voltage' (syntax type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax\:section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperture,OK,true' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IPSEC tunnels {/* #network-paloalto-ssh-ipsec */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter tunnels by name (can be a regexp) |
+| `WARNING-IPSEC-TOTAL` |  | Threshold warning total IPSEC |
+| `CRITICAL-IPSEC-TOTAL` |  | Threshold critical total IPSEC |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tunnels.ipsec.total.count` |  | total ipsec tunnels | `WARNING-IPSEC-TOTAL`, `CRITICAL-IPSEC-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System licenses {/* #network-paloalto-ssh-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{expiry_date} ne "never" and %{expiry_days} < 30'` | Set warning threshold for status. Can use special variables like: %\{expired\}, %\{expiry_days\}, %\{feature\} |
+| `CRITICAL-STATUS` | `'%{expired} eq "yes"'` | Set critical threshold for status. (Default: '%\{expired\} eq "yes"'). Can use special variables like: %\{expired\}, %\{expiry_days\}, %\{feature\} |
+| `FILTER-FEATURE` |  | Filter license by feature (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System status {/* #network-paloalto-ssh-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AV-UPDATE` | `604800` | Warning threshold AV update (s) |
+| `WARNING-THREAT-UPDATE` | `604800` | Warning threshold Threat update (s) |
+| `CRITICAL-AV-UPDATE` | `2419200` | Critical threshold AV update (s) |
+| `CRITICAL-THREAT-UPDATE` | `2419200` | Critical threshold Threat update (s) |
+| `WARNING-SESSIONS-TRAFFIC` |  | Warning threshold sessions traffic (b/s) |
+| `WARNING-SESSIONS-TOTAL-ACTIVE` |  | Warning threshold sessions total active |
+| `CRITICAL-SESSIONS-TRAFFIC` |  | Critical threshold sessions traffic (b/s) |
+| `CRITICAL-SESSIONS-TOTAL-ACTIVE` |  | Critical threshold sessions total active |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.antivirus.lastupdate.time.seconds` | `s` |  | `WARNING-AV-UPDATE`, `CRITICAL-AV-UPDATE` |
+| `system.threat.lastupdate.time.seconds` | `s` |  | `WARNING-THREAT-UPDATE`, `CRITICAL-THREAT-UPDATE` |
+| `system.sessions.traffic.count` | `b/s` | session traffic:  /s | `WARNING-SESSIONS-TRAFFIC`, `CRITICAL-SESSIONS-TRAFFIC` |
+| `system.sessions.total.active.count` |  | total active sessions | `WARNING-SESSIONS-TOTAL-ACTIVE`, `CRITICAL-SESSIONS-TOTAL-ACTIVE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-paloalto-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `MAP-SPEED-DSL` |  | Get interface speed configuration for interface type 'adsl' and 'vdsl2'. Syntax: --map-speed-dsl=interface-src-name,interface-dsl-name. E.g: --map-speed-dsl=Et0.835,Et0-vdsl2 |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Panorama connection status {/* #network-paloalto-snmp-panorama */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-paloalto-ssh-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter interface name (can be a regexp) |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `CRITICAL-TOTAL` |  | Threshold critical total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interfaces.total.count` |  | total interfaces | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Plugin pack `PaloAlto Firewall`
+    - Renamed from `Palo Alto Firewall`
+- Service template [`network-paloalto-snmp-cluster-status`](#network-paloalto-snmp-cluster-status)
+    - Renamed from `network-paloalto-cluster-status`
+    - Check command changed from `network-paloalto-cluster-status` to `network-paloalto-snmp-cluster-status`
+- Service template [`network-paloalto-snmp-cpu`](#network-paloalto-snmp-cpu)
+    - Renamed from `network-paloalto-cpu`
+    - Check command changed from `network-paloalto-cpu` to `network-paloalto-snmp-cpu`
+- Service template [`network-paloalto-snmp-gp-usage`](#network-paloalto-snmp-gp-usage)
+    - Renamed from `network-paloalto-gp-usage`
+    - Alias changed from `Global Protect Tunnel usage` to `Global Protect tunnel usage`
+    - Check command changed from `network-paloalto-gp-usage` to `network-paloalto-snmp-gp-usage`
+- Service template [`network-paloalto-snmp-hardware`](#network-paloalto-snmp-hardware)
+    - Renamed from `network-paloalto-hardware`
+    - Check command changed from `network-paloalto-hardware` to `network-paloalto-snmp-hardware`
+- Service template [`network-paloalto-snmp-interfaces`](#network-paloalto-snmp-interfaces)
+    - Renamed from `network-paloalto-interfaces`
+    - Check command changed from `network-paloalto-interfaces` to `network-paloalto-snmp-interfaces`
+- Service template [`network-paloalto-snmp-memory`](#network-paloalto-snmp-memory)
+    - Renamed from `network-paloalto-memory`
+    - Check command changed from `network-paloalto-memory` to `network-paloalto-snmp-memory`
+- Service template [`network-paloalto-snmp-panorama`](#network-paloalto-snmp-panorama)
+    - Renamed from `network-paloalto-panorama`
+    - Check command changed from `network-paloalto-panorama` to `network-paloalto-snmp-panorama`
+- Service template [`network-paloalto-snmp-sensors`](#network-paloalto-snmp-sensors)
+    - Renamed from `network-paloalto-sensors`
+    - Check command changed from `network-paloalto-sensors` to `network-paloalto-snmp-sensors`
+- Service template [`network-paloalto-snmp-sessions`](#network-paloalto-snmp-sessions)
+    - Renamed from `network-paloalto-sessions`
+    - Check command changed from `network-paloalto-sessions` to `network-paloalto-snmp-sessions`
+- Service template [`network-paloalto-snmp-signatures`](#network-paloalto-snmp-signatures)
+    - Renamed from `network-paloalto-signatures`
+    - Check command changed from `network-paloalto-signatures` to `network-paloalto-snmp-signatures`
+- Command `network-paloalto-snmp-cluster-status`
+    - Renamed from `network-paloalto-cluster-status`
+- Command `network-paloalto-snmp-cpu`
+    - Renamed from `network-paloalto-cpu`
+- Command `network-paloalto-snmp-gp-usage`
+    - Renamed from `network-paloalto-gp-usage`
+- Command `network-paloalto-snmp-hardware`
+    - Renamed from `network-paloalto-hardware`
+- Command `network-paloalto-snmp-interfaces`
+    - Renamed from `network-paloalto-interfaces`
+- Command `network-paloalto-snmp-memory`
+    - Renamed from `network-paloalto-memory`
+- Command `network-paloalto-snmp-panorama`
+    - Renamed from `network-paloalto-panorama`
+    - Macro `SNMPAUTH-PASSPHRASE` added
+    - Macro `SNMPAUTH-PROTOCOL` added
+    - Macro `SNMPPRIV-PASSPHRASE` added
+    - Macro `SNMPPRIV-PROTOCOL` added
+    - Macro `SNMPTIMEOUT` added
+    - Macro `SNMPUSERNAME` added
+- Command `network-paloalto-snmp-sensors`
+    - Renamed from `network-paloalto-sensors`
+- Command `network-paloalto-snmp-sessions`
+    - Renamed from `network-paloalto-sessions`
+- Command `network-paloalto-snmp-signatures`
+    - Renamed from `network-paloalto-signatures`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260600 - 20260709-hotfix</summary>
+
+- Host template `PaloAlto-Firewall-SNMP`
+    - Service template `network-paloalto-sensors` linked
+- Command `network-paloalto-sensors`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260600 - 20260708</summary>
+
+- Plugin pack `Palo Alto Firewall`
+    - Description updated
+- Service template `network-paloalto-sensors`
+    - Service template added
+- Command `network-paloalto-sensors`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260120</summary>
+
+- Command `network-paloalto-ssh-environment`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `SSHCLI-OPTION2` added
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `network-paloalto-ssh-environment`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+- Command `network-paloalto-ssh-ha`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `network-paloalto-ssh-interfaces`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `network-paloalto-ssh-ipsec`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `network-paloalto-ssh-licenses`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `network-paloalto-ssh-system`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+
+</details>

@@ -1,0 +1,760 @@
+---
+title: "Pfsense Firewall"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Pfsense.png";
+
+<PluginPackHeader name="Pfsense Firewall" image={image} category="Network" metadata={["API", "SNMP"]} />
+
+## Description
+
+Monitors pfSense firewalls through SNMP and the API: CPU, memory, swap and load, gateways, interfaces, firewall rules, state table, packet statistics, backup files and runtime.
+
+The plugin pack provides these checks:
+
+* [Backup Files](#apps-pfsense-fauxapi-backup-files)
+* [CPU](#apps-pfsense-snmp-cpu)
+* [CPU detailed](#apps-pfsense-snmp-cpu-detailed)
+* [Gateways](#apps-pfsense-fauxapi-gateways)
+* [Load](#apps-pfsense-snmp-load)
+* [Memory](#apps-pfsense-snmp-memory)
+* [Packet Statistics](#apps-pfsense-snmp-packet-stats)
+* [PInterfaces](#apps-pfsense-snmp-pfinterfaces)
+* [Rules](#apps-pfsense-fauxapi-rules)
+* [Runtime](#apps-pfsense-snmp-runtime)
+* [State table](#apps-pfsense-snmp-state-table)
+* [Swap](#apps-pfsense-snmp-swap)
+* [System](#apps-pfsense-fauxapi-system)
+* [Uptime](#apps-pfsense-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [PInterfaces](#apps-pfsense-snmp-pfinterfaces) | `PInterface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### pfSense-FauxAPI
+
+*pfSense FauxAPI* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-SECRET` | *(password)* | API secret. |
+| `API-KEY` |  | API key. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Backup Files](#apps-pfsense-fauxapi-backup-files) | `apps-pfsense-fauxapi-backup-files` |
+| [Gateways](#apps-pfsense-fauxapi-gateways) | `apps-pfsense-fauxapi-gateways` |
+| [Rules](#apps-pfsense-fauxapi-rules) | `apps-pfsense-fauxapi-rules` |
+| [System](#apps-pfsense-fauxapi-system) | `apps-pfsense-fauxapi-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#apps-pfsense-snmp-cpu) | `apps-pfsense-snmp-cpu` |
+| [CPU detailed](#apps-pfsense-snmp-cpu-detailed) | `apps-pfsense-snmp-cpu-detailed` |
+| [Load](#apps-pfsense-snmp-load) | `apps-pfsense-snmp-load` |
+| [Memory](#apps-pfsense-snmp-memory) | `apps-pfsense-snmp-memory` |
+| [Packet Statistics](#apps-pfsense-snmp-packet-stats) | `apps-pfsense-snmp-packet-stats` |
+| [PInterfaces](#apps-pfsense-snmp-pfinterfaces) | `apps-pfsense-snmp-pfinterfaces` |
+| [Runtime](#apps-pfsense-snmp-runtime) | `apps-pfsense-snmp-runtime` |
+| [State table](#apps-pfsense-snmp-state-table) | `apps-pfsense-snmp-state-table` |
+| [Swap](#apps-pfsense-snmp-swap) | `apps-pfsense-snmp-swap` |
+| [Uptime](#apps-pfsense-snmp-uptime) | `apps-pfsense-snmp-uptime` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### pfSense-SNMP
+
+*pfSense SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#apps-pfsense-snmp-cpu) | `apps-pfsense-snmp-cpu` |
+| [CPU detailed](#apps-pfsense-snmp-cpu-detailed) | `apps-pfsense-snmp-cpu-detailed` |
+| [Load](#apps-pfsense-snmp-load) | `apps-pfsense-snmp-load` |
+| [Memory](#apps-pfsense-snmp-memory) | `apps-pfsense-snmp-memory` |
+| [Packet Statistics](#apps-pfsense-snmp-packet-stats) | `apps-pfsense-snmp-packet-stats` |
+| [Runtime](#apps-pfsense-snmp-runtime) | `apps-pfsense-snmp-runtime` |
+| [State table](#apps-pfsense-snmp-state-table) | `apps-pfsense-snmp-state-table` |
+| [Swap](#apps-pfsense-snmp-swap) | `apps-pfsense-snmp-swap` |
+| [Uptime](#apps-pfsense-snmp-uptime) | `apps-pfsense-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Backup Files](#apps-pfsense-fauxapi-backup-files) | `apps-pfsense-fauxapi-backup-files` |
+| [Gateways](#apps-pfsense-fauxapi-gateways) | `apps-pfsense-fauxapi-gateways` |
+| [PInterfaces](#apps-pfsense-snmp-pfinterfaces) | `apps-pfsense-snmp-pfinterfaces` |
+| [Rules](#apps-pfsense-fauxapi-rules) | `apps-pfsense-fauxapi-rules` |
+| [System](#apps-pfsense-fauxapi-system) | `apps-pfsense-fauxapi-system` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Backup Files {/* #apps-pfsense-fauxapi-backup-files */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='total' |
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `WARNING-TIME-LAST` |  | Threshold warning last time |
+| `CRITICAL-TOTAL` |  | Threshold critical total |
+| `CRITICAL-TIME-LAST` |  | Threshold critical last time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `backups.total.count` |  | number of backups | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `backups.time.last.seconds` | `ms` | last backup time | `WARNING-TIME-LAST`, `CRITICAL-TIME-LAST` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Gateways {/* #apps-pfsense-fauxapi-gateways */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter gateway name (can be a regexp) |
+| `WARNING-PACKETS-DELAY` | `100` | Threshold warning packets delay (ms) |
+| `WARNING-PACKETS-LOSS` | `0` | Threshold warning packets loss (%) |
+| `WARNING-PACKETS-STDDEV` | `100` | Threshold warning packets stddev (ms) |
+| `CRITICAL-PACKETS-DELAY` | `250` | Threshold critical packets delay (ms) |
+| `CRITICAL-PACKETS-LOSS` | `10` | Threshold critical packets loss (%) |
+| `CRITICAL-PACKETS-STDDEV` | `250` | Threshold critical packets stddev (ms) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `UNKNOWN-STATUS` |  | Set unknon threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{status\} !~             /none/i'). Can used special variables like: %\{status\},             %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `gateway.packets.delay.milliseconds` | `ms` | delay:  ms | `WARNING-PACKETS-DELAY`, `CRITICAL-PACKETS-DELAY` |
+| `gateway.packets.loss.percentage` | `%` | loss:  %% | `WARNING-PACKETS-LOSS`, `CRITICAL-PACKETS-LOSS` |
+| `gateway.packets.stddev.milliseconds` | `ms` | stddev:  ms | `WARNING-PACKETS-STDDEV`, `CRITICAL-PACKETS-STDDEV` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Rules {/* #apps-pfsense-fauxapi-rules */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter rule name (can be a regexp) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='traffic' |
+| `WARNING-TRAFFIC` |  | Threshold warning traffic (b/s) |
+| `CRITICAL-TRAFFIC` |  | Threshold critical traffic (b/s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `rules.total.count` |  | number of rules |  |
+| `rule.traffic.bitspersecond` | `b/s` | traffic:  /s | `WARNING-TRAFFIC`, `CRITICAL-TRAFFIC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #apps-pfsense-fauxapi-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TEMPERATURE` | `10:50` | Threshold warning temperature (°C) |
+| `WARNING-CONNECTIONS-TCP-USAGE-PRCT` | `80` | Threshold warning connections TCP usage (%) |
+| `CRITICAL-TEMPERATURE` | `5:60` | Threshold critical temperature (°C) |
+| `CRITICAL-CONNECTIONS-TCP-USAGE-PRCT` | `90` | Threshold critical connections TCP usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='temperature' |
+| `WARNING-CONNECTIONS-TCP-USAGE` |  | Threshold warning connections TCP usage |
+| `CRITICAL-CONNECTIONS-TCP-USAGE` |  | Threshold critical connections TCP usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.connections.tcp.usage.count` |  |  | `WARNING-CONNECTIONS-TCP-USAGE`, `CRITICAL-CONNECTIONS-TCP-USAGE` |
+| `system.connections.tcp.usage.percentage` | `%` | tcp connections used:  %% | `WARNING-CONNECTIONS-TCP-USAGE-PRCT`, `CRITICAL-CONNECTIONS-TCP-USAGE-PRCT` |
+| `system.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #apps-pfsense-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #apps-pfsense-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #apps-pfsense-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+| `WARNING` | `3,2,2` | Threshold critical (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold warning (1min,5min,15min) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #apps-pfsense-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Warning threshold in percent |
+| `CRITICAL` | `90` | Critical threshold in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.cached.bytes` | `B` |  |  |
+| `memory.usage.bytes` | `B` |  |  |
+| `swap.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Packet Statistics {/* #apps-pfsense-snmp-packet-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BADOFFSET` | `0` | Threshold warning bad offset |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^match$' |
+| `WARNING-MATCH` |  | Threshold warning match |
+| `WARNING-FRAGMENT` |  | Threshold warning fragment |
+| `WARNING-SHORT` |  | Threshold warning short |
+| `WARNING-NORMALIZE` |  | Threshold warning normalize |
+| `WARNING-MEMDROP` |  | Threshold warning mem drop |
+| `CRITICAL-MATCH` |  | Threshold warning match |
+| `CRITICAL-BADOFFSET` |  | Threshold warning bad offset |
+| `CRITICAL-FRAGMENT` |  | Threshold warning fragment |
+| `CRITICAL-SHORT` |  | Threshold warning short |
+| `CRITICAL-NORMALIZE` |  | Threshold warning normalize |
+| `CRITICAL-MEMDROP` |  | Threshold warning mem drop |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `packets.matched.persecond` | `/s` | Packets Matched Filter Rule : /s | `WARNING-MATCH`, `CRITICAL-MATCH` |
+| `packets.badoffset.persecond` | `/s` | Bad Offset Packets : /s | `WARNING-BADOFFSET`, `CRITICAL-BADOFFSET` |
+| `packets.fragmented.persecond` | `/s` | Fragmented Packets : /s | `WARNING-FRAGMENT`, `CRITICAL-FRAGMENT` |
+| `packets.short.persecond` | `/s` | Short Packets : /s | `WARNING-SHORT`, `CRITICAL-SHORT` |
+| `packets.normalized.persecond` | `/s` | Normalized Packets : /s | `WARNING-NORMALIZE`, `CRITICAL-NORMALIZE` |
+| `packets.memorydropped.persecond` | `/s` | Dropped Packets Due To Memory : /s | `WARNING-MEMDROP`, `CRITICAL-MEMDROP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Runtime {/* #apps-pfsense-snmp-runtime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1800:` | Threshold warning in seconds |
+| `CRITICAL` | `900:` | Threshold critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### State table {/* #apps-pfsense-snmp-state-table */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-ENTRIES` |  | Warning threshold entries |
+| `WARNING-SEARCHES` |  | Warning threshold searches |
+| `WARNING-ENTRIES-INSERTED` |  | Warning threshold inserted entries |
+| `WARNING-ENTRIES-REMOVED` |  | Warning threshold removed entries |
+| `CRITICAL-ENTRIES` |  | Critical threshold entries |
+| `CRITICAL-SEARCHES` |  | Critical threshold searches |
+| `CRITICAL-ENTRIES-INSERTED` |  | Critical threshold inserted entries |
+| `CRITICAL-ENTRIES-REMOVED` |  | Critical threshold removed entries |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `state_table.entries.count` |  | entries | `WARNING-ENTRIES`, `CRITICAL-ENTRIES` |
+| `state_table.search.count` |  | searches | `WARNING-SEARCHES`, `CRITICAL-SEARCHES` |
+| `state_table.entries.inserted.count` |  | entries inserted | `WARNING-ENTRIES-INSERTED`, `CRITICAL-ENTRIES-INSERTED` |
+| `state_table.entries.removed.count` |  | entries removed | `WARNING-ENTRIES-REMOVED`, `CRITICAL-ENTRIES-REMOVED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #apps-pfsense-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NO-SWAP` | `ok` | Threshold if no active swap (default: 'critical') |
+| `WARNING-USAGE-PRCT` | `25` | Threshold in bytes (%) |
+| `CRITICAL-USAGE-PRCT` | `60` | Threshold in bytes (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE` |  | Threshold in bytes usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold in bytes free (B) |
+| `CRITICAL-USAGE` |  | Threshold in bytes usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold in bytes free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #apps-pfsense-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### PInterfaces {/* #apps-pfsense-snmp-pfinterfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by interface name (can be a regexp) |
+| `WARNING-TRAFFIC-IN-PASS` |  | Threshold warning traffic in pass |
+| `WARNING-TRAFFIC-OUT-PASS` |  | Threshold warning traffic out pass |
+| `WARNING-TRAFFIC-IN-BLOCK` |  | Threshold warning traffic in block |
+| `WARNING-TRAFFIC-OUT-BLOCK` |  | Threshold warning traffic out block |
+| `CRITICAL-TRAFFIC-IN-PASS` |  | Threshold critical traffic in pass |
+| `CRITICAL-TRAFFIC-OUT-PASS` |  | Threshold critical traffic out pass |
+| `CRITICAL-TRAFFIC-IN-BLOCK` |  | Threshold critical traffic in block |
+| `CRITICAL-TRAFFIC-OUT-BLOCK` |  | Threshold critical traffic out block |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pfinterface.pass.traffic.in.bitspersecond` | `b/s` | Traffic In Pass :  /s | `WARNING-TRAFFIC-IN-PASS`, `CRITICAL-TRAFFIC-IN-PASS` |
+| `pfinterface.pass.traffic.out.bitspersecond` | `b/s` | Traffic Out Pass :  /s | `WARNING-TRAFFIC-OUT-PASS`, `CRITICAL-TRAFFIC-OUT-PASS` |
+| `pfinterface.block.traffic.in.bitspersecond` | `b/s` | Traffic In Block :  /s | `WARNING-TRAFFIC-IN-BLOCK`, `CRITICAL-TRAFFIC-IN-BLOCK` |
+| `pfinterface.block.traffic.out.bitspersecond` | `b/s` | Traffic Out Block :  /s | `WARNING-TRAFFIC-OUT-BLOCK`, `CRITICAL-TRAFFIC-OUT-BLOCK` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Host template `pfSense-SNMP`
+    - Service template `apps-pfsense-snmp-cpu` linked
+    - Service template `apps-pfsense-snmp-cpu-detailed` linked
+    - Service template `apps-pfsense-snmp-load` linked
+    - Service template `apps-pfsense-snmp-memory` linked
+    - Service template `apps-pfsense-snmp-swap` linked
+    - Service template `apps-pfsense-snmp-uptime` linked
+- Service template [`apps-pfsense-snmp-cpu`](#apps-pfsense-snmp-cpu)
+    - Service template added
+- Service template [`apps-pfsense-snmp-cpu-detailed`](#apps-pfsense-snmp-cpu-detailed)
+    - Service template added
+- Service template [`apps-pfsense-snmp-load`](#apps-pfsense-snmp-load)
+    - Service template added
+- Service template [`apps-pfsense-snmp-memory`](#apps-pfsense-snmp-memory)
+    - Service template added
+- Service template [`apps-pfsense-snmp-swap`](#apps-pfsense-snmp-swap)
+    - Service template added
+- Service template [`apps-pfsense-snmp-uptime`](#apps-pfsense-snmp-uptime)
+    - Service template added
+- Command `apps-pfsense-snmp-cpu`
+    - Command added
+- Command `apps-pfsense-snmp-cpu-detailed`
+    - Command added
+- Command `apps-pfsense-snmp-load`
+    - Command added
+- Command `apps-pfsense-snmp-memory`
+    - Command added
+- Command `apps-pfsense-snmp-swap`
+    - Command added
+- Command `apps-pfsense-snmp-uptime`
+    - Command added
+
+</details>

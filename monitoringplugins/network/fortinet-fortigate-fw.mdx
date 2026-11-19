@@ -1,0 +1,1506 @@
+---
+title: "Fortinet Fortigate FW"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Fortinet.png";
+
+<PluginPackHeader name="Fortinet Fortigate FW" image={image} category="Network" metadata={["HTTPS", "SNMP"]} />
+
+## Description
+
+Monitors Fortinet FortiGate firewalls through SNMP and the HTTPS API: CPU, memory and disk usage, cluster and HA status, hardware, interfaces, sessions, VPN, SD-WAN, IPS and virus statistics, licenses, certificates, VDOMs, managed access points and switches.
+
+The plugin pack provides these checks:
+
+* [AP usage](#network-fortinet-fortigate-snmp-ap-usage)
+* [Certificates](#network-fortinet-fortigate-restapi-certificates)
+* [Cluster CPU](#network-fortinet-fortigate-snmp-cpu-cluster)
+* [Cluster Memory](#network-fortinet-fortigate-snmp-memory-cluster)
+* [Cluster status](#network-fortinet-fortigate-snmp-cluster-status)
+* [CPU](#network-fortinet-fortigate-snmp-cpu)
+* [Disk](#network-fortinet-fortigate-snmp-disk)
+* [HA status](#network-fortinet-fortigate-restapi-ha)
+* [Hardware status](#network-fortinet-fortigate-snmp-hardware)
+* [Health](#network-fortinet-fortigate-restapi-health)
+* [Interfaces](#network-fortinet-fortigate-snmp-interfaces)
+* [IPS statistics](#network-fortinet-fortigate-snmp-ips-stats)
+* [License status](#network-fortinet-fortigate-restapi-licenses)
+* [Link monitor](#network-fortinet-fortigate-snmp-link-monitor)
+* [Memory](#network-fortinet-fortigate-snmp-memory)
+* [SD-WAN](#network-fortinet-fortigate-snmp-sdwan)
+* [Sessions](#network-fortinet-fortigate-snmp-sessions)
+* [Signatures update](#network-fortinet-fortigate-snmp-signatures)
+* [Switch usage](#network-fortinet-fortigate-snmp-switch-usage)
+* [System](#network-fortinet-fortigate-restapi-system)
+* [Uptime](#network-fortinet-fortigate-snmp-uptime)
+* [VDOM usage](#network-fortinet-fortigate-snmp-vdom-usage)
+* [Virus events](#network-fortinet-fortigate-snmp-virus)
+* [VPN](#network-fortinet-fortigate-snmp-vpn)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-fortinet-fortigate-snmp-interfaces) | `Interface - <name>` |
+| [Link monitor](#network-fortinet-fortigate-snmp-link-monitor) | `Link monitor - <name>` |
+| [Switch usage](#network-fortinet-fortigate-snmp-switch-usage) | `Switch usage - <name>` |
+| [SD-WAN](#network-fortinet-fortigate-snmp-sdwan) | `SD-WAN - <name>` |
+| [VDOM usage](#network-fortinet-fortigate-snmp-vdom-usage) | `VDOM usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Fortinet-Fortigate-Cluster
+
+*Fortinet Fortigate Cluster* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster status](#network-fortinet-fortigate-snmp-cluster-status) | `network-fortinet-fortigate-snmp-cluster-status` |
+| [Cluster CPU](#network-fortinet-fortigate-snmp-cpu-cluster) | `network-fortinet-fortigate-snmp-cpu-cluster` |
+| [Disk](#network-fortinet-fortigate-snmp-disk) | `network-fortinet-fortigate-snmp-disk` |
+| [Hardware status](#network-fortinet-fortigate-snmp-hardware) | `network-fortinet-fortigate-snmp-hardware` |
+| [IPS statistics](#network-fortinet-fortigate-snmp-ips-stats) | `network-fortinet-fortigate-snmp-ips-stats` |
+| [Cluster Memory](#network-fortinet-fortigate-snmp-memory-cluster) | `network-fortinet-fortigate-snmp-memory-cluster` |
+| [Sessions](#network-fortinet-fortigate-snmp-sessions) | `network-fortinet-fortigate-snmp-sessions` |
+| [Signatures update](#network-fortinet-fortigate-snmp-signatures) | `network-fortinet-fortigate-snmp-signatures` |
+| [Uptime](#network-fortinet-fortigate-snmp-uptime) | `network-fortinet-fortigate-snmp-uptime` |
+| [VDOM usage](#network-fortinet-fortigate-snmp-vdom-usage) | `network-fortinet-fortigate-snmp-vdom-usage` |
+| [Virus events](#network-fortinet-fortigate-snmp-virus) | `network-fortinet-fortigate-snmp-virus` |
+| [VPN](#network-fortinet-fortigate-snmp-vpn) | `network-fortinet-fortigate-snmp-vpn` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP usage](#network-fortinet-fortigate-snmp-ap-usage) | `network-fortinet-fortigate-snmp-ap-usage` |
+| [Certificates](#network-fortinet-fortigate-restapi-certificates) | `network-fortinet-fortigate-restapi-certificates` |
+| [CPU](#network-fortinet-fortigate-snmp-cpu) | `network-fortinet-fortigate-snmp-cpu` |
+| [HA status](#network-fortinet-fortigate-restapi-ha) | `network-fortinet-fortigate-restapi-ha` |
+| [Health](#network-fortinet-fortigate-restapi-health) | `network-fortinet-fortigate-restapi-health` |
+| [Interfaces](#network-fortinet-fortigate-snmp-interfaces) | `network-fortinet-fortigate-snmp-interfaces` |
+| [License status](#network-fortinet-fortigate-restapi-licenses) | `network-fortinet-fortigate-restapi-licenses` |
+| [Link monitor](#network-fortinet-fortigate-snmp-link-monitor) | `network-fortinet-fortigate-snmp-link-monitor` |
+| [Memory](#network-fortinet-fortigate-snmp-memory) | `network-fortinet-fortigate-snmp-memory` |
+| [SD-WAN](#network-fortinet-fortigate-snmp-sdwan) | `network-fortinet-fortigate-snmp-sdwan` |
+| [Switch usage](#network-fortinet-fortigate-snmp-switch-usage) | `network-fortinet-fortigate-snmp-switch-usage` |
+| [System](#network-fortinet-fortigate-restapi-system) | `network-fortinet-fortigate-restapi-system` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Fortinet-Fortigate-Cluster-API
+
+*Fortinet Fortigate Cluster API* · Parent template: `Fortinet-Fortigate-Standalone-API`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` |  | Port used (default: 443) |
+| `PROTOCOL` |  | Specify https if needed (default: 'https') |
+| `ACCESS-TOKEN` |  | API token. |
+| `TIMEOUT` |  | Set timeout in seconds (default: 50). |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-fortinet-fortigate-restapi-ha) | `network-fortinet-fortigate-restapi-ha` |
+| [Certificates](#network-fortinet-fortigate-restapi-certificates) (inherited from `Fortinet-Fortigate-Standalone-API`) | `network-fortinet-fortigate-restapi-certificates` |
+| [Health](#network-fortinet-fortigate-restapi-health) (inherited from `Fortinet-Fortigate-Standalone-API`) | `network-fortinet-fortigate-restapi-health` |
+| [License status](#network-fortinet-fortigate-restapi-licenses) (inherited from `Fortinet-Fortigate-Standalone-API`) | `network-fortinet-fortigate-restapi-licenses` |
+| [System](#network-fortinet-fortigate-restapi-system) (inherited from `Fortinet-Fortigate-Standalone-API`) | `network-fortinet-fortigate-restapi-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP usage](#network-fortinet-fortigate-snmp-ap-usage) | `network-fortinet-fortigate-snmp-ap-usage` |
+| [Cluster CPU](#network-fortinet-fortigate-snmp-cpu-cluster) | `network-fortinet-fortigate-snmp-cpu-cluster` |
+| [Cluster Memory](#network-fortinet-fortigate-snmp-memory-cluster) | `network-fortinet-fortigate-snmp-memory-cluster` |
+| [Cluster status](#network-fortinet-fortigate-snmp-cluster-status) | `network-fortinet-fortigate-snmp-cluster-status` |
+| [CPU](#network-fortinet-fortigate-snmp-cpu) | `network-fortinet-fortigate-snmp-cpu` |
+| [Disk](#network-fortinet-fortigate-snmp-disk) | `network-fortinet-fortigate-snmp-disk` |
+| [Hardware status](#network-fortinet-fortigate-snmp-hardware) | `network-fortinet-fortigate-snmp-hardware` |
+| [Interfaces](#network-fortinet-fortigate-snmp-interfaces) | `network-fortinet-fortigate-snmp-interfaces` |
+| [IPS statistics](#network-fortinet-fortigate-snmp-ips-stats) | `network-fortinet-fortigate-snmp-ips-stats` |
+| [Link monitor](#network-fortinet-fortigate-snmp-link-monitor) | `network-fortinet-fortigate-snmp-link-monitor` |
+| [Memory](#network-fortinet-fortigate-snmp-memory) | `network-fortinet-fortigate-snmp-memory` |
+| [SD-WAN](#network-fortinet-fortigate-snmp-sdwan) | `network-fortinet-fortigate-snmp-sdwan` |
+| [Sessions](#network-fortinet-fortigate-snmp-sessions) | `network-fortinet-fortigate-snmp-sessions` |
+| [Signatures update](#network-fortinet-fortigate-snmp-signatures) | `network-fortinet-fortigate-snmp-signatures` |
+| [Switch usage](#network-fortinet-fortigate-snmp-switch-usage) | `network-fortinet-fortigate-snmp-switch-usage` |
+| [Uptime](#network-fortinet-fortigate-snmp-uptime) | `network-fortinet-fortigate-snmp-uptime` |
+| [VDOM usage](#network-fortinet-fortigate-snmp-vdom-usage) | `network-fortinet-fortigate-snmp-vdom-usage` |
+| [Virus events](#network-fortinet-fortigate-snmp-virus) | `network-fortinet-fortigate-snmp-virus` |
+| [VPN](#network-fortinet-fortigate-snmp-vpn) | `network-fortinet-fortigate-snmp-vpn` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Fortinet-Fortigate-Standalone
+
+*Fortinet Fortigate Standalone* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-fortinet-fortigate-snmp-cpu) | `network-fortinet-fortigate-snmp-cpu` |
+| [Disk](#network-fortinet-fortigate-snmp-disk) | `network-fortinet-fortigate-snmp-disk` |
+| [Hardware status](#network-fortinet-fortigate-snmp-hardware) | `network-fortinet-fortigate-snmp-hardware` |
+| [IPS statistics](#network-fortinet-fortigate-snmp-ips-stats) | `network-fortinet-fortigate-snmp-ips-stats` |
+| [Memory](#network-fortinet-fortigate-snmp-memory) | `network-fortinet-fortigate-snmp-memory` |
+| [Sessions](#network-fortinet-fortigate-snmp-sessions) | `network-fortinet-fortigate-snmp-sessions` |
+| [Signatures update](#network-fortinet-fortigate-snmp-signatures) | `network-fortinet-fortigate-snmp-signatures` |
+| [Uptime](#network-fortinet-fortigate-snmp-uptime) | `network-fortinet-fortigate-snmp-uptime` |
+| [VDOM usage](#network-fortinet-fortigate-snmp-vdom-usage) | `network-fortinet-fortigate-snmp-vdom-usage` |
+| [Virus events](#network-fortinet-fortigate-snmp-virus) | `network-fortinet-fortigate-snmp-virus` |
+| [VPN](#network-fortinet-fortigate-snmp-vpn) | `network-fortinet-fortigate-snmp-vpn` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP usage](#network-fortinet-fortigate-snmp-ap-usage) | `network-fortinet-fortigate-snmp-ap-usage` |
+| [Certificates](#network-fortinet-fortigate-restapi-certificates) | `network-fortinet-fortigate-restapi-certificates` |
+| [Cluster CPU](#network-fortinet-fortigate-snmp-cpu-cluster) | `network-fortinet-fortigate-snmp-cpu-cluster` |
+| [Cluster Memory](#network-fortinet-fortigate-snmp-memory-cluster) | `network-fortinet-fortigate-snmp-memory-cluster` |
+| [Cluster status](#network-fortinet-fortigate-snmp-cluster-status) | `network-fortinet-fortigate-snmp-cluster-status` |
+| [HA status](#network-fortinet-fortigate-restapi-ha) | `network-fortinet-fortigate-restapi-ha` |
+| [Health](#network-fortinet-fortigate-restapi-health) | `network-fortinet-fortigate-restapi-health` |
+| [Interfaces](#network-fortinet-fortigate-snmp-interfaces) | `network-fortinet-fortigate-snmp-interfaces` |
+| [License status](#network-fortinet-fortigate-restapi-licenses) | `network-fortinet-fortigate-restapi-licenses` |
+| [Link monitor](#network-fortinet-fortigate-snmp-link-monitor) | `network-fortinet-fortigate-snmp-link-monitor` |
+| [SD-WAN](#network-fortinet-fortigate-snmp-sdwan) | `network-fortinet-fortigate-snmp-sdwan` |
+| [Switch usage](#network-fortinet-fortigate-snmp-switch-usage) | `network-fortinet-fortigate-snmp-switch-usage` |
+| [System](#network-fortinet-fortigate-restapi-system) | `network-fortinet-fortigate-restapi-system` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Fortinet-Fortigate-Standalone-API
+
+*Fortinet Fortigate Standalone API* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `50` | Set timeout in seconds (default: 50). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `ACCESS-TOKEN` | *(password)* | API token. |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Certificates](#network-fortinet-fortigate-restapi-certificates) | `network-fortinet-fortigate-restapi-certificates` |
+| [Health](#network-fortinet-fortigate-restapi-health) | `network-fortinet-fortigate-restapi-health` |
+| [License status](#network-fortinet-fortigate-restapi-licenses) | `network-fortinet-fortigate-restapi-licenses` |
+| [System](#network-fortinet-fortigate-restapi-system) | `network-fortinet-fortigate-restapi-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AP usage](#network-fortinet-fortigate-snmp-ap-usage) | `network-fortinet-fortigate-snmp-ap-usage` |
+| [Cluster CPU](#network-fortinet-fortigate-snmp-cpu-cluster) | `network-fortinet-fortigate-snmp-cpu-cluster` |
+| [Cluster Memory](#network-fortinet-fortigate-snmp-memory-cluster) | `network-fortinet-fortigate-snmp-memory-cluster` |
+| [Cluster status](#network-fortinet-fortigate-snmp-cluster-status) | `network-fortinet-fortigate-snmp-cluster-status` |
+| [CPU](#network-fortinet-fortigate-snmp-cpu) | `network-fortinet-fortigate-snmp-cpu` |
+| [Disk](#network-fortinet-fortigate-snmp-disk) | `network-fortinet-fortigate-snmp-disk` |
+| [HA status](#network-fortinet-fortigate-restapi-ha) | `network-fortinet-fortigate-restapi-ha` |
+| [Hardware status](#network-fortinet-fortigate-snmp-hardware) | `network-fortinet-fortigate-snmp-hardware` |
+| [Interfaces](#network-fortinet-fortigate-snmp-interfaces) | `network-fortinet-fortigate-snmp-interfaces` |
+| [IPS statistics](#network-fortinet-fortigate-snmp-ips-stats) | `network-fortinet-fortigate-snmp-ips-stats` |
+| [Link monitor](#network-fortinet-fortigate-snmp-link-monitor) | `network-fortinet-fortigate-snmp-link-monitor` |
+| [Memory](#network-fortinet-fortigate-snmp-memory) | `network-fortinet-fortigate-snmp-memory` |
+| [SD-WAN](#network-fortinet-fortigate-snmp-sdwan) | `network-fortinet-fortigate-snmp-sdwan` |
+| [Sessions](#network-fortinet-fortigate-snmp-sessions) | `network-fortinet-fortigate-snmp-sessions` |
+| [Signatures update](#network-fortinet-fortigate-snmp-signatures) | `network-fortinet-fortigate-snmp-signatures` |
+| [Switch usage](#network-fortinet-fortigate-snmp-switch-usage) | `network-fortinet-fortigate-snmp-switch-usage` |
+| [Uptime](#network-fortinet-fortigate-snmp-uptime) | `network-fortinet-fortigate-snmp-uptime` |
+| [VDOM usage](#network-fortinet-fortigate-snmp-vdom-usage) | `network-fortinet-fortigate-snmp-vdom-usage` |
+| [Virus events](#network-fortinet-fortigate-snmp-virus) | `network-fortinet-fortigate-snmp-virus` |
+| [VPN](#network-fortinet-fortigate-snmp-vpn) | `network-fortinet-fortigate-snmp-vpn` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster status {/* #network-fortinet-fortigate-snmp-cluster-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UNSYNCHRONIZED` | `0` | Threshold warning not synchronized |
+| `CRITICAL-UNSYNCHRONIZED` | `2` | Threshold critical not synchronized |
+| `CRITICAL-TOTAL-NODES` | `2:` | Threshold critical Total nodes |
+| `CRITICAL-STATUS` | `'%{role} ne %{roleLast} or %{sync_status} =~ /unsynchronized/'` | Set critical threshold for status (Default: '%\{role\} ne %\{roleLast\} or %\{sync_status\} =~ /unsynchronized/'). Can used special variables like: %\{serial\}, %\{hostname\}, %\{sync_status\}, %\{role\}, %\{roleLast\} |
+| `WARNING-TOTAL-NODES` |  | Threshold warning Total nodes |
+| `WARNING-SYNCHRONIZED` |  | Threshold warning synchronized |
+| `WARNING-TOTAL-CHECKSUMS` |  | Threshold warning total checksums |
+| `CRITICAL-SYNCHRONIZED` |  | Threshold critical synchronized |
+| `CRITICAL-TOTAL-CHECKSUMS` |  | Threshold critical total checksums |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{serial\}, %\{hostname\}, %\{sync_status\}, %\{role\}, %\{roleLast\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.nodes.count` |  | total | `WARNING-TOTAL-NODES`, `CRITICAL-TOTAL-NODES` |
+| `cluster.nodes.synchronized.count` |  | synchronized | `WARNING-SYNCHRONIZED`, `CRITICAL-SYNCHRONIZED` |
+| `cluster.nodes.unsynchronized.count` |  | unsynchronized | `WARNING-UNSYNCHRONIZED`, `CRITICAL-UNSYNCHRONIZED` |
+| `cluster.checksums.total.count` |  | checksums | `WARNING-TOTAL-CHECKSUMS`, `CRITICAL-TOTAL-CHECKSUMS` |
+| `node.cpu.utilization.percentage` | `%` | cpu usage:  %% |  |
+| `node.memory.usage.percentage` | `%` | memory used:  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster CPU {/* #network-fortinet-fortigate-snmp-cpu-cluster */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Threshold warning CPU average |
+| `WARNING-CLUSTER-AVERAGE` | `80` | Threshold warning Cluster average |
+| `CRITICAL-AVERAGE` | `90` | Threshold critical CPU average |
+| `CRITICAL-CLUSTER-AVERAGE` | `90` | Threshold critical CPU average |
+| `WARNING-CORE` |  | Threshold warning CPU core |
+| `CRITICAL-CORE` |  | Threshold critical CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | CPU(s) average usage is:  %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage:  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+| `cluster.cpu.utilization.percentage` | `%` | CPU usage:  %% | `WARNING-CLUSTER-AVERAGE`, `CRITICAL-CLUSTER-AVERAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk {/* #network-fortinet-fortigate-snmp-disk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning in percent |
+| `CRITICAL` | `90` | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.space.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-fortinet-fortigate-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Set warning threshold for 'sensors' (syntax: type,regexp,threshold) Example: --warning='sensors,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'sensors' (syntax: type,regexp,threshold) Example: --critical='sensors,.*,50' |
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'sensors' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=sensors,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='sensors,WARNING,off' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hardware.sensors.measure` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IPS statistics {/* #network-fortinet-fortigate-snmp-ips-stats */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-INTRUSIONS-DETECTED` | `0` | Threshold warning intrusions detected |
+| `WARNING-INTRUSIONS-BLOCKED` | `10` | Threshold warning intrusions blocked |
+| `WARNING-CRIT-SEV-DETECTIONS` | `0` | Threshold warning critical severity detections |
+| `WARNING-HIGH-SEV-DETECTIONS` | `0` | Threshold warning high severity detections |
+| `WARNING-MED-SEV-DETECTIONS` | `0` | Threshold warning medium severity detections |
+| `WARNING-LOW-SEV-DETECTIONS` | `0` | Threshold warning low severity detections |
+| `WARNING-SIGNATURE-DETECTIONS` | `5` | Threshold warning signature detections |
+| `WARNING-ANOMALY-DETECTIONS` | `5` | Threshold warning anomaly detections |
+| `CRITICAL-INTRUSIONS-DETECTED` | `20` | Threshold critical intrusions detected |
+| `CRITICAL-INTRUSIONS-BLOCKED` | `100` | Threshold critical intrusions blocked |
+| `CRITICAL-CRIT-SEV-DETECTIONS` | `0` | Threshold critical critical severity detections |
+| `CRITICAL-HIGH-SEV-DETECTIONS` | `5` | Threshold critical high severity detections |
+| `CRITICAL-MED-SEV-DETECTIONS` | `20` | Threshold critical medium severity detections |
+| `CRITICAL-LOW-SEV-DETECTIONS` | `50` | Threshold critical low severity detections |
+| `CRITICAL-SIGNATURE-DETECTIONS` | `25` | Threshold critical signature detections |
+| `CRITICAL-ANOMALY-DETECTIONS` | `25` | Threshold critical anomaly detections |
+| `FILTER-NAME` |  | Filter virtual domain name (can be a regexp). |
+| `WARNING-INFO-SEV-DETECTIONS` |  | Threshold warning info severity detections |
+| `CRITICAL-INFO-SEV-DETECTIONS` |  | Threshold critical info severity detections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `domain.intrusions.detected.count` |  | Intrusions detected | `WARNING-INTRUSIONS-DETECTED`, `CRITICAL-INTRUSIONS-DETECTED` |
+| `domain.intrusions.blocked.count` |  | Intrusions blocked | `WARNING-INTRUSIONS-BLOCKED`, `CRITICAL-INTRUSIONS-BLOCKED` |
+| `domain.intrusions.detected.critical.severity.count` |  | Critical severity intrusions detected | `WARNING-CRIT-SEV-DETECTIONS`, `CRITICAL-CRIT-SEV-DETECTIONS` |
+| `domain.intrusions.detected.high.severity.count` |  | High severity intrusions detected | `WARNING-HIGH-SEV-DETECTIONS`, `CRITICAL-HIGH-SEV-DETECTIONS` |
+| `domain.intrusions.detected.medium.severity.count` |  | Medium severity intrusions detected | `WARNING-MED-SEV-DETECTIONS`, `CRITICAL-MED-SEV-DETECTIONS` |
+| `domain.intrusions.detected.low.severity.count` |  | Low severity intrusions detected | `WARNING-LOW-SEV-DETECTIONS`, `CRITICAL-LOW-SEV-DETECTIONS` |
+| `domain.intrusions.detected.info.severity.count` |  | Informational severity intrusions detected | `WARNING-INFO-SEV-DETECTIONS`, `CRITICAL-INFO-SEV-DETECTIONS` |
+| `domain.intrusions.detected.signature.count` |  | Signature intrusions detected | `WARNING-SIGNATURE-DETECTIONS`, `CRITICAL-SIGNATURE-DETECTIONS` |
+| `domain.intrusions.detected.anomaly.count` |  | Anomaly intrusions detected | `WARNING-ANOMALY-DETECTIONS`, `CRITICAL-ANOMALY-DETECTIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster Memory {/* #network-fortinet-fortigate-snmp-memory-cluster */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Warning threshold memory usage % |
+| `WARNING-CLUSTER-USAGE-PRCT` | `80` | Warning threshold Cluster memory usage % |
+| `CRITICAL-USAGE-PRCT` | `90` | Critical threshold memory usage % |
+| `CRITICAL-CLUSTER-USAGE-PRCT` | `90` | Critical threshold Cluster memory usage % |
+| `WARNING-USAGE-FREE` |  | Warning threshold memory usage free |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold memory usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  |  |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` | memory used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `cluster.memory.usage.percentage` | `%` | memory used:  %% | `WARNING-CLUSTER-USAGE-PRCT`, `CRITICAL-CLUSTER-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sessions {/* #network-fortinet-fortigate-snmp-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ACTIVE` |  | Threshold warning of current active sessions |
+| `WARNING-SETUP-1M` |  | Threshold warning of average setup rate 1 minute |
+| `WARNING-SETUP-10M` |  | Threshold warning of average setup rate 10 minutes |
+| `WARNING-SETUP-30M` |  | Threshold warning of average setup rate 30 minutes |
+| `WARNING-SETUP-60M` |  | Threshold warning of average setup rate 60 minutes |
+| `CRITICAL-ACTIVE` |  | Threshold critical of current active sessions |
+| `CRITICAL-SETUP-1M` |  | Threshold critical of average setup rate 1 minute |
+| `CRITICAL-SETUP-10M` |  | Threshold critical of average setup rate 10 minutes |
+| `CRITICAL-SETUP-30M` |  | Threshold critical of average setup rate 30 minutes |
+| `CRITICAL-SETUP-60M` |  | Threshold critical of average setup rate 60 minutes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sessions.active.count` |  | Current active sessions | `WARNING-ACTIVE`, `CRITICAL-ACTIVE` |
+| `sessions.setup.1min.count` |  | (1min) | `WARNING-SETUP-1M`, `CRITICAL-SETUP-1M` |
+| `sessions.setup.10min.count` |  | (10min) | `WARNING-SETUP-10M`, `CRITICAL-SETUP-10M` |
+| `sessions.setup.30min.count` |  | (30min) | `WARNING-SETUP-30M`, `CRITICAL-SETUP-30M` |
+| `sessions.setup.60min.count` |  | (60min) | `WARNING-SETUP-60M`, `CRITICAL-SETUP-60M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Signatures update {/* #network-fortinet-fortigate-snmp-signatures */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AV` | `-86400:86400` | Threshold warning AV (in seconds) |
+| `WARNING-IPS` | `-86400:86400` | Threshold warning IPS (in seconds) |
+| `WARNING-AVET` | `-86400:86400` | Threshold warning AVET (in seconds) |
+| `WARNING-IPSET` | `-86400:86400` | Threshold warning IPSET (in seconds) |
+| `CRITICAL-AV` | `-172800:172800` | Threshold critical AV (in seconds) |
+| `CRITICAL-IPS` | `-172800:172800` | Threshold critical IPS (in seconds) |
+| `CRITICAL-AVET` | `-172800:172800` | Threshold critical AVET (in seconds) |
+| `CRITICAL-IPSET` | `-172800:172800` | Threshold critical IPSET (in seconds) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `av_update` | `s` | last refresh is | `WARNING-AV`, `CRITICAL-AV` |
+| `avet_update` | `s` | last refresh is | `WARNING-AVET`, `CRITICAL-AVET` |
+| `ips_update` | `s` | last refresh is | `WARNING-IPS`, `CRITICAL-IPS` |
+| `ipset_update` | `s` | last refresh is | `WARNING-IPSET`, `CRITICAL-IPSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-fortinet-fortigate-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VDOM usage {/* #network-fortinet-fortigate-snmp-vdom-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTIL` | `80` | Threshold warning CPU util |
+| `WARNING-MEM-USAGE-PRCT` | `80` | Threshold warning Memory usage % |
+| `WARNING-LICENSE-USAGE-PRCT` | `90` | Threshold warning License usage % |
+| `CRITICAL-CPU-UTIL` | `90` | Threshold critical CPU util |
+| `CRITICAL-MEM-USAGE-PRCT` | `90` | Threshold critical Memory usage % |
+| `CRITICAL-LICENSE-USAGE-PRCT` | `95` | Threshold critical License usage % |
+| `FILTER-VDOMAIN` |  | Filter by virtual domain name (can be a regexp) |
+| `WARNING-SESSION-ACTIVE` |  | Threshold warning active sessions |
+| `WARNING-LICENSE-USAGE` |  | Threshold warning License usage |
+| `WARNING-LICENSE-FREE` |  | Threshold warning License free |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `WARNING-POLICIES-ACTIVE` |  | Threshold warning active Policies |
+| `CRITICAL-SESSION-ACTIVE` |  | Threshold critical active sessions |
+| `CRITICAL-LICENSE-USAGE` |  | Threshold critical License usage |
+| `CRITICAL-LICENSE-FREE` |  | Threshold critical License free |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-POLICIES-ACTIVE` |  | Threshold critical active Policies |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `virtualdomains.license.usage.count` |  |  | `WARNING-LICENSE-USAGE`, `CRITICAL-LICENSE-USAGE` |
+| `virtualdomains.license.free.count` |  |  | `WARNING-LICENSE-FREE`, `CRITICAL-LICENSE-FREE` |
+| `virtualdomains.license.usage.percentage` | `%` |  | `WARNING-LICENSE-USAGE-PRCT`, `CRITICAL-LICENSE-USAGE-PRCT` |
+| `virtualdomain.cpu.utilization.percentage` | `%` | cpu usage: %% | `WARNING-CPU-UTIL`, `CRITICAL-CPU-UTIL` |
+| `virtualdomain.memory.usage.percentage` | `%` | memory used :  %% | `WARNING-MEM-USAGE-PRCT`, `CRITICAL-MEM-USAGE-PRCT` |
+| `virtualdomain.policies.active.count` |  | active policies | `WARNING-POLICIES-ACTIVE`, `CRITICAL-POLICIES-ACTIVE` |
+| `virtualdomain.sessions.active.count` |  | active sessions | `WARNING-SESSION-ACTIVE`, `CRITICAL-SESSION-ACTIVE` |
+| `virtualdomain.sessions.rate.persecond` | `/s` | session setup rate: /s |  |
+| `virtualdomain.traffic.in.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `virtualdomain.traffic.out.bitspersecond` | `b/s` | traffic out: /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virus events {/* #network-fortinet-fortigate-snmp-virus */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-VIRUS-DETECTED` | `0` | Threshold warning of total virus detected |
+| `WARNING-VIRUS-BLOCKED` | `5` | Threshold warning of total virus blocked |
+| `CRITICAL-VIRUS-DETECTED` | `25` | Threshold critical of total virus detected |
+| `CRITICAL-VIRUS-BLOCKED` | `100` | Threshold critical of total virus blocked |
+| `FILTER-NAME` |  | Set the virtualdomains name - can be a regexp |
+| `WARNING-VIRUS-BLOCKED-PSEC` |  | Threshold warning of total virus blocked per second |
+| `CRITICAL-VIRUS-BLOCKED-PSEC` |  | Threshold critical of total virus blocked per second |
+| `WARNING-VIRUS-DETECTED-PSEC` |  | Threshold warning of total virus detected per second |
+| `CRITICAL-VIRUS-DETECTED-PSEC` |  | Threshold critical of total virus detected per second |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `domain.virus.detected.count` |  | virus detected | `WARNING-VIRUS-DETECTED`, `CRITICAL-VIRUS-DETECTED` |
+| `domain.virus.detected.persecond` | `/s` | virus detected: /s | `WARNING-VIRUS-DETECTED-PSEC`, `CRITICAL-VIRUS-DETECTED-PSEC` |
+| `domain.virus.blocked.count` |  | virus blocked | `WARNING-VIRUS-BLOCKED`, `CRITICAL-VIRUS-BLOCKED` |
+| `domain.virus.blocked.persecond` | `/s` | virus blocked: /s | `WARNING-VIRUS-BLOCKED-PSEC`, `CRITICAL-VIRUS-BLOCKED-PSEC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VPN {/* #network-fortinet-fortigate-snmp-vpn */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{vpn_state} eq "down"'` | Define the conditions to match for the status to be CRITICAL. Use "%\{state\}" as a special variable. Useful to be notified when tunnel is up "%\{state\} eq 'up'" |
+| `WARNING-STATUS` | `'%{vpn_state} eq "degraded"'` | Define the conditions to match for the status to be WARNING. Use "%\{state\}" as a special variable. Useful to be notified when tunnel is up "%\{state\} eq 'up'" |
+| `FILTER-VDOMAIN` |  | Filter VDOMAIN with regexp |
+| `FILTER-VPN` |  | Filter by VPN phase 1 names (regexp) |
+| `WARNING-USERS` |  | Threshold warning users |
+| `WARNING-SESSIONS` |  | Threshold warning sessions |
+| `WARNING-TUNNELS` |  | Threshold warning tunnels |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-USERS` |  | Threshold critical users |
+| `CRITICAL-SESSIONS` |  | Threshold critical sessions |
+| `CRITICAL-TUNNELS` |  | Threshold critical tunnels |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `CRITICAL-IPSEC-TUNNELS` |  | Threshold critical IPSEC tunnels |
+| `WARNING-IPSEC-TUNNELS` |  | Threshold warning IPSEC tunnels |
+| `EXCLUDE-VDOMAIN` |  | Exclude by virtual domain names (regexp) |
+| `EXCLUDE-VPN-PHASE1` |  | Exclude by VPN phase 1 names (regexp) |
+| `EXCLUDE-VPN-PHASE2` |  | Exclude by VPN phase 2 names (regexp) |
+| `FILTER-VPN-PHASE2` |  | Filter by VPN phase 2 names (regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vpn.users.logged.count` | `users` | Logged users | `WARNING-USERS`, `CRITICAL-USERS` |
+| `vpn.websessions.active.count` | `sessions` | Active web sessions | `WARNING-SESSIONS`, `CRITICAL-SESSIONS` |
+| `vpn.tunnels.active.count` | `tunnels` | Active tunnels | `WARNING-TUNNELS`, `CRITICAL-TUNNELS` |
+| `vpn.ipsec.tunnels.state.count` | `tunnels` | IPSec tunnels state up | `WARNING-IPSEC-TUNNELS`, `CRITICAL-IPSEC-TUNNELS` |
+| `vpn.traffic.in.bitspersecond` | `b/s` | Traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `vpn.traffic.out.bitspersecond` | `b/s` | Traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA status {/* #network-fortinet-fortigate-restapi-ha */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter members by name |
+| `WARNING-MEMBERS-DETECTED` | `0` | Warning threshold Members detected |
+| `WARNING-CPU-UTILIZATION` | `80` | Warning threshold CPU utilization (%) |
+| `WARNING-MEMORY-USAGE` | `80` | Warning threshold Memory usage (%) |
+| `CRITICAL-MEMORY-USAGE` | `90` | Criticalthreshold Memory usage (%) |
+| `CRITICAL-SESSIONS-ACTIVE` | `90` | Criticalthreshold Sessions active |
+| `WARNING-SESSIONS-ACTIVE` |  | Warning threshold Sessions active |
+| `CRITICAL-MEMBERS-DETECTED` |  | Critical threshold Members detected |
+| `CRITICAL-CPU-UTILIZATION` |  | Criticalthreshold CPU utilization (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `members.detected.count` |  | members detected | `WARNING-MEMBERS-DETECTED`, `CRITICAL-MEMBERS-DETECTED` |
+| `member.cpu.utilization.percentage` | `%` | cpu load:  %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `member.memory.usage.percentage` | `%` | memory used:  %% | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `member.sessions.active.count` |  | active sessions | `WARNING-SESSIONS-ACTIVE`, `CRITICAL-SESSIONS-ACTIVE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Certificates {/* #network-fortinet-fortigate-restapi-certificates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` | Select the unit for expires threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{name\}, %\{status\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /expired/i'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{status\} =~ /expired/i'). You can use the following variables: %\{name\}, %\{status\} |
+| `CRITICAL-EXPIRES` | `15:` | Critical threshold expires |
+| `WARNING-EXPIRES` | `30:` | Warning threshold expires |
+| `FILTER-NAME` |  | Filter certificates by name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `certificate.expires` |  | expires in | `WARNING-EXPIRES`, `CRITICAL-EXPIRES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {/* #network-fortinet-fortigate-restapi-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-VDOM` | `.*` | Filter vdom by name |
+| `CRITICAL-HEALTH` | `'%{status} !~ /success/i'` | Set critical threshold for status (Default: '%\{status\} !~ /success/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `UNKNOWN-HEALTH` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-HEALTH` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### License status {/* #network-fortinet-fortigate-restapi-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter licenses by name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} =~ /expired/i'` | Set critical threshold for status (Default: '%\{status\} =~ /expired/i'). Can used special variables like: %\{name\}, %\{status\} |
+| `UNIT` | `d` | Select the unit for expires threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-EXPIRES` | `30:` | Warning threshold time expires |
+| `CRITICAL-EXPIRES` | `10:` | Critical threshold time expires |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{name\}, %\{status\} |
+| `CRITICAL-LAST-UPDATE` |  | Critical threshold last update |
+| `WARNING-LAST-UPDATE` |  | Warning threshold last update |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `license.expires` |  | expires in | `WARNING-EXPIRES`, `CRITICAL-EXPIRES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #network-fortinet-fortigate-restapi-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-VDOM` | `.*` | Filter vdom by name |
+| `WARNING-CPU-UTILIZATION` | `80` | Warning threshold CPU utilization |
+| `WARNING-MEMORY-USAGE` | `80` | Warning threshold Memory usage |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Critical threshold CPU utilization |
+| `CRITICAL-MEMORY-USAGE` | `90` | Critical threshold Memory usage |
+| `WARNING-SESSIONS-ACTIVE` |  | Warning threshold Sessions active |
+| `CRITICAL-SESSIONS-ACTIVE` |  | Critical threshold Sessions active |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | cpu load:  %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `memory.usage.percentage` | `%` | memory used:  %% | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `sessions.active.count` |  | active sessions | `WARNING-SESSIONS-ACTIVE`, `CRITICAL-SESSIONS-ACTIVE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-fortinet-fortigate-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Threshold warning CPU average |
+| `CRITICAL-AVERAGE` | `90` | Threshold critical CPU average |
+| `WARNING-CORE` |  | Threshold warning CPU core |
+| `CRITICAL-CORE` |  | Threshold critical CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | CPU(s) average usage is:  %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage:  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+| `cluster.cpu.utilization.percentage` | `%` | CPU usage:  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-fortinet-fortigate-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Warning threshold memory usage % |
+| `CRITICAL-USAGE-PRCT` | `80` | Critical threshold memory usage % |
+| `WARNING-USAGE-FREE` |  | Warning threshold memory usage free |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold memory usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  |  |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` | memory used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `cluster.memory.usage.percentage` | `%` | memory used:  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AP usage {/* #network-fortinet-fortigate-snmp-ap-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU` | `80` | Warning threshold CPU usage (%) |
+| `WARNING-MEMORY` | `80` | Warning threshold Memory usage (%) |
+| `CRITICAL-CPU` | `90` | Critical threshold CPU usage (%) |
+| `CRITICAL-MEMORY` | `90` | Critical threshold Memory usage (%) |
+| `FILTER-NAME` |  | Filter by access point name (can be a regexp) |
+| `WARNING-IN-TRAFFIC` |  | Warning threshold traffic in |
+| `WARNING-OUT-TRAFFIC` |  | Warning threshold traffic out |
+| `WARNING-CLIENTS` |  | Warning threshold clients connected |
+| `CRITICAL-IN-TRAFFIC` |  | Critical threshold traffic in |
+| `CRITICAL-OUT-TRAFFIC` |  | Critical threshold traffic out |
+| `CRITICAL-CLIENTS` |  | Critical threshold clients connected |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `accesspoint.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-IN-TRAFFIC`, `CRITICAL-IN-TRAFFIC` |
+| `accesspoint.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-OUT-TRAFFIC`, `CRITICAL-OUT-TRAFFIC` |
+| `accesspoint.clients.current.count` |  | current client connections | `WARNING-CLIENTS`, `CRITICAL-CLIENTS` |
+| `accesspoint.cpu.utilization.percentage` | `%` | cpu usage:  %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `accesspoint.memory.usage.bytes` | `%` | memory usage:  %% | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-fortinet-fortigate-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Link monitor {/* #network-fortinet-fortigate-snmp-link-monitor */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} eq "dead"'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{state\} eq "dead"'). You can use the following variables: %\{state\}, %\{vdom\}, %\{id\}, %\{name\} |
+| `WARNING-LATENCY` | `25` | Warning threshold latency |
+| `WARNING-JITTER` | `25` | Warning threshold jitter |
+| `WARNING-PACKET-LOSS` | `0` | Warning threshold packet loss |
+| `CRITICAL-LATENCY` | `100` | Critical threshold latency |
+| `CRITICAL-JITTER` | `50` | Critical threshold jitter |
+| `CRITICAL-PACKET-LOSS` | `50` | Critical threshold packet loss |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-ID` |  | Filter link monitor by ID (can be a regexp) |
+| `FILTER-NAME` |  | Filter link monitor by name (can be a regexp) |
+| `FILTER-VDOM` |  | Filter link monitor by virtual domain name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{state\}, %\{vdom\}, %\{id\}, %\{name\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{vdom\}, %\{id\}, %\{name\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `linkmonitor.latency.milliseconds` | `ms` | latency: ms | `WARNING-LATENCY`, `CRITICAL-LATENCY` |
+| `linkmonitor.jitter.milliseconds` | `ms` | jitter: ms | `WARNING-JITTER`, `CRITICAL-JITTER` |
+| `linkmonitor.packet.loss.percentage` | `%` | packet loss: %% | `WARNING-PACKET-LOSS`, `CRITICAL-PACKET-LOSS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SD-WAN {/* #network-fortinet-fortigate-snmp-sdwan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-ID` | `.*` | Filter sd-wan links by ID (can be a regexp) |
+| `FILTER-NAME` | `.*` | Filter sd-wan links by name (can be a regexp) |
+| `FILTER-VDOM` | `.*` | Filter sd-wan links by vdom name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{state} eq "down"'` | Set critical threshold for status (Default: '%\{state\} eq "down"'). Can used special variables like: %\{state\}, %\{vdom\}, %\{id\}, %\{name\}, %\{ifName\} |
+| `WARNING-LATENCY` | `30` | Warning threshold latency |
+| `WARNING-JITTER` | `15` | Warning threshold jitter |
+| `CRITICAL-LATENCY` | `60` | Critical threshold latency |
+| `CRITICAL-JITTER` | `30` | Critical threshold jitter |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\}, %\{vdom\}, %\{id\}, %\{name\}, %\{ifName\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\}, %\{vdom\}, %\{id\}, %\{name\}, %\{ifName\} |
+| `WARNING-TRAFFIC-IN` |  | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold traffic out |
+| `WARNING-TRAFFIC-BI` |  | Warning threshold traffic bi |
+| `CRITICAL-TRAFFIC-IN` |  | Critical threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical threshold traffic out |
+| `CRITICAL-TRAFFIC-BI` |  | Critical threshold traffic bi |
+| `CRITICAL-PACKETLOSS` |  | Critical threshold packet loss |
+| `WARNING-PACKETLOSS` |  | Warning threshold packet loss |
+| `EXCLUDE-ID` |  | Exclude sd-wan links by ID (can be a regexp) |
+| `EXCLUDE-INTERFACE-NAME` |  | Exclude sd-wan links by interface name (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude sd-wan links by name (can be a regexp) |
+| `EXCLUDE-VDOM` |  | Filter sd-wan links by vdom name (can be a regexp) |
+| `FILTER-INTERFACE-NAME` |  | Filter sd-wan links by interface name (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sdwan.traffic.in.bitspersecond` | `b/s` | in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `sdwan.traffic.out.bitspersecond` | `b/s` | out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `sdwan.traffic.bi.bitspersecond` | `b/s` | bi:  /s | `WARNING-TRAFFIC-BI`, `CRITICAL-TRAFFIC-BI` |
+| `sdwan.latency.milliseconds` | `ms` | latency: ms | `WARNING-LATENCY`, `CRITICAL-LATENCY` |
+| `sdwan.jitter.milliseconds` | `ms` | jitter: ms | `WARNING-JITTER`, `CRITICAL-JITTER` |
+| `sdwan.packetloss.percentage` | `%` | packet loss: %% | `WARNING-PACKETLOSS`, `CRITICAL-PACKETLOSS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Switch usage {/* #network-fortinet-fortigate-snmp-switch-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU` | `80` | Warning threshold CPU usage (%) |
+| `WARNING-MEMORY` | `80` | Warning threshold memory usage (%) |
+| `CRITICAL-CPU` | `90` | Critical threshold CPU usage (%) |
+| `CRITICAL-MEMORY` | `90` | Critical threshold memory usage (%) |
+| `CRITICAL-STATUS` | `'%{admin} eq "authorized" and %{status} eq "down"'` | Define the conditions to match for the status to be CRITICAL (default: '%\{admin\} eq "authorized" and %\{status\} eq "down"'). You can use the following variables: %\{admin\}, %\{status\}, %\{display\} |
+| `FILTER-NAME` |  | Filter by switch name (can be a regexp) |
+| `FILTER-IP` |  | Filter by switch IP (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN (default: ''). You can use the following variables: %\{admin\}, %\{status\}, %\{display\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING (default: ''). You can use the following variables: %\{admin\}, %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `switch.cpu.utilization.percentage` | `%` | cpu usage:  %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `switch.memory.usage.bytes` | `%` | memory usage:  %% | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260400 - 20260424</summary>
+
+- Service template [`network-fortinet-fortigate-snmp-vpn`](#network-fortinet-fortigate-snmp-vpn)
+    - Macro `CRITICAL-STATUS`: default changed from `'%{state} eq "down"'` to `'%{vpn_state} eq "down"'`
+    - Macro `WARNING-STATUS` added (default `'%{vpn_state} eq "degraded"'`)
+- Command `network-fortinet-fortigate-snmp-sdwan`
+    - Option `--include-id='$_SERVICEFILTER-ID$'` added
+    - Option `--include-name='$_SERVICEFILTER-NAME$'` added
+    - Option `--include-vdom='$_SERVICEFILTER-VDOM$'` added
+    - Option `--include-interface-name='$_SERVICEFILTER-INTERFACE-NAME$'` added
+    - Option `--exclude-id='$_SERVICEEXCLUDE-ID$'` added
+    - Option `--exclude-name='$_SERVICEEXCLUDE-NAME$'` added
+    - Option `--exclude-vdom='$_SERVICEEXCLUDE-VDOM$'` added
+    - Option `--exclude-interface-name='$_SERVICEEXCLUDE-INTERFACE-NAME$'` added
+    - Option `--filter-id='$_SERVICEFILTER-ID$'` removed
+    - Option `--filter-name='$_SERVICEFILTER-NAME$'` removed
+    - Option `--filter-vdom='$_SERVICEFILTER-VDOM$'` removed
+    - Macro `EXCLUDE-ID` added
+    - Macro `EXCLUDE-INTERFACE-NAME` added
+    - Macro `EXCLUDE-NAME` added
+    - Macro `EXCLUDE-VDOM` added
+    - Macro `FILTER-INTERFACE-NAME` added
+- Command `network-fortinet-fortigate-snmp-vpn`
+    - Option `--include-vdomain=$_SERVICEFILTER-VDOMAIN$` added
+    - Option `--include-vpn-phase1=$_SERVICEFILTER-VPN$` added
+    - Option `--exclude-vdomain=$_SERVICEEXCLUDE-VDOMAIN$` added
+    - Option `--include-vpn-phase2=$_SERVICEFILTER-VPN-PHASE2$` added
+    - Option `--exclude-vpn-phase1=$_SERVICEEXCLUDE-VPN-PHASE1$` added
+    - Option `--exclude-vpn-phase2=$_SERVICEEXCLUDE-VPN-PHASE2$` added
+    - Option `--filter-vdomain=$_SERVICEFILTER-VDOMAIN$` removed
+    - Option `--filter-vpn=$_SERVICEFILTER-VPN$` removed
+    - Macro `EXCLUDE-VDOMAIN` added
+    - Macro `EXCLUDE-VPN-PHASE1` added
+    - Macro `EXCLUDE-VPN-PHASE2` added
+    - Macro `FILTER-VPN-PHASE2` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260100 - 20260305</summary>
+
+- Command `network-fortinet-fortigate-snmp-switch-usage`
+    - Option `--filter-name` changed from `--filter-name=$_SERVICEFILTER-NAME$` to `--filter-name='$_SERVICEFILTER-NAME$'`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250617</summary>
+
+- Service template [`network-fortinet-fortigate-restapi-certificates`](#network-fortinet-fortigate-restapi-certificates)
+    - Macro `WARNING-STATUS`: default changed from `30:` to *(empty)*
+    - Macro `CRITICAL-STATUS`: default changed from `15:` to `'%{status} =~ /expired/i'`
+    - Macro `CRITICAL-EXPIRES`: default changed from `'%{status} =~ /expired/i'` to `15:`
+    - Macro `WARNING-EXPIRES` added (default `30:`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250423</summary>
+
+- Plugin pack `Fortinet Fortigate FW`
+    - Description updated
+- Host template `Fortinet-Fortigate-Standalone-API`
+    - Service template `network-fortinet-fortigate-restapi-certificates` linked
+- Service template [`network-fortinet-fortigate-restapi-certificates`](#network-fortinet-fortigate-restapi-certificates)
+    - Service template added
+- Command `network-fortinet-fortigate-restapi-certificates`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250414</summary>
+
+- Command `network-fortinet-fortigate-snmp-vpn`
+    - Option `--warning-ipsec-tunnels-count=$_SERVICEWARNING-IPSEC-TUNNELS$` added
+    - Option `--critical-ipsec-tunnels-count=$_SERVICECRITICAL-IPSEC-TUNNELS$` added
+    - Macro `CRITICAL-IPSEC-TUNNELS` added
+    - Macro `WARNING-IPSEC-TUNNELS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Service template [`network-fortinet-fortigate-snmp-vpn`](#network-fortinet-fortigate-snmp-vpn)
+    - Macro `CRITICAL-STATUS` added (default `'%{state} eq "down"'`)
+- Command `network-fortinet-fortigate-snmp-vpn`
+    - Option `--warning-status=$_SERVICEWARNING-STATUS$` added
+    - Option `--critical-status=$_SERVICECRITICAL-STATUS$` added
+    - Macro `CRITICAL-STATUS` added
+    - Macro `WARNING-STATUS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201-hotfix-20250305 - 20250321</summary>
+
+- Plugin pack `Fortinet Fortigate FW`
+    - Description updated
+- Service template [`network-fortinet-fortigate-snmp-switch-usage`](#network-fortinet-fortigate-snmp-switch-usage)
+    - Service template added
+- Command `network-fortinet-fortigate-snmp-switch-usage`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201 - 20250217</summary>
+
+- Command `network-fortinet-fortigate-restapi-licenses`
+    - Option `--warning-last-update=$_SERVICEWARNING-LAST-UPDATE$` added
+    - Option `--critical-last-update=$_SERVICECRITICAL-LAST-UPDATE$` added
+    - Macro `CRITICAL-LAST-UPDATE` added
+    - Macro `WARNING-LAST-UPDATE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240317</summary>
+
+- Plugin pack `Fortinet Fortigate FW`
+    - Description updated
+- Service template [`network-fortinet-fortigate-snmp-link-monitor`](#network-fortinet-fortigate-snmp-link-monitor)
+    - Service template added
+- Command `network-fortinet-fortigate-snmp-link-monitor`
+    - Command added
+
+</details>

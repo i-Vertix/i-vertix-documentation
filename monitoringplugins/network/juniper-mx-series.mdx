@@ -1,0 +1,593 @@
+---
+title: "Juniper MX series"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Juniper.png";
+
+<PluginPackHeader name="Juniper MX series" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Juniper MX routers through SNMP: CPU, memory and storage, hardware, interfaces and class of service, plus BGP peers, LDP sessions, LSPs and RSVP sessions.
+
+The plugin pack provides these checks:
+
+* [BGP peer prefix status](#network-juniper-mseries-snmp-bgp-peer-prefix-statistics)
+* [BGP peer state](#network-juniper-mseries-snmp-bgp-peer-state)
+* [CoS](#network-juniper-mseries-snmp-cos)
+* [CPU](#network-juniper-mseries-snmp-cpu)
+* [Hardware](#network-juniper-mseries-snmp-hardware)
+* [Interfaces](#network-juniper-mseries-snmp-interfaces)
+* [LDP session status](#network-juniper-mseries-snmp-ldp-session-status)
+* [LSP status](#network-juniper-mseries-snmp-lsp-status)
+* [Memory](#network-juniper-mseries-snmp-memory)
+* [RSVP session status](#network-juniper-mseries-snmp-rsvp-session-status)
+* [Storage](#network-juniper-mseries-snmp-storage)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [BGP peer state](#network-juniper-mseries-snmp-bgp-peer-state) | `BGP peer state - <name>` |
+| [Interfaces](#network-juniper-mseries-snmp-interfaces) | `Interface - <name>` |
+| [Storage](#network-juniper-mseries-snmp-storage) | `Storage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Juniper-MX-Series
+
+*Juniper MX Series* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [BGP peer prefix status](#network-juniper-mseries-snmp-bgp-peer-prefix-statistics) | `network-juniper-mseries-snmp-bgp-peer-prefix-statistics` |
+| [BGP peer state](#network-juniper-mseries-snmp-bgp-peer-state) | `network-juniper-mseries-snmp-bgp-peer-state` |
+| [CoS](#network-juniper-mseries-snmp-cos) | `network-juniper-mseries-snmp-cos` |
+| [CPU](#network-juniper-mseries-snmp-cpu) | `network-juniper-mseries-snmp-cpu` |
+| [Hardware](#network-juniper-mseries-snmp-hardware) | `network-juniper-mseries-snmp-hardware` |
+| [LDP session status](#network-juniper-mseries-snmp-ldp-session-status) | `network-juniper-mseries-snmp-ldp-session-status` |
+| [LSP status](#network-juniper-mseries-snmp-lsp-status) | `network-juniper-mseries-snmp-lsp-status` |
+| [Memory](#network-juniper-mseries-snmp-memory) | `network-juniper-mseries-snmp-memory` |
+| [RSVP session status](#network-juniper-mseries-snmp-rsvp-session-status) | `network-juniper-mseries-snmp-rsvp-session-status` |
+| [Storage](#network-juniper-mseries-snmp-storage) | `network-juniper-mseries-snmp-storage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-juniper-mseries-snmp-interfaces) | `network-juniper-mseries-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### BGP peer prefix status {/* #network-juniper-mseries-snmp-bgp-peer-prefix-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-PEER` |  | Filter by peer identifier (Can be regexp) |
+| `WARNING-PREFIXES-IN` |  | Threshold warning prefixes in |
+| `WARNING-PREFIXES-IN-ACCEPTED` |  | Threshold warning prefixes in accepted |
+| `WARNING-PREFIXES-IN-REJECTED` |  | Threshold warning prefixes in rejected |
+| `WARNING-PREFIXES-IN-ACTIVE` |  | Threshold warning prefixes in active |
+| `WARNING-PREFIXES-OUT` |  | Threshold warning prefixes out |
+| `CRITICAL-PREFIXES-IN` |  | Threshold critical prefixes in |
+| `CRITICAL-PREFIXES-IN-ACCEPTED` |  | Threshold critical prefixes in accepted |
+| `CRITICAL-PREFIXES-IN-REJECTED` |  | Threshold critical prefixes in rejected |
+| `CRITICAL-PREFIXES-IN-ACTIVE` |  | Threshold critical prefixes in active |
+| `CRITICAL-PREFIXES-OUT` |  | Threshold critical prefixes out |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `peer.afisafi.prefixes.in.count` |  | Prefixes In | `WARNING-PREFIXES-IN`, `CRITICAL-PREFIXES-IN` |
+| `peer.afisafi.prefixes.in.accepted.count` |  | Prefixes In Accepted | `WARNING-PREFIXES-IN-ACCEPTED`, `CRITICAL-PREFIXES-IN-ACCEPTED` |
+| `peer.afisafi.prefixes.in.rejected.count` |  | Prefixes In Rejected | `WARNING-PREFIXES-IN-REJECTED`, `CRITICAL-PREFIXES-IN-REJECTED` |
+| `peer.afisafi.prefixes.in.active.count` |  | Prefixes In Active | `WARNING-PREFIXES-IN-ACTIVE`, `CRITICAL-PREFIXES-IN-ACTIVE` |
+| `peer.afisafi.prefixes.out.count` |  | Prefixes Out | `WARNING-PREFIXES-OUT`, `CRITICAL-PREFIXES-OUT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### BGP peer state {/* #network-juniper-mseries-snmp-bgp-peer-state */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{peer_status} =~ /running/ && %{peer_state} !~ /established/'` | Specify critical threshold (default: '%\{peer_status\} =~ /running/ && %\{peer_state\} !~ /established/'). Can use special variables like "%\{peer_identifier\}", "%\{peer_state\}", "%\{peer_status\}", "%\{local_type\}", "%\{local_ip\}", "%\{local_port\}", "%\{local_as\}", "%\{remote_type\}", "%\{remote_ip\}", "%\{remote_port\}", "%\{remote_as\}" |
+| `FILTER-PEER` |  | Filter by peer identifier (Can be regexp) |
+| `FILTER-REMOTE-IP` |  | Filter by remote ip address (Can be regexp) |
+| `FILTER-LOCAL-AS` |  | Filter by local AS (Can be regexp) |
+| `WARNING-STATUS` |  | Specify warning threshold. Can use special variables like "%\{peer_identifier\}", "%\{peer_state\}", "%\{peer_status\}", "%\{local_type\}", "%\{local_ip\}", "%\{local_port\}", "%\{local_as\}", "%\{remote_type\}", "%\{remote_ip\}", "%\{remote_port\}", "%\{remote_as\}" |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CoS {/* #network-juniper-mseries-snmp-cos */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-QUEUED` | `10000000` | Warning threshold queued |
+| `CRITICAL-QUEUED` | `50000000` | Critical threshold queued |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-INTERFACE-NAME` |  | Filter interfaces (can be a regexp) |
+| `FILTER-CLASS-NAME` |  | Filter class of services (can be a regexp) |
+| `WARNING-TRAFFIC-OUT` |  | Warning threshold traffic out |
+| `WARNING-DROPPED` |  | Warning threshold dropped |
+| `CRITICAL-TRAFFIC-OUT` |  | Critical  threshold traffic out |
+| `CRITICAL-DROPPED` |  | Critical threshold dropped |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.cos.queued.bitspersecond` | `b/s` | queued:  /s | `WARNING-QUEUED`, `CRITICAL-QUEUED` |
+| `interface.cos.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.cos.dropped.bitspersecond` | `b/s` | dropped:  /s | `WARNING-DROPPED`, `CRITICAL-DROPPED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-juniper-mseries-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` | `'routing\|fpc'` | Filter operating (Default: 'routing\|fpc') |
+| `WARNING-UTILIZATION` | `70` | Threshold warning utilization |
+| `WARNING-LOAD-1M` | `80` | Threshold warning load 1 min |
+| `WARNING-LOAD-5M` | `75` | Threshold warning load 5 min |
+| `WARNING-LOAD-15M` | `70` | Threshold warning load 15 min |
+| `CRITICAL-UTILIZATION` | `85` | Threshold critical utilization |
+| `CRITICAL-LOAD-1M` | `95` | Threshold critical load 1 min |
+| `CRITICAL-LOAD-5M` | `90` | Threshold critical load 5 min |
+| `CRITICAL-LOAD-15M` | `85` | Threshold critical load 15 min |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | average usage is: %% | `WARNING-UTILIZATION`, `CRITICAL-UTILIZATION` |
+| `cpu.load.1m.percentage` | `%` | load 1min | `WARNING-LOAD-1M`, `CRITICAL-LOAD-1M` |
+| `cpu.load.5m.percentage` | `%` | load 5min | `WARNING-LOAD-5M`, `CRITICAL-LOAD-5M` |
+| `cpu.load.15m.percentage` | `%` | load 15min | `WARNING-LOAD-15M`, `CRITICAL-LOAD-15M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-juniper-mseries-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fru', 'operating', 'alarm' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fru) Can also exclude specific instance: --filter=fru,7.3.0.0 |
+| `WARNING` |  | Set warning threshold for fru temperatures (syntax: type,regexp,threshold) Example: --warning='fru-temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for fru temperatures (syntax: type,regexp,threshold) Example: --critical='fru-temperature,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='operating,CRITICAL,^(?!(running)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDP session status {/* #network-juniper-mseries-snmp-ldp-session-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} !~ /operational/i'` | Set critical threshold for status (Default: '%\{state\} !~ /operational/i'). Can used special variables like: %\{state\} |
+| `FILTER-ENTITY` |  | Filter entities (can be a regexp) |
+| `FILTER-PEER` |  | Filter peer (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\} |
+| `WARNING-LAST-CHANGE` |  | Threshold warning last change in seconds |
+| `CRITICAL-LAST-CHANGE` |  | Threshold critical last change in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `last_change` | `s` | Last change | `WARNING-LAST-CHANGE`, `CRITICAL-LAST-CHANGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LSP status {/* #network-juniper-mseries-snmp-lsp-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} !~ /up/i'` | Set critical threshold for status (Default: '%\{state\} !~ /up/i'). Can used special variables like: %\{state\} |
+| `FILTER-NAME` |  | Filter LSP name (can be regexp) |
+| `FILTER-FROM` |  | Filter LSP from (can be regexp) |
+| `FILTER-TO` |  | Filter LSP to (can be regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\} |
+| `WARNING-TRANSITION-COUNT` |  | Threshold warning transition count |
+| `WARNING-LAST-TRANSITION` |  | Threshold warning last transition |
+| `CRITICAL-TRANSITION-COUNT` |  | Threshold critical transition count |
+| `CRITICAL-LAST-TRANSITION` |  | Threshold critical last transition |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `transition_count` |  | Transition count | `WARNING-TRANSITION-COUNT`, `CRITICAL-TRANSITION-COUNT` |
+| `last_transition` | `s` | Last transition | `WARNING-LAST-TRANSITION`, `CRITICAL-LAST-TRANSITION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-juniper-mseries-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER` | `'routing\|fpc'` | Filter operating (Default: 'routing\|fpc') |
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### RSVP session status {/* #network-juniper-mseries-snmp-rsvp-session-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} !~ /up/i'` | Set critical threshold for status (Default: '%\{state\} !~ /up/i'). Can used special variables like: %\{state\} |
+| `FILTER-NAME` |  | Filter session name (can be regexp) |
+| `FILTER-FROM` |  | Filter session from (can be regexp) |
+| `FILTER-TO` |  | Filter session to (can be regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-juniper-mseries-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning storage usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical storage usage |
+| `CRITICAL-ACCESS` | `readWrite` | Threshold critical access. Check if storage is readOnly: --critical-access=@2:2 |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `STORAGE` |  | Storage name (can be a regexp) |
+| `WARNING-ACCESS` |  | Threshold warning access |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-juniper-mseries-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%{percent_delta}` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%{percent_delta}` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `WARNING-FCS-ERRORS` | `0` | Set warning threshold for Frame Check Sum errors (in percent) |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `CRITICAL-FCS-ERRORS` | `10` | Set critical threshold for Frame Check Sum errors (in percent) |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-INPUT-POWER` |  | Set warning threshold for input power (dBm) |
+| `WARNING-BIAS-CURRENT` |  | Set warning threshold for bias current (mA) |
+| `WARNING-OUTPUT-POWER` |  | Set warning threshold for output power (dBm) |
+| `WARNING-MODULE-TEMPERATURE` |  | Set warning threshold for module temperature (C) |
+| `CRITICAL-INPUT-POWER` |  | Set critical threshold for input power (dBm) |
+| `CRITICAL-BIAS-CURRENT` |  | Set critical threshold for bias current (mA) |
+| `CRITICAL-OUTPUT-POWER` |  | Set critical threshold for output power (dBm) |
+| `CRITICAL-MODULE-TEMPERATURE` |  | Set critical threshold for module temperature (C) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.packets.in.fcserror.count` |  |  |  |
+| `interface.input.power.dbm` | `dBm` | Input Power :  dBm | `WARNING-INPUT-POWER`, `CRITICAL-INPUT-POWER` |
+| `interface.bias.current.milliampere` | `mA` | Bias Current :  mA | `WARNING-BIAS-CURRENT`, `CRITICAL-BIAS-CURRENT` |
+| `interface.output.power.dbm` | `dBm` | Output Power :  dBm | `WARNING-OUTPUT-POWER`, `CRITICAL-OUTPUT-POWER` |
+| `interface.module.temperature.celsius` | `C` | Module Temperature :  C | `WARNING-MODULE-TEMPERATURE`, `CRITICAL-MODULE-TEMPERATURE` |
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Plugin pack `Juniper MX series`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260700 - 20260818`.

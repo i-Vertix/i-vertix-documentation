@@ -1,0 +1,127 @@
+---
+title: "Grafana"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Grafana.png";
+
+<PluginPackHeader name="Grafana" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Grafana through its API: the health status of the instance.
+
+The plugin pack provides these checks:
+
+* [Health](#apps-grafana-api-health)
+
+
+## Host Templates
+
+### Grafana
+
+*Grafana* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `3000` |  |
+| `PROTOCOL` | `http` |  |
+| `HTTP-BACKEND` | `lwp` |  |
+| `TIMEOUT` | `10` |  |
+| `PASSWORD` | *(password)* |  |
+| `USERNAME` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Health](#apps-grafana-api-health) | `apps-grafana-api-health` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Health {/* #apps-grafana-api-health */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} ne "ok"'` | Set critical threshold for status  (default: '%\{state\} ne "ok"'). You can use the following variables: %\{state\}, %\{version\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default:) You can use the following variables: %\{state\}, %\{version\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240311 - 20240424</summary>
+
+- Plugin pack `Grafana`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240311 - 20240424`.

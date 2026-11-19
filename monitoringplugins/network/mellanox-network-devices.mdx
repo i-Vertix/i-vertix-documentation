@@ -1,0 +1,335 @@
+---
+title: "Mellanox network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Mellanox.png";
+
+<PluginPackHeader name="Mellanox network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Mellanox network devices through SNMP: CPU usage, sensor status, interfaces and the spanning tree.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-mellanox-snmp-cpu)
+* [Interfaces](#network-mellanox-snmp-interfaces)
+* [Sensor status](#network-mellanox-snmp-sensors)
+* [Spanning tree](#network-mellanox-snmp-spanning-tree)
+* [Uptime](#network-mellanox-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-mellanox-snmp-interfaces) | `Interface - <name>` |
+| [Spanning tree](#network-mellanox-snmp-spanning-tree) | `Spanning tree - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Mellanox
+
+*Mellanox* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-mellanox-snmp-cpu) | `network-mellanox-snmp-cpu` |
+| [Sensor status](#network-mellanox-snmp-sensors) | `network-mellanox-snmp-sensors` |
+| [Uptime](#network-mellanox-snmp-uptime) | `network-mellanox-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-mellanox-snmp-interfaces) | `network-mellanox-snmp-interfaces` |
+| [Spanning tree](#network-mellanox-snmp-spanning-tree) | `network-mellanox-snmp-spanning-tree` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-mellanox-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sensor status {/* #network-mellanox-snmp-sensors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `COMPONENT` |  | Which component to check (default: '.*'). Can be: 'sensor' |
+| `FILTER` |  | Exclude some parts (comma separated list) You can also exclude items from specific instances: --filter=sensor,celsius.* |
+| `WARNING` |  | Set warning threshold (syntax: type,regexp,threshold) Example: --warning='sensor.celsius,.*,30' |
+| `CRITICAL` |  | Set critical threshold (syntax: type,regexp,threshold) Example: --critical='sensor.celsius,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='sensor.celsius,OK,nonoperational' |
+| `SENSOR-SCALE` |  | Apply scaling value (some equipments are buggy. So we don't use scale by default) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-mellanox-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-mellanox-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `OID-FILTER` | `ifName` | Choose OID used to filter interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `5` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `5` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `5` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `5` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-EXTRADISPLAY` | `ifAlias` | Add an OID to display. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `MAP-SPEED-DSL` |  | Get interface speed configuration for interface type 'adsl' and 'vdsl2' Syntax: --map-speed-dsl=interface-src-name,interface-dsl-name |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spanning tree {/* #network-mellanox-snmp-spanning-tree */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{op_status} =~ /up/ && %{state} =~ /blocking\|broken/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{op_status\} =~ /up/ && %\{state\} =~             /blocking\|broken/'). You can use the following variables: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+| `FILTER-PORT` |  | Filter on port description (can be a regexp) |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260301</summary>
+
+- Service template [`network-mellanox-snmp-interfaces`](#network-mellanox-snmp-interfaces)
+    - Macro `OID-FILTER`: default changed from `network-mellanox-snmp-interfaces` to `ifName`
+    - Macro `OID-EXTRADISPLAY` added (default `ifAlias`)
+- Command `network-mellanox-snmp-interfaces`
+    - Option `--oid-extra-display=$_SERVICEOID-EXTRADISPLAY$` added
+    - Macro `OID-EXTRADISPLAY` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251029</summary>
+
+- Command `network-mellanox-snmp-interfaces`
+    - Option `--mode` changed from `--mode=--interface='$_SERVICEINTERFACE$'` to `--mode=interfaces`
+    - Option `--interface='$_SERVICEINTERFACE$'` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251010</summary>
+
+- Plugin pack `Mellanox network devices`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250901 - 20251010`.

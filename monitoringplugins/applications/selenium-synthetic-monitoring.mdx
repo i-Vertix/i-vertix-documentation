@@ -1,0 +1,115 @@
+---
+title: "Selenium synthetic monitoring"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Selenium.png";
+
+<PluginPackHeader name="Selenium synthetic monitoring" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors web applications with synthetic test scenarios run on a Selenium server and reports the result of each scenario.
+
+The plugin pack provides these checks:
+
+* [Selenium-scenario](#apps-selenium-scenario)
+
+
+## Host Templates
+
+### Selenium-scenario
+
+*Selenium scenario* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SELENIUM-HOSTNAME` | `127.0.0.1` | IP Addr/FQDN of the Selenium server |
+| `SELENIUM-PORT` | `4444` | Port used by Selenium server |
+| `DIRECTORY` | `/var/lib/centreon-waa` | Directory where scenarii are stored |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Selenium-scenario](#apps-selenium-scenario) | `apps-selenium-scenario` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Selenium-scenario {/* #apps-selenium-scenario */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `BROWSER` | `*firefox` | Browser used by Selenium server (Default : '*firefox') |
+| `TIMEOUT` | `50` | Scenario timeout |
+| `SCENARIO` |  | Scenario name |
+| `WARNING` |  | warning in seconds |
+| `CRITICAL` |  | critical in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

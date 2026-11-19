@@ -12,17 +12,17 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-Kubernetes-Serv
 
 ## Description
 
-### Azure Kubernetes Service monitoring
+Monitors Azure Kubernetes Service clusters through Azure Monitor: cluster health, allocatable resources, CPU, memory and disk usage of the nodes, network traffic and unschedulable pods.
 
-protocols used: HTTPS (Rest API)
+The plugin pack provides these checks:
 
-* Allocatable Resources
-* CPU
-* Health
-* Memory
-* Storage
-* Traffic
-* Unschedulable Pods
+* [Allocatable resources](#cloud-azure-compute-aks-allocatable-resources)
+* [CPU](#cloud-azure-compute-aks-cpu)
+* [Health](#cloud-azure-compute-aks-health)
+* [Memory](#cloud-azure-compute-aks-memory)
+* [Storage](#cloud-azure-compute-aks-storage)
+* [Traffic](#cloud-azure-compute-aks-traffic)
+* [Unschedulable pods](#cloud-azure-compute-aks-unschedulable-pods)
 
 ## Prerequisites
 
@@ -30,6 +30,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Kubernetes Service](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

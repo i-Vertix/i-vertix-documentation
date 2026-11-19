@@ -1,0 +1,516 @@
+---
+title: "VMware vSAN"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/VMware-vSphere.png";
+
+<PluginPackHeader name="VMware vSAN" image={image} category="Storage" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors VMware vSAN clusters through the VMware connector: cluster usage with backend IOPS, throughput and latency, datacenter alarms, licenses, snapshots, VM tools and vMotion operations.
+
+The plugin pack provides these checks:
+
+* [VMware Connector statistics](#apps-vmware-connector-stat-connectors)
+* [VMware Datacenter Alarm](#apps-vmware-connector-alarm-datacenter)
+* [VMware License usage](#apps-vmware-connector-licenses)
+* [VMware Snapshot usage size](#apps-vmware-connector-datastore-snapshot)
+* [VMware VM Snapshot age](#apps-vmware-connector-snapshot-vm)
+* [VMware VM Tools status](#apps-vmware-connector-tools-vm)
+* [VMware vMotion Operations](#apps-vmware-connector-vmoperation-cluster)
+* [VMware vSAN Cluster usage](#apps-vmware-connector-vsan-cluster-usage)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [VMware Discovery](/monitoring/monitoring-resources/discovery/vmware-discovery)
+
+
+## Host Templates
+
+### VMware-vCenter-vsan
+
+*VMware vCenter vsan* · Parent template: `VMware-vCenter`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CONTAINER` |  | Container to use |
+| `DATACENTER` |  | Datacenter to check. If not set, we check all datacenters |
+| `CONNECTOR-HOSTNAME` |  | Connector hostname (required). |
+| `CONNECTOR-PORT` |  | Connector port (default: 5700). |
+| `CLUSTER` |  | Search in following cluster(s) (can be a regexp) |
+| `ESX-HOST` |  | Search in following host(s) (can be a regexp). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [VMware vSAN Cluster usage](#apps-vmware-connector-vsan-cluster-usage) | `apps-vmware-connector-vsan-cluster-usage` |
+| [VMware Datacenter Alarm](#apps-vmware-connector-alarm-datacenter) (inherited from `VMware-vCenter`) | `apps-vmware-connector-alarm-datacenter` |
+| [VMware Snapshot usage size](#apps-vmware-connector-datastore-snapshot) (inherited from `VMware-vCenter`) | `apps-vmware-connector-datastore-snapshot` |
+| [VMware License usage](#apps-vmware-connector-licenses) (inherited from `VMware-vCenter`) | `apps-vmware-connector-licenses` |
+| [VMware VM Snapshot age](#apps-vmware-connector-snapshot-vm) (inherited from `VMware-vCenter`) | `apps-vmware-connector-snapshot-vm` |
+| [VMware Connector statistics](#apps-vmware-connector-stat-connectors) (inherited from `VMware-vCenter`) | `apps-vmware-connector-stat-connectors` |
+| [VMware VM Tools status](#apps-vmware-connector-tools-vm) (inherited from `VMware-vCenter`) | `apps-vmware-connector-tools-vm` |
+| [VMware vMotion Operations](#apps-vmware-connector-vmoperation-cluster) (inherited from `VMware-vCenter`) | `apps-vmware-connector-vmoperation-cluster` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+### VMware-vSAN
+
+*VMware vSAN* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CONTAINER` | `default` | Container to use (it depends of the connector configuration). |
+| `CLUSTER` | `.*` | Search in following cluster(s) (can be a regexp). *(not used by the check command)* |
+| `DATACENTER` | `.*` | Define which clusters to monitor based on their data center's name. This option will be treated as a regular expression. |
+| `CONNECTOR-HOSTNAME` | `127.0.0.1` | Connector hostname (required). |
+| `CONNECTOR-PORT` | `5700` | Connector port (default: 5700). |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [VMware vSAN Cluster usage](#apps-vmware-connector-vsan-cluster-usage) | `apps-vmware-connector-vsan-cluster-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [VMware Connector statistics](#apps-vmware-connector-stat-connectors) | `apps-vmware-connector-stat-connectors` |
+| [VMware Datacenter Alarm](#apps-vmware-connector-alarm-datacenter) | `apps-vmware-connector-alarm-datacenter` |
+| [VMware License usage](#apps-vmware-connector-licenses) | `apps-vmware-connector-licenses` |
+| [VMware Snapshot usage size](#apps-vmware-connector-datastore-snapshot) | `apps-vmware-connector-datastore-snapshot` |
+| [VMware VM Snapshot age](#apps-vmware-connector-snapshot-vm) | `apps-vmware-connector-snapshot-vm` |
+| [VMware VM Tools status](#apps-vmware-connector-tools-vm) | `apps-vmware-connector-tools-vm` |
+| [VMware vMotion Operations](#apps-vmware-connector-vmoperation-cluster) | `apps-vmware-connector-vmoperation-cluster` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware vSAN Cluster usage {/* #apps-vmware-connector-vsan-cluster-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OUTSTANDING-IO` | `500` | Threshold warning backend outstanding IO |
+| `WARNING-CONGESTIONS` | `200` | Threshold warning backend congestions |
+| `CRITICAL-OUTSTANDING-IO` | `2000` | Threshold critical backend outstanding IO |
+| `CRITICAL-CONGESTIONS` | `220` | Threshold critical backend congestions |
+| `CRITICAL-BACKEND-LATENCY-WRITE` | `250000` | Threshold critical backend latency write (µs) |
+| `WARNING-BACKEND-LATENCY-READ` | `100000` | Threshold warning backend latency read (µs) |
+| `CRITICAL-BACKEND-LATENCY-READ` | `250000` | Threshold critical backend latency read (µs) |
+| `WARNING-BACKEND-LATENCY-WRITE` | `100000` | Threshold warning backend latency write (µs) |
+| `WARNING-WRITE-USAGE` |  | Threshold warning backend write usage |
+| `WARNING-READ-USAGE` |  | Threshold warning backend read usage |
+| `WARNING-THROUGHPUT-READ` |  | Threshold warning backend throughput read |
+| `WARNING-THROUGHPUT-WRITE` |  | Threshold warning backend throughput write |
+| `CRITICAL-WRITE-USAGE` |  | Threshold critical backend write usage |
+| `CRITICAL-READ-USAGE` |  | Threshold critical backend read usage |
+| `CRITICAL-THROUGHPUT-READ` |  | Threshold critical backend throughput read |
+| `CRITICAL-THROUGHPUT-WRITE` |  | Threshold critical backend throughput write |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.vsan.backend.read.usage.iops` | `iops` | read IOPS | `WARNING-READ-USAGE`, `CRITICAL-READ-USAGE` |
+| `cluster.vsan.backend.write.usage.iops` | `iops` | write IOPS | `WARNING-WRITE-USAGE`, `CRITICAL-WRITE-USAGE` |
+| `cluster.vsan.backend.congestions.count` |  | congestions | `WARNING-CONGESTIONS`, `CRITICAL-CONGESTIONS` |
+| `cluster.vsan.backend.outstanding.io.count` |  | outstanding IO | `WARNING-OUTSTANDING-IO`, `CRITICAL-OUTSTANDING-IO` |
+| `cluster.vsan.backend.throughput.read.bytespersecond` | `B/s` | read throughput:  /s | `WARNING-THROUGHPUT-READ`, `CRITICAL-THROUGHPUT-READ` |
+| `cluster.vsan.backend.throughput.write.bytespersecond` | `B/s` | write throughput:  /s | `WARNING-THROUGHPUT-WRITE`, `CRITICAL-THROUGHPUT-WRITE` |
+| `cluster.vsan.backend.latency.read.microseconds` | `µs` | read latency:  µs | `WARNING-BACKEND-LATENCY-READ`, `CRITICAL-BACKEND-LATENCY-READ` |
+| `cluster.vsan.backend.latency.write.microseconds` | `µs` | write latency:  µs | `WARNING-BACKEND-LATENCY-WRITE`, `CRITICAL-BACKEND-LATENCY-WRITE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware Datacenter Alarm {/* #apps-vmware-connector-alarm-datacenter */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-ALARM-WARNING` | `0` | Threshold warning Total warning alarms |
+| `CRITICAL-TOTAL-ALARM-CRITICAL` | `0` | Threshold critial Total critical alarms |
+| `FILTER-TIME` |  | Don't check alarm older (value in seconds) |
+| `WARNING-TOTAL-ALARM-CRITICAL` |  | Threshold warning Total critical alarms |
+| `CRITICAL-TOTAL-ALARM-WARNING` |  | Threshold critical Total warning alarms |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: '%\{status\} =~ /yellow/i). Can used special variables like: %\{status\}, %\{name\},%\{entity\}, %\{type\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{status\} =~ /red/i'). Can used special variables like: %\{status\}, %\{name\}, %\{entity\}, %\{type\} |
+| `EXCLUDE-TYPE` |  | Exclude alarms of specified type(s). Can be a regex. Can be for example: --exclude-type='HostSystem' will not show HostSystem alarms |
+| `FILTER-TYPE` |  | Check only alarms for specified type(s). Can be a regex. Can be for example: --filter-type='VirtualMachine' will only show alarms for VirtualMachines |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `datacenter.alarms.warning.current.count` |  | warning alarm(s) found(s) | `WARNING-TOTAL-ALARM-WARNING`, `CRITICAL-TOTAL-ALARM-WARNING` |
+| `datacenter.alarms.critical.current.count` |  | critical alarm(s) found(s) | `WARNING-TOTAL-ALARM-CRITICAL`, `CRITICAL-TOTAL-ALARM-CRITICAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware Snapshot usage size {/* #apps-vmware-connector-datastore-snapshot */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DATASTORE` | `.*` | Search in following datastore(s) (can be a regexp) |
+| `WARNING-TOTAL` | `100GB` | Threshold warning in bytes for all snapshots |
+| `WARNING-SNAPSHOT` | `25GB` | Threshold warning in bytes for a single snapshot |
+| `CRITICAL-TOTAL` | `250GB` | Threshold critical in bytes for all snapshots |
+| `CRITICAL-SNAPSHOT` | `50GB` | Threshold critical in bytes for a single snapshot |
+| `CRITICAL-STATUS` | `'%{accessible} !~ /^true\|1$/i'` | Define the conditions to match for the status to be CRITICAL (Default: ''). You can use the following variables: %\{accessible\} |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN (Default: '%\{accessible\} !~ /^true\|1$/i'). You can use the following variables: %\{accessible\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING (Default: ''). You can use the following variables: %\{accessible\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `datastore.snapshots.usage.bytes` | `B` | total snapshots [size =  ] | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `datastore.snapshot.usage.bytes` | `B` | [size =  ] | `WARNING-SNAPSHOT`, `CRITICAL-SNAPSHOT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware License usage {/* #apps-vmware-connector-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `d` | Select the unit for expires threshold. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is days |
+| `WARNING-EXPIRES` | `30:` | Warning threshold licenses expires |
+| `CRITICAL-EXPIRES` | `10:` | Critical threshold licenses expires |
+| `FILTER-NAME` |  | Filter licenses by name (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude licenses by name (can be a regexp) |
+| `FILTER-EDITION` |  | Filter licenses by edition name (can be a regexp) |
+| `EXCLUDE-EDITION` |  | Exclude licenses by edition name (can be a regexp) |
+| `WARNING-TOTAL-LICENSES` |  | Warning threshold total licenses |
+| `WARNING-USAGE` |  | Warning threshold licenses usage |
+| `WARNING-USAGE-FREE` |  | Warning threshold licenses usage free |
+| `WARNING-USAGE-PRCT` |  | Warning threshold licenses usage (%) |
+| `CRITICAL-TOTAL-LICENSES` |  | Critical threshold total licenses |
+| `CRITICAL-USAGE` |  | Critical threshold licenses usage |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold licenses usage free |
+| `CRITICAL-USAGE-PRCT` |  | Critical threshold licenses usage (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `licenses.total.count` |  | Number of licenses | `WARNING-TOTAL-LICENSES`, `CRITICAL-TOTAL-LICENSES` |
+| `license.usage.count` |  |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `license.free.count` |  |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `license.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `license.expires` |  |  | `WARNING-EXPIRES`, `CRITICAL-EXPIRES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware VM Snapshot age {/* #apps-vmware-connector-snapshot-vm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VM-HOSTNAME` | `.*` | VM hostname to check. If not set, we check all VMs |
+| `UNIT` | `d` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING` | `7` | Threshold warning in seconds |
+| `CRITICAL` | `28` | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vm.snapshots.warning.current.count` |  |  |  |
+| `vm.snapshots.critical.current.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware Connector statistics {/* #apps-vmware-connector-stat-connectors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-REQUESTS` |  | Warning threshold total requests |
+| `WARNING-REQUESTS` |  | Warning threshold requests |
+| `CRITICAL-TOTAL-REQUESTS` |  | Critical threshold total requests |
+| `CRITICAL-REQUESTS` |  | Critical threshold requests |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connector.requests.total.count` |  | Total  requests | `WARNING-TOTAL-REQUESTS`, `CRITICAL-TOTAL-REQUESTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware VM Tools status {/* #apps-vmware-connector-tools-vm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VM-HOSTNAME` | `.*` | VM hostname to check. If not set, we check all VMs - can be a regexp |
+| `TOOLS-NOTINSTALLED-STATUS` | `critical` | Status if vmtools is not installed (default: critical) |
+| `TOOLS-NOTRUNNING-STATUS` | `critical` | Status if vmtools is not running (default: critical) |
+| `TOOLS-NOTUP2DATE-STATUS` | `ok` | Status if vmtools is not upd2date (default: warning) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vm.tools.notupdated.current.count` |  |  |  |
+| `vm.tools.notrunning.current.count` |  |  |  |
+| `vm.tools.notinstalled.current.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VMware vMotion Operations {/* #apps-vmware-connector-vmoperation-cluster */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SVMOTION` |  | Threshold warning storage vmotion |
+| `WARNING-VMOTION` |  | Threshold warning vmotion |
+| `WARNING-CLONE` |  | Threshold warning clone |
+| `CRITICAL-SVMOTION` |  | Threshold critical storage vmotion |
+| `CRITICAL-VMOTION` |  | Threshold critical vmotion |
+| `CRITICAL-CLONE` |  | Threshold critical clone |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.operations.svmotion.current.count` |  | SVMotion | `WARNING-SVMOTION`, `CRITICAL-SVMOTION` |
+| `cluster.operations.vmotion.current.count` |  | VMotion | `WARNING-VMOTION`, `CRITICAL-VMOTION` |
+| `cluster.operations.clone.current.count` |  | Clone | `WARNING-CLONE`, `CRITICAL-CLONE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20241011 - 20241124</summary>
+
+- Command `apps-vmware-connector-vsan-cluster-usage`
+    - Option `--filter` removed
+    - Option `--cluster-name=$_HOSTCLUSTER$` removed
+    - Macro `CLUSTER` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231215 - 20240213</summary>
+
+- Service template [`apps-vmware-connector-vsan-cluster-usage`](#apps-vmware-connector-vsan-cluster-usage)
+    - Macro `CRITICAL-BACKEND-LATENCY-WRITE` added (default `250000`)
+    - Macro `WARNING-BACKEND-LATENCY-READ` added (default `100000`)
+    - Macro `CRITICAL-BACKEND-LATENCY-READ` added (default `250000`)
+    - Macro `WARNING-BACKEND-LATENCY-WRITE` added (default `100000`)
+- Command `apps-vmware-connector-vsan-cluster-usage`
+    - Option `--warning-backend-latency-read=$_SERVICEWARNING-BACKEND-LATENCY-READ$` added
+    - Option `--critical-backend-latency-read=$_SERVICECRITICAL-BACKEND-LATENCY-READ$` added
+    - Option `--warning-backend-latency-write=$_SERVICEWARNING-BACKEND-LATENCY-WRITE$` added
+    - Option `--critical-backend-latency-write=$_SERVICECRITICAL-BACKEND-LATENCY-WRITE$` added
+    - Macro `CRITICAL-BACKEND-LATENCY-READ` added
+    - Macro `CRITICAL-BACKEND-LATENCY-WRITE` added
+    - Macro `WARNING-BACKEND-LATENCY-READ` added
+    - Macro `WARNING-BACKEND-LATENCY-WRITE` added
+
+</details>

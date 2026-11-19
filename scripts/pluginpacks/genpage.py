@@ -30,6 +30,67 @@ FREE_MACROS = {
 }
 
 
+# intro sentence of the Description section per plugin pack (unique_id -> {name, intro})
+DESCRIPTIONS = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'descriptions.json'), encoding='utf-8'))
+
+def _template_index():
+    """Templates documented on the other plugin pack pages: ('host'|'service', name) -> page route, so discovery
+    rules using a template of another pack (e.g. os-linux-snmp-storage of Linux SNMP) link to that page."""
+    docs = os.path.join(REPO_ROOT, 'monitoringplugins')
+    index = {}
+    for root, dirs, files in os.walk(docs):
+        dirs[:] = [x for x in dirs if x != 'assets']
+        for f in files:
+            if not f.endswith('.mdx'):
+                continue
+            route = '/monitoringplugins/' + os.path.relpath(os.path.join(root, f), docs).replace(os.sep, '/')[:-4]
+            text = open(os.path.join(root, f), encoding='utf-8').read()
+            hosts = text.split('\n## Host Templates', 1)[1].split('\n## Service Templates', 1)[0] if '\n## Host Templates' in text else ''
+            for m in re.finditer(r'^### (\S+)\s*$', hosts, flags=re.M):
+                index.setdefault(('host', m.group(1)), route)
+            for m in re.finditer(r'^### .*\{/\*\s*#([\w.-]+)\s*\*/\}\s*$', text, flags=re.M):
+                index.setdefault(('service', m.group(1)), route)
+    return index
+
+
+TEMPLATE_INDEX = _template_index()
+
+
+def heading_slug(text):
+    """Anchor Docusaurus gives a heading without explicit id (github-slugger): HP-iLO-2/3/4-API -> hp-ilo-234-api."""
+    return re.sub(r'\s', '-', re.sub(r'[^\w\s-]', '', text.strip().lower()))
+
+
+def template_anchor(kind, name):
+    # service template headings carry an explicit id (the lower-case name), host template headings do not
+    return name.lower() if kind == 'service' else heading_slug(name)
+
+
+def template_ref(kind, name, own, label=None):
+    """(markdown, found): link to a host/service template on this page (own), on another plugin pack page, or plain code."""
+    text = cell(label) if label else f'`{name}`'
+    if name in own:
+        return f'[{text}](#{template_anchor(kind, name)})', True
+    route = TEMPLATE_INDEX.get((kind, name))
+    if route:
+        return f'[{text}]({route}#{template_anchor(kind, name)})', True
+    return text, False
+
+
+# service templates of generic-host, not listed among the checks of a plugin pack
+GENERIC_STPLS = {'Ping-LAN'}
+
+
+def portal_text(html):
+    """Portal description (Markdown with HTML links) as MDX text; links to the i-Vertix guide become site paths."""
+    if not html:
+        return ''
+    text = re.sub(r'<a\s+[^>]*href="([^"]+)"[^>]*>(.*?)</a>', r'[\2](\1)', html, flags=re.S)
+    text = re.sub(r'https?://i-vertix\.guide(/[^)\s#]*?)/?(#[^)\s]*)?\)', lambda m: f'{m.group(1)}{m.group(2) or ""})', text)
+    text = re.sub(r'<[^>]+>', '', text)
+    return inline(text)
+
+
 # collapsible section without the light-blue alert look of <details>, see src/css/custom.css
 DETAILS_OPEN = '<details className="plugin-pack-details">'
 
@@ -48,8 +109,13 @@ def cell(text):
         if part.startswith('`') and part.endswith('`') and len(part) > 1:
             parts[i] = part.replace('|', '\\|')
         else:
-            parts[i] = part.replace('|', '\\|').replace('<', '&lt;').replace('{', '\\{').replace('}', '\\}')
+            parts[i] = no_directive(part.replace('|', '\\|').replace('<', '&lt;').replace('{', '\\{').replace('}', '\\}'))
     return ''.join(parts).strip()
+
+
+def no_directive(text):
+    """Escapes ':' before a letter ("HH:MM"), which MDX would read as a text directive; URLs (https://) stay."""
+    return re.sub(r'(?<!mailto)(?<!https)(?<!http)(?<!ftp):(?=[A-Za-z])', r'\\:', text)
 
 
 def inline(text):
@@ -57,7 +123,7 @@ def inline(text):
     if not text:
         return ''
     parts = re.split(r'(`[^`]*`)', text.replace('\r', '').replace('\n', ' '))
-    return ''.join(p if p.startswith('`') and len(p) > 1 else p.replace('<', '&lt;').replace('{', '\\{').replace('}', '\\}')
+    return ''.join(p if p.startswith('`') and len(p) > 1 else no_directive(p.replace('<', '&lt;').replace('{', '\\{').replace('}', '\\}'))
                    for p in parts).strip()
 
 
@@ -73,9 +139,31 @@ def nowrap_table(rows, css_class='plugin-pack-macros'):
     return f'<div className="{css_class}">\n\n' + '\n'.join(rows) + '\n\n</div>'
 
 
+# documentation pages of the i-Vertix host discoveries
+DISCOVERY_PAGES = {
+    'common': '/monitoring/monitoring-resources/discovery/common-discovery',
+    'nedi': '/monitoring/monitoring-resources/discovery/nedi',
+    'network': '/monitoring/monitoring-resources/discovery/host-discovery',
+    'meraki': '/monitoring/monitoring-resources/discovery/meraki-discovery',
+    'vmware': '/monitoring/monitoring-resources/discovery/vmware-discovery',
+}
+
+
+def site_path(url):
+    """https://i-vertix.guide/monitoring/x/#y -> /monitoring/x#y (links of the portal to this documentation)."""
+    m = re.match(r'https?://i-vertix\.guide(/[^#?]*?)/?(#.*)?$', url or '')
+    return (m.group(1) + (m.group(2) or '')) if m else url
+
+
+def placeholders(pattern):
+    """Service name pattern with its $macros$ as <macro>: "Interface - $interface_name$" -> "Interface - <interface_name>"."""
+    return re.sub(r'\$(\w+)\$', r'<\1>', pattern or '')
+
+
 class Page:
     def __init__(self, pack, plugins_src):
         self.d = pack
+        self.hosts = {h['name'] for h in pack['host_templates']}
         self.stpls = {s['name']: s for s in pack['service_templates']}
         commands = {c['name']: c for c in pack.get('commands', [])}
         self.command_lines = {name: c['command_line'] or '' for name, c in commands.items()}
@@ -136,6 +224,79 @@ class Page:
             rows.append(f"| [{cell(label)}](#{name.lower()}){note} | `{name}` |")
         return nowrap_table(rows, 'plugin-pack-templates')
 
+    def description(self):
+        """Intro sentence (descriptions.json, by unique_id) and the checks of the plugin pack, one per service
+        template, so the list always matches the service templates (the portal description is not used)."""
+        d = self.d
+        intro = DESCRIPTIONS.get(str(d['unique_id']), {}).get('intro')
+        if not intro:
+            print(f'warning: no intro for "{d["name"]}" (unique_id {d["unique_id"]}) in descriptions.json', file=sys.stderr)
+            intro = f'Monitors {d["name"]} with the checks listed below.'
+        checks = sorted((s for s in d['service_templates'] if s['name'] not in GENERIC_STPLS),
+                        key=lambda s: (s['alias'] or s['name']).lower())
+        out = ['## Description', '', intro, '']
+        if checks:
+            out += ['The plugin pack provides these checks:', '']
+            labels = [(s['alias'] or s['name']).lower() for s in checks]
+            for s in checks:
+                label = s['alias'] or s['name']
+                # several templates with the same alias (e.g. Environment / Environment Catalyst): add the template name
+                extra = f' (`{s["name"]}`)' if labels.count(label.lower()) > 1 else ''
+                out.append(f'* [{inline(label)}](#{s["name"].lower()}){extra}')
+        return out
+
+    def host_ref(self, t, where):
+        ref, found = template_ref('host', t, self.hosts)
+        if not found:
+            print(f'warning: {where} uses host template {t}, which is not part of the plugin pack nor documented elsewhere',
+                  file=sys.stderr)
+        return ref
+
+    def service_ref(self, t, where):
+        ref, found = template_ref('service', t, self.stpls, self.stpls[t]['alias'] if t in self.stpls else None)
+        if not found:
+            print(f'warning: {where} uses service template {t}, which is not part of the plugin pack nor documented elsewhere',
+                  file=sys.stderr)
+        return ref
+
+    def discovery(self):
+        """Host discoveries of the plugin pack (cloud/common definitions, NeDi, Network Scan, Meraki, VMware rules) and its
+        service discovery rules; a part without data is left out."""
+        d = self.d
+        rules = d.get('host_discovery_rules') or {}
+        found = []
+        for hd in d.get('host_discoveries') or []:
+            for r in hd.get('rules', []):
+                self.host_ref(r['host_template'], f'host discovery {hd["label"]}')
+            found.append(f'* [{inline(hd["label"])}]({site_path(hd.get("docs_url")) or DISCOVERY_PAGES["common"]})')
+        for kind, label in (('nedi', 'Network Topology Discovery'), ('network', 'Network Scan'),
+                            ('meraki', 'Cisco Meraki Discovery'), ('vmware', 'VMware Discovery')):
+            for r in rules.get(kind) or []:
+                self.host_ref(r['host_template'], f'{label} rule {r["name"]}')
+            if rules.get(kind):
+                found.append(f'* [{label}]({DISCOVERY_PAGES[kind]})')
+        hosts = ['The hosts of this plugin pack are found by these host discoveries:', ''] + found + [''] if found else []
+
+        services = []
+        for r in d.get('discovery_templates') or []:
+            if not services:
+                services = ['The service discovery creates one service per discovered object, with these rules:', '',
+                            '| Service template | Service name |', '|------------------|--------------|']
+            pattern = placeholders(re.sub(r'\$key_field\$', f'${r["xml_key_field"]}$', r['service_name_pattern'] or ''))
+            ref = self.service_ref(r['service_template'], f'service discovery rule {r["name"]}')
+            services.append(f'| {ref} | {code(pattern)} |')
+        if services:
+            services += ['', 'See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.']
+
+        if not hosts and not services:
+            return []
+        out = ['## Discovery', '']
+        if hosts:
+            out += ['### Host Discovery', ''] + hosts
+        if services:
+            out += ['### Service Discovery', ''] + services
+        return out
+
     def host_service_tabs(self, h):
         linked = [(s['name'], s['inherited_from']) for s in h['service_templates']]
         linked_names = {n for n, _ in linked}
@@ -170,13 +331,10 @@ class Page:
             '',
             f'<PluginPackHeader name="{d["name"]}" image={{image}} category="{d["category"]}" metadata={{{json.dumps(d["metadata"])}}} />',
             '',
-            '## Description',
-            '',
-            d['description_markdown'].strip(),
-            '',
-        ]
+        ] + self.description() + ['']
         if prereq:
             lines += ['## Prerequisites', '', prereq.strip(), '']
+        lines += self.discovery() + ['']
         lines += ['## Host Templates', '']
 
         for h in d['host_templates']:

@@ -1,0 +1,572 @@
+---
+title: "HPE 3PAR storage"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HPE.png";
+
+<PluginPackHeader name="HPE 3PAR storage" image={image} category="Storage" metadata={["SSH"]} />
+
+## Description
+
+Monitors HPE 3PAR storage over SSH: capacity, disk and volume usage, nodes, cages, power supplies, adaptive flash cache, hardware status, NTP time and uptime.
+
+The plugin pack provides these checks:
+
+* [Adaptive flash cache](#storage-hp-3par-ssh-afc)
+* [Cages](#storage-hp-3par-ssh-cages)
+* [Capacity](#storage-hp-3par-ssh-capacity)
+* [Disk usage](#storage-hp-3par-ssh-disk-usage)
+* [Hardware status](#storage-hp-3par-ssh-components)
+* [Nodes](#storage-hp-3par-ssh-nodes)
+* [NTP time](#storage-hp-3par-ssh-time)
+* [PSU](#storage-hp-3par-ssh-psu)
+* [Uptime](#storage-hp-3par-ssh-uptime)
+* [Volume usage](#storage-hp-3par-ssh-volume-usage)
+
+
+## Host Templates
+
+### HP-3PAR
+
+*HP 3Par Storage* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` |  | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSH-PASSWORD` |  | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+| `SSHCLI-OPTION` |  | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Adaptive flash cache](#storage-hp-3par-ssh-afc) | `storage-hp-3par-ssh-afc` |
+| [Cages](#storage-hp-3par-ssh-cages) | `storage-hp-3par-ssh-cages` |
+| [Capacity](#storage-hp-3par-ssh-capacity) | `storage-hp-3par-ssh-capacity` |
+| [Hardware status](#storage-hp-3par-ssh-components) | `storage-hp-3par-ssh-components` |
+| [Disk usage](#storage-hp-3par-ssh-disk-usage) | `storage-hp-3par-ssh-disk-usage` |
+| [Nodes](#storage-hp-3par-ssh-nodes) | `storage-hp-3par-ssh-nodes` |
+| [PSU](#storage-hp-3par-ssh-psu) | `storage-hp-3par-ssh-psu` |
+| [NTP time](#storage-hp-3par-ssh-time) | `storage-hp-3par-ssh-time` |
+| [Uptime](#storage-hp-3par-ssh-uptime) | `storage-hp-3par-ssh-uptime` |
+| [Volume usage](#storage-hp-3par-ssh-volume-usage) | `storage-hp-3par-ssh-volume-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Adaptive flash cache {/* #storage-hp-3par-ssh-afc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE-ID` | `.*` | Filter nodes by id (can be a regexp) |
+| `FILTER-VOLUME-NAME` | `.*` | Filter volumes by name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /normal/i'` | Can used special variables like: %\{status\}, %\{node_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /normal/i'). |
+| `WARNING-FLASHCACHE-USAGE-PRCT` | `90` | Warning threshold Flashcache usage (%) |
+| `CRITICAL-FLASHCACHE-USAGE-PRCT` | `95` | Critical threshold Flashcache usage (%) |
+| `UNKNOWN-STATUS` |  | Can used special variables like: %\{status\}, %\{node_id\} |
+| `WARNING-STATUS` |  | Can used special variables like: %\{status\}, %\{node_id\} |
+| `WARNING-FLASHCACHE-USAGE` |  | Warning threshold Flashcache usage |
+| `WARNING-FLASHCACHE-USAGE-FREE` |  | Warning threshold Flashcache usage free |
+| `WARNING-FLASHCACHE-NODE-READHITS` |  | Warning threshold Flashcache node read hits |
+| `WARNING-FLASHCACHE-VOLUME-READHITS` |  | Warning threshold Flashcache volume read hits |
+| `CRITICAL-FLASHCACHE-USAGE` |  | Critical threshold Flashcache usage |
+| `CRITICAL-FLASHCACHE-USAGE-FREE` |  | Critical threshold Flashcache usage free |
+| `CRITICAL-FLASHCACHE-NODE-READHITS` |  | Critical threshold Flashcache node read hits |
+| `CRITICAL-FLASHCACHE-VOLUME-READHITS` |  | Critical threshold Flashcache volume read hits |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.flashcache.usage.bytes` | `B` |  | `WARNING-FLASHCACHE-USAGE`, `CRITICAL-FLASHCACHE-USAGE` |
+| `node.flashcache.free.bytes` | `B` |  | `WARNING-FLASHCACHE-USAGE-FREE`, `CRITICAL-FLASHCACHE-USAGE-FREE` |
+| `node.flashcache.usage.percentage` | `%` |  | `WARNING-FLASHCACHE-USAGE-PRCT`, `CRITICAL-FLASHCACHE-USAGE-PRCT` |
+| `node.flashcache.readhits.percentage` | `%` | read hits: %% | `WARNING-FLASHCACHE-NODE-READHITS`, `CRITICAL-FLASHCACHE-NODE-READHITS` |
+| `volume.flashcache.readhits.percentage` | `%` | read hits: %% | `WARNING-FLASHCACHE-VOLUME-READHITS`, `CRITICAL-FLASHCACHE-VOLUME-READHITS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cages {/* #storage-hp-3par-ssh-cages */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /Normal/i'` | Can used special variables like: %\{status\}, %\{cage_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /Normal/i') |
+| `CRITICAL-BOARD-FIRMWARE-STATUS` | `'%{status} !~ /Current/i'` | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /Current/i') |
+| `CRITICAL-BOARD-SELF-STATUS` | `'%{status} !~ /ok/i'` | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /ok/i') |
+| `CRITICAL-BOARD-PARTNER-STATUS` | `'%{status} !~ /ok/i'` | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /ok/i') |
+| `CRITICAL-PSU-STATUS` | `'%{status} !~ /ok/i'` | Can used special variables like: %\{status\}, %\{cage_id\}, %\{psu_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /ok/i') |
+| `CRITICAL-DRIVE-PORTA-STATUS` | `'%{status} !~ /ok/i'` | Can used special variables like: %\{status\}, %\{cage_id\}, %\{drive_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /normal/i') |
+| `CRITICAL-DRIVE-PORTB-STATUS` | `'%{status} !~ /ok/i'` | Can used special variables like: %\{status\}, %\{cage_id\}, %\{drive_id\}. Set thresholds for status (Default critical: '%\{status\} !~ /normal/i') |
+| `UNKNOWN-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\} |
+| `WARNING-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\} |
+| `FILTER-CAGE-ID` |  | Filter cages by id (can be a regexp) |
+| `UNKNOWN-BOARD-FIRMWARE-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\} |
+| `WARNING-BOARD-FIRMWARE-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\} |
+| `UNKNOWN-BOARD-SELF-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\} |
+| `WARNING-BOARD-SELF-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\} |
+| `UNKNOWN-BOARD-PARTNER-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\} |
+| `WARNING-BOARD-PARTNER-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{board_id\} |
+| `UNKNOWN-PSU-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{psu_id\} |
+| `WARNING-PSU-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{psu_id\} |
+| `UNKNOWN-DRIVE-PORTA-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{drive_id\} |
+| `WARNING-DRIVE-PORTA-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{drive_id\} |
+| `UNKNOWN-DRIVE-PORTB-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{drive_id\} |
+| `WARNING-DRIVE-PORTB-STATUS` |  | Can used special variables like: %\{status\}, %\{cage_id\}, %\{drive_id\} |
+| `WARNING-DRIVE-TEMPERATURE` |  | Warning threshold Drive temperature |
+| `CRITICAL-DRIVE-TEMPERATURE` |  | Critical threshold Drive temperature |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `drive.temperature.celsius` | `C` | temperature:  C | `WARNING-DRIVE-TEMPERATURE`, `CRITICAL-DRIVE-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Capacity {/* #storage-hp-3par-ssh-capacity */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-TYPE` | `.*` | Filter storages by type (can be a regexp) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `WARNING-SPACE-UNAVAILABLE` |  | Warning threshold space unavailable (B) |
+| `WARNING-SPACE-FAILED` |  | Warning threshold space failed (B) |
+| `WARNING-COMPACTION` |  | Warning threshold compaction |
+| `WARNING-DEDUP` |  | Warning threshold deduplication |
+| `WARNING-COMPRESSION` |  | Warning threshold compression |
+| `WARNING-DATA-REDUCTION` |  | Warning threshold data reduction |
+| `WARNING-OVERPROVISIONING` |  | Warning threshold overprovisioning |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+| `CRITICAL-SPACE-UNAVAILABLE` |  | Critical threshold space unavailable (B) |
+| `CRITICAL-SPACE-FAILED` |  | Critical threshold space failed (B) |
+| `CRITICAL-COMPACTION` |  | Critical threshold compaction |
+| `CRITICAL-DEDUP` |  | Critical threshold deduplication |
+| `CRITICAL-COMPRESSION` |  | Critical threshold compression |
+| `CRITICAL-DATA-REDUCTION` |  | Critical threshold data reduction |
+| `CRITICAL-OVERPROVISIONING` |  | Critical threshold overprovisioning |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `storage.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `storage.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `storage.space.unavailable.bytes` | `B` | unavailable | `WARNING-SPACE-UNAVAILABLE`, `CRITICAL-SPACE-UNAVAILABLE` |
+| `storage.space.failed.bytes` | `B` | failed | `WARNING-SPACE-FAILED`, `CRITICAL-SPACE-FAILED` |
+| `storage.space.compaction.ratio.count` |  | compaction | `WARNING-COMPACTION`, `CRITICAL-COMPACTION` |
+| `storage.space.deduplication.ratio.count` |  | deduplication | `WARNING-DEDUP`, `CRITICAL-DEDUP` |
+| `storage.space.compression.ratio.count` |  | compression | `WARNING-COMPRESSION`, `CRITICAL-COMPRESSION` |
+| `storage.space.data_reduction.ratio.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+| `storage.space.overprovisioning.ratio.count` |  | overprovisioning | `WARNING-OVERPROVISIONING`, `CRITICAL-OVERPROVISIONING` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #storage-hp-3par-ssh-components */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'battery' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=battery --filter=cim) Can also exclude specific instance: --filter=port,free |
+| `WARNING` |  | Set warning threshold for 'battery.charge' (syntax: type,regexp,threshold) Example: --warning='battery.charge,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'battery.charge' (syntax: type,regexp,threshold) Example: --critical='battery.charge,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='battery,OK,degraded' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk usage {/* #storage-hp-3par-ssh-disk-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-USAGE-PRCT` | `95` | Threshold critical usage (%) |
+| `WARNING-USAGE-PRCT` | `90` | Threshold warning usage (%) |
+| `FILTER-NAME` |  | Filter disk name (can be a regexp) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `disk.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `disk.space.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Nodes {/* #storage-hp-3par-ssh-nodes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE-ID` | `.*` | Filter nodes by id (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{node_id\} |
+| `WARNING-CPU-UTILIZATION` | `80` | Warning threshold CPU utilization |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Critical threshold CPU utilization |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{node_id\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{node_id\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `core.cpu.utilization.percentage` | `%` | usage:  %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### PSU {/* #storage-hp-3par-ssh-psu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE-ID` | `.*` | Filter nodes by id (can be a regexp) |
+| `FILTER-PSU-ID` | `.*` | Filter power supplies by id (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `CRITICAL-AC-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for AC status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `CRITICAL-DC-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for DC status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `CRITICAL-FAN-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for fan status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `CRITICAL-BATTERY-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for battery status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `WARNING-CHARGE-REMAINING-MINUTES` | `20:` | Warning threshold charge remaining minutes |
+| `CRITICAL-CHARGE-REMAINING-MINUTES` | `10:` | Critical threshold charge remaining minutes |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `UNKNOWN-AC-STATUS` |  | Set unknown threshold for AC status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `WARNING-AC-STATUS` |  | Set unknown threshold for AC status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `UNKNOWN-DC-STATUS` |  | Set unknown threshold for DC status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `WARNING-DC-STATUS` |  | Set unknown threshold for DC status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `UNKNOWN-FAN-STATUS` |  | Set unknown threshold for fan status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `WARNING-FAN-STATUS` |  | Set unknown threshold for fan status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `UNKNOWN-BATTERY-STATUS` |  | Set unknown threshold for battery status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `WARNING-BATTERY-STATUS` |  | Set unknown threshold for battery status. Can used special variables like: %\{status\}, %\{node_id\}, %\{psu_id\} |
+| `WARNING-CHARGE-REMAINING` |  | Warning threshold charge remaining |
+| `CRITICAL-CHARGE-REMAINING` |  | Critical threshold charge remaining |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `battery.charge.remaining.percent` |  | remaining capacity:  %% | `WARNING-CHARGE-REMAINING`, `CRITICAL-CHARGE-REMAINING` |
+| `battery.charge.remaining.minutes` |  | remaining time:  minutes | `WARNING-CHARGE-REMAINING-MINUTES`, `CRITICAL-CHARGE-REMAINING-MINUTES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP time {/* #storage-hp-3par-ssh-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE-ID` | `.*` | Filter nodes by ID (can be a regexp). |
+| `WARNING-OFFSET` | `-3:3` | Time offset warning threshold (in seconds). |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #storage-hp-3par-ssh-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-OFFSET` | `1800:` | Warning threshold Uptime |
+| `CRITICAL-OFFSET` | `900:` | Critical threshold Uptime |
+| `FILTER-NODE-ID` |  | Filter nodes by id (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume usage {/* #storage-hp-3par-ssh-volume-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Threshold critical usage (%) |
+| `FILTER-NAME` | `^((?!.srdata\|admin).)*$` | Filter volume name (can be a regexp) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `volume.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `volume.space.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-hp-3par-ssh-afc`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-cages`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-capacity`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-components`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-disk-usage`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-nodes`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-psu`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-time`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-uptime`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `storage-hp-3par-ssh-volume-usage`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240531</summary>
+
+- Command `storage-hp-3par-ssh-afc`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-cages`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-capacity`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-components`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-disk-usage`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-nodes`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-psu`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-time`
+    - Macro `CRITICAL-OFFSET` added
+    - Macro `WARNING-OFFSET` added
+    - Macro `FILTER-VOLUME-NAME` removed
+    - Macro `UNKNOWN-STATUS` removed
+    - Macro `WARNING-STATUS` removed
+    - Macro `CRITICAL-STATUS` removed
+    - Macro `WARNING-FLASHCACHE-USAGE` removed
+    - Macro `WARNING-FLASHCACHE-USAGE-FREE` removed
+    - Macro `WARNING-FLASHCACHE-USAGE-PRCT` removed
+    - Macro `WARNING-FLASHCACHE-NODE-READHITS` removed
+    - Macro `WARNING-FLASHCACHE-VOLUME-READHIT` removed
+    - Macro `CRITICAL-FLASHCACHE-USAGE` removed
+    - Macro `CRITICAL-FLASHCACHE-USAGE-FREE` removed
+    - Macro `CRITICAL-FLASHCACHE-USAGE-PRCT` removed
+    - Macro `CRITICAL-FLASHCACHE-NODE-READHITS` removed
+    - Macro `CRITICAL-FLASHCACHE-VOLUME-READHIT` removed
+- Command `storage-hp-3par-ssh-uptime`
+    - Macro `SSHCLI-OPTION` removed
+- Command `storage-hp-3par-ssh-volume-usage`
+    - Macro `SSHCLI-OPTION` removed
+
+</details>

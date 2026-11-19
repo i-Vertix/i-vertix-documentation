@@ -1,0 +1,434 @@
+---
+title: "IBM Informix database"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Databases/Informix.png";
+
+<PluginPackHeader name="IBM Informix database" image={image} category="Database" metadata={[]} />
+
+## Description
+
+Monitors IBM Informix databases: connection time, sessions, dbspace and chunk states, checkpoints, logfile usage, locks, long transactions, cache, level-0 backups and SQL requests.
+
+The plugin pack provides these checks:
+
+* [Informix Archive Level-0 backup execution time](#database-informix-sql-archivelevel0)
+* [Informix Checkpoints](#database-informix-sql-checkpoints)
+* [Informix Chunk states](#database-informix-sql-chunkstates)
+* [Informix Connection time](#database-informix-sql-connection-time)
+* [Informix Database space usage](#database-informix-sql-dbspace-usage)
+* [Informix Global cache](#database-informix-sql-global-cache)
+* [Informix Lockoverflow](#database-informix-sql-lockoverflow)
+* [Informix Logfile usage](#database-informix-sql-logfile-usage)
+* [Informix Long TXS](#database-informix-sql-longtxs)
+* [Informix Sessions](#database-informix-sql-sessions)
+* [Informix SQL](#database-informix-sql-sql)
+* [Informix Table locks](#database-informix-sql-table-locks)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Informix Database space usage](#database-informix-sql-dbspace-usage) | `Informix Database space usage - <name>` |
+| [Informix Database space usage](#database-informix-sql-dbspace-usage) | `Informix Database Space usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Informix-Database-SQL
+
+*Informix Database SQL* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Informix Archive Level-0 backup execution time](#database-informix-sql-archivelevel0) | `database-informix-sql-archivelevel0` |
+| [Informix Checkpoints](#database-informix-sql-checkpoints) | `database-informix-sql-checkpoints` |
+| [Informix Chunk states](#database-informix-sql-chunkstates) | `database-informix-sql-chunkstates` |
+| [Informix Connection time](#database-informix-sql-connection-time) | `database-informix-sql-connection-time` |
+| [Informix Database space usage](#database-informix-sql-dbspace-usage) | `database-informix-sql-dbspace-usage` |
+| [Informix Global cache](#database-informix-sql-global-cache) | `database-informix-sql-global-cache` |
+| [Informix Lockoverflow](#database-informix-sql-lockoverflow) | `database-informix-sql-lockoverflow` |
+| [Informix Logfile usage](#database-informix-sql-logfile-usage) | `database-informix-sql-logfile-usage` |
+| [Informix Long TXS](#database-informix-sql-longtxs) | `database-informix-sql-longtxs` |
+| [Informix Sessions](#database-informix-sql-sessions) | `database-informix-sql-sessions` |
+| [Informix Table locks](#database-informix-sql-table-locks) | `database-informix-sql-table-locks` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Informix SQL](#database-informix-sql-sql) | `database-informix-sql-sql` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Archive Level-0 backup execution time {/* #database-informix-sql-archivelevel0 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `1800` | Threshold warning since last execution (s) |
+| `CRITICAL` | `3600` | Threshold critical since last execution (s) |
+| `NAME` |  | Set the dbspace (empty means 'check all dbspaces') (regexp can be used) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Checkpoints {/* #database-informix-sql-checkpoints */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CP` | `5` | Threshold warning 'cp_time' (s) |
+| `WARNING-FLUSH` | `2` | Threshold warning 'flush_time' (s) |
+| `WARNING-CRIT` | `1` | Threshold warning 'crit_time' (s) |
+| `WARNING-BLOCK` | `1` | Threshold warning 'block_time' (s) |
+| `CRITICAL-CP` | `10` | Threshold critical 'cp_time' (s) |
+| `CRITICAL-FLUSH` | `5` | Threshold critical 'flush_time' (s) |
+| `CRITICAL-CRIT` | `3` | Threshold critical 'crit_time' (s) |
+| `CRITICAL-BLOCK` | `2` | Threshold critical 'block_time' (s) |
+| `FILTER-TRIGGER` |  | Filter events that can trigger a checkpoint with a regexp |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Chunk states {/* #database-informix-sql-chunkstates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CHUNK-STATE` | `is_offline` | State to check (Can be: is_offline, is_recovering, is_blobchunk, is_inconsistent) |
+| `ERROR-MSG` | `Chunk %s is down` | Display message when you have an error. (Default: 'Chunk %s has a problem') |
+| `WARNING` | `@1:1` | Threshold warning (can check 1 or 0) |
+| `NAME` |  | Set the dbspace (empty means 'check all dbspaces') |
+| `OK-MSG` |  | Display message when chunk is ok. (Default: 'Chunk %s is ok') |
+| `GLOBAL-OK-MSG` |  | Display global message when you have no errors. (Default: 'All chunks are ok') |
+| `CRITICAL` |  | Threshold critical (can check 1 or 0) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Connection time {/* #database-informix-sql-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `250` | Threshold warning (s) |
+| `CRITICAL` | `500` | Threshold critical (s) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Database space usage {/* #database-informix-sql-dbspace-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `90` | Threshold warning (%) |
+| `CRITICAL` | `95` | Threshold critical (%) |
+| `NAME` |  | Set the dbspace (empty means 'check all dbspaces') |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Global cache {/* #database-informix-sql-global-cache */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-READ` | `90:` | Threshold warning read cached (%) |
+| `WARNING-WRITE` | `80:` | Threshold warning write cached (%) |
+| `CRITICAL-READ` | `80:` | Threshold critical read cached (%) |
+| `CRITICAL-WRITE` | `70:` | Threshold critical write cached (%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Lockoverflow {/* #database-informix-sql-lockoverflow */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `5` | Threshold warning |
+| `CRITICAL` | `10` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Logfile usage {/* #database-informix-sql-logfile-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `90` | Threshold warning (%) |
+| `CRITICAL` | `95` | Threshold critical (%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Long TXS {/* #database-informix-sql-longtxs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `2` | Threshold warning |
+| `CRITICAL` | `5` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Sessions {/* #database-informix-sql-sessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning |
+| `CRITICAL` |  | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix Table locks {/* #database-informix-sql-table-locks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DEADLKS` | `1` | Threshold warning 'deadlks' in absolute |
+| `WARNING-LOCKWTS` | `25` | Threshold warning 'lockwts' in absolute |
+| `WARNING-LKTOUTS` | `5` | Threshold warning 'lktouts' in absolute |
+| `CRITICAL-DEADLKS` | `5` | Threshold critical 'deadlks' in absolute |
+| `CRITICAL-LOCKWTS` | `50` | Threshold critical 'lockwts' in absolute |
+| `CRITICAL-LKTOUTS` | `20` | Threshold critical 'lktouts' in absolute |
+| `NAME` |  | Set the database (empty means 'check all databases') |
+| `FILTER-TABLES` |  | Filter tables (format of a table name: 'sysmater.dual') |
+| `WARNING-LOCKREQS` |  | Threshold warning 'lockreqs' in absolute |
+| `CRITICAL-LOCKREQS` |  | Threshold critical 'lockreqs' in absolute |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Informix SQL {/* #database-informix-sql-sql */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FORMAT` | `SQL statement result : %i.` | Output format (Default: 'SQL statement result : %i.') |
+| `PERFDATA-NAME` | `value` | Perfdata name in perfdata output (Default: 'value') |
+| `SQL-STATEMENT` |  | SQL statement that returns a number |
+| `PERFDATA-UNIT` |  | Perfdata unit in perfdata output (Default: '') |
+| `PERFDATA-MIN` |  | Minimum value to add in perfdata output (Default: '') |
+| `PERFDATA-MAX` |  | Maximum value to add in perfdata output (Default: '') |
+| `WARNING-VALUE` |  | Threshold warning value |
+| `WARNING-EXECUTION-TIME` |  | Threshold warning execution time |
+| `CRITICAL-VALUE` |  | Threshold critical value |
+| `CRITICAL-EXECUTION-TIME` |  | Threshold critical execution time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqlrequest.execution.time.seconds` | `s` | execution time:  second(s) | `WARNING-EXECUTION-TIME`, `CRITICAL-EXECUTION-TIME` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250114 - 20250210</summary>
+
+- Plugin pack `IBM Informix database`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250114 - 20250210`.

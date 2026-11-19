@@ -1,0 +1,1974 @@
+---
+title: "Cisco standard network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco standard network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco routers and switches through SNMP: CPU, memory and load, environment sensors, interfaces, spanning tree, stacking, VSS and vPC, BGP and HSRP, IP SLA, QoS, voice calls and configuration status.
+
+The plugin pack provides these checks:
+
+* [AAA Servers](#network-cisco-standard-snmp-aaa-servers)
+* [ARP](#network-cisco-standard-snmp-arp)
+* [BGP Peer state](#network-cisco-standard-snmp-bgp)
+* [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) (`check_nwc_health_cisco-configstatus-snmpv3`)
+* [Configuration status](#network-cisco-standard-snmp-configuration) (`network-cisco-standard-snmp-configuration`)
+* [CPU](#network-cisco-standard-snmp-cpu)
+* [Environment](#network-cisco-standard-snmp-environment) (`network-cisco-standard-snmp-environment`)
+* [Environment](#network-cisco-standard-snmp-environment-catalyst) (`network-cisco-standard-snmp-environment-catalyst`)
+* [HSRP](#network-cisco-standard-snmp-hsrp)
+* [Interfaces](#network-cisco-standard-snmp-interfaces)
+* [IP SLA](#network-cisco-standard-snmp-ipsla)
+* [Load](#network-cisco-standard-snmp-load)
+* [Memory](#network-cisco-standard-snmp-memory) (`network-cisco-standard-snmp-memory`)
+* [Memory](#network-cisco-standard-snmp-memory-catalyst) (`network-cisco-standard-snmp-memory-catalyst`)
+* [Memory flash](#network-cisco-standard-snmp-memory-flash)
+* [QoS usage](#network-cisco-standard-snmp-qos-usage)
+* [Spanning tree](#network-cisco-standard-snmp-spanning-tree)
+* [Stack](#network-cisco-standard-snmp-stack)
+* [Uptime](#network-cisco-standard-snmp-uptime)
+* [Virtual Stack](#network-cisco-standard-snmp-stack-virtual)
+* [Voice calls](#network-cisco-standard-snmp-voice-call)
+* [vPC](#network-cisco-standard-snmp-vpc)
+* [VSS](#network-cisco-standard-snmp-vss)
+* [WAN 3G](#network-cisco-standard-snmp-wan3g)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `AAA Server - <address>` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `Interface - <name>` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `Spanning tree - <port>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Cisco-Bridge-IOS
+
+*Cisco Bridge IOS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ARP](#network-cisco-standard-snmp-arp) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) | `network-cisco-standard-snmp-environment` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) | `network-cisco-standard-snmp-memory-flash` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Uptime](#network-cisco-standard-snmp-uptime) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Catalyst-Switch
+
+*Cisco Catalyst series* · Parent template: `Cisco-Standard-Switch`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [ARP](#network-cisco-standard-snmp-arp) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Catalyst-Switch-Stack
+
+*Cisco Catalyst Stack series* · Parent template: `Cisco-Catalyst-Switch`, `Cisco-Standard-Switch`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) (inherited from `Cisco-Catalyst-Switch`) | `network-cisco-standard-snmp-environment-catalyst` |
+| [Load](#network-cisco-standard-snmp-load) (inherited from `Cisco-Catalyst-Switch`) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) (inherited from `Cisco-Catalyst-Switch`) | `network-cisco-standard-snmp-memory-catalyst` |
+| [ARP](#network-cisco-standard-snmp-arp) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Nexus
+
+*Cisco Nexus* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPTIMEOUT` | `1` | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ARP](#network-cisco-standard-snmp-arp) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) | `network-cisco-standard-snmp-memory-flash` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Uptime](#network-cisco-standard-snmp-uptime) | `network-cisco-standard-snmp-uptime` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Router
+
+*Cisco Router* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPTIMEOUT` | `1` | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ARP](#network-cisco-standard-snmp-arp) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) | `network-cisco-standard-snmp-environment` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Standard-Switch
+
+*Cisco Switch (2xxx, 3xxx, Catalyst, Nexus,...)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPTIMEOUT` | `1` | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [ARP](#network-cisco-standard-snmp-arp) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Standard-Switch-Stack
+
+*Cisco Stack Switch* · Parent template: `Cisco-Standard-Switch`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [ARP](#network-cisco-standard-snmp-arp) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Standard-Switch-VirtualStack
+
+*Cisco Stack Switch* · Parent template: `Cisco-Standard-Switch`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [ARP](#network-cisco-standard-snmp-arp) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-arp` |
+| [Configuration status](#network-cisco-standard-snmp-configuration) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) (inherited from `Cisco-Standard-Switch`) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-Voice-Gateway-IOS
+
+*Cisco Voice Gateway IOS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Configuration status](#network-cisco-standard-snmp-configuration) | `network-cisco-standard-snmp-configuration` |
+| [CPU](#network-cisco-standard-snmp-cpu) | `network-cisco-standard-snmp-cpu` |
+| [Environment](#network-cisco-standard-snmp-environment) | `network-cisco-standard-snmp-environment` |
+| [Memory](#network-cisco-standard-snmp-memory) | `network-cisco-standard-snmp-memory` |
+| [Memory flash](#network-cisco-standard-snmp-memory-flash) | `network-cisco-standard-snmp-memory-flash` |
+| [Uptime](#network-cisco-standard-snmp-uptime) | `network-cisco-standard-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [AAA Servers](#network-cisco-standard-snmp-aaa-servers) | `network-cisco-standard-snmp-aaa-servers` |
+| [ARP](#network-cisco-standard-snmp-arp) | `network-cisco-standard-snmp-arp` |
+| [BGP Peer state](#network-cisco-standard-snmp-bgp) | `network-cisco-standard-snmp-bgp` |
+| [Configuration status](#check_nwc_health_cisco-configstatus-snmpv3) | `check_nwc_health_cisco-configstatus-snmpv3` |
+| [Environment](#network-cisco-standard-snmp-environment-catalyst) | `network-cisco-standard-snmp-environment-catalyst` |
+| [HSRP](#network-cisco-standard-snmp-hsrp) | `network-cisco-standard-snmp-hsrp` |
+| [Interfaces](#network-cisco-standard-snmp-interfaces) | `network-cisco-standard-snmp-interfaces` |
+| [IP SLA](#network-cisco-standard-snmp-ipsla) | `network-cisco-standard-snmp-ipsla` |
+| [Load](#network-cisco-standard-snmp-load) | `network-cisco-standard-snmp-load` |
+| [Memory](#network-cisco-standard-snmp-memory-catalyst) | `network-cisco-standard-snmp-memory-catalyst` |
+| [QoS usage](#network-cisco-standard-snmp-qos-usage) | `network-cisco-standard-snmp-qos-usage` |
+| [Spanning tree](#network-cisco-standard-snmp-spanning-tree) | `network-cisco-standard-snmp-spanning-tree` |
+| [Stack](#network-cisco-standard-snmp-stack) | `network-cisco-standard-snmp-stack` |
+| [Virtual Stack](#network-cisco-standard-snmp-stack-virtual) | `network-cisco-standard-snmp-stack-virtual` |
+| [Voice calls](#network-cisco-standard-snmp-voice-call) | `network-cisco-standard-snmp-voice-call` |
+| [vPC](#network-cisco-standard-snmp-vpc) | `network-cisco-standard-snmp-vpc` |
+| [VSS](#network-cisco-standard-snmp-vss) | `network-cisco-standard-snmp-vss` |
+| [WAN 3G](#network-cisco-standard-snmp-wan3g) | `network-cisco-standard-snmp-wan3g` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### ARP {/* #network-cisco-standard-snmp-arp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DUPLICATE-IPADDR` | `0` | Threshold warning Duplicate IP addresses |
+| `CRITICAL-DUPLICATE-IPADDR` | `10` | Threshold critical Duplicate IP addresses |
+| `WARNING-TOTAL-ENTRIES` |  | Threshold warning Total entries |
+| `WARNING-DUPLICATE-MACADDR` |  | Threshold warning Duplicate MAC addresses |
+| `CRITICAL-TOTAL-ENTRIES` |  | Threshold critical Total entries |
+| `CRITICAL-DUPLICATE-MACADDR` |  | Threshold critical Duplicate MAC addresses |
+| `FILTER-IPADDR` |  | Filter ip addresses (can be a regexp) |
+| `FILTER-MACADDR` |  | Filter mac addresses (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `arp.total.entries.count` |  | total entries | `WARNING-TOTAL-ENTRIES`, `CRITICAL-TOTAL-ENTRIES` |
+| `arp.duplicate.macaddr.count` |  | duplicate mac address | `WARNING-DUPLICATE-MACADDR`, `CRITICAL-DUPLICATE-MACADDR` |
+| `arp.duplicate.ipaddr.count` |  | duplicate ip address | `WARNING-DUPLICATE-IPADDR`, `CRITICAL-DUPLICATE-IPADDR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Configuration status {/* #network-cisco-standard-snmp-configuration */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-CONFIG-RUNNING-AHEAD` | `14400` | Set critical threshold in seconds configuration running ahead |
+| `WARNING-CONFIG-RUNNING-AHEAD` | `3600` | Set warning threshold in seconds configuration running ahead |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `configuration.running.ahead.since.seconds` | `s` |  | `WARNING-CONFIG-RUNNING-AHEAD`, `CRITICAL-CONFIG-RUNNING-AHEAD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-cisco-standard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CHECK-ORDER` | `process,old_sys,system_ext` | Check cpu in standard cisco mib. If you have some issue (wrong cpu information in a specific mib), you can change the order (Default: 'process,old_sys,system_ext') |
+| `WARNING-AVERAGE-1M` | `85` | Threshold warning Average 1 min |
+| `WARNING-AVERAGE-5M` | `80` | Threshold warning Average 5 min |
+| `CRITICAL-AVERAGE-1M` | `95` | Threshold warning Average 1 min |
+| `CRITICAL-AVERAGE-5M` | `90` | Threshold warning Average 5 min |
+| `WARNING-CORE-5s` |  | Threshold warning Core 5 sec |
+| `WARNING-CORE-1M` |  | Threshold warning Core 1 min |
+| `WARNING-CORE-5M` |  | Threshold warning Core 5 min |
+| `WARNING-AVERAGE-5s` |  | Threshold warning Average 5 sec |
+| `CRITICAL-CORE-5s` |  | Threshold warning Core 5 sec |
+| `CRITICAL-CORE-1M` |  | Threshold warning Core 1 min |
+| `CRITICAL-CORE-5M` |  | Threshold warning Core 5 min |
+| `CRITICAL-AVERAGE-5s` |  | Threshold warning Average 5 sec |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-AVERAGE-5s`, `CRITICAL-AVERAGE-5s` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-AVERAGE-1M`, `CRITICAL-AVERAGE-1M` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-AVERAGE-5M`, `CRITICAL-AVERAGE-5M` |
+| `core.cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-CORE-5s`, `CRITICAL-CORE-5s` |
+| `core.cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-CORE-1M`, `CRITICAL-CORE-1M` |
+| `core.cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-CORE-5M`, `CRITICAL-CORE-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #network-cisco-standard-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'temperature', 'voltage', 'module', 'physical', 'sensor' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(up\|normal)$)' |
+| `WARNING` |  | Set warning threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `FILTER2` |  | Exclude the items given as a comma-separated list (example: --filter=fan --filter=psu). You can also exclude items from specific instances: --filter=fan,1 |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-cisco-standard-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CORE-LOAD-1M` |  | Threshold warning load 1 minute |
+| `WARNING-CORE-LOAD-5M` | `70` | Threshold warning load 5 minute |
+| `WARNING-CORE-LOAD-15M` |  | Threshold warning load 15 minute |
+| `CRITICAL-CORE-LOAD-1M` |  | Threshold critical load 1 minute |
+| `CRITICAL-CORE-LOAD-5M` | `85` | Threshold critical load 5 minute |
+| `CRITICAL-CORE-LOAD-15M` |  | Threshold critical load 15 minute |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `core.cpu.load.1m.count` |  | (1m) | `WARNING-CORE-LOAD-1M`, `CRITICAL-CORE-LOAD-1M` |
+| `core.cpu.load.5m.count` |  | (5m) | `WARNING-CORE-LOAD-5M`, `CRITICAL-CORE-LOAD-5M` |
+| `core.cpu.load.15m.count` |  | (15m) | `WARNING-CORE-LOAD-15M`, `CRITICAL-CORE-LOAD-15M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-standard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CHECK-ORDER` | `enhanced_pool,pool,process,system_ext` | Check memory in standard cisco mib. If you have some issue (wrong memory information in a specific mib), you can change the order (Default: 'enhanced_pool,pool,process,system_ext') |
+| `WARNING-USAGE` | `85` | Threshold warning in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical in percent |
+| `FILTER-POOL` |  | Filter pool to check (can use regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory flash {/* #network-cisco-standard-snmp-memory-flash */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `FILTER-NAME` | `'^((?!webui\|ucode0).)*$'` | Filter partition name (can be a regexp) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.flash.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.flash.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.flash.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### QoS usage {/* #network-cisco-standard-snmp-qos-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName) |
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s'). Only for --warning-int-traffic and --critical-int-traffic options |
+| `FILTER-SOURCE` |  | Filter interface name and class-map (can be a regexp). Example of a source (interfacename\:servicepolicy\:classmap:...): FastEthernet1\:Visioconference |
+| `WARNING-INT-CMAP-TRAFFIC` |  | Threshold warning int CMAP traffic |
+| `WARNING-INT-CMAP-DROP` |  | Threshold warning int CMAP drop |
+| `WARNING-CMAP-TRAFFIC` |  | Threshold warning CMAP traffic |
+| `WARNING-CMAP-DROP` |  | Threshold warning CMAP drop |
+| `WARNING-TOTAL-TRAFFIC` |  | Threshold warning total traffic |
+| `WARNING-TOTAL-DROP` |  | Threshold warning total drop |
+| `CRITICAL-INT-CMAP-TRAFFIC` |  | Threshold critical int CMAP traffic |
+| `CRITICAL-INT-CMAP-DROP` |  | Threshold critical int CMAP drop |
+| `CRITICAL-CMAP-TRAFFIC` |  | Threshold critical CMAP traffic |
+| `CRITICAL-CMAP-DROP` |  | Threshold critical CMAP drop |
+| `CRITICAL-TOTAL-TRAFFIC` |  | Threshold critical total traffic |
+| `CRITICAL-TOTAL-DROP` |  | Threshold critical total drop |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `qos.interface.classmap.traffic.bitspersecond` | `b/s` |  | `WARNING-INT-CMAP-TRAFFIC`, `CRITICAL-INT-CMAP-TRAFFIC` |
+| `qos.interface.classmap.drop.bitspersecond` | `b/s` | drop:  /s | `WARNING-INT-CMAP-DROP`, `CRITICAL-INT-CMAP-DROP` |
+| `qos.classmap.traffic.bitspersecond` | `b/s` | traffic:  /s | `WARNING-CMAP-TRAFFIC`, `CRITICAL-CMAP-TRAFFIC` |
+| `qos.classmap.drop.bitspersecond` | `b/s` | drop:  /s | `WARNING-CMAP-DROP`, `CRITICAL-CMAP-DROP` |
+| `qos.traffic.bitspersecond` | `b/s` | total traffic:  /s | `WARNING-TOTAL-TRAFFIC`, `CRITICAL-TOTAL-TRAFFIC` |
+| `qos.drop.bitspersecond` | `b/s` | total drop:  /s | `WARNING-TOTAL-DROP`, `CRITICAL-TOTAL-DROP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-cisco-standard-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #network-cisco-standard-snmp-environment-catalyst */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `sensor.celsius,\d01\d,60` | Set warning threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'psu', 'temperature', 'voltage', 'module', 'physical', 'sensor' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=fan,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(up\|normal)$)' |
+| `CRITICAL` |  | Set critical threshold for temperatures, voltages, sensors (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `FILTER2` |  | Exclude the items given as a comma-separated list (example: --filter=fan --filter=psu). You can also exclude items from specific instances: --filter=fan,1 |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-cisco-standard-snmp-memory-catalyst */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CHECK-ORDER` | `process,pool,enhanced_pool,system_ext` | Check memory in standard cisco mib. If you have some issue (wrong memory information in a specific mib), you can change the order (Default: 'enhanced_pool,pool,process,system_ext') |
+| `FILTER-POOL` |  | Filter pool to check (can use regexp) |
+| `WARNING-USAGE` |  | Threshold warning in percent |
+| `CRITICAL-USAGE` |  | Threshold critical in percent |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Stack {/* #network-cisco-standard-snmp-stack */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SDM-MISMATCH` | `0` | Threshold warning SDM mismatch |
+| `WARNING-VERSION-MISMATCH` | `0` | Threshold warning version mismatch |
+| `WARNING-FEATURE-MISMATCH` | `0` | Threshold warning feature mismatch |
+| `WARNING-INVALID` | `0` | Threshold warning invalid |
+| `WARNING-REMOVED` | `0` | Threshold warning removed |
+| `CRITICAL-SDM-MISMATCH` | `1` | Threshold critical SDM mismatch |
+| `CRITICAL-VERSION-MISMATCH` | `1` | Threshold critical version mismatch |
+| `CRITICAL-FEATURE-MISMATCH` | `1` | Threshold critical feature mismatch |
+| `CRITICAL-NEW-MASTER-INIT` | `1` | Threshold critical new master init |
+| `CRITICAL-STACK-STATUS` | `'%{stack_status} =~ /notredundant/'` | Set critical threshold for stack status (Default: '%\{stack_status\} =~ /notredundant/'). Can used special variables like: %\{stack_status\} |
+| `WARNING-WAITING` |  | Threshold warning waiting |
+| `WARNING-PROGRESSING` |  | Threshold warning progressing |
+| `WARNING-ADDED` |  | Threshold warning added |
+| `WARNING-READY` |  | Threshold warning ready |
+| `WARNING-NEW-MASTER-INIT` |  | Threshold warning new master init |
+| `WARNING-PROVISIONED` |  | Threshold warning provisioned |
+| `CRITICAL-WAITING` |  | Threshold critical waiting |
+| `CRITICAL-PROGRESSING` |  | Threshold critical progressing |
+| `CRITICAL-ADDED` |  | Threshold critical added |
+| `CRITICAL-READY` |  | Threshold critical ready |
+| `CRITICAL-PROVISIONED` |  | Threshold critical provisioned |
+| `CRITICAL-INVALID` |  | Threshold critical invalid |
+| `CRITICAL-REMOVED` |  | Threshold critical removed |
+| `WARNING-STACK-STATUS` |  | Set warning threshold for stack status (Default: ''). Can used special variables like: %\{stack_status\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `waiting` |  | waiting | `WARNING-WAITING`, `CRITICAL-WAITING` |
+| `progressing` |  | progressing | `WARNING-PROGRESSING`, `CRITICAL-PROGRESSING` |
+| `added` |  | added | `WARNING-ADDED`, `CRITICAL-ADDED` |
+| `ready` |  | ready | `WARNING-READY`, `CRITICAL-READY` |
+| `sdm_mismatch` |  | SDM mismatch | `WARNING-SDM-MISMATCH`, `CRITICAL-SDM-MISMATCH` |
+| `version_mismatch` |  | version mismatch | `WARNING-VERSION-MISMATCH`, `CRITICAL-VERSION-MISMATCH` |
+| `feature_mismatch` |  | feature mismatch | `WARNING-FEATURE-MISMATCH`, `CRITICAL-FEATURE-MISMATCH` |
+| `new_master_init` |  | new master init | `WARNING-NEW-MASTER-INIT`, `CRITICAL-NEW-MASTER-INIT` |
+| `provisioned` |  | provisioned | `WARNING-PROVISIONED`, `CRITICAL-PROVISIONED` |
+| `invalid` |  | invalid | `WARNING-INVALID`, `CRITICAL-INVALID` |
+| `removed` |  | removed | `WARNING-REMOVED`, `CRITICAL-REMOVED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spanning tree {/* #network-cisco-standard-snmp-spanning-tree */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `%{op_status} =~ /up/ && %{state} =~ /broken/` | Set critical threshold for status (Default: '%\{op_status\} =~ /up/ && %\{state\} =~ /blocking\|broken/'). Can used special variables like: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+| `FILTER-PORT` |  | Filter on port description (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\}, %\{op_status\}, %\{admin_status\}, %\{port\}, %\{index\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### vPC {/* #network-cisco-standard-snmp-vpc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNINGHOST-LINKS-DOWN` | `0` | Threshold warning host links down |
+| `WARNINGHOST-LINKS-DOWNSTAR` | `0` | Threshold warning host links downstar |
+| `CRITICAL-LINKS-DOWN` | `5` | Threshold critical host links down |
+| `CRITICAL-LINKS-DOWNSTAR` | `5` | Threshold critical host links downstar |
+| `CRITICAL-PEER-STATUS` | `'%{role} ne %{role_last}'` | Define the conditions to match for the status to be CRITICAL (default: '%\{role\} ne %\{role_last\}'). You can use the following variables: %\{role\}, %\{role_last\}, %\{domain_id\} |
+| `CRITICAL-KEEPALIVE-STATUS` | `'%{keepalive_status} ne "alive"'` | Define the conditions to match for the status to be CRITICAL (default: '%\{keepalive_status\} ne "alive"'). You can use the following variables: %\{keepalive_status\}, %\{domain_id\} |
+| `WARNING-LINK-STATUS` | `'%{link_status} =~ /downStar/i'` | Define the conditions to match for the status to be WARNING (default: '%\{link_status\} =~ /downStar/i') You can use the following variables: %\{link_status\}, %\{display\} |
+| `UNKNOWN-LINK-STATUS` | `'%{link_status} eq "down"'` | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{link_status\}, %\{display\} |
+| `WARNINGHOST-LINKS-UP` |  | Threshold warning host links up |
+| `WARNINGKEEPALIVE-MESSAGES-SENT` |  | Threshold warning keepalive messages sent |
+| `WARNINGKEEPALIVE-MESSAGES-RECEIVED` |  | Threshold warning keepalive messages received |
+| `CRITICAL-LINKS-UP` |  | Threshold critical host links up |
+| `CRITICAL-MESSAGES-SENT` |  | Threshold critical keepalive messages sent |
+| `CRITICAL-MESSAGES-RECEIVED` |  | Threshold critical keepalive messages received |
+| `CRITICAL-LINK-STATUS` |  | Define the conditions to match for the status to be CRITICAL (default: '%\{link_status\} eq "down"'). You can use the following variables: %\{link_status\}, %\{display\} |
+| `UNKNOWN-KEEPALIVE-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{keepalive_status\}, %\{domain_id\} |
+| `UNKNOWN-PEER-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{role\}, %\{role_last\}, %\{domain_id\} |
+| `WARNING-KEEPALIVE-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{keepalive_status\}, %\{domain_id\} |
+| `WARNING-PEER-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{role\}, %\{role_last\}, %\{domain_id\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vpc.host.links.up.count` |  | host links up | `WARNINGHOST-LINKS-UP`, `CRITICAL-LINKS-UP` |
+| `vpc.host.links.down.count` |  | host links down | `WARNINGHOST-LINKS-DOWN`, `CRITICAL-LINKS-DOWN` |
+| `vpc.host.links.downstar.count` |  | host links downstar | `WARNINGHOST-LINKS-DOWNSTAR`, `CRITICAL-LINKS-DOWNSTAR` |
+| `vpc.keepalive.messages.sent.count` |  | messages sent | `WARNINGKEEPALIVE-MESSAGES-SENT`, `CRITICAL-MESSAGES-SENT` |
+| `vpc.keepalive.messages.received.count` |  | messages received | `WARNINGKEEPALIVE-MESSAGES-RECEIVED`, `CRITICAL-MESSAGES-RECEIVED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Virtual Stack {/* #network-cisco-standard-snmp-stack-virtual */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SDM-MISMATCH` | `0` | Threshold warning SDM mismatch |
+| `WARNING-VERSION-MISMATCH` | `0` | Threshold warning version mismatch |
+| `WARNING-FEATURE-MISMATCH` | `0` | Threshold warning feature mismatch |
+| `WARNING-INVALID` | `0` | Threshold warning invalid |
+| `WARNING-REMOVED` | `0` | Threshold warning removed |
+| `CRITICAL-SDM-MISMATCH` | `1` | Threshold critical SDM mismatch |
+| `CRITICAL-VERSION-MISMATCH` | `1` | Threshold critical version mismatch |
+| `CRITICAL-FEATURE-MISMATCH` | `1` | Threshold critical feature mismatch |
+| `CRITICAL-NEW-MASTER-INIT` | `1` | Threshold critical new master init |
+| `CRITICAL-STACK-STATUS` | `''` | Set critical threshold for stack status (Default: '%\{stack_status\} =~ /notredundant/'). Can used special variables like: %\{stack_status\} |
+| `WARNING-WAITING` |  | Threshold warning waiting |
+| `WARNING-PROGRESSING` |  | Threshold warning progressing |
+| `WARNING-ADDED` |  | Threshold warning added |
+| `WARNING-READY` |  | Threshold warning ready |
+| `WARNING-NEW-MASTER-INIT` |  | Threshold warning new master init |
+| `WARNING-PROVISIONED` |  | Threshold warning provisioned |
+| `CRITICAL-WAITING` |  | Threshold critical waiting |
+| `CRITICAL-PROGRESSING` |  | Threshold critical progressing |
+| `CRITICAL-ADDED` |  | Threshold critical added |
+| `CRITICAL-READY` |  | Threshold critical ready |
+| `CRITICAL-PROVISIONED` |  | Threshold critical provisioned |
+| `CRITICAL-INVALID` |  | Threshold critical invalid |
+| `CRITICAL-REMOVED` |  | Threshold critical removed |
+| `WARNING-STACK-STATUS` |  | Set warning threshold for stack status (Default: ''). Can used special variables like: %\{stack_status\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `waiting` |  | waiting | `WARNING-WAITING`, `CRITICAL-WAITING` |
+| `progressing` |  | progressing | `WARNING-PROGRESSING`, `CRITICAL-PROGRESSING` |
+| `added` |  | added | `WARNING-ADDED`, `CRITICAL-ADDED` |
+| `ready` |  | ready | `WARNING-READY`, `CRITICAL-READY` |
+| `sdm_mismatch` |  | SDM mismatch | `WARNING-SDM-MISMATCH`, `CRITICAL-SDM-MISMATCH` |
+| `version_mismatch` |  | version mismatch | `WARNING-VERSION-MISMATCH`, `CRITICAL-VERSION-MISMATCH` |
+| `feature_mismatch` |  | feature mismatch | `WARNING-FEATURE-MISMATCH`, `CRITICAL-FEATURE-MISMATCH` |
+| `new_master_init` |  | new master init | `WARNING-NEW-MASTER-INIT`, `CRITICAL-NEW-MASTER-INIT` |
+| `provisioned` |  | provisioned | `WARNING-PROVISIONED`, `CRITICAL-PROVISIONED` |
+| `invalid` |  | invalid | `WARNING-INVALID`, `CRITICAL-INVALID` |
+| `removed` |  | removed | `WARNING-REMOVED`, `CRITICAL-REMOVED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Configuration status {/* #check_nwc_health_cisco-configstatus-snmpv3 */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### AAA Servers {/* #network-cisco-standard-snmp-aaa-servers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AUTH-REQ-TIMEOUT` | `0` | Threshold warning  authentication requests timeout |
+| `WARNING-AUTH-ROUNDTRIP` | `50` | Threshold warning authentication roundtrip |
+| `WARNING-ACC-REQUESTS-TIMEOUT` | `0` | Threshold warning accounting requests timeout |
+| `WARNING-ACC-ROUNDTRIP` | `50` | Threshold warning accounting roundtrip |
+| `CRITICAL-AUTH-REQ-TIMEOUT` | `5` | Threshold critical authentication requests timeout |
+| `CRITICAL-AUTH-ROUNDTRIP` | `200` | Threshold critical authentication roundtrip |
+| `CRITICAL-ACC-REQUESTS-TIMEOUT` | `5` | Threshold critical accounting requests timeout |
+| `CRITICAL-ACC-ROUNDTRIP` | `200` | Threshold critical accounting roundtrip |
+| `FILTER-NAME` |  | Filter AAA server by name (E.g.: 10.199.126.100:1812:1813. Format: [address]:[authPort]:[accPort]) |
+| `WARNING-TOTAL` |  | Threshold warning total requests |
+| `WARNING-AUTH-REQ` |  | Threshold warning authentication requests |
+| `WARNING-AUTH-TRANS-SUCC` |  | Threshold warning authentication transactions success |
+| `WARNING-ACC-REQUESTS` |  | Threshold warning accounting requests |
+| `WARNING-ACC-TRANS-SUCC` |  | Threshold warning accounting transactions success |
+| `CRITICAL-TOTAL` |  | Threshold critical total requests |
+| `CRITICAL-AUTH-REQ` |  | Threshold critical authentication requests |
+| `CRITICAL-AUTH-TRANS-SUCC` |  | Threshold critical authentication transactions success |
+| `CRITICAL-ACC-REQUESTS` |  | Threshold critical accounting requests |
+| `CRITICAL-ACC-TRANS-SUCC` |  | Threshold critical accounting transactions success |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `aaa_servers.total.count` |  | total servers | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `aaa_server.authentication.requests.persecond` | `/s` | requests: /s | `WARNING-AUTH-REQ`, `CRITICAL-AUTH-REQ` |
+| `aaa_server.authentication.requests.timeout.count` |  | requests timeout | `WARNING-AUTH-REQ-TIMEOUT`, `CRITICAL-AUTH-REQ-TIMEOUT` |
+| `aaa_server.authentication.transactions.succeeded.persecond` | `/s` | transactions succeeded: /s | `WARNING-AUTH-TRANS-SUCC`, `CRITICAL-AUTH-TRANS-SUCC` |
+| `aaa_server.authentication.roundtrip.time.milliseconds` | `ms` | round trip time:  ms | `WARNING-AUTH-ROUNDTRIP`, `CRITICAL-AUTH-ROUNDTRIP` |
+| `aaa_server.accounting.requests.persecond` | `/s` | requests: /s | `WARNING-ACC-REQUESTS`, `CRITICAL-ACC-REQUESTS` |
+| `aaa_server.accounting.requests.timeout.count` |  | requests timeout | `WARNING-ACC-REQUESTS-TIMEOUT`, `CRITICAL-ACC-REQUESTS-TIMEOUT` |
+| `aaa_server.accounting.transactions.succeeded.persecond` | `/s` | transactions succeeded: /s | `WARNING-ACC-TRANS-SUCC`, `CRITICAL-ACC-TRANS-SUCC` |
+| `aaa_server.accounting.roundtrip.time.milliseconds` | `ms` | round trip time:  ms | `WARNING-ACC-ROUNDTRIP`, `CRITICAL-ACC-ROUNDTRIP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### BGP Peer state {/* #network-cisco-standard-snmp-bgp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-REMOTE-AS` | `.*` | Filter based on remote AS number (regexp allowed) |
+| `FILTER-REMOTE-ADDR` | `.*` | Filter based on IP of peers (regexp allowed) |
+| `CRITICAL-STATUS` | `'%{adminStatus} =~ /start/ && %{state} !~ /established/'` | Set critical threshold for status (Default: '%\{adminStatus\} =~ /start/ && %\{state\} !~ /established/'). Can used special variables like: %\{adminStatus\}, %\{state\}, %\{localAddr\}, %\{remoteAddr\}, %\{remoteAs\} |
+| `EXTRA-OPTS` | `--snmp-autoreduce` | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{adminStatus\}, %\{state\}, %\{localAddr\}, %\{remoteAddr\}, %\{remoteAs\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{adminStatus\}, %\{state\}, %\{localAddr\}, %\{remoteAddr\}, %\{remoteAs\} |
+| `WARNING-PEERS-DETECTED` |  | Warning threshold Peers detected |
+| `WARNING-PEER-UPDATE-LAST` |  | Warning threshold Peer last update |
+| `WARNING-PEER-PREFIXES-ACCEPTED` |  | Warning threshold Peers prefixes accepted |
+| `WARNING-PREFIXES-DENIED` |  | Warning threshold Peers prefixes denied |
+| `CRITICAL-PEERS-DETECTED` |  | Critical threshold Peers detected |
+| `CRITICAL-PEER-UPDATE-LAST` |  | Critical threshold Peer last update |
+| `CRITICAL-PEER-PREFIXES-ACCEPTED` |  | Critical threshold Peers prefixes accepted |
+| `CRITICAL-PREFIXES-DENIED` |  | Critical threshold Peers prefixes denied |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `bgp.peers.detected.count` |  | detected | `WARNING-PEERS-DETECTED`, `CRITICAL-PEERS-DETECTED` |
+| `bgp.peer.update.last.seconds` | `s` | last update:  s | `WARNING-PEER-UPDATE-LAST`, `CRITICAL-PEER-UPDATE-LAST` |
+| `bgp.peer.prefixes.accepted.count` |  | prefixes accepted | `WARNING-PEER-PREFIXES-ACCEPTED`, `CRITICAL-PEER-PREFIXES-ACCEPTED` |
+| `bgp.peer.prefixes.denied.count` |  | prefixes denied | `WARNING-PREFIXES-DENIED`, `CRITICAL-PREFIXES-DENIED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HSRP {/* #network-cisco-standard-snmp-hsrp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `HSRP-ROLE` | `primary` | If role is 'primary', an error if HSRPs are 'standby' states. If role is 'secondary', an error if HSRPs are 'active' states. (Default: 'primary') |
+| `FILTER-VRID` |  | Filter VRID (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-cisco-standard-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'deltaps', 'counter') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-CRC-IN` | `0` | Threshold warning number Packets In CRC |
+| `WARNING-DISCARD-IN` | `5` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `5` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `5` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `5` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-CRC-IN` | `10` | Threshold critical number Packets In CRC |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `WARNING-IN-FCSERROR` | `0` | Warning threshold FCS errors |
+| `CRITICAL-IN-FCSERROR` | `5` | Critical threshold FCS errors |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-OUT-FC-WAIT` | `0` | Threshold warning number of times the FC-port waited due to lack of transmit credits |
+| `CRITICAL-OUT-FC-WAIT` | `5` | Threshold critical number of times the FC-port waited due to lack of transmit credits |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.traffic.in.limit.bitspersecond` | `b/s` | Traffic In Limit :  /s |  |
+| `interface.traffic.out.limit.bitspersecond` | `b/s` | Traffic Out Limit :  /s |  |
+| `interface.packets.in.crc.count` |  |  | `WARNING-CRC-IN`, `CRITICAL-CRC-IN` |
+| `interface.packets.in.fcserror.count` |  |  | `WARNING-IN-FCSERROR`, `CRITICAL-IN-FCSERROR` |
+| `interface.wait.out.count` |  | Fc Out Wait | `WARNING-OUT-FC-WAIT`, `CRITICAL-OUT-FC-WAIT` |
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IP SLA {/* #network-cisco-standard-snmp-ipsla */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--use-new-perfdata` | Additional options appended to the plugin command line (host level). |
+| `WARNING-COMPLETION-TIME` |  | Threshold warning completion time |
+| `WARNING-NUMBER-OVER-THRESHOLDS` |  | Threshold warning number over thresholds |
+| `WARNING-AVG-DELAY-SD` |  | Threshold warning average delay SD |
+| `WARNING-AVG-DELAY-DS` |  | Threshold warning average delay DS |
+| `WARNING-PACKET-LOSS-RATIO` |  | Threshold warning packet loss ratio |
+| `WARNING-PERC-PACKETS-POSITIVE-JITTER` |  | Threshold warning % packets positive jitter |
+| `WARNING-AVG-JITTER-PER-PACKET-POSITIVE-JITTER` |  | Threshold warning average jitter per packet positive jitter |
+| `WARNING-PERC-PACKETS-NEGATIVE-JITTER` |  | Threshold warning % packets negative jitter |
+| `WARNING-AVG-JITTER-PER-PACKET-NEGATIVE-JITTER` |  | Threshold warning average jitter per packet negative jitter |
+| `WARNING-AVG-JITTER` |  | Threshold warning average jitter |
+| `WARNING-RTT-STANDARD-DEVIATION` |  | Threshold warning RTT standard deviation |
+| `WARNING-DELAY-SOURCE2DEST-STANDARD-DEV` |  | Threshold warning standard deviation delay source to destination |
+| `WARNING-DELAY-DEST2DSOURCE-STANDARD-DEV` |  | Threshold warning standard deviation delay destination to source |
+| `WARNING-JITTER-SOURCE2DEST-STANDARD-DEV` |  | Threshold warning standard deviation jitter source to destination |
+| `WARNING-JITTER-DEST2SOURCE-STANDARD-DEV` |  | Threshold warning standard deviation jitter destination to source |
+| `CRITICAL-COMPLETION-TIME` |  | Threshold critical completion time |
+| `CRITICAL-NUMBER-OVER-THRESHOLDS` |  | Threshold critical number over thresholds |
+| `CRITICAL-AVG-DELAY-SD` |  | Threshold critical average delay SD |
+| `CRITICAL-AVG-DELAY-DS` |  | Threshold critical average delay DS |
+| `CRITICAL-PACKET-LOSS-RATIO` |  | Threshold critical packet loss ratio |
+| `CRITICAL-PERC-PACKETS-POSITIVE-JITTER` |  | Threshold critical % packets positive jitter |
+| `CRITICAL-AVG-JITTER-PER-PACKET-POSITIVE-JITTER` |  | Threshold critical average jitter per packet positive jitter |
+| `CRITICAL-PERC-PACKETS-NEGATIVE-JITTER` |  | Threshold critical % packets negative jitter |
+| `CRITICAL-AVG-JITTER-PER-PACKET-NEGATIVE-JITTER` |  | Threshold critical average jitter per packet negative jitter |
+| `CRITICAL-AVG-JITTER` |  | Threshold critical average jitter |
+| `CRITICAL-RTT-STANDARD-DEVIATION` |  | Threshold critical RTT standard deviation |
+| `CRITICAL-DELAY-SOURCE2DEST-STANDARD-DEV` |  | Threshold critical standard deviation delay source to destination |
+| `CRITICAL-DELAY-DEST2DSOURCE-STANDARD-DEV` |  | Threshold critical standard deviation delay destination to source |
+| `CRITICAL-JITTER-SOURCE2DEST-STANDARD-DEV` |  | Threshold critical standard deviation jitter source to destination |
+| `CRITICAL-JITTER-DEST2SOURCE-STANDARD-DEV` |  | Threshold critical standard deviation jitter destination to source |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `completion_time` |  | Completion Time | `WARNING-COMPLETION-TIME`, `CRITICAL-COMPLETION-TIME` |
+| `number_over_thresholds` |  | Number Over Thresholds | `WARNING-NUMBER-OVER-THRESHOLDS`, `CRITICAL-NUMBER-OVER-THRESHOLDS` |
+| `average_delay_sd` | `ms` | Average Delay SD :  ms | `WARNING-AVG-DELAY-SD`, `CRITICAL-AVG-DELAY-SD` |
+| `average_delay_ds` | `ms` | Average Delay DS :  ms | `WARNING-AVG-DELAY-DS`, `CRITICAL-AVG-DELAY-DS` |
+| `packet_loss_ratio` | `%` | Packet Loss Ratio :  %% | `WARNING-PACKET-LOSS-RATIO`, `CRITICAL-PACKET-LOSS-RATIO` |
+| `prct_jitter_per_packet_positive_jitter` |  | Percentage of Packets that had Positive Jitter | `WARNING-PERC-PACKETS-POSITIVE-JITTER`, `CRITICAL-PERC-PACKETS-POSITIVE-JITTER` |
+| `average_jitter_per_packet_positive_jitter` |  | Average Jitter per Packet that had Positive Jitter | `WARNING-AVG-JITTER-PER-PACKET-POSITIVE-JITTER`, `CRITICAL-AVG-JITTER-PER-PACKET-POSITIVE-JITTER` |
+| `prct_jitter_per_packet_negative_jitter` |  | Percentage of Packets that had Negative Jitter | `WARNING-PERC-PACKETS-NEGATIVE-JITTER`, `CRITICAL-PERC-PACKETS-NEGATIVE-JITTER` |
+| `average_jitter_per_packet_negative_jitter` |  | Average Jitter per Packet that had Negative Jitter | `WARNING-AVG-JITTER-PER-PACKET-NEGATIVE-JITTER`, `CRITICAL-AVG-JITTER-PER-PACKET-NEGATIVE-JITTER` |
+| `average_jitter` | `ms` | Average Jitter :  ms | `WARNING-AVG-JITTER`, `CRITICAL-AVG-JITTER` |
+| `rtt_standard_deviation` | `ms` | Round-Trip Time Standard Deviation :  ms | `WARNING-RTT-STANDARD-DEVIATION`, `CRITICAL-RTT-STANDARD-DEVIATION` |
+| `delay_src2dest_stdev` | `ms` | One-Way Delay Source to Destination Standard Deviation :  ms | `WARNING-DELAY-SOURCE2DEST-STANDARD-DEV`, `CRITICAL-DELAY-SOURCE2DEST-STANDARD-DEV` |
+| `delay_dest2src_stdev` | `ms` | One-Way Delay Destination to Source Standard Deviation :  ms | `WARNING-DELAY-DEST2DSOURCE-STANDARD-DEV`, `CRITICAL-DELAY-DEST2DSOURCE-STANDARD-DEV` |
+| `jitter_src2dest_stdev` | `ms` | One-Way Jitter Source to Destination Standard Deviation :  ms | `WARNING-JITTER-SOURCE2DEST-STANDARD-DEV`, `CRITICAL-JITTER-SOURCE2DEST-STANDARD-DEV` |
+| `jitter_dest2src_stdev` | `ms` | One-Way Jitter Destination to Source Standard Deviation :  ms | `WARNING-JITTER-DEST2SOURCE-STANDARD-DEV`, `CRITICAL-JITTER-DEST2SOURCE-STANDARD-DEV` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Voice calls {/* #network-cisco-standard-snmp-voice-call */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-ACTIVE-1M` |  | Threshold warning active calls 1 minute |
+| `WARNING-ACTIVE-5M` |  | Threshold warning active calls 5 minute |
+| `WARNING-ACTIVE-15M` |  | Threshold warning active calls 15 minute |
+| `WARNING-CONNECTION-CALLS` |  | Threshold warning connection calls |
+| `CRITICAL-ACTIVE-1M` |  | Threshold critical active calls 1 minute |
+| `CRITICAL-ACTIVE-5M` |  | Threshold critical active calls 5 minute |
+| `CRITICAL-ACTIVE-15M` |  | Threshold critical active calls 15 minute |
+| `CRITICAL-CONNECTION-CALLS` |  | Threshold critical connection calls |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `calls.active.1m.average.count` |  | (1m) | `WARNING-ACTIVE-1M`, `CRITICAL-ACTIVE-1M` |
+| `calls.active.5m.average.count` |  | (5m) | `WARNING-ACTIVE-5M`, `CRITICAL-ACTIVE-5M` |
+| `calls.active.15m.average.count` |  | (15m) | `WARNING-ACTIVE-15M`, `CRITICAL-ACTIVE-15M` |
+| `connection.calls.active.count` |  | active calls | `WARNING-CONNECTION-CALLS`, `CRITICAL-CONNECTION-CALLS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VSS {/* #network-cisco-standard-snmp-vss */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMBERS-TOTAL` |  | Threshold warning members total |
+| `WARNING-VSL-PORTS-OPERATIONAL` |  | Threshold warning VSL ports operational |
+| `CRITICAL-MEMBERS-TOTAL` |  | Threshold critical members total |
+| `CRITICAL-VSL-PORTS-OPERATIONAL` |  | Threshold critical VSL ports operational |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vss.members.total.count` |  | total members | `WARNING-MEMBERS-TOTAL`, `CRITICAL-MEMBERS-TOTAL` |
+| `vsl.ports.operational.count` |  | operational ports | `WARNING-VSL-PORTS-OPERATIONAL`, `CRITICAL-VSL-PORTS-OPERATIONAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### WAN 3G {/* #network-cisco-standard-snmp-wan3g */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter by name (can be a regexp) |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold critical traffic out |
+| `WARNING-TEMPERATURE` |  | Threshold warning temperature |
+| `CRITICAL-TEMPERATURE` |  | Threshold critical temperature |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `modem.temperature.celsius` | `C` | memory used | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+| `modem.radio.rssi.dbm` | `dBm` | received signal strength:  dBm |  |
+| `modem.traffic.in.bitspersecond` | `b/s` | traffic in: /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `modem.traffic.out.bitspersecond` | `b/s` | traffic out: /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260500 - 20260529</summary>
+
+- Service template [`network-cisco-standard-snmp-vpc`](#network-cisco-standard-snmp-vpc)
+    - Macro `CRITICAL-PEER-STATUS` added (default `'%{role} ne %{role_last}'`)
+    - Macro `CRITICAL-KEEPALIVE-STATUS` added (default `'%{keepalive_status} ne "alive"'`)
+    - Macro `WARNING-LINK-STATUS` added (default `'%{link_status} =~ /downStar/i'`)
+    - Macro `UNKNOWN-LINK-STATUS` added (default `'%{link_status} eq "down"'`)
+- Command `network-cisco-standard-snmp-vpc`
+    - Option `--unknown-peer-status=$_SERVICEUNKNOWN-PEER-STATUS$` added
+    - Option `--warning-peer-status=$_SERVICEWARNING-PEER-STATUS$` added
+    - Option `--critical-peer-status=$_SERVICECRITICAL-PEER-STATUS$` added
+    - Option `--unknown-keepalive-status=$_SERVICEUNKNOWN-KEEPALIVE-STATUS$` added
+    - Option `--warning-keepalive-status=$_SERVICEWARNING-KEEPALIVE-STATUS$` added
+    - Option `--critical-keepalive-status=$_SERVICECRITICAL-KEEPALIVE-STATUS$` added
+    - Option `--unknown-link-status=$_SERVICEUNKNOWN-LINK-STATUS$` added
+    - Option `--warning-link-status=$_SERVICEWARNING-LINK-STATUS$` added
+    - Option `--critical-link-status=$_SERVICECRITICAL-LINK-STATUS$` added
+    - Macro `CRITICAL-KEEPALIVE-STATUS` added
+    - Macro `CRITICAL-LINK-STATUS` added
+    - Macro `CRITICAL-PEER-STATUS` added
+    - Macro `UNKNOWN-KEEPALIVE-STATUS` added
+    - Macro `UNKNOWN-LINK-STATUS` added
+    - Macro `UNKNOWN-PEER-STATUS` added
+    - Macro `WARNING-KEEPALIVE-STATUS` added
+    - Macro `WARNING-LINK-STATUS` added
+    - Macro `WARNING-PEER-STATUS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `network-cisco-standard-snmp-environment`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250600 - 20250721</summary>
+
+- Service template [`network-cisco-standard-snmp-ipsla`](#network-cisco-standard-snmp-ipsla)
+    - Macro `EXTRA-OPTS` added (default `--use-new-perfdata`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250414</summary>
+
+- Host template `Cisco-Catalyst-Switch`
+    - Service template `network-cisco-standard-snmp-load` linked
+- Service template [`network-cisco-standard-snmp-load`](#network-cisco-standard-snmp-load)
+    - Macro `WARNING-CORE-LOAD-1M`: default changed from `2` to *(empty)*
+    - Macro `WARNING-CORE-LOAD-5M`: default changed from `2` to `70`
+    - Macro `WARNING-CORE-LOAD-15M`: default changed from `2` to *(empty)*
+    - Macro `CRITICAL-CORE-LOAD-1M`: default changed from `3` to *(empty)*
+    - Macro `CRITICAL-CORE-LOAD-5M`: default changed from `3` to `85`
+    - Macro `CRITICAL-CORE-LOAD-15M`: default changed from `3` to *(empty)*
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Plugin pack `Cisco standard network devices`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201-hotfix-20250305 - 20250321</summary>
+
+- Service template [`network-cisco-standard-snmp-environment-catalyst`](#network-cisco-standard-snmp-environment-catalyst)
+    - Macro `WARNING`: default changed from `sensor.celsius,\d01\d,45` to `sensor.celsius,\d01\d,60`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250201 - 20250305</summary>
+
+- Service template [`network-cisco-standard-snmp-memory-flash`](#network-cisco-standard-snmp-memory-flash)
+    - Macro `FILTER-NAME`: default changed from `'^((?!webui).)*$'` to `'^((?!webui|ucode0).)*$'`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250210</summary>
+
+- Host template `Cisco-Voice-Gateway-IOS`
+    - Service template `network-cisco-standard-snmp-load` unlinked
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241206 - 20250115</summary>
+
+- Host template `Cisco-Catalyst-Switch`
+    - Renamed from `Cisco-Standard-Switch-9200`
+    - Alias changed from `Cisco Switch C9200 series` to `Cisco Catalyst series`
+- Host template `Cisco-Catalyst-Switch-Stack`
+    - Renamed from `Cisco-Standard-Switch-Stack-9200`
+    - Alias changed from `Cisco Stack Switch C9200 series` to `Cisco Catalyst Stack series`
+    - Parent templates changed from `Cisco-Standard-Switch-9200, Cisco-Standard-Switch, generic-host` to `Cisco-Catalyst-Switch, Cisco-Standard-Switch, generic-host`
+- Host template `Cisco-Standard-Switch`
+    - Service template `network-cisco-standard-snmp-load` unlinked
+- Service template [`network-cisco-standard-snmp-environment-catalyst`](#network-cisco-standard-snmp-environment-catalyst)
+    - Renamed from `network-cisco-standard-snmp-environment-9200`
+    - Macro `WARNING`: default changed from `sensor.celsius,\d010,45` to `sensor.celsius,\d01\d,45`
+- Service template [`network-cisco-standard-snmp-memory-catalyst`](#network-cisco-standard-snmp-memory-catalyst)
+    - Renamed from `network-cisco-standard-snmp-memory-9200`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20241011 - 20241111</summary>
+
+- Host template `Cisco-Standard-Switch`
+    - Alias changed from `Cisco Switch (2800, 2900, 3750, Nexus,...)` to `Cisco Switch (2xxx, 3xxx, Catalyst, Nexus,...)`
+- Host template `Cisco-Standard-Switch-9200`
+    - Host template added
+- Host template `Cisco-Standard-Switch-Stack-9200`
+    - Host template added
+- Host template `Cisco-Voice-Gateway-IOS`
+    - Renamed from `Cisco-Cisco-Voice-Gateway-IOS`
+    - Service template `network-cisco-standard-snmp-configuration` linked
+    - Service template `check_nwc_health_cisco-configstatus` unlinked
+- Service template [`network-cisco-standard-snmp-configuration`](#network-cisco-standard-snmp-configuration)
+    - Macro `CRITICAL-CONFIG-RUNNING-AHEAD` added (default `14400`)
+    - Macro `WARNING-CONFIG-RUNNING-AHEAD` added (default `3600`)
+    - Macro `CRITICAL-STATUS` removed
+- Service template `network-cisco-standard-snmp-environment-9200`
+    - Service template added
+- Service template [`network-cisco-standard-snmp-interfaces`](#network-cisco-standard-snmp-interfaces)
+    - Macro `WARNING-OUT-FC-WAIT` added (default `0`)
+    - Macro `CRITICAL-OUT-FC-WAIT` added (default `5`)
+- Service template `network-cisco-standard-snmp-memory-9200`
+    - Service template added
+- Service template `check_nwc_health_cisco-configstatus`
+    - Service template removed
+- Command `network-cisco-standard-snmp-configuration`
+    - Option `--warning-config-running-ahead=$_SERVICEWARNING-CONFIG-RUNNING-AHEAD$` added
+    - Option `--critical-config-running-ahead=$_SERVICECRITICAL-CONFIG-RUNNING-AHEAD$` added
+    - Option `--warning-status=$_SERVICEWARNING-STATUS$` removed
+    - Option `--critical-status=$_SERVICECRITICAL-STATUS$` removed
+    - Macro `WARNING-CONFIG-RUNNING-AHEAD` added
+    - Macro `CRITICAL-CONFIG-RUNNING-AHEAD` added
+    - Macro `WARNING-STATUS` removed
+    - Macro `CRITICAL-STATUS` removed
+- Command `network-cisco-standard-snmp-interfaces`
+    - Option `--add-fc-fe-errors` added
+    - Option `--warning-out-fc-wait=$_SERVICEWARNING-OUT-FC-WAIT$` added
+    - Option `--critical-out-fc-wait=$_SERVICECRITICAL-OUT-FC-WAIT$` added
+    - Macro `CRITICAL-OUT-FC-WAIT` added
+    - Macro `WARNING-OUT-FC-WAIT` added
+- Command `check_nwc_health_cisco-configstatus`
+    - Command removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`network-cisco-standard-snmp-interfaces`](#network-cisco-standard-snmp-interfaces)
+    - Macro `UNITS-TRAFFIC`: default changed from `%` to `percent_delta`
+    - Macro `UNITS-ERROR`: default changed from `%` to `percent_delta`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Host template `Cisco-Bridge-IOS`
+    - Service template `network-cisco-standard-snmp-configuration` linked
+    - Service template `check_nwc_health_cisco-configstatus` unlinked
+- Host template `Cisco-Nexus`
+    - Service template `network-cisco-standard-snmp-configuration` linked
+    - Service template `check_nwc_health_cisco-configstatus` unlinked
+- Host template `Cisco-Router`
+    - Service template `network-cisco-standard-snmp-configuration` linked
+    - Service template `check_nwc_health_cisco-configstatus` unlinked
+- Host template `Cisco-Standard-Switch`
+    - Service template `network-cisco-standard-snmp-configuration` linked
+    - Service template `check_nwc_health_cisco-configstatus` unlinked
+- Service template [`network-cisco-standard-snmp-configuration`](#network-cisco-standard-snmp-configuration)
+    - Service template added
+- Command `network-cisco-standard-snmp-configuration`
+    - Command added
+
+</details>

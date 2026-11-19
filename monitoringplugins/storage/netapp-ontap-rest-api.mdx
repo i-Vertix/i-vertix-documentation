@@ -1,0 +1,616 @@
+---
+title: "Netapp Ontap Rest API"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Netapp.png";
+
+<PluginPackHeader name="Netapp Ontap Rest API" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors NetApp ONTAP through its REST API: cluster and hardware status, aggregates, volumes, LUNs, quotas and SnapMirror relationships, including space usage, I/O and latency.
+
+The plugin pack provides these checks:
+
+* [Aggregates](#storage-netapp-ontap-restapi-aggregates)
+* [Cluster status](#storage-netapp-ontap-restapi-cluster)
+* [Hardware status](#storage-netapp-ontap-restapi-hardware)
+* [LUNs](#storage-netapp-ontap-restapi-luns)
+* [Quotas](#storage-netapp-ontap-restapi-quotas)
+* [Snapmirrors](#storage-netapp-ontap-restapi-snapmirrors)
+* [Volumes](#storage-netapp-ontap-restapi-volumes)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Volumes](#storage-netapp-ontap-restapi-volumes) | `Volume - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Netapp-Ontap-REST-API
+
+*Netapp Ontap REST API* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Netapp API password. |
+| `API-USERNAME` |  | Netapp API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Aggregates](#storage-netapp-ontap-restapi-aggregates) | `storage-netapp-ontap-restapi-aggregates` |
+| [Cluster status](#storage-netapp-ontap-restapi-cluster) | `storage-netapp-ontap-restapi-cluster` |
+| [Hardware status](#storage-netapp-ontap-restapi-hardware) | `storage-netapp-ontap-restapi-hardware` |
+| [LUNs](#storage-netapp-ontap-restapi-luns) | `storage-netapp-ontap-restapi-luns` |
+| [Quotas](#storage-netapp-ontap-restapi-quotas) | `storage-netapp-ontap-restapi-quotas` |
+| [Snapmirrors](#storage-netapp-ontap-restapi-snapmirrors) | `storage-netapp-ontap-restapi-snapmirrors` |
+| [Volumes](#storage-netapp-ontap-restapi-volumes) | `storage-netapp-ontap-restapi-volumes` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Aggregates {/* #storage-netapp-ontap-restapi-aggregates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} !~ /online/i'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{state\} !~ /online/i'). You can use the following variables: %\{state\}, %\{display\} |
+| `WARNING-USAGE-PRCT` | `90` | Warning threshold usage (%) |
+| `WARNING-READ-LATENCY` | `100000` | Warning threshold read latency (µs) |
+| `WARNING-WRITE-LATENCY` | `100000` | Warning threshold write latency (µs) |
+| `WARNING-TOTAL-LATENCY` | `100000` | Warning threshold total latency (µs) |
+| `WARNING-OTHER-LATENCY` | `100000` | Warning threshold other latency (µs) |
+| `CRITICAL-USAGE-PRCT` | `95` | Critical threshold usage (%) |
+| `CRITICAL-READ-LATENCY` | `250000` | Critical threshold read latency (µs) |
+| `CRITICAL-WRITE-LATENCY` | `250000` | Critical threshold write latency (µs) |
+| `CRITICAL-TOTAL-LATENCY` | `250000` | Critical threshold total latency (µs) |
+| `CRITICAL-OTHER-LATENCY` | `250000` | Critical threshold other latency (µs) |
+| `FILTER-NAME` |  | Filter aggregates by aggregate name (can be a regexp) |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{display\} |
+| `WARNING-USAGE` |  | Warning threshold usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold usage free (B) |
+| `WARNING-READ` |  | Warning threshold read (B/s) |
+| `WARNING-READ-IOPS` |  | Warning threshold read IOPS |
+| `WARNING-WRITE` |  | Warning threshold write (B/s) |
+| `WARNING-WRITE-IOPS` |  | Warning threshold write IOPS |
+| `WARNING-OTHER` |  | Warning threshold other (B/s) |
+| `WARNING-TOTAL` |  | Warning threshold total (B/s) |
+| `WARNING-OTHER-IOPS` |  | Warning threshold other IOPS |
+| `WARNING-TOTAL-IOPS` |  | Warning threshold total IOPS |
+| `CRITICAL-USAGE` |  | Critical threshold usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold usage free (B) |
+| `CRITICAL-READ` |  | Critical threshold read (B/s) |
+| `CRITICAL-READ-IOPS` |  | Critical threshold read IOPS |
+| `CRITICAL-WRITE` |  | Critical threshold write (B/s) |
+| `CRITICAL-WRITE-IOPS` |  | Critical threshold write IOPS |
+| `CRITICAL-OTHER` |  | Critical threshold other (B/s) |
+| `CRITICAL-TOTAL` |  | Critical threshold total (B/s) |
+| `CRITICAL-OTHER-IOPS` |  | Critical threshold other IOPS |
+| `CRITICAL-TOTAL-IOPS` |  | Critical threshold total IOPS |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{state\}, %\{display\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^usage$' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `aggregate.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `aggregate.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `aggregate.space.usage.percentage` | `%` | used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `aggregate.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `aggregate.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `aggregate.io.other.usage.bytespersecond` | `B/s` | other:  /s | `WARNING-OTHER`, `CRITICAL-OTHER` |
+| `aggregate.io.total.usage.bytespersecond` | `B/s` | total:  /s | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `aggregate.io.read.usage.iops` | `iops` | read iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `aggregate.io.write.usage.iops` | `iops` | write iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `aggregate.io.other.usage.iops` | `iops` | other iops | `WARNING-OTHER-IOPS`, `CRITICAL-OTHER-IOPS` |
+| `aggregate.io.total.usage.iops` | `iops` | total iops | `WARNING-TOTAL-IOPS`, `CRITICAL-TOTAL-IOPS` |
+| `aggregate.io.read.latency.microseconds` | `µs` | read latency:  µs | `WARNING-READ-LATENCY`, `CRITICAL-READ-LATENCY` |
+| `aggregate.io.write.latency.microseconds` | `µs` | write latency:  µs | `WARNING-WRITE-LATENCY`, `CRITICAL-WRITE-LATENCY` |
+| `aggregate.io.other.latency.microseconds` | `µs` | other latency:  µs | `WARNING-OTHER-LATENCY`, `CRITICAL-OTHER-LATENCY` |
+| `aggregate.io.total.latency.microseconds` | `µs` | total latency:  µs | `WARNING-TOTAL-LATENCY`, `CRITICAL-TOTAL-LATENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster status {/* #storage-netapp-ontap-restapi-cluster */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-READ-LATENCY` | `100` | Warning threshold read latency (ms) |
+| `WARNING-WRITE-LATENCY` | `100` | Warning threshold write latency (ms) |
+| `WARNING-TOTAL-LATENCY` | `100` | Warning threshold total latency (ms) |
+| `WARNING-OTHER-LATENCY` | `100` | Warning threshold other latency (ms) |
+| `CRITICAL-NODE-STATUS` | `'%{state} ne "online"'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{state\} ne "online"'). You can use the following variables: %\{state\}, %\{link_status\}, %\{display\} |
+| `CRITICAL-READ-LATENCY` | `250` | Critical threshold read latency (ms) |
+| `CRITICAL-WRITE-LATENCY` | `250` | Critical threshold write latency (ms) |
+| `CRITICAL-TOTAL-LATENCY` | `250` | Critical threshold total latency (ms) |
+| `CRITICAL-OTHER-LATENCY` | `250` | Critical threshold other latency (ms) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='node-status' |
+| `UNKNOWN-NODE-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{state\}, %\{link_status\}, %\{display\} |
+| `WARNING-NODE-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{link_status\}, %\{display\} |
+| `WARNING-READ` |  | Warning threshold read (B/s) |
+| `WARNING-WRITE` |  | Warning threshold write (B/s) |
+| `WARNING-READ-IOPS` |  | Warning threshold read IOPS |
+| `WARNING-WRITE-IOPS` |  | Warning threshold write IOPS |
+| `CRITICAL-READ` |  | Critical threshold read (B/s) |
+| `CRITICAL-WRITE` |  | Critical threshold write (B/s) |
+| `CRITICAL-READ-IOPS` |  | Critical threshold read IOPS |
+| `CRITICAL-WRITE-IOPS` |  | Critical threshold write IOPS |
+| `WARNING-OTHER` |  | Critical threshold other (B/s) |
+| `WARNING-TOTAL` |  | Critical threshold total (B/s) |
+| `WARNING-OTHER-IOPS` |  | Critical threshold other IOPS |
+| `WARNING-TOTAL-IOPS` |  | Critical threshold total IOPS |
+| `CRITICAL-OTHER` |  | Critical threshold other (B/s) |
+| `CRITICAL-TOTAL` |  | Critical threshold total (B/s) |
+| `CRITICAL-OTHER-IOPS` |  | Critical threshold other IOPS |
+| `CRITICAL-TOTAL-IOPS` |  | Critical threshold total IOPS |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `cluster.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `cluster.io.other.usage.bytespersecond` | `B/s` | other:  /s | `WARNING-OTHER`, `CRITICAL-OTHER` |
+| `cluster.io.total.usage.bytespersecond` | `B/s` | total:  /s | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `cluster.io.read.usage.iops` | `iops` | read iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `cluster.io.write.usage.iops` | `iops` | write iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `cluster.io.other.usage.iops` | `iops` | other iops | `WARNING-OTHER-IOPS`, `CRITICAL-OTHER-IOPS` |
+| `cluster.io.total.usage.iops` | `iops` | total iops | `WARNING-TOTAL-IOPS`, `CRITICAL-TOTAL-IOPS` |
+| `cluster.io.read.latency.milliseconds` | `ms` | read latency:  ms | `WARNING-READ-LATENCY`, `CRITICAL-READ-LATENCY` |
+| `cluster.io.write.latency.milliseconds` | `ms` | write latency:  ms | `WARNING-WRITE-LATENCY`, `CRITICAL-WRITE-LATENCY` |
+| `cluster.io.other.latency.milliseconds` | `ms` | other latency:  ms | `WARNING-OTHER-LATENCY`, `CRITICAL-OTHER-LATENCY` |
+| `cluster.io.total.latency.milliseconds` | `ms` | total latency:  ms | `WARNING-TOTAL-LATENCY`, `CRITICAL-TOTAL-LATENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #storage-netapp-ontap-restapi-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'bay', 'disk', 'fru', 'shelf' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter='fru,-' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fru,OK,error' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LUNs {/* #storage-netapp-ontap-restapi-luns */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{state} !~ /online/i'` | Define the conditions to match for the status to be CRITICAL             (Default: '%\{state\} !~ /online/i'). You can use the following variables: %\{state\}, %\{container_state\}, %\{display\} |
+| `FILTER-NAME` |  | Filter LUN name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{state\}, %\{container_state\}, %\{display\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{container_state\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Quotas {/* #storage-netapp-ontap-restapi-quotas */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold space usage (%) |
+| `FILTER-INDEX` |  | Filter by index (identified entry in the /etc/quotas) (can be a regexp) |
+| `FILTER-VSERVER` |  | Filter by vserver name (can be a regexp) |
+| `FILTER-VOLUME` |  | Filter by volume name (can be a regexp) |
+| `FILTER-QTREE` |  | Filter by qtree name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold space usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `quota.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `quota.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `quota.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Snapmirrors {/* #storage-netapp-ontap-restapi-snapmirrors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{healthy} ne "true" or %{state} eq "broken_off"'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{healthy\} ne "true" or %\{state\} eq "broken_off"'). You can use the following variables: %\{healthy\}, %\{state\}, %\{transfer_state\}, %\{display\} |
+| `FILTER-NAME` |  | Filter snapmirror name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{healthy\}, %\{state\}, %\{transfer_state\}, %\{display\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{healthy\}, %\{state\}, %\{transfer_state\}, %\{display\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volumes {/* #storage-netapp-ontap-restapi-volumes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Threshold warning usage (%) |
+| `WARNING-READ-LATENCY` | `100` | Warning threshold read latency (ms) |
+| `WARNING-WRITE-LATENCY` | `100` | Warning threshold write latency (ms) |
+| `WARNING-TOTAL-LATENCY` | `100` | Warning threshold total latency (ms) |
+| `WARNING-OTHER-LATENCY` | `100` | Warning threshold other latency (ms) |
+| `CRITICAL-STATUS` | `'%{state} !~ /online/i'` | Define the conditions to match for the status to be CRITICAL (Default: '%\{state\} !~ /online/i'). You can use the following variables: %\{state\}, %\{display\} |
+| `CRITICAL-USAGE-PRCT` | `95` | Threshold critical usage (%) |
+| `CRITICAL-READ-LATENCY` | `250` | Threshold critical read latency (ms) |
+| `CRITICAL-WRITE-LATENCY` | `250` | Threshold critical write latency (ms) |
+| `CRITICAL-TOTAL-LATENCY` | `250` | Critical threshold total latency (ms) |
+| `CRITICAL-OTHER-LATENCY` | `250` | Critical threshold other latency (ms) |
+| `CRITICAL-LOGICAL-USAGE-PRCT` | `95` | Critical logical threshold usage (%) |
+| `WARNING-LOGICAL-USAGE-PRCT` | `90` | Warning logical threshold usage (%) |
+| `CRITICAL-SNAPSHOT-USAGE-PRCT` | `95` | Critical snapshot threshold usage (%) |
+| `WARNING-SNAPSHOT-USAGE-PRCT` | `90` | Warning snapshot threshold usage (%) |
+| `CRITICAL-VIRTUAL-USAGE-PRCT` | `95` | Critical threshold virtual usage (%) |
+| `WARNING-VIRTUAL-USAGE-PRCT` | `90` | Warning threshold virtual usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^usage$' |
+| `FILTER-NAME` |  | Filter volumes by volume name (can be a regexp) |
+| `FILTER-VSERVER-NAME` |  | Filter volumes by vserver name (can be a regexp) |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{state\}, %\{display\} |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{state\}, %\{display\} |
+| `WARNING-USAGE` |  | Warning threshold usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold usage free (B) |
+| `WARNING-READ` |  | Warning threshold read (B/s) |
+| `WARNING-WRITE` |  | Warning threshold write (B/s) |
+| `WARNING-READ-IOPS` |  | Warning threshold read IOPS |
+| `WARNING-WRITE-IOPS` |  | Warning threshold write IOPS |
+| `CRITICAL-USAGE` |  | Critical threshold usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold usage free (B) |
+| `CRITICAL-READ` |  | Critical threshold read (B/s) |
+| `CRITICAL-WRITE` |  | Critical threshold write (B/s) |
+| `CRITICAL-READ-IOPS` |  | Critical threshold read IOPS |
+| `CRITICAL-WRITE-IOPS` |  | Critical threshold write IOPS |
+| `WARNING-OTHER` |  | Warning threshold other (B/s) |
+| `WARNING-TOTAL` |  | Warning threshold total (B/s) |
+| `WARNING-OTHER-IOPS` |  | Warning threshold other IOPS |
+| `WARNING-TOTAL-IOPS` |  | Warning threshold total IOPS |
+| `CRITICAL-OTHER` |  | Critical threshold other (B/s) |
+| `CRITICAL-TOTAL` |  | Critical threshold total (B/s) |
+| `CRITICAL-OTHER-IOPS` |  | Critical threshold other IOPS |
+| `CRITICAL-TOTAL-IOPS` |  | Critical threshold total IOPS |
+| `FILTER-VOLUME-NAME` |  | Filter the API request by volumes name (* can be used, volumes name are separated by \|). Required if you wan to retrieve logical space metrics |
+| `CRITICAL-LOGICAL-USAGE` |  | Critical logical threshold usage (B) |
+| `CRITICAL-LOGICAL-USAGE-FREE` |  | Critical logical threshold usage free (B) |
+| `WARNING-LOGICAL-USAGE` |  | Warning logical threshold usage (B) |
+| `WARNING-LOGICAL-USAGE-FREE` |  | Warning logical threshold usage free (B) |
+| `CRITICAL-SNAPSHOT-USAGE` |  | Critical snapshot threshold usage (B) |
+| `CRITICAL-SNAPSHOT-USAGE-FREE` |  | Critical snapshot threshold free usage (B) |
+| `WARNING-SNAPSHOT-USAGE` |  | Warning snapshot threshold usage (B) |
+| `WARNING-SNAPSHOT-USAGE-FREE` |  | Warning snapshot threshold free usage (B) |
+| `CRITICAL-VIRTUAL-USAGE` |  | Critical threshold virtual usage (B) |
+| `WARNING-VIRTUAL-USAGE` |  | Warning threshold virtual usage (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `volume.space.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `volume.space.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `volume.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `volume.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `volume.io.other.usage.bytespersecond` | `B/s` | other:  /s | `WARNING-OTHER`, `CRITICAL-OTHER` |
+| `volume.io.total.usage.bytespersecond` | `B/s` | total:  /s | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `volume.io.read.usage.iops` | `iops` | read iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `volume.io.write.usage.iops` | `iops` | write iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `volume.io.other.usage.iops` | `iops` | other iops | `WARNING-OTHER-IOPS`, `CRITICAL-OTHER-IOPS` |
+| `volume.io.total.usage.iops` | `iops` | total iops | `WARNING-TOTAL-IOPS`, `CRITICAL-TOTAL-IOPS` |
+| `volume.io.read.latency.milliseconds` | `ms` | read latency:  ms | `WARNING-READ-LATENCY`, `CRITICAL-READ-LATENCY` |
+| `volume.io.write.latency.milliseconds` | `ms` | write latency:  ms | `WARNING-WRITE-LATENCY`, `CRITICAL-WRITE-LATENCY` |
+| `volume.io.other.latency.milliseconds` | `ms` | other latency:  ms | `WARNING-OTHER-LATENCY`, `CRITICAL-OTHER-LATENCY` |
+| `volume.io.total.latency.milliseconds` | `ms` | total latency:  ms | `WARNING-TOTAL-LATENCY`, `CRITICAL-TOTAL-LATENCY` |
+| `volume.virtualspace.usage.bytes` | `B` |  | `WARNING-VIRTUAL-USAGE`, `CRITICAL-VIRTUAL-USAGE` |
+| `volume.virtualspace.usage.percentage` | `%` |  | `WARNING-VIRTUAL-USAGE-PRCT`, `CRITICAL-VIRTUAL-USAGE-PRCT` |
+| `volume.logicalspace.usage.bytes` | `B` |  | `WARNING-LOGICAL-USAGE`, `CRITICAL-LOGICAL-USAGE` |
+| `volume.logicalspace.free.bytes` | `B` |  | `WARNING-LOGICAL-USAGE-FREE`, `CRITICAL-LOGICAL-USAGE-FREE` |
+| `volume.logicalspace.usage.percentage` | `%` |  | `WARNING-LOGICAL-USAGE-PRCT`, `CRITICAL-LOGICAL-USAGE-PRCT` |
+| `volume.space.snapshot.usage.bytes` | `B` |  | `WARNING-SNAPSHOT-USAGE`, `CRITICAL-SNAPSHOT-USAGE` |
+| `volume.space.snapshot.free.bytes` | `B` |  | `WARNING-SNAPSHOT-USAGE-FREE`, `CRITICAL-SNAPSHOT-USAGE-FREE` |
+| `volume.space.snapshot.usage.percentage` | `%` |  | `WARNING-SNAPSHOT-USAGE-PRCT`, `CRITICAL-SNAPSHOT-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260100 - 20260311</summary>
+
+- Command `storage-netapp-ontap-restapi-hardware`
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `CRITICAL` removed
+    - Macro `WARNING` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260120</summary>
+
+- Command `storage-netapp-ontap-restapi-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-netapp-ontap-restapi-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `CRITICAL` added
+    - Macro `NO-COMPONENT` added
+    - Macro `WARNING` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251118</summary>
+
+- Service template [`storage-netapp-ontap-restapi-volumes`](#storage-netapp-ontap-restapi-volumes)
+    - Macro `CRITICAL-SNAPSHOT-USAGE-PRCT` added (default `95`)
+    - Macro `WARNING-SNAPSHOT-USAGE-PRCT` added (default `90`)
+    - Macro `CRITICAL-VIRTUAL-USAGE-PRCT` added (default `95`)
+    - Macro `WARNING-VIRTUAL-USAGE-PRCT` added (default `90`)
+- Command `storage-netapp-ontap-restapi-volumes`
+    - Option `--warning-snapshot-usage=$_SERVICEWARNING-SNAPSHOT-USAGE$` added
+    - Option `--warning-snapshot-usage-free=$_SERVICEWARNING-SNAPSHOT-USAGE-FREE$` added
+    - Option `--warning-snapshot-usage-prct=$_SERVICEWARNING-SNAPSHOT-USAGE-PRCT$` added
+    - Option `--critical-snapshot-usage=$_SERVICECRITICAL-SNAPSHOT-USAGE$` added
+    - Option `--critical-snapshot-usage-free=$_SERVICECRITICAL-SNAPSHOT-USAGE-FREE$` added
+    - Option `--critical-snapshot-usage-prct=$_SERVICECRITICAL-SNAPSHOT-USAGE-PRCT$` added
+    - Option `--warning-virtual-usage=$_SERVICEWARNING-VIRTUAL-USAGE$` added
+    - Option `--warning-virtual-usage-prct=$_SERVICEWARNING-VIRTUAL-USAGE-PRCT$` added
+    - Option `--critical-virtual-usage=$_SERVICECRITICAL-VIRTUAL-USAGE$` added
+    - Option `--critical-virtual-usage-prct=$_SERVICECRITICAL-VIRTUAL-USAGE-PRCT$` added
+    - Macro `CRITICAL-SNAPSHOT-USAGE` added
+    - Macro `CRITICAL-SNAPSHOT-USAGE-FREE` added
+    - Macro `CRITICAL-SNAPSHOT-USAGE-PRCT` added
+    - Macro `WARNING-SNAPSHOT-USAGE` added
+    - Macro `WARNING-SNAPSHOT-USAGE-FREE` added
+    - Macro `WARNING-SNAPSHOT-USAGE-PRCT` added
+    - Macro `CRITICAL-VIRTUAL-USAGE` added
+    - Macro `CRITICAL-VIRTUAL-USAGE-PRCT` added
+    - Macro `WARNING-VIRTUAL-USAGE` added
+    - Macro `WARNING-VIRTUAL-USAGE-PRCT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251010</summary>
+
+- Command `storage-netapp-ontap-restapi-volumes`
+    - Option `--add-virtual` added
+    - Option `--add-snapshot` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250210</summary>
+
+- Service template [`storage-netapp-ontap-restapi-volumes`](#storage-netapp-ontap-restapi-volumes)
+    - Macro `CRITICAL-LOGICAL-USAGE-PRCT` added (default `95`)
+    - Macro `WARNING-LOGICAL-USAGE-PRCT` added (default `90`)
+- Command `storage-netapp-ontap-restapi-volumes`
+    - Option `--filter-volume-name=$_SERVICEFILTER-VOLUME-NAME$` added
+    - Option `--warning-logical-usage=$_SERVICEWARNING-LOGICAL-USAGE$` added
+    - Option `--warning-logical-usage-free=$_SERVICEWARNING-LOGICAL-USAGE-FREE$` added
+    - Option `--warning-logical-usage-prct=$_SERVICEWARNING-LOGICAL-USAGE-PRCT$` added
+    - Option `--critical-logical-usage=$_SERVICECRITICAL-LOGICAL-USAGE$` added
+    - Option `--critical-logical-usage-free=$_SERVICECRITICAL-LOGICAL-USAGE-FREE$` added
+    - Option `--critical-logical-usage-prct=$_SERVICECRITICAL-LOGICAL-USAGE-PRCT$` added
+    - Macro `FILTER-VOLUME-NAME` added
+    - Macro `CRITICAL-LOGICAL-USAGE` added
+    - Macro `CRITICAL-LOGICAL-USAGE-FREE` added
+    - Macro `CRITICAL-LOGICAL-USAGE-PRCT` added
+    - Macro `WARNING-LOGICAL-USAGE` added
+    - Macro `WARNING-LOGICAL-USAGE-FREE` added
+    - Macro `WARNING-LOGICAL-USAGE-PRCT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231023</summary>
+
+- Command `storage-netapp-ontap-restapi-hardware`
+    - Macro `HTTP-BACKEND` added
+    - Macro `PROTO` added
+    - Macro `PROTOCOL` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Service template [`storage-netapp-ontap-restapi-aggregates`](#storage-netapp-ontap-restapi-aggregates)
+    - Macro `WARNING-READ-LATENCY`: default changed from `100` to `100000`
+    - Macro `WARNING-WRITE-LATENCY`: default changed from `100` to `100000`
+    - Macro `WARNING-TOTAL-LATENCY`: default changed from `100` to `100000`
+    - Macro `WARNING-OTHER-LATENCY`: default changed from `100` to `100000`
+    - Macro `CRITICAL-READ-LATENCY`: default changed from `250` to `250000`
+    - Macro `CRITICAL-WRITE-LATENCY`: default changed from `250` to `250000`
+    - Macro `CRITICAL-TOTAL-LATENCY`: default changed from `250` to `250000`
+    - Macro `CRITICAL-OTHER-LATENCY`: default changed from `250` to `250000`
+- Service template [`storage-netapp-ontap-restapi-cluster`](#storage-netapp-ontap-restapi-cluster)
+    - Macro `WARNING-CPU-UTILIZATION` removed
+    - Macro `CRITICAL-CPU-UTILIZATION` removed
+- Command `storage-netapp-ontap-restapi-cluster`
+    - Option `--warning-cpu-utilization=$_SERVICEWARNING-CPU-UTILIZATION$` removed
+    - Option `--critical-cpu-utilization=$_SERVICECRITICAL-CPU-UTILIZATION$` removed
+    - Macro `WARNING-CPU-UTILIZATION` removed
+    - Macro `CRITICAL-CPU-UTILIZATION` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Plugin pack `Netapp Ontap Rest API`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230810 - 20230828`.

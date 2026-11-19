@@ -1,0 +1,286 @@
+---
+title: "Dell Powerstore"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dell.png";
+
+<PluginPackHeader name="Dell Powerstore" image={image} category="Storage" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors Dell PowerStore through its REST API: alerts, clusters, hardware status and storage usage.
+
+The plugin pack provides these checks:
+
+* [Alerts](#storage-dell-powerstore-restapi-alerts)
+* [Clusters](#storage-dell-powerstore-restapi-clusters)
+* [Hardware status](#storage-dell-powerstore-restapi-hardware)
+* [Storage](#storage-dell-powerstore-restapi-memory)
+
+
+## Host Templates
+
+### Dell-Powerstore
+
+*Dell Powerstore* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 50). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#storage-dell-powerstore-restapi-alerts) | `storage-dell-powerstore-restapi-alerts` |
+| [Clusters](#storage-dell-powerstore-restapi-clusters) | `storage-dell-powerstore-restapi-clusters` |
+| [Hardware status](#storage-dell-powerstore-restapi-hardware) | `storage-dell-powerstore-restapi-hardware` |
+| [Storage](#storage-dell-powerstore-restapi-memory) | `storage-dell-powerstore-restapi-memory` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #storage-dell-powerstore-restapi-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{severity} =~ /minor/i'` | Set warning threshold for status (Default: '%\{severity\} =~ /minor/i') Can used special variables like: %\{severity\}, %\{resource\}, %\{name\}, %\{timeraised\} |
+| `CRITICAL-STATUS` | `'%{severity} =~ /major\|critical/i'` | Set critical threshold for status (Default: '%\{severity\} =~ /major\|critical/i'). Can used special variables like: %\{severity\}, %\{resource\}, %\{name\}, %\{timeraised\} |
+| `EXTRA-OPTS` | `--memory` | --memory: Only check new alarms |
+| `FILTER-NAME` |  | Filter alerts by name (can be a regexp) |
+| `WARNING-SEVERITY-NONE` |  | Warning threshold Alarms with severity NONE |
+| `WARNING-SEVERITY-INFO` |  | Warning threshold Alarms with severity INFO |
+| `WARNING-SEVERITY-MINOR` |  | Warning threshold Alarms with severity MINOR |
+| `WARNING-SEVERITY-MAJOR` |  | Warning threshold Alarms with severity MAJOR |
+| `WARNING-SEVERITY-CRITICAL` |  | Warning threshold Alarms with severity CRITICAL |
+| `CRITICAL-SEVERITY-NONE` |  | Critical threshold Alarms with severity NONE |
+| `CRITICAL-SEVERITY-INFO` |  | Critical threshold Alarms with severity INFO |
+| `CRITICAL-SEVERITY-MINOR` |  | Critical threshold Alarms with severity MINOR |
+| `CRITICAL-SEVERITY-MAJOR` |  | Critical threshold Alarms with severity MAJOR |
+| `CRITICAL-SEVERITY-CRITICAL` |  | Critical threshold Alarms with severity CRITICAL |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Clusters {/* #storage-dell-powerstore-restapi-clusters */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-ID` | `.*` | Filter clusters by id |
+| `WARNING-CLUSTERS-DETECTED` | `0` | Warning threshold Clusters detected |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-READ-IOPS-5M` |  | Warning Read IOPS 5M |
+| `WARNING-READ-IOPS-30M` |  | Warning Read IOPS 30M |
+| `WARNING-READ-IOPS-1H` |  | Warning Read IOPS 1H |
+| `WARNING-READ-IOPS-24H` |  | Warning Read IOPS 24 |
+| `WARNING-WRITE-IOPS-5M` |  | Warning Write IOPS 5M |
+| `WARNING-WRITE-IOPS-30M` |  | Warning Write IOPS 30M |
+| `WARNING-WRITE-IOPS-1H` |  | Warning Write IOPS 1H |
+| `WARNING-WRITE-IOPS-24H` |  | Warning Write IOPS 24 |
+| `WARNING-READ-LATENCY-5M` |  | Warning Read Latency 5M |
+| `WARNING-READ-LATENCY-30M` |  | Warning Read Latency 30M |
+| `WARNING-READ-LATENCY-1H` |  | Warning Read Latency 1H |
+| `WARNING-READ-LATENCY-24H` |  | Warning Read Latency 24H |
+| `WARNING-WRITE-LATENCY-5M` |  | Warning Write Latency 5M |
+| `WARNING-WRITE-LATENCY-30M` |  | Warning Write Latency 30M |
+| `WARNING-WRITE-LATENCY-1H` |  | Warning Write Latency 1H |
+| `WARNING-WRITE-LATENCY-24H` |  | Warning Write Latency 24H |
+| `WARNING-READ-BANDWIDTH-5M` |  | Warning Read Bandwidth 5M |
+| `WARNING-READ-BANDWIDTH-30M` |  | Warning Read Bandwidth 30M |
+| `WARNING-READ-BANDWIDTH-1H` |  | Warning Read Bandwidth 1H |
+| `WARNING-READ-BANDWIDTH-24H` |  | Warning Read Bandwidth 24H |
+| `WARNING-WRITE-BANDWIDTH-5M` |  | Warning Write Bandwidth 5M |
+| `WARNING-WRITE-BANDWIDTH-30M` |  | Warning Write Bandwidth 30M |
+| `WARNING-WRITE-BANDWIDTH-1H` |  | Warning Write Bandwidth 1H |
+| `WARNING-WRITE-BANDWIDTH-24H` |  | Warning Write Bandwidth 24H |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `clusters.detected.count` | `ms` | detected | `WARNING-CLUSTERS-DETECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #storage-dell-powerstore-restapi-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'appliance', 'battery', 'dimm', 'disk', 'enclosure', 'fan', 'node', 'iomodule', 'psu', 'sfp' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter='disk,26018c5b69264a868e49119eec95b0a9' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='disk,CRITICAL,Uninitialized' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #storage-dell-powerstore-restapi-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `90` | Warning threshold memory usage (%) |
+| `CRITICAL-USAGE-PRCT` | `95` | Critical threshold memory usage free (B) |
+| `FILTER-APPLIANCE-ID` |  | Filter appliance ID |
+| `WARNING-USAGE` |  | Warning threshold memory usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold memory usage free (B) |
+| `CRITICAL-USAGE` |  | Critical threshold memory usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260301</summary>
+
+- Command `storage-dell-powerstore-restapi-hardware`
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `CRITICAL` removed
+    - Macro `WARNING` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-dell-powerstore-restapi-hardware`
+    - Option `--component` changed from `--component='$_SERVICECOMPONENT$'` to `--component=$_SERVICECOMPONENT$`
+    - Option `--filter` changed from `--filter='$_SERVICEFILTER$'` to `--filter=$_SERVICEFILTER$`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--warning=$_SERVICEWARNING$` added
+    - Option `--critical=$_SERVICECRITICAL$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `CRITICAL` added
+    - Macro `NO-COMPONENT` added
+    - Macro `WARNING` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`storage-dell-powerstore-restapi-memory`](#storage-dell-powerstore-restapi-memory)
+    - Alias changed from `Memory` to `Storage`
+
+</details>

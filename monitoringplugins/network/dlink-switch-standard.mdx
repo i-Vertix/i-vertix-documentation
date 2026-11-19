@@ -1,0 +1,444 @@
+---
+title: "DLink Switch (standard)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dlink.png";
+
+<PluginPackHeader name="DLink Switch (standard)" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors D-Link switches through SNMP: CPU and memory usage, hardware health, stack members, interfaces and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-dlink-standard-snmp-cpu)
+* [Hardware](#network-dlink-standard-snmp-hardware)
+* [Interfaces](#network-dlink-standard-snmp-interfaces)
+* [Memory](#network-dlink-standard-snmp-memory)
+* [Stack](#network-dlink-standard-snmp-stack)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-dlink-standard-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### DLink-Switch
+
+*D-Link Switch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-dlink-standard-snmp-cpu) | `network-dlink-standard-snmp-cpu` |
+| [Hardware](#network-dlink-standard-snmp-hardware) | `network-dlink-standard-snmp-hardware` |
+| [Memory](#network-dlink-standard-snmp-memory) | `network-dlink-standard-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-dlink-standard-snmp-interfaces) | `network-dlink-standard-snmp-interfaces` |
+| [Stack](#network-dlink-standard-snmp-stack) | `network-dlink-standard-snmp-stack` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### DLink-Switch-stack
+
+*D-Link Switch stack* · Parent template: `DLink-Switch`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Stack](#network-dlink-standard-snmp-stack) | `network-dlink-standard-snmp-stack` |
+| [CPU](#network-dlink-standard-snmp-cpu) (inherited from `DLink-Switch`) | `network-dlink-standard-snmp-cpu` |
+| [Hardware](#network-dlink-standard-snmp-hardware) (inherited from `DLink-Switch`) | `network-dlink-standard-snmp-hardware` |
+| [Memory](#network-dlink-standard-snmp-memory) (inherited from `DLink-Switch`) | `network-dlink-standard-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) (inherited from `DLink-Switch`) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-dlink-standard-snmp-interfaces) | `network-dlink-standard-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-dlink-standard-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE-5S` | `85` | Threshold warning average 5 seconds |
+| `WARNING-AVERAGE-1M` | `80` | Threshold warning average 1 minute |
+| `WARNING-AVERAGE-5M` | `80` | Threshold warning average 5 minutes |
+| `CRITICAL-AVERAGE-5S` | `95` | Threshold critical average 5 seconds |
+| `CRITICAL-AVERAGE-1M` | `90` | Threshold critical average 1 minute |
+| `CRITICAL-AVERAGE-5M` | `90` | Threshold critical average 5 minutes |
+| `WARNING-CORE-5S` |  | Threshold warning core 5 seconds |
+| `WARNING-CORE-1M` |  | Threshold warning core 1 minute |
+| `WARNING-CORE-5M` |  | Threshold warning core 5 minutes |
+| `CRITICAL-CORE-5S` |  | Threshold critical core 5 seconds |
+| `CRITICAL-CORE-1M` |  | Threshold critical core 1 minute |
+| `CRITICAL-CORE-5M` |  | Threshold critical core 5 minutes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-AVERAGE-5S`, `CRITICAL-AVERAGE-5S` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-AVERAGE-1M`, `CRITICAL-AVERAGE-1M` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-AVERAGE-5M`, `CRITICAL-AVERAGE-5M` |
+| `core.cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-CORE-5S`, `CRITICAL-CORE-5S` |
+| `core.cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-CORE-1M`, `CRITICAL-CORE-1M` |
+| `core.cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-CORE-5M`, `CRITICAL-CORE-5M` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-dlink-standard-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'psu', 'fan', 'temperature' |
+| `WARNING` |  | Set warning threshold for temperatures (syntax: section,[instance,]status,regexp) Example: --warning='temperature,.*,30' --warning='fan,.*,1000' |
+| `CRITICAL` |  | Set critical threshold for temperatures (syntax: section,[instance,]status,regexp) Example: --critical='temperature,.*,40' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=psu) Can also exclude specific instance: --filter=fan,1.1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(working)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-dlink-standard-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Stack {/* #network-dlink-standard-snmp-stack */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-MEMBER-STATUS` |  | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{role\}, %\{roleLast\}, %\{status\}, %\{display\} |
+| `UNKNOWN-LINK-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-MEMBER-STATUS` |  | Set warning threshold for status (Default: '%\{status\} =~ /codeUpdate/i'). Can used special variables like: %\{role\}, %\{roleLast\}, %\{status\}, %\{display\} |
+| `WARNING-LINK-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-MEMBERS-TOTAL` |  | Threshold warning members total |
+| `CRITICAL-MEMBER-STATUS` |  | Set critical threshold for status (Default: '%\{role\} ne %\{roleLast\} \|\| %\{status\} =~ /unsupported\|codeMismatch/i'). Can used special variables like: %\{role\}, %\{roleLast\}, %\{status\}, %\{display\} |
+| `CRITICAL-LINK-STATUS` |  | Set critical threshold for status (Default: '%\{status\} eq "down"'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-MEMBERS-TOTAL` |  | Threshold critical members total |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `stack.members.total.count` |  | Total members | `WARNING-MEMBERS-TOTAL`, `CRITICAL-MEMBERS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-dlink-standard-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERFACE` | `.*` | Interface name - you can use regex |
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250300 - 20250414</summary>
+
+- Plugin pack `DLink Switch (standard)`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`network-dlink-standard-snmp-interfaces`](#network-dlink-standard-snmp-interfaces)
+    - Macro `UNITS-TRAFFIC`: default changed from `%` to `percent_delta`
+    - Macro `UNITS-ERROR`: default changed from `%` to `percent_delta`
+    - Macro `OID-EXTRA-DISPLAY` added (default `ifAlias`)
+- Command `network-dlink-standard-snmp-interfaces`
+    - Option `--oid-extra-display=$_SERVICEOID-EXTRA-DISPLAY$` added
+    - Macro `OID-EXTRA-DISPLAY` added
+
+</details>

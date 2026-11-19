@@ -1,0 +1,567 @@
+---
+title: "QNAP NAS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Qnap.png";
+
+<PluginPackHeader name="QNAP NAS" image={image} category="Storage" metadata={["SNMP"]} />
+
+## Description
+
+Monitors QNAP NAS devices through SNMP: CPU, memory, pool, volume and storage usage, hardware status, interfaces, processes, NTP, upgrade status and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#storage-qnap-snmp-cpu)
+* [Hardware status](#storage-qnap-snmp-hardware)
+* [Interfaces](#storage-qnap-snmp-interfaces)
+* [Memory](#storage-qnap-snmp-memory)
+* [NTP](#storage-qnap-snmp-time)
+* [Pool](#storage-qnap-snmp-pools)
+* [Process count](#storage-qnap-snmp-processcount)
+* [Storage](#storage-qnap-snmp-storage)
+* [Upgrade status](#storage-qnap-snmp-upgrade)
+* [Uptime](#storage-qnap-snmp-uptime)
+* [Volume usage](#storage-qnap-snmp-volumes)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+* [Network Scan](/monitoring/monitoring-resources/discovery/host-discovery)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#storage-qnap-snmp-interfaces) | `Interface - <name>` |
+| [Process count](#storage-qnap-snmp-processcount) | `Process - <name>` |
+| [Storage](#storage-qnap-snmp-storage) | `Storage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### QNAP-NAS-SNMP
+
+*QNAP NAS SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (10)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPTIMEOUT` | `3` | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `EXTRA-OPTS` |  | --force-counters-legacy - Force to use legacy counters. Should be used when EX/ES/QTS counters are buggy |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#storage-qnap-snmp-cpu) | `storage-qnap-snmp-cpu` |
+| [Hardware status](#storage-qnap-snmp-hardware) | `storage-qnap-snmp-hardware` |
+| [Memory](#storage-qnap-snmp-memory) | `storage-qnap-snmp-memory` |
+| [Pool](#storage-qnap-snmp-pools) | `storage-qnap-snmp-pools` |
+| [NTP](#storage-qnap-snmp-time) | `storage-qnap-snmp-time` |
+| [Upgrade status](#storage-qnap-snmp-upgrade) | `storage-qnap-snmp-upgrade` |
+| [Uptime](#storage-qnap-snmp-uptime) | `storage-qnap-snmp-uptime` |
+| [Volume usage](#storage-qnap-snmp-volumes) | `storage-qnap-snmp-volumes` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#storage-qnap-snmp-interfaces) | `storage-qnap-snmp-interfaces` |
+| [Process count](#storage-qnap-snmp-processcount) | `storage-qnap-snmp-processcount` |
+| [Storage](#storage-qnap-snmp-storage) | `storage-qnap-snmp-storage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #storage-qnap-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `85` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning threshold Core utilization |
+| `CRITICAL-CORE` |  | Critical threshold Core utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #storage-qnap-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--snmp-force-getnext` | Additional options appended to the plugin command line (host level). |
+| `WARNING` |  | Set warning threshold for temperatures |
+| `CRITICAL` |  | Set critical threshold for temperatures |
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'disk', 'fan', 'mdisk', 'psu', 'raid', 'temperature. |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=disk) Can also exclude specific instance: --filter=disk,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='disk,CRITICAL,^(?!(ready)$)' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #storage-qnap-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY-USAGE-PRCT` | `80` | Threshold warning in percent |
+| `CRITICAL-MEMORY-USAGE-PRCT` | `90` | Threshold critical in percent |
+| `CRITICAL-MEMORY-USAGE` |  | Threshold critical memory usage (B) |
+| `CRITICAL-MEMORY-USAGE-FREE` |  | Threshold critical memory free (B) |
+| `WARNING-MEMORY-USAGE` |  | Threshold warning memory usage (B) |
+| `WARNING-MEMORY-USAGE-FREE` |  | Threshold warning memory free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-MEMORY-USAGE-FREE`, `CRITICAL-MEMORY-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-MEMORY-USAGE-PRCT`, `CRITICAL-MEMORY-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pool {/* #storage-qnap-snmp-pools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter pools by name (can be a regexp) |
+| `WARNING-POOLS-STATUS` | `'%{status} =~ /degraded\|warning/i'` | Set warning threshold for status (Default: '%\{status\} =~ /degraded\|warning/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-POOLS-STATUS` | `'%{status} =~ /error\|critical/i'` | Set critical threshold for status (Default: '%\{status\} =~ /error\|critical/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold Pool space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold Pool space usage (%) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold Pool space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold Pool space usage free (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold Pool space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold Pool space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pool.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `pool.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `pool.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #storage-qnap-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Upgrade status {/* #storage-qnap-snmp-upgrade */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{upgrade} eq "available"'` | Set warning threshold for status (Default : '%\{upgrade\} eq "available"'). Can used special variables like: %\{model\}, %\{version\}, %\{upgrade\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{model\}, %\{version\}, %\{upgrade\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #storage-qnap-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold warning in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume usage {/* #storage-qnap-snmp-volumes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') *(not used by the check command)* |
+| `WARNING-SPACE-USAGE-PRCT` | `85` | Threshold warning usage |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Threshold critical usage |
+| `CRITICAL-VOLUME-STATUS` | `'%{status} =~ /critical/i'` | Set critical threshold for status (Default: '%\{status\} =~ /critical/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-VOLUME-STATUS` | `'%{status} =~ /degraded\|warning/i'` | Set warning threshold for status (Default: '%\{status\} =~ /degraded\|warning/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `FILTER-NAME` |  | Filter volume name (can be a regexp) |
+| `CRITICAL-SPACE-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `WARNING-SPACE-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold warning usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `volume.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `volume.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #storage-qnap-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `90` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process count {/* #storage-qnap-snmp-processcount */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL` | `1:` | Threshold critical of matching processes count |
+| `PROCESS` |  | Process name - can be a regexp |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #storage-qnap-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `85` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical. Check if storage is readOnly: --critical-access=readOnly |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `STORAGE` |  | Set the storage (number expected) ex: 1, 2,... (empty means  'check all storage') - can be a regexp |
+| `WARNING-ACCESS` |  | Threshold warning |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-qnap-snmp-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250414</summary>
+
+- Plugin pack `QNAP NAS`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240212 - 20240317</summary>
+
+- Command `storage-qnap-snmp-hardware`
+    - Macro `SNMPAUTH-PASSPHRASE` added
+    - Macro `SNMPAUTH-PROTOCOL` added
+    - Macro `SNMPPRIV-PASSPHRASE` added
+    - Macro `SNMPPRIV-PROTOCOL` added
+    - Macro `SNMPTIMEOUT` added
+    - Macro `SNMPUSERNAME` added
+    - Macro `COMPONENT` added
+    - Macro `FILTER` added
+    - Macro `THRESHOLD-OVERLOAD` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Service template [`storage-qnap-snmp-hardware`](#storage-qnap-snmp-hardware)
+    - Macro `EXTRA-OPTS` added (default `--snmp-force-getnext`)
+
+</details>

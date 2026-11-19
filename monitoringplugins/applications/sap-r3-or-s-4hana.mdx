@@ -1,0 +1,1647 @@
+---
+title: "SAP R3 or S/4HANA"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/SAP.png";
+
+<PluginPackHeader name="SAP R3 or S/4HANA" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors SAP R/3 and S/4HANA systems through the message server: CCMS monitors, connection time, uptime, processes, background jobs, IDocs, short dumps, failed updates and workload.
+
+The plugin pack provides these checks:
+
+* [SAP CCMS - All Monitoring Contexts - Background - Long running jobs](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs`)
+* [SAP CCMS - All Monitoring Contexts - Background - Long running jobs](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg`)
+* [SAP CCMS - All Monitoring Contexts - BackgroundService](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice`)
+* [SAP CCMS - All Monitoring Contexts - BackgroundService](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg`)
+* [SAP CCMS - All Monitoring Contexts - BusinessCommunication](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication`)
+* [SAP CCMS - All Monitoring Contexts - BusinessCommunication](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg`)
+* [SAP CCMS - All Monitoring Contexts - InstanceAsTask](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask`)
+* [SAP CCMS - All Monitoring Contexts - InstanceAsTask](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg`)
+* [SAP CCMS - All Monitoring Contexts - OperatingSystem](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem`)
+* [SAP CCMS - All Monitoring Contexts - OperatingSystem](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg`)
+* [SAP CCMS - All Monitoring Contexts - R3Abap](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap`)
+* [SAP CCMS - All Monitoring Contexts - R3Abap](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg`)
+* [SAP CCMS - All Monitoring Contexts - R3Services](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services`)
+* [SAP CCMS - All Monitoring Contexts - R3Services](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg`)
+* [SAP CCMS - All Monitoring Contexts - R3Syslog](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog`)
+* [SAP CCMS - All Monitoring Contexts - R3Syslog](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg`)
+* [SAP CCMS - All Monitoring Contexts - SpoolNumbers](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers`)
+* [SAP CCMS - All Monitoring Contexts - SpoolNumbers](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg) (`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg`)
+* [SAP CCMS - Monitor Templates - Dialog Overview](#check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview) (`check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview`)
+* [SAP CCMS - Monitor Templates - Dialog Overview](#check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg) (`check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg`)
+* [SAP CCMS - Monitor Templates - Enqueue](#check_sap_health-ccms-sap-ccms-monitor-templates-enqueue) (`check_sap_health-ccms-sap-ccms-monitor-templates-enqueue`)
+* [SAP CCMS - Monitor Templates - Enqueue](#check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg) (`check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg`)
+* [SAP CCMS - Monitor Templates - OperatingSystem](#check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem) (`check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem`)
+* [SAP CCMS - Monitor Templates - OperatingSystem](#check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg) (`check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg`)
+* [SAP CCMS check](#check_sap_health-ccms-mte-check-msg)
+* [SAP Connection time](#check_sap_health-connection-time) (`check_sap_health-connection-time`)
+* [SAP Connection time](#check_sap_health-connection-time-msg) (`check_sap_health-connection-time-msg`)
+* [SAP Count processes](#check_sap_health-count-processes) (`check_sap_health-count-processes`)
+* [SAP Count processes](#check_sap_health-count-processes-msg) (`check_sap_health-count-processes-msg`)
+* [SAP Exceeded failed jobs](#check_sap_health-exceeded-failed-jobs) (`check_sap_health-exceeded-failed-jobs`)
+* [SAP Exceeded failed jobs](#check_sap_health-exceeded-failed-jobs-msg) (`check_sap_health-exceeded-failed-jobs-msg`)
+* [SAP Failed IDOCS](#check_sap_health-failed-idocs) (`check_sap_health-failed-idocs`)
+* [SAP Failed IDOCS](#check_sap_health-failed-idocs-msg) (`check_sap_health-failed-idocs-msg`)
+* [SAP Failed jobs](#check_sap_health-failed-jobs) (`check_sap_health-failed-jobs`)
+* [SAP Failed jobs](#check_sap_health-failed-jobs-msg) (`check_sap_health-failed-jobs-msg`)
+* [SAP Failed updates](#check_sap_health-failed-updates) (`check_sap_health-failed-updates`)
+* [SAP Failed updates](#check_sap_health-failed-updates-msg) (`check_sap_health-failed-updates-msg`)
+* [SAP List IDOCS](#check_sap_health-list-idocs) (`check_sap_health-list-idocs`)
+* [SAP List IDOCS](#check_sap_health-list-idocs-msg) (`check_sap_health-list-idocs-msg`)
+* [SAP List jobs](#check_sap_health-list-jobs) (`check_sap_health-list-jobs`)
+* [SAP List jobs](#check_sap_health-list-jobs-msg) (`check_sap_health-list-jobs-msg`)
+* [SAP List processes](#check_sap_health-list-processes) (`check_sap_health-list-processes`)
+* [SAP List processes](#check_sap_health-list-processes-msg) (`check_sap_health-list-processes-msg`)
+* [SAP List Shortdumps](#check_sap_health-shortdumps-list) (`check_sap_health-shortdumps-list`)
+* [SAP List Shortdumps](#check_sap_health-shortdumps-list-msg) (`check_sap_health-shortdumps-list-msg`)
+* [SAP Shortdumps count](#check_sap_health-shortdumps-count) (`check_sap_health-shortdumps-count`)
+* [SAP Shortdumps count](#check_sap_health-shortdumps-count-msg) (`check_sap_health-shortdumps-count-msg`)
+* [SAP Shortdumps recurrence](#check_sap_health-shortdumps-recurrence) (`check_sap_health-shortdumps-recurrence`)
+* [SAP Shortdumps recurrence](#check_sap_health-shortdumps-recurrence-msg) (`check_sap_health-shortdumps-recurrence-msg`)
+* [SAP uptime](#check_sap_health-uptime) (`check_sap_health-uptime`)
+* [SAP uptime](#check_sap_health-uptime-msg) (`check_sap_health-uptime-msg`)
+* [SAP Workload overview](#check_sap_health-workload-overview) (`check_sap_health-workload-overview`)
+* [SAP Workload overview](#check_sap_health-workload-overview-msg) (`check_sap_health-workload-overview-msg`)
+
+
+## Host Templates
+
+### SAP-R3
+
+*SAP R3* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (4)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SAP-SYSNR` | `00` |  |
+| `SAP_CLIENT` | `000` |  |
+| `SAP-PASSWORD` | *(password)* |  |
+| `SAP-USERNAME` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SAP CCMS - All Monitoring Contexts - Background - Long running jobs](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs` |
+| [SAP CCMS - All Monitoring Contexts - BackgroundService](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice` |
+| [SAP CCMS - All Monitoring Contexts - BusinessCommunication](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication` |
+| [SAP CCMS - All Monitoring Contexts - InstanceAsTask](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask` |
+| [SAP CCMS - All Monitoring Contexts - OperatingSystem](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem` |
+| [SAP CCMS - All Monitoring Contexts - R3Abap](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap` |
+| [SAP CCMS - All Monitoring Contexts - R3Services](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services` |
+| [SAP CCMS - All Monitoring Contexts - R3Syslog](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog` |
+| [SAP CCMS - All Monitoring Contexts - SpoolNumbers](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers` |
+| [SAP CCMS - Monitor Templates - Dialog Overview](#check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview) | `check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview` |
+| [SAP CCMS - Monitor Templates - Enqueue](#check_sap_health-ccms-sap-ccms-monitor-templates-enqueue) | `check_sap_health-ccms-sap-ccms-monitor-templates-enqueue` |
+| [SAP CCMS - Monitor Templates - OperatingSystem](#check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem) | `check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem` |
+| [SAP Connection time](#check_sap_health-connection-time) | `check_sap_health-connection-time` |
+| [SAP Count processes](#check_sap_health-count-processes) | `check_sap_health-count-processes` |
+| [SAP Exceeded failed jobs](#check_sap_health-exceeded-failed-jobs) | `check_sap_health-exceeded-failed-jobs` |
+| [SAP Failed IDOCS](#check_sap_health-failed-idocs) | `check_sap_health-failed-idocs` |
+| [SAP Failed jobs](#check_sap_health-failed-jobs) | `check_sap_health-failed-jobs` |
+| [SAP Failed updates](#check_sap_health-failed-updates) | `check_sap_health-failed-updates` |
+| [SAP List IDOCS](#check_sap_health-list-idocs) | `check_sap_health-list-idocs` |
+| [SAP List jobs](#check_sap_health-list-jobs) | `check_sap_health-list-jobs` |
+| [SAP List processes](#check_sap_health-list-processes) | `check_sap_health-list-processes` |
+| [SAP Shortdumps count](#check_sap_health-shortdumps-count) | `check_sap_health-shortdumps-count` |
+| [SAP List Shortdumps](#check_sap_health-shortdumps-list) | `check_sap_health-shortdumps-list` |
+| [SAP Shortdumps recurrence](#check_sap_health-shortdumps-recurrence) | `check_sap_health-shortdumps-recurrence` |
+| [SAP uptime](#check_sap_health-uptime) | `check_sap_health-uptime` |
+| [SAP Workload overview](#check_sap_health-workload-overview) | `check_sap_health-workload-overview` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SAP CCMS - All Monitoring Contexts - Background - Long running jobs](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg` |
+| [SAP CCMS - All Monitoring Contexts - BackgroundService](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg` |
+| [SAP CCMS - All Monitoring Contexts - BusinessCommunication](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg` |
+| [SAP CCMS - All Monitoring Contexts - InstanceAsTask](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg` |
+| [SAP CCMS - All Monitoring Contexts - OperatingSystem](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg` |
+| [SAP CCMS - All Monitoring Contexts - R3Abap](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg` |
+| [SAP CCMS - All Monitoring Contexts - R3Services](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg` |
+| [SAP CCMS - All Monitoring Contexts - R3Syslog](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg` |
+| [SAP CCMS - All Monitoring Contexts - SpoolNumbers](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg` |
+| [SAP CCMS - Monitor Templates - Dialog Overview](#check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg) | `check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg` |
+| [SAP CCMS - Monitor Templates - Enqueue](#check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg) | `check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg` |
+| [SAP CCMS - Monitor Templates - OperatingSystem](#check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg) | `check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg` |
+| [SAP CCMS check](#check_sap_health-ccms-mte-check-msg) | `check_sap_health-ccms-mte-check-msg` |
+| [SAP Connection time](#check_sap_health-connection-time-msg) | `check_sap_health-connection-time-msg` |
+| [SAP Count processes](#check_sap_health-count-processes-msg) | `check_sap_health-count-processes-msg` |
+| [SAP Exceeded failed jobs](#check_sap_health-exceeded-failed-jobs-msg) | `check_sap_health-exceeded-failed-jobs-msg` |
+| [SAP Failed IDOCS](#check_sap_health-failed-idocs-msg) | `check_sap_health-failed-idocs-msg` |
+| [SAP Failed jobs](#check_sap_health-failed-jobs-msg) | `check_sap_health-failed-jobs-msg` |
+| [SAP Failed updates](#check_sap_health-failed-updates-msg) | `check_sap_health-failed-updates-msg` |
+| [SAP List IDOCS](#check_sap_health-list-idocs-msg) | `check_sap_health-list-idocs-msg` |
+| [SAP List jobs](#check_sap_health-list-jobs-msg) | `check_sap_health-list-jobs-msg` |
+| [SAP List processes](#check_sap_health-list-processes-msg) | `check_sap_health-list-processes-msg` |
+| [SAP List Shortdumps](#check_sap_health-shortdumps-list-msg) | `check_sap_health-shortdumps-list-msg` |
+| [SAP Shortdumps count](#check_sap_health-shortdumps-count-msg) | `check_sap_health-shortdumps-count-msg` |
+| [SAP Shortdumps recurrence](#check_sap_health-shortdumps-recurrence-msg) | `check_sap_health-shortdumps-recurrence-msg` |
+| [SAP uptime](#check_sap_health-uptime-msg) | `check_sap_health-uptime-msg` |
+| [SAP Workload overview](#check_sap_health-workload-overview-msg) | `check_sap_health-workload-overview-msg` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### SAP-R3-MSG
+
+*SAP R3 Message Server*
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SAP-SYSNR` | `00` |  |
+| `SAP-PASSWORD` | *(password)* |  |
+| `MESSAGE-SERVER-PORT` | `3604` |  |
+| `SAP-CLIENT` | `000` |  |
+| `MESSAGE-SERVER` |  |  |
+| `MS-GROUP` |  |  |
+| `SAP-USERNAME` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SAP CCMS check](#check_sap_health-ccms-mte-check-msg) | `check_sap_health-ccms-mte-check-msg` |
+| [SAP CCMS - All Monitoring Contexts - Background - Long running jobs](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg` |
+| [SAP CCMS - All Monitoring Contexts - BackgroundService](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg` |
+| [SAP CCMS - All Monitoring Contexts - BusinessCommunication](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg` |
+| [SAP CCMS - All Monitoring Contexts - InstanceAsTask](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg` |
+| [SAP CCMS - All Monitoring Contexts - OperatingSystem](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg` |
+| [SAP CCMS - All Monitoring Contexts - R3Abap](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg` |
+| [SAP CCMS - All Monitoring Contexts - R3Services](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg` |
+| [SAP CCMS - All Monitoring Contexts - R3Syslog](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg` |
+| [SAP CCMS - All Monitoring Contexts - SpoolNumbers](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg` |
+| [SAP CCMS - Monitor Templates - Dialog Overview](#check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg) | `check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg` |
+| [SAP CCMS - Monitor Templates - Enqueue](#check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg) | `check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg` |
+| [SAP CCMS - Monitor Templates - OperatingSystem](#check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg) | `check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg` |
+| [SAP Connection time](#check_sap_health-connection-time-msg) | `check_sap_health-connection-time-msg` |
+| [SAP Count processes](#check_sap_health-count-processes-msg) | `check_sap_health-count-processes-msg` |
+| [SAP Exceeded failed jobs](#check_sap_health-exceeded-failed-jobs-msg) | `check_sap_health-exceeded-failed-jobs-msg` |
+| [SAP Failed IDOCS](#check_sap_health-failed-idocs-msg) | `check_sap_health-failed-idocs-msg` |
+| [SAP Failed jobs](#check_sap_health-failed-jobs-msg) | `check_sap_health-failed-jobs-msg` |
+| [SAP Failed updates](#check_sap_health-failed-updates-msg) | `check_sap_health-failed-updates-msg` |
+| [SAP List IDOCS](#check_sap_health-list-idocs-msg) | `check_sap_health-list-idocs-msg` |
+| [SAP List jobs](#check_sap_health-list-jobs-msg) | `check_sap_health-list-jobs-msg` |
+| [SAP List processes](#check_sap_health-list-processes-msg) | `check_sap_health-list-processes-msg` |
+| [SAP Shortdumps count](#check_sap_health-shortdumps-count-msg) | `check_sap_health-shortdumps-count-msg` |
+| [SAP List Shortdumps](#check_sap_health-shortdumps-list-msg) | `check_sap_health-shortdumps-list-msg` |
+| [SAP Shortdumps recurrence](#check_sap_health-shortdumps-recurrence-msg) | `check_sap_health-shortdumps-recurrence-msg` |
+| [SAP uptime](#check_sap_health-uptime-msg) | `check_sap_health-uptime-msg` |
+| [SAP Workload overview](#check_sap_health-workload-overview-msg) | `check_sap_health-workload-overview-msg` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Ping](#ping-lan) | `Ping-LAN` |
+| [SAP CCMS - All Monitoring Contexts - Background - Long running jobs](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs` |
+| [SAP CCMS - All Monitoring Contexts - BackgroundService](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice` |
+| [SAP CCMS - All Monitoring Contexts - BusinessCommunication](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication` |
+| [SAP CCMS - All Monitoring Contexts - InstanceAsTask](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask` |
+| [SAP CCMS - All Monitoring Contexts - OperatingSystem](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem` |
+| [SAP CCMS - All Monitoring Contexts - R3Abap](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap` |
+| [SAP CCMS - All Monitoring Contexts - R3Services](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services` |
+| [SAP CCMS - All Monitoring Contexts - R3Syslog](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog` |
+| [SAP CCMS - All Monitoring Contexts - SpoolNumbers](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers) | `check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers` |
+| [SAP CCMS - Monitor Templates - Dialog Overview](#check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview) | `check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview` |
+| [SAP CCMS - Monitor Templates - Enqueue](#check_sap_health-ccms-sap-ccms-monitor-templates-enqueue) | `check_sap_health-ccms-sap-ccms-monitor-templates-enqueue` |
+| [SAP CCMS - Monitor Templates - OperatingSystem](#check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem) | `check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem` |
+| [SAP Connection time](#check_sap_health-connection-time) | `check_sap_health-connection-time` |
+| [SAP Count processes](#check_sap_health-count-processes) | `check_sap_health-count-processes` |
+| [SAP Exceeded failed jobs](#check_sap_health-exceeded-failed-jobs) | `check_sap_health-exceeded-failed-jobs` |
+| [SAP Failed IDOCS](#check_sap_health-failed-idocs) | `check_sap_health-failed-idocs` |
+| [SAP Failed jobs](#check_sap_health-failed-jobs) | `check_sap_health-failed-jobs` |
+| [SAP Failed updates](#check_sap_health-failed-updates) | `check_sap_health-failed-updates` |
+| [SAP List IDOCS](#check_sap_health-list-idocs) | `check_sap_health-list-idocs` |
+| [SAP List jobs](#check_sap_health-list-jobs) | `check_sap_health-list-jobs` |
+| [SAP List processes](#check_sap_health-list-processes) | `check_sap_health-list-processes` |
+| [SAP List Shortdumps](#check_sap_health-shortdumps-list) | `check_sap_health-shortdumps-list` |
+| [SAP Shortdumps count](#check_sap_health-shortdumps-count) | `check_sap_health-shortdumps-count` |
+| [SAP Shortdumps recurrence](#check_sap_health-shortdumps-recurrence) | `check_sap_health-shortdumps-recurrence` |
+| [SAP uptime](#check_sap_health-uptime) | `check_sap_health-uptime` |
+| [SAP Workload overview](#check_sap_health-workload-overview) | `check_sap_health-workload-overview` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - Background - Long running jobs {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `Long-Running Jobs` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - BackgroundService {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `BackgroundService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - BusinessCommunication {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `BusinessCommunication` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - InstanceAsTask {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `InstanceAsTask` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - OperatingSystem {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `OperatingSystem` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - R3Abap {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `R3Abap` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - R3Services {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `R3Services` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - R3Syslog {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `R3Syslog` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - SpoolNumbers {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `SpoolNumbers` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - Monitor Templates - Dialog Overview {/* #check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Monitor Templates` |  |
+| `NAME2` | `Dialog Overview` |  |
+| `NAME3` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - Monitor Templates - Enqueue {/* #check_sap_health-ccms-sap-ccms-monitor-templates-enqueue */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Monitor Templates` |  |
+| `NAME2` | `Enqueue` |  |
+| `NAME3` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - Monitor Templates - OperatingSystem {/* #check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Monitor Templates` |  |
+| `NAME2` | `Operating System` |  |
+| `NAME3` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Connection time {/* #check_sap_health-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `0.5` | warning threshold in seconds |
+| `CRITICAL` | `2` | critical threshold in seconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Count processes {/* #check_sap_health-count-processes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-NUM-DIA` | `1:` |  |
+| `CRITICAL-NUM-UPD` | `1:` |  |
+| `CRITICAL-NUM-UP2` | `1:` |  |
+| `CRITICAL-NUM-BGD` | `1:` |  |
+| `CRITICAL-NUM-ENQ` | `1:` |  |
+| `CRITICAL-NUM-SPO` | `1:` |  |
+| `WARNING-NUM-BGD` |  |  |
+| `WARNING-NUM-DIA` |  |  |
+| `WARNING-NUM-ENQ` |  |  |
+| `WARNING-NUM-SPO` |  |  |
+| `WARNING-NUM-UP2` |  |  |
+| `WARNING-NUM-UPD` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Exceeded failed jobs {/* #check_sap_health-exceeded-failed-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Failed IDOCS {/* #check_sap_health-failed-idocs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Failed jobs {/* #check_sap_health-failed-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Failed updates {/* #check_sap_health-failed-updates */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List IDOCS {/* #check_sap_health-list-idocs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List jobs {/* #check_sap_health-list-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List processes {/* #check_sap_health-list-processes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` | *(not used by the check command)* |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Shortdumps count {/* #check_sap_health-shortdumps-count */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List Shortdumps {/* #check_sap_health-shortdumps-list */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Shortdumps recurrence {/* #check_sap_health-shortdumps-recurrence */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600*24` |  |
+| `REPORT` | `html` |  |
+| `WARNING-SHORTDUMPS` | `500` |  |
+| `WARNING-MAX-UNIQUE-SHORTDUMPS` | `5` |  |
+| `CRITICAL-SHORTDUMPS` | `1000` |  |
+| `CRITICAL-MAX-UNIQUE-SHORTDUMPS` | `50` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP uptime {/* #check_sap_health-uptime */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Workload overview {/* #check_sap_health-workload-overview */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `10000` |  |
+| `CRITICAL` | `60000` |  |
+| `NAME` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS check {/* #check_sap_health-ccms-mte-check-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` |  |  |
+| `NAME2` |  |  |
+| `NAME3` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - Background - Long running jobs {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `Long-Running Jobs` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - BackgroundService {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `BackgroundService` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - BusinessCommunication {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `BusinessCommunication` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - InstanceAsTask {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `InstanceAsTask` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - OperatingSystem {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `OperatingSystem` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - R3Abap {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `R3Abap` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - R3Services {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `R3Services` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - R3Syslog {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `R3Syslog` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - All Monitoring Contexts - SpoolNumbers {/* #check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Technical Expert Monitors` |  |
+| `NAME2` | `All Monitoring Contexts` |  |
+| `NAME3` | `SpoolNumbers` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - Monitor Templates - Dialog Overview {/* #check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Monitor Templates` |  |
+| `NAME2` | `Dialog Overview` |  |
+| `NAME3` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - Monitor Templates - Enqueue {/* #check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Monitor Templates` |  |
+| `NAME2` | `Enqueue` |  |
+| `NAME3` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP CCMS - Monitor Templates - OperatingSystem {/* #check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NAME` | `SAP CCMS Monitor Templates` |  |
+| `NAME2` | `Operating System` |  |
+| `NAME3` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Connection time {/* #check_sap_health-connection-time-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `0.5` |  |
+| `CRITICAL` | `2` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Count processes {/* #check_sap_health-count-processes-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-NUM-DIA` | `1:` |  |
+| `CRITICAL-NUM-UPD` | `1:` |  |
+| `CRITICAL-NUM-UP2` | `1:` |  |
+| `CRITICAL-NUM-BGD` | `1:` |  |
+| `CRITICAL-NUM-ENQ` | `1:` |  |
+| `CRITICAL-NUM-SPO` | `1:` |  |
+| `WARNING-NUM-DIA` |  |  |
+| `WARNING-NUM-UPD` |  |  |
+| `WARNING-NUM-UP2` |  |  |
+| `WARNING-NUM-BGD` |  |  |
+| `WARNING-NUM-ENQ` |  |  |
+| `WARNING-NUM-SPO` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Exceeded failed jobs {/* #check_sap_health-exceeded-failed-jobs-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Failed IDOCS {/* #check_sap_health-failed-idocs-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Failed jobs {/* #check_sap_health-failed-jobs-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Failed updates {/* #check_sap_health-failed-updates-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List IDOCS {/* #check_sap_health-list-idocs-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List jobs {/* #check_sap_health-list-jobs-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List processes {/* #check_sap_health-list-processes-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` | *(not used by the check command)* |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Shortdumps count {/* #check_sap_health-shortdumps-count-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP List Shortdumps {/* #check_sap_health-shortdumps-list-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Shortdumps recurrence {/* #check_sap_health-shortdumps-recurrence-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `LOOKBACK` | `3600*24` |  |
+| `REPORT` | `html` |  |
+| `WARNING-SHORTDUMPS` | `500` |  |
+| `WARNING-MAX-UNIQUE-SHORTDUMPS` | `5` |  |
+| `CRITICAL-SHORTDUMPS` | `1000` |  |
+| `CRITICAL-MAX-UNIQUE-SHORTDUMPS` | `50` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP uptime {/* #check_sap_health-uptime-msg */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAP Workload overview {/* #check_sap_health-workload-overview-msg */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `10000` |  |
+| `CRITICAL` | `60000` |  |
+| `NAME` |  |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20241206 - 20250115</summary>
+
+- Host template `SAP-R3-MSG`
+    - Host template added
+- Service template [`check_sap_health-ccms-mte-check-msg`](#check_sap_health-ccms-mte-check-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgriound-long-running-jobs-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-backgroundservice-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-businesscommunication-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-instanceastask.-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-operatingsystem-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3abap-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3services-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-r3syslog-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg`](#check_sap_health-ccms-sap-ccms-all-monitoring-contexts-spoolnumbers-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg`](#check_sap_health-ccms-sap-ccms-monitor-templates-dialog-overview-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg`](#check_sap_health-ccms-sap-ccms-monitor-templates-enqueue-msg)
+    - Service template added
+- Service template [`check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg`](#check_sap_health-ccms-sap-ccms-monitor-templates-operatingsystem-msg)
+    - Service template added
+- Service template [`check_sap_health-connection-time-msg`](#check_sap_health-connection-time-msg)
+    - Service template added
+- Service template [`check_sap_health-count-processes-msg`](#check_sap_health-count-processes-msg)
+    - Service template added
+- Service template [`check_sap_health-exceeded-failed-jobs-msg`](#check_sap_health-exceeded-failed-jobs-msg)
+    - Service template added
+- Service template [`check_sap_health-failed-idocs-msg`](#check_sap_health-failed-idocs-msg)
+    - Service template added
+- Service template [`check_sap_health-failed-jobs-msg`](#check_sap_health-failed-jobs-msg)
+    - Service template added
+- Service template [`check_sap_health-failed-updates-msg`](#check_sap_health-failed-updates-msg)
+    - Service template added
+- Service template [`check_sap_health-list-idocs-msg`](#check_sap_health-list-idocs-msg)
+    - Service template added
+- Service template [`check_sap_health-list-jobs-msg`](#check_sap_health-list-jobs-msg)
+    - Service template added
+- Service template [`check_sap_health-list-processes-msg`](#check_sap_health-list-processes-msg)
+    - Service template added
+- Service template [`check_sap_health-shortdumps-count-msg`](#check_sap_health-shortdumps-count-msg)
+    - Service template added
+- Service template [`check_sap_health-shortdumps-list-msg`](#check_sap_health-shortdumps-list-msg)
+    - Service template added
+- Service template [`check_sap_health-shortdumps-recurrence-msg`](#check_sap_health-shortdumps-recurrence-msg)
+    - Service template added
+- Service template [`check_sap_health-uptime-msg`](#check_sap_health-uptime-msg)
+    - Service template added
+- Service template [`check_sap_health-workload-overview-msg`](#check_sap_health-workload-overview-msg)
+    - Service template added
+- Command `check_sap_health-ccms-mte-check-msg`
+    - Command added
+- Command `check_sap_health-connection-time-msg`
+    - Command added
+- Command `check_sap_health-count-processes-msg`
+    - Command added
+- Command `check_sap_health-exceeded-failed-jobs-msg`
+    - Command added
+- Command `check_sap_health-failed-idocs-msg`
+    - Command added
+- Command `check_sap_health-failed-jobs-msg`
+    - Command added
+- Command `check_sap_health-failed-updates-msg`
+    - Command added
+- Command `check_sap_health-list-idocs-msg`
+    - Command added
+- Command `check_sap_health-list-jobs-msg`
+    - Command added
+- Command `check_sap_health-list-processes-msg`
+    - Command added
+- Command `check_sap_health-shortdumps-count-msg`
+    - Command added
+- Command `check_sap_health-shortdumps-list-msg`
+    - Command added
+- Command `check_sap_health-shortdumps-recurrence-msg`
+    - Command added
+- Command `check_sap_health-uptime-msg`
+    - Command added
+- Command `check_sap_health-workload-overview-msg`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240909 - 20240925</summary>
+
+- Command `check_sap_health-ccms-mte-check`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `NAME` added
+    - Macro `NAME2` added
+    - Macro `NAME3` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-connection-time`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-count-processes`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `CRITICAL-NUM-BGD` added
+    - Macro `CRITICAL-NUM-DIA` added
+    - Macro `CRITICAL-NUM-ENQ` added
+    - Macro `CRITICAL-NUM-SPO` added
+    - Macro `CRITICAL-NUM-UP2` added
+    - Macro `CRITICAL-NUM-UPD` added
+    - Macro `WARNING-NUM-BGD` added
+    - Macro `WARNING-NUM-DIA` added
+    - Macro `WARNING-NUM-ENQ` added
+    - Macro `WARNING-NUM-SPO` added
+    - Macro `WARNING-NUM-UP2` added
+    - Macro `WARNING-NUM-UPD` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-exceeded-failed-jobs`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+- Command `check_sap_health-failed-idocs`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-failed-jobs`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-failed-updates`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-list-idocs`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+- Command `check_sap_health-list-jobs`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+- Command `check_sap_health-shortdumps-count`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+- Command `check_sap_health-shortdumps-list`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `LOOKBACK` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-shortdumps-recurrence`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `CRITICAL-MAX-UNIQUE-SHORTDUMPS` added
+    - Macro `CRITICAL-SHORTDUMPS` added
+    - Macro `LOOKBACK` added
+    - Macro `REPORT` added
+    - Macro `WARNING-MAX-UNIQUE-SHORTDUMPS` added
+    - Macro `WARNING-SHORTDUMPS` added
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-uptime`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+- Command `check_sap_health-workload-overview`
+    - Macro `SAP-PASSWORD` added
+    - Macro `SAP-SYSNR` added
+    - Macro `SAP-USERNAME` added
+    - Macro `SAP_CLIENT` added
+    - Macro `NAME` added
+    - Macro `SYSNR` removed
+    - Macro `MANDANT` removed
+    - Macro `USER` removed
+    - Macro `PASSWORD` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230920</summary>
+
+- Plugin pack `SAP R3 or S/4HANA`
+    - Description updated
+
+</details>

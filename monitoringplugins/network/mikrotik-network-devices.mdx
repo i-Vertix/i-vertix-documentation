@@ -1,0 +1,859 @@
+---
+title: "Mikrotik network devices"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/MikroTik.png";
+
+<PluginPackHeader name="Mikrotik network devices" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors MikroTik RouterOS devices through SNMP: CPU, memory and disk usage, environment, firmware, interfaces, NTP time, and LTE interfaces, status and signal quality.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-mikrotik-snmp-cpu)
+* [Disk](#network-mikrotik-snmp-disk)
+* [Environment](#network-mikrotik-snmp-environment)
+* [Firmware](#network-mikrotik-snmp-firmware)
+* [Interfaces](#network-mikrotik-snmp-interfaces)
+* [LTE interfaces](#network-mikrotik-snmp-lte-interfaces)
+* [LTE status](#network-mikrotik-snmp-lte)
+* [Memory](#network-mikrotik-snmp-memory)
+* [NTP-time](#network-mikrotik-snmp-time)
+* [Signal](#network-mikrotik-snmp-singal)
+* [Uptime](#network-mikrotik-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-mikrotik-snmp-interfaces) | `Interface - <name>` |
+| [LTE interfaces](#network-mikrotik-snmp-lte-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Mikrotik-Switch-Router
+
+*Mikrotik Switch/Router* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-mikrotik-snmp-cpu) | `network-mikrotik-snmp-cpu` |
+| [Disk](#network-mikrotik-snmp-disk) | `network-mikrotik-snmp-disk` |
+| [Environment](#network-mikrotik-snmp-environment) | `network-mikrotik-snmp-environment` |
+| [Firmware](#network-mikrotik-snmp-firmware) | `network-mikrotik-snmp-firmware` |
+| [Memory](#network-mikrotik-snmp-memory) | `network-mikrotik-snmp-memory` |
+| [NTP-time](#network-mikrotik-snmp-time) | `network-mikrotik-snmp-time` |
+| [Uptime](#network-mikrotik-snmp-uptime) | `network-mikrotik-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-mikrotik-snmp-interfaces) | `network-mikrotik-snmp-interfaces` |
+| [LTE interfaces](#network-mikrotik-snmp-lte-interfaces) | `network-mikrotik-snmp-lte-interfaces` |
+| [LTE status](#network-mikrotik-snmp-lte) | `network-mikrotik-snmp-lte` |
+| [Signal](#network-mikrotik-snmp-singal) | `network-mikrotik-snmp-singal` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Mikrotik-Wireless
+
+*Mikrotik Wireless* · Parent template: `Mikrotik-Switch-Router`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Signal](#network-mikrotik-snmp-singal) | `network-mikrotik-snmp-singal` |
+| [CPU](#network-mikrotik-snmp-cpu) (inherited from `Mikrotik-Switch-Router`) | `network-mikrotik-snmp-cpu` |
+| [Disk](#network-mikrotik-snmp-disk) (inherited from `Mikrotik-Switch-Router`) | `network-mikrotik-snmp-disk` |
+| [Environment](#network-mikrotik-snmp-environment) (inherited from `Mikrotik-Switch-Router`) | `network-mikrotik-snmp-environment` |
+| [Firmware](#network-mikrotik-snmp-firmware) (inherited from `Mikrotik-Switch-Router`) | `network-mikrotik-snmp-firmware` |
+| [Memory](#network-mikrotik-snmp-memory) (inherited from `Mikrotik-Switch-Router`) | `network-mikrotik-snmp-memory` |
+| [NTP-time](#network-mikrotik-snmp-time) (inherited from `Mikrotik-Switch-Router`) | `network-mikrotik-snmp-time` |
+| [Uptime](#network-mikrotik-snmp-uptime) (inherited from `Mikrotik-Switch-Router`) | `network-mikrotik-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-mikrotik-snmp-interfaces) | `network-mikrotik-snmp-interfaces` |
+| [LTE interfaces](#network-mikrotik-snmp-lte-interfaces) | `network-mikrotik-snmp-lte-interfaces` |
+| [LTE status](#network-mikrotik-snmp-lte) | `network-mikrotik-snmp-lte` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-mikrotik-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Threshold warning for each core |
+| `CRITICAL-CORE` |  | Threshold critical for each core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING`, `CRITICAL` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk {/* #network-mikrotik-snmp-disk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-STORAGE-TYPE` | `^(?!(hrStorageRam\|hrStorageFlashMemory)$)` | Filter storage types with a regexp (Default: '^(?!(hrStorageRam)$)') |
+| `STORAGE` | `.*` | Set the storage (number expected) ex: 1, 2,... (empty means 'check all storage') - can be a regexp |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USAGE` | `80` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #network-mikrotik-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'current', 'fan', 'psu', 'temperature', 'voltage' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=voltage) Can also exclude specific instance --filter=fan,1.1 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='xxxxx,CRITICAL,^(?!(normal)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firmware {/* #network-mikrotik-snmp-firmware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{firmware_version} ne %{software_version}'` | Set warning threshold for status (Default : '%\{firmware_version\} ne %\{software_version\}'). Can used special variables like: %\{model\}, %\{software_version\}, %\{firmware_version\}, %\{firmware_version_update\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{model\}, %\{software_version\}, %\{firmware_version\}, %\{firmware_version_update\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-mikrotik-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-STORAGE-TYPE` | `^(hrStorageRam\|hrStorageFlashMemory)$` | Filter storage types with a regexp (Default: '^(hrStorageRam\|hrStorageFlashMemory)$') |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `STORAGE` | `.*` | Set the storage (number expected) ex: 1, 2,... (empty means 'check all storage') - can be a regexp |
+| `WARNING-USAGE` | `80` | Threshold warning |
+| `CRITICAL-USAGE` | `90` | Threshold critical |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP-time {/* #network-mikrotik-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Time offset warning threshold (in seconds) |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-mikrotik-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Signal {/* #network-mikrotik-snmp-singal */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RX-STRENGHT` | `-70:` | Threshold warning RX strenght |
+| `WARNING-TX-STRENGHT` | `-70:` | Threshold warning TX strenght |
+| `WARNING-SIGNAL2NOISE` | `-20` | Threshold warning Signal2Noise |
+| `CRITICAL-RX-STRENGHT` | `-85:` | Threshold critical RX strenght |
+| `CRITICAL-TX-STRENGHT` | `-85:` | Threshold critical TX strenght |
+| `CRITICAL-SIGNAL2NOISE` | `-10` | Threshold critical Signal2Noise |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `signal_rx` | `dBm` | signal strength Rx:  dBm | `WARNING-RX-STRENGHT`, `CRITICAL-RX-STRENGHT` |
+| `signal_tx` | `dBm` | signal strength Tx:  dBm | `WARNING-TX-STRENGHT`, `CRITICAL-TX-STRENGHT` |
+| `signal_noise` | `dB` | signal to noise:  dB | `WARNING-SIGNAL2NOISE`, `CRITICAL-SIGNAL2NOISE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-mikrotik-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `INTERFACE` | `.*` | Interface name - you can use regex |
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `CRITICAL-IN-ALIGNERROR` |  | Threshold critical number Allign Error In (%) |
+| `CRITICAL-IN-CARRIERERROR` |  | Threshold critical number Carrier Error In (%) |
+| `CRITICAL-IN-CODEERROR` |  | Threshold critical number Code Error In (%) |
+| `CRITICAL-IN-DROP` |  | Threshold critical number Drop In (%) |
+| `CRITICAL-IN-FRAGMENT` |  | Threshold critical number Fragment In (%) |
+| `CRITICAL-IN-FSCERROR` |  | Threshold critical number FSC Error In (%) |
+| `CRITICAL-IN-JABBER` |  | Threshold critical number Jabber In (%) |
+| `CRITICAL-IN-LENGHTERROR` |  | Threshold critical number Lenght Error In (%) |
+| `CRITICAL-IN-OVERFLOW` |  | Threshold critical number Overflow In (%) |
+| `CRITICAL-IN-TOOLONG` |  | Threshold critical number Too Long In (%) |
+| `CRITICAL-IN-TOOSHORT` |  | Threshold critical number Too Short In (%) |
+| `CRITICAL-IN-UNKNOWNOP` |  | Threshold critical number Unknwown Op In (%) |
+| `CRITICAL-OUT-COLLISION` |  | Threshold critical number Collision Out (%) |
+| `CRITICAL-OUT-DEFERRED` |  | Threshold critical number Deffered Out (%) |
+| `CRITICAL-OUT-EXCESSIVECOLLISION` |  | Threshold critical number Excessive Collision Out (%) |
+| `CRITICAL-OUT-EXCESSIVEDEFERRED` |  | Threshold critical number Excessive Deferred Out (%) |
+| `CRITICAL-OUT-FRAGMENT` |  | Threshold critical number Fragment Out (%) |
+| `CRITICAL-OUT-FSCERROR` |  | Threshold critical number FSC Error Out (%) |
+| `CRITICAL-OUT-JABBER` |  | Threshold critical number Jabber Out (%) |
+| `CRITICAL-OUT-LATECOLLISION` |  | Threshold critical number Late Collision Out (%) |
+| `CRITICAL-OUT-MULTIPLECOLLISION` |  | Threshold critical number Multiple Collission Out (%) |
+| `CRITICAL-OUT-SINGLECOLLISION` |  | Threshold critical number Single Collission Out (%) |
+| `CRITICAL-OUT-TOOLONG` |  | Threshold critical number Too Long Out (%) |
+| `CRITICAL-OUT-TOOSHORT` |  | Threshold critical number Too Short Out (%) |
+| `CRITICAL-OUT-TOTALCOLLISION` |  | Threshold critical number Total Collision Out (%) |
+| `CRITICAL-OUT-UNDERRUN` |  | Threshold critical number Underrun Out (%) |
+| `WARNING-IN-ALIGNERROR` |  | Threshold warning number Allign Error In (%) |
+| `WARNING-IN-CARRIERERROR` |  | Threshold warning number Carrier Error In (%) |
+| `WARNING-IN-CODEERROR` |  | Threshold warning number Code Error In (%) |
+| `WARNING-IN-DROP` |  | Threshold warning number Drop In (%) |
+| `WARNING-IN-FRAGMENT` |  | Threshold warning number Fragment In (%) |
+| `WARNING-IN-FSCERROR` |  | Threshold warning number FSC Error In (%) |
+| `WARNING-IN-JABBER` |  | Threshold warning number Jabber In (%) |
+| `WARNING-IN-LENGHTERROR` |  | Threshold warning number Lenght Error In (%) |
+| `WARNING-IN-OVERFLOW` |  | Threshold warning number Overflow In (%) |
+| `WARNING-IN-TOOLONG` |  | Threshold warning number Too Long In (%) |
+| `WARNING-IN-TOOSHORT` |  | Threshold warning number Too Short In (%) |
+| `WARNING-IN-UNKNOWNOP` |  | Threshold warning number Unknwown Op In (%) |
+| `WARNING-OUT-COLLISION` |  | Threshold warning number Collision Out (%) |
+| `WARNING-OUT-DEFERRED` |  | Threshold warning number Deffered Out (%) |
+| `WARNING-OUT-EXCESSIVECOLLISION` |  | Threshold warning number Excessive Collision Out (%) |
+| `WARNING-OUT-EXCESSIVEDEFERRED` |  | Threshold warning number Excessive Deferred Out (%) |
+| `WARNING-OUT-FRAGMENT` |  | Threshold warning number Fragment Out (%) |
+| `WARNING-OUT-FSCERROR` |  | Threshold warning number FSC Error Out (%) |
+| `WARNING-OUT-JABBER` |  | Threshold warning number Jabber Out (%) |
+| `WARNING-OUT-LATECOLLISION` |  | Threshold warning number Late Collision Out (%) |
+| `WARNING-OUT-MULTIPLECOLLISION` |  | Threshold warning number Multiple Collission Out (%) |
+| `WARNING-OUT-SINGLECOLLISION` |  | Threshold warning number Single Collission Out (%) |
+| `WARNING-OUT-TOOLONG` |  | Threshold warning number Too Long Out (%) |
+| `WARNING-OUT-TOOSHORT` |  | Threshold warning number Too Short Out (%) |
+| `WARNING-OUT-TOTALCOLLISION` |  | Threshold warning number Total Collision Out (%) |
+| `WARNING-OUT-UNDERRUN` |  | Threshold warning number Underrun Out (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LTE status {/* #network-mikrotik-snmp-lte */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: "%\{current_operator\}", "%\{imsi\}", "%\{iccid\}" |
+| `CRITICAL-STATUS` |  | Define the conditions to match for the status to be CRITICAL. You can use the following variables: "%\{current_operator\}", "%\{imsi\}", "%\{iccid\}" |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LTE interfaces {/* #network-mikrotik-snmp-lte-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (default: 'percent_delta') ('percent_delta', 'bps', 'counter'). |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'deltaps', 'counter'). |
+| `OID-DISPLAY` | `ifName` | Define the OID that will be used to name the interfaces (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr). |
+| `WARNING-DISCARD-IN` | `0` | Warning threshold for in-discard |
+| `WARNING-DISCARD-OUT` | `0` | Warning threshold for out-discard |
+| `WARNING-ERROR-IN` | `0` | Warning threshold for in-error |
+| `WARNING-ERROR-OUT` | `0` | Warning threshold for out-error |
+| `WARNING-TRAFFIC-IN` | `80` | Warning threshold for in-traffic (b/s) |
+| `WARNING-TRAFFIC-OUT` | `80` | Warning threshold for out-traffic (b/s) |
+| `CRITICAL-DISCARD-IN` | `10` | Critical threshold for in-discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Critical threshold for out-discard |
+| `CRITICAL-ERROR-IN` | `10` | Critical threshold for in-error |
+| `CRITICAL-ERROR-OUT` | `10` | Critical threshold for out-error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Critical threshold for in-traffic (b/s) |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Critical threshold for out-traffic (b/s) |
+| `CRITICAL-RSRP` | `@~:-106` | Critical threshold for rsrp:  dBm (dBm) |
+| `CRITICAL-RSRQ` | `@~:-16` | Critical threshold for rsrq:  dB |
+| `CRITICAL-RSSI` | `@~:-76` | Critical threshold for rssi:  dBm (dBm) |
+| `CRITICAL-SINR` | `@~:4` | Critical threshold for sinr:  dB (dBm) |
+| `WARNING-RSRP` | `@~:-91` | Warning threshold for rsrp:  dBm (dBm) |
+| `WARNING-RSRQ` | `@~:-11` | Warning threshold for rsrq:  dB |
+| `WARNING-RSSI` | `@~:-66` | Warning threshold for rssi:  dBm (dBm) |
+| `WARNING-SINR` | `@~:12` | Warning threshold for sinr:  dB (dBm) |
+| `INTERFACE` |  | Set the interface (number expected) example: 1,2,... (empty means 'check all interfaces'). |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb). |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb). |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `interface.signal.rsrp.dbm` | `dBm` | rsrp:  dBm | `WARNING-RSRP`, `CRITICAL-RSRP` |
+| `interface.signal.rsrq.db` |  | rsrq:  dB | `WARNING-RSRQ`, `CRITICAL-RSRQ` |
+| `interface.signal.rssi.dbm` | `dBm` | rssi:  dBm | `WARNING-RSSI`, `CRITICAL-RSSI` |
+| `interface.signal.sinr.dbm` | `dBm` | sinr:  dB | `WARNING-SINR`, `CRITICAL-SINR` |
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20261000 - 20261116</summary>
+
+- Service template [`network-mikrotik-snmp-lte-interfaces`](#network-mikrotik-snmp-lte-interfaces)
+    - Macro `CRITICAL-RSRP` added (default `@~:-106`)
+    - Macro `CRITICAL-RSRQ` added (default `@~:-16`)
+    - Macro `CRITICAL-RSSI` added (default `@~:-76`)
+    - Macro `CRITICAL-SINR` added (default `@~:4`)
+    - Macro `WARNING-RSRP` added (default `@~:-91`)
+    - Macro `WARNING-RSRQ` added (default `@~:-11`)
+    - Macro `WARNING-RSSI` added (default `@~:-66`)
+    - Macro `WARNING-SINR` added (default `@~:12`)
+- Command `network-mikrotik-snmp-lte-interfaces`
+    - Option `--warning-rsrp=$_SERVICEWARNING-RSRP$` added
+    - Option `--warning-rsrq=$_SERVICEWARNING-RSRQ$` added
+    - Option `--warning-rssi=$_SERVICEWARNING-RSSI$` added
+    - Option `--warning-sinr=$_SERVICEWARNING-SINR$` added
+    - Option `--critical-rsrp=$_SERVICECRITICAL-RSRP$` added
+    - Option `--critical-rsrq=$_SERVICECRITICAL-RSRQ$` added
+    - Option `--critical-rssi=$_SERVICECRITICAL-RSSI$` added
+    - Option `--critical-sinr=$_SERVICECRITICAL-SINR$` added
+    - Option `--oid-extra-display=$_SERVICEOID-EXTRA-DISPLAY$` removed
+    - Macro `CRITICAL-RSRP` added
+    - Macro `CRITICAL-RSRQ` added
+    - Macro `CRITICAL-RSSI` added
+    - Macro `CRITICAL-SINR` added
+    - Macro `WARNING-RSRP` added
+    - Macro `WARNING-RSRQ` added
+    - Macro `WARNING-RSSI` added
+    - Macro `WARNING-SINR` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260100 - 20260305</summary>
+
+- Plugin pack `Mikrotik network devices`
+    - Description updated
+- Service template [`network-mikrotik-snmp-lte`](#network-mikrotik-snmp-lte)
+    - Service template added
+- Command `network-mikrotik-snmp-lte`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `network-mikrotik-snmp-environment`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Option `--threshold-overload=$_SERVICETHRESHOLD-OVERLOAD$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+    - Macro `THRESHOLD-OVERLOAD` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250501 - 20250622</summary>
+
+- Plugin pack `Mikrotik network devices`
+    - Description updated
+- Service template [`network-mikrotik-snmp-lte-interfaces`](#network-mikrotik-snmp-lte-interfaces)
+    - Service template added
+- Command `network-mikrotik-snmp-lte-interfaces`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20230828</summary>
+
+- Service template [`network-mikrotik-snmp-interfaces`](#network-mikrotik-snmp-interfaces)
+    - Macro `UNITS-TRAFFIC`: default changed from `%` to `percent_delta`
+    - Macro `UNITS-ERROR`: default changed from `%` to `percent_delta`
+    - Macro `OID-EXTRA-DISPLAY` added (default `ifAlias`)
+- Command `network-mikrotik-snmp-interfaces`
+    - Option `--oid-extra-display=$_SERVICEOID-EXTRA-DISPLAY$` added
+    - Macro `OID-EXTRA-DISPLAY` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230812</summary>
+
+- Service template [`network-mikrotik-snmp-firmware`](#network-mikrotik-snmp-firmware)
+    - Macro `WARNING-STATUS` added (default `'%{firmware_version} ne %{software_version}'`)
+- Command `network-mikrotik-snmp-interfaces`
+    - Option `--warning-in-tooshort=$_SERVICEWARNING-IN-TOOSHORT$` added
+    - Option `--warning-in-toolong=$_SERVICEWARNING-IN-TOOLONG$` added
+    - Option `--warning-in-fcserror=$_SERVICEWARNING-IN-FSCERROR$` added
+    - Option `--warning-in-alignerror=$_SERVICEWARNING-IN-ALIGNERROR$` added
+    - Option `--warning-in-fragment=$_SERVICEWARNING-IN-FRAGMENT$` added
+    - Option `--warning-in-overflow=$_SERVICEWARNING-IN-OVERFLOW$` added
+    - Option `--warning-in-unknownop=$_SERVICEWARNING-IN-UNKNOWNOP$` added
+    - Option `--warning-in-lengtherror=$_SERVICEWARNING-IN-LENGHTERROR$` added
+    - Option `--warning-in-codeerror=$_SERVICEWARNING-IN-CODEERROR$` added
+    - Option `--warning-in-carriererror=$_SERVICEWARNING-IN-CARRIERERROR$` added
+    - Option `--warning-in-jabber=$_SERVICEWARNING-IN-JABBER$` added
+    - Option `--warning-in-drop=$_SERVICEWARNING-IN-DROP$` added
+    - Option `--warning-out-tooshort=$_SERVICEWARNING-OUT-TOOSHORT$` added
+    - Option `--warning-out-toolong=$_SERVICEWARNING-OUT-TOOLONG$` added
+    - Option `--warning-out-underrun=$_SERVICEWARNING-OUT-UNDERRUN$` added
+    - Option `--warning-out-collision=$_SERVICEWARNING-OUT-COLLISION$` added
+    - Option `--warning-out-excessivecollision=$_SERVICEWARNING-OUT-EXCESSIVECOLLISION$` added
+    - Option `--warning-out-multiplecollision=$_SERVICEWARNING-OUT-MULTIPLECOLLISION$` added
+    - Option `--warning-out-singlecollision=$_SERVICEWARNING-OUT-SINGLECOLLISION$` added
+    - Option `--warning-out-excessivedeferred=$_SERVICEWARNING-OUT-EXCESSIVEDEFERRED$` added
+    - Option `--warning-out-deferred=$_SERVICEWARNING-OUT-DEFERRED$` added
+    - Option `--warning-out-latecollision=$_SERVICEWARNING-OUT-LATECOLLISION$` added
+    - Option `--warning-out-totalcollision=$_SERVICEWARNING-OUT-TOTALCOLLISION$` added
+    - Option `--warning-out-jabber=$_SERVICEWARNING-OUT-JABBER$` added
+    - Option `--warning-out-fcserror=$_SERVICEWARNING-OUT-FSCERROR$` added
+    - Option `--warning-out-fragment=$_SERVICEWARNING-OUT-FRAGMENT$` added
+    - Option `--critical-in-tooshort=$_SERVICECRITICAL-IN-TOOSHORT$` added
+    - Option `--critical-in-toolong=$_SERVICECRITICAL-IN-TOOLONG$` added
+    - Option `--critical-in-fcserror=$_SERVICECRITICAL-IN-FSCERROR$` added
+    - Option `--critical-in-alignerror=$_SERVICECRITICAL-IN-ALIGNERROR$` added
+    - Option `--critical-in-fragment=$_SERVICECRITICAL-IN-FRAGMENT$` added
+    - Option `--critical-in-overflow=$_SERVICECRITICAL-IN-OVERFLOW$` added
+    - Option `--critical-in-unknownop=$_SERVICECRITICAL-IN-UNKNOWNOP$` added
+    - Option `--critical-in-lengtherror=$_SERVICECRITICAL-IN-LENGHTERROR$` added
+    - Option `--critical-in-codeerror=$_SERVICECRITICAL-IN-CODEERROR$` added
+    - Option `--critical-in-carriererror=$_SERVICECRITICAL-IN-CARRIERERROR$` added
+    - Option `--critical-in-jabber=$_SERVICECRITICAL-IN-JABBER$` added
+    - Option `--critical-in-drop=$_SERVICECRITICAL-IN-DROP$` added
+    - Option `--critical-out-tooshort=$_SERVICECRITICAL-OUT-TOOSHORT$` added
+    - Option `--critical-out-toolong=$_SERVICECRITICAL-OUT-TOOLONG$` added
+    - Option `--critical-out-underrun=$_SERVICECRITICAL-OUT-UNDERRUN$` added
+    - Option `--critical-out-collision=$_SERVICECRITICAL-OUT-COLLISION$` added
+    - Option `--critical-out-excessivecollision=$_SERVICECRITICAL-OUT-EXCESSIVECOLLISION$` added
+    - Option `--critical-out-multiplecollision=$_SERVICECRITICAL-OUT-MULTIPLECOLLISION$` added
+    - Option `--critical-out-singlecollision=$_SERVICECRITICAL-OUT-SINGLECOLLISION$` added
+    - Option `--critical-out-excessivedeferred=$_SERVICECRITICAL-OUT-EXCESSIVEDEFERRED$` added
+    - Option `--critical-out-deferred=$_SERVICECRITICAL-OUT-DEFERRED$` added
+    - Option `--critical-out-latecollision=$_SERVICECRITICAL-OUT-LATECOLLISION$` added
+    - Option `--critical-out-totalcollision=$_SERVICECRITICAL-OUT-TOTALCOLLISION$` added
+    - Option `--critical-out-jabber=$_SERVICECRITICAL-OUT-JABBER$` added
+    - Option `--critical-out-fcserror=$_SERVICECRITICAL-OUT-FSCERROR$` added
+    - Option `--critical-out-fragment=$_SERVICECRITICAL-OUT-FRAGMENT$` added
+    - Macro `CRITICAL-IN-ALIGNERROR` added
+    - Macro `CRITICAL-IN-CARRIERERROR` added
+    - Macro `CRITICAL-IN-CODEERROR` added
+    - Macro `CRITICAL-IN-DROP` added
+    - Macro `CRITICAL-IN-FRAGMENT` added
+    - Macro `CRITICAL-IN-FSCERROR` added
+    - Macro `CRITICAL-IN-JABBER` added
+    - Macro `CRITICAL-IN-LENGHTERROR` added
+    - Macro `CRITICAL-IN-OVERFLOW` added
+    - Macro `CRITICAL-IN-TOOLONG` added
+    - Macro `CRITICAL-IN-TOOSHORT` added
+    - Macro `CRITICAL-IN-UNKNOWNOP` added
+    - Macro `CRITICAL-OUT-COLLISION` added
+    - Macro `CRITICAL-OUT-DEFERRED` added
+    - Macro `CRITICAL-OUT-EXCESSIVECOLLISION` added
+    - Macro `CRITICAL-OUT-EXCESSIVEDEFERRED` added
+    - Macro `CRITICAL-OUT-FRAGMENT` added
+    - Macro `CRITICAL-OUT-FSCERROR` added
+    - Macro `CRITICAL-OUT-JABBER` added
+    - Macro `CRITICAL-OUT-LATECOLLISION` added
+    - Macro `CRITICAL-OUT-MULTIPLECOLLISION` added
+    - Macro `CRITICAL-OUT-SINGLECOLLISION` added
+    - Macro `CRITICAL-OUT-TOOLONG` added
+    - Macro `CRITICAL-OUT-TOOSHORT` added
+    - Macro `CRITICAL-OUT-TOTALCOLLISION` added
+    - Macro `CRITICAL-OUT-UNDERRUN` added
+    - Macro `WARNING-IN-ALIGNERROR` added
+    - Macro `WARNING-IN-CARRIERERROR` added
+    - Macro `WARNING-IN-CODEERROR` added
+    - Macro `WARNING-IN-DROP` added
+    - Macro `WARNING-IN-FRAGMENT` added
+    - Macro `WARNING-IN-FSCERROR` added
+    - Macro `WARNING-IN-JABBER` added
+    - Macro `WARNING-IN-LENGHTERROR` added
+    - Macro `WARNING-IN-OVERFLOW` added
+    - Macro `WARNING-IN-TOOLONG` added
+    - Macro `WARNING-IN-TOOSHORT` added
+    - Macro `WARNING-IN-UNKNOWNOP` added
+    - Macro `WARNING-OUT-COLLISION` added
+    - Macro `WARNING-OUT-DEFERRED` added
+    - Macro `WARNING-OUT-EXCESSIVECOLLISION` added
+    - Macro `WARNING-OUT-EXCESSIVEDEFERRED` added
+    - Macro `WARNING-OUT-FRAGMENT` added
+    - Macro `WARNING-OUT-FSCERROR` added
+    - Macro `WARNING-OUT-JABBER` added
+    - Macro `WARNING-OUT-LATECOLLISION` added
+    - Macro `WARNING-OUT-MULTIPLECOLLISION` added
+    - Macro `WARNING-OUT-SINGLECOLLISION` added
+    - Macro `WARNING-OUT-TOOLONG` added
+    - Macro `WARNING-OUT-TOOSHORT` added
+    - Macro `WARNING-OUT-TOTALCOLLISION` added
+    - Macro `WARNING-OUT-UNDERRUN` added
+
+</details>

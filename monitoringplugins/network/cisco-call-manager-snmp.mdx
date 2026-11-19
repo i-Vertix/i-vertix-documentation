@@ -1,0 +1,634 @@
+---
+title: "Cisco Call Manager (SNMP)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco Call Manager (SNMP)" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Cisco Unified Communications Manager through SNMP: CPU and storage usage, phone, gateway, media device, CTI and voicemail usage, and the response of the H.323, SCCP, SIP and TFTP services.
+
+The plugin pack provides these checks:
+
+* [CCM usage](#network-cisco-callmanager-snmp-ccm-usage)
+* [CPU](#os-linux-snmp-cpu)
+* [CTI usage](#network-cisco-callmanager-snmp-cti-usage)
+* [Gateway usage](#network-cisco-callmanager-snmp-gateway-usage)
+* [Media Device usage](#network-cisco-callmanager-snmp-mediadevice-usage)
+* [Phone usage](#network-cisco-callmanager-snmp-phone-usage)
+* [Storage](#os-linux-snmp-storage)
+* [TCP H323](#apps-protocols-tcp-connection-status-cucm-h323)
+* [TCP SCCP](#apps-protocols-tcp-connection-status-cucm-sccp)
+* [TCP SIP](#apps-protocols-tcp-connection-status-cucm-sip)
+* [TCP TFTP](#apps-protocols-tcp-connection-status-cucm-tftp)
+* [UDP TFTP](#apps-protocols-udp-connection-cucm-tftp)
+* [Uptime](#os-linux-snmp-uptime)
+* [Voicemail usage](#network-cisco-callmanager-snmp-voicemail-usage)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Storage](#os-linux-snmp-storage) | `Storage <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Cisco-Callmanager-SNMP
+
+*Cisco Call Manager SNMP* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [TCP H323](#apps-protocols-tcp-connection-status-cucm-h323) | `apps-protocols-tcp-connection-status-cucm-h323` |
+| [TCP SCCP](#apps-protocols-tcp-connection-status-cucm-sccp) | `apps-protocols-tcp-connection-status-cucm-sccp` |
+| [TCP SIP](#apps-protocols-tcp-connection-status-cucm-sip) | `apps-protocols-tcp-connection-status-cucm-sip` |
+| [TCP TFTP](#apps-protocols-tcp-connection-status-cucm-tftp) | `apps-protocols-tcp-connection-status-cucm-tftp` |
+| [UDP TFTP](#apps-protocols-udp-connection-cucm-tftp) | `apps-protocols-udp-connection-cucm-tftp` |
+| [CCM usage](#network-cisco-callmanager-snmp-ccm-usage) | `network-cisco-callmanager-snmp-ccm-usage` |
+| [CTI usage](#network-cisco-callmanager-snmp-cti-usage) | `network-cisco-callmanager-snmp-cti-usage` |
+| [Gateway usage](#network-cisco-callmanager-snmp-gateway-usage) | `network-cisco-callmanager-snmp-gateway-usage` |
+| [Media Device usage](#network-cisco-callmanager-snmp-mediadevice-usage) | `network-cisco-callmanager-snmp-mediadevice-usage` |
+| [Phone usage](#network-cisco-callmanager-snmp-phone-usage) | `network-cisco-callmanager-snmp-phone-usage` |
+| [Voicemail usage](#network-cisco-callmanager-snmp-voicemail-usage) | `network-cisco-callmanager-snmp-voicemail-usage` |
+| [CPU](#os-linux-snmp-cpu) | `os-linux-snmp-cpu` |
+| [Storage](#os-linux-snmp-storage) | `os-linux-snmp-storage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP H323 {/* #apps-protocols-tcp-connection-status-cucm-h323 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `1720` | Port used |
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+| `CRITICAL-STATUS` | `'%{status} eq "failed"'` | Set critical threshold for status (Default: '%\{status\} eq "failed"'). Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `2` | Threshold critical in seconds |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `EXTRA-OPTS` |  | --ssl: Use SSL connection. (no attempt is made to check the certificate validity by default) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.response.time.seconds` | `s` |  | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP SCCP {/* #apps-protocols-tcp-connection-status-cucm-sccp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `2000` | Port used |
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+| `CRITICAL-STATUS` | `'%{status} eq "failed"'` | Set critical threshold for status (Default: '%\{status\} eq "failed"'). Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `2` | Threshold critical in seconds |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `EXTRA-OPTS` |  | --ssl: Use SSL connection. (no attempt is made to check the certificate validity by default) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.response.time.seconds` | `s` |  | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP SIP {/* #apps-protocols-tcp-connection-status-cucm-sip */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `5060` | Port used |
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+| `CRITICAL-STATUS` | `'%{status} eq "failed"'` | Set critical threshold for status (Default: '%\{status\} eq "failed"'). Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `2` | Threshold critical in seconds |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `EXTRA-OPTS` |  | --ssl: Use SSL connection. (no attempt is made to check the certificate validity by default) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.response.time.seconds` | `s` |  | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP TFTP {/* #apps-protocols-tcp-connection-status-cucm-tftp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `6970` | Port used |
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+| `CRITICAL-STATUS` | `'%{status} eq "failed"'` | Set critical threshold for status (Default: '%\{status\} eq "failed"'). Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `2` | Threshold critical in seconds |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `EXTRA-OPTS` |  | --ssl: Use SSL connection. (no attempt is made to check the certificate validity by default) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.response.time.seconds` | `s` |  | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### UDP TFTP {/* #apps-protocols-udp-connection-cucm-tftp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `69` | Port used |
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CCM usage {/* #network-cisco-callmanager-snmp-ccm-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-PHONES-UNREGISTERED` | `0` | Threshold warning phones unregistered |
+| `WARNING-PHONES-REJECTED` | `0` | Threshold warning phones rejected |
+| `WARNING-GATEWAYS-UNREGISTERED` | `0` | Threshold warning gateways unregistered |
+| `WARNING-GATEWAYS-REJECTED` | `0` | Threshold warning gateways rejected |
+| `WARNING-MEDIADEVICES-UNREGISTERED` | `0` | Threshold warning media devices unregistered |
+| `WARNING-MEDIADEVICES-REJECTED` | `0` | Threshold warning media devices rejected |
+| `CRITICAL-STATUS` | `'%{status} !~ /up/'` | Set critical threshold for status (Default: '%\{status\} !~ /up/'). Can used special variables like: %\{status\}, %\{display\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='phone' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-PHONES-REGISTERED` |  | Threshold warning phones registered |
+| `WARNING-GATEWAYS-REGISTERED` |  | Threshold warning gateways registered |
+| `WARNING-MEDIADEVICES-REGISTERED` |  | Threshold warning media devices registered |
+| `CRITICAL-PHONES-REGISTERED` |  | Threshold critical phones registered |
+| `CRITICAL-PHONES-UNREGISTERED` |  | Threshold critical phones unregistered |
+| `CRITICAL-PHONES-REJECTED` |  | Threshold critical phones rejected |
+| `CRITICAL-GATEWAYS-REGISTERED` |  | Threshold critical gateways registered |
+| `CRITICAL-GATEWAYS-UNREGISTERED` |  | Threshold critical gateways unregistered |
+| `CRITICAL-GATEWAYS-REJECTED` |  | Threshold critical gateways rejected |
+| `CRITICAL-MEDIADEVICES-REGISTERED` |  | Threshold critical media devices registered |
+| `CRITICAL-MEDIADEVICES-UNREGISTERED` |  | Threshold critical media devices unregistered |
+| `CRITICAL-MEDIADEVICES-REJECTED` |  | Threshold critical media devices rejected |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CTI usage {/* #network-cisco-callmanager-snmp-cti-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-UNREGISTERED` | `0` | Threshold warning total unregistered |
+| `WARNING-TOTAL-REJECTED` | `0` | Threshold warning total rejected |
+| `CRITICAL-STATUS` | `'%{status} !~ /^registered/'` | Set critical threshold for status (Default: '%\{status\} !~ /^registered/'). Can used special variables like: %\{status\}, %\{display\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TOTAL-REGISTERED` |  | Threshold warning total registered |
+| `WARNING-TOTAL-UNKNOWN` |  | Threshold warning total unknown |
+| `WARNING-TOTAL-PARTIALLYREGISTERED` |  | Threshold warning total partially registered |
+| `CRITICAL-TOTAL-REGISTERED` |  | Threshold critical total registered |
+| `CRITICAL-TOTAL-UNREGISTERED` |  | Threshold critical total unregistered |
+| `CRITICAL-TOTAL-REJECTED` |  | Threshold critical total rejected |
+| `CRITICAL-TOTAL-UNKNOWN` |  | Threshold critical total unknown |
+| `CRITICAL-TOTAL-PARTIALLYREGISTERED` |  | Threshold critical total partially registered |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Gateway usage {/* #network-cisco-callmanager-snmp-gateway-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-UNREGISTERED` | `0` | Threshold warning total unregistered |
+| `WARNING-TOTAL-REJECTED` | `0` | Threshold warning total rejected |
+| `WARNING-TOTAL-UNKNOWN` | `0` | Threshold warning total unknown |
+| `WARNING-TOTAL-PARTIALLYREGISTERED` | `0` | Threshold warning total partially registered |
+| `CRITICAL-STATUS` | `'%{status} !~ /^registered/'` | Set critical threshold for status (Default: '%\{status\} !~ /^registered/'). Can used special variables like: %\{status\}, %\{display\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TOTAL-REGISTERED` |  | Threshold warning total registered |
+| `CRITICAL-TOTAL-REGISTERED` |  | Threshold critical total registered |
+| `CRITICAL-TOTAL-UNREGISTERED` |  | Threshold critical total unregistered |
+| `CRITICAL-TOTAL-REJECTED` |  | Threshold critical total rejected |
+| `CRITICAL-TOTAL-UNKNOWN` |  | Threshold critical total unknown |
+| `CRITICAL-TOTAL-PARTIALLYREGISTERED` |  | Threshold critical total partially registered |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Media Device usage {/* #network-cisco-callmanager-snmp-mediadevice-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-UNREGISTERED` | `0` | Threshold warning total unregistered |
+| `WARNING-TOTAL-REJECTED` | `0` | Threshold warning total rejected |
+| `WARNING-TOTAL-UNKNOWN` | `0` | Threshold warning total unknown |
+| `WARNING-TOTAL-PARTIALLYREGISTERED` | `0` | Threshold warning total partially registered |
+| `CRITICAL-STATUS` | `'%{status} !~ /^registered/'` | Set critical threshold for status (Default: '%\{status\} !~ /^registered/'). Can used special variables like: %\{status\}, %\{display\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TOTAL-REGISTERED` |  | Threshold warning total registered |
+| `CRITICAL-TOTAL-REGISTERED` |  | Threshold critical total registered |
+| `CRITICAL-TOTAL-UNREGISTERED` |  | Threshold critical total unregistered |
+| `CRITICAL-TOTAL-REJECTED` |  | Threshold critical total rejected |
+| `CRITICAL-TOTAL-UNKNOWN` |  | Threshold critical total unknown |
+| `CRITICAL-TOTAL-PARTIALLYREGISTERED` |  | Threshold critical total partially registered |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Phone usage {/* #network-cisco-callmanager-snmp-phone-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter phone by name (can be a regexp) |
+| `FILTER-DESCRIPTION` | `.*` | Filter phone by description (can be a regexp) |
+| `WARNING-TOTAL-UNREGISTERED` | `0` | Threshold warning total unregistered |
+| `WARNING-TOTAL-REJECTED` | `0` | Threshold warning total rejected |
+| `WARNING-TOTAL-UNKNOWN` | `0` | Threshold warning total unknown |
+| `WARNING-TOTAL-PARTIALLYREGISTERED` | `0` | Threshold warning total partially registered |
+| `CRITICAL-STATUS` | `'%{status} !~ /^registered/'` | Set critical threshold for status (Default: '%\{status\} !~ /^registered/'). Can used special variables like: %\{status\}, %\{name\}, %\{description\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{name\}, %\{description\} |
+| `WARNING-TOTAL-REGISTERED` |  | Threshold warning total registered |
+| `CRITICAL-TOTAL-REGISTERED` |  | Threshold critical total registered |
+| `CRITICAL-TOTAL-UNREGISTERED` |  | Threshold critical total unregistered |
+| `CRITICAL-TOTAL-REJECTED` |  | Threshold critical total rejected |
+| `CRITICAL-TOTAL-UNKNOWN` |  | Threshold critical total unknown |
+| `CRITICAL-TOTAL-PARTIALLYREGISTERED` |  | Threshold critical total partially registered |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Voicemail usage {/* #network-cisco-callmanager-snmp-voicemail-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-UNREGISTERED` | `0` | Threshold warning total unregistered |
+| `WARNING-TOTAL-REJECTED` | `0` | Threshold warning total rejected |
+| `WARNING-TOTAL-UNKNOWN` | `0` | Threshold warning total unknown |
+| `WARNING-TOTAL-PARTIALLYREGISTERED` | `0` | Threshold warning total partially registered |
+| `CRITICAL-STATUS` | `'%{status} !~ /^registered/'` | Set critical threshold for status (Default: '%\{status\} !~ /^registered/'). Can used special variables like: %\{status\}, %\{display\} |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TOTAL-REGISTERED` |  | Threshold warning total registered |
+| `CRITICAL-TOTAL-REGISTERED` |  | Threshold critical total registered |
+| `CRITICAL-TOTAL-UNREGISTERED` |  | Threshold critical total unregistered |
+| `CRITICAL-TOTAL-REJECTED` |  | Threshold critical total rejected |
+| `CRITICAL-TOTAL-UNKNOWN` |  | Threshold critical total unknown |
+| `CRITICAL-TOTAL-PARTIALLYREGISTERED` |  | Threshold critical total partially registered |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #os-linux-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #os-linux-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `STORAGE` | `.*` | Set the storage (number expected) ex: 1, 2,... (empty means  'check all storage') - can be a regexp |
+| `WARNING-USAGE` | `85` | Threshold warning |
+| `CRITICAL-USAGE` | `90` | Threshold critical |
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical. Check if storage is readOnly: --critical-access=readOnly |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `SPACE-RESERVATION` | `0` | Some filesystem has space reserved (like ext4 for root). The value is in percent of total (Default: none) (results like 'df' command) |
+| `WARNING-ACCESS` |  | Threshold warning |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240212 - 20240317</summary>
+
+- Plugin pack `Cisco Call Manager (SNMP)`
+    - Description updated
+- Host template `Cisco-Callmanager-SNMP`
+    - Service template `apps-protocols-tcp-connection-status-cucm-h323` linked
+    - Service template `apps-protocols-tcp-connection-status-cucm-sccp` linked
+    - Service template `apps-protocols-tcp-connection-status-cucm-sip` linked
+    - Service template `apps-protocols-tcp-connection-status-cucm-tftp` linked
+    - Service template `apps-protocols-udp-connection-cucm-tftp` linked
+    - Service template `os-linux-snmp-storage` linked
+- Service template [`apps-protocols-tcp-connection-status-cucm-h323`](#apps-protocols-tcp-connection-status-cucm-h323)
+    - Service template added
+- Service template [`apps-protocols-tcp-connection-status-cucm-sccp`](#apps-protocols-tcp-connection-status-cucm-sccp)
+    - Service template added
+- Service template [`apps-protocols-tcp-connection-status-cucm-sip`](#apps-protocols-tcp-connection-status-cucm-sip)
+    - Service template added
+- Service template [`apps-protocols-tcp-connection-status-cucm-tftp`](#apps-protocols-tcp-connection-status-cucm-tftp)
+    - Service template added
+- Service template [`apps-protocols-udp-connection-cucm-tftp`](#apps-protocols-udp-connection-cucm-tftp)
+    - Service template added
+- Service template [`os-linux-snmp-storage`](#os-linux-snmp-storage)
+    - Service template added
+- Command `apps-protocols-tcp-connection-status`
+    - Command added
+- Command `apps-protocols-udp-connection`
+    - Command added
+- Command `os-linux-snmp-storage`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231114 - 20231230</summary>
+
+- Plugin pack `Cisco Call Manager (SNMP)`
+    - Description updated
+- Host template `Cisco-Callmanager-SNMP`
+    - Service template `os-linux-snmp-cpu` linked
+- Service template [`os-linux-snmp-cpu`](#os-linux-snmp-cpu)
+    - Service template added
+- Command `os-linux-snmp-cpu`
+    - Command added
+
+</details>

@@ -1,0 +1,397 @@
+---
+title: "Firebird Database"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Databases/Firebird.png";
+
+<PluginPackHeader name="Firebird Database" image={image} category="Database" metadata={[]} />
+
+## Description
+
+Monitors Firebird databases through SQL queries: connection time, long queries, memory usage, page and query statistics, SQL requests and connected users.
+
+The plugin pack provides these checks:
+
+* [Firebird connection time](#database-firebird-connection-time)
+* [Firebird long queries](#database-firebird-long-queries)
+* [Firebird memory](#database-firebird-memory)
+* [Firebird pages](#database-firebird-pages)
+* [Firebird queries](#database-firebird-queries)
+* [Firebird SQL](#database-firebird-sql)
+* [Firebird users](#database-firebird-users)
+
+
+## Host Templates
+
+### Firebird-DB
+
+*Firebird database* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DATABASE` |  | Path to Database. (example: /opt/firebird/examples/empbuild/employee.fdb) |
+| `USERNAME` |  | User name used to connect to the database. |
+| `PASSWORD` | *(password)* | Password for the defined user name. |
+| `PORT` |  | Database Server Port. |
+| `TIMEOUT` |  | Timeout in seconds for connection. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Firebird connection time](#database-firebird-connection-time) | `database-firebird-connection-time` |
+| [Firebird long queries](#database-firebird-long-queries) | `database-firebird-long-queries` |
+| [Firebird memory](#database-firebird-memory) | `database-firebird-memory` |
+| [Firebird pages](#database-firebird-pages) | `database-firebird-pages` |
+| [Firebird queries](#database-firebird-queries) | `database-firebird-queries` |
+| [Firebird users](#database-firebird-users) | `database-firebird-users` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Firebird SQL](#database-firebird-sql) | `database-firebird-sql` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firebird connection time {/* #database-firebird-connection-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `250` | Threshold warning (ms) |
+| `CRITICAL` | `500` | Threshold critical (ms) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connection.time.milliseconds` | `ms` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firebird long queries {/* #database-firebird-long-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SECONDS` | `60` | Filter queries over X seconds (Default: 60) |
+| `WARNING` | `0` | Threshold warning (number of long queries) |
+| `FILTER-USER` |  | Filter by user (can be a regexp) |
+| `FILTER-STATE` |  | Filter by state (can be a regexp. Default: '^(?!(0)$)') |
+| `CRITICAL` |  | Threshold critical (number of long queries) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `longqueries.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firebird memory {/* #database-firebird-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USED` | `90` | Threshold warning used (%) |
+| `CRITICAL-USED` | `95` | Threshold critical used (%) |
+| `WARNING-ATTACHMENT` |  | Threshold warning attachment (%) |
+| `WARNING-TRANSACTION` |  | Threshold warning transaction (%) |
+| `WARNING-STATEMENT` |  | Threshold warning statement (%) |
+| `WARNING-CALL` |  | Threshold warning call (%) |
+| `CRITICAL-ATTACHMENT` |  | Threshold critical attachment (%) |
+| `CRITICAL-TRANSACTION` |  | Threshold critical transaction (%) |
+| `CRITICAL-STATEMENT` |  | Threshold critical statement (%) |
+| `CRITICAL-CALL` |  | Threshold critical call (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `database.usage.bytes` | `B` |  | `WARNING-USED`, `CRITICAL-USED` |
+| `attachment.usage.bytes` | `B` |  | `WARNING-ATTACHMENT`, `CRITICAL-ATTACHMENT` |
+| `transaction.usage.bytes` | `B` |  | `WARNING-TRANSACTION`, `CRITICAL-TRANSACTION` |
+| `statement.usage.bytes` | `B` |  | `WARNING-STATEMENT`, `CRITICAL-STATEMENT` |
+| `call.usage.bytes` | `B` |  | `WARNING-CALL`, `CRITICAL-CALL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firebird pages {/* #database-firebird-pages */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-READS` |  | Threshold warning reads |
+| `WARNING-WRITES` |  | Threshold warning writes |
+| `WARNING-FETCHES` |  | Threshold warning fetches |
+| `WARNING-MARKS` |  | Threshold warning marks |
+| `CRITICAL-READS` |  | Threshold critical reads |
+| `CRITICAL-WRITES` |  | Threshold critical writes |
+| `CRITICAL-FETCHES` |  | Threshold critical fetches |
+| `CRITICAL-MARKS` |  | Threshold critical marks |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pages.reads.persecond` | `/s` | Reads | `WARNING-READS`, `CRITICAL-READS` |
+| `pages.writes.persecond` | `/s` | Writes | `WARNING-WRITES`, `CRITICAL-WRITES` |
+| `pages.fetches.persecond` | `/s` | Fetches | `WARNING-FETCHES`, `CRITICAL-FETCHES` |
+| `pages.marks.persecond` | `/s` | Marks | `WARNING-MARKS`, `CRITICAL-MARKS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firebird queries {/* #database-firebird-queries */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL` |  | Threshold warning total |
+| `WARNING-SEQ-READS` |  | Threshold warning sequence reads |
+| `WARNING-INSERTS` |  | Threshold warning inserts |
+| `WARNING-UPDATES` |  | Threshold warning updates |
+| `WARNING-DELETES` |  | Threshold warning deletes |
+| `WARNING-BACKOUTS` |  | Threshold warning backouts |
+| `WARNING-PURGES` |  | Threshold warning purges |
+| `WARNING-EXPUNGES` |  | Threshold warning expunges |
+| `CRITICAL-TOTAL` |  | Threshold critical total |
+| `CRITICAL-SEQ-READS` |  | Threshold critical sequence reads |
+| `CRITICAL-INSERTS` |  | Threshold critical  inserts |
+| `CRITICAL-UPDATES` |  | Threshold critical updates |
+| `CRITICAL-DELETES` |  | Threshold critical deletes |
+| `CRITICAL-BACKOUTS` |  | Threshold critical backouts |
+| `CRITICAL-PURGES` |  | Threshold critical  purges |
+| `CRITICAL-EXPUNGES` |  | Threshold critical expunges |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `queries.total.persecond` | `/s` | Total | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+| `queries.sequentialreads.persecond` | `/s` | Seq Reads | `WARNING-SEQ-READS`, `CRITICAL-SEQ-READS` |
+| `queries.insert.persecond` | `/s` | Inserts | `WARNING-INSERTS`, `CRITICAL-INSERTS` |
+| `queries.updates.persecond` | `/s` | Updates | `WARNING-UPDATES`, `CRITICAL-UPDATES` |
+| `queries.deletes.persecond` | `/s` | Deletes | `WARNING-DELETES`, `CRITICAL-DELETES` |
+| `queries.backout.persecond` | `/s` | Backouts | `WARNING-BACKOUTS`, `CRITICAL-BACKOUTS` |
+| `queries.purges.persecond` | `/s` | Purges | `WARNING-PURGES`, `CRITICAL-PURGES` |
+| `queries.expunges.persecond` | `/s` | Expunges | `WARNING-EXPUNGES`, `CRITICAL-EXPUNGES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firebird users {/* #database-firebird-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Threshold warning |
+| `CRITICAL` |  | Threshold critical |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `users.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Firebird SQL {/* #database-firebird-sql */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FORMAT` | `SQL statement result : %i` | Output format (Default: 'SQL statement result : %i.') |
+| `SQL-STATEMENT` |  | SQL statement that returns a number |
+| `PERFDATA-UNIT` |  | Perfdata unit in perfdata output (Default: '') |
+| `PERFDATA-NAME` |  | Perfdata name in perfdata output (Default: 'value') |
+| `PERFDATA-MIN` |  | Minimum value to add in perfdata output (Default: '') |
+| `PERFDATA-MAX` |  | Maximum value to add in perfdata output (Default: '') |
+| `WARNING-VALUE` |  | Threshold warning value |
+| `WARNING-EXECUTION-TIME` |  | Threshold warning execution time |
+| `CRITICAL-VALUE` |  | Threshold critical value |
+| `CRITICAL-EXECUTION-TIME` |  | Threshold critical execution time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sqlrequest.execution.time.seconds` | `s` | execution time:  second(s) | `WARNING-EXECUTION-TIME`, `CRITICAL-EXECUTION-TIME` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231114 - 20231230</summary>
+
+- Command `database-firebird-sql`
+    - Option `--format` changed from `--format=$_SERVICEFORMAT$` to `--format='$_SERVICEFORMAT$'`
+    - Macro `DATASOURCE` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230810 - 20231011</summary>
+
+- Plugin pack `Firebird Database`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230810 - 20231011`.

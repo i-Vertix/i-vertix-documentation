@@ -1,0 +1,112 @@
+---
+title: "Netapp SnapCenter Backup"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Netapp.png";
+
+<PluginPackHeader name="Netapp SnapCenter Backup" image={image} category="Application" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors NetApp SnapCenter through its API: the backup jobs.
+
+The plugin pack provides these checks:
+
+* [Jobs](#apps-backup-netapp-snapcenter-restapi-jobs)
+
+
+## Host Templates
+
+### NetApp-SnapCenter
+
+*NetApp SnapCenter Backup*
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Set port (default: '443'). |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https'). |
+| `TIMEOUT` | `30` | Threshold for HTTP timeout (default: '30'). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Set password. |
+| `API-USERNAME` |  | Set username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Jobs](#apps-backup-netapp-snapcenter-restapi-jobs) | `apps-backup-netapp-snapcenter-restapi-jobs` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Jobs {/* #apps-backup-netapp-snapcenter-restapi-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{status} =~ /warning/i'` | Set warning threshold for status (Default: '%\{status\} =~ /warning/i'). Can used special variables like: %\{display\}, %\{status\}, %\{type\} |
+| `CRITICAL-STATUS` | `'%{status} =~ /failed/i'` | Set critical threshold for status (Default: '%\{status\} =~ /failed/i'). Can used special variables like: %\{display\}, %\{status\}, %\{type\} |
+| `CRITICAL-TOTAL` | `1:` | Critical threshold for total jobs |
+| `FILTER-NAME` |  | Filter job name (can be a regexp) |
+| `FILTER-TYPE` |  | Filter job type (can be a regexp) |
+| `FILTER-START-TIME` |  | Filter job with start time greater than current time less value in seconds |
+| `FILTER-END-TIME` |  | Filter job with end time greater than current time less value in seconds (Default: 86400) |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{display\}, %\{status\}, %\{type\} |
+| `WARNING-TOTAL` |  | Warning threshold for total jobs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.total.count` |  | total jobs | `WARNING-TOTAL`, `CRITICAL-TOTAL` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

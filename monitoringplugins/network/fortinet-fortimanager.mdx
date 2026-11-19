@@ -1,0 +1,227 @@
+---
+title: "Fortinet FortiManager"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Fortinet.png";
+
+<PluginPackHeader name="Fortinet FortiManager" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Fortinet FortiManager through SNMP: CPU, memory and disk usage, the status of the managed devices and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-fortinet-fortimanager-snmp-cpu)
+* [Device Status](#network-fortinet-fortimanager-snmp-device-status)
+* [Disk](#network-fortinet-fortimanager-snmp-disk)
+* [Memory](#network-fortinet-fortimanager-snmp-memory)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+
+## Host Templates
+
+### Fortinet-Fortimanager
+
+*Fortinet Fortimanager* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (12)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `AUTH_PASSPHRASE` | *(password)* | *(not used by the check command)* |
+| `AUTH_PROTOCOL` |  | *(not used by the check command)* |
+| `PRIV_PASSPHRASE` | *(password)* | *(not used by the check command)* |
+| `PRIV_PROTOCOL` |  | *(not used by the check command)* |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-fortinet-fortimanager-snmp-cpu) | `network-fortinet-fortimanager-snmp-cpu` |
+| [Device Status](#network-fortinet-fortimanager-snmp-device-status) | `network-fortinet-fortimanager-snmp-device-status` |
+| [Disk](#network-fortinet-fortimanager-snmp-disk) | `network-fortinet-fortimanager-snmp-disk` |
+| [Memory](#network-fortinet-fortimanager-snmp-memory) | `network-fortinet-fortimanager-snmp-memory` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-fortinet-fortimanager-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `80` | Threshold warning |
+| `CRITICAL` | `90` | Threshold critical |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Device Status {/* #network-fortinet-fortimanager-snmp-device-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by device name (can be a regexp) |
+| `WARNING-DEVICE-STATUS` |  | Set warning threshold for device status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-DEVICE-CON-STATUS` |  | Set warning threshold for device connection status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-DEVICE-DB-STATUS` |  | Set warning threshold for device DB status. Can used special variables like: %\{status\}, %\{name\} |
+| `WARNING-DEVICE-CONFIG-STATUS` |  | Set warning threshold for device configuration status. Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-DEVICE-STATUS` |  | Set critical threshold for device status Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-DEVICE-CON-STATUS` |  | Set critical threshold for device connection status (Default: '%\{status\} =~ /down/i'). Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-DEVICE-DB-STATUS` |  | Set critical threshold for device DB status. Can used special variables like: %\{status\}, %\{name\} |
+| `CRITICAL-DEVICE-CONFIG-STATUS` |  | Set critical threshold for device configuration status. Can used special variables like: %\{status\}, %\{name\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk {/* #network-fortinet-fortimanager-snmp-disk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical in percent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-fortinet-fortimanager-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage in percent |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage in percent |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

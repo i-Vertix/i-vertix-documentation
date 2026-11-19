@@ -1,0 +1,339 @@
+---
+title: "Dell ME4"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dell.png";
+
+<PluginPackHeader name="Dell ME4" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors Dell ME4 storage through its API: hardware status, interfaces, and controller and volume statistics such as throughput, IOPS, cache and CPU usage.
+
+The plugin pack provides these checks:
+
+* [Controller statistics](#storage-dell-me4-restapi-controller-statistics)
+* [Hardware](#storage-dell-me4-restapi-hardware)
+* [Interfaces](#storage-dell-me4-restapi-interfaces)
+* [Volume statistics](#storage-dell-me4-restapi-volume-statistics)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Controller statistics](#storage-dell-me4-restapi-controller-statistics) | `Controller statistics - <name>` |
+| [Volume statistics](#storage-dell-me4-restapi-volume-statistics) | `Volume statistics - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Dell-ME4-API
+
+*Dell ME4 storage (Rest API)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password. |
+| `EXTRA-OPTS` | `--digest-sha256` | Additional options appended to the plugin command line (host level). |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Controller statistics](#storage-dell-me4-restapi-controller-statistics) | `storage-dell-me4-restapi-controller-statistics` |
+| [Hardware](#storage-dell-me4-restapi-hardware) | `storage-dell-me4-restapi-hardware` |
+| [Interfaces](#storage-dell-me4-restapi-interfaces) | `storage-dell-me4-restapi-interfaces` |
+| [Volume statistics](#storage-dell-me4-restapi-volume-statistics) | `storage-dell-me4-restapi-volume-statistics` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Controller statistics {/* #storage-dell-me4-restapi-controller-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-WRITE-CACHE-USED` | `50:` | Threshold warning cache write usage (%) |
+| `WARNING-CPU-UTILIZATION` | `80` | Threshold warning CPU utilization (%) |
+| `CRITICAL-WRITE-CACHE-USED` | `10:` | Threshold critical cache write usage (%) |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Threshold critical CPU utilization (%) |
+| `FILTER-NAME` |  | Filter controller name (Can be a regexp) |
+| `WARNING-DATA-READ` |  | Threshold warning data read (B/s) |
+| `WARNING-DATA-WRITTEN` |  | Threshold warning data written (B/s) |
+| `WARNING-READS` |  | Threshold warning reads count |
+| `WARNING-WRITES` |  | Threshold warning writes count |
+| `WARNING-DATA-TRANSFER` |  | Threshold warning data transfer (B/s) |
+| `WARNING-IOPS` |  | Threshold warning iops ops |
+| `WARNING-FORWARDED-CMDS` |  | Threshold warning commands forwarded count |
+| `WARNING-WRITE-CACHE-HITS` |  | Threshold warning write hits count |
+| `WARNING-WRITE-CACHE-MISSES` |  | Threshold warning write misses count |
+| `WARNING-READ-CACHE-HITS` |  | Threshold warning read hits count |
+| `WARNING-READ-CACHE-MISSES` |  | Threshold warning read misses count |
+| `CRITICAL-DATA-READ` |  | Threshold critical data read (B/s) |
+| `CRITICAL-DATA-WRITTEN` |  | Threshold critical data written (B/s) |
+| `CRITICAL-READS` |  | Threshold critical reads count |
+| `CRITICAL-WRITES` |  | Threshold critical writes count |
+| `CRITICAL-DATA-TRANSFER` |  | Threshold critical data transfer (B/s) |
+| `CRITICAL-IOPS` |  | Threshold critical iops ops |
+| `CRITICAL-FORWARDED-CMDS` |  | Threshold critical commands forwarded count |
+| `CRITICAL-WRITE-CACHE-HITS` |  | Threshold critical write hits count |
+| `CRITICAL-WRITE-CACHE-MISSES` |  | Threshold critical write misses count |
+| `CRITICAL-READ-CACHE-HITS` |  | Threshold critical read hits count |
+| `CRITICAL-READ-CACHE-MISSES` |  | Threshold critical read misses count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `controller.data.read.bytespersecond` | `B/s` | data read: /s | `WARNING-DATA-READ`, `CRITICAL-DATA-READ` |
+| `controller.data.written.bytespersecond` | `B/s` | data written: /s | `WARNING-DATA-WRITTEN`, `CRITICAL-DATA-WRITTEN` |
+| `controller.reads.persecond` | `/s` | reads: /s | `WARNING-READS`, `CRITICAL-READS` |
+| `controller.writes.persecond` | `/s` | writes: /s | `WARNING-WRITES`, `CRITICAL-WRITES` |
+| `controller.data.transfer.bytespersecond` | `B/s` | data transfer: /s | `WARNING-DATA-TRANSFER`, `CRITICAL-DATA-TRANSFER` |
+| `controller.iops.count` | `ops` | iops:  ops | `WARNING-IOPS`, `CRITICAL-IOPS` |
+| `controller.commands.forwarded.count` |  | forwarded commands | `WARNING-FORWARDED-CMDS`, `CRITICAL-FORWARDED-CMDS` |
+| `controller.cache.write.usage.percentage` | `%` | cache write usage: %% | `WARNING-WRITE-CACHE-USED`, `CRITICAL-WRITE-CACHE-USED` |
+| `controller.cache.write.hits.persecond` | `/s` | cache write hits: /s | `WARNING-WRITE-CACHE-HITS`, `CRITICAL-WRITE-CACHE-HITS` |
+| `controller.cache.write.misses.persecond` | `/s` | cache write misses: /s | `WARNING-WRITE-CACHE-MISSES`, `CRITICAL-WRITE-CACHE-MISSES` |
+| `controller.cache.read.hits.persecond` | `/s` | cache read hits: /s | `WARNING-READ-CACHE-HITS`, `CRITICAL-READ-CACHE-HITS` |
+| `controller.cache.read.misses.persecond` | `/s` | cache read misses: /s | `WARNING-READ-CACHE-MISSES`, `CRITICAL-READ-CACHE-MISSES` |
+| `controller.cpu.utilization.percentage` | `%` | cpu utilization: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #storage-dell-me4-restapi-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'controller', 'disk', 'fan', 'fru', 'psu', 'sensor', 'volume' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter='sensor,Overall Sensor' |
+| `WARNING` |  | Set warning threshold for 'temperature' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='controller,OK,Operational but not redundant' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #storage-dell-me4-restapi-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-PORT-NAME` | `.*` | Filter port name (Can be a regexp) |
+| `UNKNOWN-PORT-STATUS` | `'%{status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\}, %\{health\}, %\{display\} |
+| `WARNING-PORT-STATUS` | `'%{status} =~ /degraded/i'` | Set warning threshold for status (Default: '%\{status\} =~ /degraded/i'). Can used special variables like: %\{status\}, %\{health\}, %\{display\} |
+| `CRITICAL-PORT-STATUS` | `'%{status} =~ /fault/i'` | Set critical threshold for status (Default: '%\{status\} =~ /fault/i'). Can used special variables like: %\{status\}, %\{health\}, %\{display\} |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops |
+| `WARNING-READ-TRAFFIC` |  | Threshold warning read traffic |
+| `WARNING-WRITE-TRAFFIC` |  | Threshold warning write traffic |
+| `WARNING-INTERFACE-DISPARITY-ERRORS` |  | Threshold warning interface disparity errors |
+| `WARNING-INTERFACE-LOST-DWORDS` |  | Threshold warning interface lost dwords |
+| `WARNING-INTERFACE-INVALID-DWORDS` |  | Threshold warning interface invalid dwords |
+| `CRITICAL-READ-IOPS` |  | Threshold critical read iops |
+| `CRITICAL-WRITE-IOPS` |  | Threshold critical write iops |
+| `CRITICAL-READ-TRAFFIC` |  | Threshold critical read traffic |
+| `CRITICAL-WRITE-TRAFFIC` |  | Threshold critical write traffic |
+| `CRITICAL-INTERFACE-DISPARITY-ERRORS` |  | Threshold critical interface disparity errors |
+| `CRITICAL-INTERFACE-LOST-DWORDS` |  | Threshold critical interface lost dwords |
+| `CRITICAL-INTERFACE-INVALID-DWORDS` |  | Threshold critical interface invalid dwords |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `port.io.read.usage.iops` | `iops` | read iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `port.io.write.usage.iops` | `iops` | write iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `port.traffic.read.usage.bitspersecond` | `b/s` | read traffic:  /s | `WARNING-READ-TRAFFIC`, `CRITICAL-READ-TRAFFIC` |
+| `port.traffic.write.usage.bitspersecond` | `b/s` | write traffic:  /s | `WARNING-WRITE-TRAFFIC`, `CRITICAL-WRITE-TRAFFIC` |
+| `port.interface.disparity.errors.count` |  | disparity errors | `WARNING-INTERFACE-DISPARITY-ERRORS`, `CRITICAL-INTERFACE-DISPARITY-ERRORS` |
+| `port.interface.lost.dwords.count` |  | lost dwords | `WARNING-INTERFACE-LOST-DWORDS`, `CRITICAL-INTERFACE-LOST-DWORDS` |
+| `port.interface.invalid.dwords.count` |  | invalid dwords | `WARNING-INTERFACE-INVALID-DWORDS`, `CRITICAL-INTERFACE-INVALID-DWORDS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume statistics {/* #storage-dell-me4-restapi-volume-statistics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter volume name (Can be a regexp) |
+| `WARNING-WRITE-CACHE-PERCENT` | `50:` | Threshold warning cache write usage (%) |
+| `CRITICAL-WRITE-CACHE-PERCENT` | `10:` | Threshold critical cache write usage (%) |
+| `WARNING-DATA-READ` |  | Threshold warning data read (B/s) |
+| `WARNING-DATA-WRITTEN` |  | Threshold warning data written (B/s) |
+| `WARNING-WRITES` |  | Threshold warning writes count |
+| `WARNING-DATA-TRANSFER` |  | Threshold warning data transfer (B/s) |
+| `WARNING-IOPS` |  | Threshold warning iops ops |
+| `WARNING-WRITE-CACHE-HITS` |  | Threshold warning cache write hits count |
+| `WARNING-WRITE-CACHE-MISSES` |  | Threshold warning cache write misses count |
+| `WARNING-READ-CACHE-HITS` |  | Threshold warning cache read hits count |
+| `WARNING-READ-CACHE-MISSES` |  | Threshold warning cache read misses count |
+| `CRITICAL-DATA-READ` |  | Threshold critical data read (B/s) |
+| `CRITICAL-DATA-WRITTEN` |  | Threshold critical data written (B/s) |
+| `CRITICAL-READS` |  | Threshold critical reads count |
+| `CRITICAL-WRITES` |  | Threshold critical writes count |
+| `CRITICAL-DATA-TRANSFER` |  | Threshold critical data transfer (B/s) |
+| `CRITICAL-IOPS` |  | Threshold critical iops ops |
+| `CRITICAL-WRITE-CACHE-HITS` |  | Threshold critical cache write hits count |
+| `CRITICAL-WRITE-CACHE-MISSES` |  | Threshold critical cache write misses count |
+| `CRITICAL-READ-CACHE-HITS` |  | Threshold critical cache read hits count |
+| `CRITICAL-READ-CACHE-MISSES` |  | Threshold critical cache read misses count |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.data.read.bytespersecond` | `B/s` | data read: /s | `WARNING-DATA-READ`, `CRITICAL-DATA-READ` |
+| `volume.data.written.bytespersecond` | `B/s` | data written: /s | `WARNING-DATA-WRITTEN`, `CRITICAL-DATA-WRITTEN` |
+| `volume.reads.persecond` | `/s` | reads: /s | `CRITICAL-READS` |
+| `volume.writes.persecond` | `/s` | writes: /s | `WARNING-WRITES`, `CRITICAL-WRITES` |
+| `volume.data.transfer.bytespersecond` | `B/s` | data transfer: /s | `WARNING-DATA-TRANSFER`, `CRITICAL-DATA-TRANSFER` |
+| `volume.iops.ops` | `ops` | iops:  ops | `WARNING-IOPS`, `CRITICAL-IOPS` |
+| `volume.cache.write.usage.percentage` | `%` | cache write usage: %% | `WARNING-WRITE-CACHE-PERCENT`, `CRITICAL-WRITE-CACHE-PERCENT` |
+| `volume.cache.write.hits.persecond` | `/s` | cache write hits: /s | `WARNING-WRITE-CACHE-HITS`, `CRITICAL-WRITE-CACHE-HITS` |
+| `volume.cache.write.misses.persecond` | `/s` | cache write misses: /s | `WARNING-WRITE-CACHE-MISSES`, `CRITICAL-WRITE-CACHE-MISSES` |
+| `volume.cache.read.hits.persecond` | `/s` | cache read hits: /s | `WARNING-READ-CACHE-HITS`, `CRITICAL-READ-CACHE-HITS` |
+| `volume.cache.read.misses.persecond` | `/s` | cache read misses: /s | `WARNING-READ-CACHE-MISSES`, `CRITICAL-READ-CACHE-MISSES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260120</summary>
+
+- Command `storage-dell-me4-restapi-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` removed
+    - Macro `ABSENT-PROBLEM` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20251100 - 20260114</summary>
+
+- Command `storage-dell-me4-restapi-hardware`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+
+</details>

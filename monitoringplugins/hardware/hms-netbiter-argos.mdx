@@ -1,0 +1,204 @@
+---
+title: "HMS Netbiter Argos"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HMS.png";
+
+<PluginPackHeader name="HMS Netbiter Argos" image={image} category="Hardware" metadata={["API"]} />
+
+## Description
+
+Monitors HMS Netbiter Argos systems through the Argos REST API: the sensors and the alerts of the connected devices.
+
+The plugin pack provides these checks:
+
+* [Alerts](#hardware-devices-hms-netbiter-argos-restapi-alerts)
+* [Sensors](#hardware-devices-hms-netbiter-argos-restapi-sensors)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Sensors](#hardware-devices-hms-netbiter-argos-restapi-sensors) | `Sensor - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### HMS-Netbiter-Argos
+
+*HMS Netbiter Argos* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-ENDPOINT` | `/operation/v1/rest/json` | Argos API requests endpoint (default: '/operation/v1/rest/json') |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | For Username/Password authentication method. Must be used with --api-username option. |
+| `PORT` |  | Port used (default: 443) |
+| `API-USERNAME` |  | For Username/Password authentication method. Must be used with --api-password option. |
+| `ACCESS-KEY` |  | For Access Key "direct" authentication method. Example: --access-key='ABCDEFG1234567890' |
+| `SYSTEM-ID` |  | Set the Netbiter Argos System ID (mandatory). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alerts](#hardware-devices-hms-netbiter-argos-restapi-alerts) | `hardware-devices-hms-netbiter-argos-restapi-alerts` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Sensors](#hardware-devices-hms-netbiter-argos-restapi-sensors) | `hardware-devices-hms-netbiter-argos-restapi-sensors` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alerts {/* #hardware-devices-hms-netbiter-argos-restapi-alerts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--filter-acked --filter-active` | Additional options appended to the plugin command line (host level). |
+| `CRITICAL-ACTIVE-STATUS` | `'%{active} =~ "true"'` | Set critical threshold for active status (default: '%\{active\} =~ "true"'). Typical syntax: --critical-active-status='%\{active\} =~ "true"' |
+| `FILTER-SEVERITY` |  | Only show alarms with a given severity level. Can be: 'critical', 'major', 'minor', 'warning', 'cleared'. Only one value can be set (no multiple values) |
+| `WARNING-ACTIVE-STATUS` |  | Set warning threshold for active status (default: ''). Typical syntax: --warning-active-status='%\{active\} =~ "true"' |
+| `WARNING-ACKED-STATUS` |  | Set warning threshold for acked status (default: '%\{acked\} =~ "false"'). Typical syntax: --warning-acked-status='%\{acked\} =~ "false"' |
+| `WARNING-ALARM-SEVERITY` |  | Warning threshold alarm severity (level from 0 to 5) |
+| `WARNING-ALARMS-TOTAL` |  | Warning threshold alarms total |
+| `CRITICAL-ACKED-STATUS` |  | Set critical threshold for acked status (default: ''). Typical syntax: --critical-acked-status='%\{acked\} =~ "false"' |
+| `CRITICAL-ALARM-SEVERITY` |  | Critical threshold alarm severity (level from 0 to 5) |
+| `CRITICAL-ALARMS-TOTAL` |  | Critical threshold alarms total |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sensors {/* #hardware-devices-hms-netbiter-argos-restapi-sensors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-ID` |  | Filter by sensor ID (regexp can be used). Example: --filter-id='^1234.5678$' |
+| `FILTER-DEVICE` |  | Filter by device name (regexp can be used). Example: --filter-device='^ZONE(1\|2)$' |
+| `FILTER-NAME` |  | Filter by sensor name (regexp can be used). Example: --filter-name='^temperature_(in\|out)$' |
+| `WARNING-SENSOR-VALUE` |  | Warning threshold sensor value |
+| `CRITICAL-SENSOR-VALUE` |  | Critical threshold sensor value |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sensor.reading.count` |  | value | `WARNING-SENSOR-VALUE`, `CRITICAL-SENSOR-VALUE` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Plugin pack `HMS Netbiter Argos`
+    - Renamed from `HMS Netbiter Argon`
+    - Description updated
+- Host template `HMS-Netbiter-Argos`
+    - Renamed from `HMS-Netbiter-Argon`
+    - Alias changed from `HMS Netbiter Argon` to `HMS Netbiter Argos`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240808 - 20240912</summary>
+
+- Plugin pack `HMS Netbiter Argon`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240808 - 20240912`.

@@ -1,0 +1,742 @@
+---
+title: "Netapp Ontap OnCommand"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Netapp.png";
+
+<PluginPackHeader name="Netapp Ontap OnCommand" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors NetApp ONTAP through the OnCommand API: cluster status, usage and I/O, aggregates, volumes, LUNs, qtrees, SnapMirror, disks, FC ports and node hardware and failover.
+
+The plugin pack provides these checks:
+
+* [Aggregate raid status](#storage-netapp-ontap-oncommandapi-aggregate-raid-status)
+* [Aggregate status](#storage-netapp-ontap-oncommandapi-aggregate-status)
+* [Aggregate usage](#storage-netapp-ontap-oncommandapi-aggregate-usage)
+* [Cluster I/O](#storage-netapp-ontap-oncommandapi-cluster-io)
+* [Cluster status](#storage-netapp-ontap-oncommandapi-cluster-status)
+* [Cluster usage](#storage-netapp-ontap-oncommandapi-cluster-usage)
+* [Disk failed](#storage-netapp-ontap-oncommandapi-disk-failed)
+* [Disk spare](#storage-netapp-ontap-oncommandapi-disk-spare)
+* [FC port status](#storage-netapp-ontap-oncommandapi-fc-port-status)
+* [LUN alignment](#storage-netapp-ontap-oncommandapi-lun-alignment)
+* [LUN online](#storage-netapp-ontap-oncommandapi-lun-online)
+* [LUN usage](#storage-netapp-ontap-oncommandapi-lun-usage)
+* [Node failover status](#storage-netapp-ontap-oncommandapi-node-failover-status)
+* [Node hardware status](#storage-netapp-ontap-oncommandapi-node-hardware-status)
+* [Qtree status](#storage-netapp-ontap-oncommandapi-qtree-status)
+* [Snapmirror status](#storage-netapp-ontap-oncommandapi-snapmirror-status)
+* [Snapmirror usage](#storage-netapp-ontap-oncommandapi-snapmirror-usage)
+* [Volumes](#storage-netapp-ontap-oncommandapi-volumes)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Aggregate raid status](#storage-netapp-ontap-oncommandapi-aggregate-raid-status) | `Aggregate raid status - <name>` |
+| [Aggregate status](#storage-netapp-ontap-oncommandapi-aggregate-status) | `Aggregate status - <name>` |
+| [Aggregate usage](#storage-netapp-ontap-oncommandapi-aggregate-usage) | `Aggregate usage - <name>` |
+| [Cluster I/O](#storage-netapp-ontap-oncommandapi-cluster-io) | `Cluster I/O - <name>` |
+| [Cluster status](#storage-netapp-ontap-oncommandapi-cluster-status) | `Cluster status - <name>` |
+| [Cluster usage](#storage-netapp-ontap-oncommandapi-cluster-usage) | `Cluster usage - <name>` |
+| [FC port status](#storage-netapp-ontap-oncommandapi-fc-port-status) | `FC port status - <name>` |
+| [LUN alignment](#storage-netapp-ontap-oncommandapi-lun-alignment) | `LUN alignment - <name>` |
+| [LUN online](#storage-netapp-ontap-oncommandapi-lun-online) | `LUN online - <name>` |
+| [LUN usage](#storage-netapp-ontap-oncommandapi-lun-usage) | `LUN usage - <name>` |
+| [Node failover status](#storage-netapp-ontap-oncommandapi-node-failover-status) | `Node failover status - <name>` |
+| [Node hardware status](#storage-netapp-ontap-oncommandapi-node-hardware-status) | `Node hardware status - <name>` |
+| [Snapmirror status](#storage-netapp-ontap-oncommandapi-snapmirror-status) | `Snapmirror status - <name>` |
+| [Snapmirror usage](#storage-netapp-ontap-oncommandapi-snapmirror-usage) | `Snapmirror usage - <name>` |
+| [Volumes](#storage-netapp-ontap-oncommandapi-volumes) | `Volume - <name>` |
+| [Volumes](#storage-netapp-ontap-oncommandapi-volumes) | `Volume - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Netapp-Ontap-OnCommand-API
+
+*Netapp Ontap OnCommand storage* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL_PATH` | `/api/4.0/ontap` | *(not used by the check command)* |
+| `PORT` | `8443` | OnCommand API port (default: 8443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `USERNAME` |  | OnCommand API username. |
+| `PASSWORD` | *(password)* | OnCommand API password. |
+| `TIMEOUT` |  | Set HTTP timeout |
+| `URL-PATH` |  | OnCommand API url path (default: '/api/4.0/ontap') |
+| `HTTP-BACKEND` |  | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Aggregate raid status](#storage-netapp-ontap-oncommandapi-aggregate-raid-status) | `storage-netapp-ontap-oncommandapi-aggregate-raid-status` |
+| [Aggregate status](#storage-netapp-ontap-oncommandapi-aggregate-status) | `storage-netapp-ontap-oncommandapi-aggregate-status` |
+| [Aggregate usage](#storage-netapp-ontap-oncommandapi-aggregate-usage) | `storage-netapp-ontap-oncommandapi-aggregate-usage` |
+| [Cluster I/O](#storage-netapp-ontap-oncommandapi-cluster-io) | `storage-netapp-ontap-oncommandapi-cluster-io` |
+| [Cluster status](#storage-netapp-ontap-oncommandapi-cluster-status) | `storage-netapp-ontap-oncommandapi-cluster-status` |
+| [Cluster usage](#storage-netapp-ontap-oncommandapi-cluster-usage) | `storage-netapp-ontap-oncommandapi-cluster-usage` |
+| [Disk failed](#storage-netapp-ontap-oncommandapi-disk-failed) | `storage-netapp-ontap-oncommandapi-disk-failed` |
+| [Disk spare](#storage-netapp-ontap-oncommandapi-disk-spare) | `storage-netapp-ontap-oncommandapi-disk-spare` |
+| [FC port status](#storage-netapp-ontap-oncommandapi-fc-port-status) | `storage-netapp-ontap-oncommandapi-fc-port-status` |
+| [LUN alignment](#storage-netapp-ontap-oncommandapi-lun-alignment) | `storage-netapp-ontap-oncommandapi-lun-alignment` |
+| [LUN online](#storage-netapp-ontap-oncommandapi-lun-online) | `storage-netapp-ontap-oncommandapi-lun-online` |
+| [LUN usage](#storage-netapp-ontap-oncommandapi-lun-usage) | `storage-netapp-ontap-oncommandapi-lun-usage` |
+| [Node failover status](#storage-netapp-ontap-oncommandapi-node-failover-status) | `storage-netapp-ontap-oncommandapi-node-failover-status` |
+| [Node hardware status](#storage-netapp-ontap-oncommandapi-node-hardware-status) | `storage-netapp-ontap-oncommandapi-node-hardware-status` |
+| [Qtree status](#storage-netapp-ontap-oncommandapi-qtree-status) | `storage-netapp-ontap-oncommandapi-qtree-status` |
+| [Snapmirror status](#storage-netapp-ontap-oncommandapi-snapmirror-status) | `storage-netapp-ontap-oncommandapi-snapmirror-status` |
+| [Snapmirror usage](#storage-netapp-ontap-oncommandapi-snapmirror-usage) | `storage-netapp-ontap-oncommandapi-snapmirror-usage` |
+| [Volumes](#storage-netapp-ontap-oncommandapi-volumes) | `storage-netapp-ontap-oncommandapi-volumes` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Aggregate raid status {/* #storage-netapp-ontap-oncommandapi-aggregate-raid-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be a regexp) |
+| `FILTER-NODE` | `.*` | Filter node (can be a regexp) |
+| `FILTER-CLUSTER` | `.*` | Filter cluster (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /normal/i'` | Set critical threshold for status (Default: '%\{status\} !~ /normal/i'). Can used special variables like: %\{status\}, %\{type\}, %\{size\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{type\}, %\{size\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Aggregate status {/* #storage-netapp-ontap-oncommandapi-aggregate-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be a regexp) |
+| `FILTER-NODE` | `.*` | Filter node (can be a regexp) |
+| `FILTER-CLUSTER` | `.*` | Filter cluster (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{state} !~ /online/i'` | Set critical threshold for status (Default: '%\{state\} !~ /online/i'). Can used special variables like: %\{state\}, %\{mirror_status\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\}, %\{mirror_status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Aggregate usage {/* #storage-netapp-ontap-oncommandapi-aggregate-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be a regexp) |
+| `FILTER-NODE` | `.*` | Filter node (can be a regexp) |
+| `FILTER-CLUSTER` | `.*` | Filter cluster (can be a regexp) |
+| `FILTER-STATE` | `.*` | Filter state (can be a regexp) |
+| `FILTER-TYPE` | `.*` | Filter type (can be a regexp) |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USAGE` | `90` | Threshold warning usage |
+| `CRITICAL-USAGE` | `95` | Threshold critical usage |
+| `WARNING-SNAPSHOT` |  | Threshold warning snapshot |
+| `CRITICAL-SNAPSHOT` |  | Threshold critical snapshot |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster I/O {/* #storage-netapp-ontap-oncommandapi-cluster-io */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter snapmirror name (can be a regexp) |
+| `WARNING-TOTAL-THROUGHPUT` |  | Threshold warning total throughput |
+| `WARNING-TOTAL-OPS` |  | Threshold warning total ops |
+| `CRITICAL-TOTAL-THROUGHPUT` |  | Threshold critical total throughput |
+| `CRITICAL-TOTAL-OPS` |  | Threshold critical total ops |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_throughput` | `B/s` | Total throughput:  /s | `WARNING-TOTAL-THROUGHPUT`, `CRITICAL-TOTAL-THROUGHPUT` |
+| `total_ops` | `ops/s` | Total IOPS:  ops/s | `WARNING-TOTAL-OPS`, `CRITICAL-TOTAL-OPS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster status {/* #storage-netapp-ontap-oncommandapi-cluster-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter snapmirror name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /ok/i'` | Set critical threshold for status (Default: '%\{status\} !~ /ok/i'). Can used special variables like: %\{status\}, %\{metro_cluster_mode\}, %\{metro_cluster_configuration_state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{metro_cluster_mode\}, %\{metro_cluster_configuration_state\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster usage {/* #storage-netapp-ontap-oncommandapi-cluster-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter snapmirror name (can be a regexp) |
+| `WARNING-MAX-NODE-UTILIZATION` | `90` | Threshold warning maximum node utilization |
+| `WARNING-MAX-AGGREGATE-UTILIZATION` | `90` | Threshold warning maximum aggregate utilization |
+| `CRITICAL-MAX-NODE-UTILIZATION` | `95` | Threshold critical maximum node utilization |
+| `CRITICAL-MAX-AGGREGATE-UTILIZATION` | `95` | Threshold critical maximum aggregate utilization |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `max_node_utilization` | `%` | Node utilization:  %% | `WARNING-MAX-NODE-UTILIZATION`, `CRITICAL-MAX-NODE-UTILIZATION` |
+| `max_aggregate_utilization` | `%` | Aggregate utilization:  %% | `WARNING-MAX-AGGREGATE-UTILIZATION`, `CRITICAL-MAX-AGGREGATE-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk failed {/* #storage-netapp-ontap-oncommandapi-disk-failed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE` | `.*` | Filter name (can be a regexp) |
+| `FILTER-CLUSTER` | `.*` | Filter cluster (can be a regexp) |
+| `WARNING-PRE-FAILED` | `0` | Threshold warning pre failed |
+| `CRITICAL-FAILED` | `0` | Threshold critical failed |
+| `CRITICAL-PRE-FAILED` | `1` | Threshold critical pre failed |
+| `WARNING-FAILED` |  | Threshold warning failed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `failed` |  | Failed disks | `WARNING-FAILED`, `CRITICAL-FAILED` |
+| `pre_failed` |  | Pre-failed disks | `WARNING-PRE-FAILED`, `CRITICAL-PRE-FAILED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk spare {/* #storage-netapp-ontap-oncommandapi-disk-spare */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NODE` | `.*` | Filter name (can be a regexp) |
+| `FILTER-CLUSTER` | `.*` | Filter cluster (can be a regexp) |
+| `WARNING-SPARE` |  | Threshold warning spare |
+| `WARNING-ZEROED` |  | Threshold warning zeroed |
+| `WARNING-NOT-ZEROED` |  | Threshold warning not zeroed |
+| `CRITICAL-SPARE` |  | Threshold critical spare |
+| `CRITICAL-ZEROED` |  | Threshold critical zeroed |
+| `CRITICAL-NOT-ZEROED` |  | Threshold critical not zeroed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `spare` |  | Spare disks | `WARNING-SPARE`, `CRITICAL-SPARE` |
+| `zeroed` |  | Zeroed disks | `WARNING-ZEROED`, `CRITICAL-ZEROED` |
+| `not_zeroed` |  | Not zeroed disks | `WARNING-NOT-ZEROED`, `CRITICAL-NOT-ZEROED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### FC port status {/* #storage-netapp-ontap-oncommandapi-fc-port-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be a regexp) |
+| `FILTER-VOLUME` | `.*` | Filter volume (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} !~ /online/i \|\| %{state} !~ /online/i'` | Set critical threshold for status (Default: '%\{status\} !~ /online/i \|\| %\{state\} !~ /online/i'). Can used special variables like: %\{status\}, %\{state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\}, %\{state\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LUN alignment {/* #storage-netapp-ontap-oncommandapi-lun-alignment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-VOLUME` | `.*` | Filter volume (can be a regexp) |
+| `WARNING-POSSIBLY-MISALIGNED` | `0` | Threshold warning possibly misaligned |
+| `WARNING-INDETERMINATE` | `0` | Threshold warning indeterminate |
+| `CRITICAL-MISALIGNED` | `0` | Threshold critical misaligned |
+| `WARNING-ALIGNED` |  | Threshold warning aligned |
+| `WARNING-MISALIGNED` |  | Threshold warning misaligned |
+| `WARNING-POTENTIAL-WRITES` |  | Threshold warning potential writes |
+| `WARNING-NOT-MAPPED` |  | Threshold warning not mapped |
+| `CRITICAL-ALIGNED` |  | Threshold critical aligned |
+| `CRITICAL-POSSIBLY-MISALIGNED` |  | Threshold critical possibly misaligned |
+| `CRITICAL-INDETERMINATE` |  | Threshold critical indeterminate |
+| `CRITICAL-POTENTIAL-WRITES` |  | Threshold critical potential writes |
+| `CRITICAL-NOT-MAPPED` |  | Threshold critical not mapped |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `aligned` |  | Luns aligned | `WARNING-ALIGNED`, `CRITICAL-ALIGNED` |
+| `misaligned` |  | Luns misaligned | `WARNING-MISALIGNED`, `CRITICAL-MISALIGNED` |
+| `possibly_misaligned` |  | Luns possibly misaligned | `WARNING-POSSIBLY-MISALIGNED`, `CRITICAL-POSSIBLY-MISALIGNED` |
+| `indeterminate` |  | Luns indeterminate | `WARNING-INDETERMINATE`, `CRITICAL-INDETERMINATE` |
+| `partial_writes` |  | Luns partial writes | `WARNING-POTENTIAL-WRITES`, `CRITICAL-POTENTIAL-WRITES` |
+| `not_mapped` |  | Luns not mapped | `WARNING-NOT-MAPPED`, `CRITICAL-NOT-MAPPED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LUN online {/* #storage-netapp-ontap-oncommandapi-lun-online */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-VOLUME` | `.*` | Filter volume (can be a regexp) |
+| `WARNING-NOT-MAPPED` | `0` | Threshold warning not mapped |
+| `CRITICAL-NOT-ONLINE` | `0` | Threshold critical not online |
+| `WARNING-ONLINE` |  | Threshold warning online |
+| `WARNING-NOT-ONLINE` |  | Threshold warning not online |
+| `WARNING-MAPPED` |  | Threshold warning mapped |
+| `CRITICAL-ONLINE` |  | Threshold critical online |
+| `CRITICAL-MAPPED` |  | Threshold critical mapped |
+| `CRITICAL-NOT-MAPPED` |  | Threshold critical not mapped |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `online` |  | Luns online | `WARNING-ONLINE`, `CRITICAL-ONLINE` |
+| `not_online` |  | Luns not online | `WARNING-NOT-ONLINE`, `CRITICAL-NOT-ONLINE` |
+| `mapped` |  | Luns mapped | `WARNING-MAPPED`, `CRITICAL-MAPPED` |
+| `not_mapped` |  | Luns not mapped | `WARNING-NOT-MAPPED`, `CRITICAL-NOT-MAPPED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LUN usage {/* #storage-netapp-ontap-oncommandapi-lun-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter lun name (can be a regexp) |
+| `WARNING-USAGE` | `90` | Threshold warning usage |
+| `CRITICAL-USAGE` | `95` | Threshold critical usage |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Node failover status {/* #storage-netapp-ontap-oncommandapi-node-failover-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be a regexp) |
+| `FILTER-CLUSTERS` | `.*` | Filter clusters (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{state} !~ /connected/i \|\| %{interconnect} !~ /up/i'` | Set critical threshold for status (Default: '%\{state\} !~ /connected/i \|\| %\{interconnect\} !~ /up/i'). Can used special variables like: %\{state\}, %\{interconnect\}, %\{current_mode\}, %\{take_over_possible\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\}, %\{interconnect\}, %\{current_mode\}, %\{take_over_possible\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Node hardware status {/* #storage-netapp-ontap-oncommandapi-node-hardware-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be a regexp) |
+| `FILTER-CLUSTERS` | `.*` | Filter clusters (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{status} =~ /not healthy/i \|\| %{temperature} !~ /ok/i \|\| %{battery_status} !~ /battery_ok\|battery_fully_charge\|battery_over_charged/i'` | Set critical threshold for status (Default: '%\{status\} =~ /not healthy/i \|\| %\{temperature\} !~ /ok/i \|\| %\{battery_status\} !~ /battery_ok\|battery_fully_charge\|battery_over_charged/i'). Can used special variables like: %\{status\}, %\{temperature\}, %\{battery_status\} |
+| `CRITICAL-FAILED-FANS` | `0` | Threshold critical failed fans |
+| `CRITICAL-PSU` | `0` | Threshold critical PSU |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{temperature\}, %\{battery_status\} |
+| `WARNING-FAILED-FANS` |  | Threshold warning failed fans |
+| `WARNING-PSU` |  | Threshold warning PSU |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `failed_fans` |  | failed fan(s) | `WARNING-FAILED-FANS`, `CRITICAL-FAILED-FANS` |
+| `failed_psu` |  | failed psu |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Qtree status {/* #storage-netapp-ontap-oncommandapi-qtree-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter name (can be a regexp) |
+| `FILTER-VOLUME` | `.*` | Filter volume (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Snapmirror status {/* #storage-netapp-ontap-oncommandapi-snapmirror-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter snapmirror name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{state} !~ /snapmirrored/i \|\| %{update} =~ /not healthy/i'` | Set critical threshold for status (Default: '%\{state\} !~ /snapmirrored/i \|\| %\{update\} =~ /not healthy/i'). Can used special variables like: %\{state\}, %\{update\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{state\}, %\{update\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Snapmirror usage {/* #storage-netapp-ontap-oncommandapi-snapmirror-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter snapmirror name (can be a regexp) |
+| `WARNING-LAST-TRANSFER-DURATION` |  | Threshold warning last transfer duration |
+| `WARNING-LAST-TRANSFER-SIZE` |  | Threshold warning last transfer size |
+| `WARNING-LAG-TIME` |  | Threshold warning lag time |
+| `CRITICAL-LAST-TRANSFER-DURATION` |  | Threshold critical last transfer duration |
+| `CRITICAL-LAST-TRANSFER-SIZE` |  | Threshold critical last transfer size |
+| `CRITICAL-LAG-TIME` |  | Threshold critical lag time |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `last_transfer_duration` | `s` | Last transfer duration:  s | `WARNING-LAST-TRANSFER-DURATION`, `CRITICAL-LAST-TRANSFER-DURATION` |
+| `last_transfer_size` | `B` | Last transfer size | `WARNING-LAST-TRANSFER-SIZE`, `CRITICAL-LAST-TRANSFER-SIZE` |
+| `lag_time` | `s` | Lag time:  s | `WARNING-LAG-TIME`, `CRITICAL-LAG-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volumes {/* #storage-netapp-ontap-oncommandapi-volumes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-VOLUME-KEY` | `.*` | Filter volumes by volume key |
+| `FILTER-VOLUME-NAME` | `.*` | Filter volumes by volume name |
+| `FILTER-VOLUME-STATE` | `.*` | Filter volumes by volume state |
+| `FILTER-VOLUME-STYLE` | `.*` | Filter volumes by volume style |
+| `FILTER-VOLUME-TYPE` | `.*` | Filter volumes by volume type |
+| `FILTER-SVM-NAME` | `.*` | Filter volumes by storage virtual machine name |
+| `CRITICAL-STATUS` | `'%{state} !~ /online/i'` | Set critical threshold for status (Default: '%\{state\} !~ /online/i'). Can used special variables like: %\{state\}, %\{volumeName\}, %\{svmName\} |
+| `WARNING-INODES-USAGE-PRCT` | `90` | Threshold warning Inodes usage (%) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Threshold warning Space usage (%) |
+| `WARNING-AVG-LATENCY` | `250` | Threshold warning average latency |
+| `CRITICAL-INODES-USAGE-PRCT` | `95` | Threshold critical Inodes usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Threshold critical Space usage (%) |
+| `CRITICAL-AVG-LATENCY` | `500` | Threshold critical average latency |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops |
+| `WARNING-OTHER-IOPS` |  | Threshold warning other iops |
+| `WARNING-READ-LATENCY` |  | Threshold warning read latency |
+| `WARNING-WRITE-LATENCY` |  | Threshold warning write latency |
+| `WARNING-OTHER-LATENCY` |  | Threshold warning other latency |
+| `CRITICAL-READ-IOPS` |  | Threshold critical read iops |
+| `CRITICAL-WRITE-IOPS` |  | Threshold critical write iops |
+| `CRITICAL-OTHER-IOPS` |  | Threshold critical other iops |
+| `CRITICAL-READ-LATENCY` |  | Threshold critical read latency |
+| `CRITICAL-WRITE-LATENCY` |  | Threshold critical write latency |
+| `CRITICAL-OTHER-LATENCY` |  | Threshold critical other latency |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\}, %\{volumeName\}, %\{svmName\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{state\}, %\{volumeName\}, %\{svmName\} |
+| `WARNING-SPACE-USAGE` |  | Threshold warning Space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold warning Space usage free (B) |
+| `WARNING-COMPRESSION-SAVED-PRCT` |  | Threshold warning Compression saved (%) |
+| `WARNING-DEDUPLICATION-SAVED-PRCT` |  | Threshold warning Deduplication saved (%) |
+| `WARNING-SNAPSHOT-RESERVE-USAGE-PRCT` |  | Threshold warning Snapshot reserve usage(%) |
+| `CRITICAL-SPACE-USAGE` |  | Threshold critical Space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Threshold critical Space usage free (B) |
+| `CRITICAL-COMPRESSION-SAVED-PRCT` |  | Threshold critical Compression saved (%) |
+| `CRITICAL-DEDUPLICATION-SAVED-PRCT` |  | Threshold critical Deduplication saved (%) |
+| `CRITICAL-SNAPSHOT-RESERVE-USAGE-PRCT` |  | Threshold critical Snapshot reserve usage(%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `volume.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `volume.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `volume.inodes.usage.percentage` | `%` | inodes used  %% | `WARNING-INODES-USAGE-PRCT`, `CRITICAL-INODES-USAGE-PRCT` |
+| `volume.space.compression.saved.percentage` | `%` | compression space saved  %% | `WARNING-COMPRESSION-SAVED-PRCT`, `CRITICAL-COMPRESSION-SAVED-PRCT` |
+| `volume.space.deduplication.saved.percentage` | `%` | deduplication space saved  %% | `WARNING-DEDUPLICATION-SAVED-PRCT`, `CRITICAL-DEDUPLICATION-SAVED-PRCT` |
+| `volume.snapshots.reserve.usage.percentage` | `%` | snapshots reserve used  %% | `WARNING-SNAPSHOT-RESERVE-USAGE-PRCT`, `CRITICAL-SNAPSHOT-RESERVE-USAGE-PRCT` |
+| `volume.io.read.usage.iops` |  | read | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `volume.io.write.usage.iops` |  | write | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `volume.io.other.usage.iops` |  | other | `WARNING-OTHER-IOPS`, `CRITICAL-OTHER-IOPS` |
+| `volume.io.average.latency.milliseconds` | `ms` | average  ms |  |
+| `volume.io.read.latency.milliseconds` | `ms` | read  ms | `WARNING-READ-LATENCY`, `CRITICAL-READ-LATENCY` |
+| `volume.io.write.latency.milliseconds` | `ms` | write  ms | `WARNING-WRITE-LATENCY`, `CRITICAL-WRITE-LATENCY` |
+| `volume.io.other.latency.milliseconds` | `ms` | other  ms | `WARNING-OTHER-LATENCY`, `CRITICAL-OTHER-LATENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

@@ -12,14 +12,11 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS EC2.png";
 
 ## Description
 
-### AWS ASG (Auto Scaling Group) monitoring
-protocols used: awscli, Rest API
+Monitors Amazon EC2 Auto Scaling groups: the status of the group and the number of instances it runs.
 
-- ASG status
+The plugin pack provides these checks:
 
-### Discovery modes
-
-- ASG
+* [EC2 ASG status](#cloud-aws-ec2-asg-status)
 
 ## Prerequisites
 
@@ -27,6 +24,18 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [EC2 ASG status](#cloud-aws-ec2-asg-status) | `EC2 ASG status - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
 
 ## Host Templates
 

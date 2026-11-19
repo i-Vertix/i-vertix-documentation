@@ -12,17 +12,18 @@ import image from "../../assets/pluginpacks/Databases/Azure-MySQL.png";
 
 ## Description
 
-### Azure MySQL monitoring
-protocols used: Rest API (https)
+Monitors Azure Database for MySQL servers: CPU, memory, storage and I/O consumption, connections, queries, network traffic and the replication lag.
 
-- Connections
-- CPU
-- IO consumption
-- Memory
-- Queries
-- Replication
-- Storage
-- Traffic
+The plugin pack provides these checks:
+
+* [Connections](#cloud-azure-database-mysql-connections)
+* [CPU](#cloud-azure-database-mysql-cpu)
+* [IO consumption](#cloud-azure-database-mysql-io-consumption)
+* [Memory](#cloud-azure-database-mysql-memory)
+* [Queries](#cloud-azure-database-mysql-queries)
+* [Replication](#cloud-azure-database-mysql-replication)
+* [Storage](#cloud-azure-database-mysql-storage)
+* [Traffic](#cloud-azure-database-mysql-traffic)
 
 ## Prerequisites
 
@@ -30,6 +31,7 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
 
 ## Host Templates
 

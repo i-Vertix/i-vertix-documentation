@@ -12,12 +12,13 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-Virtual-WAN.png
 
 ## Description
 
-### Azure Virtual Hub monitoring
-protocols used: HTTPS (Rest API)
+Monitors Azure Virtual WAN hubs: resource health, hub status, data processed, routes exchanged with the peers, infrastructure units and the utilization of the spoke VMs.
 
-- Health
-- Hub traffic
-- Hub status
+The plugin pack provides these checks:
+
+* [Hub health](#cloud-azure-network-virtualhub-health)
+* [Hub status](#cloud-azure-network-virtualhub-status)
+* [Hub traffic](#cloud-azure-network-virtualhub-traffic)
 
 ## Prerequisites
 
@@ -25,6 +26,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Virtual Hub](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

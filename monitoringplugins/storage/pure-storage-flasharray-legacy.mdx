@@ -1,0 +1,295 @@
+---
+title: "Pure Storage Flasharray (legacy)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Purestorage.png";
+
+<PluginPackHeader name="Pure Storage Flasharray (legacy)" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors Pure Storage FlashArray (legacy) through its API: alarms, array and volume usage and data reduction, hardware status and protection group replication.
+
+The plugin pack provides these checks:
+
+* [Alarms](#storage-purestorage-flasharray-legacy-restapi-alarms)
+* [Arrays](#storage-purestorage-flasharray-legacy-restapi-arrays)
+* [Hardware](#storage-purestorage-flasharray-legacy-restapi-hardware)
+* [Protection Group replication](#storage-purestorage-flasharray-legacy-restapi-pgroup-replication)
+* [Volume usage](#storage-purestorage-flasharray-legacy-restapi-volume-usage)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Protection Group replication](#storage-purestorage-flasharray-legacy-restapi-pgroup-replication) | `Protection Group replication - <name>` |
+| [Volume usage](#storage-purestorage-flasharray-legacy-restapi-volume-usage) | `Volume usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### PureStorage-Flasharray-legacy
+
+*PureStorage Flasharray* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-PATH` | `/api/1.11` | API base url path (default: '/api/1.11'). |
+| `TIMEOUT` | `10` | Set HTTP timeout in seconds (default: '10'). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PASSWORD` | *(password)* | Pure Storage password. |
+| `USERNAME` |  | Pure Storage username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Alarms](#storage-purestorage-flasharray-legacy-restapi-alarms) | `storage-purestorage-flasharray-legacy-restapi-alarms` |
+| [Arrays](#storage-purestorage-flasharray-legacy-restapi-arrays) | `storage-purestorage-flasharray-legacy-restapi-arrays` |
+| [Hardware](#storage-purestorage-flasharray-legacy-restapi-hardware) | `storage-purestorage-flasharray-legacy-restapi-hardware` |
+| [Protection Group replication](#storage-purestorage-flasharray-legacy-restapi-pgroup-replication) | `storage-purestorage-flasharray-legacy-restapi-pgroup-replication` |
+| [Volume usage](#storage-purestorage-flasharray-legacy-restapi-volume-usage) | `storage-purestorage-flasharray-legacy-restapi-volume-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Alarms {/* #storage-purestorage-flasharray-legacy-restapi-alarms */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{severity} =~ /warning/i'` | Set warning threshold for status (Default: '%\{severity\} =~ /warning/i') Can used special variables like: %\{category\}, %\{code\}, %\{severity\}, %\{opened\}, %\{event\}, %\{component_name\} |
+| `CRITICAL-STATUS` | `'%{severity} =~ /critical/i'` | Set critical threshold for status (Default: '%\{severity\} =~ /critical/i'). Can used special variables like: %\{category\}, %\{code\}, %\{severity\}, %\{opened\}, %\{event\}, %\{component_name\} |
+| `FILTER-CATEGORY` |  | Filter by category name (can be a regexp) |
+| `EXTRA-OPTS` |  | --memory: Only check new alarms |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Arrays {/* #storage-purestorage-flasharray-legacy-restapi-arrays */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Threshold warning space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Threshold warning space usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='data-reduction' |
+| `FILTER-NAME` |  | Filter arrays by name (can be a regexp) |
+| `WARNING-SPACE-USAGE` |  | Threshold warning space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold warning space usage free (B) |
+| `WARNING-DATA-REDUCTION` |  | Threshold warning data reduction |
+| `CRITICAL-SPACE-USAGE` |  | Threshold warning space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Threshold warning space usage free (B) |
+| `CRITICAL-DATA-REDUCTION` |  | Threshold warning data reduction |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `array.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `array.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `array.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `array.data.reduction.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #storage-purestorage-flasharray-legacy-restapi-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'entity' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=entity,CT1.FC0 |
+| `WARNING` |  | Set warning threshold for 'temperature' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,40' |
+| `CRITICAL` |  | Set critical threshold for 'temperature' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='entity,OK,device_off' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hardware.entity.temperature.celsius` | `C` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Protection Group replication {/* #storage-purestorage-flasharray-legacy-restapi-pgroup-replication */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (Can be a regexp). Example: --filter-counters='^progress$' |
+| `FILTER-NAME` |  | Filter protection group name (Can be a regexp) |
+| `WARNING-PROGRESS` |  | Threshold warning progress (%) |
+| `WARNING-CREATION` |  | Threshold warning creation (s) |
+| `WARNING-DURATION` |  | Threshold warning duration (s) |
+| `WARNING-PHYSICAL-BYTES-WRITTEN` |  | Threshold warning physical bytes written (B) |
+| `WARNING-DATA-TRANSFERRED` |  | Threshold warning data transferred(B) |
+| `CRITICAL-PROGRESS` |  | Threshold critical progress (%) |
+| `CRITICAL-CREATION` |  | Threshold critical creation (s) |
+| `CRITICAL-DURATION` |  | Threshold critical duration (s) |
+| `CRITICAL-PHYSICAL-BYTES-WRITTEN` |  | Threshold critical physical bytes written (B) |
+| `CRITICAL-DATA-TRANSFERRED` |  | Threshold critical data transferred(B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `protection_group.progress.percentage` | `%` | progress:  %% | `WARNING-PROGRESS`, `CRITICAL-PROGRESS` |
+| `protection_group.creation.seconds` | `s` | creation time | `WARNING-CREATION`, `CRITICAL-CREATION` |
+| `protection_group.duration.seconds` | `s` | duration | `WARNING-DURATION`, `CRITICAL-DURATION` |
+| `protection_group.physical.written.bytes` | `B` | physical bytes written | `WARNING-PHYSICAL-BYTES-WRITTEN`, `CRITICAL-PHYSICAL-BYTES-WRITTEN` |
+| `protection_group.transferred.data.bytes` | `B` | data transferred | `WARNING-DATA-TRANSFERRED`, `CRITICAL-DATA-TRANSFERRED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume usage {/* #storage-purestorage-flasharray-legacy-restapi-volume-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter volume name (can be a regexp) |
+| `UNITS` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `WARNING-USAGE` | `90` | Threshold warning usage |
+| `CRITICAL-USAGE` | `95` | Threshold critical usage |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^iops$' |
+| `WARNING-DATA-REDUCTION` |  | Threshold warning data reduction |
+| `WARNING-TOTAL-REDUCTION` |  | Threshold warning total reduction |
+| `CRITICAL-DATA-REDUCTION` |  | Threshold critical data reduction |
+| `CRITICAL-TOTAL-REDUCTION` |  | Threshold critical total reduction |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.data.reduction.count` |  | data reduction | `WARNING-DATA-REDUCTION`, `CRITICAL-DATA-REDUCTION` |
+| `volume.total.reduction.count` |  | total reduction | `WARNING-TOTAL-REDUCTION`, `CRITICAL-TOTAL-REDUCTION` |
+| `volume.snapshots.usage.bytes` | `B` | snapshots |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

@@ -1,0 +1,558 @@
+---
+title: "Fujitsu Eternus DX storage (official Fujitsu Nagios plugin)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Fujitsu.png";
+
+<PluginPackHeader name="Fujitsu Eternus DX storage (official Fujitsu Nagios plugin)" image={image} category="Storage" metadata={["SSH"]} />
+
+## Description
+
+Monitors Fujitsu Eternus DX storage over SSH using the official Fujitsu Nagios plugin: system, controller and disk enclosure status, temperatures, power, disks, RAID groups, thin provisioning pools, volumes, ports and remote copy sessions.
+
+The plugin pack provides these checks:
+
+* [CE exhaust temperature](#3th-check_fujitsu-eternus-dx-chkcetemp)
+* [CE intake temperature](#3th-check_fujitsu-eternus-dx-chkceintaketemp)
+* [Channel Adapter ports](#3th-check_fujitsu-eternus-dx-chkcaport)
+* [CM busy-rate](#3th-check_fujitsu-eternus-dx-chkcmbusyrate)
+* [Controller Enclosure status](#3th-check_fujitsu-eternus-dx-chkce)
+* [Controller Modules status](#3th-check_fujitsu-eternus-dx-chkcm)
+* [Disk busy-rate](#3th-check_fujitsu-eternus-dx-chkdiskbusyrate)
+* [Disk Enclosure status](#3th-check_fujitsu-eternus-dx-chkde)
+* [Physical disks](#3th-check_fujitsu-eternus-dx-chkdisks)
+* [Power](#3th-check_fujitsu-eternus-dx-chkpower)
+* [Raid groups](#3th-check_fujitsu-eternus-dx-chkraids)
+* [Remote Copy sessions](#3th-check_fujitsu-eternus-dx-chkrecsessions)
+* [Spare disks](#3th-check_fujitsu-eternus-dx-chksparedisks)
+* [System status](#3th-check_fujitsu-eternus-dx-chksystem)
+* [Thin Provisioning pools](#3th-check_fujitsu-eternus-dx-chkthinpropools)
+* [Volume Read response time](#3th-check_fujitsu-eternus-dx-chkvolreadrestime)
+* [Volume Write response time](#3th-check_fujitsu-eternus-dx-chkvolwriterestime)
+* [Volumes](#3th-check_fujitsu-eternus-dx-chkvolumes)
+
+
+## Host Templates
+
+### Fujitsu-Eternus-DX-ssh-official-FJ-Nagios
+
+*Fujitsu Eternus DX storage (official FJ Nagios Plugin)* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (1)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-USERNAME` |  |  |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Channel Adapter ports](#3th-check_fujitsu-eternus-dx-chkcaport) | `3th-check_fujitsu-eternus-dx-chkcaport` |
+| [Controller Enclosure status](#3th-check_fujitsu-eternus-dx-chkce) | `3th-check_fujitsu-eternus-dx-chkce` |
+| [CE intake temperature](#3th-check_fujitsu-eternus-dx-chkceintaketemp) | `3th-check_fujitsu-eternus-dx-chkceintaketemp` |
+| [CE exhaust temperature](#3th-check_fujitsu-eternus-dx-chkcetemp) | `3th-check_fujitsu-eternus-dx-chkcetemp` |
+| [Controller Modules status](#3th-check_fujitsu-eternus-dx-chkcm) | `3th-check_fujitsu-eternus-dx-chkcm` |
+| [CM busy-rate](#3th-check_fujitsu-eternus-dx-chkcmbusyrate) | `3th-check_fujitsu-eternus-dx-chkcmbusyrate` |
+| [Disk Enclosure status](#3th-check_fujitsu-eternus-dx-chkde) | `3th-check_fujitsu-eternus-dx-chkde` |
+| [Disk busy-rate](#3th-check_fujitsu-eternus-dx-chkdiskbusyrate) | `3th-check_fujitsu-eternus-dx-chkdiskbusyrate` |
+| [Physical disks](#3th-check_fujitsu-eternus-dx-chkdisks) | `3th-check_fujitsu-eternus-dx-chkdisks` |
+| [Power](#3th-check_fujitsu-eternus-dx-chkpower) | `3th-check_fujitsu-eternus-dx-chkpower` |
+| [Raid groups](#3th-check_fujitsu-eternus-dx-chkraids) | `3th-check_fujitsu-eternus-dx-chkraids` |
+| [Remote Copy sessions](#3th-check_fujitsu-eternus-dx-chkrecsessions) | `3th-check_fujitsu-eternus-dx-chkrecsessions` |
+| [Spare disks](#3th-check_fujitsu-eternus-dx-chksparedisks) | `3th-check_fujitsu-eternus-dx-chksparedisks` |
+| [System status](#3th-check_fujitsu-eternus-dx-chksystem) | `3th-check_fujitsu-eternus-dx-chksystem` |
+| [Thin Provisioning pools](#3th-check_fujitsu-eternus-dx-chkthinpropools) | `3th-check_fujitsu-eternus-dx-chkthinpropools` |
+| [Volume Read response time](#3th-check_fujitsu-eternus-dx-chkvolreadrestime) | `3th-check_fujitsu-eternus-dx-chkvolreadrestime` |
+| [Volumes](#3th-check_fujitsu-eternus-dx-chkvolumes) | `3th-check_fujitsu-eternus-dx-chkvolumes` |
+| [Volume Write response time](#3th-check_fujitsu-eternus-dx-chkvolwriterestime) | `3th-check_fujitsu-eternus-dx-chkvolwriterestime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Channel Adapter ports {/* #3th-check_fujitsu-eternus-dx-chkcaport */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkcaport` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Controller Enclosure status {/* #3th-check_fujitsu-eternus-dx-chkce */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkce` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CE intake temperature {/* #3th-check_fujitsu-eternus-dx-chkceintaketemp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkceintaketemp` |  |
+| `WARNING` | `45` |  |
+| `CRITICAL` | `50` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CE exhaust temperature {/* #3th-check_fujitsu-eternus-dx-chkcetemp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkcetemp` |  |
+| `WARNING` | `70` |  |
+| `CRITICAL` | `75` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Controller Modules status {/* #3th-check_fujitsu-eternus-dx-chkcm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkcm` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CM busy-rate {/* #3th-check_fujitsu-eternus-dx-chkcmbusyrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkcmbusyrate` |  |
+| `WARNING` | `80` |  |
+| `CRITICAL` | `90` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk Enclosure status {/* #3th-check_fujitsu-eternus-dx-chkde */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkde` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk busy-rate {/* #3th-check_fujitsu-eternus-dx-chkdiskbusyrate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkdiskbusyrate` |  |
+| `WARNING` | `80` |  |
+| `CRITICAL` | `90` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Physical disks {/* #3th-check_fujitsu-eternus-dx-chkdisks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkdisks` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Power {/* #3th-check_fujitsu-eternus-dx-chkpower */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkpower` |  |
+| `WARNING` | `1800` |  |
+| `CRITICAL` | `2000` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Raid groups {/* #3th-check_fujitsu-eternus-dx-chkraids */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkraids` |  |
+| `WARNING` | `75` |  |
+| `CRITICAL` | `85` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Remote Copy sessions {/* #3th-check_fujitsu-eternus-dx-chkrecsessions */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkrecsessions` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Spare disks {/* #3th-check_fujitsu-eternus-dx-chksparedisks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chksparedisks` |  |
+| `WARNING` | `2` |  |
+| `CRITICAL` | `0` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System status {/* #3th-check_fujitsu-eternus-dx-chksystem */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chksystem` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Thin Provisioning pools {/* #3th-check_fujitsu-eternus-dx-chkthinpropools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkthinpropools` |  |
+| `WARNING` | `75` |  |
+| `CRITICAL` | `85` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume Read response time {/* #3th-check_fujitsu-eternus-dx-chkvolreadrestime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkvolreadrestime` |  |
+| `WARNING` | `500` |  |
+| `CRITICAL` | `800` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volumes {/* #3th-check_fujitsu-eternus-dx-chkvolumes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkvolumes` |  |
+| `PERFORMANCE` |  |  |
+| `WARNING` |  |  |
+| `CRITICAL` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volume Write response time {/* #3th-check_fujitsu-eternus-dx-chkvolwriterestime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PERFORMANCE` | `2` |  |
+| `VERBOSE` | `2` |  |
+| `CHECK` | `--chkvolwriterestime` |  |
+| `WARNING` | `500` |  |
+| `CRITICAL` | `800` |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240909 - 20240925</summary>
+
+- Plugin pack `Fujitsu Eternus DX storage (official Fujitsu Nagios plugin)`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Fujitsu Eternus DX storage (official Fujitsu Nagios plugin)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231017 - 20231031`.

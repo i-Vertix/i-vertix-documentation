@@ -1,0 +1,233 @@
+---
+title: "ABB CMS 700"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/ABB.png";
+
+<PluginPackHeader name="ABB CMS 700" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors ABB CMS-700 power monitoring devices through SNMP: mains measurements (power, voltage, current, energy, power factor and harmonic distortion) and sensor measurements.
+
+The plugin pack provides these checks:
+
+* [Mains measurements](#hardware-devices-abb-cms700-snmp-mains-measurements)
+* [Sensors measurements](#hardware-devices-abb-cms700-snmp-sensors-measurements)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Sensors measurements](#hardware-devices-abb-cms700-snmp-sensors-measurements) | `Sensors measurements - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### ABB-CMS-700
+
+*ABB CMS 700* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Mains measurements](#hardware-devices-abb-cms700-snmp-mains-measurements) | `hardware-devices-abb-cms700-snmp-mains-measurements` |
+| [Sensors measurements](#hardware-devices-abb-cms700-snmp-sensors-measurements) | `hardware-devices-abb-cms700-snmp-sensors-measurements` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mains measurements {/* #hardware-devices-abb-cms700-snmp-mains-measurements */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^power\|energy$' *(not used by the check command)* |
+| `FILTER-PHASE` |  | Filter by phase (can be a regexp) |
+| `WARNING-POWER-APPARENT-TOTAL` |  | Threshold warning power apparent total |
+| `WARNING-POWER-ACTIVE-TOTAL` |  | Threshold warning power active total |
+| `WARNING-POWER-REACTIVE-TOTAL` |  | Threshold warning power reactive total |
+| `WARNING-VOLTAGE` |  | Threshold warning voltage |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `WARNING-POWER-FACTOR` |  | Threshold warning power factor |
+| `WARNING-COSPHI` |  | Threshold warning cosphi |
+| `WARNING-POWER-APPARENT` |  | Threshold warning power apparent |
+| `WARNING-POWER-ACTIVE` |  | Threshold warning power active |
+| `WARNING-POWER-REACTIVE` |  | Threshold warning power reactive |
+| `WARNING-ENERGY-APPARENT` |  | Threshold warning energy apparent |
+| `WARNING-ENERGY-ACTIVE` |  | Threshold warning energy active |
+| `WARNING-ENERGY-REACTIVE` |  | Threshold warning energy reactive |
+| `WARNING-VOLTAGE-THD` |  | Threshold warning voltage thd |
+| `WARNING-CURRENT-THD` |  | Threshold warning current thd |
+| `CRITICAL-POWER-APPARENT-TOTAL` |  | Threshold critical power apparent total |
+| `CRITICAL-POWER-ACTIVE-TOTAL` |  | Threshold critical power active total |
+| `CRITICAL-POWER-REACTIVE-TOTAL` |  | Threshold critical power reactive total |
+| `CRITICAL-VOLTAGE` |  | Threshold critical voltage |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `CRITICAL-POWER-FACTOR` |  | Threshold critical power factor |
+| `CRITICAL-COSPHI` |  | Threshold critical cosphi |
+| `CRITICAL-POWER-APPARENT` |  | Threshold critical power apparent |
+| `CRITICAL-POWER-ACTIVE` |  | Threshold critical power active |
+| `CRITICAL-POWER-REACTIVE` |  | Threshold critical power reactive |
+| `CRITICAL-ENERGY-APPARENT` |  | Threshold critical energy apparent |
+| `CRITICAL-ENERGY-ACTIVE` |  | Threshold critical energy active |
+| `CRITICAL-ENERGY-REACTIVE` |  | Threshold critical energy reactive |
+| `CRITICAL-VOLTAGE-THD` |  | Threshold critical voltage thd |
+| `CRITICAL-CURRENT-THD` |  | Threshold critical current thd |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `power.active.watt` | `W` | Active Power:  W | `WARNING-POWER-ACTIVE-TOTAL`, `CRITICAL-POWER-ACTIVE-TOTAL` |
+| `power.reactive.voltamperereactive` | `VAR` | Reactive Power:  VAR | `WARNING-POWER-REACTIVE-TOTAL`, `CRITICAL-POWER-REACTIVE-TOTAL` |
+| `power.apparent.voltampere` | `VA` | Apparent Power:  VA | `WARNING-POWER-APPARENT-TOTAL`, `CRITICAL-POWER-APPARENT-TOTAL` |
+| `phase.voltage.volt` | `V` | Voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `phase.current.ampere` | `A` | Current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `phase.power.factor.ratio` |  | Power Factor | `WARNING-POWER-FACTOR`, `CRITICAL-POWER-FACTOR` |
+| `phase.cosphi.ratio` |  | Cos Phi | `WARNING-COSPHI`, `CRITICAL-COSPHI` |
+| `phase.power.active.watt` | `W` | Active Power:  W | `WARNING-POWER-ACTIVE`, `CRITICAL-POWER-ACTIVE` |
+| `phase.power.reactive.voltamperereactive` | `VAR` | Reactive Power:  VAR | `WARNING-POWER-REACTIVE`, `CRITICAL-POWER-REACTIVE` |
+| `phase.power.apparent.voltampere` | `VA` | Apparent Power:  VA | `WARNING-POWER-APPARENT`, `CRITICAL-POWER-APPARENT` |
+| `phase.energy.active.watthours` | `Wh` | Active Energy:  Wh | `WARNING-ENERGY-ACTIVE`, `CRITICAL-ENERGY-ACTIVE` |
+| `phase.energy.reactive.voltamperereactivehours` | `VARh` | Reactive Energy:  VARh | `WARNING-ENERGY-REACTIVE`, `CRITICAL-ENERGY-REACTIVE` |
+| `phase.energy.apparent.voltamperehours` | `VAh` | Apparent Energy:  VAh | `WARNING-ENERGY-APPARENT`, `CRITICAL-ENERGY-APPARENT` |
+| `phase.voltage.thd.percentage` | `%` | Voltage THD:  %% | `WARNING-VOLTAGE-THD`, `CRITICAL-VOLTAGE-THD` |
+| `phase.current.thd.percentage` | `%` | Current THD:  %% | `WARNING-CURRENT-THD`, `CRITICAL-CURRENT-THD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sensors measurements {/* #hardware-devices-abb-cms700-snmp-sensors-measurements */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter by sensor name (can be a regexp) |
+| `FILTER-GROUP` |  | Filter by sensor group name (can be a regexp) |
+| `FILTER-PHASE` |  | Filter by sensor phase (can be a regexp) |
+| `WARNING-CURRENT-MIXTE` |  | Threshold warning current mixte |
+| `WARNING-CURRENT-ALTERNATIVE` |  | Threshold warning current alternative |
+| `WARNING-CURRENT-DIRECT` |  | Threshold warning current direct |
+| `WARNING-POWER-ACTIVE` |  | Threshold warning power active |
+| `WARNING-ENERGY-ACTIVE` |  | Threshold warning energy active |
+| `WARNING-POWER-FACTOR` |  | Threshold warning power factor |
+| `CRITICAL-CURRENT-MIXTE` |  | Threshold critical current mixte |
+| `CRITICAL-CURRENT-ALTERNATIVE` |  | Threshold critical current alternative |
+| `CRITICAL-CURRENT-DIRECT` |  | Threshold critical current direct |
+| `CRITICAL-POWER-ACTIVE` |  | Threshold critical power active |
+| `CRITICAL-ENERGY-ACTIVE` |  | Threshold critical energy active |
+| `CRITICAL-POWER-FACTOR` |  | Threshold critical power factor |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sensor.current.mixte.ampere` | `A` | Mixte Current:  A | `WARNING-CURRENT-MIXTE`, `CRITICAL-CURRENT-MIXTE` |
+| `sensor.current.alternative.ampere` | `A` | Alternative Current:  A | `WARNING-CURRENT-ALTERNATIVE`, `CRITICAL-CURRENT-ALTERNATIVE` |
+| `sensor.current.direct.ampere` | `A` | Direct Current:  A | `WARNING-CURRENT-DIRECT`, `CRITICAL-CURRENT-DIRECT` |
+| `sensor.power.active.watt` | `W` | Active Power:  W | `WARNING-POWER-ACTIVE`, `CRITICAL-POWER-ACTIVE` |
+| `sensor.energy.active.watthours` | `Wh` | Active Energy:  Wh | `WARNING-ENERGY-ACTIVE`, `CRITICAL-ENERGY-ACTIVE` |
+| `sensor.power.factor.ratio` |  | Power Factor | `WARNING-POWER-FACTOR`, `CRITICAL-POWER-FACTOR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

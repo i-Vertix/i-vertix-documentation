@@ -1,0 +1,288 @@
+---
+title: "HAProxy (Web API)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Haproxy.png";
+
+<PluginPackHeader name="HAProxy (Web API)" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors HAProxy through its web API: sessions, queues, traffic, denied requests and errors of the frontends, backends and servers.
+
+The plugin pack provides these checks:
+
+* [HA Proxy - backend](#apps-haproxy-web-backend-usage)
+* [HA Proxy - frontend](#apps-haproxy-web-frontend-usage)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [HA Proxy - backend](#apps-haproxy-web-backend-usage) | `Backend - <name>` |
+| [HA Proxy - frontend](#apps-haproxy-web-frontend-usage) | `Frontend - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### HAProxy-WebApi
+
+*HAProxy* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROTOCOL` | `https` | Specify https if needed (default: 'http') *(not used by the check command)* |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. *(not used by the check command)* |
+| `HAPROXY-PASSWORD` | *(password)* | Specify the password for authentication (mandatory if --credentials is specified). *(not used by the check command)* |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA Proxy - backend](#apps-haproxy-web-backend-usage) | `apps-haproxy-web-backend-usage` |
+| [HA Proxy - frontend](#apps-haproxy-web-frontend-usage) | `apps-haproxy-web-frontend-usage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA Proxy - backend {/* #apps-haproxy-web-backend-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-BACKEND-STATUS` | `%{status} !~ /UP/i` | Define the conditions to match for the backend status to be CRITICAL. Default: '%\{status\} !~ /UP/i'. You can use the following variables: "%\{status\}". Example: "--critical-backend-status='%\{status\} !~ /UP/i'" |
+| `CRITICAL-SERVER-STATUS` | `%{status} !~ /UP/i` | Define the conditions to match for the status to be CRITICAL. Default: '%\{status\} !~ /UP/i'. You can use the following variables: "%\{status\}". Example: "--critical-backend-status='%\{status\} !~ /UP/i'" |
+| `FILTER-COUNTERS` |  | efine which counters should appear in the performance data (metrics). This option will be treated as a regular expression. Example: "--filter-counters='^total-connections$'" |
+| `FILTER-NAME` |  | Define which backends should be monitored based on their names. This option will be treated as a regular expression |
+| `WARNING-BACKEND-STATUS` |  | Define the conditions to match for the backend status to be WARNING. You can use the following variables: %\{status\}. Example: "--warning-backend-status='%\{status\} !~ /UP/i'" |
+| `WARNING-SERVER-STATUS` |  | Define the conditions to match for the server status to be WARNING. You can use the following variables: "%\{status\}". Example: "--warning-backend-status='%\{status\} !~ /UP/i'" |
+| `WARNING-BACKEND-CURRENT-QUEUE` |  | Warning threshold current queue (count) |
+| `WARNING-BACKEND-CURRENT-SESSION-RATE` |  | Warning threshold current session rate |
+| `WARNING-BACKEND-MAX-SESSION-RATE` |  | Warning threshold max session rate |
+| `WARNING-BACKEND-CURRENT-SESSIONS` |  | Warning threshold current sessions (count) |
+| `WARNING-BACKEND-TOTAL-SESSIONS` |  | Warning threshold total sessions (count) |
+| `WARNING-BACKEND-TRAFFIC-IN` |  | Warning threshold current traffic in (b/s) |
+| `WARNING-BACKEND-TRAFFIC-OUT` |  | Warning threshold current traffic out (b/s) |
+| `WARNING-BACKEND-DENIED-REQUESTS` |  | Warning threshold denied requests (count) |
+| `WARNING-BACKEND-DENIED-RESPONSES` |  | Warning threshold denied responses (count) |
+| `WARNING-BACKEND-CONNECTIONS-ERRORS` |  | Warning threshold connection errors (count) |
+| `WARNING-BACKEND-RESPONSES-ERRORS` |  | Warning threshold responses errors (count) |
+| `WARNING-SERVER-CURRENT-SESSIONS` |  | Warning threshold current sessions (count) |
+| `WARNING-SERVER-CURRENT-SESSION-RATE` |  | Warning threshold current session rate |
+| `WARNING-SERVER-MAX-SESSION-RATE` |  | Warning threshold max session rate |
+| `WARNING-SERVER-DENIED-RESPONSES` |  | Warning threshold denied responses (count) |
+| `WARNING-SERVER-CONNECTIONS-ERRORS` |  | Warning threshold connection errors (count) |
+| `WARNING-SERVER-RESPONSES-ERRORS` |  | Warning threshold responses errors (count) |
+| `CRITICAL-BACKEND-CURRENT-QUEUE` |  | Critical threshold current queue (count) |
+| `CRITICAL-BACKEND-CURRENT-SESSION-RATE` |  | Critical threshold current session rate |
+| `CRITICAL-BACKEND-MAX-SESSION-RATE` |  | Critical threshold max session rate |
+| `CRITICAL-BACKEND-CURRENT-SESSIONS` |  | Critical threshold current sessions (count) |
+| `CRITICAL-BACKEND-TOTAL-SESSIONS` |  | Critical threshold total sessions (count) |
+| `CRITICAL-BACKEND-TRAFFIC-IN` |  | Critical threshold current traffic in (b/s) |
+| `CRITICAL-BACKEND-TRAFFIC-OUT` |  | Critical threshold current traffic out (b/s) |
+| `CRITICAL-BACKEND-DENIED-REQUESTS` |  | Critical threshold denied requests (count) |
+| `CRITICAL-BACKEND-DENIED-RESPONSES` |  | Critical threshold denied responses (count) |
+| `CRITICAL-BACKEND-CONNECTIONS-ERRORS` |  | Critical threshold connection errors (count) |
+| `CRITICAL-BACKEND-RESPONSES-ERRORS` |  | Critical threshold responses errors (count) |
+| `CRITICAL-SERVER-CURRENT-SESSIONS` |  | Critical threshold current sessions (count) |
+| `CRITICAL-SERVER-CURRENT-SESSION-RATE` |  | Critical threshold current session rate |
+| `CRITICAL-SERVER-MAX-SESSION-RATE` |  | Critical threshold max session rate |
+| `CRITICAL-SERVER-DENIED-RESPONSES` |  | Critical threshold denied responses (count) |
+| `CRITICAL-SERVER-CONNECTIONS-ERRORS` |  | Critical threshold connection errors (count) |
+| `CRITICAL-SERVER-RESPONSES-ERRORS` |  | Critical threshold responses errors (count) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `backend.queue.current.count` |  | current queue | `WARNING-BACKEND-CURRENT-QUEUE`, `CRITICAL-BACKEND-CURRENT-QUEUE` |
+| `backend.session.current.rate.countpersecond` |  | current session rate: /s | `WARNING-BACKEND-CURRENT-SESSION-RATE`, `CRITICAL-BACKEND-CURRENT-SESSION-RATE` |
+| `backend.session.max.rate.countpersecond` |  | max session rate: /s | `WARNING-BACKEND-MAX-SESSION-RATE`, `CRITICAL-BACKEND-MAX-SESSION-RATE` |
+| `backend.sessions.current.count` |  | current sessions | `WARNING-BACKEND-CURRENT-SESSIONS`, `CRITICAL-BACKEND-CURRENT-SESSIONS` |
+| `backend.sessions.total.count` |  | total sessions | `WARNING-BACKEND-TOTAL-SESSIONS`, `CRITICAL-BACKEND-TOTAL-SESSIONS` |
+| `backend.traffic.in.bitpersecond` | `b/s` | traffic in:  /s | `WARNING-BACKEND-TRAFFIC-IN`, `CRITICAL-BACKEND-TRAFFIC-IN` |
+| `backend.traffic.out.bitpersecond` | `b/s` | traffic out:  /s | `WARNING-BACKEND-TRAFFIC-OUT`, `CRITICAL-BACKEND-TRAFFIC-OUT` |
+| `backend.requests.denied.count` |  | denied requests | `WARNING-BACKEND-DENIED-REQUESTS`, `CRITICAL-BACKEND-DENIED-REQUESTS` |
+| `backend.responses.denied.count` |  | denied responses | `WARNING-BACKEND-DENIED-RESPONSES`, `CRITICAL-BACKEND-DENIED-RESPONSES` |
+| `backend.connections.error.count` |  | connection errors | `WARNING-BACKEND-CONNECTIONS-ERRORS`, `CRITICAL-BACKEND-CONNECTIONS-ERRORS` |
+| `backend.responses.error.count` |  | responses errors | `WARNING-BACKEND-RESPONSES-ERRORS`, `CRITICAL-BACKEND-RESPONSES-ERRORS` |
+| `server.sessions.current.count` |  | current sessions | `WARNING-SERVER-CURRENT-SESSIONS`, `CRITICAL-SERVER-CURRENT-SESSIONS` |
+| `server.session.current.rate.countpersecond` |  | current session rate: /s | `WARNING-SERVER-CURRENT-SESSION-RATE`, `CRITICAL-SERVER-CURRENT-SESSION-RATE` |
+| `server.session.max.rate.countpersecond` |  | max session rate: /s | `WARNING-SERVER-MAX-SESSION-RATE`, `CRITICAL-SERVER-MAX-SESSION-RATE` |
+| `server.responses.denied.count` |  | denied responses | `WARNING-SERVER-DENIED-RESPONSES`, `CRITICAL-SERVER-DENIED-RESPONSES` |
+| `server.connections.error.count` |  | connection errors | `WARNING-SERVER-CONNECTIONS-ERRORS`, `CRITICAL-SERVER-CONNECTIONS-ERRORS` |
+| `server.responses.error.count` |  | responses errors | `WARNING-SERVER-RESPONSES-ERRORS`, `CRITICAL-SERVER-RESPONSES-ERRORS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA Proxy - frontend {/* #apps-haproxy-web-frontend-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-FRONTEND-STATUS` | `%{status} !~ /OPEN/i` | Define the conditions to match for the status to be CRITICAL. Default: "%\{status\} !~ /OPEN/i". You can use the following variables: "%\{status\}". Example: "--critical-frontend-status='%\{status\} !~ /UP/i'" |
+| `CRITICAL-LISTENER-STATUS` | `%{status} !~ /UP/i` | Define the conditions to match for the status to be CRITICAL. Default: "%\{status\} !~ /OPEN/i". You can use the following variables: "%\{status\}". Example: "--critical-listener-status='%\{status\} !~ /UP/i'" |
+| `FILTER-COUNTERS` |  | Define which counters should appear in the performance data (metrics). This option will be treated as a regular expression. Example: --filter-counters='^total-connections$' |
+| `FILTER-NAME` |  | Define which frontends should be monitored based on their names. This option will be treated as a regular expression |
+| `WARNING-FRONTEND-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: "%\{status\}". Example: "--warning-frontend-status='%\{status\} !~ /UP/i'" |
+| `WARNING-LISTENER-STATUS` |  | Define the conditions to match for the status to be WARNING You can use the following variables: "%\{status\}". Example: "--warning-listener-status='%\{status\} !~ /UP/i'" |
+| `WARNING-FRONTEND-CURRENT-SESSION-RATE` |  | Warning threshold current session rate |
+| `WARNING-FRONTEND-MAX-SESSION-RATE` |  | Warning threshold max session rate |
+| `WARNING-FRONTEND-CURRENT-SESSIONS` |  | Warning threshold current sessions |
+| `WARNING-FRONTEND-TOTAL-SESSIONS` |  | Warning threshold total sessions |
+| `WARNING-FRONTEND-MAX-SESSIONS` |  | Warning threshold max sessions |
+| `WARNING-FRONTEND-TRAFFIC-IN` |  | Warning threshold traffic in (b/s) |
+| `WARNING-FRONTEND-TRAFFIC-OUT` |  | Warning threshold traffic out (b/s) |
+| `WARNING-FRONTEND-DENIED-REQUESTS` |  | Warning threshold denied requests |
+| `WARNING-FRONTEND-DENIED-RESPONSES` |  | Warning threshold denied responses |
+| `WARNING-LISTENER-CURRENT-SESSIONS` |  | Warning threshold current sessions |
+| `WARNING-LISTENER-DENIED-REQUESTS` |  | Warning threshold denied requests |
+| `WARNING-LISTENER-DENIED-RESPONSES` |  | Warning threshold denied responses |
+| `WARNING-LISTENER-ERRORS-REQUESTS` |  | Warning threshold error requests |
+| `WARNING-LISTENER-TRAFFIC-IN` |  | Warning threshold traffic in (b/s) |
+| `WARNING-LISTENER-TRAFFIC-OUT` |  | Warning threshold traffic out (b/s) |
+| `CRITICAL-FRONTEND-CURRENT-SESSION-RATE` |  | Critical threshold current session rate |
+| `CRITICAL-FRONTEND-MAX-SESSION-RATE` |  | Critical threshold max session rate |
+| `CRITICAL-FRONTEND-CURRENT-SESSIONS` |  | Critical threshold current sessions |
+| `CRITICAL-FRONTEND-TOTAL-SESSIONS` |  | Critical threshold total sessions |
+| `CRITICAL-FRONTEND-MAX-SESSIONS` |  | Critical threshold max sessions |
+| `CRITICAL-FRONTEND-TRAFFIC-IN` |  | Critical threshold traffic in (b/s) |
+| `CRITICAL-FRONTEND-TRAFFIC-OUT` |  | Critical threshold traffic out (b/s) |
+| `CRITICAL-FRONTEND-DENIED-REQUESTS` |  | Critical threshold denied requests |
+| `CRITICAL-FRONTEND-DENIED-RESPONSES` |  | Critical threshold denied responses |
+| `CRITICAL-LISTENER-CURRENT-SESSIONS` |  | Critical threshold current sessions |
+| `CRITICAL-LISTENER-DENIED-REQUESTS` |  | Critical threshold denied requests |
+| `CRITICAL-LISTENER-DENIED-RESPONSES` |  | Critical threshold denied responses |
+| `CRITICAL-LISTENER-ERRORS-REQUESTS` |  | Critical threshold error requests |
+| `CRITICAL-LISTENER-TRAFFIC-IN` |  | Critical threshold traffic in (b/s) |
+| `CRITICAL-LISTENER-TRAFFIC-OUT` |  | Critical threshold traffic out (b/s) |
+| `WARNING-FRONTEND-ERRORS-REQUESTS` |  | Warning threshold error requests |
+| `CRITICAL-FRONTEND-ERRORS-REQUESTS` |  | Critical threshold error requests |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `frontend.session.current.rate.countpersecond` |  | current session rate: /s | `WARNING-FRONTEND-CURRENT-SESSION-RATE`, `CRITICAL-FRONTEND-CURRENT-SESSION-RATE` |
+| `frontend.session.max.rate.countpersecond` |  | max session rate: /s | `WARNING-FRONTEND-MAX-SESSION-RATE`, `CRITICAL-FRONTEND-MAX-SESSION-RATE` |
+| `frontend.sessions.current.count` |  | current sessions | `WARNING-FRONTEND-CURRENT-SESSIONS`, `CRITICAL-FRONTEND-CURRENT-SESSIONS` |
+| `frontend.sessions.total.count` |  | total sessions | `WARNING-FRONTEND-TOTAL-SESSIONS`, `CRITICAL-FRONTEND-TOTAL-SESSIONS` |
+| `frontend.sessions.maximum.count` |  | max sessions | `WARNING-FRONTEND-MAX-SESSIONS`, `CRITICAL-FRONTEND-MAX-SESSIONS` |
+| `frontend.traffic.in.bitpersecond` | `b/s` | traffic in:  /s | `WARNING-FRONTEND-TRAFFIC-IN`, `CRITICAL-FRONTEND-TRAFFIC-IN` |
+| `frontend.traffic.out.bitpersecond` | `b/s` | traffic out:  /s | `WARNING-FRONTEND-TRAFFIC-OUT`, `CRITICAL-FRONTEND-TRAFFIC-OUT` |
+| `frontend.requests.denied.count` |  | denied requests | `WARNING-FRONTEND-DENIED-REQUESTS`, `CRITICAL-FRONTEND-DENIED-REQUESTS` |
+| `frontend.responses.denied.count` |  | denied responses | `WARNING-FRONTEND-DENIED-RESPONSES`, `CRITICAL-FRONTEND-DENIED-RESPONSES` |
+| `frontend.requests.error.count` |  | error requests | `WARNING-FRONTEND-ERRORS-REQUESTS`, `CRITICAL-FRONTEND-ERRORS-REQUESTS` |
+| `listener.sessions.current.count` |  | current sessions | `WARNING-LISTENER-CURRENT-SESSIONS`, `CRITICAL-LISTENER-CURRENT-SESSIONS` |
+| `listener.requests.denied.count` |  | denied requests | `WARNING-LISTENER-DENIED-REQUESTS`, `CRITICAL-LISTENER-DENIED-REQUESTS` |
+| `listener.responses.denied.count` |  | denied responses | `WARNING-LISTENER-DENIED-RESPONSES`, `CRITICAL-LISTENER-DENIED-RESPONSES` |
+| `listener.requests.error.count` |  | error requests | `WARNING-LISTENER-ERRORS-REQUESTS`, `CRITICAL-LISTENER-ERRORS-REQUESTS` |
+| `listener.traffic.in.bitpersecond` | `b/s` | traffic in:  /s | `WARNING-LISTENER-TRAFFIC-IN`, `CRITICAL-LISTENER-TRAFFIC-IN` |
+| `listener.traffic.out.bitpersecond` | `b/s` | traffic out:  /s | `WARNING-LISTENER-TRAFFIC-OUT`, `CRITICAL-LISTENER-TRAFFIC-OUT` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250201 - 20250217</summary>
+
+- Plugin pack `HAProxy (Web API)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250201 - 20250217`.

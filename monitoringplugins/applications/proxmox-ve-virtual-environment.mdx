@@ -1,0 +1,314 @@
+---
+title: "Proxmox VE (Virtual Environment)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Proxmox.png";
+
+<PluginPackHeader name="Proxmox VE (Virtual Environment)" image={image} category="Application" metadata={["API", "HTTPS"]} />
+
+## Description
+
+Monitors Proxmox VE through its API: node CPU, memory, swap and filesystem usage, storage usage, virtual machine usage (CPU, memory, I/O and network) and the installed version.
+
+The plugin pack provides these checks:
+
+* [Node usage](#apps-proxmox-ve-restapi-node-usage)
+* [Storage usage](#apps-proxmox-ve-restapi-storage-usage)
+* [Version](#apps-proxmox-ve-restapi-version)
+* [VM Usage](#apps-proxmox-ve-restapi-vm-usage)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Proxmox-VE](/monitoring/monitoring-resources/discovery/common-discovery#proxmox-virtual-environment)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Node usage](#apps-proxmox-ve-restapi-node-usage) | `Node usage - <name>` |
+| [Storage usage](#apps-proxmox-ve-restapi-storage-usage) | `Storage usage - <name>` |
+| [VM Usage](#apps-proxmox-ve-restapi-vm-usage) | `VM usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Proxmox-VE
+
+*Proxmox Virtual Environment* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `8006` | Set Proxmox VE Port (default: '8006') |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https'). |
+| `REALM` | `pam` | Set Proxmox VE Realm (`pam`, `pve` or `custom`) (default: `pam`). |
+| `API-PASSWORD` | *(password)* | Set Proxmox VE Password |
+| `API-USERNAME` |  | Set Proxmox VE Username API user need to have this privileges `VM.Monitor`, `VM.Audit`, `Datastore.Audit`, `Sys.Audit`, `Sys.Syslog` |
+| `TIMEOUT` |  | Threshold for HTTP timeout. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Node usage](#apps-proxmox-ve-restapi-node-usage) | `apps-proxmox-ve-restapi-node-usage` |
+| [Storage usage](#apps-proxmox-ve-restapi-storage-usage) | `apps-proxmox-ve-restapi-storage-usage` |
+| [Version](#apps-proxmox-ve-restapi-version) | `apps-proxmox-ve-restapi-version` |
+| [VM Usage](#apps-proxmox-ve-restapi-vm-usage) | `apps-proxmox-ve-restapi-vm-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Node usage {/* #apps-proxmox-ve-restapi-node-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` | `.*` | Only display some counters (regexp can be used). Example: --filter-counters='^node-status$' |
+| `WARNING-CPU` | `80` | Threshold warning cpu (%) |
+| `WARNING-MEMORY` | `80` | Threshold warning memory (%) |
+| `WARNING-SWAP` | `25` | Threshold warning swap (%) |
+| `WARNING-FS` | `80` | Threshold warning fs (%) |
+| `CRITICAL-CPU` | `90` | Threshold critical cpu (%) |
+| `CRITICAL-MEMORY` | `90` | Threshold critical memory (%) |
+| `CRITICAL-SWAP` | `60` | Threshold critical swap (%) |
+| `CRITICAL-FS` | `90` | Threshold critical fs (%) |
+| `NODE-NAME` |  | Exact node name (if multiple names: names separated by ':') |
+| `FILTER-NAME` |  | Filter by node name (can be a regexp) |
+| `WARNING-NODE-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{name\}, %\{state\} |
+| `CRITICAL-NODE-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{name\}, %\{state\} |
+| `NODE-ID` |  | Exact node ID |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `node.cpu.utilization.percentage` | `%` | cpu usage:  %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `node.memory.usage.bytes` | `B` |  |  |
+| `node.swap.usage.bytes` | `B` |  |  |
+| `node.filesystem.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage usage {/* #apps-proxmox-ve-restapi-storage-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STORAGE` | `90` | Threshold warning storage (%) |
+| `CRITICAL-STORAGE` | `95` | Threshold critical storage (%) |
+| `STORAGE-NAME` |  | Exact storage name (if multiple names: names separated by ':') |
+| `FILTER-NAME` |  | Filter by storage name (can be a regexp) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='^storage-status$' |
+| `WARNING-STORAGE-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{name\}, %\{state\} |
+| `CRITICAL-STORAGE-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{name\}, %\{state\} |
+| `STORAGE-ID` |  | Exact storage ID |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.space.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Version {/* #apps-proxmox-ve-restapi-version */}
+
+</summary>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VM Usage {/* #apps-proxmox-ve-restapi-vm-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` | `.*` | Only display some counters (regexp can be used). Example: --filter-counters='^vm-status$' |
+| `WARNING-CPU` | `80` | Threshold warning cpu (%) |
+| `WARNING-MEMORY` | `80` | Threshold warning memory (%) |
+| `WARNING-SWAP` | `80` | Threshold warning swap (%) |
+| `CRITICAL-CPU` | `90` | Threshold warning cpu (%) |
+| `CRITICAL-MEMORY` | `90` | Threshold warning memory (%) |
+| `CRITICAL-SWAP` | `90` | Threshold warning swap (%) |
+| `VM-NAME` |  | Exact VM name (if multiple names: names separated by ':') |
+| `FILTER-NAME` |  | Filter by vm name (can be a regexp) |
+| `WARNING-VM-STATUS` |  | Set warning threshold for status (Default: -) Can used special variables like: %\{name\}, %\{state\} |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops |
+| `WARNING-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `CRITICAL-VM-STATUS` |  | Set critical threshold for status (Default: -). Can used special variables like: %\{name\}, %\{state\} |
+| `CRITICAL-READ-IOPS` |  | Threshold warning read iops |
+| `CRITICAL-WRITE-IOPS` |  | Threshold warning write iops |
+| `CRITICAL-TRAFFIC-IN` |  | Threshold warning traffic in |
+| `CRITICAL-TRAFFIC-OUT` |  | Threshold warning traffic out |
+| `VM-ID` |  | Exact VM ID |
+| `EXCLUDE-NAME` |  | Exclude by virtual machine name (can be a regexp) |
+| `EXCLUDE-NODE-NAME` |  | Exclude virtual machine running on specified node name (can be a regexp) |
+| `INCLUDE-NODE-NAME` |  | Filter only virtual machine running on specified node name (can be a regexp) |
+| `EXCLUDE-TAGS` |  | Exclude by virtual machine tags (can be a regexp) |
+| `INCLUDE-TAGS` |  | Filter by virtual machine tags (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vm.cpu.utilization.percentage` | `%` | cpu usage:  %% | `WARNING-CPU`, `CRITICAL-CPU` |
+| `vm.read.usage.iops` | `iops` | read iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `vm.write.usage.iops` | `iops` | write iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `vm.traffic.in.bitspersecond` | `b/s` | traffic in:  /s | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `vm.traffic.out.bitspersecond` | `b/s` | traffic out:  /s | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `vm.memory.usage.bytes` | `B` |  |  |
+| `vm.swap.usage.bytes` | `B` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260700 - 20260818</summary>
+
+- Command `apps-proxmox-ve-restapi-node-usage`
+    - Option `--include-name=$_SERVICEFILTER-NAME$` added
+    - Option `--filter-name=$_SERVICEFILTER-NAME$` removed
+- Command `apps-proxmox-ve-restapi-vm-usage`
+    - Option `--include-name=$_SERVICEFILTER-NAME$` added
+    - Option `--include-tags=$_SERVICEINCLUDE-TAGS$` added
+    - Option `--exclude-tags=$_SERVICEEXCLUDE-TAGS$` added
+    - Option `--filter-name=$_SERVICEFILTER-NAME$` removed
+    - Macro `EXCLUDE-TAGS` added
+    - Macro `INCLUDE-TAGS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260500 - 20260529</summary>
+
+- Command `apps-proxmox-ve-restapi-node-usage`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+- Command `apps-proxmox-ve-restapi-storage-usage`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+- Command `apps-proxmox-ve-restapi-version`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+- Command `apps-proxmox-ve-restapi-vm-usage`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250901 - 20251010</summary>
+
+- Command `apps-proxmox-ve-restapi-vm-usage`
+    - Option `--exclude-name=$_SERVICEEXCLUDE-NAME$` added
+    - Option `--include-node-name=$_SERVICEINCLUDE-NODE-NAME$` added
+    - Option `--exclude-node-name=$_SERVICEEXCLUDE-NODE-NAME$` added
+    - Macro `EXCLUDE-NAME` added
+    - Macro `EXCLUDE-NODE-NAME` added
+    - Macro `INCLUDE-NODE-NAME` added
+
+</details>

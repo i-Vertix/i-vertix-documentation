@@ -1,0 +1,133 @@
+---
+title: "Selenium Katalon synthetic monitoring"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Katalon.png";
+
+<PluginPackHeader name="Selenium Katalon synthetic monitoring" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors web applications with Katalon Studio test scenarios run through Selenium and reports the result of each scenario.
+
+The plugin pack provides these checks:
+
+* [Selenium-Katalon-scenario](#apps-selenium-scenario-katalon)
+
+
+## Host Templates
+
+### Selenium-Katalon-scenario
+
+*Selenium Katalon scenario* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SELENIUM-HOSTNAME` | `127.0.0.1` | IP Addr/FQDN of the Selenium server. |
+| `SELENIUM-PORT` | `4444` | Port used by Selenium server. |
+| `DIRECTORY` | `/var/lib/centreon-waa` | Directory where scenarii are stored. |
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Selenium-Katalon-scenario](#apps-selenium-scenario-katalon) | `apps-selenium-scenario-katalon` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Selenium-Katalon-scenario {/* #apps-selenium-scenario-katalon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `BROWSER` | `*firefox` | Browser used by Selenium server (default : '*firefox'). |
+| `TIMEOUT` | `50` | Set scenario execution timeout in second (Default: 50) |
+| `ACTION-TIMEOUT` | `10` | Set action execution timeout in second (Default: 10) |
+| `CRITICAL-FAILED` | `0` | Threshold critical step state count failed |
+| `SCENARIO` |  | Scenario to play (without extension) |
+| `WARNING-FAILED` |  | Threshold warning step state count failed |
+| `WARNING-SUCCESSFUL` |  | Threshold warning step state count successful |
+| `WARNING-TIME-SCENARIO` |  | Threshold warning scenario execution time (ms) |
+| `WARNING-TIME-STEP` |  | Threshold warning step execution time (ms) |
+| `CRITICAL-SUCCESSFUL` |  | Threshold critical step state count successful |
+| `CRITICAL-TIME-SCENARIO` |  | Threshold critical scenario execution time (ms) |
+| `CRITICAL-TIME-STEP` |  | Threshold critical step execution time (ms) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time_scenario` | `ms` | Total execution time :  ms | `WARNING-TIME-SCENARIO`, `CRITICAL-TIME-SCENARIO` |
+| `time_step` | `ms` | Execution time :  ms | `WARNING-TIME-STEP`, `CRITICAL-TIME-STEP` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

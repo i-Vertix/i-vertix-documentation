@@ -1,0 +1,218 @@
+---
+title: "Barracuda Message Archiver"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Barracuda.png";
+
+<PluginPackHeader name="Barracuda Message Archiver" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Barracuda Message Archiver appliances through SNMP: system load, mail processing, storage usage and uptime.
+
+The plugin pack provides these checks:
+
+* [Load](#network-barracuda-bma-snmp-load)
+* [Mail](#network-barracuda-bma-snmp-mails)
+* [Storage](#network-barracuda-bma-snmp-storage)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### Barracuda-Message-Archiver
+
+*Barracuda Message Archiver* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Load](#network-barracuda-bma-snmp-load) | `network-barracuda-bma-snmp-load` |
+| [Mail](#network-barracuda-bma-snmp-mails) | `network-barracuda-bma-snmp-mails` |
+| [Storage](#network-barracuda-bma-snmp-storage) | `network-barracuda-bma-snmp-storage` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-barracuda-bma-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-LOAD` | `85` | warning threshold in % |
+| `CRITICAL-CPU-LOAD` | `90` | critical threshold in % |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.cpu.load.percentage` | `%` | system cpu load: %% | `WARNING-CPU-LOAD`, `CRITICAL-CPU-LOAD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mail {/* #network-barracuda-bma-snmp-mails */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-INTERNAL-HOURLY` |  | warning threshold for internal hourly |
+| `CRITICAL-INTERNAL-HOURLY` |  | critical threshold for internal hourly |
+| `WARNING-INTERNAL-DAILY` |  | warning threshold for internal daily |
+| `CRITICAL-INTERNAL-DAILY` |  | critical threshold for internal daily |
+| `WARNING-INTERNAL-TOTAL` |  | warning threshold for internal total |
+| `CRITICAL-INTERNAL-TOTAL` |  | critical threshold for internal total |
+| `WARNING-OUTBOUND-HOURLY` |  | warning threshold for outbound hourly |
+| `CRITICAL-OUTBOUND-HOURLY` |  | critical threshold for outbound hourly |
+| `WARNING-OUTBOUND-DAILY` |  | warning threshold for outbound daily |
+| `CRITICAL-OUTBOUND-DAILY` |  | critical threshold for outbound daily |
+| `WARNING-OUTBOUND-TOTAL` |  | warning threshold for outbound total |
+| `CRITICAL-OUTBOUND-TOTAL` |  | critical threshold for outbound total |
+| `WARNING-INBOUND-HOURLY` |  | warning threshold for inbound hourly |
+| `CRITICAL-INBOUND-HOURLY` |  | critical threshold for inbound hourly |
+| `WARNING-INBOUND-DAILY` |  | warning threshold for inbound daily |
+| `CRITICAL-INBOUND-DAILY` |  | critical threshold for inbound daily |
+| `WARNING-INBOUND-TOTAL` |  | warning threshold for inbound total |
+| `CRITICAL-INBOUND-TOTAL` |  | critical threshold for inbound total |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storage {/* #network-barracuda-bma-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-FIRMWARE-SPACE` | `80` | warning threshold in % |
+| `CRITICAL-FIRMWARE-SPACE` | `90` | critical threshold in % |
+| `WARNING-MAIILOG-SPACE` | `80` | warning threshold in % |
+| `CRITICAL-MAIILOG-SPACE` | `90` | critical threshold in % |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

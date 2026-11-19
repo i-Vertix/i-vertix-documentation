@@ -1,0 +1,145 @@
+---
+title: "DNS requests (active)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/DNS.png";
+
+<PluginPackHeader name="DNS requests (active)" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors DNS servers with active DNS requests, checking that names are resolved.
+
+The plugin pack provides these checks:
+
+* [DNS request](#apps-protocols-dns-request) (`apps-protocols-dns-request`)
+* [DNS request](#apps-protocols-dns-request-use-ptr-fqdn) (`apps-protocols-dns-request-use-ptr-fqdn`)
+
+
+## Host Templates
+
+### DNS-request
+
+*DNS request* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (0)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+
+</div>
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [DNS request](#apps-protocols-dns-request) | `apps-protocols-dns-request` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [DNS request](#apps-protocols-dns-request-use-ptr-fqdn) | `apps-protocols-dns-request-use-ptr-fqdn` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### DNS request {/* #apps-protocols-dns-request */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SEARCH` | `google.com` | Set the search value (required) |
+| `WARNING` | `1` | Threshold warning in seconds |
+| `CRITICAL` | `2` | Threshold critical in seconds |
+| `SEARCH-TYPE` | `A` | Set the search type. Can be: 'MX', 'SOA', 'NS', 'A', 'CNAME' or 'PTR'. 'A' or 'PTR' is used by default (depends if an IP or not) |
+| `EXPECTED-ANSWER` |  | What the server must answer (can be a regexp) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### DNS request {/* #apps-protocols-dns-request-use-ptr-fqdn */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CUSTOM-OPTION` | `--use-ptr-fqdn` |  |
+| `SEARCH` |  | Set the search value (required) |
+| `WARNING` |  | Threshold warning in seconds |
+| `CRITICAL` |  | Threshold critical in seconds |
+| `SEARCH-TYPE` |  | Set the search type. Can be: 'MX', 'SOA', 'NS', 'A', 'CNAME' or 'PTR'. 'A' or 'PTR' is used by default (depends if an IP or not) |
+| `EXPECTED-ANSWER` |  | What the server must answer (can be a regexp) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

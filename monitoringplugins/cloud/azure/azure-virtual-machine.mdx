@@ -12,15 +12,16 @@ import image from "../../assets/pluginpacks/Brands/Azure.png";
 
 ## Description
 
-### Azure Virtual Machine monitoring
-protocols used: HTTPS (Rest API)
+Monitors Azure virtual machines and groups of virtual machines through Azure Monitor: health and power state, CPU, memory, disk I/O, network traffic and the VM size.
 
-- CPU usage
-- Disk IO
-- Health
-- Network
-- VM sizes (only Resource Group)
-- VM state (only Resource Group)
+The plugin pack provides these checks:
+
+* [CPU usage](#cloud-azure-compute-virtualmachine-cpu)
+* [Disk IO](#cloud-azure-compute-virtualmachine-diskio)
+* [Health status](#cloud-azure-compute-virtualmachine-health)
+* [Memory usage](#cloud-azure-compute-virtualmachine-memory)
+* [Network usage](#cloud-azure-compute-virtualmachine-network)
+* [VM Size](#cloud-azure-compute-virtualmachine-vm-sizes)
 
 ## Prerequisites
 
@@ -28,6 +29,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure Virtual Machine](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

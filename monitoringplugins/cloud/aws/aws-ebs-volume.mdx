@@ -12,12 +12,13 @@ import image from "../../assets/pluginpacks/Brands/AWS.png";
 
 ## Description
 
-### AWS EBS volume monitoring
-protocols used: awscli, Rest API
+Monitors Amazon EBS volumes through Amazon CloudWatch: read/write throughput, IOPS and the time spent on I/O operations.
 
-- Volume IO
-- Volume IOPS
-- Volume time
+The plugin pack provides these checks:
+
+* [Volume IO](#cloud-aws-ebs-volumeio)
+* [Volume IOPS](#cloud-aws-ebs-volumeiops)
+* [Volume time](#cloud-aws-ebs-volumetime)
 
 ## Prerequisites
 
@@ -25,6 +26,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-EBS-Volume](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

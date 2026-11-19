@@ -1,0 +1,557 @@
+---
+title: "Aruba Clearpass"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Aruba.png";
+
+<PluginPackHeader name="Aruba Clearpass" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Aruba ClearPass policy managers through SNMP: CPU, memory, disk and swap usage, interfaces, RADIUS and TACACS request statistics and the response times of authentication repositories.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-aruba-cppm-snmp-cpu)
+* [Disks](#network-aruba-cppm-snmp-disks)
+* [Interfaces](#network-aruba-cppm-snmp-interfaces)
+* [Memory](#network-aruba-cppm-snmp-memory)
+* [Radius](#network-aruba-cppm-snmp-radius)
+* [Repositories](#network-aruba-cppm-snmp-repositories)
+* [Swap](#network-aruba-cppm-snmp-swap)
+* [Tacacs](#network-aruba-cppm-snmp-tacacs)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-aruba-cppm-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Aruba-CPPM
+
+*Aruba Clearpass* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-aruba-cppm-snmp-cpu) | `network-aruba-cppm-snmp-cpu` |
+| [Disks](#network-aruba-cppm-snmp-disks) | `network-aruba-cppm-snmp-disks` |
+| [Memory](#network-aruba-cppm-snmp-memory) | `network-aruba-cppm-snmp-memory` |
+| [Radius](#network-aruba-cppm-snmp-radius) | `network-aruba-cppm-snmp-radius` |
+| [Repositories](#network-aruba-cppm-snmp-repositories) | `network-aruba-cppm-snmp-repositories` |
+| [Swap](#network-aruba-cppm-snmp-swap) | `network-aruba-cppm-snmp-swap` |
+| [Tacacs](#network-aruba-cppm-snmp-tacacs) | `network-aruba-cppm-snmp-tacacs` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-aruba-cppm-snmp-interfaces) | `network-aruba-cppm-snmp-interfaces` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-aruba-cppm-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disks {/* #network-aruba-cppm-snmp-disks */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `80` | Warning threshold disk space usage (%) |
+| `CRITICAL-SPACE-USAGE-PRCT` | `90` | Critical threshold disk space usage (%) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold disk space usage free (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold disk space usage free (B) |
+| `WARNING-SPACE-USAGE` |  | Warning threshold disk space usage (B) |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold disk space usage (B) |
+| `FILTER-NAME` |  | Filter disks by system hostname (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `disk.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `disk.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-aruba-cppm-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Warning threshold memory usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Critical threshold memory usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE` |  | Warning threshold memory usage (B) |
+| `CRITICAL-USAGE` |  | Critical threshold memory usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold memory usage free (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Radius {/* #network-aruba-cppm-snmp-radius */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-RADIUS-REQUESTS-FAILED` |  | Warning threshold Radius requests failed |
+| `CRITICAL-RADIUS-REQUESTS-FAILED` | `250` | Critical threshold Radius requests failed |
+| `WARNING-RADIUS-REQUESTS-TIME` | `500` | Warning threshold Radius requests time |
+| `CRITICAL-RADIUS-REQUESTS-TIME` | `1000` | Critical threshold Radius requests time |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-RADIUS-POLICY-EVAL` |  | Warning threshold Radius Policy eval |
+| `CRITICAL-RADIUS-POLICY-EVAL` |  | Critical threshold Radius Policy eval |
+| `WARNING-RADIUS-REQUESTS` |  | Warning threshold Radius requests |
+| `CRITICAL-RADIUS-REQUESTS` |  | Critical threshold Radius requests |
+| `WARNING-RADIUS-REQUESTS-SUCCEEDED` |  | Warning threshold Radius requests succeeded |
+| `CRITICAL-RADIUS-REQUESTS-SUCCEEDED` |  | Critical threshold Radius requests succeeded |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `radius.policy.evaluation.milliseconds` | `ms` | policy evaluation time:  ms | `WARNING-RADIUS-POLICY-EVAL`, `CRITICAL-RADIUS-POLICY-EVAL` |
+| `radius.requests.milliseconds` | `ms` | requests time:  ms | `WARNING-RADIUS-REQUESTS-TIME`, `CRITICAL-RADIUS-REQUESTS-TIME` |
+| `radius.requests.count` |  | total requests | `WARNING-RADIUS-REQUESTS`, `CRITICAL-RADIUS-REQUESTS` |
+| `radius.requests.failed.count` |  | failed requests | `WARNING-RADIUS-REQUESTS-FAILED`, `CRITICAL-RADIUS-REQUESTS-FAILED` |
+| `radius.requests.succeeded.count` |  | succeeded requests | `WARNING-RADIUS-REQUESTS-SUCCEEDED`, `CRITICAL-RADIUS-REQUESTS-SUCCEEDED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Repositories {/* #network-aruba-cppm-snmp-repositories */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-REQUESTS-FAILED` |  | Warning threshold repositories requests failed |
+| `CRITICAL-REQUESTS-FAILED` | `100` | Critical threshold repositories requests failed |
+| `CRITICAL-REQUESTS-TIME` | `1000` | Critical threshold repositories requests time |
+| `WARNING-REQUESTS-TIME` | `500` | Warning threshold repositories requests time |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-REQUESTS` |  | Warning threshold repositories requests |
+| `CRITICAL-REQUESTS` |  | Critical threshold repositories requests |
+| `WARNING-REQUESTS-SUCCEEDED` |  | Warning threshold repositories requests succeeded |
+| `CRITICAL-REQUESTS-SUCCEEDED` |  | Critical threshold repositories requests succeeded |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `authentication_repository.requests.milliseconds` | `ms` | requests time:  ms | `WARNING-REQUESTS-TIME`, `CRITICAL-REQUESTS-TIME` |
+| `authentication_repository.requests.count` |  | total requests | `WARNING-REQUESTS`, `CRITICAL-REQUESTS` |
+| `authentication_repository.requests.failed.count` |  | failed requests | `WARNING-REQUESTS-FAILED`, `CRITICAL-REQUESTS-FAILED` |
+| `authentication_repository.requests.succeeded.count` |  | succeeded requests | `WARNING-REQUESTS-SUCCEEDED`, `CRITICAL-REQUESTS-SUCCEEDED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #network-aruba-cppm-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--no-swap=OK` | Additional options appended to the plugin command line (host level). |
+| `WARNING-USAGE-PRCT` | `25` | Warning threshold memory usage (%) |
+| `CRITICAL-USAGE-PRCT` | `80` | Critical threshold memory usage (%) |
+| `WARNING-USAGE` |  | Warning threshold memory usage (B) |
+| `CRITICAL-USAGE` |  | Critical threshold memory usage (B) |
+| `WARNING-USAGE-FREE` |  | Warning threshold memory usage free (B) |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold memory usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Tacacs {/* #network-aruba-cppm-snmp-tacacs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TACACS-AUTH-REQUESTS-FAILED` | `0` | Warning threshold Tacacs authentication failed requests |
+| `CRITICAL-TACACS-AUTH-REQUESTS-FAILED` | `10` | Critical threshold Tacacs authentication failed requests |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING-TACACS-AUTH-POLICY-EVAL` |  | Warning threshold Tacacs authentication policy eval |
+| `CRITICAL-TACACS-AUTH-POLICY-EVAL` |  | Critical threshold Tacacs authentication policy eval |
+| `WARNING-TACACS-AUTH-REQUESTS-AUTH-TIME` |  | Warning threshold Tacacs authentication requests auth time |
+| `CRITICAL-TACACS-AUTH-REQUESTS-AUTH-TIME` |  | Critical threshold Tacacs authentication requests auth time |
+| `WARNING-TACACS-AUTH-REQUESTS-TIME` |  | Warning threshold Tacacs authentication requests time |
+| `CRITICAL-TACACS-AUTH-REQUESTS-TIME` |  | Critical threshold Tacacs authentication requests time |
+| `WARNING-TACACS-AUTH-REQUESTS` |  | Warning threshold Tacacs authentication requests |
+| `CRITICAL-TACACS-AUTH-REQUESTS` |  | Critical threshold Tacacs authentication requests |
+| `WARNING-TACACS-AUTH-REQUESTS-SUCCEEDED` |  | Warning threshold Tacacs authentication succeeded requests |
+| `CRITICAL-TACACS-AUTH-REQUESTS-SUCCEEDED` |  | Critical threshold Tacacs authentication succeeded requests |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tacacs.authentication.policy.evaluation.milliseconds` | `ms` | policy evaluation time:  ms | `WARNING-TACACS-AUTH-POLICY-EVAL`, `CRITICAL-TACACS-AUTH-POLICY-EVAL` |
+| `tacacs.authentication.service.policy.evaluation.milliseconds` | `ms` | service policy evaluation time:  ms | `WARNING-TACACS-AUTH-POLICY-EVAL`, `CRITICAL-TACACS-AUTH-POLICY-EVAL` |
+| `tacacs.authentication.requests.authentication.time.milliseconds` | `ms` | requests authentication time:  ms | `WARNING-TACACS-AUTH-REQUESTS-AUTH-TIME`, `CRITICAL-TACACS-AUTH-REQUESTS-AUTH-TIME` |
+| `tacacs.authentication.requests.time.milliseconds` | `ms` | requests time:  ms | `WARNING-TACACS-AUTH-REQUESTS-TIME`, `CRITICAL-TACACS-AUTH-REQUESTS-TIME` |
+| `tacacs.authentication.requests.count` |  | total requests | `WARNING-TACACS-AUTH-REQUESTS`, `CRITICAL-TACACS-AUTH-REQUESTS` |
+| `tacacs.authentication.requests.failed.count` |  | failed requests | `WARNING-TACACS-AUTH-REQUESTS-FAILED`, `CRITICAL-TACACS-AUTH-REQUESTS-FAILED` |
+| `tacacs.authentication.requests.succeeded.count` |  | succeeded requests | `WARNING-TACACS-AUTH-REQUESTS-SUCCEEDED`, `CRITICAL-TACACS-AUTH-REQUESTS-SUCCEEDED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-aruba-cppm-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (default: 'percent_delta') ('percent_delta', 'percent', 'delta', 'deltaps', 'counter') |
+| `OID-DISPLAY` | `ifName` | Define the OID that will be used to name the interfaces (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-DISCARD-IN` | `0` | Warning threshold discards in |
+| `WARNING-DISCARD-OUT` | `0` | Warning threshold discards out |
+| `WARNING-ERROR-IN` | `0` | Warning threshold errors in |
+| `WARNING-ERROR-OUT` | `0` | Warning threshold errors out |
+| `WARNING-TRAFFIC-IN` | `80` | Warning threshold traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Warning threshold traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Critical threshold discards in |
+| `CRITICAL-DISCARD-OUT` | `10` | Critical threshold discards out |
+| `CRITICAL-ERROR-IN` | `10` | Critical threshold errors in |
+| `CRITICAL-ERROR-OUT` | `10` | Critical threshold errors out |
+| `CRITICAL-TRAFFIC-IN` | `90` | Critical threshold traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Critical threshold traffic out |
+| `INTERFACE` |  | Set the interface (number expected) example: 1,2,... (empty means 'check all interfaces'). |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250400 - 20250617</summary>
+
+- Host template `Aruba-CPPM`
+    - Renamed from `Arubca-CPPM`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250216</summary>
+
+- Service template [`network-aruba-cppm-snmp-radius`](#network-aruba-cppm-snmp-radius)
+    - Macro `WARNING-RADIUS-REQUESTS-FAILED`: default changed from `0` to *(empty)*
+    - Macro `CRITICAL-RADIUS-REQUESTS-FAILED`: default changed from `10` to `250`
+    - Macro `WARNING-RADIUS-REQUESTS-TIME` added (default `500`)
+    - Macro `CRITICAL-RADIUS-REQUESTS-TIME` added (default `1000`)
+- Service template [`network-aruba-cppm-snmp-repositories`](#network-aruba-cppm-snmp-repositories)
+    - Macro `WARNING-REQUESTS-FAILED`: default changed from `0` to *(empty)*
+    - Macro `CRITICAL-REQUESTS-FAILED`: default changed from `5` to `100`
+    - Macro `CRITICAL-REQUESTS-TIME` added (default `1000`)
+    - Macro `WARNING-REQUESTS-TIME` added (default `500`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240516 - 20240621</summary>
+
+- Command `network-aruba-cppm-snmp-cpu`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+    - Macro `SNMPTIMEOUT` removed
+- Command `network-aruba-cppm-snmp-disks`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+    - Macro `SNMPTIMEOUT` removed
+- Command `network-aruba-cppm-snmp-interfaces`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+- Command `network-aruba-cppm-snmp-list-interfaces`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+- Command `network-aruba-cppm-snmp-memory`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+- Command `network-aruba-cppm-snmp-radius`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+- Command `network-aruba-cppm-snmp-repositories`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+- Command `network-aruba-cppm-snmp-swap`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+- Command `network-aruba-cppm-snmp-tacacs`
+    - Option `--plugin` changed from `--plugin=network::cisco::standard::snmp::plugin` to `--plugin=network::aruba::cppm::snmp::plugin`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20240311 - 20240606</summary>
+
+- Plugin pack `Aruba Clearpass`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20240311 - 20240606`.

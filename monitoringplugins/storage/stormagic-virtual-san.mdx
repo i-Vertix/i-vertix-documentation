@@ -1,0 +1,300 @@
+---
+title: "StorMagic Virtual SAN"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/StorMagic.png";
+
+<PluginPackHeader name="StorMagic Virtual SAN" image={image} category="Storage" metadata={["SNMP"]} />
+
+## Description
+
+Monitors StorMagic SvSAN virtual SANs through SNMP: system status, mirrors, pools and uptime.
+
+The plugin pack provides these checks:
+
+* [Mirrors](#storage-stormagic-svsan-snmp-mirrors)
+* [Pools](#storage-stormagic-svsan-snmp-pools)
+* [System status](#storage-stormagic-svsan-snmp-system-status)
+* [Uptime](#storage-stormagic-svsan-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Mirrors](#storage-stormagic-svsan-snmp-mirrors) | `Mirror <mirror_name> (NSH: <mirror_nsh>)` |
+| [Pools](#storage-stormagic-svsan-snmp-pools) | `Pool <pool_name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### StorMagic-SvSAN
+
+*StorMagic Virtual SAN* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--snmp-autoreduce` | Additional options appended to the plugin command line (host level). |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [System status](#storage-stormagic-svsan-snmp-system-status) | `storage-stormagic-svsan-snmp-system-status` |
+| [Uptime](#storage-stormagic-svsan-snmp-uptime) | `storage-stormagic-svsan-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Mirrors](#storage-stormagic-svsan-snmp-mirrors) | `storage-stormagic-svsan-snmp-mirrors` |
+| [Pools](#storage-stormagic-svsan-snmp-pools) | `storage-stormagic-svsan-snmp-pools` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### System status {/* #storage-stormagic-svsan-snmp-system-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{system_status} =~ /warning/'` | Define the conditions to match for the status to be WARNING (default: '%\{system_status\} =~ /warning/'). You can use the following variables: %\{system_status\} |
+| `CRITICAL-STATUS` | `'%{system_status} =~ /error/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{system_status\} =~ /error/'). You can use the following variables: %\{system_status\} |
+| `INCLUDE-NAME` |  | Filter systems by name (can be a regexp). |
+| `EXCLUDE-NAME` |  | Exclude systems by name (can be a regexp). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN (default: ''). You can use the following variables: %\{system_status\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #storage-stormagic-svsan-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Mirrors {/* #storage-stormagic-svsan-snmp-mirrors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--verbose` | Additional options appended to the plugin command line (host level). |
+| `UNKNOWN-MIRROR-STATUS` | `'%{mirror_state} =~ /unknown/i'` | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: C&lt;%\{mirror_state\}>, C&lt;%\{mirror_online\}>, C&lt;%\{display\}> |
+| `WARNING-MIRROR-STATUS` | `'%{mirror_state} =~ /degraded\|missing\|migrated/i'` | Define the conditions to match for the status to be WARNING (default: ''). You can use the following variables: C&lt;%\{mirror_state\}>, C&lt;%\{mirror_online\}>, C&lt;%\{display\}> |
+| `CRITICAL-MIRROR-STATUS` | `'%{mirror_state} =~ /failed\|offline/i \|\| %{mirror_online} =~ /no/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{mirror_state\} !~ /normal/i \|\| %\{mirror_online\} =~ /offline/i'). You can use the following variables: C&lt;%\{mirror_state\}>, C&lt;%\{mirror_online\}>, C&lt;%\{display\}> |
+| `CRITICAL-CACHE-STATUS` | `'%{cache_state} =~ /failed/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{cache_state\} =~ /failed/i'). You can use the following variables: C&lt;%\{cache_state\}>, C&lt;%\{display\}> |
+| `UNKNOWN-CACHE-STATUS` | `'%{cache_state} =~ /unknown/i'` | Define the conditions to match for the status to be UNKNOWN (default: '%\{cache_state\} =~ /unknown/i'). You can use the following variables: C&lt;%\{cache_state\}>, C&lt;%\{display\}> |
+| `WARNING-MBC-USAGE-PRCT` | `90` | Warning threshold for memory cache usage (%). |
+| `CRITICAL-MBC-USAGE-PRCT` | `95` | Critical threshold for memory cache usage (%). |
+| `INCLUDE-NAME` |  | Filter mirrors by name (can be a regexp). |
+| `EXCLUDE-NAME` |  | Exclude mirrors by name (can be a regexp). |
+| `WARNING-CACHE-STATUS` |  | Define the conditions to match for the status to be WARNING (default: ''). You can use the following variables: C&lt;%\{cache_state\}>, C&lt;%\{display\}> |
+| `WARNING-MIRROR-SIZE` |  | Warning threshold for mirror size (B). |
+| `WARNING-CACHE-SIZE` |  | Warning threshold for cache size (B). |
+| `WARNING-MBC-USAGE` |  | Warning threshold for memory cache usage (B). |
+| `WARNING-MBC-USAGE-FREE` |  | Warning threshold for free memory cache (B). |
+| `CRITICAL-MIRROR-SIZE` |  | Critical threshold for mirror size (B). |
+| `CRITICAL-CACHE-SIZE` |  | Critical threshold for cache size (B). |
+| `CRITICAL-MBC-USAGE` |  | Critical threshold for memory cache usage (B). |
+| `CRITICAL-MBC-USAGE-FREE` |  | Critical threshold for free memory cache (B). |
+| `CRITICAL-RESYNC-PROGRESS` |  | Critical threshold for Resynchronization progress (%). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `mirror.size.bytes` | `B` | size | `WARNING-MIRROR-SIZE`, `CRITICAL-MIRROR-SIZE` |
+| `mirror.resync.progress.percentage` | `%` | resync progress:  %% | `CRITICAL-RESYNC-PROGRESS` |
+| `mirror.mbc.usage.bytes` | `B` |  | `WARNING-MBC-USAGE`, `CRITICAL-MBC-USAGE` |
+| `mirror.mbc.free.bytes` | `B` |  | `WARNING-MBC-USAGE-FREE`, `CRITICAL-MBC-USAGE-FREE` |
+| `mirror.mbc.usage.percentage` | `%` |  | `WARNING-MBC-USAGE-PRCT`, `CRITICAL-MBC-USAGE-PRCT` |
+| `mirror.cache.size.bytes` | `B` | cache size | `WARNING-CACHE-SIZE`, `CRITICAL-CACHE-SIZE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pools {/* #storage-stormagic-svsan-snmp-pools */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` | `--skip-zero-cache --verbose` | Additional options appended to the plugin command line (host level). |
+| `CRITICAL-POOL-STATUS` | `'%{pool_state} !~ /normal/i \|\| %{pool_online} =~ /offline/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{pool_state\} !~ /normal/i \|\| %\{pool_online\} =~ /offline/i'). You can use the following variables: %\{status\}, %\{display\} |
+| `UNKNOWN-CACHE-STATUS` | `'%{cache_state} =~ /unknown/i'` | Define the conditions to match for the status to be UNKNOWN (default: '%\{cache_state\} =~ /unknown/i'). You can use the following variables: %\{cache_state\}, %\{display\} |
+| `WARNING-CACHE-STATUS` | `'%{cache_state} =~ /recovering/i'` | Define the conditions to match for the status to be WARNING (default: '%\{cache_state\} =~ /recovering/i'). You can use the following variables: %\{cache_state\}, %\{display\} |
+| `CRITICAL-CACHE-STATUS` | `'%{cache_state} =~ /failed/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{cache_state\} =~ /failed/i'). You can use the following variables: %\{cache_state\}, %\{display\} |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning threshold for space usage (%). |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Critical threshold for space usage (%). |
+| `INCLUDE-NAME` |  | Filter pools by name (can be a regexp). |
+| `EXCLUDE-NAME` |  | Exclude pools by name (can be a regexp). |
+| `UNKNOWN-POOL-STATUS` |  | Define the conditions to match for the status to be UNKNOWN (default: ''). You can use the following variables: %\{status\}, %\{display\} |
+| `WARNING-POOL-STATUS` |  | Define the conditions to match for the status to be WARNING (default: ''). You can use the following variables: %\{status\}, %\{display\} |
+| `WARNING-SPACE-USAGE` |  | Warning threshold for space usage (B). |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning threshold for free space usage (B). |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold for space usage (B). |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold for free space usage (B). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pool.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `pool.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `pool.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `pool.cache.usage.bytes` | `B` |  |  |
+| `pool.cache.free.bytes` | `B` |  |  |
+| `pool.cache.usage.percentage` | `%` |  |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260600 - 20260708</summary>
+
+- Command `storage-stormagic-svsan-snmp-mirrors`
+    - Option `--warning-resync-progress=$_SERVICEWARNING-RESYNC-PROGRESS$` added
+    - Option `--critical-resync-progress=$_SERVICECRITICAL-RESYNC-PROGRESS$` added
+    - Macro `CRITICAL-RESYNC-PROGRESS` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260500 - 20260613</summary>
+
+- Host template `StorMagic-SvSAN`
+    - Macro `EXTRA-OPTS` added (default `--snmp-autoreduce`)
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260500 - 20260529</summary>
+
+- Plugin pack `StorMagic Virtual SAN`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260500 - 20260529`.

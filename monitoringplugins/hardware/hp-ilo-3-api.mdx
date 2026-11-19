@@ -1,0 +1,128 @@
+---
+title: "HP iLO 3 API"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HP.png";
+
+<PluginPackHeader name="HP iLO 3 API" image={image} category="Hardware" metadata={["HTTPS"]} />
+
+## Description
+
+Monitors HP ProLiant servers with iLO 3 through the iLO XML API: the status of the hardware components.
+
+The plugin pack provides these checks:
+
+* [Hardware status](#hardware-server-hp-ilo-xmlapi-hardware-ilo3)
+
+
+## Host Templates
+
+### HP-iLO-3-API
+
+*HP iLO 3 xmlapi* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `HTTP-BACKEND` | `curl` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `ILO-PASSWORD` |  | ILO password. |
+| `ILO-USERNAME` |  | ILO username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hardware status](#hardware-server-hp-ilo-xmlapi-hardware-ilo3) | `hardware-server-hp-ilo-xmlapi-hardware-ilo3` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #hardware-server-hp-ilo-xmlapi-hardware-ilo3 */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `THRESHOLD-OVERLOAD` | `'nic,OK,other'` | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,OK,degraded' |
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'fan', 'temperature', 'vrm', 'psu', 'cpu', 'memory', 'nic', 'battery', 'ctrl', 'driveencl', 'pdrive', 'ldrive', 'bios' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature --filter=fan) Can also exclude specific instance: --filter="fan,Fan Block 1" |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'temperature', 'fan' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,50' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230608-hotfix20230630-2 - 20230717</summary>
+
+- Service template [`hardware-server-hp-ilo-xmlapi-hardware-ilo3`](#hardware-server-hp-ilo-xmlapi-hardware-ilo3)
+    - Macro `THRESHOLD-OVERLOAD` added (default `'nic,OK,other'`)
+- Command `hardware-server-hp-ilo-xmlapi-hardware-ilo3`
+    - Option `--threshold-overload=$_SERVICETHRESHOLD-OVERLOAD$` added
+    - Macro `THRESHOLD-OVERLOAD` added
+
+</details>

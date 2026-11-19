@@ -1,0 +1,564 @@
+---
+title: "Nokia TimOS (7750SR, 7210SAS)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Nokia.png";
+
+<PluginPackHeader name="Nokia TimOS (7750SR, 7210SAS)" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Nokia TimOS routers (7750 SR, 7210 SAS) through SNMP: CPU and memory, hardware, interfaces, SAS alarms, service access points and the usage of BGP, IS-IS, LDP and L2TP.
+
+The plugin pack provides these checks:
+
+* [BGP usage](#network-nokia-timos-snmp-bgp-usage)
+* [CPU](#network-nokia-timos-snmp-cpu)
+* [Hardware](#network-nokia-timos-snmp-hardware)
+* [Interfaces](#network-nokia-timos-snmp-interfaces)
+* [IS-IS usage](#network-nokia-timos-snmp-isis-usage)
+* [L2TP usage](#network-nokia-timos-snmp-l2tp-usage)
+* [LDP usage](#network-nokia-timos-snmp-ldp-usage)
+* [Memory](#network-nokia-timos-snmp-memory)
+* [SAS alarm](#network-nokia-timos-snmp-sas-alarm)
+* [Service Access Point usage](#network-nokia-timos-snmp-sap-usage)
+* [Uptime](#network-nokia-timos-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [BGP usage](#network-nokia-timos-snmp-bgp-usage) | `BGP usage - <name>` |
+| [Interfaces](#network-nokia-timos-snmp-interfaces) | `Interface - <name>` |
+| [IS-IS usage](#network-nokia-timos-snmp-isis-usage) | `IS-IS usage - <name>` |
+| [L2TP usage](#network-nokia-timos-snmp-l2tp-usage) | `L2TP usage - <name>` |
+| [LDP usage](#network-nokia-timos-snmp-ldp-usage) | `LDP usage - <name>` |
+| [Service Access Point usage](#network-nokia-timos-snmp-sap-usage) | `Service Access Point usage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Nokia-TimOS
+
+*Nokia TimOS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community (default value: public). It is recommended to use a read-only community. |
+| `SNMPVERSION` |  | Version of the SNMP protocol. 1 for SNMP v1 (default), 2 for SNMP v2c, 3 for SNMP v3. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-nokia-timos-snmp-cpu) | `network-nokia-timos-snmp-cpu` |
+| [Hardware](#network-nokia-timos-snmp-hardware) | `network-nokia-timos-snmp-hardware` |
+| [Memory](#network-nokia-timos-snmp-memory) | `network-nokia-timos-snmp-memory` |
+| [Uptime](#network-nokia-timos-snmp-uptime) | `network-nokia-timos-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [BGP usage](#network-nokia-timos-snmp-bgp-usage) | `network-nokia-timos-snmp-bgp-usage` |
+| [Interfaces](#network-nokia-timos-snmp-interfaces) | `network-nokia-timos-snmp-interfaces` |
+| [IS-IS usage](#network-nokia-timos-snmp-isis-usage) | `network-nokia-timos-snmp-isis-usage` |
+| [L2TP usage](#network-nokia-timos-snmp-l2tp-usage) | `network-nokia-timos-snmp-l2tp-usage` |
+| [LDP usage](#network-nokia-timos-snmp-ldp-usage) | `network-nokia-timos-snmp-ldp-usage` |
+| [SAS alarm](#network-nokia-timos-snmp-sas-alarm) | `network-nokia-timos-snmp-sas-alarm` |
+| [Service Access Point usage](#network-nokia-timos-snmp-sap-usage) | `network-nokia-timos-snmp-sap-usage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-nokia-timos-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu` | `%` | Usage :  %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #network-nokia-timos-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'entity' |
+| `FILTER` |  | Exclude some parts (comma seperated list) Can also exclude specific instance: --filter=entity,fan.1 |
+| `WARNING` |  | Set warning threshold (syntax: type,regexp,threshold) Example: --warning='temperature,.*,20' |
+| `CRITICAL` |  | Set critical threshold (syntax: type,regexp,threshold) Example: --critical='temperature,.*,30' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='entity,fan..*,CRITICAL,booting' |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hardware.entity.temperature.celsius` | `C` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-nokia-timos-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage (%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-nokia-timos-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNIT` | `s` | Select the unit for performance data and thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds |
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### BGP usage {/* #network-nokia-timos-snmp-bgp-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by BGP name (can be a regexp). Syntax: VrtrName\:peeraddr\:peerAS\:description |
+| `CRITICAL-STATUS` | `'%{state} =~ /outOfService/'` | Set critical threshold for status (Default: '%\{state\} =~ /outOfService/') Can used special variables like: %\{display\}, %\{state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{display\}, %\{state\} |
+| `WARNING-ACTIVE-PREFIXES` |  | Threshold warning active prefixes |
+| `WARNING-SENT-PREFIXES` |  | Threshold warning sent prefixes |
+| `WARNING-RECEIVED-PREFIXES` |  | Threshold warning received prefixes |
+| `CRITICAL-ACTIVE-PREFIXES` |  | Threshold critical active prefixes |
+| `CRITICAL-SENT-PREFIXES` |  | Threshold critical sent prefixes |
+| `CRITICAL-RECEIVED-PREFIXES` |  | Threshold critical received prefixes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `active_prefixes` |  | Active Prefixes | `WARNING-ACTIVE-PREFIXES`, `CRITICAL-ACTIVE-PREFIXES` |
+| `sent_prefixes` |  | Sent Prefixes | `WARNING-SENT-PREFIXES`, `CRITICAL-SENT-PREFIXES` |
+| `received_prefixes` |  | Received Prefixes | `WARNING-RECEIVED-PREFIXES`, `CRITICAL-RECEIVED-PREFIXES` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-nokia-timos-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `WARNING-SPEED` |  | Threshold warning speed |
+| `CRITICAL-SPEED` |  | Threshold critical speed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s | `WARNING-SPEED`, `CRITICAL-SPEED` |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### IS-IS usage {/* #network-nokia-timos-snmp-isis-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by instance name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{admin_state} eq "inService" and %{oper_state} !~ /inService\|transition/'` | Set critical threshold for status (Default: '%\{admin_state\} eq "inService" and %\{oper_state\} !~ /inService\|transition/'). Can used special variables like: %\{display\}, %\{oper_state\}, %\{admin_state\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{display\}, %\{oper_state\}, %\{admin_state\} |
+| `WARNING-TOTAL-INT-INSERVICE` |  | Threshold warning total int in service |
+| `WARNING-TOTAL-INT-OUTSERVICE` |  | Threshold warning total int out service |
+| `CRITICAL-TOTAL-INT-INSERVICE` |  | Threshold critical total int in service |
+| `CRITICAL-TOTAL-INT-OUTSERVICE` |  | Threshold critical total int out service |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_int_inservice` |  | Total Interfaces InServices | `WARNING-TOTAL-INT-INSERVICE`, `CRITICAL-TOTAL-INT-INSERVICE` |
+| `total_int_outservice` |  | Total Interfaces OutOfServices | `WARNING-TOTAL-INT-OUTSERVICE`, `CRITICAL-TOTAL-INT-OUTSERVICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### L2TP usage {/* #network-nokia-timos-snmp-l2tp-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-VRTR-NAME` | `.*` | Filter by vrtr name (can be a regexp) |
+| `FILTER-PEER-ADDR` | `.*` | Filter by peer addr (can be a regexp) |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{display\}, %\{state\} |
+| `WARNING-VRTR-TUNNEL-TOTAL` |  | Threshold warning vrtr tunnel total |
+| `WARNING-VRTR-TUNNEL-ACTIVE-SESSIONS` |  | Threshold warning vrtr tunnel active sessions |
+| `WARNING-VRTR-TUNNEL-TOTAL-SESSIONS` |  | Threshold warning vrtr tunnel total sessions |
+| `WARNING-PEER-TUNNEL-TOTAL` |  | Threshold warning peer tunnel total |
+| `WARNING-PEER-TUNNEL-ACTIVE-SESSIONS` |  | Threshold warning peer tunnel active sessions |
+| `WARNING-PEER-TUNNEL-TOTAL-SESSIONS` |  | Threshold warning peer tunnel total sessions |
+| `CRITICAL-STATUS` |  | Set critical threshold for status. Can used special variables like: %\{display\}, %\{state\} |
+| `CRITICAL-VRTR-TUNNEL-TOTAL` |  | Threshold critical vrtr tunnel total |
+| `CRITICAL-VRTR-TUNNEL-ACTIVE-SESSIONS` |  | Threshold critical vrtr tunnel active sessions |
+| `CRITICAL-VRTR-TUNNEL-TOTAL-SESSIONS` |  | Threshold critical vrtr tunnel total sessions |
+| `CRITICAL-PEER-TUNNEL-TOTAL` |  | Threshold critical peer tunnel total |
+| `CRITICAL-PEER-TUNNEL-ACTIVE-SESSIONS` |  | Threshold critical peer tunnel active sessions |
+| `CRITICAL-PEER-TUNNEL-TOTAL-SESSIONS` |  | Threshold critical peer tunnel total sessions |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vrtr_total_tunnel` |  | Total | `WARNING-VRTR-TUNNEL-TOTAL`, `CRITICAL-VRTR-TUNNEL-TOTAL` |
+| `vrtr_tunnel_active_sessions` |  | Active Sessions | `WARNING-VRTR-TUNNEL-ACTIVE-SESSIONS`, `CRITICAL-VRTR-TUNNEL-ACTIVE-SESSIONS` |
+| `vrtr_tunnel_total_sessions` |  | Total Sessions | `WARNING-VRTR-TUNNEL-TOTAL-SESSIONS`, `CRITICAL-VRTR-TUNNEL-TOTAL-SESSIONS` |
+| `peer_total_tunnel` |  | Total | `WARNING-PEER-TUNNEL-TOTAL`, `CRITICAL-PEER-TUNNEL-TOTAL` |
+| `peer_tunnel_active_sessions` |  | Active Sessions | `WARNING-PEER-TUNNEL-ACTIVE-SESSIONS`, `CRITICAL-PEER-TUNNEL-ACTIVE-SESSIONS` |
+| `peer_tunnel_total_sessions` |  | Total Sessions | `WARNING-PEER-TUNNEL-TOTAL-SESSIONS`, `CRITICAL-PEER-TUNNEL-TOTAL-SESSIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### LDP usage {/* #network-nokia-timos-snmp-ldp-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by LDP instance name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{admin_state} eq "inService" and %{ipv4_oper_state} !~ /inService\|transition/'` | Set critical threshold for status (Default: '%\{admin_state\} eq "inService" and %\{ipv4_oper_state\} !~ /inService\|transition/'). Can used special variables like: %\{ipv4_oper_state\}, %\{admin_state\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{ipv4_oper_state\}, %\{admin_state\}, %\{display\} |
+| `WARNING-IPV4-OPER-DOWN-EVENTS` |  | Threshold warning IPv4 oper down events |
+| `WARNING-IPV4-ACTIVE-SESSIONS` |  | Threshold warning IPv4 active sessions |
+| `WARNING-IPV4-ACTIVE-LINK-ADJ` |  | Threshold warning IPv4 active link adj |
+| `WARNING-IPV4-ACTIVE-TARGET-ADJ` |  | Threshold warning IPv4 active target adj |
+| `CRITICAL-IPV4-OPER-DOWN-EVENTS` |  | Threshold critical IPv4 oper down events |
+| `CRITICAL-IPV4-ACTIVE-SESSIONS` |  | Threshold critical IPv4 active sessions |
+| `CRITICAL-IPV4-ACTIVE-LINK-ADJ` |  | Threshold critical IPv4 active link adj |
+| `CRITICAL-IPV4-ACTIVE-TARGET-ADJ` |  | Threshold critical IPv4 active target adj |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `ipv4_active_sessions` |  | IPv4 Active Sessions | `WARNING-IPV4-ACTIVE-SESSIONS`, `CRITICAL-IPV4-ACTIVE-SESSIONS` |
+| `ipv4_active_link_adj` |  | IPv4 Active Link Adjacencies | `WARNING-IPV4-ACTIVE-LINK-ADJ`, `CRITICAL-IPV4-ACTIVE-LINK-ADJ` |
+| `ipv4_active_target_adj` |  | IPv4 Active Target Adjacencies | `WARNING-IPV4-ACTIVE-TARGET-ADJ`, `CRITICAL-IPV4-ACTIVE-TARGET-ADJ` |
+| `ipv4_oper_down_events` |  | IPv4 Oper Down Events | `WARNING-IPV4-OPER-DOWN-EVENTS`, `CRITICAL-IPV4-OPER-DOWN-EVENTS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Service Access Point usage {/* #network-nokia-timos-snmp-sap-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter by virtual server name (can be a regexp) |
+| `CRITICAL-STATUS` | `'%{admin_state} eq "up" and %{oper_state} !~ /up/'` | Set critical threshold for status (Default: '%\{admin_state\} eq "up" and %\{oper_state\} !~ /up/'). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-TRAFFIC-IN-ABOVE-CIR` |  | Threshold warning traffic in above CIR |
+| `WARNING-TRAFFIC-IN-BELOW-CIR` |  | Threshold warning traffic in below CIR |
+| `WARNING-TRAFFIC-OUT-ABOVE-CIR` |  | Threshold warning traffic out above CIR |
+| `WARNING-TRAFFIC-OUT-BELOW-CIR` |  | Threshold warning traffic out below CIR |
+| `CRITICAL-TRAFFIC-IN-ABOVE-CIR` |  | Threshold critical traffic in above CIR |
+| `CRITICAL-TRAFFIC-IN-BELOW-CIR` |  | Threshold critical traffic in below CIR |
+| `CRITICAL-TRAFFIC-OUT-ABOVE-CIR` |  | Threshold critical traffic out above CIR |
+| `CRITICAL-TRAFFIC-OUT-BELOW-CIR` |  | Threshold critical traffic out below CIR |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `traffic_in_below_cir` | `b/s` | Traffic In Below CIR :  /s | `WARNING-TRAFFIC-IN-BELOW-CIR`, `CRITICAL-TRAFFIC-IN-BELOW-CIR` |
+| `traffic_in_above_cir` | `b/s` | Traffic In Above CIR :  /s | `WARNING-TRAFFIC-IN-ABOVE-CIR`, `CRITICAL-TRAFFIC-IN-ABOVE-CIR` |
+| `traffic_out_below_cir` | `b/s` | Traffic Out Below CIR :  /s | `WARNING-TRAFFIC-OUT-BELOW-CIR`, `CRITICAL-TRAFFIC-OUT-BELOW-CIR` |
+| `traffic_out_above_cir` | `b/s` | Traffic Out Above CIR :  /s | `WARNING-TRAFFIC-OUT-ABOVE-CIR`, `CRITICAL-TRAFFIC-OUT-ABOVE-CIR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SAS alarm {/* #network-nokia-timos-snmp-sas-alarm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{alarm_input_admin_state} eq "up" and %{alarm_input_status} eq "alarm" and %{alarm_output_severity} =~ /minor/'` | Set warning threshold for status. (Default: '%\{alarm_input_admin_state\} eq "up" and %\{alarm_input_status\} eq "alarm" and %\{alarm_output_severity\} =~ /minor/') You can usethe following variables: %\{alarm_input_admin_state\}, %\{alarm_input_status\}, %\{alarm_output_severity\} |
+| `CRITICAL-STATUS` | `'%{alarm_input_admin_state} eq "up" and %{alarm_input_status} eq "alarm" and %{alarm_output_severity} =~ /major\|critical/'` | Set critical threshold for status (Default: '%\{alarm_input_admin_state\} eq "up" and %\{alarm_input_status\} eq "alarm" and %\{alarm_output_severity\} =~ /major\|critical/'). You can use the following variables: %\{ipv4_oper_state\}, %\{admin_state\}, %\{display\} |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-NAME` |  | Filter alarm input (tmnxSasAlarmInputDescription) (can be a regexp) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `Nokia TimOS (7750SR, 7210SAS)`
+    - Description updated
+- Service template [`network-nokia-timos-snmp-sas-alarm`](#network-nokia-timos-snmp-sas-alarm)
+    - Service template added
+- Command `network-nokia-timos-snmp-sas-alarm`
+    - Command added
+
+</details>

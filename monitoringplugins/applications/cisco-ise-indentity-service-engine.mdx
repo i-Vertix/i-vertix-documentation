@@ -1,0 +1,918 @@
+---
+title: "Cisco ISE (Indentity Service Engine)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco ISE (Indentity Service Engine)" image={image} category="Application" metadata={["API", "HTTPS", "SNMP"]} />
+
+## Description
+
+Monitors Cisco Identity Services Engine (ISE) through its API and SNMP: active sessions, CPU, memory, disk I/O, system load, NTP, the ISE application and Oracle database processes, TCP services and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#os-linux-snmp-cpu)
+* [CPU detailed](#os-linux-snmp-cpu-detailed)
+* [Disk IO](#os-linux-snmp-diskio)
+* [Memory](#os-linux-snmp-memory-no-swap)
+* [NTP](#os-linux-snmp-time)
+* [Process - Application Server](#os-linux-snmp-processcount-ise-jsvc)
+* [Process - MnT Session Database](#os-linux-snmp-processcount-ise-timestend)
+* [Process - Oracle Database Listener](#os-linux-snmp-processcount-ise-tnslsnr)
+* [Process - Oracle Database Writer](#os-linux-snmp-processcount-ise-ora_dbw)
+* [Process - Oracle Log Writer](#os-linux-snmp-processcount-ise-ora_lgwr)
+* [Process - Oracle PMON](#os-linux-snmp-processcount-ise-ora_pmon)
+* [Process - Oracle SMON](#os-linux-snmp-processcount-ise-ora_smon)
+* [Process - Profiler Database](#os-linux-snmp-processcount-ise-redis-server)
+* [Sessions](#apps-cisco-ise-restapi-session)
+* [System Load](#os-linux-snmp-load)
+* [TCP OCPS](#apps-protocols-tcp-connection-status-ise-ocsp)
+* [TCP SCEP](#apps-protocols-tcp-connection-status-ise-scep)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [`os-linux-snmp-interfaces`](/monitoringplugins/operating-system/linux-snmp#os-linux-snmp-interfaces) | `Interface - <name>` |
+| [`os-linux-snmp-processcount`](/monitoringplugins/operating-system/linux-snmp#os-linux-snmp-processcount) | `Process memory <name>` |
+| [`os-linux-snmp-storage`](/monitoringplugins/network/cisco-call-manager-snmp#os-linux-snmp-storage) | `Storage <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Cisco-ISE
+
+*Cisco Identity Services Engine* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `URL-PATH` | `/admin/API/mnt` | API url path (default: '/admin/API/mnt') |
+| `PORT` | `443` | API port (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `TIMEOUT` | `10` | Set HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PASSWORD` | *(password)* | Set API password |
+| `USERNAME` |  | Set API username |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Sessions](#apps-cisco-ise-restapi-session) | `apps-cisco-ise-restapi-session` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#os-linux-snmp-cpu) | `os-linux-snmp-cpu` |
+| [CPU detailed](#os-linux-snmp-cpu-detailed) | `os-linux-snmp-cpu-detailed` |
+| [Disk IO](#os-linux-snmp-diskio) | `os-linux-snmp-diskio` |
+| [Memory](#os-linux-snmp-memory-no-swap) | `os-linux-snmp-memory-no-swap` |
+| [NTP](#os-linux-snmp-time) | `os-linux-snmp-time` |
+| [Process - Application Server](#os-linux-snmp-processcount-ise-jsvc) | `os-linux-snmp-processcount-ise-jsvc` |
+| [Process - MnT Session Database](#os-linux-snmp-processcount-ise-timestend) | `os-linux-snmp-processcount-ise-timestend` |
+| [Process - Oracle Database Listener](#os-linux-snmp-processcount-ise-tnslsnr) | `os-linux-snmp-processcount-ise-tnslsnr` |
+| [Process - Oracle Database Writer](#os-linux-snmp-processcount-ise-ora_dbw) | `os-linux-snmp-processcount-ise-ora_dbw` |
+| [Process - Oracle Log Writer](#os-linux-snmp-processcount-ise-ora_lgwr) | `os-linux-snmp-processcount-ise-ora_lgwr` |
+| [Process - Oracle PMON](#os-linux-snmp-processcount-ise-ora_pmon) | `os-linux-snmp-processcount-ise-ora_pmon` |
+| [Process - Oracle SMON](#os-linux-snmp-processcount-ise-ora_smon) | `os-linux-snmp-processcount-ise-ora_smon` |
+| [Process - Profiler Database](#os-linux-snmp-processcount-ise-redis-server) | `os-linux-snmp-processcount-ise-redis-server` |
+| [System Load](#os-linux-snmp-load) | `os-linux-snmp-load` |
+| [TCP OCPS](#apps-protocols-tcp-connection-status-ise-ocsp) | `apps-protocols-tcp-connection-status-ise-ocsp` |
+| [TCP SCEP](#apps-protocols-tcp-connection-status-ise-scep) | `apps-protocols-tcp-connection-status-ise-scep` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-ISE-OS
+
+*Cisco ISE OS, portals and ports* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (13)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [TCP OCPS](#apps-protocols-tcp-connection-status-ise-ocsp) | `apps-protocols-tcp-connection-status-ise-ocsp` |
+| [TCP SCEP](#apps-protocols-tcp-connection-status-ise-scep) | `apps-protocols-tcp-connection-status-ise-scep` |
+| [CPU](#os-linux-snmp-cpu) | `os-linux-snmp-cpu` |
+| [CPU detailed](#os-linux-snmp-cpu-detailed) | `os-linux-snmp-cpu-detailed` |
+| [Disk IO](#os-linux-snmp-diskio) | `os-linux-snmp-diskio` |
+| [System Load](#os-linux-snmp-load) | `os-linux-snmp-load` |
+| [Memory](#os-linux-snmp-memory-no-swap) | `os-linux-snmp-memory-no-swap` |
+| [Process - Application Server](#os-linux-snmp-processcount-ise-jsvc) | `os-linux-snmp-processcount-ise-jsvc` |
+| [Process - Oracle Database Writer](#os-linux-snmp-processcount-ise-ora_dbw) | `os-linux-snmp-processcount-ise-ora_dbw` |
+| [Process - Oracle Log Writer](#os-linux-snmp-processcount-ise-ora_lgwr) | `os-linux-snmp-processcount-ise-ora_lgwr` |
+| [Process - Oracle PMON](#os-linux-snmp-processcount-ise-ora_pmon) | `os-linux-snmp-processcount-ise-ora_pmon` |
+| [Process - Oracle SMON](#os-linux-snmp-processcount-ise-ora_smon) | `os-linux-snmp-processcount-ise-ora_smon` |
+| [Process - Profiler Database](#os-linux-snmp-processcount-ise-redis-server) | `os-linux-snmp-processcount-ise-redis-server` |
+| [Process - MnT Session Database](#os-linux-snmp-processcount-ise-timestend) | `os-linux-snmp-processcount-ise-timestend` |
+| [Process - Oracle Database Listener](#os-linux-snmp-processcount-ise-tnslsnr) | `os-linux-snmp-processcount-ise-tnslsnr` |
+| [NTP](#os-linux-snmp-time) | `os-linux-snmp-time` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Sessions](#apps-cisco-ise-restapi-session) | `apps-cisco-ise-restapi-session` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sessions {/* #apps-cisco-ise-restapi-session */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). (Example: --filter-counters='active') |
+| `WARNING-ACTIVE-SESSIONS` |  | Threshold warning active sessions |
+| `WARNING-POSTURED-ENDPOINTS` |  | Threshold warning postured endpoints |
+| `WARNING-PROFILER-SERVICE-SESSIONS` |  | Threshold warning profiler service sessions |
+| `CRITICAL-ACTIVE-SESSIONS` |  | Threshold critical active sessions |
+| `CRITICAL-POSTURED-ENDPOINTS` |  | Threshold critical postured endpoints |
+| `CRITICAL-PROFILER-SERVICE-SESSIONS` |  | Threshold critical profiler service sessions |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `sessions.active.count` |  | Active sessions | `WARNING-ACTIVE-SESSIONS`, `CRITICAL-ACTIVE-SESSIONS` |
+| `endpoints.postured.count` |  | Postured endpoints | `WARNING-POSTURED-ENDPOINTS`, `CRITICAL-POSTURED-ENDPOINTS` |
+| `sessions.profiler.count` |  | Profiler service sessions | `WARNING-PROFILER-SERVICE-SESSIONS`, `CRITICAL-PROFILER-SERVICE-SESSIONS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP OCPS {/* #apps-protocols-tcp-connection-status-ise-ocsp */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `2560` | Port used |
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+| `CRITICAL-STATUS` | `'%{status} eq "failed"'` | Set critical threshold for status (Default: '%\{status\} eq "failed"'). Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `2` | Threshold critical in seconds |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `EXTRA-OPTS` |  | --ssl: Use SSL connection. (no attempt is made to check the certificate validity by default) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.response.time.seconds` | `s` |  | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP SCEP {/* #apps-protocols-tcp-connection-status-ise-scep */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `9090` | Port used |
+| `TIMEOUT` | `3` | Connection timeout in seconds (Default: 3) |
+| `CRITICAL-STATUS` | `'%{status} eq "failed"'` | Set critical threshold for status (Default: '%\{status\} eq "failed"'). Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `2` | Threshold critical in seconds |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{port\}, %\{error_message\} |
+| `EXTRA-OPTS` |  | --ssl: Use SSL connection. (no attempt is made to check the certificate validity by default) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `tcp.response.time.seconds` | `s` |  | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #os-linux-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #os-linux-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning WaitThreshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold critical Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk IO {/* #os-linux-snmp-diskio */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `DEVICE` | `.*` | Set the device name ex: sda, sda1, sdb (empty means 'check all devices') - you can use regex |
+| `WARNING-READ` | `500MB` | Warning threshold reads (bytes per second) |
+| `WARNING-WRITE` | `500MB` | Warning threshold writes (bytes per second) |
+| `WARNING-READ-IOPS` | `2500` | Warning threshold read IOPs |
+| `WARNING-WRITE-IOPS` | `2500` | Warning threshold write IOPs |
+| `CRITICAL-READ` | `2000MB` | Critical threshold reads (bytes per second) |
+| `CRITICAL-WRITE` | `2000MB` | Critical threshold writes(bytes per second) |
+| `CRITICAL-READ-IOPS` | `10000` | Critical threshold read IOPs |
+| `CRITICAL-WRITE-IOPS` | `10000` | Critical threshold write IOPs |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total_read` | `B/s` | Read I/O :  /s |  |
+| `total_write` | `B/s` | Write I/O :  /s |  |
+| `total_read_iops` | `iops` | Read IOPs |  |
+| `total_write_iops` | `iops` | Write IOPs |  |
+| `sum_read_write` | `B/s` | R+W I/O :  /s |  |
+| `sum_read_write_iops` | `iops` | R+W IOPs |  |
+| `read` | `B/s` | Read I/O :  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `write` | `B/s` | Write I/O :  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `read_iops` | `iops` | Read IOPs | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `write_iops` | `iops` | Write IOPs | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Load {/* #os-linux-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #os-linux-snmp-memory-no-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `WARNING-BUFFER` |  | Threshold warning buffer (B) |
+| `WARNING-CACHED` |  | Threshold warning cached (B) |
+| `WARNING-SHARED` |  | Threshold warning shared (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical usage free (B) |
+| `CRITICAL-BUFFER` |  | Threshold critical buffer (B) |
+| `CRITICAL-CACHED` |  | Threshold critical cached (B) |
+| `CRITICAL-SHARED` |  | Threshold critical shared (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - Application Server {/* #os-linux-snmp-processcount-ise-jsvc */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^jsvc$` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - Oracle Database Writer {/* #os-linux-snmp-processcount-ise-ora_dbw */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^ora_dbw` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - Oracle Log Writer {/* #os-linux-snmp-processcount-ise-ora_lgwr */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^ora_lgwr` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - Oracle PMON {/* #os-linux-snmp-processcount-ise-ora_pmon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^ora_pmon` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - Oracle SMON {/* #os-linux-snmp-processcount-ise-ora_smon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^ora_smon` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - Profiler Database {/* #os-linux-snmp-processcount-ise-redis-server */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^redis-server$` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - MnT Session Database {/* #os-linux-snmp-processcount-ise-timestend */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^timestend$` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Process - Oracle Database Listener {/* #os-linux-snmp-processcount-ise-tnslsnr */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROCESS` | `^tnslsnr$` | Process name - can be a regexp |
+| `WARNING` |  | Threshold warning of matching processes count |
+| `CRITICAL` |  | Threshold critical of matching processes count |
+| `PROCESS-ARGS` |  | Filter process arguments - can be a regexp |
+| `WARNING-MEM-TOTAL` |  | Threshold warning of total memory used by matching processes (in Bytes) |
+| `WARNING-MEM-EACH` |  | Threshold warning of memory used by each matching processes (in Bytes) |
+| `WARNING-MEM-AVG` |  | Threshold warning of average memory used by matching processes (in Bytes) |
+| `WARNING-CPU-TOTAL` |  | Threshold warning of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+| `CRITICAL-MEM-TOTAL` |  | Threshold critical of total memory used by matching processes (in Bytes) |
+| `CRITICAL-MEM-EACH` |  | Threshold critical of memory used by each matching processes (in Bytes) |
+| `CRITICAL-MEM-AVG` |  | Threshold critical of average memory used by matching processes (in Bytes) |
+| `CRITICAL-CPU-TOTAL` |  | Threshold critical of cpu usage for all processes (in percent). CPU usage is in % of one cpu, so maximum can be 100% * number of CPU and a process can have a value greater than 100%. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #os-linux-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Threshold warning in seconds |
+| `CRITICAL-OFFSET` | `-5:5` | Threshold critical in seconds |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20240212 - 20240317</summary>
+
+- Plugin pack `Cisco ISE (Indentity Service Engine)`
+    - Description updated
+- Host template `Cisco-ISE-OS`
+    - Host template added
+- Service template [`apps-protocols-tcp-connection-status-ise-ocsp`](#apps-protocols-tcp-connection-status-ise-ocsp)
+    - Service template added
+- Service template [`apps-protocols-tcp-connection-status-ise-scep`](#apps-protocols-tcp-connection-status-ise-scep)
+    - Service template added
+- Service template [`os-linux-snmp-cpu`](#os-linux-snmp-cpu)
+    - Service template added
+- Service template [`os-linux-snmp-cpu-detailed`](#os-linux-snmp-cpu-detailed)
+    - Service template added
+- Service template [`os-linux-snmp-diskio`](#os-linux-snmp-diskio)
+    - Service template added
+- Service template [`os-linux-snmp-load`](#os-linux-snmp-load)
+    - Service template added
+- Service template [`os-linux-snmp-memory-no-swap`](#os-linux-snmp-memory-no-swap)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-jsvc`](#os-linux-snmp-processcount-ise-jsvc)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-ora_dbw`](#os-linux-snmp-processcount-ise-ora_dbw)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-ora_lgwr`](#os-linux-snmp-processcount-ise-ora_lgwr)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-ora_pmon`](#os-linux-snmp-processcount-ise-ora_pmon)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-ora_smon`](#os-linux-snmp-processcount-ise-ora_smon)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-redis-server`](#os-linux-snmp-processcount-ise-redis-server)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-timestend`](#os-linux-snmp-processcount-ise-timestend)
+    - Service template added
+- Service template [`os-linux-snmp-processcount-ise-tnslsnr`](#os-linux-snmp-processcount-ise-tnslsnr)
+    - Service template added
+- Service template [`os-linux-snmp-time`](#os-linux-snmp-time)
+    - Service template added
+- Service template [`os-linux-snmp-uptime`](#os-linux-snmp-uptime)
+    - Service template added
+- Command `apps-protocols-tcp-connection-status`
+    - Command added
+- Command `os-linux-snmp-cpu`
+    - Command added
+- Command `os-linux-snmp-cpu-detailed`
+    - Command added
+- Command `os-linux-snmp-diskio`
+    - Command added
+- Command `os-linux-snmp-load`
+    - Command added
+- Command `os-linux-snmp-memory-no-swap`
+    - Command added
+- Command `os-linux-snmp-processcount`
+    - Command added
+- Command `os-linux-snmp-time`
+    - Command added
+- Command `os-linux-snmp-uptime`
+    - Command added
+
+</details>

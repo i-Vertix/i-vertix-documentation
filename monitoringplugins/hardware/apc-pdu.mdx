@@ -1,0 +1,263 @@
+---
+title: "APC PDU"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/APC.png";
+
+<PluginPackHeader name="APC PDU" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors APC power distribution units (PDU) through SNMP: hardware status, load per bank, phase and device, outlets, time synchronization and uptime.
+
+The plugin pack provides these checks:
+
+* [Hardware](#hardware-pdu-apc-snmp-hardware)
+* [Load](#hardware-pdu-apc-snmp-load)
+* [NTP-time](#hardware-pdu-apc-snmp-time)
+* [Outlet](#hardware-pdu-apc-snmp-outlet)
+* [Uptime](#hardware-pdu-apc-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+
+## Host Templates
+
+### APC-PDU
+
+*APC PDU* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Hardware](#hardware-pdu-apc-snmp-hardware) | `hardware-pdu-apc-snmp-hardware` |
+| [Load](#hardware-pdu-apc-snmp-load) | `hardware-pdu-apc-snmp-load` |
+| [Outlet](#hardware-pdu-apc-snmp-outlet) | `hardware-pdu-apc-snmp-outlet` |
+| [NTP-time](#hardware-pdu-apc-snmp-time) | `hardware-pdu-apc-snmp-time` |
+| [Uptime](#hardware-pdu-apc-snmp-uptime) | `hardware-pdu-apc-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #hardware-pdu-apc-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'psu', 'humidity', 'temperature' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=temperature --filter=humidity) Can also exclude specific instance: --filter=temperature,1 |
+| `WARNING` |  | Set warning threshold for temperatures (syntax: type,instance,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperatures (syntax: type,instance,threshold) Example: --critical='temperature,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='temperature,CRITICAL,^(?!(normal)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #hardware-pdu-apc-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-BANK-STATUS` | `'%{status} =~ /low\|nearOverload/i'` | Set warning threshold for status (Default: '%\{status\} =~ /low\|nearOverload/i'). Can used special variables like: %\{type\}, %\{status\}, %\{display\} |
+| `WARNING-PHASE-STATUS` | `'%{status} =~ /low\|nearOverload/i'` | Set warning threshold for status (Default: '%\{status\} =~ /low\|nearOverload/i'). Can used special variables like:             %\{status\}, %\{display\} |
+| `CRITICAL-BANK-STATUS` | `'%{status} =~ /^overload/'` | Set critical threshold for status (Default: '%\{status\} =~ /^overload/'). Can used special variables like: %\{type\}, %\{status\}, %\{display\} |
+| `CRITICAL-PHASE-STATUS` | `'%{status} =~ /^overload/'` | Set critical threshold for status (Default: '%\{status\} =~ /^overload/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `WARNING-POWER` |  | Threshold warning power |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `CRITICAL-POWER` |  | Threshold critical power |
+| `UNKNOWN-BANK-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{type\}, %\{status\}, %\{display\} |
+| `UNKNOWN-PHASE-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `bank.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `phase.current.ampere` | `A` | current:  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+| `phase.power.watt` | `W` | power:  W | `WARNING-POWER`, `CRITICAL-POWER` |
+| `device.power.watt` | `W` | power:  W | `WARNING-POWER`, `CRITICAL-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Outlet {/* #hardware-pdu-apc-snmp-outlet */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} =~ /off/'` | Set critical threshold for status (Default: '%\{status\} =~ /off/'). Can used special variables like: %\{status\}, %\{phase\}, %\{bank\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{status\}, %\{phase\}, %\{bank\}, %\{display\} |
+| `WARNING-CURRENT` |  | Threshold warning current |
+| `CRITICAL-CURRENT` |  | Threshold critical current |
+| `UNKNOWN-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `outlet.current.ampere` | `A` | current :  A | `WARNING-CURRENT`, `CRITICAL-CURRENT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP-time {/* #hardware-pdu-apc-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Time offset warning threshold (in seconds) |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #hardware-pdu-apc-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning usage(B) |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

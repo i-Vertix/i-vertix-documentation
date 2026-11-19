@@ -1,0 +1,279 @@
+---
+title: "Cisco Email Security Gateway"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Cisco.png";
+
+<PluginPackHeader name="Cisco Email Security Gateway" image={image} category="Network" metadata={["API"]} />
+
+## Description
+
+Monitors Cisco Email Security Gateways through their API: system status and resource usage such as CPU, memory, swap, disk I/O and logging disk, message queues and connections.
+
+The plugin pack provides these checks:
+
+* [System](#network-cisco-esa-restapi-system)
+* [System Usage](#network-cisco-esa-xmlapi-system-usage)
+
+
+## Host Templates
+
+### Cisco-ESA-RestAPI
+
+*Cisco Email Security Gateway* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https') |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PASSWORD` | *(password)* | API password. |
+| `TIMEOUT` |  | Set timeout in seconds (default: 50). |
+| `USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [System](#network-cisco-esa-restapi-system) | `network-cisco-esa-restapi-system` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [System Usage](#network-cisco-esa-xmlapi-system-usage) | `network-cisco-esa-xmlapi-system-usage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Cisco-ESA-XMLAPI
+
+*Cisco Email Security Gateway* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROTOCOL` | `https` | Protocol used http or https (default: https) |
+| `URLPATH` | `/xml/status` | Set path to get server-status page in auto mode (default: '/xml/status') |
+| `TIMEOUT` | `10` | Threshold for HTTP timeout |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `PASSWORD` | *(password)* | Specify the password for authentication |
+| `PORT` |  | Port used. |
+| `USERNAME` |  | Specify the username for authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [System Usage](#network-cisco-esa-xmlapi-system-usage) | `network-cisco-esa-xmlapi-system-usage` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [System](#network-cisco-esa-restapi-system) | `network-cisco-esa-restapi-system` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### System {/* #network-cisco-esa-restapi-system */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-UTILIZATION` | `80` | Warning threshold CPU utilization (%) |
+| `WARNING-QUEUE-UTILIZATION` | `80` | Warning threshold Queue utilization (%) |
+| `WARNING-MEMORY` | `80` | Warning threshold Memory utilization (%) |
+| `WARNING-SWAP` | `20` | Warning threshold Swap utilization (%) |
+| `CRITICAL-CPU-UTILIZATION` | `90` | Critical threshold CPU utilization (%) |
+| `CRITICAL-QUEUE-UTILIZATION` | `90` | Critical threshold Queue utilization (%) |
+| `CRITICAL-MEMORY` | `90` | Critical threshold Memory utilization (%) |
+| `CRITICAL-SWAP` | `50` | Critical threshold Swap utilization (%) |
+| `WARNING-RESOURCE-CONSERVATION` |  | Warning threshold Resource conservation |
+| `WARNING-MESSAGES-QUARANTINE` |  | Warning threshold Messages quarantine |
+| `WARNING-MESSAGES-WORKQUEUE` |  | Warning threshold Messages workqueue |
+| `CRITICAL-RESOURCE-CONSERVATION` |  | Critical threshold Resource conservation |
+| `CRITICAL-MESSAGES-QUARANTINE` |  | Critical threshold Messages quarantine |
+| `CRITICAL-MESSAGES-WORKQUEUE` |  | Critical threshold Messages workqueue |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.cpu.utilization.percentage` | `%` | cpu utilization: %% | `WARNING-CPU-UTILIZATION`, `CRITICAL-CPU-UTILIZATION` |
+| `system.memory.usage.percentage` | `%` | memory usage:  %% | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+| `system.swap.usage.percentage` | `%` | swap usage:  %% | `WARNING-SWAP`, `CRITICAL-SWAP` |
+| `system.resource.conservation.current.count` |  | current resource conservation | `WARNING-RESOURCE-CONSERVATION`, `CRITICAL-RESOURCE-CONSERVATION` |
+| `system.queue.messages.quarantine.current.count` |  | quarantine | `WARNING-MESSAGES-QUARANTINE`, `CRITICAL-MESSAGES-QUARANTINE` |
+| `system.queue.messages.workqueue.current.count` |  | workqueue | `WARNING-MESSAGES-WORKQUEUE`, `CRITICAL-MESSAGES-WORKQUEUE` |
+| `system.queue.utilization.percentage` | `%` | queue utilization: %% | `WARNING-QUEUE-UTILIZATION`, `CRITICAL-QUEUE-UTILIZATION` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Usage {/* #network-cisco-esa-xmlapi-system-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-HTTP-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold unknown for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-MEMORY` | `80` | Threshold warning memory (%) |
+| `WARNING-CPU-TOTAL` | `80` | Threshold warning CPU total (%) |
+| `WARNING-DISKIO` | `80` | Threshold warning disk IO (%) |
+| `WARNING-LOG` | `80` | Threshold warning log (%) |
+| `WARNING-QUEUEDISK` | `80` | Threshold warning queue disk (%) |
+| `CRITICAL-SYSTEM-STATUS` | `'%{system_status} !~ /online/i'` | Set critical threshold for status (Default: '%\{system_status\} !~ /online/i'). Can used special variables like: %\{system_status\} |
+| `CRITICAL-MEMORY` | `90` | Threshold critical memory (%) |
+| `CRITICAL-CPU-TOTAL` | `90` | Threshold critical CPU total (%) |
+| `CRITICAL-DISKIO` | `90` | Threshold critical disk IO (%) |
+| `CRITICAL-LOG` | `90` | Threshold critical log (%) |
+| `CRITICAL-QUEUEDISK` | `90` | Threshold critical queue disk (%) |
+| `WARNING-SYSTEM-STATUS` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{system_status\} |
+| `WARNING-RESOURCE-CONSERVATION` |  | Threshold warning resource conservation |
+| `WARNING-CONNECTIONS-IN` |  | Threshold warning connections in |
+| `WARNING-CONNECTIONS-OUT` |  | Threshold warning connections out |
+| `WARNING-QUEUE-ACTIVE-RECIPIENTS` |  | Threshold warning queue active recipients |
+| `WARNING-MESSAGES-QUARANTINE` |  | Threshold warning messages quarantine |
+| `WARNING-MESSAGES-WORKQUEUE` |  | Threshold warning messages workqueue |
+| `WARNING-MESSAGES-RECEIVED` |  | Threshold warning messages received |
+| `CRITICAL-RESOURCE-CONSERVATION` |  | Threshold critical resource conservation |
+| `CRITICAL-CONNECTIONS-IN` |  | Threshold critical connections in |
+| `CRITICAL-CONNECTIONS-OUT` |  | Threshold critical connections out |
+| `CRITICAL-QUEUE-ACTIVE-RECIPIENTS` |  | Threshold critical queue active recipients |
+| `CRITICAL-MESSAGES-QUARANTINE` |  | Threshold critical messages quarantine |
+| `CRITICAL-MESSAGES-WORKQUEUE` |  | Threshold critical messages workqueue |
+| `CRITICAL-MESSAGES-RECEIVED` |  | Threshold critical messages received |
+| `WARNING-HTTP-STATUS` |  | Threshold warning for http response code |
+| `CRITICAL-HTTP-STATUS` |  | Threshold critical for http response code |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `system.memory.usage.percentage` | `%` | memory usage:  %% | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+| `system.cpu.total.utilization.percentage` | `%` | total cpu usage:  %% | `WARNING-CPU-TOTAL`, `CRITICAL-CPU-TOTAL` |
+| `system.disk.io.usage.percentage` | `%` | disk i/o usage:  %% | `WARNING-DISKIO`, `CRITICAL-DISKIO` |
+| `system.logging.disk.usage.percentage` | `%` | logging disk usage:  %% | `WARNING-LOG`, `CRITICAL-LOG` |
+| `system.resource.conservation.current.count` |  | resource conservation mode | `WARNING-RESOURCE-CONSERVATION`, `CRITICAL-RESOURCE-CONSERVATION` |
+| `system.connections.inbound.current.count` |  | current inbound connections | `WARNING-CONNECTIONS-IN`, `CRITICAL-CONNECTIONS-IN` |
+| `system.connections.outbound.current.count` |  | current outbound connections | `WARNING-CONNECTIONS-OUT`, `CRITICAL-CONNECTIONS-OUT` |
+| `system.queue.recipients.active.current.count` |  | queue active recipients | `WARNING-QUEUE-ACTIVE-RECIPIENTS`, `CRITICAL-QUEUE-ACTIVE-RECIPIENTS` |
+| `system.queue.messages.quarantine.current.count` |  | messages in quarantine | `WARNING-MESSAGES-QUARANTINE`, `CRITICAL-MESSAGES-QUARANTINE` |
+| `system.queue.messages.workqueue.current.count` |  | messages in work queue | `WARNING-MESSAGES-WORKQUEUE`, `CRITICAL-MESSAGES-WORKQUEUE` |
+| `system.queue.messages.received.persecond` | `/s` | messages received: /s | `WARNING-MESSAGES-RECEIVED`, `CRITICAL-MESSAGES-RECEIVED` |
+| `system.queue.disk.usage.percentage` | `%` | queue disk usage:  %% | `WARNING-QUEUEDISK`, `CRITICAL-QUEUEDISK` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

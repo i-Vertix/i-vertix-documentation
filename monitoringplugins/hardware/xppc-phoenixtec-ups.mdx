@@ -1,0 +1,267 @@
+---
+title: "XPPC Phoenixtec UPS"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Phoenixtec.png";
+
+<PluginPackHeader name="XPPC Phoenixtec UPS" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors XPPC Phoenixtec UPS devices through SNMP: battery status (charge, temperature) and the input and output lines.
+
+The plugin pack provides these checks:
+
+* [Battery Status](#hardware-ups-phoenixtec-snmp-battery-status)
+* [Input Lines](#hardware-ups-phoenixtec-snmp-input-lines)
+* [Output Lines](#hardware-ups-phoenixtec-snmp-output-lines)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### XPCC-Phoenixtec-UPS
+
+*XPCC Phoenixtec UPS* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Battery Status](#hardware-ups-phoenixtec-snmp-battery-status) | `hardware-ups-phoenixtec-snmp-battery-status` |
+| [Input Lines](#hardware-ups-phoenixtec-snmp-input-lines) | `hardware-ups-phoenixtec-snmp-input-lines` |
+| [Output Lines](#hardware-ups-phoenixtec-snmp-output-lines) | `hardware-ups-phoenixtec-snmp-output-lines` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Battery Status {/* #hardware-ups-phoenixtec-snmp-battery-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\} |
+| `WARNING-STATUS` | `'%{status} =~ /low/i'` | Set warning threshold for status (Default: '%\{status\} =~ /low/i'). Can used special variables like: %\{status\} |
+| `WARNING-CHARGE-REMAINING` | `60:` | Threshold warning charge remaining (%) |
+| `WARNING-CHARGE-MINUTES` | `30:` | Threshold warning charge remaining (min) |
+| `WARNING-TEMPERATURE` | `15:30` | Threshold warning temperature (°C) |
+| `CRITICAL-CHARGE-REMAINING` | `30:` | Threshold critical charge remaining (%) |
+| `CRITICAL-CHARGE-MINUTES` | `15:` | Threshold critical charge remaining (min) |
+| `CRITICAL-TEMPERATURE` | `10:40` | Threshold critical temperature (°C) |
+| `WARNING-VOLTAGE` |  | Threshold warning voltage (V) |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: ''). Can used special variables like: %\{status\} |
+| `CRITICAL-VOLTAGE` |  | Threshold critical voltage (V) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `battery.charge.remaining.percent` | `%` | remaining capacity:  %% | `WARNING-CHARGE-REMAINING`, `CRITICAL-CHARGE-REMAINING` |
+| `battery.charge.remaining.minutes` | `m` | remaining time:  minutes | `WARNING-CHARGE-MINUTES`, `CRITICAL-CHARGE-MINUTES` |
+| `battery.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `battery.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Input Lines {/* #hardware-ups-phoenixtec-snmp-input-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-FREQUENCE` | `45:55` | Threshold warning frequence |
+| `WARNING-VOLTAGE` | `200:245` | Threshold warning voltage |
+| `CRITICAL-FREQUENCE` | `40:60` | Threshold critical frequence |
+| `CRITICAL-VOLTAGE` | `180:255` | Threshold critical voltage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lines.input.frequence.hertz` | `Hz` | frequence:  Hz | `WARNING-FREQUENCE`, `CRITICAL-FREQUENCE` |
+| `lines.input.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Output Lines {/* #hardware-ups-phoenixtec-snmp-output-lines */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /unknown/i'` | Set unknown threshold for status (Default: '%\{status\} =~ /unknown/i'). Can used special variables like: %\{status\} |
+| `WARNING-STATUS` | `'%{status} =~ /rebooting\|onBypass/i'` | Set warning threshold for status (Default: '%\{status\} =~ /rebooting\|onBypass/i'). Can used special variables like: %\{status\} |
+| `WARNING-LOAD` | `80` | Threshold warning load |
+| `WARNING-VOLTAGE` | `200:245` | Threshold warning voltage |
+| `CRITICAL-STATUS` | `'%{status} =~ /onBattery/i'` | Set critical threshold for status (Default: '%\{status\} =~ /onBattery/i'). Can used special variables like: %\{status\} |
+| `CRITICAL-LOAD` | `90` | Threshold critical load |
+| `CRITICAL-VOLTAGE` | `180:255` | Threshold critical voltage |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `lines.output.load.percentage` | `%` | load:  %% | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `lines.output.frequency.hertz` | `Hz` | frequency:  Hz |  |
+| `lines.output.voltage.volt` | `V` | voltage:  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260400 - 20260424</summary>
+
+- Service template [`hardware-ups-phoenixtec-snmp-battery-status`](#hardware-ups-phoenixtec-snmp-battery-status)
+    - Macro `WARNING-CHARGE-REMAINING`: default changed from `60` to `60:`
+    - Macro `CRITICAL-CHARGE-REMAINING`: default changed from `30` to `30:`
+- Command `hardware-ups-phoenixtec-snmp-output-lines`
+    - Option `--warning-current=$_SERVICEWARNING-CURRENT$` removed
+    - Option `--warning-power=$_SERVICEWARNING-POWER$` removed
+    - Option `--critical-current=$_SERVICECRITICAL-CURRENT$` removed
+    - Option `--critical-power=$_SERVICECRITICAL-POWER$` removed
+    - Macro `WARNING-CURRENT` removed
+    - Macro `WARNING-POWER` removed
+    - Macro `CRITICAL-CURRENT` removed
+    - Macro `CRITICAL-POWER` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20230608-hotfix20230630-2 - 20230812</summary>
+
+- Plugin pack `XPPC Phoenixtec UPS`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230608-hotfix20230630-2 - 20230812`.

@@ -1,0 +1,53 @@
+---
+title: "SMSEagle notification v2"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/SMSEagle.png";
+
+<PluginPackHeader name="SMSEagle notification v2" image={image} category="Notification" metadata={["API"]} />
+
+## Description
+
+Provides notification commands that send host and service alerts through the SMSEagle REST API v2 as SMS, voice or ring alerts.
+
+
+
+## Host Templates
+
+## Service Templates
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250201 - 20250217</summary>
+
+- Command `host-notification-smseagle-restapi-ring-alert`
+    - Option `--insecure` added
+- Command `host-notification-smseagle-restapi-sms-alert`
+    - Option `--insecure` added
+- Command `host-notification-smseagle-restapi-voice-alert`
+    - Option `--insecure` added
+- Command `service-notification-smseagle-restapi-ring-alert`
+    - Option `--insecure` added
+- Command `service-notification-smseagle-restapi-sms-alert`
+    - Option `--insecure` added
+- Command `service-notification-smseagle-restapi-voice-alert`
+    - Option `--insecure` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250114 - 20250210</summary>
+
+- Plugin pack `SMSEagle notification v2`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250114 - 20250210`.

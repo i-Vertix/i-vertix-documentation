@@ -1,0 +1,219 @@
+---
+title: "IBM IMM"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/IBM.png";
+
+<PluginPackHeader name="IBM IMM" image={image} category="Hardware" metadata={["SNMP"]} />
+
+## Description
+
+Monitors IBM servers through the IMM management module via SNMP: the environment, the event log, NTP time offset and the uptime.
+
+The plugin pack provides these checks:
+
+* [Environment](#hardware-server-ibm-mgmt_cards-imm-snmp-environment)
+* [Eventlog](#hardware-server-ibm-mgmt_cards-imm-snmp-eventlog)
+* [NTP](#hardware-server-ibm-mgmt_cards-imm-snmp-time)
+* [Uptime](#os-linux-snmp-uptime)
+
+
+## Host Templates
+
+### IBM-IMM
+
+*IBM IMM* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Environment](#hardware-server-ibm-mgmt_cards-imm-snmp-environment) | `hardware-server-ibm-mgmt_cards-imm-snmp-environment` |
+| [Eventlog](#hardware-server-ibm-mgmt_cards-imm-snmp-eventlog) | `hardware-server-ibm-mgmt_cards-imm-snmp-eventlog` |
+| [NTP](#hardware-server-ibm-mgmt_cards-imm-snmp-time) | `hardware-server-ibm-mgmt_cards-imm-snmp-time` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Environment {/* #hardware-server-ibm-mgmt_cards-imm-snmp-environment */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'global', 'fan', 'temperature', 'voltage' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=temperature) Can also exclude specific instance: --filter=fan,1 |
+| `WARNING` |  | Set warning threshold for 'temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperature', 'fan', 'voltage' (syntax: type,regexp,threshold) Example: --critical='temperature,.*,40' |
+| `ABSENT-PROBLEM` |  | Return an error if a component is not 'present' (default is skipping). It can be set globally or for a specific instance: --absent-problem='component_name' or --absent-problem='component_name,instance_value' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical) |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='fan,OK,offline' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Eventlog {/* #hardware-server-ibm-mgmt_cards-imm-snmp-eventlog */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` | `'%{severity} =~ /warning/i'` | Set warning threshold for status (Default: '%\{severity\} =~ /warning/i') Can used special variables like: %\{severity\}, %\{text\}, %\{since\} |
+| `CRITICAL-STATUS` | `'%{severity} =~ /error/i'` | Set critical threshold for status (Default: '%\{severity\} =~ /error/i'). Can used special variables like: %\{severity\}, %\{text\}, %\{since\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #hardware-server-ibm-mgmt_cards-imm-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Time offset warning threshold (in seconds) |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Command `hardware-server-ibm-mgmt_cards-imm-snmp-environment`
+    - Option `--absent-problem=$_SERVICEABSENT-PROBLEM$` added
+    - Option `--no-component=$_SERVICENO-COMPONENT$` added
+    - Macro `SNMPAUTH-PASSPHRASE` added
+    - Macro `SNMPAUTH-PROTOCOL` added
+    - Macro `SNMPPRIV-PASSPHRASE` added
+    - Macro `SNMPPRIV-PROTOCOL` added
+    - Macro `SNMPTIMEOUT` added
+    - Macro `SNMPUSERNAME` added
+    - Macro `ABSENT-PROBLEM` added
+    - Macro `NO-COMPONENT` added
+    - Macro `THRESHOLD-OVERLOAD` added
+
+</details>

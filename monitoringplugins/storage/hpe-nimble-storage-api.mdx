@@ -1,0 +1,239 @@
+---
+title: "HPE Nimble storage (API)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/HPE.png";
+
+<PluginPackHeader name="HPE Nimble storage (API)" image={image} category="Storage" metadata={["API"]} />
+
+## Description
+
+Monitors HPE Nimble storage through its REST API: array space usage and snapshot compression, hardware status, and volume usage with read/write throughput, IOPS and latency.
+
+The plugin pack provides these checks:
+
+* [Arrays](#storage-nimble-restapi-arrays)
+* [Hardware](#storage-nimble-restapi-hardware)
+* [Volumes](#storage-nimble-restapi-volumes)
+
+
+## Host Templates
+
+### HPE-Nimble-REST-API
+
+*HPE Nimble REST API* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (6)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `5392` | Set port (default: '5392'). |
+| `PROTOCOL` | `https` | Specify https if needed (default: 'https'). |
+| `TIMEOUT` | `30` | Threshold for HTTP timeout (default: '30'). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | Set password. |
+| `API-USERNAME` |  | Set username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Arrays](#storage-nimble-restapi-arrays) | `storage-nimble-restapi-arrays` |
+| [Hardware](#storage-nimble-restapi-hardware) | `storage-nimble-restapi-hardware` |
+| [Volumes](#storage-nimble-restapi-volumes) | `storage-nimble-restapi-volumes` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Arrays {/* #storage-nimble-restapi-arrays */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter array name (can be a regexp) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Threshold warning space usage (%) |
+| `CRITICAL-STATUS` | `'%{status} =~ /unreachable/i'` | Set critical threshold for status (Default: '%\{status\} =~ /unreachable/i'). Can used special variables like: %\{status\}, %\{display\} |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Threshold critical space usage (%) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{display\} |
+| `WARNING-SPACE-USAGE` |  | Threshold warning space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold warning space usage free (B) |
+| `WARNING-SNAPSHOTS-COMPRESSION-RATE` |  | Threshold warning snapshots compression rate |
+| `WARNING-SNAPSHOTS-SPACE-REDUCTION-RATE` |  | Threshold warning snapshots space reduction rate |
+| `CRITICAL-SPACE-USAGE` |  | Threshold critical space usage (B) |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Threshold critical space usage free (B) |
+| `CRITICAL-SNAPSHOTS-COMPRESSION-RATE` |  | Threshold critical snapshots compression rate |
+| `CRITICAL-SNAPSHOTS-SPACE-REDUCTION-RATE` |  | Threshold critical snapshots space reduction rate |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `array.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `array.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `array.space.usage.percentage` | `%` | space used:  %% | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+| `array.snapshots.compression.rate.count` |  | snapshots compression rate | `WARNING-SNAPSHOTS-COMPRESSION-RATE`, `CRITICAL-SNAPSHOTS-COMPRESSION-RATE` |
+| `array.snapshots.space.reduction.rate.count` |  | snapshots space reduction rate | `WARNING-SNAPSHOTS-SPACE-REDUCTION-RATE`, `CRITICAL-SNAPSHOTS-SPACE-REDUCTION-RATE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware {/* #storage-nimble-restapi-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` | `.*` | Which component to check (Default: '.*'). Can be: 'disk', 'fan', 'psu', 'temperature' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=psu) Can also exclude specific instance: --filter=fan,A\:fan1 |
+| `WARNING` |  | Set warning threshold for 'fan', 'temperature' (syntax: section,[instance,]status,regexp) Example: --warning='temperature,.*,30' --warning='fan,.*,1000' |
+| `CRITICAL` |  | Set critical threshold for 'fan', 'temperature' (syntax: section,[instance,]status,regexp) Example: --critical='temperature,.*,40' |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='sensor,WARNING,missing' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Volumes {/* #storage-nimble-restapi-volumes */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` | `.*` | Filter volume name (can be a regexp) |
+| `WARNING-STATUS` | `'%{space_usage_level} =~ /warning/'` | Set warning threshold for status (Default: '%\{space_usage_level\} =~ /warning/'). Can used special variables like: %\{state\}, %\{space_level_usage\}, %\{display\} |
+| `WARNING-READ-LATENCY` | `100` | Threshold warning read latency (ms) |
+| `WARNING-WRITE-LATENCY` | `100` | Threshold warning write latency (ms) |
+| `CRITICAL-STATUS` | `'%{state} !~ /online/i \|\| %{space_usage_level} =~ /critical/'` | Set critical threshold for status (Default: '%\{state\} !~ /online/i \|\| %\{space_usage_level\} =~ /critical/'). Can used special variables like: %\{state\}, %\{space_level_usage\}, %\{display\} |
+| `CRITICAL-READ-LATENCY` | `500` | Threshold critical read latency (ms) |
+| `CRITICAL-WRITE-LATENCY` | `500` | Threshold critical write latency (ms) |
+| `FILTER-COUNTERS` |  | Only display some counters (regexp can be used). Example: --filter-counters='status' |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for status. Can used special variables like: %\{state\}, %\{space_level_usage\}, %\{display\} |
+| `WARNING-SPACE-USAGE` |  | Threshold warning space usage (B) |
+| `WARNING-READ` |  | Threshold warning read (B/s) |
+| `WARNING-WRITE` |  | Threshold warning write (B/s) |
+| `WARNING-READ-IOPS` |  | Threshold warning read iops |
+| `WARNING-WRITE-IOPS` |  | Threshold warning write iops |
+| `CRITICAL-SPACE-USAGE` |  | Threshold critical space usage (B) |
+| `CRITICAL-READ` |  | Threshold critical read (B/s) |
+| `CRITICAL-WRITE` |  | Threshold critical write (B/s) |
+| `CRITICAL-READ-IOPS` |  | Threshold critical read iops |
+| `CRITICAL-WRITE-IOPS` |  | Threshold critical write iops |
+| `FILTER-REPLICATION-ROLE` |  | Filter volumes by replication role (can be a regexp) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `volume.space.usage.bytes` | `B` | space used | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `volume.io.read.usage.bytespersecond` | `B/s` | read:  /s | `WARNING-READ`, `CRITICAL-READ` |
+| `volume.io.write.usage.bytespersecond` | `B/s` | write:  /s | `WARNING-WRITE`, `CRITICAL-WRITE` |
+| `volume.io.read.usage.iops` | `iops` | read iops | `WARNING-READ-IOPS`, `CRITICAL-READ-IOPS` |
+| `volume.io.write.usage.iops` | `iops` | write iops | `WARNING-WRITE-IOPS`, `CRITICAL-WRITE-IOPS` |
+| `volume.io.read.latency.milliseconds` | `ms` | read latency:  ms | `WARNING-READ-LATENCY`, `CRITICAL-READ-LATENCY` |
+| `volume.io.write.latency.milliseconds` | `ms` | write latency:  ms | `WARNING-WRITE-LATENCY`, `CRITICAL-WRITE-LATENCY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20230920</summary>
+
+- Command `storage-nimble-restapi-arrays`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+    - Macro `HTTP-BACKEND` added
+- Command `storage-nimble-restapi-hardware`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+    - Macro `HTTP-BACKEND` added
+- Command `storage-nimble-restapi-volumes`
+    - Option `--api-password` changed from `--api-password=$_HOSTAPI-PASSWORD$` to `--api-password='$_HOSTAPI-PASSWORD$'`
+
+</details>

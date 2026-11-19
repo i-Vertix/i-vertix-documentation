@@ -1,0 +1,355 @@
+---
+title: "HTTP(S) or website"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/HTTPS.png";
+
+<PluginPackHeader name="HTTP(S) or website" image={image} category="Application" metadata={["HTTP", "HTTPS"]} />
+
+## Description
+
+Monitors websites and web services over HTTP(S): response and extended timing metrics, expected content, and JSON and SOAP content checks.
+
+The plugin pack provides these checks:
+
+* [HTTP expected content](#apps-protocols-http-expected-content)
+* [HTTP JSON content](#apps-protocols-http-json-content)
+* [HTTP response](#apps-protocols-http-response)
+* [HTTP response - extended metrics](#apps-protocols-http-response-extended-metrics)
+* [HTTP SOAP content](#apps-protocols-http-soap-content)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP expected content {/* #apps-protocols-http-expected-content */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `METHOD` | `GET` | Specify http method used (Default: 'GET') |
+| `PROTO` | `https` | Specify https if needed (Default: 'http') |
+| `WARNING-TIME` | `1` | Threshold warning in seconds (Webpage response time) |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds (Webpage response time) |
+| `UNKNOWN-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold warning for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `PORT` |  | Port used by Webserver |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 5) |
+| `URL-PATH` |  | Set path to get Webpage (Default: '/') |
+| `EXTRACTED-PATTERN` |  | Set pattern to extracted a number (used --warning-extracted and  --critical-extracted option) |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `CRITICAL-STATUS` |  | Threshold critical for http response code |
+| `WARNING-CONTENT` |  | Set warning threshold for status (Default: ''). Can used special variables like: %\{content\}, %\{header\}, %\{first_header\}, %\{code\} |
+| `WARNING-EXTRACTED` |  | Threshold warning for extracted value |
+| `WARNING-SIZE` |  | Threshold warning for content size |
+| `CRITICAL-CONTENT` |  | Set critical threshold for content page (Default: ''). Can used special variables like: %\{content\}, %\{header\}, %\{first_header\}, %\{code\} |
+| `CRITICAL-EXTRACTED` |  | Threshold critical for extracted value |
+| `CRITICAL-SIZE` |  | Threshold critical for content size |
+| `EXPECTED-STRING` |  | --expected-string='toto' is a shortcut for --critical-content='%\{content\} !~ /toto/mi' Recommend to use directly --critical-content |
+| `USERNAME` |  | Specify username for authentication (Mandatory if --credentials is specified) |
+| `PASSWORD` |  | Specify password for authentication (Mandatory if --credentials is specified) |
+| `CUSTOM-OPTION` |  | --credentials Specify this option if you access webpage with authentication, --basic Specify this option if you access webpage over basic authentication (Use with --credentials) |
+| `FQDN` |  | IP Addr/FQDN of the Webserver host |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `http.content.size.bytes` | `B` | Content size | `WARNING-SIZE`, `CRITICAL-SIZE` |
+| `http.response.time.seconds` | `s` | Response time : s | `WARNING-TIME`, `CRITICAL-TIME` |
+| `http.extracted.value.count` |  | Extracted value | `WARNING-EXTRACTED`, `CRITICAL-EXTRACTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP JSON content {/* #apps-protocols-http-json-content */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PROTO` | `https` | Specify https if needed (Default: 'http') |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code |
+| `USERNAME` |  | Specify username for authentication (Mandatory if --credentials is specified) |
+| `PASSWORD` |  | Specify password for authentication (Mandatory if --credentials is specified) |
+| `CUSTOM-OPTION` |  | --credentials Specify this option if you access webpage with authentication, --basic Specify this option if you access webpage over basic authentication (Use with --credentials) |
+| `PORT` |  | Port used by Webserver |
+| `URL-PATH` |  | Set path to get Webpage (Default: '/') |
+| `UNKNOWN-STATUS` |  | Threshold unknown for http response code: %\{http_code\} |
+| `WARNING-STATUS` |  | Threshold warning for http response code: %\{http_code\} |
+| `DATA` |  | Set file with JSON request |
+| `LOOKUP` |  | What to lookup in JSON response (JSON XPath string) (can be multiple) See: http://goessner.net/articles/JsonPath/ |
+| `FORMAT-LOOKUP` |  | Take the output message from the JSON response (JSON XPath string) Override all the format options but substitute are still applied |
+| `UNKNOWN-STRING` |  | Threshold unknown if the string match |
+| `WARNING-NUMERIC` |  | Threshold warning (Default: on total matching elements) |
+| `WARNING-STRING` |  | Threshold warning if the string match |
+| `CRITICAL-NUMERIC` |  | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `THRESHOLD-VALUE` |  | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `FQDN` |  | IP Addr/FQDN of the Webserver host |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `json.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP response {/* #apps-protocols-http-response */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `METHOD` | `GET` | Specify http method used (Default: 'GET') |
+| `PROTO` | `https` | Specify https if needed (Default: 'http') |
+| `WARNING-TIME` | `1` | Threshold warning in seconds (Webpage response time) |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds (Webpage response time) |
+| `CRITICAL-STATUS` | `'%{http_code} < 200 or %{http_code} >= 300'` | Threshold critical for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp and curl |
+| `PORT` |  | Port used by Webserver |
+| `USERNAME` |  | Specify username for authentication (Mandatory if --credentials is specified) |
+| `PASSWORD` |  | Specify password for authentication (Mandatory if --credentials is specified) |
+| `CUSTOM-OPTION` |  | --credentials Specify this option if you access webpage with authentication, --basic Specify this option if you access webpage over basic authentication (Use with --credentials) |
+| `URL-PATH` |  | Set path to get webpage (Default: '/') |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 5) |
+| `FQDN` |  | IP Addr/FQDN of the Webserver host |
+| `CRITICAL-SIZE` |  | Threshold critical for http response size |
+| `WARNING-SIZE` |  | Threshold warning for http response size |
+| `CRITICAL-CONNECT` |  | Threshold critical in ms (Connect response time) |
+| `CRITICAL-PROCESSING` |  | Threshold critical in ms (Processing response time) |
+| `CRITICAL-RESOLVE` |  | Threshold critical in ms (Resolve response time) |
+| `CRITICAL-TLS` |  | Threshold critical in ms (TLS response time) |
+| `CRITICAL-TRANSFER` |  | Threshold critical in ms (Transfer response time) |
+| `WARNING-CONNECT` |  | Threshold warning in ms (Connect response time) |
+| `WARNING-PROCESSING` |  | Threshold warning in ms (Processing response time) |
+| `WARNING-RESOLVE` |  | Threshold warning in ms (Resolve response time) |
+| `WARNING-TLS` |  | Threshold warning in ms (TLS response time) |
+| `WARNING-TRANSFER` |  | Threshold warning in ms (Transfer response time) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `http.response.time.seconds` | `s` | response time s | `WARNING-TIME`, `CRITICAL-TIME` |
+| `http.response.size.count` | `B` | content size | `WARNING-SIZE`, `CRITICAL-SIZE` |
+| `http.response.resolve.time.milliseconds` | `ms` | resolve:  ms | `WARNING-RESOLVE`, `CRITICAL-RESOLVE` |
+| `http.response.connect.time.milliseconds` | `ms` | connect:  ms | `WARNING-CONNECT`, `CRITICAL-CONNECT` |
+| `http.response.tls.time.milliseconds` | `ms` | tls:  ms | `WARNING-TLS`, `CRITICAL-TLS` |
+| `http.response.processing.time.milliseconds` | `ms` | processing:  ms | `WARNING-PROCESSING`, `CRITICAL-PROCESSING` |
+| `http.response.transfer.time.milliseconds` | `ms` | transfer:  ms | `WARNING-TRANSFER`, `CRITICAL-TRANSFER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP response - extended metrics {/* #apps-protocols-http-response-extended-metrics */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `HTTP-BACKEND` | `curl` | Perl library to use for HTTP transactions. Possible values are: lwp and curl |
+| `CUSTOM-OPTION` | `--extra-stats` | --credentials Specify this option if you access webpage with authentication, --basic Specify this option if you access webpage over basic authentication (Use with --credentials) |
+| `PORT` |  | Port used by Webserver |
+| `METHOD` |  | Specify http method used (Default: 'GET') |
+| `PROTO` |  | Specify https if needed (Default: 'http') |
+| `USERNAME` |  | Specify username for authentication (Mandatory if --credentials is specified) |
+| `PASSWORD` |  | Specify password for authentication (Mandatory if --credentials is specified) |
+| `URL-PATH` |  | Set path to get webpage (Default: '/') |
+| `UNKNOWN-STATUS` |  | Threshold warning for http response code |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `CRITICAL-STATUS` |  | Threshold critical for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-TIME` |  | Threshold warning in seconds (Webpage response time) |
+| `CRITICAL-TIME` |  | Threshold critical in seconds (Webpage response time) |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 5) |
+| `FQDN` |  | IP Addr/FQDN of the Webserver host |
+| `CRITICAL-SIZE` |  | Threshold critical for http response size |
+| `WARNING-SIZE` |  | Threshold warning for http response size |
+| `CRITICAL-CONNECT` |  | Threshold critical in ms (Connect response time) |
+| `CRITICAL-PROCESSING` |  | Threshold critical in ms (Processing response time) |
+| `CRITICAL-RESOLVE` |  | Threshold critical in ms (Resolve response time) |
+| `CRITICAL-TLS` |  | Threshold critical in ms (TLS response time) |
+| `CRITICAL-TRANSFER` |  | Threshold critical in ms (Transfer response time) |
+| `WARNING-CONNECT` |  | Threshold warning in ms (Connect response time) |
+| `WARNING-PROCESSING` |  | Threshold warning in ms (Processing response time) |
+| `WARNING-RESOLVE` |  | Threshold warning in ms (Resolve response time) |
+| `WARNING-TLS` |  | Threshold warning in ms (TLS response time) |
+| `WARNING-TRANSFER` |  | Threshold warning in ms (Transfer response time) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `http.response.time.seconds` | `s` | response time s | `WARNING-TIME`, `CRITICAL-TIME` |
+| `http.response.size.count` | `B` | content size | `WARNING-SIZE`, `CRITICAL-SIZE` |
+| `http.response.resolve.time.milliseconds` | `ms` | resolve:  ms | `WARNING-RESOLVE`, `CRITICAL-RESOLVE` |
+| `http.response.connect.time.milliseconds` | `ms` | connect:  ms | `WARNING-CONNECT`, `CRITICAL-CONNECT` |
+| `http.response.tls.time.milliseconds` | `ms` | tls:  ms | `WARNING-TLS`, `CRITICAL-TLS` |
+| `http.response.processing.time.milliseconds` | `ms` | processing:  ms | `WARNING-PROCESSING`, `CRITICAL-PROCESSING` |
+| `http.response.transfer.time.milliseconds` | `ms` | transfer:  ms | `WARNING-TRANSFER`, `CRITICAL-TRANSFER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HTTP SOAP content {/* #apps-protocols-http-soap-content */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `METHOD` | `GET` | Specify http method used (Default: 'GET') *(not used by the check command)* |
+| `PROTO` | `https` | Specify https if needed (Default: 'http') |
+| `WARNING-TIME` | `1` | Threshold warning in seconds of webservice response time |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds of webservice response time |
+| `USERNAME` |  | Specify username for authentication (Mandatory if --credentials is specified) |
+| `PASSWORD` |  | Specify password for authentication (Mandatory if --credentials is specified) |
+| `CUSTOM-OPTION` |  | --credentials Specify this option if you access webpage with authentication, --basic Specify this option if you access webpage over basic authentication (Use with --credentials) |
+| `PORT` |  | Port used by Webserver |
+| `URL-PATH` |  | Set path to get Webpage (Default: '/') |
+| `DATA` |  | Set file with SOAP request (Required) |
+| `LOOKUP` |  | What to lookup in XML response (XPath string) (can be multiple) |
+| `THRESHOLD-VALUE` |  | Which value to use (Default: 'count') Can be: 'values' (only check numeric values) |
+| `WARNING-NUMERIC` |  | Threshold warning (Default: on total matching elements) |
+| `WARNING-STRING` |  | Threshold warning if the string match |
+| `CRITICAL-NUMERIC` |  | Threshold critical (Default: on total matching elements) |
+| `CRITICAL-STRING` |  | Threshold critical if the string match |
+| `UNKNOWN-STATUS` |  | Threshold unknown for http response code (Default: '%\{http_code\} &lt; 200 or %\{http_code\} >= 300') |
+| `WARNING-STATUS` |  | Threshold warning for http response code |
+| `CRITICAL-STATUS` |  | Threshold critical for http response code |
+| `SERVICE-SOAP` |  | Service Soap Action (Required) |
+| `TIMEOUT` |  | Threshold for HTTP timeout (Default: 10) |
+| `FQDN` |  | IP Addr/FQDN of the Webserver host |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `xml.match.total.count` |  |  |  |
+| `http.response.time.seconds` | `s` |  |  |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20250201-hotfix-20250305 - 20250321</summary>
+
+- Command `apps-protocols-http-expected-content`
+    - Option `--http-backend` changed from `--http-backend=$HOSTHTTP-BACKEND$` to `--http-backend=$_SERVICEHTTP-BACKEND$`
+- Command `apps-protocols-http-json-content`
+    - Option `--http-backend` changed from `--http-backend=$HOSTHTTP-BACKEND$` to `--http-backend=$_SERVICEHTTP-BACKEND$`
+- Command `apps-protocols-http-soap-content`
+    - Option `--http-backend` changed from `--http-backend=$HOSTHTTP-BACKEND$` to `--http-backend=$_SERVICEHTTP-BACKEND$`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20231017 - 20231031</summary>
+
+- Plugin pack `HTTP(S) or website`
+    - Description updated
+- Service template [`apps-protocols-http-response`](#apps-protocols-http-response)
+    - Macro `HTTP-BACKEND` added (default `lwp`)
+- Service template [`apps-protocols-http-response-extended-metrics`](#apps-protocols-http-response-extended-metrics)
+    - Service template added
+- Command `apps-protocols-http-response`
+    - Option `--http-backend` changed from `--http-backend=$HOSTHTTP-BACKEND$` to `--http-backend=$_SERVICEHTTP-BACKEND$`
+    - Option `--warning-resolve=$_SERVICEWARNING-RESOLVE$` added
+    - Option `--warning-connect=$_SERVICEWARNING-CONNECT$` added
+    - Option `--warning-tls=$_SERVICEWARNING-TLS$` added
+    - Option `--warning-processing=$_SERVICEWARNING-PROCESSING$` added
+    - Option `--warning-transfer=$_SERVICEWARNING-TRANSFER$` added
+    - Option `--critical-resolve=$_SERVICECRITICAL-RESOLVE$` added
+    - Option `--critical-connect=$_SERVICECRITICAL-CONNECT$` added
+    - Option `--critical-tls=$_SERVICECRITICAL-TLS$` added
+    - Option `--critical-processing=$_SERVICECRITICAL-PROCESSING$` added
+    - Option `--critical-transfer=$_SERVICECRITICAL-TRANSFER$` added
+    - Macro `CRITICAL-CONNECT` added
+    - Macro `CRITICAL-PROCESSING` added
+    - Macro `CRITICAL-RESOLVE` added
+    - Macro `CRITICAL-TLS` added
+    - Macro `CRITICAL-TRANSFER` added
+    - Macro `WARNING-CONNECT` added
+    - Macro `WARNING-PROCESSING` added
+    - Macro `WARNING-RESOLVE` added
+    - Macro `WARNING-TLS` added
+    - Macro `WARNING-TRANSFER` added
+    - Macro `HTTP-BACKEND` added
+
+</details>

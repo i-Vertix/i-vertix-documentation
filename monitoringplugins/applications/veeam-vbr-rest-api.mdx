@@ -1,0 +1,291 @@
+---
+title: "Veeam VBR (Rest API)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Veeam.png";
+
+<PluginPackHeader name="Veeam VBR (Rest API)" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Veeam Backup & Replication servers through the REST API: jobs, license usage and expiration, managed servers and the space usage of repositories.
+
+The plugin pack provides these checks:
+
+* [VBR Jobs](#apps-backuo-veeam-vbr-restapi-jobs)
+* [VBR Licenses](#apps-backuo-veeam-vbr-restapi-licenses)
+* [VBR Managed servers](#apps-backuo-veeam-vbr-restapi-managed-servers)
+* [VBR Repositories](#apps-backuo-veeam-vbr-restapi-repositories)
+
+
+## Host Templates
+
+### Veeam-VBR-RestAPI
+
+*Veeam-VBR-RestAPI* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `9419` | Port used (default: 9419) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `API-VERSION` | `1.3-rev1` |  |
+| `TIMEOUT` | `30` | Set timeout in seconds (default: 30). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [VBR Jobs](#apps-backuo-veeam-vbr-restapi-jobs) | `apps-backuo-veeam-vbr-restapi-jobs` |
+| [VBR Licenses](#apps-backuo-veeam-vbr-restapi-licenses) | `apps-backuo-veeam-vbr-restapi-licenses` |
+| [VBR Managed servers](#apps-backuo-veeam-vbr-restapi-managed-servers) | `apps-backuo-veeam-vbr-restapi-managed-servers` |
+| [VBR Repositories](#apps-backuo-veeam-vbr-restapi-repositories) | `apps-backuo-veeam-vbr-restapi-repositories` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### VBR Jobs {/* #apps-backuo-veeam-vbr-restapi-jobs */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-JOB-STATUS` | `'%{last_result} =~ /warning/i and %{status} !~ /disabled/i'` | Define the conditions to match for the status to be WARNING (default: '%\{last_result\} =~ /warning/i and %\{status\} !~ /disabled/i'). You can use the following variables: %\{status\}, %\{last_result\}, %\{name\}, %\{type\}, %\{workload\} |
+| `CRTICAL-JOB-STATUS` | `'%{last_result} =~ /failed/i and %{status} !~ /disabled/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{last_result\} =~ /failed/i and %\{status\} !~ /disabled/i'). You can use the following variables: %\{status\}, %\{last_result\}, %\{name\}, %\{type\}, %\{workload\} |
+| `INCLUDE-ID` |  | Filter jobs by ID (can be a regexp) |
+| `EXCLUDE-ID` |  | Exclude jobs by ID (can be a regexp) |
+| `INCLUDE-NAME` |  | Filter jobs by name (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude jobs by name (can be a regexp) |
+| `INCLUDE-TYPE` |  | Filter jobs by type (can be a regexp). Example: "VSphereBackup", "BackupCopy", "LinuxAgentBackup" |
+| `EXCLUDE-TYPE` |  | Exclude jobs by type (can be a regexp) |
+| `INCLUDE-STATUS` |  | Filter jobs by current status (can be a regexp). Example: "Running", "Stopped", "Disabled" |
+| `EXCLUDE-STATUS` |  | Exclude jobs by current status (can be a regexp) |
+| `WARNING-JOBS-DETECTED` |  | Warning theshold jobs detected |
+| `WARNING-JOBS-SUCCESS` |  | Warning theshold jobs success |
+| `WARNING-JOBS-WARNING` |  | Warning theshold jobs warning |
+| `WARNING-JOBS-FAILED` |  | Warning theshold jobs failed |
+| `CRTICAL-JOBS-DETECTED` |  | Critical theshold jobs detected |
+| `CRTICAL-JOBS-SUCCESS` |  | Critical theshold jobs success |
+| `CRTICAL-JOBS-WARNING` |  | Critical theshold jobs warning |
+| `CRTICAL-JOBS-FAILED` |  | Critical theshold jobs failed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `jobs.detected.count` |  | detected | `WARNING-JOBS-DETECTED`, `CRTICAL-JOBS-DETECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VBR Licenses {/* #apps-backuo-veeam-vbr-restapi-licenses */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRTICAL-STATUS` | `'%{status} =~ /expired\|invalid/i` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /expired\|invalid/i'). You can use the following variables: %\{status\}, %\{to\}, %\{type\}, %\{edition\} |
+| `WARNING-EXPIRES` | `30:` | Warning threshold expires |
+| `CRTICAL-EXPIRES` | `15` | Critical threshold expires |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{status\}, %\{to\}, %\{type\}, %\{edition\} |
+| `WARNING-LICENSE-INSTANCES-USAGE` |  | Warning threshold license instance usage |
+| `WARNING-LICENSE-INSTANCES-FREE` |  | Warning threshold license instance free |
+| `WARNING-LICENSE-INSTANCES-USAGE-PRCT` |  | Warning threshold license instance usage (%) |
+| `CRTICAL-LICENSE-INSTANCES-USAGE` |  | Critical threshold license instance usage |
+| `CRTICAL-LICENSE-INSTANCES-FREE` |  | Critical threshold license instance free |
+| `CRTICAL-LICENSE-INSTANCES-USAGE-PRCT` |  | Critical threshold license instance usage (%) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `license.expires.days` | `d` | expires in | `WARNING-EXPIRES`, `CRTICAL-EXPIRES` |
+| `license.instances.usage.count` |  |  | `WARNING-LICENSE-INSTANCES-USAGE`, `CRTICAL-LICENSE-INSTANCES-USAGE` |
+| `license.instances.free.count` |  |  | `WARNING-LICENSE-INSTANCES-FREE`, `CRTICAL-LICENSE-INSTANCES-FREE` |
+| `license.instances.usage.percentage` | `%` |  | `WARNING-LICENSE-INSTANCES-USAGE-PRCT`, `CRTICAL-LICENSE-INSTANCES-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VBR Managed servers {/* #apps-backuo-veeam-vbr-restapi-managed-servers */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRTICAL-SERVER-STATUS` | `'%{status} =~ /unavailable/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /unavailable/i'). You can use the following variables: %\{status\}, %\{name\}, %\{type\} |
+| `INCLUDE-ID` |  | Filter managed servers by ID (can be a regexp) |
+| `EXCLUDE-ID` |  | Exclude managed servers by ID (can be a regexp) |
+| `INCLUDE-NAME` |  | Filter managed servers by name (can be a regexp) |
+| `EXCLUDE-NAME` |  | Exclude managed servers by name (can be a regexp) |
+| `INCLUDE-TYPE` |  | Filter managed servers by type (can be a regexp). Example: "ViHost", "WindowsHost", "LinuxHost" |
+| `EXCLUDE-TYPE` |  | Exclude managed servers by type (can be a regexp) |
+| `WARNING-SERVER-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{status\}, %\{name\}, %\{type\} |
+| `WARNING-SERVERS-DETECTED` |  | Warning threshold servers detected |
+| `WARNING-SERVERS-AVAILABLE` |  | Warning threshold servers available |
+| `WARNING-SERVERS-UNAVAILABLE` |  | Warning threshold servers unavailable |
+| `CRTICAL-SERVERS-DETECTED` |  | Critical threshold servers detected |
+| `CRTICAL-SERVERS-AVAILABLE` |  | Critical threshold servers available |
+| `CRTICAL-SERVERS-UNAVAILABLE` |  | Critical threshold servers unavailable |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `managedservers.detected.count` |  | detected | `WARNING-SERVERS-DETECTED`, `CRTICAL-SERVERS-DETECTED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VBR Repositories {/* #apps-backuo-veeam-vbr-restapi-repositories */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `VEEAM-EXTRA-OPTS` | `--exclude-extents` | --exclude-extents: Do not return the extents of scale-out backup repositories |
+| `WARNING-REPOSITORY-STATUS` | `'%{state} =~ /outofdate/i'` | Define the conditions to match for the status to be WARNING (default: '%\{state\} =~ /outofdate/i'). You can use the following variables: %\{state\} ("online", "offline" or "outOfDate"), %\{name\}, %\{type\} |
+| `CRTICAL-REPOSITORY-STATUS` | `'%{state} =~ /offline/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{state\} =~ /offline/i'). You can use the following variables: %\{state\} ("online", "offline" or "outOfDate"), %\{name\}, %\{type\} |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Warning theshold space usage (%) |
+| `CRTICAL-SPACE-USAGE-PRCT` | `95` | Critical theshold space usage (%) |
+| `INCLUDE-ID` |  | Filter repositories by ID (can be a regexp) |
+| `EXCLUDE-ID` |  | Exclude repositories by ID (can be a regexp) |
+| `INCLUDE-NAME` |  | Filter repositories by name (can be a regexp). |
+| `EXCLUDE-NAME` |  | Exclude repositories by name (can be a regexp) |
+| `INCLUDE-TYPE` |  | Filter repositories by type (can be a regexp). Example: "WinLocal", "LinuxHardened", "AmazonS3" |
+| `EXCLUDE-TYPE` |  | Exclude repositories by type (can be a regexp) |
+| `WARNING-REPOSITORIES-DETECTED` |  | Warning theshold repositories detected |
+| `WARNING-SPACE-USAGE` |  | Warning theshold space usage (B) |
+| `WARNING-SPACE-USAGE-FREE` |  | Warning theshold space usage free (B) |
+| `CRTICAL-REPOSITORIES-DETECTED` |  | Critical theshold repositories detected |
+| `CRTICAL-SPACE-USAGE` |  | Critical theshold space usage (B) |
+| `CRTICAL-SPACE-USAGE-FREE` |  | Critical theshold space usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `repositories.detected.count` |  | detected | `WARNING-REPOSITORIES-DETECTED`, `CRTICAL-REPOSITORIES-DETECTED` |
+| `repository.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRTICAL-SPACE-USAGE` |
+| `repository.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRTICAL-SPACE-USAGE-FREE` |
+| `repository.space.usage.percentage` | `%` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20261000 - 20261029</summary>
+
+- Plugin pack `Veeam VBR (Rest API)`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20261000 - 20261029`.

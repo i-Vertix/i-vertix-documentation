@@ -12,15 +12,14 @@ import image from "../../assets/pluginpacks/Infrastructure/Azure-API-Management.
 
 ## Description
 
-### Azure API Management monitoring
+Monitors Azure API Management services: the capacity of the gateway, the total and failed requests and the duration of the requests and backend calls.
 
-protocols used: HTTPS (Rest API)
+The plugin pack provides these checks:
 
-* Capacity
-* Duration
-* Events
-* Request
-* Failed Requests
+* [Capacity](#cloud-azure-management-apimanagement-capacity)
+* [Duration](#cloud-azure-management-apimanagement-duration)
+* [Failed requests](#cloud-azure-management-apimanagement-failed-requests)
+* [Requests](#cloud-azure-management-apimanagement-requests)
 
 ## Prerequisites
 
@@ -28,6 +27,15 @@ The plugin pack retrieves the metrics through the Azure Rest API. Before you can
 Azure application with the **Monitoring Reader** role and its credentials (*Subscription ID*, *Tenant ID*, *Client ID* and *Client Secret*).
 
 See [Azure Prerequisites](/monitoringplugins/cloud/azure/azure-prerequisites) for a step-by-step guide.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Azure API Management](/monitoring/monitoring-resources/discovery/common-discovery#azure)
+
 
 ## Host Templates
 

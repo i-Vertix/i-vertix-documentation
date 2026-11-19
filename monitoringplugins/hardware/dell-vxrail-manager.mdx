@@ -1,0 +1,194 @@
+---
+title: "Dell VxRail Manager"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Dell.png";
+
+<PluginPackHeader name="Dell VxRail Manager" image={image} category="Hardware" metadata={["API"]} />
+
+## Description
+
+Monitors Dell VxRail clusters through the VxRail Manager REST API: the status of the chassis, power supplies, hosts, NICs and disks.
+
+The plugin pack provides these checks:
+
+* [Chasis](#hardware-server-dell-vxm-chassis)
+* [Hosts](#hardware-server-dell-vxm-hosts)
+
+
+## Host Templates
+
+### Dell-VxRail-Manager
+
+*Dell VxRail Manager* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used (default: 443) |
+| `PROTO` | `https` | Specify https if needed (default: 'https') |
+| `API-VERSION` | `2` | API version (default: 2). |
+| `TIMEOUT` | `50` | Set timeout in seconds (default: 50). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-PASSWORD` | *(password)* | API password. |
+| `API-USERNAME` |  | API username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Chasis](#hardware-server-dell-vxm-chassis) | `hardware-server-dell-vxm-chassis` |
+| [Hosts](#hardware-server-dell-vxm-hosts) | `hardware-server-dell-vxm-hosts` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Chasis {/* #hardware-server-dell-vxm-chassis */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CHASSIS-STATUS` | `'%{status} =~ /warning/i'` | Define the conditions to match for the status to be WARNING (default: '%\{status\} =~ /warning/i'). You can use the following variables: %\{status\}, %\{chassisSn\} |
+| `CRITICAL-CHASSIS-STATUS` | `'%{status} =~ /critical\|error/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /critical\|error/i'). You can use the following variables: %\{status\}, %\{chassisSn\} |
+| `WARNING-PSU-STATUS` | `'%{status} =~ /warning/i'` | Set warning threshold for power supply status (default: '%\{status\} =~ /warning/i'). You can use the following variables: %\{status\}, %\{chassisSn\}, %\{psuName\} |
+| `CRITICAL-PSU-STATUS` | `'%{status} =~ /critical\|error/i'` | Set critical threshold for power supply status (default: '%\{status\} =~ /critical\|error/i'). You can use the following variables: %\{status\}, %\{chassisSn\}, %\{psuName\} |
+| `FILTER-CHASSIS-SN` |  | Filter clusters by serial number (can be a regexp) |
+| `UNKNOWN-CHASSIS-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{status\}, %\{chassisSn\} |
+| `UNKNOWN-PSU-STATUS` |  | Set unknown threshold for power supply status. You can use the following variables: %\{status\}, %\{chassisSn\}, %\{psuName\} |
+| `WARNING-CHASSIS-DETECTED` |  | Warning threshold chassis detected |
+| `WARNING-CHASSIS-UNHEALTHY` |  | Warning threshold chassis unhealthy |
+| `CRITICAL-CHASSIS-DETECTED` |  | Critical threshold chassis detected |
+| `CRITICAL-CHASSIS-UNHEALTHY` |  | Critical threshold chassis unhealthy |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `chassis.detected.count` |  | detected | `WARNING-CHASSIS-DETECTED`, `CRITICAL-CHASSIS-DETECTED` |
+| `chassis.unhealthy.count` |  | unhealthy | `WARNING-CHASSIS-UNHEALTHY`, `CRITICAL-CHASSIS-UNHEALTHY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hosts {/* #hardware-server-dell-vxm-hosts */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-HOST-STATUS` | `'%{status} =~ /warning/i'` | Define the conditions to match for the status to be WARNING (default: '%\{status\} =~ /warning/i'). You can use the following variables: %\{status\}, %\{name\}, %\{sn\} |
+| `CRITICAL-HOST-STATUS` | `'%{status} =~ /critical\|error/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} =~ /critical\|error/i'). You can use the following variables: %\{status\}, %\{name\}, %\{sn\} |
+| `CRITICAL-DISK-STATUS` | `'%{status} !~ /OK/i'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} !~ /OK/i'). You can use the following variables: %\{status\}, %\{sn\}, %\{bay\}, %\{slot\} |
+| `FILTER-HOST-SN` |  | Filter hosts by serial number (can be a regexp) |
+| `FILTER-HOST-NAME` |  | Filter hosts by name (can be a regexp) |
+| `UNKNOWN-HOST-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{status\}, %\{name\}, %\{sn\} |
+| `UNKNOWN-NIC-STATUS` |  | Set unknown threshold for nic status. You can use the following variables: %\{status\}, %\{mac\}, %\{slot\} |
+| `WARNING-NIC-STATUS` |  | Set warning threshold for nic status. You can use the following variables: %\{status\}, %\{mac\}, %\{slot\} |
+| `CRITICAL-NIC-STATUS` |  | Set critical threshold for nic status You can use the following variables: %\{status\}, %\{mac\}, %\{slot\} |
+| `UNKNOWN-DISK-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: %\{status\}, %\{sn\}, %\{bay\}, %\{slot\} |
+| `WARNING-DISK-STATUS` |  | Define the conditions to match for the status to be WARNING. You can use the following variables: %\{status\}, %\{sn\}, %\{bay\}, %\{slot\} |
+| `CRITICAL-HOSTS-DETECTED` |  | Critical threshold Hosts detected |
+| `CRITICAL-HOSTS-UNHEALTHY` |  | Critical threshold Hosts unhealthy |
+| `WARNING-HOSTS-DETECTED` |  | Warning threshold Hosts detected |
+| `WARNING-HOSTS-UNHEALTHY` |  | Warning threshold Hosts unhealthy |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `hosts.detected.count` |  | detected | `WARNING-HOSTS-DETECTED`, `CRITICAL-HOSTS-DETECTED` |
+| `hosts.unhealthy.count` |  | unhealthy | `WARNING-HOSTS-UNHEALTHY`, `CRITICAL-HOSTS-UNHEALTHY` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20231215 - 20240130</summary>
+
+- Plugin pack `Dell VxRail Manager`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20231215 - 20240130`.

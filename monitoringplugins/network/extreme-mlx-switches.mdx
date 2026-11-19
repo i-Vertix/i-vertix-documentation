@@ -1,0 +1,463 @@
+---
+title: "Extreme MLX switches"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Extreme.png";
+
+<PluginPackHeader name="Extreme MLX switches" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Extreme MLX switches through SNMP: CPU and memory usage, hardware status, interfaces, SFP ports, TCP and UDP connections and uptime.
+
+The plugin pack provides these checks:
+
+* [CPU](#network-extreme-mlx-snmp-cpu)
+* [Hardware status](#network-extreme-mlx-snmp-hardware)
+* [Interfaces](#network-extreme-mlx-snmp-interfaces)
+* [Memory](#network-extreme-mlx-snmp-memory)
+* [SFP port status](#network-extreme-mlx-snmp-sfp-port-status)
+* [TCP connections](#os-linux-snmp-tcpcon)
+* [UDP connections](#os-linux-snmp-udpcon)
+* [Uptime](#os-linux-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-extreme-mlx-snmp-interfaces) | `Interface - <name>` |
+| [SFP port status](#network-extreme-mlx-snmp-sfp-port-status) | `SFP port <number> - <interface_name> - status` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Extreme-Switch-MLX
+
+*Extreme Networks MLX Switch* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#network-extreme-mlx-snmp-cpu) | `network-extreme-mlx-snmp-cpu` |
+| [Hardware status](#network-extreme-mlx-snmp-hardware) | `network-extreme-mlx-snmp-hardware` |
+| [Memory](#network-extreme-mlx-snmp-memory) | `network-extreme-mlx-snmp-memory` |
+| [TCP connections](#os-linux-snmp-tcpcon) | `os-linux-snmp-tcpcon` |
+| [UDP connections](#os-linux-snmp-udpcon) | `os-linux-snmp-udpcon` |
+| [Uptime](#os-linux-snmp-uptime) | `os-linux-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-extreme-mlx-snmp-interfaces) | `network-extreme-mlx-snmp-interfaces` |
+| [SFP port status](#network-extreme-mlx-snmp-sfp-port-status) | `network-extreme-mlx-snmp-sfp-port-status` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-extreme-mlx-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-1MIN` | `80` | Threshold warning average 1 minute |
+| `CRITICAL-1MIN` | `90` | Threshold critical average 1 minute |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-COUNTER` |  | Only display some counters (regexp can be used). Example to check SSL connections only : --filter-counters='^xxxx\|yyyy$' |
+| `WARNING-5SECS` |  | Threshold warning average 5 seconds |
+| `WARNING-5MIN` |  | Threshold warning average 5 minutes |
+| `CRITICAL-5SECS` |  | Threshold critical average 5 seconds |
+| `CRITICAL-5MIN` |  | Threshold critical average 5 minutes |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.5s.percentage` | `%` | %% (5s) | `WARNING-5SECS`, `CRITICAL-5SECS` |
+| `cpu.utilization.1m.percentage` | `%` | %% (1m) | `WARNING-1MIN`, `CRITICAL-1MIN` |
+| `cpu.utilization.5m.percentage` | `%` | %% (5m) | `WARNING-5MIN`, `CRITICAL-5MIN` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-extreme-mlx-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (default: '.*'). Can be: 'board', 'fan', 'temperature', 'psu'. |
+| `FILTER` |  | Exclude the items given as a comma-separated list (example: --filter=fan --filter=psu). You can also exclude items from specific instances: --filter=fan,1.1 |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='psu,CRITICAL,fail' |
+| `WARNING` |  | Set warning threshold for 'temperature' (syntax: type,regexp,threshold). Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for 'temperature' (syntax: type,regexp,threshold). Example: --critical='temperature,.*,50' |
+| `NO-COMPONENT` |  | Define the expected status if no components are found (default: critical). |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-extreme-mlx-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE` | `80` | Threshold warning usage (%) |
+| `CRITICAL-USAGE` | `90` | Threshold critical usage (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.utilization.percentage` | `%` | memory usage is: %% | `WARNING-USAGE`, `CRITICAL-USAGE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### TCP connections {/* #os-linux-snmp-tcpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.tcp.count` |  |  |  |
+| `application.connections.tcp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### UDP connections {/* #os-linux-snmp-udpcon */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `WARNING` |  | Warning threshold for total connections |
+| `CRITICAL` |  | Critical threshold for total connections |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `service.connections.udp.count` |  |  |  |
+| `application.connections.udp.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #os-linux-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-extreme-mlx-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (default: 'percent_delta') ('percent_delta', 'bps', 'counter') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (default: 'percent_delta') ('percent_delta', 'delta', 'deltaps', 'counter') |
+| `OID-DISPLAY` | `ifDesc` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `OID-EXTRA-DISPLAY` | `ifAlias` | Add an OID to display |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### SFP port status {/* #network-extreme-mlx-snmp-sfp-port-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{temp_status} =~ /unknown/ \|\| %{tx_power_status} =~ /unknown/ \|\| %{rx_power_status} =~ /unknown/ \|\| %{bias_status} =~ /unknown/'` | Define the conditions to match for the status to be WARNING (default: '%\{temp_status\} =~ /unknown/ \|\| %\{tx_power_status\} =~ /unknown/ \|\| %\{rx_power_status\} =~ /unknown/ \|\| %\{bias_status\} =~ /unknown/'). You can use the following variables: %\{temp_status\}, %\{tx_power_status\}, %\{rx_power_status\}, %\{bias_status\} |
+| `WARNING-STATUS` | `'%{temp_status} =~ /warn/ \|\| %{tx_power_status} =~ /warn/ \|\| %{rx_power_status} =~ /warn/ \|\| %{bias_status} =~ /warn/'` | Define the conditions to match for the status to be WARNING (default: '%\{temp_status\} =~ /warn/ \|\| %\{tx_power_status\} =~ /warn/ \|\| %\{rx_power_status\} =~ /warn/ \|\| %\{bias_status\} =~ /warn/'). You can use the following variables: %\{temp_status\}, %\{tx_power_status\}, %\{rx_power_status\}, %\{bias_status\} |
+| `CRITICAL-STATUS` | `'%{temp_status} =~ /alarm/ \|\| %{tx_power_status} =~ /alarm/ \|\| %{rx_power_status} =~ /alarm/ \|\| %{bias_status} =~ /alarm/'` | Define the conditions to match for the status to be CRITICAL '%\{temp_status\} =~ /alarm/ \|\| %\{tx_power_status\} =~ /alarm/ \|\| %\{rx_power_status\} =~ /alarm/ \|\| %\{bias_status\} =~ /alarm/'). You can use the following variables: %\{temp_status\}, %\{tx_power_status\}, %\{rx_power_status\}, %\{bias_status\} |
+| `EXCLUDE-PORT` |  | Exclude ports by index (can be a regexp). |
+| `WARNING-RX-INPUT-POWER-DBM` |  | Warning threshold for measured RX power (dBm) |
+| `CRITICAL-RX-INPUT-POWER-DBM` |  | Critical threshold for measured RX power (dBm) |
+| `WARNING-TX-OUTPUT-POWER-DBM` |  | Warning threshold for measured TX power (dBm) |
+| `CRITICAL-TX-OUTPUT-POWER-DBM` |  | Critical threshold for measured TX power (dBm) |
+| `WARNING-BIAS-CURRENT` |  | Warning threshold for measured TX current (mA) |
+| `CRITICAL-BIAS-CURRENT` |  | Critical threshold for measured TX current (mA) |
+| `WARNING-TEMPERATURE` |  | Warning threshold for temperature celsius degrees |
+| `CRITICAL-TEMPERATURE` |  | Critical threshold for temperature celsius degrees |
+| `FILTER-INTERFACE` |  | Filter ports by interface name (can be a regexp). Can be used only together with --add-interface-name. |
+| `EXCLUDE-INTERFACE` |  | Exclude ports by interface name (can be a regexp). Can be used only together with --add-interface-name. |
+| `FILTER-PORT` |  | Filter ports by index (can be a regexp). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `port.input.power.dbm` | `dBm` | input power:  dBm | `WARNING-RX-INPUT-POWER-DBM`, `CRITICAL-RX-INPUT-POWER-DBM` |
+| `port.output.power.dbm` | `dBm` | output power:  dBm | `WARNING-TX-OUTPUT-POWER-DBM`, `CRITICAL-TX-OUTPUT-POWER-DBM` |
+| `port.bias.current.milliampere` | `mA` | Bias Current :  mA | `WARNING-BIAS-CURRENT`, `CRITICAL-BIAS-CURRENT` |
+| `port.temperature.celsius` | `C` | temperature:  C | `WARNING-TEMPERATURE`, `CRITICAL-TEMPERATURE` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260500 - 20260529</summary>
+
+- Command `network-extreme-mlx-snmp-sfp-port-status`
+    - Option `--include-port=$_SERVICEFILTER-PORT$` added
+    - Option `--exclude-port=$_SERVICEEXCLUDE-PORT$` added
+    - Option `--include-interface=$_SERVICEFILTER-INTERFACE$` added
+    - Option `--exclude-interface=$_SERVICEEXCLUDE-INTERFACE$` added
+    - Option `--filter-port=$_SERVICEFILTER-PORT$` removed
+    - Option `--filter-interface=$_SERVICEFILTER-INTERFACE$` removed
+    - Macro `EXCLUDE-PORT` added
+    - Macro `EXCLUDE-INTERFACE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260400 - 20260424</summary>
+
+- Command `network-extreme-mlx-snmp-sfp-port-status`
+    - Option `--filter-interface=$_SERVICEFILTER-INTERFACE$` added
+    - Macro `FILTER-INTERFACE` added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260300 - 20260331</summary>
+
+- Plugin pack `Extreme MLX switches`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260300 - 20260331`.

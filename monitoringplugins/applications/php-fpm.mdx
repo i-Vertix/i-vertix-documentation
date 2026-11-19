@@ -1,0 +1,70 @@
+---
+title: "PHP-FPM"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/php.png";
+
+<PluginPackHeader name="PHP-FPM" image={image} category="Application" metadata={[]} />
+
+## Description
+
+Monitors PHP-FPM pools: active and idle processes, the listen queue and the requests per second.
+
+The plugin pack provides these checks:
+
+* [PHP-FPM usage](#apps-php-fpm-web-usage)
+
+
+## Host Templates
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### PHP-FPM usage {/* #apps-php-fpm-web-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `443` | Port used by web server |
+| `PROTO` | `https` | Specify https if needed |
+| `URL_PATH` | `/fpm-status` | Set path to get server-status page in auto mode (Default: '/fpm-status') |
+| `WARNING-ACTIVE-PROCESSES` |  | Threshold warning active processes |
+| `WARNING-IDLE-PROCESSES` |  | Threshold warning idle processes |
+| `WARNING-LISTEN-QUEUE` |  | Threshold warning listen queue |
+| `WARNING-REQUESTS` |  | Threshold warning requests |
+| `CRITICAL-ACTIVE-PROCESSES` |  | Threshold critical active processes |
+| `CRITICAL-IDLE-PROCESSES` |  | Threshold critical idle processes |
+| `CRITICAL-LISTEN-QUEUE` |  | Threshold critical listen queue |
+| `CRITICAL-REQUESTS` |  | Threshold critical requests |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `fpm.processes.active.count` |  |  | `WARNING-ACTIVE-PROCESSES`, `CRITICAL-ACTIVE-PROCESSES` |
+| `fpm.processes.idle.count` |  |  | `WARNING-IDLE-PROCESSES`, `CRITICAL-IDLE-PROCESSES` |
+| `fpm.queue.listen.count` |  | listen queue | `WARNING-LISTEN-QUEUE`, `CRITICAL-LISTEN-QUEUE` |
+| `fpm.requests.persecond` | `/s` | requests: /s | `WARNING-REQUESTS`, `CRITICAL-REQUESTS` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

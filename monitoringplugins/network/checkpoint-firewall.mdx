@@ -1,0 +1,692 @@
+---
+title: "Checkpoint Firewall"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Checkpoint-new.png";
+
+<PluginPackHeader name="Checkpoint Firewall" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Check Point firewalls through SNMP: CPU, memory, disk and system load, connections, interfaces, hardware health, HA, VRRP, VSX and VPN status, remote access users and NTP.
+
+The plugin pack provides these checks:
+
+* [Connections](#network-checkpoint-snmp-connections)
+* [CPU](#network-checkpoint-snmp-cpu)
+* [Disk](#network-checkpoint-snmp-disk)
+* [HA status](#network-checkpoint-snmp-hastate)
+* [Hardware status](#network-checkpoint-snmp-hardware)
+* [Interfaces](#network-checkpoint-snmp-interfaces)
+* [Memory](#network-checkpoint-snmp-memory)
+* [NTP](#network-checkpoint-snmp-time)
+* [Remote Access users](#network-checkpoint-snmp-ra-users)
+* [System Load](#os-linux-snmp-load)
+* [Uptime](#network-checkpoint-snmp-uptime)
+* [VPN status](#network-checkpoint-snmp-vpn-status)
+* [VRRP status](#network-checkpoint-snmp-vrrp-status)
+* [VSX](#network-checkpoint-snmp-vsx)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Interfaces](#network-checkpoint-snmp-interfaces) | `Interface - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Checkpoint-FW
+
+*Checkpoint Firewall standalone* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#network-checkpoint-snmp-connections) | `network-checkpoint-snmp-connections` |
+| [CPU](#network-checkpoint-snmp-cpu) | `network-checkpoint-snmp-cpu` |
+| [Disk](#network-checkpoint-snmp-disk) | `network-checkpoint-snmp-disk` |
+| [Hardware status](#network-checkpoint-snmp-hardware) | `network-checkpoint-snmp-hardware` |
+| [Memory](#network-checkpoint-snmp-memory) | `network-checkpoint-snmp-memory` |
+| [Remote Access users](#network-checkpoint-snmp-ra-users) | `network-checkpoint-snmp-ra-users` |
+| [NTP](#network-checkpoint-snmp-time) | `network-checkpoint-snmp-time` |
+| [Uptime](#network-checkpoint-snmp-uptime) | `network-checkpoint-snmp-uptime` |
+| [VPN status](#network-checkpoint-snmp-vpn-status) | `network-checkpoint-snmp-vpn-status` |
+| [System Load](#os-linux-snmp-load) | `os-linux-snmp-load` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-checkpoint-snmp-hastate) | `network-checkpoint-snmp-hastate` |
+| [Interfaces](#network-checkpoint-snmp-interfaces) | `network-checkpoint-snmp-interfaces` |
+| [VRRP status](#network-checkpoint-snmp-vrrp-status) | `network-checkpoint-snmp-vrrp-status` |
+| [VSX](#network-checkpoint-snmp-vsx) | `network-checkpoint-snmp-vsx` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Checkpoint-FW-Cluster
+
+*Checkpoint Firewall Cluster* · Parent template: `Checkpoint-FW`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [HA status](#network-checkpoint-snmp-hastate) | `network-checkpoint-snmp-hastate` |
+| [Connections](#network-checkpoint-snmp-connections) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-connections` |
+| [CPU](#network-checkpoint-snmp-cpu) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-cpu` |
+| [Disk](#network-checkpoint-snmp-disk) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-disk` |
+| [Hardware status](#network-checkpoint-snmp-hardware) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-hardware` |
+| [Memory](#network-checkpoint-snmp-memory) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-memory` |
+| [Remote Access users](#network-checkpoint-snmp-ra-users) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-ra-users` |
+| [NTP](#network-checkpoint-snmp-time) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-time` |
+| [Uptime](#network-checkpoint-snmp-uptime) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-uptime` |
+| [VPN status](#network-checkpoint-snmp-vpn-status) (inherited from `Checkpoint-FW`) | `network-checkpoint-snmp-vpn-status` |
+| [System Load](#os-linux-snmp-load) (inherited from `Checkpoint-FW`) | `os-linux-snmp-load` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-checkpoint-snmp-interfaces) | `network-checkpoint-snmp-interfaces` |
+| [VRRP status](#network-checkpoint-snmp-vrrp-status) | `network-checkpoint-snmp-vrrp-status` |
+| [VSX](#network-checkpoint-snmp-vsx) | `network-checkpoint-snmp-vsx` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {/* #network-checkpoint-snmp-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `85` | Number of connections trigerring a warning state |
+| `CRITICAL` | `90` | Number of connections trigerring a criticalstate |
+| `UNITS` | `%` | Units of thresholds (Default: 'absolute') ('%', 'absolute') |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.active.count` | `con` |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-checkpoint-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `85` | Warning threshold average CPU utilization |
+| `CRITICAL-AVERAGE` | `90` | Critical threshold average CPU utilization |
+| `WARNING-CORE` |  | Warning thresholds for each CPU core |
+| `CRITICAL-CORE` |  | Critical thresholds for each CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage:  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk {/* #network-checkpoint-snmp-disk */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `85` | Threshold warning usage (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold critical usage (%) |
+| `FILTER-NAME` |  | Filter disk name |
+| `WARNING-USAGE` |  | Threshold warning usage (B) |
+| `WARNING-USAGE-FREE` |  | Threshold warning usage free (B) |
+| `CRITICAL-USAGE` |  | Threshold critical usage (B) |
+| `CRITICALUSAGE-FREE` |  | Threshold critical usage free (B) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `disk.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICALUSAGE-FREE` |
+| `disk.usage.percentage` | `%` | used:  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Hardware status {/* #network-checkpoint-snmp-hardware */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `COMPONENT` |  | Which component to check (Default: '.*'). Can be: 'psu', 'fan', 'temperature', 'voltage', 'raiddisk' |
+| `FILTER` |  | Exclude some parts (comma seperated list) (Example: --filter=fan --filter=psu) Can also exclude specific instance: --filter=psu,1 |
+| `THRESHOLD-OVERLOAD` |  | Set to overload default threshold values (syntax: section,[instance,]status,regexp) It used before default thresholds (order stays). Example: --threshold-overload='fan,CRITICAL,^(?!(false)$)' |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-checkpoint-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY` | `80` | Warning threshold Memory usage (%) |
+| `WARNING-SWAP` | `20` | Warning threshold Swap usage (%) |
+| `WARNING-FAILED-MALLOC` | `5` | Warning threshold failed malloc |
+| `CRITICAL-MEMORY` | `90` | Critical threshold Memory usage (%) |
+| `CRITICAL-SWAP` | `80` | Critical threshold Swap usage (%) |
+| `CRITICAL-FAILED-MALLOC` | `60` | Critical threshold failed malloc |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-MEMORY`, `CRITICAL-MEMORY` |
+| `swap.usage.bytes` | `B` |  | `WARNING-SWAP`, `CRITICAL-SWAP` |
+| `memory.allocations.failed.persecond` | `/s` | Failed memory allocations /s | `WARNING-FAILED-MALLOC`, `CRITICAL-FAILED-MALLOC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Remote Access users {/* #network-checkpoint-snmp-ra-users */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-NAME` |  | Filter on remote access users (can be a regexp) |
+| `WARNING-USERS-TOTAL` |  | Warning threshold Users total |
+| `CRITICAL-USERS-TOTAL` |  | Critical threshold Users total |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{display\}, %\{status\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{status\} =~ /down/i'). Can used special variables like: %\{display\}, %\{status\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `remoteaccess.users.total.count` |  | current total number of remote access users | `WARNING-USERS-TOTAL`, `CRITICAL-USERS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### NTP {/* #network-checkpoint-snmp-time */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-OFFSET` | `-2:2` | Time offset warning threshold (in seconds) |
+| `CRITICAL-OFFSET` | `-5:5` | Time offset critical Threshold (in seconds) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `time.offset.seconds` | `s` |  | `WARNING-OFFSET`, `CRITICAL-OFFSET` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-checkpoint-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VPN status {/* #network-checkpoint-snmp-vpn-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER_NAME` |  | Filter vpn name (can be a regexp) |
+| `WARNING-TUNNELS-TOTAL` |  | Threshold warning Tunnels total |
+| `CRITICAL-TUNNELS-TOTAL` |  | Threshold critical Tunnels total |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{type\}, %\{status\}, %\{display\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{type\} eq "permanent" and %\{status\} =~ /down/i'). Can used special variables like: %\{type\}, %\{status\}, %\{display\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `vpn.tunnels.total.count` |  | current total number of tunnels | `WARNING-TUNNELS-TOTAL`, `CRITICAL-TUNNELS-TOTAL` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Load {/* #os-linux-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Threshold warning (1min,5min,15min) |
+| `CRITICAL` | `5,4,4` | Threshold critical (1min,5min,15min) |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### HA status {/* #network-checkpoint-snmp-hastate */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` |  | Trigger warning on %\{role\} or %\{hastate\} values e.g --warning-status '%\{role\} !~ /master/' will warn when failover occurs |
+| `CRITICAL-STATUS` |  | Trigger critical on %\{role\} or %\{hastate\} values (default: '%\{hastate\} !~ /(UP\|working)/') |
+| `NOHA-STATUS` |  | Status to return when HA not running or not installed (default: 'UNKNOWN') |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-checkpoint-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `%` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `%` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+| `MAP-SPEED-DSL` |  | Get interface speed configuration for interface type 'adsl' and 'vdsl2'. Syntax: --map-speed-dsl=interface-src-name,interface-dsl-name. E.g: --map-speed-dsl=Et0.835,Et0-vdsl2 |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VRRP status {/* #network-checkpoint-snmp-vrrp-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{adminState\}, %\{operStateLast\}, %\{operState\}, %\{masterIpAddr\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for status (Default: '%\{adminState\} eq "up" and %\{operState\} ne %\{operStateLast\}'). Can used special variables like: %\{adminState\}, %\{operStateLast\}, %\{operState\}, %\{masterIpAddr\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### VSX {/* #network-checkpoint-snmp-vsx */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-MEMORY-USAGE` | `80` | Warning threshold memory usage |
+| `WARNING-CPU-UTILIZATION-1H` | `70` | Warning threshold CPU util 1 hour |
+| `WARNING-CPU-UTILIZATION-1M` | `90` | Warning threshold CPU util 1 min |
+| `CRITICAL-MEMORY-USAGE` | `90` | Critical threshold memory usage |
+| `CRITICAL-CPU-UTILIZATION-1H` | `85` | Critical threshold CPU util 1 hour |
+| `CRITICAL-CPU-UTILIZATION-1M` | `95` | Critical threshold CPU util 1 min |
+| `CRITICAL-CONNECTIONS-ACTIVE-PRCT` | `95` | Critical threshold connections active (%) |
+| `WARNING-CONNECTIONS-ACTIVE-PRCT` | `90` | Warning threshold connections active (%) |
+| `FILTER-VSX` |  | Filter by virtual system name (can be a regexp) |
+| `WARNING-TRAFFIC-ACCEPTED` |  | Warning threshold traffic accepted |
+| `WARNING-TRAFFIC-DROPPED` |  | Warning threshold traffic dropped |
+| `WARNING-TRAFFIC-REJECTED` |  | Warning threshold traffic rejected |
+| `WARNING-CONNECTIONS-ACTIVE` |  | Warning threshold connections active |
+| `CRITICAL-TRAFFIC-ACCEPTED` |  | Critical threshold traffic accepted |
+| `CRITICAL-TRAFFIC-DROPPED` |  | Critical threshold traffic dropped |
+| `CRITICAL-TRAFFIC-REJECTED` |  | Critical threshold traffic rejected |
+| `CRITICAL-CONNECTIONS-ACTIVE` |  | Critical threshold connections active |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `virtualsystem.cpu.utilization.1hour.percentage` | `%` | %% (1hour) | `WARNING-CPU-UTILIZATION-1H`, `CRITICAL-CPU-UTILIZATION-1H` |
+| `virtualsystem.cpu.utilization.1min.percentage` | `%` | %% (1min) | `WARNING-CPU-UTILIZATION-1M`, `CRITICAL-CPU-UTILIZATION-1M` |
+| `virtualsystem.memory.usage.bytes` | `B` | memory used | `WARNING-MEMORY-USAGE`, `CRITICAL-MEMORY-USAGE` |
+| `virtualsystem.connections.active.count` |  |  | `WARNING-CONNECTIONS-ACTIVE`, `CRITICAL-CONNECTIONS-ACTIVE` |
+| `virtualsystem.connections.active.percentage` | `%` |  | `WARNING-CONNECTIONS-ACTIVE-PRCT`, `CRITICAL-CONNECTIONS-ACTIVE-PRCT` |
+| `virtualsystem.traffic.accepted.bitspersecond` | `b/s` | traffic accepted: /s | `WARNING-TRAFFIC-ACCEPTED`, `CRITICAL-TRAFFIC-ACCEPTED` |
+| `virtualsystem.traffic.dropped.bitspersecond` | `b/s` | traffic dropped: /s | `WARNING-TRAFFIC-DROPPED`, `CRITICAL-TRAFFIC-DROPPED` |
+| `virtualsystem.traffic.rejected.bitspersecond` | `b/s` | traffic rejected: /s | `WARNING-TRAFFIC-REJECTED`, `CRITICAL-TRAFFIC-REJECTED` |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

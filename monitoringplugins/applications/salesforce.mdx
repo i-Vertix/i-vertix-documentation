@@ -1,0 +1,127 @@
+---
+title: "Salesforce"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Salesforce.png";
+
+<PluginPackHeader name="Salesforce" image={image} category="Application" metadata={["API"]} />
+
+## Description
+
+Monitors Salesforce instances through the Salesforce API: the status of the instance and the number of current incidents.
+
+The plugin pack provides these checks:
+
+* [SFDC Instance](#apps-salesforce-restapi-sfdc-instance)
+
+
+## Host Templates
+
+### Salesforce
+
+*Salesforce* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `API-HOSTNAME` | `api.status.salesforce.com` | Define the hostname to query (default: `api.status.salesforce.com`) |
+| `TIMEOUT` | `10` | Define the HTTP timeout in seconds (default: '10'). |
+| `HTTP-BACKEND` | `lwp` | Perl library to use for HTTP transactions. Possible values are: lwp (default) and curl. |
+| `API-VERSION` | `v1` | API version (Default: 'v1') |
+| `INSTANCE` |  | Set your instance identifier |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SFDC Instance](#apps-salesforce-restapi-sfdc-instance) | `apps-salesforce-restapi-sfdc-instance` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### SFDC Instance {/* #apps-salesforce-restapi-sfdc-instance */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /OK/'` | Set critical threshold for instance status (Default: '%\{status\} !~ /OK/') |
+| `UNKNOWN-STATUS` |  | Set unknown threshold for instance status (Default: '') |
+| `WARNING-STATUS` |  | Set warning threshold for instance status (Default: '') |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `salesforce.incident.current.count` |  | incidents currently |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

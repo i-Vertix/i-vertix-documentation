@@ -1,0 +1,279 @@
+---
+title: "Sentry PDU"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Server-Technology.png";
+
+<PluginPackHeader name="Sentry PDU" image={image} category="Hardware" metadata={["CDU", "PDU", "SNMP"]} />
+
+## Description
+
+Monitors Sentry PDUs through SNMP: infeeds, tower status, system power, connected sensors and the uptime.
+
+The plugin pack provides these checks:
+
+* [Infeeds](#hardware-pdu-sentry-snmp-infeeds)
+* [Sensors](#hardware-pdu-sentry-snmp-sensors)
+* [System Power](#hardware-pdu-sentry-snmp-system-power)
+* [Tower Status](#hardware-pdu-sentry-snmp-tower-status)
+* [Uptime](#hardware-pdu-sentry-snmp-uptime)
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [Network Topology Discovery](/monitoring/monitoring-resources/discovery/nedi)
+
+
+## Host Templates
+
+### Sentry-PDU
+
+*Sentry PDU* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPUSERNAME` |  | SNMP v3 only: User name (`securityName`). |
+| `SNMPTIMEOUT` |  | Time to wait before sending the request again if no reply has been received, in seconds (default: 1). See also --snmp-retries. |
+| `SNMPAUTH-PASSPHRASE` |  | SNMP v3 only: Pass phrase hashed using the authentication protocol defined in the --authprotocol option. |
+| `SNMPAUTH-PROTOCOL` |  | SNMP v3 only: Authentication protocol: MD5\|SHA. Since net-snmp 5.9.1: SHA224\|SHA256\|SHA384\|SHA512. |
+| `SNMPPRIV-PASSPHRASE` |  | SNMP v3 only: Privacy pass phrase (`privPassword`) to encrypt messages using the protocol defined in the --privprotocol option. |
+| `SNMPPRIV-PROTOCOL` |  | SNMP v3 only: Privacy protocol (`privProtocol`) used to encrypt messages. Supported protocols are: DES\|AES and since net-snmp 5.9.1: AES192\|AES192C\|AES256\|AES256C. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Infeeds](#hardware-pdu-sentry-snmp-infeeds) | `hardware-pdu-sentry-snmp-infeeds` |
+| [Sensors](#hardware-pdu-sentry-snmp-sensors) | `hardware-pdu-sentry-snmp-sensors` |
+| [System Power](#hardware-pdu-sentry-snmp-system-power) | `hardware-pdu-sentry-snmp-system-power` |
+| [Tower Status](#hardware-pdu-sentry-snmp-tower-status) | `hardware-pdu-sentry-snmp-tower-status` |
+| [Uptime](#hardware-pdu-sentry-snmp-uptime) | `hardware-pdu-sentry-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Infeeds {/* #hardware-pdu-sentry-snmp-infeeds */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{status} =~ /noComm/i \|\| %{load_status} =~ /noComm\|readError/i'` | Define the conditions to match for the status to be UNKNOWN. (default: '%\{status\} =~ /noComm/i \|\| %\{load_status\} =~ /noComm\|readError/i'). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{load_status\}>, C&lt;%\{display\}> |
+| `WARNING-STATUS` | `'%{load_status} =~ /loadLow/i'` | Define the conditions to match for the status to be WARNING. (default: '%\{load_status\} =~ /loadLow/i'). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{load_status\}>, C&lt;%\{display\}> |
+| `CRITICAL-STATUS` | `'%{status} =~ /error/i \|\| %{load_status} =~ /loadHigh\|overLoad/i'` | Define the conditions to match for the status to be CRITICAL. (default: '%\{status\} =~ /error/i \|\| %\{load_status\} =~ /loadHigh\|overLoad/i'). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{display\}> |
+| `WARNING-VOLTAGE` | `200:245` | Warning threshold. (V) |
+| `CRITICAL-VOLTAGE` | `180:255` | Critical threshold. (V) |
+| `WARNING-LOAD-PRCT` | `80` | Warning threshold. (%) |
+| `CRITICAL-LOAD-PRCT` | `90` | Critical threshold. (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-COUNTER` |  | Only display some counters (regexp can be used). Example: C&lt;--filter-counters='active-power'> |
+| `INCLUDE-INFEED` |  | Filter C&lt;infeed> by number (can be a regexp). Example: C&lt;--include-infeed='Master_A'> |
+| `EXCLUDE-INFEED` |  | Exclude C&lt;infeed> by number (can be a regexp). Example: C&lt;--exclude-infeed='Master_B'> |
+| `WARNING-LOAD` |  | Warning threshold. (A) |
+| `CRITICAL-LOAD` |  | Critical threshold. (A) |
+| `WARNING-POWER` |  | Warning threshold. (W) |
+| `CRITICAL-POWER` |  | Critical threshold. (W) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `infeed.voltage.volt` | `V` | Voltage :  V | `WARNING-VOLTAGE`, `CRITICAL-VOLTAGE` |
+| `infeed.load.ampere` | `A` | Load :  A | `WARNING-LOAD`, `CRITICAL-LOAD` |
+| `infeed.load.percentage` | `%` | Load :  %% | `WARNING-LOAD-PRCT`, `CRITICAL-LOAD-PRCT` |
+| `infeed.power.watt` | `W` | power:  W | `WARNING-POWER`, `CRITICAL-POWER` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Sensors {/* #hardware-pdu-sentry-snmp-sensors */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `COMPONENT` |  | Which component to check (default: '.*'). Can be: 'humidity', 'temperature'. |
+| `FILTER` |  | Exclude the items given as a comma-separated list (example: --filter=temperature --filter=humidity). You can also exclude items from specific instances: --filter=temperature,1 |
+| `THRESHOLD-OVERLOAD` |  | Use this option to override the status returned by the plugin when the status label matches a regular expression (syntax: section,[instance,]status,regexp). Example: --threshold-overload='temperature,CRITICAL,^(?!(normal)$)' |
+| `WARNING` |  | Set warning threshold for temperatures (syntax: type,instance,threshold). Example: --warning='temperature,.*,30' |
+| `CRITICAL` |  | Set critical threshold for temperatures (syntax: type,instance,threshold). Example: --critical='temperature,.*,40' |
+| `NO-COMPONENT` |  | Which component to check (default: '.*'). Can be: 'humidity', 'temperature'. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### System Power {/* #hardware-pdu-sentry-snmp-system-power */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-POWER-FACTOR` | `20:` | Warning threshold. (%) |
+| `CRITICAL-POWER-FACTOR` | `10:` | Critical threshold. (%) |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `FILTER-COUNTER` |  | Only display some counters (regexp can be used). Example: C&lt;--filter-counters='total-power'> |
+| `WARNING-TOTAL-POWER` |  | Warning threshold. (W) |
+| `CRITICAL-TOTAL-POWER` |  | Critical threshold. (W) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `pdu.power.total.watt` | `W` | total power:  W | `WARNING-TOTAL-POWER`, `CRITICAL-TOTAL-POWER` |
+| `pdu.power.factor.percent` | `%` | power factor :  %% | `WARNING-POWER-FACTOR`, `CRITICAL-POWER-FACTOR` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Tower Status {/* #hardware-pdu-sentry-snmp-tower-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-STATUS` | `'%{status} !~ /normal/'` | Define the conditions to match for the status to be CRITICAL (default: '%\{status\} !~ /normal/'). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{display\}> |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `INCLUDE-TOWER` |  | Filter C&lt;tower> by number (can be a regexp). Example: C&lt;--include-tower='Master'> |
+| `EXCLUDE-TOWER` |  | Exclude C&lt;tower> by number (can be a regexp). Example: C&lt;--exclude-tower='Master'> |
+| `UNKNOWN-STATUS` |  | Define the conditions to match for the status to be UNKNOWN. You can use the following variables: C&lt;%\{status\}>, C&lt;%\{display\}> |
+| `WARNING-STATUS` |  | Define the conditions to match for the status to be WARNING (default: ''). You can use the following variables: C&lt;%\{status\}>, C&lt;%\{display\}> |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #hardware-pdu-sentry-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `UNIT` |  | Select the time unit for thresholds. May be 's' for seconds, 'm' for minutes, 'h' for hours, 'd' for days, 'w' for weeks. Default is seconds. |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260600 - 20260708</summary>
+
+- Plugin pack `Sentry PDU`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20260600 - 20260708`.

@@ -1,0 +1,217 @@
+---
+title: "Pacemaker"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/Pacemaker.png";
+
+<PluginPackHeader name="Pacemaker" image={image} category="Application" metadata={["SSH"]} />
+
+## Description
+
+Monitors Pacemaker clusters through SSH: node states, failed actions and migrations of resources, constraints and the cluster resource manager.
+
+The plugin pack provides these checks:
+
+* [Pacemaker Cluster Resource Manager](#apps-pacemaker-local-crm)
+* [Pacemaker Cluster statistics](#apps-pacemaker-local-clustat)
+* [Pacemaker Constraints](#apps-pacemaker-local-constraints)
+
+
+## Host Templates
+
+### Pacemaker-HA
+
+*Pacemaker HA* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (7)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-BACKEND` | `sshcli` | Define the backend you want to use. It can be: `sshcli` (default for most plugins), `plink` and `libssh`. |
+| `SSHCLI-OPTION` | `-o=StrictHostKeyChecking=no` | Specify SSH CLI options (example: --sshcli-option='-o=StrictHostKeyChecking=no -o=LogLevel=ERROR'). The default parameter is --sshcli-option='-o=LogLevel=ERROR' which hides the SSH banner. If you override this parameter, make sure to append '-o=LogLevel=ERROR' to your new value to maintain this behavior. This parameter can be used multiple times and multiple options can be specified in the same parameter. |
+| `TIMEOUT` | `15` | Timeout in seconds for the command (default: 45). Default value can be override by the mode. |
+| `SSHCLI-OPTION2` | `-o=LogLevel=ERROR` | hides the SSH banner |
+| `SSH-USERNAME` |  | Define the user name to log in to the host. |
+| `SSH-PASSWORD` |  | Define the password associated with the user name. Cannot be used with the `sshcli` backend. Warning: using a password is not recommended. Use `--ssh-priv-key` instead. |
+| `SSH-PRIV-KEY` |  | Define the private key file to use for user authentication. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Pacemaker Cluster statistics](#apps-pacemaker-local-clustat) | `apps-pacemaker-local-clustat` |
+| [Pacemaker Constraints](#apps-pacemaker-local-constraints) | `apps-pacemaker-local-constraints` |
+| [Pacemaker Cluster Resource Manager](#apps-pacemaker-local-crm) | `apps-pacemaker-local-crm` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pacemaker Cluster statistics {/* #apps-pacemaker-local-clustat */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-GROUP` | `'%{state} !~ /started\|starting/'` | Threshold critical for group status (Default: --critical-group='%\{state\} !~ /started\|starting/') |
+| `CRITICAL-NODE` | `'%{state} !~ /up\|clean/'` | Threshold critical for node status (Default: --critical-node='%\{state\} !~ /up\|clean/') |
+| `WARNING-GROUP` |  | Threshold warning for group status |
+| `WARNING-NODE` |  | Threshold warning for node status |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pacemaker Constraints {/* #apps-pacemaker-local-constraints */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `RESOURCE` |  | Set the resource name you want to check |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Pacemaker Cluster Resource Manager {/* #apps-pacemaker-local-crm */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `FILTER-RESOURCE-NAME` | `.*` | Filter resource (also clone resource) by name (can be a regexp) |
+| `CRITICAL-CONNECTIONS-STATUS` | `'%{connection_status} =~ /failed/i'` | Set critical threshold for status (Default: '%\{connection_status\} =~ /failed/i'). Can used special variables like: %\{connection_status\}, %\{connection_error\} |
+| `CRITICAL-QUORUM-STATUS` | `'%{quorum_status} =~ /noQuorum/i'` | Set critical threshold for status (Default: '%\{quorum_status\} =~ /noQuorum/i'). Can used special variables like: %\{quorum_status\} |
+| `CRITICAL-RESOURCE-STATUS` | `'%{status} =~ /stopped\|failed/i'` | Set critical threshold for status (Default: '%\{status\} =~ /stopped\|failed/i'). Can used special variables like: %\{name\}, %\{status\}, %\{node\}, %\{is_unmanaged\} |
+| `CRITICAL-CLONE-RESOURCE-STATUS` | `'%{status} =~ /failed/i'` | Set critical threshold for status (Default: '%\{status\} =~ /failed/i'). Can used special variables like: %\{name\}, %\{status\}, %\{masters_nodes_name\}, %\{slaves_nodes_name\}, %\{is_unmanaged\} |
+| `WARNING-CLUSTER-ACTIONS-FAILED` | `0` | Threshold warning Cluster actions failed |
+| `WARNING-CLUSTER-RESOURCE-ACTIONS-FAILED` | `0` | Threshold warning Cluster Resource actions failed |
+| `WARNING-CLONE-RESOURCE-MIGRATION-FAILED` | `0` | Threshold warning Clone Resource migration failed |
+| `WARNING-NODES-OFFLINE` | `0` | Threshold warning Nodes Offline |
+| `WARNING-RESOURCE-ACTIONS-FAILED` | `0` | Threshold warning Resource actions failed |
+| `WARNING-RESOURCE-MIGRATION-FAILED` | `0` | Threshold warning Resource migration failed |
+| `WARNING-CONNECTIONS-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{connection_status\}, %\{connection_error\} |
+| `WARNING-QUORUM-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{quorum_status\} |
+| `WARNING-RESOURCE-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{name\}, %\{status\}, %\{node\}, %\{is_unmanaged\} |
+| `WARNING-CLONE-RESOURCE-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{name\}, %\{status\}, %\{masters_nodes_name\}, %\{slaves_nodes_name\}, %\{is_unmanaged\} |
+| `WARNING-NODES-ONLINE` |  | Threshold warning Nodes Online |
+| `WARNING-NODES-STANDBY` |  | Threshold warning Nodes Standby |
+| `CRITICAL-CLUSTER-ACTIONS-FAILED` |  | Threshold critical Cluster actions failed |
+| `CRITICAL-CLUSTER-RESOURCE-ACTIONS-FAILED` |  | Threshold critical Cluster Resource actions failed |
+| `CRITICAL-CLONE-RESOURCE-MIGRATION-FAILED` |  | Threshold critical Clone Resource migration failed |
+| `CRITICAL-NODES-ONLINE` |  | Threshold critical Nodes Online |
+| `CRITICAL-NODES-OFFLINE` |  | Threshold critical Nodes Offline |
+| `CRITICAL-NODES-STANDBY` |  | Threshold critical Nodes Standby |
+| `CRITICAL-RESOURCE-ACTIONS-FAILED` |  | Threshold critical Resource actions failed |
+| `CRITICAL-RESOURCE-MIGRATION-FAILED` |  | Threshold critical Resource migration failed |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.nodes.online.count` |  |  | `WARNING-NODES-ONLINE`, `CRITICAL-NODES-ONLINE` |
+| `cluster.nodes.offline.count` |  |  | `WARNING-NODES-OFFLINE`, `CRITICAL-NODES-OFFLINE` |
+| `cluster.nodes.standby.count` |  |  | `WARNING-NODES-STANDBY`, `CRITICAL-NODES-STANDBY` |
+| `cluster.actions.failed.count` |  | actions failed | `WARNING-CLUSTER-ACTIONS-FAILED`, `CRITICAL-CLUSTER-ACTIONS-FAILED` |
+| `resource.actions.failed.count` |  | actions failed | `WARNING-RESOURCE-ACTIONS-FAILED`, `CRITICAL-RESOURCE-ACTIONS-FAILED` |
+| `resource.migration.failed.count` |  | migration failed | `WARNING-RESOURCE-MIGRATION-FAILED`, `CRITICAL-RESOURCE-MIGRATION-FAILED` |
+| `clone_resource.actions.failed.count` |  | actions failed | `WARNING-CLUSTER-RESOURCE-ACTIONS-FAILED`, `CRITICAL-CLUSTER-RESOURCE-ACTIONS-FAILED` |
+| `clone_resource.migration.failed.count` |  | migration failed | `WARNING-CLONE-RESOURCE-MIGRATION-FAILED`, `CRITICAL-CLONE-RESOURCE-MIGRATION-FAILED` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20251100 - 20260114</summary>
+
+- Host template `Pacemaker-HA`
+    - Macro `SSHCLI-OPTION2` added (default `-o=LogLevel=ERROR`)
+- Command `apps-pacemaker-local-clustat`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `apps-pacemaker-local-constraints`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+- Command `apps-pacemaker-local-crm`
+    - Option `--sshcli-option='$_HOSTSSHCLI-OPTION2$'` added
+
+</details>

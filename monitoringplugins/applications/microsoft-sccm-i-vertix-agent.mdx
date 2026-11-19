@@ -1,0 +1,158 @@
+---
+title: "Microsoft SCCM (i-Vertix agent)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/MS-SCCM.png";
+
+<PluginPackHeader name="Microsoft SCCM (i-Vertix agent)" image={image} category="Application" metadata={["HTTPS", "i-Vertix agent"]} />
+
+## Description
+
+Monitors Microsoft SCCM through the i-Vertix agent: the site status and the database replication status.
+
+The plugin pack provides these checks:
+
+* [Database Replication Status](#ivertix-agent-apps-microsoft-sccm-local-database-replication-status)
+* [Site status](#ivertix-agent-apps-microsoft-sccm-local-site-status)
+
+
+## Host Templates
+
+### Microsoft-SCCM-iVertix-agent
+
+*Microsoft SCCM iVertix agent* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (5)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `NSCLIENT-TIMEOUT` |  | Define the timeout in seconds (default: 5). |
+| `NSCLIENT-PORT` |  | Port used (default: 8443). |
+| `NSCLIENT-PROTO` |  | Specify http if needed (default: 'https'). |
+| `NSCLIENT-PWD` |  | Specify the password for authentication (mandatory if --credentials is specified). |
+| `NSCLIENT-USERNAME` |  | User for agent authentication |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Database Replication Status](#ivertix-agent-apps-microsoft-sccm-local-database-replication-status) | `ivertix-agent-apps-microsoft-sccm-local-database-replication-status` |
+| [Site status](#ivertix-agent-apps-microsoft-sccm-local-site-status) | `ivertix-agent-apps-microsoft-sccm-local-site-status` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Database Replication Status {/* #ivertix-agent-apps-microsoft-sccm-local-database-replication-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-LINK-STATUS` |  | Set warning threshold for current synchronisation status (Default: '') Can used special variables like: %\{status\} |
+| `WARNING-SITE-STATUS` |  | Set warning threshold for current synchronisation status (Default: '') Can used special variables like: %\{status\}, %\{type\}, %\{site_to_site_state\}, %\{last_sync_time\} |
+| `CRITICAL-LINK-STATUS` |  | Set critical threshold for current synchronisation status (Default: ''). Can used special variables like: %\{status\} |
+| `CRITICAL-SITE-STATUS` |  | Set critical threshold for current synchronisation status (Default: ''). Can used special variables like: %\{status\}, %\{type\}, %\{site_to_site_state\}, %\{last_sync_time\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Site status {/* #ivertix-agent-apps-microsoft-sccm-local-site-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-STATUS` |  | Set warning threshold for current synchronisation status (Default: ''). Can used special variables like: %\{status\}, %\{mode\}, %\{type\}, %\{name\} |
+| `CRITICAL-STATUS` |  | Set critical threshold for current synchronisation status (Default: ''). Can used special variables like: %\{status\}, %\{mode\}, %\{type\}, %\{name\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260401</summary>
+
+- Host template `Microsoft-SCCM-iVertix-agent`
+    - Parent templates changed from *(empty)* to `generic-host`
+- Command `ivertix-agent-apps-microsoft-sccm-local-database-replication-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+- Command `ivertix-agent-apps-microsoft-sccm-local-site-status`
+    - Option `--username='$_HOSTNSCLIENT-USERNAME$'` added
+    - Option `--password='$_HOSTNSCLIENT-PWD$'` added
+    - Option `--legacy-password=$_HOSTNSCLIENT-PWD$` removed
+    - Macro `NSCLIENT-USERNAME` added
+
+</details>

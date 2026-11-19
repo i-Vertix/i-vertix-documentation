@@ -1,0 +1,127 @@
+---
+title: "SSH login (active)"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Applications/SSH.png";
+
+<PluginPackHeader name="SSH login (active)" image={image} category="Application" metadata={["SSH"]} />
+
+## Description
+
+Monitors SSH servers with an active login check and reports the response time of the connection.
+
+The plugin pack provides these checks:
+
+* [SSH login](#apps-protocols-ssh-login)
+
+
+## Host Templates
+
+### SSH-login
+
+*SSH login* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (3)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `SSH-PORT` | `22` | *(not used by the check command)* |
+| `SSH-PASSWORD` | *(password)* | SSH password. |
+| `SSH-USERNAME` |  | SSH username. |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [SSH login](#apps-protocols-ssh-login) | `apps-protocols-ssh-login` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### SSH login {/* #apps-protocols-ssh-login */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PORT` | `22` | SSH port |
+| `WARNING-TIME` | `1` | Threshold warning in seconds |
+| `CRITICAL-TIME` | `5` | Threshold critical in seconds |
+| `CRITICAL-STATUS` | `'%{message} !~ /authentication succeeded/i'` | Set critical threshold for status (Default: '%\{message\} !~ /authentication succeeded/i' Can used special variables like: %\{status\}, %\{message\} |
+| `WARNING-STATUS` |  | Set warning threshold for status. Can used special variables like: %\{status\}, %\{message\} |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `response.time.seconds` | `s` | Response time s | `WARNING-TIME`, `CRITICAL-TIME` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+No changes since `20230608 - 20230630`, the oldest release in the plugin store history.

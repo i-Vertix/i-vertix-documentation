@@ -12,12 +12,13 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-application-ELB.p
 
 ## Description
 
-### AWS Application ELB monitoring
-protocols used: Rest API
+Monitors AWS Application Load Balancers through Amazon CloudWatch: active, new and rejected connections, HTTP response codes and the health of the targets.
 
-- Connections
-- HTTP codes
-- Target availability
+The plugin pack provides these checks:
+
+* [Connections](#cloud-aws-elb-application-connections)
+* [HTTP codes](#cloud-aws-elb-application-http-codes)
+* [Targets health](#cloud-aws-elb-application-targets-health)
 
 ## Prerequisites
 
@@ -25,6 +26,15 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
+## Discovery
+
+### Host Discovery
+
+The hosts of this plugin pack are found by these host discoveries:
+
+* [AWS-Application-ELB](/monitoring/monitoring-resources/discovery/common-discovery#aws)
+
 
 ## Host Templates
 

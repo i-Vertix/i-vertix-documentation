@@ -1,0 +1,200 @@
+---
+title: "Google Compute Engine"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Infrastructure/GCP-ComputeEngine.png";
+
+<PluginPackHeader name="Google Compute Engine" image={image} category="Cloud" metadata={["API"]} />
+
+## Description
+
+Monitors Google Compute Engine instances through the Google API: CPU, disk I/O and network usage.
+
+The plugin pack provides these checks:
+
+* [CPU](#cloud-google-gcp-compute-computeengine-cpu)
+* [Disk IO](#cloud-google-gcp-compute-computeengine-diskio)
+* [Network](#cloud-google-gcp-compute-computeengine-network)
+
+
+## Host Templates
+
+### GCP-Compute-Engine
+
+*GCP Compute Engine* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (8)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AUTHORIZATION-ENDPOINT` | `https://www.googleapis.com/oauth2/v4/token` | Set GCP authorization endpoint URL (default: 'https://www.googleapis.com/oauth2/v4/token') |
+| `MONITORING-ENDPOINT` | `https://monitoring.googleapis.com/v3` | Set GCP monitoring endpoint URL (default: 'https://monitoring.googleapis.com/v3') |
+| `SCOPE-ENDPOINT` | `https://www.googleapis.com/auth/cloud-platform` | Set GCP scope endpoint URL (default: 'https://www.googleapis.com/auth/cloud-platform') |
+| `TIMEOUT` | `10` | Set timeout in seconds (default: 10). |
+| `KEY-FILE` |  | Set GCP key file path. |
+| `DIMENSION-NAME` |  | Set dimension name (default: 'metric.labels.instance_name'). |
+| `DIMENSION-OPERATOR` |  | Set dimension operator (default: 'equals'. Can also be: 'regexp', 'starts'). |
+| `DIMENSION-VALUE` |  | Set dimension value (required). |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [CPU](#cloud-google-gcp-compute-computeengine-cpu) | `cloud-google-gcp-compute-computeengine-cpu` |
+| [Disk IO](#cloud-google-gcp-compute-computeengine-diskio) | `cloud-google-gcp-compute-computeengine-diskio` |
+| [Network](#cloud-google-gcp-compute-computeengine-network) | `cloud-google-gcp-compute-computeengine-network` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+*All service templates of the plugin pack are linked to this host template.*
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #cloud-google-gcp-compute-computeengine-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total') |
+| `WARNING-UTILIZATION` | `80` | Threshold warning CPU utilization |
+| `CRITICAL-UTILIZATION` | `90` | Threshold critical CPU utilization |
+| `TIMEFRAME` |  | Set timeframe in seconds (i.e. 3600 to check last hour) |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'instance/cpu/utilization', 'instance/cpu/reserved_cores') (Can be a regexp) |
+| `WARNING-CORES-RESERVED` |  | Threshold warning CPU cores reserved |
+| `CRITICAL-CORES-RESERVED` |  | Threshold critical CPU cores reserved |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk IO {/* #cloud-google-gcp-compute-computeengine-diskio */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total') |
+| `TIMEFRAME` |  | Set timeframe in seconds (i.e. 3600 to check last hour) |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'instance/disk/read_bytes_count', 'instance/disk/throttled_read_bytes_count', 'instance/disk/write_bytes_count', 'instance/disk/throttled_write_bytes_count', 'instance/disk/read_ops_count', 'instance/disk/write_ops_count') (Can be a regexp) |
+| `WARNING-READ-VOLUME` |  | Threshold warning read volume |
+| `WARNING-THROTTLED-READ-VOLUME` |  | Threshold warning read throttled volume |
+| `WARNING-WRITE-VOLUME` |  | Threshold warning write volume |
+| `WARNING-THROTTLED-WRITE-VOLUME` |  | Threshold warning write throttled volume |
+| `WARNING-READ-OPS` |  | Threshold warning read ops |
+| `WARNING-WRITE-OPS` |  | Threshold warning write ops |
+| `CRITICAL-READ-VOLUME` |  | Threshold critical read volume |
+| `CRITICAL-THROTTLED-READ-VOLUME` |  | Threshold critical read throttled volume |
+| `CRITICAL-WRITE-VOLUME` |  | Threshold critical write volume |
+| `CRITICAL-THROTTLED-WRITE-VOLUME` |  | Threshold critical write throttled volume |
+| `CRITICAL-READ-OPS` |  | Threshold critical read ops |
+| `CRITICAL-WRITE-OPS` |  | Threshold critical write ops |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Network {/* #cloud-google-gcp-compute-computeengine-network */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `AGGREGATION` | `average` | Set monitor aggregation (Can be multiple, Can be: 'minimum', 'maximum', 'average', 'total') |
+| `TIMEFRAME` |  | Set timeframe in seconds (i.e. 3600 to check last hour) |
+| `FILTER-METRIC` |  | Filter metrics (Can be: 'instance/network/received_bytes_count', 'instance/network/sent_bytes_count', 'instance/network/received_packets_count', 'instance/network/sent_packets_count') (Can be a regexp) |
+| `WARNING-RECEIVED-VOLUME` |  | Threshold warning received volume |
+| `WARNING-SENT-VOLUME` |  | Threshold warning sent volume |
+| `WARNING-RECEIVED-PACKETS` |  | Threshold warning received packets |
+| `WARNING-SENT-PACKETS` |  | Threshold warning sent packets |
+| `CRITICAL-RECEIVED-VOLUME` |  | Threshold critical received volume |
+| `CRITICAL-SENT-VOLUME` |  | Threshold critical sent volume |
+| `CRITICAL-RECEIVED-PACKETS` |  | Threshold critical received packets |
+| `CRITICAL-SENT-PACKETS` |  | Threshold critical sent packets |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20230810 - 20231011</summary>
+
+- Plugin pack `Google Compute Engine`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20230810 - 20231011`.

@@ -1,0 +1,825 @@
+---
+title: "Forcepoint SD-WAN Firewall"
+hide_title: true
+---
+
+import PluginPackHeader from "@site/src/components/PluginPackHeader";
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+import image from "../assets/pluginpacks/Brands/Forcepoint.png";
+
+<PluginPackHeader name="Forcepoint SD-WAN Firewall" image={image} category="Network" metadata={["SNMP"]} />
+
+## Description
+
+Monitors Forcepoint SD-WAN firewalls through SNMP: cluster status and load, connections, CPU, load, memory, swap and disk usage, interfaces, dropped and rejected packets and uptime.
+
+The plugin pack provides these checks:
+
+* [Cluster load](#network-forcepoint-sdwan-snmp-cluster-load)
+* [Cluster status](#network-forcepoint-sdwan-snmp-cluster-status)
+* [Connections](#network-forcepoint-sdwan-snmp-connections)
+* [CPU](#network-forcepoint-sdwan-snmp-cpu)
+* [CPU detailed](#network-forcepoint-sdwan-snmp-cpu-detailed)
+* [Disk usage](#network-forcepoint-sdwan-snmp-disk-usage)
+* [Interfaces](#network-forcepoint-sdwan-snmp-interfaces)
+* [Load](#network-forcepoint-sdwan-snmp-load)
+* [Memory](#network-forcepoint-sdwan-snmp-memory)
+* [Packets dropped](#network-forcepoint-sdwan-snmp-dropped-packets)
+* [Packets rejected](#network-forcepoint-sdwan-snmp-rejected-packets)
+* [Storages](#network-forcepoint-sdwan-snmp-storage)
+* [Swap](#network-forcepoint-sdwan-snmp-swap)
+* [Uptime](#network-forcepoint-sdwan-snmp-uptime)
+
+## Discovery
+
+### Service Discovery
+
+The service discovery creates one service per discovered object, with these rules:
+
+| Service template | Service name |
+|------------------|--------------|
+| [Disk usage](#network-forcepoint-sdwan-snmp-disk-usage) | `Disk - <name>` |
+| [Interfaces](#network-forcepoint-sdwan-snmp-interfaces) | `Interface - <name>` |
+| [Storages](#network-forcepoint-sdwan-snmp-storage) | `Storage - <name>` |
+
+See [Service Discovery](/monitoring/monitoring-resources/discovery/service-discovery) for how to run it.
+
+## Host Templates
+
+### Forcepoint-SD-WAN-Firewall
+
+*Forcepoint SD-WAN Firewall* · Parent template: `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | Identifier used in SNMPv3 for authentication |
+| `SNMPTIMEOUT` |  | Duration that an SNMP manager waits for a response (s) |
+| `SNMPAUTH-PASSPHRASE` |  | Authentication password used in SNMPv3 for secure communication |
+| `SNMPAUTH-PROTOCOL` |  | Authentication protocol used in SNMPv3 for securing communication (MD5, SHA) |
+| `SNMPPRIV-PASSPHRASE` |  | Encryption password used in SNMPv3 to secure data transmission |
+| `SNMPPRIV-PROTOCOL` |  | Encryption protocol used in SNMPv3 to protect data confidentiality |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Connections](#network-forcepoint-sdwan-snmp-connections) | `network-forcepoint-sdwan-snmp-connections` |
+| [CPU](#network-forcepoint-sdwan-snmp-cpu) | `network-forcepoint-sdwan-snmp-cpu` |
+| [CPU detailed](#network-forcepoint-sdwan-snmp-cpu-detailed) | `network-forcepoint-sdwan-snmp-cpu-detailed` |
+| [Disk usage](#network-forcepoint-sdwan-snmp-disk-usage) | `network-forcepoint-sdwan-snmp-disk-usage` |
+| [Packets dropped](#network-forcepoint-sdwan-snmp-dropped-packets) | `network-forcepoint-sdwan-snmp-dropped-packets` |
+| [Load](#network-forcepoint-sdwan-snmp-load) | `network-forcepoint-sdwan-snmp-load` |
+| [Memory](#network-forcepoint-sdwan-snmp-memory) | `network-forcepoint-sdwan-snmp-memory` |
+| [Packets rejected](#network-forcepoint-sdwan-snmp-rejected-packets) | `network-forcepoint-sdwan-snmp-rejected-packets` |
+| [Swap](#network-forcepoint-sdwan-snmp-swap) | `network-forcepoint-sdwan-snmp-swap` |
+| [Uptime](#network-forcepoint-sdwan-snmp-uptime) | `network-forcepoint-sdwan-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster load](#network-forcepoint-sdwan-snmp-cluster-load) | `network-forcepoint-sdwan-snmp-cluster-load` |
+| [Cluster status](#network-forcepoint-sdwan-snmp-cluster-status) | `network-forcepoint-sdwan-snmp-cluster-status` |
+| [Interfaces](#network-forcepoint-sdwan-snmp-interfaces) | `network-forcepoint-sdwan-snmp-interfaces` |
+| [Storages](#network-forcepoint-sdwan-snmp-storage) | `network-forcepoint-sdwan-snmp-storage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+### Forcepoint-SD-WAN-Firewall-Cluster
+
+*Forcepoint SD-WAN Firewall Cluster* · Parent template: `Forcepoint-SD-WAN-Firewall`, `generic-host`
+
+<details className="plugin-pack-details">
+<summary>Macros (9)</summary>
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `SNMPCOMMUNITY` |  | SNMP community |
+| `SNMPVERSION` |  | SNMP version |
+| `SNMPUSERNAME` |  | Identifier used in SNMPv3 for authentication |
+| `SNMPTIMEOUT` |  | Duration that an SNMP manager waits for a response (s) |
+| `SNMPAUTH-PASSPHRASE` |  | Authentication password used in SNMPv3 for secure communication |
+| `SNMPAUTH-PROTOCOL` |  | Authentication protocol used in SNMPv3 for securing communication (MD5, SHA) |
+| `SNMPPRIV-PASSPHRASE` |  | Encryption password used in SNMPv3 to secure data transmission |
+| `SNMPPRIV-PROTOCOL` |  | Encryption protocol used in SNMPv3 to protect data confidentiality |
+
+</div>
+
+Macros without a default value are only defined in the check commands. Set them on the host where needed.
+
+</details>
+
+#### Service Templates
+
+<Tabs>
+<TabItem value="linked" label="Linked to the host template" default>
+
+These service templates are linked to the host template: the services are created automatically on every host using it.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Cluster load](#network-forcepoint-sdwan-snmp-cluster-load) | `network-forcepoint-sdwan-snmp-cluster-load` |
+| [Cluster status](#network-forcepoint-sdwan-snmp-cluster-status) | `network-forcepoint-sdwan-snmp-cluster-status` |
+| [Connections](#network-forcepoint-sdwan-snmp-connections) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-connections` |
+| [CPU](#network-forcepoint-sdwan-snmp-cpu) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-cpu` |
+| [CPU detailed](#network-forcepoint-sdwan-snmp-cpu-detailed) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-cpu-detailed` |
+| [Disk usage](#network-forcepoint-sdwan-snmp-disk-usage) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-disk-usage` |
+| [Packets dropped](#network-forcepoint-sdwan-snmp-dropped-packets) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-dropped-packets` |
+| [Load](#network-forcepoint-sdwan-snmp-load) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-load` |
+| [Memory](#network-forcepoint-sdwan-snmp-memory) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-memory` |
+| [Packets rejected](#network-forcepoint-sdwan-snmp-rejected-packets) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-rejected-packets` |
+| [Swap](#network-forcepoint-sdwan-snmp-swap) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-swap` |
+| [Uptime](#network-forcepoint-sdwan-snmp-uptime) (inherited from `Forcepoint-SD-WAN-Firewall`) | `network-forcepoint-sdwan-snmp-uptime` |
+| [Ping](#ping-lan) (inherited from `generic-host`) | `Ping-LAN` |
+
+</div>
+
+</TabItem>
+<TabItem value="others" label="Other service templates">
+
+These service templates are part of the plugin pack, but not linked to the host template. Create the services manually or by a service discovery.
+
+<div className="plugin-pack-templates">
+
+| Service template | Name |
+|------------------|------|
+| [Interfaces](#network-forcepoint-sdwan-snmp-interfaces) | `network-forcepoint-sdwan-snmp-interfaces` |
+| [Storages](#network-forcepoint-sdwan-snmp-storage) | `network-forcepoint-sdwan-snmp-storage` |
+
+</div>
+
+</TabItem>
+</Tabs>
+
+## Service Templates
+
+<details className="plugin-pack-details">
+<summary>
+
+### Connections {/* #network-forcepoint-sdwan-snmp-connections */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-TOTAL-CONNECTIONS` |  | Treshold warning for connections |
+| `CRITICAL-TOTAL-CONNECTIONS` |  | Threshold critical for connections |
+| `WARNING-NEW-CONNECTIONS-SEC` |  | Treshold warning for new connections per second |
+| `CRITICAL-NEW-CONNECTIONS-SEC` |  | Treshold critical for new connections per second |
+| `WARNING-DISCARDED-CONNECTIONS-SEC` |  | Treshold warning for discarded connections per second |
+| `CRITICAL-DISCARDED-CONNECTIONS-SEC` |  | Treshold critical for discarded connections per second |
+| `WARNING-REFUSED-CONNECTIONS-SEC` |  | Treshold warning for refused connections per second |
+| `CRITICAL-REFUSED-CONNECTIONS-SEC` |  | Treshold critical for refused connections per second |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `connections.total.count` | `con` | Total connections | `WARNING-TOTAL-CONNECTIONS`, `CRITICAL-TOTAL-CONNECTIONS` |
+| `connections.new.persecond` | `con/s` | New Connections :  /s | `WARNING-NEW-CONNECTIONS-SEC`, `CRITICAL-NEW-CONNECTIONS-SEC` |
+| `connections.discarded.persecond` | `con/s` | Discarded Connections :  /s | `WARNING-DISCARDED-CONNECTIONS-SEC`, `CRITICAL-DISCARDED-CONNECTIONS-SEC` |
+| `connections.refused.persecond` | `con/s` | Refused Connections :  /s | `WARNING-REFUSED-CONNECTIONS-SEC`, `CRITICAL-REFUSED-CONNECTIONS-SEC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU {/* #network-forcepoint-sdwan-snmp-cpu */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-AVERAGE` | `80` | Treshold warning for average CPU |
+| `CRITICAL-AVERAGE` | `90` | Treshold critical for average CPU |
+| `WARNING-CORE` |  | Treshold warning for CPU core |
+| `CRITICAL-CORE` |  | Treshold critical for CPU core |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.utilization.percentage` | `%` | %% | `WARNING-AVERAGE`, `CRITICAL-AVERAGE` |
+| `core.cpu.utilization.percentage` | `%` | usage :  %% | `WARNING-CORE`, `CRITICAL-CORE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### CPU detailed {/* #network-forcepoint-sdwan-snmp-cpu-detailed */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-IDLE` | `20:` | Threshold warning Idle |
+| `WARNING-WAIT` | `35` | Threshold warning Wait |
+| `CRITICAL-IDLE` | `10:` | Threshold critical Idle |
+| `CRITICAL-WAIT` | `60` | Threshold critical Wait |
+| `WARNING-USER` |  | Threshold warning User |
+| `WARNING-NICE` |  | Threshold warning Nice |
+| `WARNING-KERNEL` |  | Threshold warning Kernel |
+| `WARNING-SYSTEM` |  | Threshold warning System |
+| `WARNING-INTERRUPT` |  | Threshold warning Interrupt |
+| `WARNING-SOFTIRQ` |  | Threshold warning Softirq |
+| `WARNING-STEAL` |  | Threshold warning Steal |
+| `WARNING-GUEST` |  | Threshold warning Guest |
+| `WARNING-GUESTNICE` |  | Threshold warning Guest Nice |
+| `CRITICAL-USER` |  | Threshold critical User |
+| `CRITICAL-NICE` |  | Threshold critical Nice |
+| `CRITICAL-KERNEL` |  | Threshold critical Kernel |
+| `CRITICAL-SYSTEM` |  | Threshold critical System |
+| `CRITICAL-INTERRUPT` |  | Threshold critical Interrupt |
+| `CRITICAL-SOFTIRQ` |  | Threshold critical Softirq |
+| `CRITICAL-STEAL` |  | Threshold warning Steal |
+| `CRITICAL-GUEST` |  | Threshold critical Guest |
+| `CRITICAL-GUESTNICE` |  | Threshold critical Guest Nice |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cpu.user.utilization.percentage` | `%` | User  %% | `WARNING-USER`, `CRITICAL-USER` |
+| `cpu.nice.utilization.percentage` | `%` | Nice  %% | `WARNING-NICE`, `CRITICAL-NICE` |
+| `cpu.system.utilization.percentage` | `%` | System  %% | `WARNING-SYSTEM`, `CRITICAL-SYSTEM` |
+| `cpu.idle.utilization.percentage` | `%` | Idle  %% | `WARNING-IDLE`, `CRITICAL-IDLE` |
+| `cpu.wait.utilization.percentage` | `%` | Wait  %% | `WARNING-WAIT`, `CRITICAL-WAIT` |
+| `cpu.kernel.utilization.percentage` | `%` | Kernel  %% | `WARNING-KERNEL`, `CRITICAL-KERNEL` |
+| `cpu.interrupt.utilization.percentage` | `%` | Interrupt  %% | `WARNING-INTERRUPT`, `CRITICAL-INTERRUPT` |
+| `cpu.softirq.utilization.percentage` | `%` | Soft Irq  %% | `WARNING-SOFTIRQ`, `CRITICAL-SOFTIRQ` |
+| `cpu.steal.utilization.percentage` | `%` | Steal  %% | `WARNING-STEAL`, `CRITICAL-STEAL` |
+| `cpu.guest.utilization.percentage` | `%` | Guest  %% | `WARNING-GUEST`, `CRITICAL-GUEST` |
+| `cpu.guestnice.utilization.percentage` | `%` | Guest Nice  %% | `WARNING-GUESTNICE`, `CRITICAL-GUESTNICE` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Disk usage {/* #network-forcepoint-sdwan-snmp-disk-usage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-SPACE-USAGE-PRCT` | `80` | Threshold waring for space usage percent |
+| `CRITICAL-SPACE-USAGE-PRCT` | `90` | Critical threshold for space usage percent |
+| `FILTER-NAME` | `^\/dev\/sd` | Filter disk name |
+| `WARNING-SPACE-USAGE` |  | Threshold waring for space usage |
+| `WARNING-SPACE-USAGE-FREE` |  | Threshold waring for space usage free |
+| `CRITICAL-SPACE-USAGE` |  | Critical threshold for space usage |
+| `CRITICAL-SPACE-USAGE-FREE` |  | Critical threshold for space usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `disk.space.usage.bytes` | `B` |  | `WARNING-SPACE-USAGE`, `CRITICAL-SPACE-USAGE` |
+| `disk.space.free.bytes` | `B` |  | `WARNING-SPACE-USAGE-FREE`, `CRITICAL-SPACE-USAGE-FREE` |
+| `disk.space.usage.percentage` | `%` |  | `WARNING-SPACE-USAGE-PRCT`, `CRITICAL-SPACE-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Packets dropped {/* #network-forcepoint-sdwan-snmp-dropped-packets */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-DROPPED-PACKETS-SEC` |  | Treshold warning for dropped packets |
+| `CRITICAL-DROPPED-PACKETS-SEC` |  | Treshold critical for dropped packets |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `dropped.packets.persecond` | `packets/s` | Packets Dropped :  /s | `WARNING-DROPPED-PACKETS-SEC`, `CRITICAL-DROPPED-PACKETS-SEC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Load {/* #network-forcepoint-sdwan-snmp-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING` | `3,2,2` | Warning threshold for space Load |
+| `CRITICAL` | `5,4,4` | Critical threshold for space Load |
+| `EXTRA-OPTS` | `--average` | Additional options appended to the plugin command line (host level). |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `load.1m.average.count` |  |  |  |
+| `load.5m.average.count` |  |  |  |
+| `load.15m.average.count` |  |  |  |
+| `load.1m.count` |  |  |  |
+| `load.5m.count` |  |  |  |
+| `load.15m.count` |  |  |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Memory {/* #network-forcepoint-sdwan-snmp-memory */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `80` | Threshold waring for memory usage free (%) |
+| `CRITICAL-USAGE-PRCT` | `90` | Threshold waring for memory usage free (%) |
+| `WARNING-USAGE` |  | Threshold waring for memory usage |
+| `WARNING-USAGE-FREE` |  | Threshold waring for memory usage free |
+| `WARNING-BUFFER` |  | Threshold waring for memory buffer |
+| `WARNING-CACHED` |  | Threshold waring for memory cache |
+| `WARNING-SHARED` |  | Threshold waring for shared memory |
+| `CRITICAL-USAGE` |  | Threshold critical for memory usage |
+| `CRITICAL-USAGE-FREE` |  | Threshold critical for memory usage free |
+| `CRITICAL-BUFFER` |  | Threshold critical for memory buffer |
+| `CRITICAL-CACHED` |  | Threshold critical for memory cache |
+| `CRITICAL-SHARED` |  | Threshold critical for shared memory |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `memory.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `memory.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `memory.usage.percentage` | `%` |  | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+| `memory.buffer.bytes` | `B` | Buffer | `WARNING-BUFFER`, `CRITICAL-BUFFER` |
+| `memory.cached.bytes` | `B` | Cached | `WARNING-CACHED`, `CRITICAL-CACHED` |
+| `memory.shared.bytes` | `B` | Shared | `WARNING-SHARED`, `CRITICAL-SHARED` |
+| `swap.usage.bytes` | `B` |  |  |
+| `swap.free.bytes` | `B` |  |  |
+| `swap.usage.percentage` | `%` | Swap Used :  %% |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Packets rejected {/* #network-forcepoint-sdwan-snmp-rejected-packets */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-REJECTED-PACKETS-SEC` |  | Threshold waring for rejected packets |
+| `CRITICAL-REJECTED-PACKETS-SEC` |  | Threshold critical for rejected packets |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `rejected.packets.persecond` | `packets/s` | Packets Rejected :  /s | `WARNING-REJECTED-PACKETS-SEC`, `CRITICAL-REJECTED-PACKETS-SEC` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Swap {/* #network-forcepoint-sdwan-snmp-swap */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-USAGE-PRCT` | `20` | Threshold waring for swap usage percent |
+| `CRITICAL-USAGE-PRCT` | `80` | Critical threshold for swap usage percent |
+| `WARNING-USAGE` |  | Threshold waring for swap usage |
+| `WARNING-USAGE-FREE` |  | Threshold waring for swap usage free |
+| `CRITICAL-USAGE` |  | Critical threshold for swap usage |
+| `CRITICAL-USAGE-FREE` |  | Critical threshold for swap usage free |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `swap.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `swap.free.bytes` | `B` |  | `WARNING-USAGE-FREE`, `CRITICAL-USAGE-FREE` |
+| `swap.usage.percentage` | `%` | Used :  %% | `WARNING-USAGE-PRCT`, `CRITICAL-USAGE-PRCT` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Uptime {/* #network-forcepoint-sdwan-snmp-uptime */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-UPTIME` | `1800:` | Threshold warning in seconds |
+| `CRITICAL-UPTIME` | `900:` | Threshold critical in seconds |
+| `REBOOT-WINDOW` | `5000` | To be used with check-overload option. Time in milliseconds (Default: 5000) You increase the chance of not missing a reboot if you decrease that value |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Ping {/* #ping-lan */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `PING_NUMBER` | `5` | number of packets to send |
+| `WARNING` | `100ms,20%` | warning threshold (200ms,40%) |
+| `CRITICAL` | `200ms,60%` | critical threshold (500ms,80%) |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster load {/* #network-forcepoint-sdwan-snmp-cluster-load */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `WARNING-CPU-LOAD` | `80` | Threshold waring for cpu load |
+| `CRITICAL-CPU-LOAD` | `90` | Threshold critical for cpu load |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `cluster.cpu.load.percentage` | `%` | cluster cpu load: %% | `WARNING-CPU-LOAD`, `CRITICAL-CPU-LOAD` |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Cluster status {/* #network-forcepoint-sdwan-snmp-cluster-status */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNKNOWN-STATUS` | `'%{node_status} =~ /unknown/i'` | Set unknown threshold for status. Default: '%\{node_status\} =~ /unknown/i'. Can used special variables like: %\{node_status\}, %\{node_member_id\} |
+| `WARNING-STATUS` | `'%{node_status} =~ /lockedOnline/i'` | Set warning threshold for status. Default: '%\{node_status\} =~ /lockedOnline/i'. Can used special variables like: %\{node_status\}, %\{node_member_id\} |
+| `CRITICAL-STATUS` | `'%{node_status} =~ /^(?:offline\|goingOffline\|lockedOffline\|goingLockedOffline)$/i'` | Set critical threshold for status. Default: '%\{node_status\} =~ /^(?\:offline\|goingOffline\|lockedOffline\|goingLockedOffline\|standby\|goingStandby)$/i'. Can used special variables like: %\{node_status\}, %\{node_member_id\} |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Interfaces {/* #network-forcepoint-sdwan-snmp-interfaces */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `UNITS-TRAFFIC` | `percent_delta` | Units of thresholds for the traffic (Default: '%') ('%', 'b/s') |
+| `UNITS-ERROR` | `percent_delta` | Units of thresholds for errors/discards (Default: '%') ('%', 'absolute') |
+| `OID-DISPLAY` | `ifName` | Choose OID used to display interface (default: ifName) (values: ifDesc, ifAlias, ifName, IpAddr) |
+| `WARNING-DISCARD-IN` | `0` | Threshold warning number Packets In Discard |
+| `WARNING-DISCARD-OUT` | `0` | Threshold warning number Packets Out Discard |
+| `WARNING-ERROR-IN` | `0` | Threshold warning number Packets In Error |
+| `WARNING-ERROR-OUT` | `0` | Threshold warning number Packets Out Error |
+| `WARNING-TRAFFIC-IN` | `80` | Threshold warning traffic in |
+| `WARNING-TRAFFIC-OUT` | `80` | Threshold warning traffic out |
+| `CRITICAL-DISCARD-IN` | `10` | Threshold critical number Packets In Discard |
+| `CRITICAL-DISCARD-OUT` | `10` | Threshold critical number Packets Out Discard |
+| `CRITICAL-ERROR-IN` | `10` | Threshold critical number Packets In Error |
+| `CRITICAL-ERROR-OUT` | `10` | Threshold critical number Packets Out Error |
+| `CRITICAL-TRAFFIC-IN` | `90` | Threshold critical traffic in |
+| `CRITICAL-TRAFFIC-OUT` | `90` | Threshold critical traffic out |
+| `INTERFACE` |  | Interface name - you can use regex |
+| `SPEED` |  | Set interface speed for incoming/outgoing traffic (in Mb) |
+| `SPEED-IN` |  | Set interface speed for incoming traffic (in Mb) |
+| `SPEED-OUT` |  | Set interface speed for outgoing traffic (in Mb) |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `total.interfaces.count` |  | Total port |  |
+| `total.interfaces.admin.up.count` |  | AdminStatus Up |  |
+| `total.interfaces.admin.down.count` |  | AdminStatus Down |  |
+| `total.interfaces.operational.up.count` |  | OperStatus Up |  |
+| `total.interfaces.operational.down.count` |  | OperStatus Down |  |
+| `interface.traffic.in.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-IN`, `CRITICAL-TRAFFIC-IN` |
+| `interface.traffic.out.bitspersecond` | `b/s` |  | `WARNING-TRAFFIC-OUT`, `CRITICAL-TRAFFIC-OUT` |
+| `interface.packets.in.discard.count` |  |  | `WARNING-DISCARD-IN`, `CRITICAL-DISCARD-IN` |
+| `interface.packets.in.error.count` |  |  | `WARNING-ERROR-IN`, `CRITICAL-ERROR-IN` |
+| `interface.packets.out.discard.count` |  |  | `WARNING-DISCARD-OUT`, `CRITICAL-DISCARD-OUT` |
+| `interface.packets.out.error.count` |  |  | `WARNING-ERROR-OUT`, `CRITICAL-ERROR-OUT` |
+| `interface.packets.in.unicast.count` |  |  |  |
+| `interface.packets.in.broadcast.count` |  |  |  |
+| `interface.packets.in.multicast.count` |  |  |  |
+| `interface.packets.out.unicast.count` |  |  |  |
+| `interface.packets.out.broadcast.count` |  |  |  |
+| `interface.packets.out.multicast.count` |  |  |  |
+| `interface.speed.bitspersecond` | `b/s` | Speed : /s |  |
+| `interface.volume.in.bytes` | `B` | Volume In |  |
+| `interface.volume.out.bytes` | `B` | Volume Out |  |
+
+</div>
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>
+
+### Storages {/* #network-forcepoint-sdwan-snmp-storage */}
+
+</summary>
+
+#### Macros
+
+<div className="plugin-pack-macros">
+
+| Macro | Default value | Description |
+|-------|---------------|-------------|
+| `CRITICAL-ACCESS` | `readOnly` | Threshold critical. Check if storage is readOnly: --critical-access=@2:2 |
+| `UNIT` | `%` | Units of thresholds (Default: '%') ('%', 'B') |
+| `SPACE-RESERVATION` | `0` | Some filesystem has space reserved (like ext4 for root). The value is in percent of total (Default: none) (results like 'df' command) |
+| `WARNING-SPACE-USAGE-PRCT` | `90` | Threshold in percentage. *(not used by the check command)* |
+| `CRITICAL-SPACE-USAGE-PRCT` | `95` | Threshold in percentage. *(not used by the check command)* |
+| `EXTRA-OPTS` |  | Additional options appended to the plugin command line (host level). |
+| `STORAGE` |  | Set the storage (number expected) ex: 1, 2,... (empty means 'check all storage') - can be a regexp |
+| `WARNING-USAGE` |  | Threshold warning |
+| `WARNING-ACCESS` |  | Threshold warning |
+| `CRITICAL-USAGE` |  | Threshold critical |
+
+</div>
+
+#### Metrics
+
+<div className="plugin-pack-macros">
+
+| Metric | Unit | Description | Threshold macros |
+|--------|------|-------------|------------------|
+| `storage.partitions.count` |  | Partitions count |  |
+| `storage.space.usage.bytes` | `B` |  | `WARNING-USAGE`, `CRITICAL-USAGE` |
+| `storage.access.count` |  |  | `WARNING-ACCESS`, `CRITICAL-ACCESS` |
+
+</div>
+
+</details>
+
+## Changelog
+
+Changes of the plugin pack per release, compared with the previous release.
+
+<details className="plugin-pack-details" open>
+<summary>20260300 - 20260331</summary>
+
+- Service template [`network-forcepoint-sdwan-snmp-storage`](#network-forcepoint-sdwan-snmp-storage)
+    - Service template added
+- Command `network-forcepoint-sdwan-snmp-storage`
+    - Command added
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20260100 - 20260327</summary>
+
+- Service template [`network-forcepoint-sdwan-snmp-disk-usage`](#network-forcepoint-sdwan-snmp-disk-usage)
+    - Macro `FILTER-NAME` added (default `^\/dev\/sd`)
+- Command `network-forcepoint-sdwan-snmp-connections`
+    - Option `--warning-total-connections=$_SERVICEWARNING-TOTAL-CONNECTIONS$` added
+    - Option `--critical-total-connections=$_SERVICECRITICAL-TOTAL-CONNECTIONS$` added
+    - Option `--warning-connections=$_SERVICEWARNING-CONNECTIONS$` removed
+    - Option `--critical-connections=$_SERVICECRITICAL-CONNECTIONS$` removed
+    - Macro `WARNING-TOTAL-CONNECTIONS` added
+    - Macro `CRITICAL-TOTAL-CONNECTIONS` added
+    - Macro `WARNING-CONNECTIONS` removed
+    - Macro `CRITICAL-CONNECTIONS` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250800 - 20250915</summary>
+
+- Plugin pack `Forcepoint SD-WAN Firewall`
+    - Description updated
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250400 - 20250423</summary>
+
+- Command `network-forcepoint-sdwan-snmp-dropped-packets`
+    - Option `--warning-dropped-packets-sec=$_SERVICEWARNING-DROPPED-PACKETS-SEC$` added
+    - Option `--critical-dropped-packets-sec=$_SERVICECRITICAL-DROPPED-PACKETS-SEC$` added
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `WARNING-DROPPED-PACKETS-SEC` added
+    - Macro `CRITICAL-DROPPED-PACKETS-SEC` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+- Command `network-forcepoint-sdwan-snmp-rejected-packets`
+    - Option `--warning-rejected-packets-sec=$_SERVICEWARNING-REJECTED-PACKETS-SEC$` added
+    - Option `--critical-rejected-packets-sec=$_SERVICECRITICAL-REJECTED-PACKETS-SEC$` added
+    - Option `--warning=$_SERVICEWARNING$` removed
+    - Option `--critical=$_SERVICECRITICAL$` removed
+    - Macro `WARNING-REJECTED-PACKETS-SEC` added
+    - Macro `CRITICAL-REJECTED-PACKETS-SEC` added
+    - Macro `WARNING` removed
+    - Macro `CRITICAL` removed
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250414</summary>
+
+- Service template [`network-forcepoint-sdwan-snmp-cluster-status`](#network-forcepoint-sdwan-snmp-cluster-status)
+    - Macro `UNKNOWN-STATUS`: default changed from `%{node_status} =~ /unknown/i` to `'%{node_status} =~ /unknown/i'`
+    - Macro `WARNING-STATUS`: default changed from `%{node_status} =~ /lockedOnline/i` to `'%{node_status} =~ /lockedOnline/i'`
+    - Macro `CRITICAL-STATUS`: default changed from `%{node_status} =~ /^(?:offline|goingOffline|lockedOffline|goingLockedOffline|standby|goingStandby)$/i` to `'%{node_status} =~ /^(?:offline|goingOffline|lockedOffline|goingLockedOffline)$/i'`
+- Service template [`network-forcepoint-sdwan-snmp-disk-usage`](#network-forcepoint-sdwan-snmp-disk-usage)
+    - Macro `WARNING-SPACE-USAGE-PRCT`: default changed from `85` to `80`
+
+</details>
+
+<details className="plugin-pack-details">
+<summary>20250300 - 20250330</summary>
+
+- Plugin pack `Forcepoint SD-WAN Firewall`
+    - Plugin pack added
+
+</details>
+
+The plugin pack was added in `20250300 - 20250330`.

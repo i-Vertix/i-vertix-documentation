@@ -12,10 +12,11 @@ import image from "../../assets/pluginpacks/Infrastructure/AWS-SES.png";
 
 ## Description
 
-### AWS SES (Simple Email Service) monitoring
-Protocols used: Rest API
+Monitors Amazon SES through Amazon CloudWatch: e-mails sent and delivered, the reject rate and the spam complaint rate.
 
-- Emails
+The plugin pack provides these checks:
+
+* [E-Mails](#cloud-aws-ses-emails)
 
 ## Prerequisites
 
@@ -23,6 +24,7 @@ The plugin pack retrieves the metrics through the AWS API (Amazon CloudWatch). B
 AWS user with the required read permissions and its credentials (*Access Key ID* and *Secret Access Key*), and the *region* of the resources.
 
 See [AWS Prerequisites](/monitoringplugins/cloud/aws/aws-prerequisites) for a step-by-step guide and the required permissions.
+
 
 ## Host Templates
 

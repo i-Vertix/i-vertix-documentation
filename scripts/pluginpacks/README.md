@@ -12,6 +12,7 @@ and the centreon-plugins sources.
 | `genpage.py` | Renders the MDX page from that JSON |
 | `plugininfo.py` | Reads option help (POD) and metrics (perfdata) of a plugin mode from centreon-plugins, starting from a command line |
 | `prerequisites/*.md` | Content of the *Prerequisites* section, shared by the packs of one technology (absolute links only) |
+| `descriptions.json` | Intro sentence of the *Description* section per pack (`unique_id` -> `name`, `intro`); a pack without one gets a generic sentence and a warning. The checks listed below it and the *Discovery* section are generated from the portal data (cloud/common host discoveries, NeDi, Network Scan, Meraki and VMware host discovery rules, service discovery rules; parts without data are left out), the portal description is not used |
 
 The Claude Code skill `.claude/skills/pluginpack-docs-release` describes the whole release workflow.
 
